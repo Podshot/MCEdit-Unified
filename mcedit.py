@@ -383,7 +383,7 @@ class MCEdit(GLViewport):
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
             
         def refresh():
-            PlayerCache.Instance().force_refresh()
+            PlayerCache().force_refresh()
 
         hotkeys = ([("",
                      "Controls",

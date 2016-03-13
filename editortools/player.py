@@ -416,7 +416,7 @@ class PlayerPositionPanel(Panel):
                         if len(player) > 4 and player[4] == "-":
                             os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
                             player = player.replace("-", "", 1)
-                        data = self.playercache.getPlayerInfo(player)
+                        data = self.playercache.getPlayerInfo(player, use_old_data=True)
                         #self.player_UUID[data[0]] = data[1]
                         self.player_UUID["UUID"].append(data[0])
                         self.player_UUID["Name"].append(data[1])

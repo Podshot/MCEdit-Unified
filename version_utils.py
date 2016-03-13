@@ -8,10 +8,8 @@ import atexit
 import threading
 import logging
 from uuid import UUID
-from utilities.misc import deprecated, Singleton
 import httplib
 import base64
-import directories
 import datetime
 
 log = logging.getLogger(__name__)
@@ -22,7 +20,7 @@ class PlayerCache:
     Used to cache Player names and UUID's, provides an small API to interface with it
     '''
     
-    PATH = os.path.join(directories.getDataDir(), "newcache.json")
+    PATH = userCachePath
     TIMEOUT = 2.5
     
     __shared_state = {}
@@ -49,7 +47,6 @@ class PlayerCache:
             new_dict["Name"] = player["Playername"]
             new_dict["Timestamp"] = player["Timestamp"]
             new_dict["Successful"] = player["WasSuccessful"]
-            new_dict["Skin"] = player["Skin"]
             self._cache["Cache"][player["UUID (No Separator)"]] = new_dict
             
     def save(self):
@@ -57,21 +54,15 @@ class PlayerCache:
         json.dump(self._cache, fp, indent=4, separators=(',', ':'))
         fp.close()
     
-    def load(self, path=None):
+    def load(self):
         '''
         Loads from the usercache.json file if it exists, if not an empty one will be generated
         '''
-        if path is not None:
-            self.PATH = path
         self._cache = {"Version": 2, "Connection Timeout": 2.5, "Cache": {}}
         if not os.path.exists(self.PATH):
-            print "Path does not exist"
-            print self.PATH
             fp = open(self.PATH, 'w')
             json.dump(self._cache, fp)
             fp.close()
-        else:
-            print "Path exists"
         fp = open(self.PATH, 'r')
         try:
             json_in = json.load(fp)
@@ -111,22 +102,11 @@ class PlayerCache:
             to_refresh = to_refresh_successful + to_refresh_failed
             for uuid in to_refresh:
                 self._getPlayerInfoUUID(uuid)
-            '''
-            if response_successful is not None:
-                response_successful = json.loads(response_successful)
-                for player in response_successful:
-                    name = player["name"]
-                    uuid = player["id"]
-                    entry = self._cache["Cache"].get(uuid,{}) # Since we have to retrieve information via Playernames, the info returned could be for another UUID that took the existing Playername
-                    if entry == {}:
-                        entry["Name"] = name
-                        entry["Successful"] = True
-                        entry["Timestamp"] = time.time()
-                    else:
-                        entry["Name"] = name
-                        entry["Timestamp"] = time.time()
-                    self._cache["Cache"][uuid] = entry
-            '''
+        self.save()
+        
+    def force_refresh(self):
+        for uuid in self._cache["Cache"].keys():
+            self.getPlayerInfo(uuid, force=True)
         self.save()
         
             
@@ -209,7 +189,7 @@ class PlayerCache:
                 return player.get("Successful", False)
         return False
             
-    def getPlayerInfo(self, arg, force=False):
+    def getPlayerInfo(self, arg, force=False, use_old_data=False):
         '''
         Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in 'arg'
         
@@ -225,7 +205,7 @@ class PlayerCache:
             if self.UUIDInCache(arg) and self._wasSuccessfulUUID(arg) and not force:
                 return self._getDataFromCacheUUID(arg)
             else:
-                return self._getPlayerInfoUUID(arg)
+                return self._getPlayerInfoUUID(arg, use_old_data)
         except ValueError:
             if self.nameInCache(arg) and self._wasSuccessfulName(arg) and not force:
                 return self._getDataFromCacheName(arg)
@@ -233,7 +213,7 @@ class PlayerCache:
                 return self._getPlayerInfoName(arg)
     
     # --- Player Data Getters ---
-    def _getPlayerInfoUUID(self, uuid):
+    def _getPlayerInfoUUID(self, uuid, use_old_data=False):
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(clean_uuid))
@@ -247,16 +227,21 @@ class PlayerCache:
                 self._cache["Cache"][clean_uuid] = player
                 self.temp_skin_cache[clean_uuid] = data
                 self.save()
-                #print self._cache
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
             except:
                 player["Successful"] = False
                 self._cache["Cache"][clean_uuid] = player
-                return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
+                if use_old_data and player.get("Name", "<Unknown Name>") != "<Unknown Name>":
+                    return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+                else:
+                    return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         else:
             player["Successful"] = False
             self._cache["Cache"][clean_uuid] = player
-            return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
+            if use_old_data and player.get("Name", "<Unknown Name>") != "<Unknown Name>":
+                return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+            else:
+                return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         
     def _getPlayerInfoName(self, name):
         response = self._getDataFromURL("https://api.mojang.com/users/profiles/minecraft/{}".format(name))
@@ -269,7 +254,6 @@ class PlayerCache:
                 player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][uuid] = player
-                #print self._cache
                 self.save()
                 return (self.insertSeperators(uuid), player["Name"], uuid)
             except:
@@ -329,7 +313,6 @@ class PlayerCache:
                         player["Skin"] = { "Timestamp": time.time() }
                         self._cache["Cache"][uuid] = player
                         del self.temp_skin_cache[uuid]
-                        print self._cache
                         self.save()
                 else:
                     response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
@@ -340,7 +323,6 @@ class PlayerCache:
                             toReturn = skin_path
                             player["Skin"] = { "Timestamp": time.time() }
                             self._cache["Cache"][uuid] = player
-                            print self._cache
                             self.save()
                
         except IOError:
@@ -377,23 +359,16 @@ class PlayerCache:
     def _getDataFromURL(self, url):
         import traceback
         try:
-            #print "Getting data from: {}".format(url)
             response = urllib2.urlopen(url, timeout=self.TIMEOUT).read()
-            #print "\"{}\"".format(response)
             return response
         except urllib2.HTTPError, e:
             log.warn("Encountered a HTTPError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.code))
-            #print "Encountered a HTTPError"
-            #print "Error: " + str(e.code)
-            #print traceback.format_exc()
         except urllib2.URLError, e:
             log.warn("Encountered an URLError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.reason))
-            #print traceback.format_exc()
         except httplib.HTTPException:
             log.warn("Encountered a HTTPException while trying to access \"" + url + "\"")
-            #print traceback.format_exc()
         except Exception:
             log.warn("Unknown error occurred while trying to get data from URL: " + url)
             log.warn(traceback.format_exc())
@@ -408,14 +383,11 @@ class PlayerCache:
         except urllib2.HTTPError, e:
             log.warn("Encountered a HTTPError while trying to POST to \"" + url + "\"")
             log.warn("Error: " + str(e.code))
-            #print traceback.format_exc()
         except urllib2.URLError, e:
             log.warn("Encountered an URLError while trying to POST to \"" + url + "\"")
             log.warn("Error: " + str(e.reason))
-            #print traceback.format_exc()
         except httplib.HTTPException:
             log.warn("Encountered a HTTPException while trying to POST to \"" + url + "\"")
-            #print traceback.format_exc()
         except Exception:
             log.warn("Unknown error occurred while trying to POST data to URL: " + url)
             log.warn(traceback.format_exc())
@@ -432,8 +404,6 @@ def _cleanup():
             except IOError:
                 fp.close()
                 os.remove(os.path.join("player-skins", image_file))
-    #NewPlayerCache().cleanup()
     
 atexit.register(_cleanup)
-#PlayerCache().load()
 atexit.register(PlayerCache().save)
