@@ -640,8 +640,8 @@ class PlayerPositionTool(EditorTool):
             for player in self.editor.level.players:
                 if player != "Player" and player in self.playerTexture.keys():
                     del self.playerTexture[player]
-                    self.playerTexture[player] = loadPNGTexture(self.cache.getPlayerSkin(player, force_download=True, instance=self))
-            self.markerList.call(self._drawToolMarkers)
+                    self.playerTexture[player] = loadPNGTexture(self.playercache.getPlayerSkin(player, force_download=True, instance=self))
+            #self.markerList.call(self._drawToolMarkers)
         except:
             raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
 
