@@ -2,9 +2,20 @@ var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
 var releasesURL = 'https://api.github.com/repos/Khroki/MCEdit-Unified/releases';
 var cacheItemPrependString = 'cache_json_store'
+var norefetches = false;
 
-function getJSON(url,forceLoad){
-	forceLoad = false
+var URL_PRELOAD_REGISTER = [
+	"navbar.json",
+	"comments.json",
+	"https://api.github.com/repos/Khroki/MCEdit-Unified/releases",
+	"https://api.github.com/repos/Khroki/MCEdit-Unified/contributors"
+]
+
+function getJSONAsync(url, forceLoad, callback) {
+	forceLoad = false;
+	if (norefetches) {
+		forceLoad = false;
+	}
 	if (forceLoad !== true) {
 		forceLoad = false
 	} else {
@@ -13,6 +24,56 @@ function getJSON(url,forceLoad){
 	var isRateLimitCheck = (url.indexOf('rate_limit') != -1);
 	var ret_val = {};
 	if (localStorage[cacheItemPrependString+url] && !isRateLimitCheck && !forceLoad) {
+		ret_val = JSON.parse(localStorage[cacheItemPrependString+url]);
+	} else {
+		try {
+			$.ajax({
+				type: "GET",
+				url: url,
+				cache: false,
+				async: true
+			}).done(function(ret_val) {
+				if (typeof ret_val == "string") {
+					ret_val = JSON.parse(ret_val);
+				}
+				if (ret_val !== undefined && !isRateLimitCheck) {
+					localStorage[cacheItemPrependString+url] = JSON.stringify(ret_val);
+				} else if (!isRateLimitCheck) { 
+					loadFailError();
+				}
+				if (ret_val && ret_val.message && ret_val.message.indexOf('rate limit') != -1) {
+					if (!checkRateLimit()) {
+						localStorage.removeItem(cacheItemPrependString+url);
+						if (confirm('An error occured loading ' + url + '. The page will now reload.')) {
+							location.reload();
+							return;
+						} else {
+							alert('uh...ok, well it might be broken');
+						}
+					}
+				}
+				callback(ret_val);
+			});
+		} catch(err) {
+			console.log(err.message);
+			loadFailError();
+		}
+	}
+}
+
+function getJSON(url,forceLoad){
+	forceLoad = false;
+	if (norefetches) {
+		forceLoad = false;
+	}
+	if (forceLoad !== true) {
+		forceLoad = false;
+	} else {
+		console.log("Forcing load of " + url);
+	}
+	var isRateLimitCheck = (url.indexOf('rate_limit') != -1);
+	var ret_val = {};
+	if (localStorage[cacheItemPrependString+url] && (!isRateLimitCheck || norefetches) && (!forceLoad || norefetches)) {
 		ret_val = JSON.parse(localStorage[cacheItemPrependString+url]);
 	} else {
 		try {
@@ -164,6 +225,7 @@ function generatePageStructure() {
 
 		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + (navitem.icon ? '<i class="fa fa-' + navitem.icon + '"></i>' : '') + (navitem.icon && navitem.showTextInNavbar ? ' ' : '') + (navitem.showTextInNavbar ? navitem.displayname : '') + '</a></li>');
 	}
+	$('#loading_row').remove();
 	return true;
 }
 function getDownload(platform,version,bittage) {
@@ -202,8 +264,16 @@ function getReleaseData() {
 	return releaseData.sort(compareVersionObject);
 }
 $(document).ready(function(){
+	var lastLoad = localStorage["lastLoad"];
+	var now = new Date().getTime();
+	if (lastLoad && now - lastLoad < 300000) {
+		console.log("Turning norefetch on");
+		norefetches = true;
+	}
+	localStorage["lastLoad"] = now;
+
 	var ratelimits = getJSON('https://api.github.com/rate_limit');
-	if (ratelimits.resources.core.remaining < 5 && ratelimits.resources.core.remaining > 0) {
+	if (ratelimits && ratelimits.resources && ratelimits.resources.core && ratelimits.resources.core.remaining < 5 && ratelimits.resources.core.remaining > 0) {
 		$('body').children().hide();
 		$('body').append('<div id="ratewarning"><h1>Rate Limit Low</h1><br>You only have ' + ratelimits.resources.core.remaining + ' requests remaining<br><br><button onclick="$(\'#ratewarning\').remove();$(\'body\').css(\'background-color\',\'white\').children().show();" class="btn btn-default"><i class="fa fa-check"></i> Ok</button></div>');
 		$('body').css('background-color','#444444');

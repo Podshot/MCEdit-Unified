@@ -37,6 +37,8 @@
 
 	<script>
 		function pageTrigger() {
+			$('#center_jumbo_row').show();
+
 			var is_OSX = navigator.platform.match(/(Mac)/i);
 			var is_Win = (navigator.platform.match(/(Win)/i) && !is_OSX);
 
@@ -199,7 +201,12 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
+		<div class="row" id="loading_row">
+			<div class="col-md-12">
+				<p>The page is loading...</p>
+			</div>
+		</div>
+		<div class="row" id="center_jumbo_row" style="display: none;">
 			<div class="col-md-12">
 				<div class="jumbotron" style="text-align:center;" id="downloads">
 					<div class="row">
