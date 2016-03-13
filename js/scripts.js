@@ -1,6 +1,6 @@
 var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
-var releasesURL = 'https://api.github.com/repos/Khroki/MCEdit-Unified/releases';
+var releasesURL = 'https://api.github.com/repos/Khroki/MCEdit-Unified/releases?per_page=3';
 var cacheItemPrependString = 'cache_json_store'
 var norefetches = false;
 
