@@ -68,7 +68,7 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-import version_utils
+from version_utils import PlayerCache
 import directories
 import keys
 
@@ -390,7 +390,7 @@ class MCEdit(GLViewport):
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
             
         def refresh():
-            version_utils.playercache.force_refresh()
+            PlayerCache().force_refresh()
 
         hotkeys = ([("",
                      "Controls",
@@ -714,6 +714,7 @@ class MCEdit(GLViewport):
 
     @classmethod
     def main(cls):
+        PlayerCache().load()
         displayContext = GLDisplayContext(splash.splash, caption=('MCEdit ~ ' + release.get_version()%_("for"), 'MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'

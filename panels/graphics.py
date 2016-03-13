@@ -1,6 +1,6 @@
 import albow
 from albow.dialogs import Dialog
-import resource_packs
+from resource_packs import ResourcePackHandler
 import pymclevel
 from config import config
 
@@ -23,7 +23,7 @@ class GraphicsPanel(Dialog):
             config.settings.maxViewDistance: config.settings.maxViewDistance.get()
         }
 
-        self.saveOldResourcePack = resource_packs.packs.get_selected_resource_pack_name()
+        self.saveOldResourcePack = ResourcePackHandler.Instance().get_selected_resource_pack_name()
 
         self.fieldOfViewRow = albow.FloatInputRow("Field of View: ",
                                                 ref=config.settings.fov, width=100, min=25, max=120)
@@ -56,7 +56,7 @@ class GraphicsPanel(Dialog):
                                        )
         self.maxView.subwidgets[1]._increment = 2
 
-        packs = resource_packs.packs.get_available_resource_packs()
+        packs = ResourcePackHandler.Instance().get_available_resource_packs()
         packs.remove('Default Resource Pack')
         packs.sort()
         packs.insert(0, 'Default Resource Pack')
@@ -94,7 +94,7 @@ class GraphicsPanel(Dialog):
             self.mcedit.displayContext.loadTextures()
 
     def change_texture(self):
-        resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
+        ResourcePackHandler.Instance().set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
         self.mcedit.displayContext.loadTextures()
     texturePack = config.settings.skin.property(_reloadTextures)
     

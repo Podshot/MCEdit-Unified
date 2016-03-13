@@ -10,7 +10,7 @@ import os
 import mcplatform
 import numpy
 import pymclevel
-import resource_packs
+from resource_packs import ResourcePackHandler
 import glutils
 import mceutils
 import functools
@@ -165,7 +165,7 @@ class GLDisplayContext(object):
         textures = (
             (pymclevel.classicMaterials, 'terrain-classic.png'),
             (pymclevel.indevMaterials, 'terrain-classic.png'),
-            (pymclevel.alphaMaterials, resource_packs.packs.get_selected_resource_pack().terrain_path()),
+            (pymclevel.alphaMaterials, ResourcePackHandler.Instance().get_selected_resource_pack().terrain_path()),
             (pymclevel.pocketMaterials, 'terrain-pocket.png')
         )
 
