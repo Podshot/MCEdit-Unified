@@ -796,10 +796,12 @@ pocketMaterials.BlockofIron = pocketMaterials[42, 0]
 
 pocketMaterials.DoubleStoneSlab = pocketMaterials[43, 0]
 pocketMaterials.DoubleSandstoneSlab = pocketMaterials[43, 1]
+pocketMaterials.DoubleWoodenSlab = pocketMaterials[43, 2]
 pocketMaterials.DoubleCobblestoneSlab = pocketMaterials[43, 3]
 pocketMaterials.DoubleBrickSlab = pocketMaterials[43, 4]
 pocketMaterials.StoneSlab = pocketMaterials[44, 0]
 pocketMaterials.SandstoneSlab = pocketMaterials[44, 1]
+pocketMaterials.WoodenSlab = pocketMaterials[44, 2]
 pocketMaterials.CobblestoneSlab = pocketMaterials[44, 3]
 pocketMaterials.BrickSlab = pocketMaterials[44, 4]
 
