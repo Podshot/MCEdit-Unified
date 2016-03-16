@@ -603,6 +603,13 @@ alphaMaterials.PurpurPillar = alphaMaterials[202, 0]
 alphaMaterials.PurpurStairs = alphaMaterials[203, 0]
 alphaMaterials.PurpurSlab = alphaMaterials[205, 0]
 alphaMaterials.EndStone = alphaMaterials[206, 0]
+alphaMaterials.BeetRoot = alphaMaterials[207, 0]
+alphaMaterials.GrassPath = alphaMaterials[208, 0]
+alphaMaterials.EndGateway = alphaMaterials[209, 0]
+alphaMaterials.CommandBlockRepeating = alphaMaterials[210, 0]
+alphaMaterials.CommandBlockChain = alphaMaterials[211, 0]
+alphaMaterials.FrostedIce = alphaMaterials[212, 0]
+alphaMaterials.StructureBlock = alphaMaterials[255, 0]
 
 # --- Classic static block defs ---
 classicMaterials.Stone = classicMaterials[1]

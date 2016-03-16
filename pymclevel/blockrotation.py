@@ -802,8 +802,14 @@ Hopper.roll[Hopper.North] = Hopper.Down
 
 
 @genericFlipRotation
-class Dropper:
-    blocktypes = [alphaMaterials.Dropper.ID, alphaMaterials.Dispenser.ID]
+class DropperCommandblock:
+    blocktypes = [
+        alphaMaterials.Dropper.ID, 
+        alphaMaterials.Dispenser.ID, 
+        alphaMaterials.CommandBlock.ID,
+        alphaMaterials.CommandBlockRepeating.ID, 
+        alphaMaterials.CommandBlockChain.ID
+    ]
     Down = 0
     Up = 1
     East = 2
@@ -811,7 +817,7 @@ class Dropper:
     North = 4
     South = 5
 
-applyBit8(Dropper)
+applyBit8(DropperCommandblock)
 
 
 @genericFlipRotation 
