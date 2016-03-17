@@ -352,8 +352,6 @@ class MCEdit(GLViewport):
         if i - 1 < len(worlds):
             self.loadFile(worlds[i - 1])
 
-    numRecentWorlds = 5
-
     @staticmethod
     def removeLevelDat(filename):
         if filename.endswith("level.dat"):
@@ -362,7 +360,7 @@ class MCEdit(GLViewport):
 
     def recentWorlds(self):
         worlds = []
-        for i in range(self.numRecentWorlds):
+        for i in range(5):
             if config.config.has_option("Recent Worlds", str(i)):
                 try:
                     filename = (config.config.get("Recent Worlds", str(i)).decode('utf-8'))
@@ -377,7 +375,7 @@ class MCEdit(GLViewport):
         rw = list(self.recentWorlds())
         if filename in rw:
             return
-        rw = [filename] + rw[:self.numRecentWorlds - 1]
+        rw = [filename] + rw[:5 - 1]
         self.setRecentWorlds(rw)
 
     @staticmethod
