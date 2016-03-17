@@ -352,8 +352,6 @@ class MCEdit(GLViewport):
         if i - 1 < len(worlds):
             self.loadFile(worlds[i - 1])
 
-    numRecentWorlds = 5
-
     @staticmethod
     def removeLevelDat(filename):
         if filename.endswith("level.dat"):
@@ -362,7 +360,7 @@ class MCEdit(GLViewport):
 
     def recentWorlds(self):
         worlds = []
-        for i in range(self.numRecentWorlds):
+        for i in range(5):
             if config.config.has_option("Recent Worlds", str(i)):
                 try:
                     filename = (config.config.get("Recent Worlds", str(i)).decode('utf-8'))
@@ -377,7 +375,7 @@ class MCEdit(GLViewport):
         rw = list(self.recentWorlds())
         if filename in rw:
             return
-        rw = [filename] + rw[:self.numRecentWorlds - 1]
+        rw = [filename] + rw[:5 - 1]
         self.setRecentWorlds(rw)
 
     @staticmethod
@@ -418,9 +416,7 @@ class MCEdit(GLViewport):
                      refresh)
                    ])
 
-        c = albow.HotkeyColumn(hotkeys)
-
-        return c
+        return albow.HotkeyColumn(hotkeys)
 
     def makeSideColumn2(self):
         def showCacheDir():
@@ -447,9 +443,7 @@ class MCEdit(GLViewport):
                      os.path.join(directories.getCacheDir(), "screenshots"))
                    ])
 
-        c = albow.HotkeyColumn(hotkeys)
-
-        return c
+        return albow.HotkeyColumn(hotkeys)
 
     def resized(self, dw, dh):
         """

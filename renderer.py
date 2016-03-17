@@ -270,7 +270,6 @@ def chunkMarkers(chunkSet):
 
 
 class ChunkRenderer(object):
-    maxlod = 2
     minlod = 0
 
     def __init__(self, renderer, chunkPosition):
@@ -364,7 +363,7 @@ class ChunkRenderer(object):
     def calcFaces(self):
         minlod = self.renderer.detailLevelForChunk(self.chunkPosition)
 
-        minlod = min(minlod, self.maxlod)
+        minlod = min(minlod, 2)
         if self.detailLevel != minlod:
             self.forgetDisplayLists()
             self.detailLevel = minlod
