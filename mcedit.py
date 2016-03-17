@@ -416,9 +416,7 @@ class MCEdit(GLViewport):
                      refresh)
                    ])
 
-        c = albow.HotkeyColumn(hotkeys)
-
-        return c
+        return albow.HotkeyColumn(hotkeys)
 
     def makeSideColumn2(self):
         def showCacheDir():
@@ -445,9 +443,7 @@ class MCEdit(GLViewport):
                      os.path.join(directories.getCacheDir(), "screenshots"))
                    ])
 
-        c = albow.HotkeyColumn(hotkeys)
-
-        return c
+        return albow.HotkeyColumn(hotkeys)
 
     def resized(self, dw, dh):
         """
