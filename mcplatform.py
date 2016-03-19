@@ -245,11 +245,17 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
     return filename
 
 
-def askOpenFileWin32(title, schematics, initialDir):
+def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         # if schematics:
-        f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
+        if not suffixes:
+            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
              '*.*\0*.*\0\0')
+        else:
+            f = "All\0"
+            for suffix in suffixes:
+                f += "*." + suffix + ";"
+            f += "\0*.*\0\0"
         #        else:
         #            f = ('Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0' +
         #                 '*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0' +
