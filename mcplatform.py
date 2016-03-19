@@ -199,9 +199,14 @@ lastSchematicsDir = None
 lastSaveDir = None
 
 
-def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=["mclevel", "dat", "mine", "mine.gz"]):
+def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=None):
     global lastSchematicsDir, lastSaveDir
 
+    if not suffixes:
+        suffixes = ["mclevel", "dat", "mine", "mine.gz"]
+        suffixesChanged = False
+    else:
+        suffixesChanged = True
     initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
         initialDir = lastSchematicsDir or directories.schematicsDir
@@ -219,7 +224,11 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             _suffixes.append("bo3")
 
         if sys.platform == "win32": #!#
-            return askOpenFileWin32(title, schematics, initialDir)
+            if suffixesChanged:
+                sendSuffixes = _suffixes
+            else:
+                sendSuffixes = None
+            return askOpenFileWin32(title, schematics, initialDir, sendSuffixes)
 
         elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
             return askOpenFileGtk(title, _suffixes, initialDir)
