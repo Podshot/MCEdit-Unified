@@ -34,9 +34,10 @@ ask() {
 
 cd "$(dirname "$0")"
 if ! type "python2" > /dev/null; then
-    python -B mcedit.py --debug-wm
+    # Just let all command line parameter be sent to the program.
+    python -B mcedit.py    
 else
-    python2 -B mcedit.py --debug-wm
+    python2 -B mcedit.py
 fi
 echo "-------------------------"
 if ask "Press R to restart MCEdit, any other key to exit:"; then
