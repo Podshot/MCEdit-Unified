@@ -69,6 +69,10 @@ Debian and Ubuntu Linux users can install the following packages via apt-get to 
 
 `$sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib`
 
+Mac users need to install python-xlib. This can be done using `pip`:
+
+`>pip install svn+https://svn.code.sf.net/p/python-xlib/code/trunk/`
+
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
 ## INSTALLING _nbt.pyx:

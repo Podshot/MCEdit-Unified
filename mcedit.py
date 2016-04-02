@@ -68,7 +68,7 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-import version_utils
+from version_utils import PlayerCache
 import directories
 import keys
 
@@ -390,7 +390,7 @@ class MCEdit(GLViewport):
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
             
         def refresh():
-            version_utils.playercache.force_refresh()
+            PlayerCache().force_refresh()
 
         hotkeys = ([("",
                      "Controls",
@@ -462,10 +462,12 @@ class MCEdit(GLViewport):
         config_w, config_h = config.settings.windowWidth.get(), config.settings.windowHeight.get()
         win = self.displayContext.win
 
-        if DEBUG_WM:
+        if DEBUG_WM and win:
             print "dw", dw, "dh", dh
             print "self.size (w, h) 1", self.size, "win.get_size", win.get_size()
             print "size 1", config_w, config_h
+        elif DEBUG_WM and not win:
+            print "win is None, unable to print debug messages"
 
         if win:
             x, y =  win.get_position()
@@ -478,7 +480,14 @@ class MCEdit(GLViewport):
             self.editor.renderer.render = False
             return
 
-        if win:
+        # Mac window handling works better now, but `win`
+        # doesn't exist. So to get this alert to show up
+        # I'm checking if the platform is darwin. This only
+        # works because the code block never actually references
+        # `win`, otherwise it WOULD CRASH!!!
+        # You cannot change further if statements like this
+        # because they reference `win`
+        if win or sys.platform == "darwin":
             # Handling too small resolutions.
             # Dialog texts.
             # "MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution."
@@ -714,6 +723,7 @@ class MCEdit(GLViewport):
 
     @classmethod
     def main(cls):
+        PlayerCache().load()
         displayContext = GLDisplayContext(splash.splash, caption=('MCEdit ~ ' + release.get_version()%_("for"), 'MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
