@@ -4069,32 +4069,100 @@ blocks:
     name: Command Block
     search: Impulse
     mapcolor: [200, 200, 200]
-    tex: [19, 11]
+    tex: [22, 3]
     data:
       0:
         name: Command Block (Not Conditional, Down)
+        tex_direction:
+          FORWARD: [29, 4]
+          SIDES: [29, 4]
+          BACKWARD: [29, 4]
+          BOTTOM: [22, 0]
       1:
         name: Command Block (Not Conditional, Up)
+        tex_direction:
+          FORWARD: [27, 4]
+          SIDES: [27, 4]
+          BACKWARD: [27, 4]
+          TOP: [22, 0]
       2:
         name: Command Block (Not Conditional, North)
+        tex_direction:
+          FORWARD: [22, 0]
+          LEFT: [30, 4]
+          RIGHT: [28, 4]
+          TOP: [27, 4]
+          BOTTOM: [27, 4]
       3:
         name: Command Block (Not Conditional, South)
+        tex_direction:
+          LEFT: [28, 4]
+          RIGHT: [30, 4]
+          BACKWARD: [22, 0]
+          TOP: [29, 4]
+          BOTTOM: [29, 4]
       4:
         name: Command Block (Not Conditional, West)
+        tex_direction:
+          FORWARD: [28, 4]
+          LEFT: [22, 0]
+          BACKWARD: [30, 4]
+          TOP: [30, 4]
+          BOTTOM: [30, 4]
       5:
         name: Command Block (Not Conditional, East)
+        tex_direction:
+          FORWARD: [30, 4]
+          RIGHT: [22, 0]
+          BACKWARD: [28, 4]
+          TOP: [28, 4]
+          BOTTOM: [28, 4]
       8:
         name: Command Block (Conditional, Down)
+        tex_direction:
+          FORWARD: [25, 4]
+          SIDES: [25, 4]
+          BACKWARD: [25, 4]
+          BOTTOM: [22, 0]
       9:
         name: Command Block (Conditional, Up)
+        tex_direction:
+          FORWARD: [23, 4]
+          SIDES: [23, 4]
+          BACKWARD: [23, 4]
+          TOP: [22, 0]
       10:
         name: Command Block (Conditional, North)
+        tex_direction:
+          FORWARD: [22, 0]
+          LEFT: [26, 4]
+          RIGHT: [24, 4]
+          TOP: [23, 4]
+          BOTTOM: [23, 4]
       11:
         name: Command Block (Conditional, South)
+        tex_direction:
+          LEFT: [24, 4]
+          RIGHT: [26, 4]
+          BACKWARD: [22, 0]
+          TOP: [25, 4]
+          BOTTOM: [25, 4]
       12:
         name: Command Block (Conditional, West)
+        tex_direction:
+          FORWARD: [24, 4]
+          LEFT: [22, 0]
+          BACKWARD: [26, 4]
+          TOP: [26, 4]
+          BOTTOM: [26, 4]
       13:
         name: Command Block (Conditional, East)
+        tex_direction:
+          FORWARD: [26, 4]
+          RIGHT: [22, 0]
+          BACKWARD: [24, 4]
+          TOP: [24, 4]
+          BOTTOM: [24, 4]
 
   - id: 138
     idStr: beacon
@@ -6352,63 +6420,199 @@ blocks:
     idStr: repeating_command_block
     name: Repeating Command Block
     mapcolor: [200, 200, 200]
-    tex: [19, 12]
+    tex: [22, 4]
     data:
       0:
         name: Repeating Command Block (Not Conditional, Down)
+        tex_direction:
+          FORWARD: [29, 5]
+          SIDES: [29, 5]
+          BACKWARD: [29, 5]
+          BOTTOM: [22, 1]
       1:
         name: Repeating Command Block (Not Conditional, Up)
+        tex_direction:
+          FORWARD: [27, 5]
+          SIDES: [27, 5]
+          BACKWARD: [27, 5]
+          TOP: [22, 1]
       2:
         name: Repeating Command Block (Not Conditional, North)
+        tex_direction:
+          FORWARD: [22, 1]
+          LEFT: [30, 5]
+          RIGHT: [28, 5]
+          TOP: [27, 5]
+          BOTTOM: [27, 5]
       3:
         name: Repeating Command Block (Not Conditional, South)
+        tex_direction:
+          LEFT: [28, 5]
+          RIGHT: [30, 5]
+          BACKWARD: [22, 1]
+          TOP: [29, 5]
+          BOTTOM: [29, 5]
       4:
         name: Repeating Command Block (Not Conditional, West)
+        tex_direction:
+          FORWARD: [28, 5]
+          LEFT: [22, 1]
+          BACKWARD: [30, 5]
+          TOP: [30, 5]
+          BOTTOM: [30, 5]
       5:
         name: Repeating Command Block (Not Conditional, East)
+        tex_direction:
+          FORWARD: [30, 5]
+          RIGHT: [22, 1]
+          BACKWARD: [28, 5]
+          TOP: [28, 5]
+          BOTTOM: [28, 5]
       8:
         name: Repeating Command Block (Conditional, Down)
+        tex_direction:
+          FORWARD: [25, 5]
+          SIDES: [25, 5]
+          BACKWARD: [25, 5]
+          BOTTOM: [22, 1]
       9:
         name: Repeating Command Block (Conditional, Up)
+        tex_direction:
+          FORWARD: [23, 5]
+          SIDES: [23, 5]
+          BACKWARD: [23, 5]
+          TOP: [22, 1]
       10:
         name: Repeating Command Block (Conditional, North)
+        tex_direction:
+          FORWARD: [22, 1]
+          LEFT: [26, 5]
+          RIGHT: [24, 5]
+          TOP: [23, 5]
+          BOTTOM: [23, 5]
       11:
         name: Repeating Command Block (Conditional, South)
+        tex_direction:
+          LEFT: [24, 5]
+          RIGHT: [26, 5]
+          BACKWARD: [22, 1]
+          TOP: [25, 5]
+          BOTTOM: [25, 5]
       12:
         name: Repeating Command Block (Conditional, West)
+        tex_direction:
+          FORWARD: [24, 5]
+          LEFT: [22, 1]
+          BACKWARD: [26, 5]
+          TOP: [26, 5]
+          BOTTOM: [26, 5]
       13:
         name: Repeating Command Block (Conditional, East)
+        tex_direction:
+          FORWARD: [26, 5]
+          RIGHT: [22, 1]
+          BACKWARD: [24, 5]
+          TOP: [24, 5]
+          BOTTOM: [24, 5]
 
   - id: 211
     idStr: chain_command_block
     name: Chain Command Block
     mapcolor: [200, 200, 200]
-    tex: [19, 13]
+    tex: [22, 5]
     data:
       0:
         name: Chain Command Block (Not Conditional, Down)
+        tex_direction:
+          FORWARD: [29, 6]
+          SIDES: [29, 6]
+          BACKWARD: [29, 6]
+          BOTTOM: [22, 2]
       1:
         name: Chain Command Block (Not Conditional, Up)
+        tex_direction:
+          FORWARD: [27, 6]
+          SIDES: [27, 6]
+          BACKWARD: [27, 6]
+          TOP: [22, 2]
       2:
         name: Chain Command Block (Not Conditional, North)
+        tex_direction:
+          FORWARD: [22, 2]
+          LEFT: [30, 6]
+          RIGHT: [28, 6]
+          TOP: [27, 6]
+          BOTTOM: [27, 6]
       3:
         name: Chain Command Block (Not Conditional, South)
+        tex_direction:
+          LEFT: [28, 6]
+          RIGHT: [30, 6]
+          BACKWARD: [22, 2]
+          TOP: [29, 6]
+          BOTTOM: [29, 6]
       4:
         name: Chain Command Block (Not Conditional, West)
+        tex_direction:
+          FORWARD: [28, 6]
+          LEFT: [22, 2]
+          BACKWARD: [30, 6]
+          TOP: [30, 6]
+          BOTTOM: [30, 6]
       5:
         name: Chain Command Block (Not Conditional, East)
+        tex_direction:
+          FORWARD: [30, 6]
+          RIGHT: [22, 2]
+          BACKWARD: [28, 6]
+          TOP: [28, 6]
+          BOTTOM: [28, 6]
       8:
         name: Chain Command Block (Conditional, Down)
+        tex_direction:
+          FORWARD: [25, 6]
+          SIDES: [25, 6]
+          BACKWARD: [25, 6]
+          BOTTOM: [22, 2]
       9:
         name: Chain Command Block (Conditional, Up)
+        tex_direction:
+          FORWARD: [23, 6]
+          SIDES: [23, 6]
+          BACKWARD: [23, 6]
+          TOP: [22, 2]
       10:
         name: Chain Command Block (Conditional, North)
+        tex_direction:
+          FORWARD: [22, 2]
+          LEFT: [26, 6]
+          RIGHT: [24, 6]
+          TOP: [23, 6]
+          BOTTOM: [23, 6]
       11:
         name: Chain Command Block (Conditional, South)
+        tex_direction:
+          LEFT: [24, 6]
+          RIGHT: [26, 6]
+          BACKWARD: [22, 2]
+          TOP: [25, 6]
+          BOTTOM: [25, 6]
       12:
         name: Chain Command Block (Conditional, West)
+        tex_direction:
+          FORWARD: [24, 6]
+          LEFT: [22, 2]
+          BACKWARD: [26, 6]
+          TOP: [26, 6]
+          BOTTOM: [26, 6]
       13:
         name: Chain Command Block (Conditional, East)
+        tex_direction:
+          FORWARD: [26, 6]
+          RIGHT: [22, 2]
+          BACKWARD: [24, 6]
+          TOP: [24, 6]
+          BOTTOM: [24, 6]
         
   - id: 212
     idStr: frosted_ice

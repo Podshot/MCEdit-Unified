@@ -38,7 +38,7 @@ if sys.platform == "win32":
     if platform.architecture()[0] == "64bit":
         plat = "win-amd64"
     sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
-elif sys.platform == 'linux2':
+elif sys.platform in ['linux2', 'darwin']:
     try:
         import Xlib.display
         import Xlib.X
@@ -199,9 +199,14 @@ lastSchematicsDir = None
 lastSaveDir = None
 
 
-def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=["mclevel", "dat", "mine", "mine.gz"]):
+def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=None):
     global lastSchematicsDir, lastSaveDir
 
+    if not suffixes:
+        suffixes = ["mclevel", "dat", "mine", "mine.gz"]
+        suffixesChanged = False
+    else:
+        suffixesChanged = True
     initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
         initialDir = lastSchematicsDir or directories.schematicsDir
@@ -219,7 +224,11 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             _suffixes.append("bo3")
 
         if sys.platform == "win32": #!#
-            return askOpenFileWin32(title, schematics, initialDir)
+            if suffixesChanged:
+                sendSuffixes = _suffixes
+            else:
+                sendSuffixes = None
+            return askOpenFileWin32(title, schematics, initialDir, sendSuffixes)
 
         elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
             return askOpenFileGtk(title, _suffixes, initialDir)
@@ -245,11 +254,17 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
     return filename
 
 
-def askOpenFileWin32(title, schematics, initialDir):
+def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         # if schematics:
-        f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
+        if not suffixes:
+            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
              '*.*\0*.*\0\0')
+        else:
+            f = "All\0"
+            for suffix in suffixes:
+                f += "*." + suffix + ";"
+            f += "\0*.*\0\0"
         #        else:
         #            f = ('Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0' +
         #                 '*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0' +

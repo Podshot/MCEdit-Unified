@@ -1956,7 +1956,7 @@ t908 Analyse
 o909 Click to set the spawn position.
 t909 Klicke, um den Spawnpunkt zu setzen.
 o910 <Toolbar>
-t910 <Schnellzugriffsleiste>
+t910 <Werkzeugleiste>
 o911 Edit Sign
 t911 Schild bearbeiten
 o912 Add Color Code...
@@ -1996,7 +1996,7 @@ t928 §f  Weiß
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 Klicke und ziehe, um das Objekt neu zu positionieren. Doppelklicke, um es aufzunehmen. Klicke Import oder drücke Enter zur Bestätigung
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 Entity-ID des Typs dieses Spawners. Ungültige Werte können Minecraft zum Abstürzen bringen.
+t930 Objekt-ID des Typs dieses Spawners. Ungültige Werte können Minecraft zum Abstürzen bringen.
 o931 Right mouse
 t931 Rechte Maustaste
 o932 Deleting the item {0} from the entire world ({1} chunks)
@@ -2004,7 +2004,7 @@ t932 Lösche den Gegenstand {0} aus der gesamten Welt ({1} Chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 WARNUNG: Du bist dabei, die komplette Welt zu verändern. Dies kann nicht rückgängig gemacht werden. Möchtest du wirklich alle Vorkommnisse dieses Gegenstandes in allen Chunks, Truhen, Öfen, Werfern, sowie allen sontigen Behältern und Inventaren in dieser Welt entfernen?
 o934 Check to show/hide specific ores using the settings below.
-t934 Auswählen, um spezifische Erze mithilfe der folgenden Einstellungen anzuzeigen oder zu verstecken
+t934 Anwählen um spezifische Erze anzuzeigen/verstecken, mithilfe der folgenden Einstellungen 
 o935 NBTEdit
 t935 NBTEdit
 o936 Save camera position on close
@@ -2041,5 +2041,5 @@ o949 for
 t949 für
 o950 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t950 MCEdit unterstützt keine Fenster Auflösung unter 1000x700.
-Du könntest vielleicht nicht alle Funktionen erreichen.
+t950 MCEdit unterstützt keine Fensterauflösungen unter 1000x700.
+Du wirst unter dieser Auflösung vielleicht nicht auf alle Funktionen zugreifen können.
