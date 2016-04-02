@@ -92,6 +92,8 @@ from renderer import MCRenderer
 from pymclevel.entity import Entity
 from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
     MCInfdevOldLevel
+# Block and item translation
+from mclangres import translate as trn
 
 try:
     import resource  # @UnresolvedImport
@@ -714,18 +716,18 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        blockRows = [("", "", ""), (box.volume, "<Blocks>", "")]
+        blockRows = [("", "", ""), (box.volume, "<%s>"%_("Blocks"), "")]
         rows = list(blockRows)
-        rows.extend([[count, block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
+        rows.extend([[count, trn(block.name), ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
             if entitySum:
-                rows.extend([("", "", ""), (entitySum, "<Entities>", "")])
-                rows.extend([(count, id[1], id[0]) for (id, count) in sorted(entityCounts.iteritems())])
+                rows.extend([("", "", ""), (entitySum, "<%s>"%_("Entities"), "")])
+                rows.extend([(count, trn(id[1]), id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
-                rows.extend([("", "", ""), (tileEntitySum, "<TileEntities>", "")])
-                rows.extend([(count, id, "") for (id, count) in sorted(tileEntityCounts.iteritems())])
+                rows.extend([("", "", ""), (tileEntitySum, "<%s>"%_("TileEntities"), "")])
+                rows.extend([(count, trn(id), "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
 

@@ -1464,7 +1464,7 @@ class CameraViewport(GLViewport):
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        if not self.should_lock:
+        if not self.should_lock and self.editor.level:
             self.toggleMouseLook()
         # if self.rightMouseDragStart is None:
         #     return
@@ -1594,7 +1594,7 @@ class CameraViewport(GLViewport):
 
         def showCommands():
             try:
-                if point:
+                if point and self.editor.level:
                     block = self.editor.level.blockAt(*point)
                     if block == pymclevel.alphaMaterials.CommandBlock.ID or block == 210 or block == 211:
                         self.hoveringCommandBlock[0] = True
