@@ -506,10 +506,9 @@ class Log:
     Type1EastWest = 8
     Type2EastWest = 9
     Type3EastWest = 10
-    Type4EastWest = 11
-
-    rotateLeft = arange(16, dtype='uint8')
-
+    Type4EastWest = 11  
+    
+Log.rotateLeft = arange(16, dtype='uint8')
 Log.rotateLeft[Log.Type1NorthSouth] = Log.Type1EastWest
 Log.rotateLeft[Log.Type1EastWest] = Log.Type1NorthSouth
 Log.rotateLeft[Log.Type2NorthSouth] = Log.Type2EastWest
@@ -708,20 +707,6 @@ class NetherPortal:
     West = 1
     North = 2
     South = 2
-
-
-class Wood:
-    blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]
-
-    East = 0
-    South = 1
-    West = 2
-    North = 3
-
-
-genericFlipRotation(Wood)
-applyWoodBit = applyBit8
-applyWoodBit(Wood)
 
 
 class FenceGate:
