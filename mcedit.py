@@ -724,7 +724,7 @@ class MCEdit(GLViewport):
     @classmethod
     def main(cls):
         PlayerCache().load()
-        displayContext = GLDisplayContext(splash.splash, caption=('MCEdit ~ ' + release.get_version()%_("for"), 'MCEdit'))
+        displayContext = GLDisplayContext(splash.splash, caption=('MCEdit ~ ' + release.get_version(), 'for MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
 
