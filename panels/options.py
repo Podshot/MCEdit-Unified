@@ -26,29 +26,30 @@ class OptionsPanel(Dialog):
         self.saveOldPortable = self.portableVar.get()
 
         self.saveOldConfig = {
-            config.controls.autobrake:                 config.controls.autobrake.get(),
-            config.controls.swapAxes:                  config.controls.swapAxes.get(),
-            config.controls.cameraAccel:               config.controls.cameraAccel.get(),
-            config.controls.cameraDrag:                config.controls.cameraDrag.get(),
-            config.controls.cameraMaxSpeed:            config.controls.cameraMaxSpeed.get(),
-            config.controls.cameraBrakingSpeed:        config.controls.cameraBrakingSpeed.get(),
-            config.controls.mouseSpeed:                config.controls.mouseSpeed.get(),
-            config.settings.undoLimit:                 config.settings.undoLimit.get(),
-            config.settings.maxCopies:                 config.settings.maxCopies.get(),
-            config.controls.invertMousePitch:          config.controls.invertMousePitch.get(),
-            config.settings.spaceHeight:               config.settings.spaceHeight.get(),
-            albow.AttrRef(self, 'blockBuffer'):        albow.AttrRef(self, 'blockBuffer').get(),
-            config.settings.setWindowPlacement:        config.settings.setWindowPlacement.get(),
-            config.settings.rotateBlockBrush:          config.settings.rotateBlockBrush.get(),
-            config.settings.shouldResizeAlert:         config.settings.shouldResizeAlert.get(),
-            config.settings.superSecretSettings:       config.settings.superSecretSettings.get(),
-            config.settings.longDistanceMode:          config.settings.longDistanceMode.get(),
-            config.settings.flyMode:                   config.settings.flyMode.get(),
-            config.settings.langCode:                  config.settings.langCode.get(),
-            config.settings.compassToggle:             config.settings.compassToggle.get(),
-            config.settings.compassSize:               config.settings.compassSize.get(),
-            config.settings.fontProportion:            config.settings.fontProportion.get(),
-            config.settings.fogIntensity:              config.settings.fogIntensity.get(),
+            config.controls.autobrake:                        config.controls.autobrake.get(),
+            config.controls.swapAxes:                         config.controls.swapAxes.get(),
+            config.controls.cameraAccel:                      config.controls.cameraAccel.get(),
+            config.controls.cameraDrag:                       config.controls.cameraDrag.get(),
+            config.controls.cameraMaxSpeed:                   config.controls.cameraMaxSpeed.get(),
+            config.controls.cameraBrakingSpeed:               config.controls.cameraBrakingSpeed.get(),
+            config.controls.mouseSpeed:                       config.controls.mouseSpeed.get(),
+            config.settings.undoLimit:                        config.settings.undoLimit.get(),
+            config.settings.maxCopies:                        config.settings.maxCopies.get(),
+            config.controls.invertMousePitch:                 config.controls.invertMousePitch.get(),
+            config.settings.spaceHeight:                      config.settings.spaceHeight.get(),
+            albow.AttrRef(self, 'blockBuffer'):               albow.AttrRef(self, 'blockBuffer').get(),
+            config.settings.setWindowPlacement:               config.settings.setWindowPlacement.get(),
+            config.settings.rotateBlockBrush:                 config.settings.rotateBlockBrush.get(),
+            config.settings.shouldResizeAlert:                config.settings.shouldResizeAlert.get(),
+            config.settings.superSecretSettings:              config.settings.superSecretSettings.get(),
+            config.settings.longDistanceMode:                 config.settings.longDistanceMode.get(),
+            config.settings.flyMode:                          config.settings.flyMode.get(),
+            config.settings.langCode:                         config.settings.langCode.get(),
+            config.settings.compassToggle:                    config.settings.compassToggle.get(),
+            config.settings.compassSize:                      config.settings.compassSize.get(),
+            config.settings.fontProportion:                   config.settings.fontProportion.get(),
+            config.settings.fogIntensity:                     config.settings.fogIntensity.get(),
+            config.schematicCopying.cancelCommandBlockOffset: config.schematicCopying.cancelCommandBlockOffset.get()
         }
         global old_lang
         if old_lang == None:
@@ -145,6 +146,10 @@ class OptionsPanel(Dialog):
                                               ref=config.settings.showCommands,
                                               tooltipText="Show the command in a Command Block when hovering over it.")
 
+        cancelCommandBlockOffset = albow.CheckBoxLabel("Cancel Command Block Offset",
+                                                       ref=config.schematicCopying.cancelCommandBlockOffset,
+                                                       tooltipText="Cancels the command blocks coords changed when copied.")
+
         lng = config.settings.langCode.get()
 
         langs = sorted(self.getLanguageChoices().items())
@@ -194,6 +199,7 @@ class OptionsPanel(Dialog):
                     rotateBlockBrushRow,
                     compassToggleRow,
                     showCommandsRow,
+                    cancelCommandBlockOffset,
                     langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())

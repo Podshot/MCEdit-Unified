@@ -752,11 +752,11 @@ def adjustExtractionParameters(self, box):
     return box, (destX, destY, destZ)
 
 
-def extractSchematicFrom(sourceLevel, box, entities=True):
-    return exhaust(extractSchematicFromIter(sourceLevel, box, entities))
+def extractSchematicFrom(sourceLevel, box, entities=True, cancelCommandBlockOffset=False):
+    return exhaust(extractSchematicFromIter(sourceLevel, box, entities, cancelCommandBlockOffset))
 
 
-def extractSchematicFromIter(sourceLevel, box, entities=True):
+def extractSchematicFromIter(sourceLevel, box, entities=True, cancelCommandBlockOffset=False):
     p = sourceLevel.adjustExtractionParameters(box)
     if p is None:
         yield None
@@ -764,7 +764,7 @@ def extractSchematicFromIter(sourceLevel, box, entities=True):
     newbox, destPoint = p
 
     tempSchematic = MCSchematic(shape=box.size, mats=sourceLevel.materials)
-    for i in tempSchematic.copyBlocksFromIter(sourceLevel, newbox, destPoint, entities=entities, biomes=True, first=True):
+    for i in tempSchematic.copyBlocksFromIter(sourceLevel, newbox, destPoint, entities=entities, biomes=True, first=True, cancelCommandBlockOffset=cancelCommandBlockOffset):
         yield i
 
     yield tempSchematic
@@ -781,7 +781,7 @@ def extractZipSchematicFrom(sourceLevel, box, zipfilename=None, entities=True):
     return exhaust(extractZipSchematicFromIter(sourceLevel, box, zipfilename, entities))
 
 
-def extractZipSchematicFromIter(sourceLevel, box, zipfilename=None, entities=True):
+def extractZipSchematicFromIter(sourceLevel, box, zipfilename=None, entities=True, cancelCommandBlockOffset=False):
     # converts classic blocks to alpha
     # probably should only apply to alpha levels
 
@@ -800,7 +800,7 @@ def extractZipSchematicFromIter(sourceLevel, box, zipfilename=None, entities=Tru
     tempSchematic.materials = sourceLevel.materials
 
     for i in tempSchematic.copyBlocksFromIter(sourceLevel, sourceBox, destPoint, entities=entities, create=True,
-                                              biomes=True, first=True):
+                                              biomes=True, first=True, cancelCommandBlockOffset=cancelCommandBlockOffset):
         yield i
 
     tempSchematic.Width, tempSchematic.Height, tempSchematic.Length = sourceBox.size

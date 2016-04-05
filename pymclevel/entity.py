@@ -172,7 +172,7 @@ class TileEntity(object):
             tag[a] = nbt.TAG_Int(p)
 
     @classmethod
-    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first):
+    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first, cancelCommandBlockOffset=False):
         # You'll need to use this function twice
         # The first time with first equals to True
         # The second time with first equals to False
@@ -265,7 +265,7 @@ class TileEntity(object):
                         pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
                         Entity.setpos(mob, pos)
 
-        if eTag['id'].value == "Control":
+        if eTag['id'].value == "Control" and not cancelCommandBlockOffset:
             command = eTag['Command'].value
             oldCommand = command
 

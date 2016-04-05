@@ -602,6 +602,9 @@ definitions = {
         ("sorting", "Sorting", "chain"),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
+    ],
+    ("schematicCopying", "Schematics Copying"): [
+        ("cancelCommandBlockOffset", "Cancel Command Block Offset", False)
     ]
 }
 
