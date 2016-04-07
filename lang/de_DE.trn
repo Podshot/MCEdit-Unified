@@ -333,7 +333,7 @@ t154 Abgehackte Mausbewegung aktivieren zum schnelleren Laden.
 o155 Point here and use mousewheel to adjust
 t155 Mausrad zum Einstellen nutzen
 o156 Portable
-t156 Portabel
+t156 Transportabel
 o157 Fixed
 t157 Fest
 o158 Change the direction of the Forward and Backward keys when looking down
@@ -1308,7 +1308,7 @@ t610 Maximalanzahl von kopierten Objekten.
 o611 Try to save and restore the window position.
 t611 Versucht, die Fensterposition zu speichern und wiederherzustellen.
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t612 Das wird dein MCEdit "portabel" machen, indem die Einstellungen und Schematics in den selben Ordner wie die {0} verschoben werden. Fortsetzen?
+t612 Das wird dein MCEdit "transportabel" machen, indem die Einstellungen und Schematics in den selben Ordner wie die {0} verschoben werden. Fortsetzen?
 o613 MCEditData
 t613 MCEditData
 o614 This will move your settings and schematics to your Documents folder. Continue?
@@ -2044,7 +2044,7 @@ You may not be able to access all functions at this resolution.
 t950 MCEdit unterstützt keine Fensterauflösungen unter 1000x700.
 Du wirst unter dieser Auflösung vielleicht nicht auf alle Funktionen zugreifen können.
 o951 Found a previous portable installation
-t951 Eine vorherige portabel Installation wurde gefunden
+t951 Eine vorherige transportable Installation wurde gefunden
 o952 Use
 t952 Benutze
 o953 Overwrite
