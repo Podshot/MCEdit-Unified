@@ -1201,6 +1201,7 @@ class SelectionTool(EditorTool):
                         self.selectChunks()
                         box = self.selectionBox()
 
+        cancelCommandBlockOffset = config.schematicCopying.cancelCommandBlockOffset.get()
         with setWindowCaption("Copying - "):
             filename = tempfile.mkdtemp(".zip", "mceditcopy")
             os.rmdir(filename)
@@ -1208,10 +1209,10 @@ class SelectionTool(EditorTool):
             status = _("Copying {0:n} blocks...").format(box.volume)
             if fileFormat == "schematic":
                 schematic = showProgress(status,
-                                         self.editor.level.extractSchematicIter(box), cancel=True)
+                                         self.editor.level.extractSchematicIter(box, cancelCommandBlockOffset=cancelCommandBlockOffset), cancel=True)
             else:
                 schematic = showProgress(status,
-                                         self.editor.level.extractZipSchematicIter(box, filename), cancel=True)
+                                         self.editor.level.extractZipSchematicIter(box, filename, cancelCommandBlockOffset=cancelCommandBlockOffset), cancel=True)
             if schematic == "Canceled":
                 return None
 
