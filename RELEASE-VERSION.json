@@ -1,6 +1,6 @@
 {
 	"name": "Unified v{tag_name} for Minecraft {mc_versions} | PE {pe_versions}",
-	"tag_name": "1.5.2.0",
+	"tag_name": "1.5.2.1",
 	"mc_versions": "1.8/1.9",
 	"pe_versions": "0.11",
 	"development": false
