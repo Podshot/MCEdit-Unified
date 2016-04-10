@@ -155,9 +155,9 @@ class PaletteView(GridView):
             s = float(d) / n
             if abs(self.scroll_rel) >= s:
                 if self.scroll_rel > 0:
-                    self.scroll_down()
+                    self.scroll_down(delta=int(abs(self.scroll_rel) / s))
                 else:
-                    self.scroll_up()
+                    self.scroll_up(delta=int(abs(self.scroll_rel) / s))
                 self.scroll_rel = 0
 
     def mouse_up(self, event):
@@ -166,13 +166,13 @@ class PaletteView(GridView):
                 self.dragging_hover = False
                 self.scroll_rel = 0
 
-    def scroll_up(self):
+    def scroll_up(self, delta=1):
         if self.can_scroll_up():
-            self.scroll -= 1
+            self.scroll -= delta
 
-    def scroll_down(self):
+    def scroll_down(self, delta=1):
         if self.can_scroll_down():
-            self.scroll += 1
+            self.scroll += delta
 
     def scroll_to_item(self, n):
         i = max(0, min(n, self.num_items() - 1))
