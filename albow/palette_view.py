@@ -244,6 +244,8 @@ class PaletteView(GridView):
         r.right = self.width - m
         r.bottom = min(r.bottom, t)
         r.inflate_ip(-4, -4)
+        if r.h < 1:
+            r.h = int(h)
         return r
 
     def draw_scrollbar(self, surface):
