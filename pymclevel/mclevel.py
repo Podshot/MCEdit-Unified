@@ -174,6 +174,7 @@ from indev import MCIndevLevel
 from infiniteworld import MCInfdevOldLevel
 from javalevel import MCJavaLevel
 from logging import getLogger
+import logging
 from directories import minecraftSaveFileDir
 import nbt
 from numpy import fromstring
@@ -224,10 +225,10 @@ def fromFile(filename, loadInfinite=True, readonly=False):
         if leveldbpocket.leveldb_available:
             return PocketLeveldbWorld(filename)
         else:
-            raise ValueError("An error occurred while loading MCPE support. Check the console for details.")
+            logging.exception("Pocket support has failed")
 
     if os.path.isdir(filename):
-        raise ValueError("Folder {0} was not identified as a Minecraft level.".format(os.path.basename(filename)))
+        logging.exception("World load failed, trying to open a directory instead of a file")
 
     f = file(filename, 'rb')
     rawdata = f.read()
