@@ -1308,7 +1308,7 @@ class LevelEditor(GLViewport):
     def initWindowCaption(self):
         filename = self.level.filename
         s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ~ ") + release.get_version()
+        title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
         if DEF_ENC != "UTF-8":
             title = title.encode('utf-8')
         display.set_caption(title)
@@ -2043,7 +2043,7 @@ class LevelEditor(GLViewport):
         self.renderer.level = None
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
-        display.set_caption("MCEdit ~ " + release.get_version())
+        display.set_caption("MCEdit ~ " + release.get_version()%_("for"))
         if self.revertPlayerSkins:
             config.settings.downloadPlayerSkins.set(True)
             self.revertPlayerSkins = False
@@ -2109,7 +2109,7 @@ class LevelEditor(GLViewport):
             self.renderer.level = None
             self.mcedit.removeEditor()
             self.controlPanel.dismiss()
-            display.set_caption("MCEdit ~ " + release.get_version())
+            display.set_caption("MCEdit ~ " + release.get_version()%_("for"))
 
             self._ftp_client.cleanup()
         else:
