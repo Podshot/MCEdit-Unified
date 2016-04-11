@@ -2043,7 +2043,7 @@ class LevelEditor(GLViewport):
         self.renderer.level = None
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
-        display.set_caption("MCEdit ~ " + release.get_version()%_("for"))
+        display.set_caption(("MCEdit ~ " + release.get_version()%_("for")).encode('utf-8'))
         if self.revertPlayerSkins:
             config.settings.downloadPlayerSkins.set(True)
             self.revertPlayerSkins = False
@@ -2109,7 +2109,7 @@ class LevelEditor(GLViewport):
             self.renderer.level = None
             self.mcedit.removeEditor()
             self.controlPanel.dismiss()
-            display.set_caption("MCEdit ~ " + release.get_version()%_("for"))
+            display.set_caption(("MCEdit ~ " + release.get_version()%_("for")).encode('utf-8'))
 
             self._ftp_client.cleanup()
         else:
