@@ -56,6 +56,9 @@ from albow.translate import _
 from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from datetime import datetime
 
+import re
+import subprocess
+
 try:
     import gtk
     if gtk.pygtk_version < (2,3,90):
@@ -537,7 +540,6 @@ win32_window_size = True
 # * Test on the actually unsupported Linux DEs.
 # * Review WWindowHandler class for Windows.
 # * Create a DWindowHandler class for Darwin (OSX).
-import re
 
 # Window states
 MINIMIZED = 0
