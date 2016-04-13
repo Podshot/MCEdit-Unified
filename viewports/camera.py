@@ -880,7 +880,7 @@ class CameraViewport(GLViewport):
                 oldText = '"{}"'.format(tileEntity[l])
                 # Double quotes handling
 #                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
+                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255])
                 if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
