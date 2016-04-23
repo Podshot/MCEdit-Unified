@@ -381,7 +381,7 @@ class CloneToolPanel(Panel):
 
 class CloneToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         self.autoPlaceCheckBox = CheckBox(ref=AttrRef(tool, "placeImmediately"))
         self.autoPlaceLabel = Label("Place Immediately")
@@ -1111,7 +1111,7 @@ class ConstructionToolPanel(CloneToolPanel):
 
 class ConstructionToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
 
         importNudgeLabel = Label("Import Fast Nudge Settings:")

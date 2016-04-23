@@ -83,6 +83,10 @@ class RowOrColumn(Widget):
             py = p[1] + sy
         self.shrink_wrap()
 
+    def call_handler(self, name, *args):
+        # Automatically call the parent *_action methods
+        if Widget.call_handler(self, name, *args) == 'pass':
+            return self.call_parent_handler(name, *args)
 
 #---------------------------------------------------------------------------
 

@@ -62,7 +62,7 @@ class SelectionToolOptions(ToolOptions):
         self.colorPopupButton.choiceIndex = names.index(color.lower())
 
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
 
         self.colorPopupButton = ChoiceButton([], choose=self.colorChanged)

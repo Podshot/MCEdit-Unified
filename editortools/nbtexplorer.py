@@ -372,7 +372,7 @@ class NBTTree(Tree):
 # -----------------------------------------------------------------------------
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
