@@ -62,7 +62,7 @@ class CoordsInput(Widget):
             field.change_action = self._coordsChanged
             field.enter_passes = False
 
-        offsetCol = Column((self.xField, self.yField, self.zField))
+        offsetCol = Column((Row((Label('X'), self.xField)), Row((Label('Y'), self.yField)), Row((Label('Z'), self.zField))))
 
         nudgeOffsetRow = Row((offsetCol, self.nudgeButton))
 
