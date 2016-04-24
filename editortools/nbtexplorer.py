@@ -444,6 +444,8 @@ class NBTExplorerOptions(ToolOptions):
         fName = mcplatform.askOpenFile(title="Choose an image file...", suffixes=['png', 'jpg', 'bmp'])
         if fName:
             config.nbtTreeSettings.bulletFileName.set(fName)
+            self.bulletFilePath.subwidgets[1].set_text(fName)
+            self.bulletFilePath.subwidgets[1].commit(notify=True)
 
     def dismiss(self, *args, **kwargs):
         bullet_styles = change_styles()
