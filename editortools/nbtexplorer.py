@@ -446,6 +446,8 @@ class NBTExplorerOptions(ToolOptions):
             config.nbtTreeSettings.bulletFileName.set(fName)
             self.bulletFilePath.subwidgets[1].set_text(fName)
             self.bulletFilePath.subwidgets[1].commit(notify=True)
+            global bullet_image
+            bullet_image = None
 
     def dismiss(self, *args, **kwargs):
         bullet_styles = change_styles()
