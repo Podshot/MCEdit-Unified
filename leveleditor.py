@@ -3325,6 +3325,12 @@ class EditorToolbar(GLOrtho):
         toolNumber = float(len(self.tools)) * x / tw
         return min(int(toolNumber), len(self.tools) - 1)
 
+    def set_update_ui(self, v):
+        for tool in self.tools:
+            if tool.optionsPanel:
+                tool.optionsPanel.set_update_ui(v)
+        GLOrtho.set_update_ui(self, v)
+
     def mouse_down(self, evt):
         if self.parent.level:
             toolNo = self.toolNumberUnderMouse(evt.pos)
