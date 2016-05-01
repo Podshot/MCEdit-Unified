@@ -25,6 +25,7 @@ from pymclevel import nbt
 from editortools.select import SelectionTool
 from pymclevel.box import BoundingBox
 from waypoints import WaypointManager
+from editortools.timeditor import TimeEditor
 
 """
 leveleditor.py
@@ -75,7 +76,7 @@ import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
 get_font = albow.resource.get_font
-from albow.controls import Label, ValueDisplay, Image
+from albow.controls import Label, ValueDisplay, Image, RotatableImage
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
@@ -2170,7 +2171,7 @@ class LevelEditor(GLViewport):
         ticksPerHour = ticksPerDay / 24
         ticksPerMinute = ticksPerDay / (24 * 60)
 
-        def decomposeMCTime(time):
+        def fromTicks(time):
             day = time / ticksPerDay
             tick = time % ticksPerDay
             hour = tick / ticksPerHour
@@ -2228,14 +2229,15 @@ class LevelEditor(GLViewport):
             timezoneAdjust = ticksPerHour * 30
             time += timezoneAdjust
 
-            d, h, m, tick = decomposeMCTime(time)
+            d, h, m, tick = fromTicks(time)
 
             dayInput = IntField(value=d, min=1)
-            items.append(Row((Label("Day: "), dayInput)))
+            #items.append(Row((Label("Day: "), dayInput)))
 
             timeInput = TimeField(value=(h, m))
-            timeInputRow = Row((Label("Time of day:"), timeInput))
-            items.append(timeInputRow)
+            timeInputRow = Row((Label("Time of day:"), timeInput, Label("REPLACING")))
+            items.append(TimeEditor(current_tick_time=time))
+            #items.append(timeInputRow)
 
         if hasattr(self.level, 'RandomSeed'):
             seedField = IntField(width=250, value=self.level.RandomSeed)
@@ -2290,6 +2292,7 @@ class LevelEditor(GLViewport):
         size = self.level.size
         sizelabel = Label("{L}L x {W}W x {H}H".format(L=size[2], H=size[1], W=size[0]))
         items.append(sizelabel)
+        #items.append(TimeEditor(current_tick_time=0))
 
         if hasattr(self.level, "Entities"):
             label = Label(_("{0} Entities").format(len(self.level.Entities)))

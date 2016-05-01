@@ -3,7 +3,7 @@
 #
 #-# Modified by D.C.-G. for translation purpose
 
-from pygame import Rect, draw
+from pygame import Rect, draw, transform
 
 from widget import Widget, overridable_property
 from theme import ThemeProperty
@@ -289,7 +289,33 @@ class Image(Widget):
         r = image.get_rect()
         r.center = frame.center
         surf.blit(image, r)
+        
+class RotatableImage(Image):
+    
+    def __init__(self, angle=0.0, **kwds):
+        super(RotatableImage, self).__init__(**kwds)
+        self.angle = angle
+        self.last_pos = (None, None)
+    
+    def draw(self, surf):
+        frame = surf.get_rect()
+        if self.highlighted:
+            surf.fill(self.highlight_color)
+        image = self.image
+        image = transform.rotate(image, self.angle)
+        r = image.get_rect()
+        r.center = frame.center
+        surf.blit(image, r)
+        
+    def get_angle(self):
+        return self.angle
 
+    def set_angle(self, angle):
+        angle = max(min(angle, 0), -360)
+        self.angle = angle
+        
+    def add_angle(self, angle):
+        self.set_angle(self.get_angle() + (angle * -1))
 
 class ImageButton(ButtonBase, Image):
     pass
