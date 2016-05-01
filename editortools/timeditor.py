@@ -5,6 +5,7 @@ from albow.widget import Widget
 from albow.layout import Column, Row
 from albow.fields import TimeField, IntField
 import math
+import types
 
 class TimeEditor(Widget):
     # Do Not Change These Fields (unless necessary)
@@ -58,6 +59,7 @@ class TimeEditor(Widget):
         
         self.time_field = TimeField(value=(h, m))
         self.time_label = Label("Time of day:")
+        self.time_field.change_action = types.MethodType(self.change_action, self.time_field)
         #self._debug_ticks = Label("")
         self.add(Column((
                          Row((Label("Day: "), self.day_input)), 
@@ -85,3 +87,6 @@ class TimeEditor(Widget):
         
     def mouse_up(self, event):
         self.last_pos = (None, None)
+        
+    def change_action(self, *args):
+        print self.time_field.format_value(args[0].get_value())
