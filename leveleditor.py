@@ -2167,21 +2167,8 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def showWorldInfo(self):
-        ticksPerDay = 24000
-        ticksPerHour = ticksPerDay / 24
-        ticksPerMinute = ticksPerDay / (24 * 60)
 
-        def fromTicks(time):
-            day = time / ticksPerDay
-            tick = time % ticksPerDay
-            hour = tick / ticksPerHour
-            tick %= ticksPerHour
-            minute = tick / ticksPerMinute
-            tick %= ticksPerMinute
-
-            return day, hour, minute, tick
-
-        def composeMCTime(d, h, m, t):
+        def _composeMCTime(d, h, m, t):
             time = d * ticksPerDay + h * ticksPerHour + m * ticksPerMinute + t
             return time
 
@@ -2226,10 +2213,10 @@ class LevelEditor(GLViewport):
             # timezone adjust -
             # minecraft time shows 0:00 on day 0 at the first sunrise
             # I want that to be 6:00 on day 1, so I add 30 hours
-            timezoneAdjust = ticksPerHour * 30
+            timezoneAdjust = TimeEditor.ticksPerHour * 30
             time += timezoneAdjust
 
-            d, h, m, tick = fromTicks(time)
+            d, h, m, tick = TimeEditor.fromTicks(time)
 
             dayInput = IntField(value=d, min=1)
             #items.append(Row((Label("Day: "), dayInput)))
@@ -2313,7 +2300,7 @@ class LevelEditor(GLViewport):
             Changes = False
             if hasattr(self.level, 'Time'):
                 h, m = timeInput.value
-                time = composeMCTime(dayInput.value, h, m, tick)
+                time = TimeEditor.toTicks(dayInput.value, h, m, tick)
                 time -= timezoneAdjust
                 if self.level.Time != time:
                     Changes = True
@@ -2424,7 +2411,7 @@ class LevelEditor(GLViewport):
 
         if hasattr(self.level, 'Time'):
             h, m = timeInput.value
-            time = composeMCTime(dayInput.value, h, m, tick)
+            time = TimeEditor.toTicks((dayInput.value, h, m, tick))
             time -= timezoneAdjust
             if self.level.Time != time:
                 changeTime = True

@@ -295,7 +295,6 @@ class RotatableImage(Image):
     def __init__(self, angle=0.0, **kwds):
         super(RotatableImage, self).__init__(**kwds)
         self.angle = angle
-        self.last_pos = (None, None)
     
     def draw(self, surf):
         frame = surf.get_rect()
