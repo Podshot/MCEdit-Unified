@@ -262,7 +262,7 @@ class TextEditor(Widget):
         self.addUndo()
         if self.upper:
             c = c.upper()
-        if k == K_BACKSPACE or k == K_DELETE:
+        if (k == K_BACKSPACE or k == K_DELETE) and self.enabled:
             text, i = self.get_text_and_insertion_point()
             if i is None:
                 text = u""
@@ -280,7 +280,7 @@ class TextEditor(Widget):
             return self.call_handler('enter_action')
         elif c == "\x1b":
             return self.call_handler('escape_action')
-        elif c >= "\x20":
+        elif c >= "\x20" and self.enabled:
             if self.allow_char(c):
                 text, i = self.get_text_and_insertion_point()
                 if i is None:
@@ -1114,7 +1114,7 @@ class TextEditorWrapped(Widget):
         self.addUndo()
         if self.upper:
             c = c.upper()
-        if k == K_BACKSPACE or k == K_DELETE:
+        if (k == K_BACKSPACE or k == K_DELETE) and self.enabled:
             text, i = self.get_text_and_insertion_point()
             if i is None and (self.selection_start is None or self.selection_end is None):
                 text = ""
@@ -1141,7 +1141,7 @@ class TextEditorWrapped(Widget):
             return self.call_handler('enter_action')
         elif c == "\x1b":
             return self.call_handler('escape_action')
-        elif c >= "\x20":
+        elif c >= "\x20" and self.enabled:
             if self.allow_char(c):
                 text, i = self.get_text_and_insertion_point()
                 if i is None and (self.selection_start is None or self.selection_end is None):

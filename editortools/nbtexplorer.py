@@ -14,7 +14,7 @@
 from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu
+    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu, Frame
 from albow.dialogs import Dialog
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
@@ -82,14 +82,19 @@ import struct
 
 # -----------------------------------------------------------------------------
 bullet_image = None
+default_bullet_images = os.path.join(getDataDir(), "Nbtsheet.png")
 
 
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
+
     if not bullet_image:
         # # Debug for MacOS
         try:
-            bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
+            if config.nbtTreeSettings.defaultBulletImages.get():
+                bullet_image = image.load(default_bullet_images)
+            else:
+                bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
         except Exception, e:
             print "*** MCEDIT DEBUG: bullets image could not be loaded."
             print "*** MCEDIT DEBUG:", e
@@ -101,6 +106,7 @@ def get_bullet_image(index, w=16, h=16):
             for i in range(4):
                 for j in range(4):
                     bullet_image.fill((255/(i or 1), 255/(j or 1), 255, 255), [16*i, 16*j, 16*i+16, 16*j+16])
+
     r = Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     line = int(index / line_length)
@@ -131,8 +137,9 @@ def change_styles():
     global default_bullet_styles
     global bullet_styles
     if config.nbtTreeSettings.useBulletStyles.get() and \
-            config.nbtTreeSettings.useBulletImages.get() and \
-            os.path.exists(config.nbtTreeSettings.bulletFileName.get()):
+            ((config.nbtTreeSettings.useBulletImages.get() and \
+            os.path.exists(config.nbtTreeSettings.bulletFileName.get())) \
+            or config.nbtTreeSettings.defaultBulletImages.get()):
         i = 0
         for key in (
                 TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array,
@@ -384,8 +391,28 @@ class NBTExplorerOptions(ToolOptions):
         useImagesBox = CheckBoxLabel(title="Use Bullet Images",
                                      ref=config.nbtTreeSettings.useBulletImages)
         self.useImagesBox = useImagesBox
+
         bulletFilePath = Row((Button("Bullet Images File", action=self.open_bullet_file),
                               TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
+
+        defaultBulletImagesBox = CheckBoxLabel(title="Reset to default",
+                                         ref=config.nbtTreeSettings.defaultBulletImages)
+        self.defaultBulletImagesBox = defaultBulletImagesBox
+
+        def mouse_down(e):
+            CheckBox.mouse_down(defaultBulletImagesBox.subwidgets[1], e)
+            self.defaultBulletImagesBox_click(e)
+
+        defaultBulletImagesBox.subwidgets[1].mouse_down = mouse_down
+
+        frameContent = Column((defaultBulletImagesBox, bulletFilePath))
+        color = self.bg_color
+        if len(color) == 4:
+            color = (max(color[0] + 200, 255), max(color[1] + 200, 255), max(color[2] + 200, 255), max(color[3] + 100,255))
+        else:
+            color = tuple([max([i] * 2, 255) for i in color])
+        bulletFilePathFrame = Frame(frameContent, border_width=1, border_color=color)
+        bulletFilePathFrame.add_centered(frameContent)
 
         def mouse_down(e):
             if self.bulletFilePath.subwidgets[1].enabled:
@@ -396,13 +423,16 @@ class NBTExplorerOptions(ToolOptions):
 
         def mouse_down(e):
             CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
-            for sub in bulletFilePath.subwidgets:
+            for sub in defaultBulletImagesBox.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-                if type(sub) == TextFieldWrapped:
+                if type(sub) in (CheckBox, TextFieldWrapped):
                     if config.nbtTreeSettings.useBulletImages.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
+                if type(sub) == CheckBox:
+                    sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
+            self.defaultBulletImagesBox_click(None)
 
         useImagesBox.subwidgets[0].mouse_down = useImagesBox.subwidgets[1].mouse_down = mouse_down
 
@@ -419,17 +449,31 @@ class NBTExplorerOptions(ToolOptions):
         col = Column((
             Label("NBT Tree Settings"),
             Row((useStyleBox, useTextBox, useImagesBox)),
-            bulletFilePath,
+            bulletFilePathFrame,
             showAllTags,
-            #                      Button("Load NBT file...", action=tool.loadFile),
             Button("OK", action=self.dismiss),
         ))
         self.add(col)
         self.shrink_wrap()
         self.useStyleBox_click(None)
+        self.defaultBulletImagesBox_click(None)
+
+    def defaultBulletImagesBox_click(self, e):
+        enabled = not config.nbtTreeSettings.defaultBulletImages.get() \
+                    and config.nbtTreeSettings.useBulletImages.get() \
+                    and config.nbtTreeSettings.useBulletStyles.get()
+        for sub in self.bulletFilePath.subwidgets:
+            sub.enabled = enabled
+            if type(sub) == TextFieldWrapped:
+                if enabled:
+                    sub.fg_color = fg_color
+                else:
+                    sub.fg_color = disabled_color
+        global bullet_image
+        bullet_image = None
 
     def useStyleBox_click(self, e):
-        for widget in (self.useTextBox, self.useImagesBox, self.bulletFilePath):
+        for widget in (self.useTextBox, self.useImagesBox):
             for sub in widget.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletStyles.get()
                 if type(sub) in (CheckBox, TextFieldWrapped):
@@ -439,6 +483,16 @@ class NBTExplorerOptions(ToolOptions):
                         sub.fg_color = disabled_color
                 if type(sub) == CheckBox:
                     sub.set_enabled(config.nbtTreeSettings.useBulletStyles.get())
+        for sub in self.defaultBulletImagesBox.subwidgets:
+            sub.enabled = config.nbtTreeSettings.useBulletImages.get()
+            if type(sub) in (CheckBox, TextFieldWrapped):
+                if config.nbtTreeSettings.useBulletImages.get():
+                    sub.fg_color = fg_color
+                else:
+                    sub.fg_color = disabled_color
+            if type(sub) == CheckBox:
+                sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
+        self.defaultBulletImagesBox_click(None)
 
     def open_bullet_file(self):
         fName = mcplatform.askOpenFile(title="Choose an image file...", suffixes=['png', 'jpg', 'bmp'])

@@ -187,3 +187,8 @@ class Frame(Widget):
         self.size = (w + 2 * d, h + 2 * d)
         client.topleft = (d, d)
         self.add(client)
+
+    def call_handler(self, name, *args):
+        # Automatically call the parent *_action methods
+        if Widget.call_handler(self, name, *args) == 'pass':
+            return self.call_parent_handler(name, *args)
