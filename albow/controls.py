@@ -294,7 +294,7 @@ class RotatableImage(Image):
     
     def __init__(self, angle=0.0, min_angle=0, max_angle=360, **kwds):
         super(RotatableImage, self).__init__(**kwds)
-        self._angle = angle
+        self._angle = -angle
         self._min_angle = min_angle
         self._max_angle = max_angle
     

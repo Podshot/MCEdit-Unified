@@ -2223,7 +2223,8 @@ class LevelEditor(GLViewport):
 
             timeInput = TimeField(value=(h, m))
             timeInputRow = Row((Label("Time of day:"), timeInput, Label("REPLACING")))
-            items.append(TimeEditor(current_tick_time=time))
+            time_editor = TimeEditor(current_tick_time=time)
+            items.append(time_editor)
             #items.append(timeInputRow)
 
         if hasattr(self.level, 'RandomSeed'):
@@ -2299,9 +2300,7 @@ class LevelEditor(GLViewport):
         def cancel(*args, **kwargs):
             Changes = False
             if hasattr(self.level, 'Time'):
-                h, m = timeInput.value
-                time = TimeEditor.toTicks(dayInput.value, h, m, tick)
-                time -= timezoneAdjust
+                time = time_editor.get_value()
                 if self.level.Time != time:
                     Changes = True
             if hasattr(self.level, 'RandomSeed'):
@@ -2410,9 +2409,7 @@ class LevelEditor(GLViewport):
         changeGameType = False
 
         if hasattr(self.level, 'Time'):
-            h, m = timeInput.value
-            time = TimeEditor.toTicks((dayInput.value, h, m, tick))
-            time -= timezoneAdjust
+            time = time_editor.get_value()
             if self.level.Time != time:
                 changeTime = True
 

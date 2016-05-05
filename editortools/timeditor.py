@@ -7,6 +7,19 @@ from albow.fields import TimeField, IntField
 import math
 import types
 
+class ModifiedTimeField(TimeField):
+    
+    _callback = None
+    
+    def __init__(self, callback=None, **kwds):
+        super(ModifiedTimeField, self).__init__(**kwds)
+        self._callback = callback
+        
+    def __setattr__(self, *args, **kwargs):
+        if  self._callback and args[0] == "value":
+            self._callback(args[1])
+        return TimeField.__setattr__(self, *args, **kwargs)
+
 class TimeEditor(Widget):
     # Do Not Change These Fields (unless necessary)
     ticksPerDay = 24000
@@ -15,8 +28,10 @@ class TimeEditor(Widget):
     _maxRotation = 360.04
     _tickToDegree = 66.66
     _distance = 600.0
+    _time_adjustment = (ticksPerHour * 30)
     
     
+    # -- Conversion Methods -- #
     @classmethod
     def fromTicks(cls, time):
         day = time / cls.ticksPerDay
@@ -43,27 +58,57 @@ class TimeEditor(Widget):
     def ticksToDegrees(self, ticks):
         return (ticks * (1 / self._tickToDegree))
     
+    def doTimeAdjustment(self, ticks):
+        return (ticks + self._time_adjustment)
+    
+    def undoTimeAdjustment(self, ticks):
+        return (ticks - self._time_adjustment)
+    
+    # -- Special Callback -- #
+    def _timeFieldCallback(self, (h, m)):
+        ticks = self.undoTimeAdjustment(self.toTicks((1, h, m, 0)))
+        deg = 0
+        if ticks > 0:
+            deg = self.ticksToDegrees(self.undoTimeAdjustment(self.toTicks((1, h, m, 0))))
+        else:
+            deg = self.ticksToDegrees(24000 + ticks)
+        self.rot_image.set_angle(0)
+        self.rot_image.add_angle(deg)
+        
+        self._current_tick_time = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
+        self._current_time = self.fromTicks(self.doTimeAdjustment(self._current_tick_time))
+        
+    
     def __init__(self, current_tick_time=0, **kwds):
         super(TimeEditor, self).__init__(**kwds)
-        self._current_tick_time = current_tick_time
-        self.original_value = current_tick_time
-        self._current_tick_time += (self.ticksPerHour * 30)
-        d, h, m, t = self.fromTicks(self._current_tick_time)
+        
+        self._current_tick_time = self.doTimeAdjustment(current_tick_time)
+        self._current_time = self.fromTicks(self._current_tick_time)
+        
+        self.__original_value = current_tick_time
+        self.__original_time = self._current_time
+        
         self.last_pos = (None, None)
         
-        self.day_input = IntField(value=d, min=1)
+        self.day_input = IntField(value=self.__original_time[0], min=1)
+        
+        __deg = self.ticksToDegrees(self.undoTimeAdjustment(self.toTicks((1, self.__original_time[1], self.__original_time[2], 0))))
         
         self.rot_image = RotatableImage(
                                         image=pygame.image.load(os.path.join("toolicons", "day_night_cycle.png")),
                                         min_angle=-self._maxRotation,
-                                        max_angle=0
+                                        max_angle=0,
+                                        angle=__deg
                                         )
         #self.rot_image.set_angle(self.ticksToDegrees(self._current_tick_time))
         self.rot_image.mouse_drag = self.mouse_drag
         self.rot_image.mouse_up = self.mouse_up
         
-        self.time_field = TimeField(value=(h, m))
-        self._time_field_old_value = self.time_field.value
+        self.time_field = ModifiedTimeField(
+                                            value=(self.__original_time[1], self.__original_time[2]),
+                                            callback=self._timeFieldCallback
+                                            )
+        __time_field_old_value = self.time_field.value
         #self._debug_ticks = Label("")
         self.add(Column((
                          Row((Label("Day: "), self.day_input)), 
@@ -73,61 +118,24 @@ class TimeEditor(Widget):
                  )
         self.shrink_wrap()
     
-    '''    
-    def draw(self, surface):
-        if not self.time_field.editing:
-            if self._time_field_old_value != self.time_field.value:
-                h, m = self.time_field.value
-                ticks = self.toTicks((self.day_input.value, h, m, 0))
-                self.rot_image.set_angle(self.ticksToDegrees(ticks) * -1)
-                self._time_field_old_value = self.time_field.value
-        #Widget.draw(self, surface)
-    '''
+    def get_value(self):
+        rot_ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
+        rot_ticks = self.doTimeAdjustment(rot_ticks)
+        rot_time = self.fromTicks(rot_ticks)
+        rot_time = self.toTicks((self.day_input.value, rot_time[1], rot_time[2], rot_time[3]))
+        return rot_time
         
     def mouse_drag(self, event):
-        #METHOD #1
         if self.last_pos == (None, None):
             self.last_pos = event.pos
         delta = (event.pos[0] - self.last_pos[0])
-        #print "Delta: {}".format(delta)
-        #print "Degrees: {}".format(self.deltaToDegrees(delta))
-        #print ""
-        #if self.degreesToTicks(self.rot_image.get_angle()) == self.original_value:
-        #    print "Setting" 
-        #    self.rot_image.set_angle(self.deltaToDegrees(delta * -1))
-        #else:
-        #    print "Adding"
+        
         self.rot_image.add_angle(self.deltaToDegrees(delta))
         
-        self._current_tick_time = self.degreesToTicks(self.rot_image.get_angle() * -1)
-        d, h, m, t = self.fromTicks(self._current_tick_time + (self.ticksPerHour * 30))
-        self.time_field.set_value((h,m))
-        self.last_pos = event.pos
-        '''
-        #METHOD #2
-        if self.last_pos == (None, None):
-            self.last_pos = event.pos
-        delta = (event.pos[0] - self.last_pos[0]) / 600.0
-        if delta >= 0.0:
-            new_delta = max(min(delta, 0.5), 0.0)
-        else:
-            new_delta = max(min(delta, 0.0), -0.5)
-        print "Distance: {}".format((event.pos[0] - self.last_pos[0]))
-        print "Delta: {}".format(delta)
-        print "New Delta: {}".format(new_delta)
-        print "Ticks: {}".format(new_delta * 24000)
-        print "Degrees: {}".format(new_delta * 360)
-        print ""
-        self.rot_image.add_angle(new_delta * 360)
-        
-        self._current_tick_time = new_delta * 24000
-        d, h, m, t = self.fromTicks(self._current_tick_time + (self.ticksPerHour * 30))
-        self.time_field.set_value((h,m))
-        '''
-        
+        self._current_tick_time = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
+        self._current_time = self.fromTicks(self.doTimeAdjustment(self._current_tick_time))
+        self.time_field.set_value((self._current_time[1], self._current_time[2]))
+        self.last_pos = event.pos      
         
     def mouse_up(self, event):
         self.last_pos = (None, None)
-        
-    def get_value(self):
-        return None
