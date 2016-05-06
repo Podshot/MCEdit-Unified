@@ -2168,10 +2168,6 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def showWorldInfo(self):
 
-        def _composeMCTime(d, h, m, t):
-            time = d * ticksPerDay + h * ticksPerHour + m * ticksPerMinute + t
-            return time
-
         worldInfoPanel = Dialog()
         items = []
 
@@ -2213,19 +2209,9 @@ class LevelEditor(GLViewport):
             # timezone adjust -
             # minecraft time shows 0:00 on day 0 at the first sunrise
             # I want that to be 6:00 on day 1, so I add 30 hours
-            timezoneAdjust = TimeEditor.ticksPerHour * 30
-            time += timezoneAdjust
 
-            d, h, m, tick = TimeEditor.fromTicks(time)
-
-            dayInput = IntField(value=d, min=1)
-            #items.append(Row((Label("Day: "), dayInput)))
-
-            timeInput = TimeField(value=(h, m))
-            timeInputRow = Row((Label("Time of day:"), timeInput, Label("REPLACING")))
             time_editor = TimeEditor(current_tick_time=time)
             items.append(time_editor)
-            #items.append(timeInputRow)
 
         if hasattr(self.level, 'RandomSeed'):
             seedField = IntField(width=250, value=self.level.RandomSeed)

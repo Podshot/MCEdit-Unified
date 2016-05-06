@@ -50,7 +50,6 @@ class TimeEditor(Widget):
     
     def deltaToDegrees(self, delta):
         return ((delta * (24000 / self._distance)) * (1 / self._tickToDegree))
-        #return ((delta * (24000.0 / 16000.0)) * (1.0 / 66.66))
     
     def degreesToTicks(self, deg):
         return (deg * self._tickToDegree)
@@ -77,13 +76,12 @@ class TimeEditor(Widget):
         
         self._current_tick_time = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
         self._current_time = self.fromTicks(self.doTimeAdjustment(self._current_tick_time))
-        
     
     def __init__(self, current_tick_time=0, **kwds):
         super(TimeEditor, self).__init__(**kwds)
         
-        self._current_tick_time = self.doTimeAdjustment(current_tick_time)
-        self._current_time = self.fromTicks(self._current_tick_time)
+        self._current_tick_time = current_tick_time
+        self._current_time = self.fromTicks(self.doTimeAdjustment(self._current_tick_time))
         
         self.__original_value = current_tick_time
         self.__original_time = self._current_time
@@ -92,7 +90,7 @@ class TimeEditor(Widget):
         
         self.day_input = IntField(value=self.__original_time[0], min=1)
         
-        __deg = self.ticksToDegrees(self.undoTimeAdjustment(self.toTicks((1, self.__original_time[1], self.__original_time[2], 0))))
+        __deg = self.ticksToDegrees(current_tick_time)
         
         self.rot_image = RotatableImage(
                                         image=pygame.image.load(os.path.join("toolicons", "day_night_cycle.png")),
@@ -100,7 +98,6 @@ class TimeEditor(Widget):
                                         max_angle=0,
                                         angle=__deg
                                         )
-        #self.rot_image.set_angle(self.ticksToDegrees(self._current_tick_time))
         self.rot_image.mouse_drag = self.mouse_drag
         self.rot_image.mouse_up = self.mouse_up
         
@@ -109,7 +106,6 @@ class TimeEditor(Widget):
                                             callback=self._timeFieldCallback
                                             )
         __time_field_old_value = self.time_field.value
-        #self._debug_ticks = Label("")
         self.add(Column((
                          Row((Label("Day: "), self.day_input)), 
                          self.rot_image, 
@@ -118,12 +114,11 @@ class TimeEditor(Widget):
                  )
         self.shrink_wrap()
     
-    def get_value(self):
+    def get_value(self):     
+        if self.time_field.editing:
+            self._timeFieldCallback(self.time_field.value)
         rot_ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
-        rot_ticks = self.doTimeAdjustment(rot_ticks)
-        rot_time = self.fromTicks(rot_ticks)
-        rot_time = self.toTicks((self.day_input.value, rot_time[1], rot_time[2], rot_time[3]))
-        return rot_time
+        return (((self.day_input.value * self.ticksPerDay) + rot_ticks) - self.ticksPerDay)
         
     def mouse_drag(self, event):
         if self.last_pos == (None, None):
