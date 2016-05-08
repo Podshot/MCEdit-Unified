@@ -2849,7 +2849,6 @@ blocks:
     tex: [3, 9]
     type: THINSLICE
     opacity: 0
-    brightness: 9
     data:
       0: 
         name: Redstone Repeater (Powered, Delay 1, North)
