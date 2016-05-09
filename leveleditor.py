@@ -2286,8 +2286,12 @@ class LevelEditor(GLViewport):
         def cancel(*args, **kwargs):
             Changes = False
             if hasattr(self.level, 'Time'):
-                time = time_editor.get_value()
+                time = time_editor.get_time_value()
                 if self.level.Time != time:
+                    Changes = True
+            if hasattr(self.level, 'DayTime'):
+                day_time = time_editor.get_daytime_value()
+                if self.level.DayTime != day_time:
                     Changes = True
             if hasattr(self.level, 'RandomSeed'):
                 if seedField.value != self.level.RandomSeed:
@@ -2339,6 +2343,7 @@ class LevelEditor(GLViewport):
 
                 self.changeLevelName = changeLevelName
                 self.changeTime = changeTime
+                self.changeDayTime = changeDayTime
                 self.changeSeed = changeSeed
                 self.changeGameType = changeGameType
 
@@ -2351,6 +2356,10 @@ class LevelEditor(GLViewport):
                     if changeTime:
                         self.UndoTime = self.level.Time
                         self.RedoTime = time
+                        
+                    if changeDayTime:
+                        self.UndoDayTime = self.level.DayTime
+                        self.RedoDayTime = day_time
 
                     if changeSeed:
                         self.UndoSeed = self.level.RandomSeed
@@ -2364,6 +2373,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = nameField.value
                 if changeTime:
                     self.level.Time = time
+                if changeDayTime:
+                    self.level.DayTime = day_time
                 if changeSeed:
                     self.level.RandomSeed = seedField.value
                 if changeGameType:
@@ -2374,6 +2385,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = self.UndoText
                 if self.changeTime:
                     self.level.Time = self.UndoTime
+                if self.changeDayTime:
+                    self.level.DayTime = self.UndoDayTime
                 if self.changeSeed:
                     self.level.RandomSeed = self.UndoSeed
                 if self.changeGameType:
@@ -2384,6 +2397,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = self.RedoText
                 if self.changeTime:
                     self.level.Time = self.RedoTime
+                if self.changeDayTime:
+                    self.level.DayTime = self.RedoDayTime
                 if self.changeSeed:
                     self.level.RandomSeed = self.RedoSeed
                 if self.changeGameType:
@@ -2393,11 +2408,17 @@ class LevelEditor(GLViewport):
         changeSeed = False
         changeLevelName = False
         changeGameType = False
+        changeDayTime = False
 
         if hasattr(self.level, 'Time'):
-            time = time_editor.get_value()
+            time = time_editor.get_time_value()
             if self.level.Time != time:
                 changeTime = True
+                
+        if hasattr(self.level, 'DayTime'):
+            day_time = time_editor.get_daytime_value()
+            if self.level.DayTime != day_time:
+                changeDayTime = True
 
         if hasattr(self.level, 'RandomSeed'):
             if seedField.value != self.level.RandomSeed:

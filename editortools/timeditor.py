@@ -116,11 +116,17 @@ class TimeEditor(Widget):
         self.shrink_wrap()
         
     
-    def get_value(self):     
+    def get_time_value(self):     
         if self.time_field.editing:
             self._timeFieldCallback(self.time_field.value)
         rot_ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
         return (((self.day_input.value * self.ticksPerDay) + rot_ticks) - self.ticksPerDay)
+    
+    def get_daytime_value(self):
+        if self.time_field.editing:
+            self._timeFieldCallback(self.time_field.value)
+        ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000), 0)
+        return ticks
     
     def mouse_down(self, event):
         if "tooltipText" in self.rot_image.__dict__:

@@ -1134,6 +1134,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.RandomSeed = long(random_seed)
         self.SizeOnDisk = 0
         self.Time = 1
+        self.DayTime = 1
         self.LevelName = os.path.basename(self.worldFolder.filename)
 
         # ## if singleplayer:
@@ -1289,6 +1290,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     SizeOnDisk = TagProperty('SizeOnDisk', nbt.TAG_Long, 0)
     RandomSeed = TagProperty('RandomSeed', nbt.TAG_Long, 0)
     Time = TagProperty('Time', nbt.TAG_Long, 0)  # Age of the world in ticks. 20 ticks per second; 24000 ticks per day.
+    DayTime = TagProperty('DayTime', nbt.TAG_Long, 0)
     LastPlayed = TagProperty('LastPlayed', nbt.TAG_Long, lambda self: long(time.time() * 1000))
 
     LevelName = TagProperty('LevelName', nbt.TAG_String, lambda self: self.displayName)
