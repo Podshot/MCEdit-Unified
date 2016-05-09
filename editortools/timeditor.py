@@ -100,6 +100,7 @@ class TimeEditor(Widget):
                                         )
         self.rot_image.mouse_drag = self.mouse_drag
         self.rot_image.mouse_up = self.mouse_up
+        self.rot_image.tooltipText = "Left-Click and drag to the left or the right"
         
         self.time_field = ModifiedTimeField(
                                             value=(self.__original_time[1], self.__original_time[2]),
@@ -113,12 +114,17 @@ class TimeEditor(Widget):
                          ))
                  )
         self.shrink_wrap()
+        
     
     def get_value(self):     
         if self.time_field.editing:
             self._timeFieldCallback(self.time_field.value)
         rot_ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
         return (((self.day_input.value * self.ticksPerDay) + rot_ticks) - self.ticksPerDay)
+    
+    def mouse_down(self, event):
+        if "tooltipText" in self.rot_image.__dict__:
+            del self.rot_image.tooltipText
         
     def mouse_drag(self, event):
         if self.last_pos == (None, None):
