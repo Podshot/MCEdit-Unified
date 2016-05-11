@@ -25,6 +25,7 @@ from pymclevel import nbt
 from editortools.select import SelectionTool
 from pymclevel.box import BoundingBox
 from waypoints import WaypointManager
+from editortools.timeditor import TimeEditor
 
 """
 leveleditor.py
@@ -75,7 +76,7 @@ import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
 get_font = albow.resource.get_font
-from albow.controls import Label, ValueDisplay, Image
+from albow.controls import Label, ValueDisplay, Image, RotatableImage
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
@@ -92,6 +93,8 @@ from renderer import MCRenderer
 from pymclevel.entity import Entity
 from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
     MCInfdevOldLevel
+# Block and item translation
+from mclangres import translate as trn
 
 try:
     import resource  # @UnresolvedImport
@@ -215,6 +218,8 @@ class LevelEditor(GLViewport):
 
         def chooseDistance():
             self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
+        if self.renderer.viewDistance not in range(2,32,2):
+            self.renderer.viewDistance = 8
         self.viewDistanceReadout = ChoiceButton(["%s"%a for a in range(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
         self.viewDistanceReadout.shrink_wrap()
@@ -714,18 +719,18 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        blockRows = [("", "", ""), (box.volume, "<Blocks>", "")]
+        blockRows = [("", "", ""), (box.volume, "<%s>"%_("Blocks"), "")]
         rows = list(blockRows)
-        rows.extend([[count, block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
+        rows.extend([[count, trn(block.name), ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
             if entitySum:
-                rows.extend([("", "", ""), (entitySum, "<Entities>", "")])
-                rows.extend([(count, id[1], id[0]) for (id, count) in sorted(entityCounts.iteritems())])
+                rows.extend([("", "", ""), (entitySum, "<%s>"%_("Entities"), "")])
+                rows.extend([(count, trn(id[1]), id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
-                rows.extend([("", "", ""), (tileEntitySum, "<TileEntities>", "")])
-                rows.extend([(count, id, "") for (id, count) in sorted(tileEntityCounts.iteritems())])
+                rows.extend([("", "", ""), (tileEntitySum, "<%s>"%_("TileEntities"), "")])
+                rows.extend([(count, trn(id), "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
 
@@ -1304,7 +1309,7 @@ class LevelEditor(GLViewport):
     def initWindowCaption(self):
         filename = self.level.filename
         s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ~ ") + release.get_version()
+        title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
         if DEF_ENC != "UTF-8":
             title = title.encode('utf-8')
         display.set_caption(title)
@@ -2039,7 +2044,7 @@ class LevelEditor(GLViewport):
         self.renderer.level = None
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
-        display.set_caption("MCEdit ~ " + release.get_version())
+        display.set_caption(("MCEdit ~ " + release.get_version()%_("for")).encode('utf-8'))
         if self.revertPlayerSkins:
             config.settings.downloadPlayerSkins.set(True)
             self.revertPlayerSkins = False
@@ -2105,7 +2110,7 @@ class LevelEditor(GLViewport):
             self.renderer.level = None
             self.mcedit.removeEditor()
             self.controlPanel.dismiss()
-            display.set_caption("MCEdit ~ " + release.get_version())
+            display.set_caption(("MCEdit ~ " + release.get_version()%_("for")).encode('utf-8'))
 
             self._ftp_client.cleanup()
         else:
@@ -2162,23 +2167,6 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def showWorldInfo(self):
-        ticksPerDay = 24000
-        ticksPerHour = ticksPerDay / 24
-        ticksPerMinute = ticksPerDay / (24 * 60)
-
-        def decomposeMCTime(time):
-            day = time / ticksPerDay
-            tick = time % ticksPerDay
-            hour = tick / ticksPerHour
-            tick %= ticksPerHour
-            minute = tick / ticksPerMinute
-            tick %= ticksPerMinute
-
-            return day, hour, minute, tick
-
-        def composeMCTime(d, h, m, t):
-            time = d * ticksPerDay + h * ticksPerHour + m * ticksPerMinute + t
-            return time
 
         worldInfoPanel = Dialog()
         items = []
@@ -2221,17 +2209,9 @@ class LevelEditor(GLViewport):
             # timezone adjust -
             # minecraft time shows 0:00 on day 0 at the first sunrise
             # I want that to be 6:00 on day 1, so I add 30 hours
-            timezoneAdjust = ticksPerHour * 30
-            time += timezoneAdjust
 
-            d, h, m, tick = decomposeMCTime(time)
-
-            dayInput = IntField(value=d, min=1)
-            items.append(Row((Label("Day: "), dayInput)))
-
-            timeInput = TimeField(value=(h, m))
-            timeInputRow = Row((Label("Time of day:"), timeInput))
-            items.append(timeInputRow)
+            time_editor = TimeEditor(current_tick_time=time)
+            items.append(time_editor)
 
         if hasattr(self.level, 'RandomSeed'):
             seedField = IntField(width=250, value=self.level.RandomSeed)
@@ -2286,6 +2266,7 @@ class LevelEditor(GLViewport):
         size = self.level.size
         sizelabel = Label("{L}L x {W}W x {H}H".format(L=size[2], H=size[1], W=size[0]))
         items.append(sizelabel)
+        #items.append(TimeEditor(current_tick_time=0))
 
         if hasattr(self.level, "Entities"):
             label = Label(_("{0} Entities").format(len(self.level.Entities)))
@@ -2305,10 +2286,12 @@ class LevelEditor(GLViewport):
         def cancel(*args, **kwargs):
             Changes = False
             if hasattr(self.level, 'Time'):
-                h, m = timeInput.value
-                time = composeMCTime(dayInput.value, h, m, tick)
-                time -= timezoneAdjust
+                time = time_editor.get_time_value()
                 if self.level.Time != time:
+                    Changes = True
+            if hasattr(self.level, 'DayTime'):
+                day_time = time_editor.get_daytime_value()
+                if self.level.DayTime != day_time:
                     Changes = True
             if hasattr(self.level, 'RandomSeed'):
                 if seedField.value != self.level.RandomSeed:
@@ -2360,6 +2343,7 @@ class LevelEditor(GLViewport):
 
                 self.changeLevelName = changeLevelName
                 self.changeTime = changeTime
+                self.changeDayTime = changeDayTime
                 self.changeSeed = changeSeed
                 self.changeGameType = changeGameType
 
@@ -2372,6 +2356,10 @@ class LevelEditor(GLViewport):
                     if changeTime:
                         self.UndoTime = self.level.Time
                         self.RedoTime = time
+                        
+                    if changeDayTime:
+                        self.UndoDayTime = self.level.DayTime
+                        self.RedoDayTime = day_time
 
                     if changeSeed:
                         self.UndoSeed = self.level.RandomSeed
@@ -2385,6 +2373,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = nameField.value
                 if changeTime:
                     self.level.Time = time
+                if changeDayTime:
+                    self.level.DayTime = day_time
                 if changeSeed:
                     self.level.RandomSeed = seedField.value
                 if changeGameType:
@@ -2395,6 +2385,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = self.UndoText
                 if self.changeTime:
                     self.level.Time = self.UndoTime
+                if self.changeDayTime:
+                    self.level.DayTime = self.UndoDayTime
                 if self.changeSeed:
                     self.level.RandomSeed = self.UndoSeed
                 if self.changeGameType:
@@ -2405,6 +2397,8 @@ class LevelEditor(GLViewport):
                     self.level.LevelName = self.RedoText
                 if self.changeTime:
                     self.level.Time = self.RedoTime
+                if self.changeDayTime:
+                    self.level.DayTime = self.RedoDayTime
                 if self.changeSeed:
                     self.level.RandomSeed = self.RedoSeed
                 if self.changeGameType:
@@ -2414,13 +2408,17 @@ class LevelEditor(GLViewport):
         changeSeed = False
         changeLevelName = False
         changeGameType = False
+        changeDayTime = False
 
         if hasattr(self.level, 'Time'):
-            h, m = timeInput.value
-            time = composeMCTime(dayInput.value, h, m, tick)
-            time -= timezoneAdjust
+            time = time_editor.get_time_value()
             if self.level.Time != time:
                 changeTime = True
+                
+        if hasattr(self.level, 'DayTime'):
+            day_time = time_editor.get_daytime_value()
+            if self.level.DayTime != day_time:
+                changeDayTime = True
 
         if hasattr(self.level, 'RandomSeed'):
             if seedField.value != self.level.RandomSeed:
@@ -3320,6 +3318,12 @@ class EditorToolbar(GLOrtho):
 
         toolNumber = float(len(self.tools)) * x / tw
         return min(int(toolNumber), len(self.tools) - 1)
+
+    def set_update_ui(self, v):
+        for tool in self.tools:
+            if tool.optionsPanel:
+                tool.optionsPanel.set_update_ui(v)
+        GLOrtho.set_update_ui(self, v)
 
     def mouse_down(self, evt):
         if self.parent.level:

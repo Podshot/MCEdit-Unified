@@ -59,6 +59,10 @@ def perform(level, box, options):
     import mcInterface
     '''Load the file, create the trees, and save the new file.
     '''
+    # Set up a reversed translation handler for the Shape and Roots options.
+    reverse_trn = {}
+    for value in (inputs[1][1] + inputs[12][1]):
+        reverse_trn[trn.string_cache.get(value, value)] = value
     # set up the non 1 to 1 mappings of options to Forester global names
     optmap = {
         "Tree Height": "CENTERHEIGHT",
@@ -68,15 +72,13 @@ def perform(level, box, options):
     def setOption(opt):
         OPT = optmap.get(opt, opt.replace(" ", "").upper())
         if OPT in dir(Forester):
-            val = options[opt]
-            print 'opt', opt, 'val', val
+            val = reverse_trn.get(options[opt], options[opt])
             if isinstance(val, (str, unicode)):
                 val = val.replace(" ", "").lower()
 
             setattr(Forester, OPT, val)
 
     # set all of the options
-    print 'options', options
     for option in options:
         setOption(option)
     # set the EDGEHEIGHT the same as CENTERHEIGHT

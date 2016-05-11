@@ -85,6 +85,18 @@ inputs = [(("Trade", "title"),
 
 
 def perform(level, box, options):
+    # Redefine Professions and CustomHeads with translated data
+    profs = {}
+    global Professions
+    for k, v in Professions.items():
+        profs[trn._(k)] = v
+    Professions = profs
+    cust_heads = {}
+    global CustomHeads
+    for k, v in CustomHeads.items():
+        cust_heads[trn._(k)] = v
+    CustomHeads = cust_heads
+    #
     emptyTrade = options["Add Stopping Trade"]
     invincible = options["Invulnerable Villager"]
     unlimited = options["Make Unlimited Trades"]

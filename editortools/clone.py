@@ -62,7 +62,7 @@ class CoordsInput(Widget):
             field.change_action = self._coordsChanged
             field.enter_passes = False
 
-        offsetCol = Column((self.xField, self.yField, self.zField))
+        offsetCol = Column((Row((Label('X'), self.xField)), Row((Label('Y'), self.yField)), Row((Label('Z'), self.zField))))
 
         nudgeOffsetRow = Row((offsetCol, self.nudgeButton))
 
@@ -381,7 +381,7 @@ class CloneToolPanel(Panel):
 
 class CloneToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         self.autoPlaceCheckBox = CheckBox(ref=AttrRef(tool, "placeImmediately"))
         self.autoPlaceLabel = Label("Place Immediately")
@@ -1111,7 +1111,7 @@ class ConstructionToolPanel(CloneToolPanel):
 
 class ConstructionToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
 
         importNudgeLabel = Label("Import Fast Nudge Settings:")

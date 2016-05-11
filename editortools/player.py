@@ -295,7 +295,7 @@ class PlayerMoveOperation(Operation):
                 level.setPlayerOrientation((yaw, pitch), self.player)
             level.setPlayerPosition(self.pos, self.player)
             level.setPlayerDimension(level.dimNo, self.player)
-            self.tool.playerPos[self.pos] = self.player
+            self.tool.playerPos[tuple(self.pos)] = self.player
             self.tool.revPlayerPos[self.player] = self.pos
             self.tool.markerList.invalidate()
             self.canUndo = True
@@ -958,7 +958,7 @@ class PlayerPositionTool(EditorTool):
 
 class PlayerSpawnPositionOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         self.spawnProtectionCheckBox = CheckBox(ref=AttrRef(tool, "spawnProtection"))
         self.spawnProtectionLabel = Label("Spawn Position Safety")

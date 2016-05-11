@@ -2044,3 +2044,13 @@ o950 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
 t950 La taille minimum de la fenêtre pour MCEDit est de 1000x700.
 Il est possible que cretaines fonctionnalités soient inaccessibles.
+o951 Found a previous portable installation
+t951 Une installation portable existse déjà
+o952 Use
+t952 Utiliser
+o953 Overwrite
+t953 Écraser
+o954 Edit Skull Data
+t954 Éditer crâne
+o955 Found a previous fixed installation
+t955 Une installation résidente existse déjà

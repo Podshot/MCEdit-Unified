@@ -591,6 +591,7 @@ definitions = {
         ("useBulletStyles", "Use Bullet Styles", True),
         ("useBulletText", "Use Bullet Text", False),
         ("useBulletImages", "Use Bullet Images", True),
+        ("defaultBulletImages", "Default Bullet Images", True),
         ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
         ("showAllTags", "Show all the tags in the tree", False),
     ],
@@ -602,6 +603,9 @@ definitions = {
         ("sorting", "Sorting", "chain"),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
+    ],
+    ("schematicCopying", "Schematics Copying"): [
+        ("cancelCommandBlockOffset", "Cancel Command Block Offset", False)
     ]
 }
 
