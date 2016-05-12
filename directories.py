@@ -65,22 +65,22 @@ def win32_utf8_argv():
     except Exception:
         pass
     
-# def getNewDataDir(path=""):
-#    '''
-#    Returns the directory where the executable is located (This function is only ran on Windows OS's)
-#    
-#    :param path: Additional directories/files to join to the data directory path
-#    
-#    :return unicode
-#    '''
-#    dataDir = os.path.dirname(os.path.abspath(__file__))
-#    #print "Dynamic: " + str(os.getcwdu())
-#    #print "Fixed: " + str(dataDir) 
-#    if len(path) > 0:
-#        return os.path.join(dataDir, path)
-#    return dataDir
+def getNewDataDir(path=""):
+    '''
+    Returns the directory where the executable is located (This function is only ran on Windows OS's)
+    
+    :param path: Additional directories/files to join to the data directory path
+    
+    :return unicode
+    '''
+    dataDir = os.path.dirname(os.path.abspath(__file__))
+    #print "Dynamic: " + str(os.getcwdu())
+    #print "Fixed: " + str(dataDir) 
+    if len(path) > 0:
+        return os.path.join(dataDir, path)
+    return dataDir
 
-# getNewDataDir()
+getNewDataDir()
 
 def getDataDir(path=""):
     '''
