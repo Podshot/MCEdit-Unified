@@ -3,6 +3,8 @@
 # and tweaked ;)
 import os
 import directories
+import codecs
+
 if os.sys.platform == 'linux2':
     os.sys.path.insert(1, os.path.expanduser('~/.local/lib/python2.7/site-packages'))
     os.sys.path.insert(1, os.path.abspath('./lib'))
@@ -20,7 +22,7 @@ splash_name = os.path.join(cur_dir, 'splash')
 try:
     found = False
     if os.path.exists(splash_name):
-        splash_img = open(splash_name).read().strip()
+        splash_img = codecs.open(splash_name, 'r', encoding='utf-8').read().strip()
         if os.path.exists(splash_img) and splash_img.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
             found = True
             splash = pygame.image.load(open(splash_img, 'rb'))
@@ -60,4 +62,4 @@ if len(open(splash_name).read()) > 0:
     if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
         if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
-            open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+            codecs.open(splash_name, 'w', encoding='utf-8').write(os.path.join(cur_dir, splashes_folder, new_splash))
