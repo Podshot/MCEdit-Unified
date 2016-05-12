@@ -65,22 +65,22 @@ def win32_utf8_argv():
     except Exception:
         pass
     
-def getNewDataDir(path=""):
-    '''
-    Returns the directory where the executable is located (This function is only ran on Windows OS's)
-    
-    :param path: Additional directories/files to join to the data directory path
-    
-    :return unicode
-    '''
-    dataDir = os.path.dirname(os.path.abspath(__file__))
-    #print "Dynamic: " + str(os.getcwdu())
-    #print "Fixed: " + str(dataDir) 
-    if len(path) > 0:
-        return os.path.join(dataDir, path)
-    return dataDir
+# def getNewDataDir(path=""):
+#    '''
+#    Returns the directory where the executable is located (This function is only ran on Windows OS's)
+#    
+#    :param path: Additional directories/files to join to the data directory path
+#    
+#    :return unicode
+#    '''
+#    dataDir = os.path.dirname(os.path.abspath(__file__))
+#    #print "Dynamic: " + str(os.getcwdu())
+#    #print "Fixed: " + str(dataDir) 
+#    if len(path) > 0:
+#        return os.path.join(dataDir, path)
+#    return dataDir
 
-getNewDataDir()
+# getNewDataDir()
 
 def getDataDir(path=""):
     '''
@@ -108,8 +108,8 @@ def getDataDir(path=""):
         return os.path.join(dataDir, path)
     return dataDir
 
-if sys.platform == "win32":
-    getDataDir = getNewDataDir
+# if sys.platform == "win32":
+#     getDataDir = getNewDataDir
 
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
