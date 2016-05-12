@@ -438,4 +438,3 @@ except:
 
 def getFiltersDir():
     return filtersDir
-
