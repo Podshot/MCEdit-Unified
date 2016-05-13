@@ -69,6 +69,7 @@ inputs = [(("Trade", "title"),
           (("Head", "title"),
            ("Choose a custom head for the villagers you make", "label"),
            ("Custom Head", False),
+           ("Legacy Mode (Pre 1.9)", False),
            ("Skull Type", HeadsKeys),
            ("", "label"),
            ("If Player Skull", "label"),
@@ -108,6 +109,7 @@ def perform(level, box, options):
     xaxis = options["X-Axis"]
     IsCustomHead = options["Custom Head"]
     SkullType = options["Skull Type"]
+    legacy = options["Legacy Mode (Pre 1.9)"]
     PlayerName = options["Player's Name"]
     for (chunk, slices, point) in level.getChunkSlices(box):
         for e in chunk.TileEntities:
@@ -118,10 +120,10 @@ def perform(level, box, options):
             if (x, y, z) in box:
                 if e["id"].value == "Chest":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
-                               xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, CustomHeads[SkullType], PlayerName)
+                               xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, legacy, CustomHeads[SkullType], PlayerName)
 
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, SkullType, PlayerName):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, legacy, SkullType, PlayerName):
     chest = level.tileEntityAt(x, y, z)
     if chest is None:
         return
@@ -212,12 +214,15 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 
     if IsCustomHead:
         Head = TAG_Compound()
-        Head["id"] = TAG_Short(397)
+        Head["id"] = TAG_String("minecraft:skull")
         Head["Damage"] = TAG_Short(SkullType)
         if SkullType == 3 and PlayerName:
             Head["tag"] = TAG_Compound()
             Head["tag"]["SkullOwner"] = TAG_String(PlayerName)
-        villager["Equipment"] = TAG_List([TAG_Compound(), TAG_Compound(), TAG_Compound(), TAG_Compound(), Head])
+        if legacy == True:
+            villager["Equipment"] = TAG_List([TAG_Compound(), TAG_Compound(), TAG_Compound(),TAG_Compound(), Head],)
+        else:
+            villager["ArmorItems"] = TAG_List([TAG_Compound(), TAG_Compound(), TAG_Compound(), Head])
 
     level.setBlockAt(x, y, z, 0)
 
