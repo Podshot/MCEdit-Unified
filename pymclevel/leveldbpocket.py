@@ -332,6 +332,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     playerTagCache = {}
     _playerList = None
 
+    entityClass = entity.PocketEntity
+
     @property
     def LevelName(self):
         if "LevelName" not in self.root_tag:
@@ -1006,7 +1008,14 @@ class PocketLeveldbChunk(LightedChunk):
                 # Whenever we save an entity, we need to make sure to swap back.
                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
                 for ent in Entities:
-                    ent["id"] = nbt.TAG_String(invertEntities[ent["id"].value])
+                    # Get the string id, or a build one
+                    v = ent["id"].value
+                    id = invertEntities.get(v, "Entity %s"%v)
+                    # Add the built one to the entities
+                    if id not in entity.PocketEntity.entityList.keys():
+                        logger.warning("Found unknown entity '%s'"%v)
+                        entity.PocketEntity.entityList[id] = v
+                    ent["id"] = nbt.TAG_String(id)
                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
 
             self.Blocks, terrain = terrain[:32768], terrain[32768:]
@@ -1122,3 +1131,4 @@ class PocketLeveldbChunk(LightedChunk):
         :return:
         """
         self._TileEntities = TileEntities
+

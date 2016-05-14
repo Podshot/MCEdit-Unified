@@ -636,10 +636,7 @@ class Entity(object):
 
     @classmethod
     def getId(cls, v):
-        for entity in Entity.entityList.keys():
-            if v == entity:
-                return Entity.entityList[entity]
-        return "No ID"
+        return cls.entityList.get(v, 'No ID')
 
 
 class PocketEntity(Entity):
