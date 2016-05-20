@@ -80,6 +80,25 @@ class fileEdit():
             elif blockData == 5 and self.level.blockAt(x+1, y, z) == 211:
                 skip.append((x+1,y,z))
                 self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
+            # Blockdata 6 and 7 are unused. 8-13 are conditional
+            elif blockData == 8 and self.level.blockAt(x, y-1, z) == 211:
+                skip.append((x,y-1,z))
+                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order)
+            elif blockData == 9 and self.level.blockAt(x, y+1, z) == 211:
+                skip.append((x,y+1,z))
+                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order)
+            elif blockData == 10 and self.level.blockAt(x, y, z-1) == 211:
+                skip.append((x,y,z-1))
+                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order)
+            elif blockData == 11 and self.level.blockAt(x, y, z+1) == 211:
+                skip.append((x,y,z+1))
+                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order)
+            elif blockData == 12 and self.level.blockAt(x-1, y, z) == 211:
+                skip.append((x-1,y,z))
+                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order)
+            elif blockData == 13 and self.level.blockAt(x+1, y, z) == 211:
+                skip.append((x+1,y,z))
+                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
 
 
 class FileEditsOperation(Operation):
