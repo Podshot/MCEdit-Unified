@@ -43,7 +43,7 @@ class fileEdit():
         if op.canUndo:
             self.editor.addUnsavedEdit()
 
-    def writeCommandInFile(self, first, space, (x,y,z), fileTemp, skip, chain, done, order):
+    def writeCommandInFile(self, first, space, (x,y,z), fileTemp, skip, chain, done, order, grouping):
         block = self.editor.level.tileEntityAt(x, y, z)
         if chain:
             if not block or (x, y, z) in done:
@@ -59,46 +59,46 @@ class fileEdit():
         order.append((x,y,z))
         fileTemp.write(text.encode('utf-8'))
 
-        if chain:
+        if grouping.chains:
             done.append((x, y, z))
             blockData =  self.editor.level.blockDataAt(x, y, z)
             if blockData == 0 and self.level.blockAt(x, y-1, z) == 211:
                 skip.append((x,y-1,z))
-                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 1 and self.level.blockAt(x, y+1, z) == 211:
                 skip.append((x,y+1,z))
-                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 2 and self.level.blockAt(x, y, z-1) == 211:
                 skip.append((x,y,z-1))
-                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order, grouping)
             elif blockData == 3 and self.level.blockAt(x, y, z+1) == 211:
                 skip.append((x,y,z+1))
-                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order, grouping)
             elif blockData == 4 and self.level.blockAt(x-1, y, z) == 211:
                 skip.append((x-1,y,z))
-                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 5 and self.level.blockAt(x+1, y, z) == 211:
                 skip.append((x+1,y,z))
-                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order, grouping)
             # Blockdata 6 and 7 are unused. 8-13 are conditional
             elif blockData == 8 and self.level.blockAt(x, y-1, z) == 211:
                 skip.append((x,y-1,z))
-                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 9 and self.level.blockAt(x, y+1, z) == 211:
                 skip.append((x,y+1,z))
-                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 10 and self.level.blockAt(x, y, z-1) == 211:
                 skip.append((x,y,z-1))
-                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order, grouping)
             elif blockData == 11 and self.level.blockAt(x, y, z+1) == 211:
                 skip.append((x,y,z+1))
-                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order, grouping)
             elif blockData == 12 and self.level.blockAt(x-1, y, z) == 211:
                 skip.append((x-1,y,z))
-                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order, grouping)
             elif blockData == 13 and self.level.blockAt(x+1, y, z) == 211:
                 skip.append((x+1,y,z))
-                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
+                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order, grouping)
 
 
 class FileEditsOperation(Operation):
@@ -136,15 +136,63 @@ class FileEditsOperation(Operation):
 
 
 def GetSort(box, sorting):
-    if sorting == "xz" or sorting == "chain":
-        return itertools.product(
-            xrange(box.minx, box.maxx),
-            xrange(box.miny, box.maxy),
-            xrange(box.minz, box.maxz)
-        )
+    if sorting.invertX:
+        xlist = reversed(xrange(box.minx, box.maxx))
+        #xlist = xrange(box.maxx, box.minx -1,-1) #Untested alternative if reversed is not available. First -1 may be unneeded
     else:
+        xlist = xrange(box.minx, box.maxx)
+
+    if sorting.invertY:
+        ylist = reversed(xrange(box.miny, box.maxy))
+    else:
+        ylist = xrange(box.miny, box.maxy)
+
+    if sorting.invertZ:
+        zlist = reversed(xrange(box.minz, box.maxz))
+    else:
+        zlist = xrange(box.minz, box.maxz)
+
+    # ittertools.product. Last axis advances every itteration.
+    if sorting.order == "xyz":
         return itertools.product(
-            xrange(box.minz, box.maxz),
-            xrange(box.miny, box.maxy),
-            xrange(box.minx, box.maxx)
+            zlist,
+            ylist,
+            xlist
+        )
+    elif sorting.order == "xzy":
+        return itertools.product(
+            ylist,
+            zlist,
+            xlist
+        )
+    elif sorting.order == "yxz":
+        return itertools.product(
+            zlist,
+            xlist,
+            ylist
+        )
+    elif sorting.order == "yzx":
+        return itertools.product(
+            xlist,
+            zlist,
+            ylist
+        )
+    elif sorting.order == "zxy":
+        return itertools.product(
+            ylist,
+            xlist,
+            zlist
+        )
+    elif sorting.order == "zyx":
+        return itertools.product(
+            xlist,
+            ylist,
+            zlist
+        )
+    else: # Some Error occured, defualt to xyz
+        alert("Invalid sort order '" + sorting.order + "'. Defaulting to xyz")
+        return itertools.product(
+            zlist,
+            ylist,
+            xlist
         )

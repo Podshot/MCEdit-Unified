@@ -1231,17 +1231,39 @@ class SelectionTool(EditorTool):
         file = open(filename, 'w')
         first = True
         space = config.commands.space.get()
-        sorting = config.commands.sorting.get()
+        from collections import namedtuple
+        SortingTuple=namedtuple('sorting','order invertX invertY invertZ')
+        GroupingTuple=namedtuple('grouping','chains')
+        sorting=SortingTuple(
+            order = config.commands.sorting.get(),
+            invertX = config.commands.invertX.get(),
+            invertY = config.commands.invertY.get(),
+            invertZ = config.commands.invertZ.get()
+        )
+        grouping = GroupingTuple(chains=config.commands.groupchains.get())
         edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor,
                         self.editor.level)
 
         order = []
-        if sorting == "chain":
+        if grouping.chains:
             skip = []
             done = []
             chainStored = []
             for coords in GetSort(self.editor.selectionBox(), sorting):
-                (x, y, z) = coords
+                if sorting.order == "xyz":
+                    (z, y, x) = coords
+                elif sorting.order == "xzy":
+                    (y, z, x) = coords
+                elif sorting.order == "yxz":
+                    (z, x, y) = coords
+                elif sorting.order == "yzx":
+                    (x, z, y) = coords
+                elif sorting.order == "zxy":
+                    (y, x, z) = coords
+                elif sorting.order == "zyx":
+                    (x, y, z) = coords
+                else:
+                    (z, y, x) = coords
                 if (x,y,z) in skip:
                     skip.remove((x,y,z))
                     continue
@@ -1250,22 +1272,32 @@ class SelectionTool(EditorTool):
                     chainStored.append((x, y, z))
                     continue
                 if blockID == 137 or blockID == 210:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                    edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order, grouping)
                     first = False
             for (x, y, z) in chainStored:
                 if (x, y, z) in done:
                     continue
-                edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order, grouping)
 
         else:
             for coords in GetSort(self.editor.selectionBox(), sorting):
-                if sorting == "xz":
+                if sorting.order == "xyz":
+                    (z, y, x) = coords
+                elif sorting.order == "xzy":
+                    (y, z, x) = coords
+                elif sorting.order == "yxz":
+                    (z, x, y) = coords
+                elif sorting.order == "yzx":
+                    (x, z, y) = coords
+                elif sorting.order == "zxy":
+                    (y, x, z) = coords
+                elif sorting.order == "zyx":
                     (x, y, z) = coords
                 else:
                     (z, y, x) = coords
                 blockID = self.editor.level.blockAt(x, y, z)
                 if blockID == 137 or blockID == 210 or blockID == 211:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, None, False, None, order)
+                    edit.writeCommandInFile(first, space, (x,y,z), file, None, False, None, order, grouping)
                     first = False
         file.close()
         if first:
@@ -1293,9 +1325,24 @@ class CBCommandsOptionsPanel(ToolOptions):
 
         empty = Label("")
 
-        self.sorting = ChoiceButton(["chain", "xz", "zx"], choose=self.changeSorting)
+        self.sorting = ChoiceButton(["xyz", "xzy","yxz", "yzx","zxy", "zyx"], choose=self.changeSorting)
         self.sorting.selectedChoice = config.commands.sorting.get()
         sortingRow = Row((Label("Sort Order"), self.sorting))
+        sortingInvert = Row((Label("Invert:"),CheckBoxLabel("X",
+                                               tooltipText="Sort from Positive X to Negative X",
+                                               ref=config.commands.invertX),
+                                 CheckBoxLabel("Y",
+                                               tooltipText="Sort from Positive Y to Negative Y",
+                                               ref=config.commands.invertY),
+                                 CheckBoxLabel("Z",
+                                               tooltipText="Sort from Positive Z to Negative Z",
+                                               ref=config.commands.invertZ)))
+        # Grouping Methods. Perhaps multiple can be used simultaneously?
+        groupchain = Row((Label("Group"),
+                          CheckBoxLabel("Chains",
+                                        tooltipText="Group chain command blocks, in execution order. NOTE: An initiating impulse or repeating block must be present for grouping to work.",
+                                        ref=config.commands.groupchains)))
+
         space = CheckBoxLabel("Space between lines",
                               tooltipText="Make space between the lines",
                               ref=config.commands.space)
@@ -1304,7 +1351,7 @@ class CBCommandsOptionsPanel(ToolOptions):
                                   ref=config.commands.fileFormat)
         okButton = Button("OK", action=self.dismiss)
 
-        col = Column((Label("Command Blocks Commands Options"), sortingRow, empty, space, empty, fileFormat, okButton),
+        col = Column((Label("Command Blocks Commands Options"), sortingRow, sortingInvert, groupchain, empty, space, empty, fileFormat, okButton),
                      spacing=2)
 
         self.add(col)
