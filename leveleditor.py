@@ -256,7 +256,7 @@ class LevelEditor(GLViewport):
                    
             for ore in config.settings.hiddableOres.get():
                 col.append(CheckBoxLabel("", ref=config.settings["showOre{}".format(ore)]))
-                col2.append(Label("* "+self.level.materials[ore].name.replace(" Ore", "")))
+                col2.append(Label("* " + _(self.level.materials[ore].name.replace(" Ore", ""))))
             
             col2 = Column(col2, align="l", spacing=4)
             col = Column(col, align="r", spacing=4)
