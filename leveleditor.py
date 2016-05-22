@@ -224,52 +224,41 @@ class LevelEditor(GLViewport):
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
         self.viewDistanceReadout.shrink_wrap()
 
-
-        def showViewOptions():      #See Col2 for labels, separated so I could justify the labels independently.
-            col = [CheckBoxLabel("", ref=config.settings.drawEntities),                     #Entities
-                   CheckBoxLabel("", ref=config.settings.drawItems),                        #Items
-                   CheckBoxLabel("", ref=config.settings.drawTileEntities),                 #TileEntitites
-                   CheckBoxLabel("", ref=config.settings.drawTileTicks),                    #TileTicks
-                   CheckBoxLabel("", ref=config.settings.drawPlayerHeads),                  #Player Heads
-                   CheckBoxLabel("", fg_color=renderer.TerrainPopulatedRenderer.color,      #Unpopulated Chunks
-                                 ref=config.settings.drawUnpopulatedChunks),            
-                   CheckBoxLabel("", fg_color=renderer.ChunkBorderRenderer.color,           #Chunks Borders
+        def showViewOptions():
+            col = [CheckBoxLabel("Entities", expand=0, fg_color=(0xff, 0x22, 0x22),
+                                 ref=config.settings.drawEntities),
+                   CheckBoxLabel("Items", expand=0, fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems),
+                   CheckBoxLabel("TileEntities", expand=0, fg_color=(0xff, 0xff, 0x22),
+                                 ref=config.settings.drawTileEntities),
+                   CheckBoxLabel("TileTicks", expand=0, ref=config.settings.drawTileTicks),
+                   CheckBoxLabel("Player Heads", expand=0, ref=config.settings.drawPlayerHeads),
+                   CheckBoxLabel("Unpopulated Chunks", expand=0, fg_color=renderer.TerrainPopulatedRenderer.color,
+                                 ref=config.settings.drawUnpopulatedChunks),
+                   CheckBoxLabel("Chunks Borders", expand=0, fg_color=renderer.ChunkBorderRenderer.color,
                                  ref=config.settings.drawChunkBorders),
-                   CheckBoxLabel("", ref=config.settings.drawSky),                          #Sky
-                   CheckBoxLabel("", ref=config.settings.drawFog),                          #Fog
-                   CheckBoxLabel("", ref=config.settings.showCeiling),                      #Ceiling
-                   CheckBoxLabel("", ref=config.settings.showChunkRedraw),                  #Chunk Redraw
-                   CheckBoxLabel("", ref=config.settings.showHiddenOres,                    #Hidden Ores
+                   CheckBoxLabel("Sky", expand=0, ref=config.settings.drawSky),
+                   CheckBoxLabel("Fog", expand=0, ref=config.settings.drawFog),
+                   CheckBoxLabel("Ceiling", expand=0, ref=config.settings.showCeiling),
+                   CheckBoxLabel("Chunk Redraw", expand=0, fg_color=(0xff, 0x99, 0x99),
+                                 ref=config.settings.showChunkRedraw),
+                   CheckBoxLabel("Hidden Ores", expand=0, ref=config.settings.showHiddenOres,
                                  tooltipText="Check to show/hide specific ores using the settings below.")]
-            col2 = [Label("Entities", fg_color=(0xff, 0x22, 0x22)),
-                   Label("Items", fg_color=(0x22, 0xff, 0x22)),
-                   Label("TileEntities", fg_color=(0xff, 0xff, 0x22)),
-                   Label("TileTicks"),
-                   Label("Player Heads"),
-                   Label("Unpopulated Chunks"),
-                   Label("Chunks Borders"),
-                   Label("Sky"),
-                   Label("Fog"),
-                   Label("Ceiling"),
-                   Label("Chunk Redraw", fg_color=(0xff, 0x99, 0x99)),
-                   Label("Hidden Ores", tooltipText="Check to show/hide specific ores using the settings below.")]
-                   
+
             for ore in config.settings.hiddableOres.get():
-                col.append(CheckBoxLabel("", ref=config.settings["showOre{}".format(ore)]))
-                col2.append(Label("* " + _(self.level.materials[ore].name.replace(" Ore", ""))))
-            
-            col2 = Column(col2, align="l", spacing=4)
-            col = Column(col, align="r", spacing=4)
-            row = Row([col2, col], spacing=4)
+                col.append(CheckBoxLabel("* " + _(self.level.materials[ore].name.replace(" Ore", "")), expand=0,
+                                         ref=config.settings["showOre{}".format(ore)]))
+
+            col = Column(col, align="r", spacing=4, expand='h')
 
             d = QuickDialog()
-            d.add(row)
+            d.add(col)
+
             d.shrink_wrap()
             d.topleft = self.viewButton.bottomleft
             d.present(centered=False)
 
         self.viewButton = Button("Show...", action=showViewOptions)
-        
+
         self.waypointManager = WaypointManager(editor=self)
         self.waypointManager.load()
         #self.loadWaypoints()

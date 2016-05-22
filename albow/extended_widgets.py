@@ -199,6 +199,17 @@ class ChoiceButton(ValueButton):
 def CheckBoxLabel(title, *args, **kw):
     tooltipText = kw.pop('tooltipText', None)
 
+    l_kw = {'margin': 0}
+    b_kw = {'margin': 0}
+    expand = kw.pop('expand', 'none')
+    r_kw = {}
+    if expand != 'none':
+        r_kw['expand'] = expand
+
+    align = kw.pop('align', None)
+    if align:
+        r_kw['align'] = align
+
     cb = CheckBox(*args, **kw)
     lab = Label(title, fg_color=cb.fg_color)
     lab.mouse_down = cb.mouse_down
@@ -218,7 +229,7 @@ def CheckBoxLabel(title, *args, **kw):
         def value(self, val):
             self.checkbox.value = val
 
-    row = CBRow((lab, cb))
+    row = CBRow((Column((lab,), **l_kw), Column((cb,), **b_kw)), **r_kw)
     row.checkbox = cb
     return row
 

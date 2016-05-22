@@ -39,6 +39,29 @@ class RowOrColumn(Widget):
         size = self._size
         spacing = self.spacing
     #-#
+
+        # If the 'expand' value is in 'h' or 'v', resize the widgets according
+        # to the larger one.
+        if type(expand) in (str, unicode):
+            w = 'n'
+            h = 'n'
+            if 'h' in expand:
+                # Expand horizontally
+                w = max([a.width for a in items])
+            if 'v' in expand:
+                # Expand vertically
+                h = max([a.height for a in items])
+            if w != 'n' and h == 'n':
+                for item in items:
+                    item.width = w
+            elif w == 'n' and h != 'n':
+                for item in items:
+                    item.height = h
+            elif w != 'n' and h != 'n':
+                for item in items:
+                    item.width = w
+                    item.height = h
+
         d = self.d
         longways = self.longways
         crossways = self.crossways
