@@ -1091,7 +1091,14 @@ class PocketLeveldbChunk(LightedChunk):
 
             for ent in self.Entities:
                 v = ent["id"].value
-                ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+#                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+                id = entity.PocketEntity.getNumId(v)
+#                 print id
+                if id >= 1000:
+                    print id
+                    print type(ent)
+                    print ent
+                ent['id'] = nbt.TAG_Int(id)
                 entityData += ent.save(compressed=False)
                 # We have to re-invert after saving otherwise the next save will fail.
                 ent["id"] = nbt.TAG_String(v)
