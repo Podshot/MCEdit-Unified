@@ -786,7 +786,17 @@ class LevelEditor(GLViewport):
                 except Exception, e:
                     alert(str(e))
                 else:
-                    csvfile.writerows(rows)
+                    for row in rows:
+                        _row=[]
+                        if row == ("", "", ""):
+                            _row = ["Number", "Type", "ID"]
+                        else:
+                            for a in row:
+                                if type(a) == unicode:
+                                    _row.append(a.encode('utf-8'))
+                                else:
+                                    _row.append(a)
+                        csvfile.writerow(_row)
 
         saveButton = Button("Save to file...", action=saveToFile)
         col = Column((Label("Analysis"), tableBacking, saveButton))
