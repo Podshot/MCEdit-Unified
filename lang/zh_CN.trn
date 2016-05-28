@@ -1130,11 +1130,11 @@ t532 创造
 o533 Style:
 t533 形状：
 o534 H
-t534 
+t534 高
 o535 L
-t535 
+t535 长
 o536 W
-t536 
+t536 宽
 o537 Minimum Spacing
 t537 笔刷间隔
 o538 Regenerate Entity UUID
@@ -2053,4 +2053,4 @@ t954 编辑头颅数据
 o955 Found a previous fixed installation
 t955 发现以前的固定式安装文件
 o956 Left-Click and drag to the left or the right
-t956 
+t956 鼠标左键朝左右拖动来调整
