@@ -1326,9 +1326,9 @@ class LevelEditor(GLViewport):
         last_dir, f_name = os.path.split(filename)
         last_dir = os.path.basename(last_dir)
         title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version()%_("for"))
-        print "###########", type(title)
-        if DEF_ENC != "UTF-8":
-            title = title.encode('utf-8')
+#        if DEF_ENC != "UTF-8":
+#            title = title.encode('utf-8')
+        title = title.encode('utf-8')
         display.set_caption(title)
 
     @mceutils.alertException
