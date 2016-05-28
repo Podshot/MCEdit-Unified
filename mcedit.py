@@ -252,6 +252,8 @@ class MCEdit(GLViewport):
                 lng = "en_US"
                 config.settings.langCode.set(lng)
             albow.translate.setLang(lng)
+        # Set the window caption here again, since the initialization is done through several steps...
+        display.set_caption(('MCEdit ~ ' + release.get_version()%_("for")).encode('utf-8'), 'MCEdit')
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
@@ -724,7 +726,7 @@ class MCEdit(GLViewport):
     @classmethod
     def main(cls):
         PlayerCache().load()
-        displayContext = GLDisplayContext(splash.splash, caption=('MCEdit ~ ' + release.get_version(), 'for MCEdit'))
+        displayContext = GLDisplayContext(splash.splash, caption=(('MCEdit ~ ' + release.get_version()%_("for")).encode('utf-8'), 'MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
 

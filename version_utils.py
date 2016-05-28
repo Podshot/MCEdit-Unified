@@ -50,9 +50,10 @@ class PlayerCache:
             self._cache["Cache"][player["UUID (No Separator)"]] = new_dict
             
     def save(self):
-        fp = open(self.PATH, 'w')
-        json.dump(self._cache, fp, indent=4, separators=(',', ':'))
-        fp.close()
+        if hasattr(self, "_cache"):
+            fp = open(self.PATH, 'w')
+            json.dump(self._cache, fp, indent=4, separators=(',', ':'))
+            fp.close()
     
     def load(self):
         '''
@@ -400,10 +401,15 @@ def _cleanup():
             try:
                 fp = open(os.path.join("player-skins", image_file), 'rb')
                 im = Image.open(fp)
-                im.close()
+                if hasattr(im, 'close'):
+                    im.close()
             except IOError:
-                fp.close()
                 os.remove(os.path.join("player-skins", image_file))
+            except AttributeError:
+                pass # I have no idea why an Attribute Error is thrown on .close(), but this fixes it
+            finally:
+                if fp and not fp.closed:
+                    fp.close()
     
 atexit.register(_cleanup)
 atexit.register(PlayerCache().save)

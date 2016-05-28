@@ -943,11 +943,11 @@ o442 Savanna
 t442 사바나
 o443 Savanna Plateau
 t443 사바나 고원
-o444 Messa
+o444 Mesa
 t444 퇴적층
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 퇴적층 고원 F
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 퇴적층 고원
 o447 Sunflower Plains
 t447 해바라기 꽃밭
@@ -2020,17 +2020,20 @@ t947 이 아이템을 불러오려면 클릭하십시오.
 o948 Menu
 t948 메뉴
 o949 for
-t949 
+t949 위해
 o950 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t950 
+t950 MCEdit은 1000×700보다 작은 창 크기를 지원하지 않습니다.
+이 해상도에서는 모든 기능에 접근하지 못할 수도 있습니다.
 o951 Found a previous portable installation
-t951 
+t951 이전 버전의 이동식 설치본을 찾았습니다.
 o952 Use
-t952 
+t952 사용
 o953 Overwrite
-t953 
+t953 덮어쓰기
 o954 Edit Skull Data
-t954 
+t954 해골 정보 수정
 o955 Found a previous fixed installation
-t955 
+t955 이전 버전의 고정 설치본을 찾았습니다.햐 
+o956 Left-Click and drag to the left or the right
+t956 

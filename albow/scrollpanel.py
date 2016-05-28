@@ -151,6 +151,8 @@ class ScrollRow(PaletteView):
         r = Rect(left, slt, w, self.scroll_button_size)
         r.right = min(r.right, d + slr)
         r.inflate_ip(-4, -4)
+        if r.w < 1:
+            r.w = int(w)
         return r
 
     def can_scroll_left(self):
@@ -202,13 +204,13 @@ class ScrollRow(PaletteView):
         if l or r:
             self.draw_hscrollbar(surface)
 
-    def scroll_left(self):
+    def scroll_left(self, delta=1):
         if self.can_scroll_left():
-            self.hscroll -= self.cell_size[1]
+            self.hscroll -= self.cell_size[1] * delta
 
-    def scroll_right(self):
+    def scroll_right(self, delta=1):
         if self.can_scroll_right():
-            self.hscroll += self.cell_size[1]
+            self.hscroll += self.cell_size[1] * delta
 
     def mouse_down(self, event):
         if event.button == 1:
@@ -241,9 +243,9 @@ class ScrollRow(PaletteView):
             s = float(d) / n
             if abs(self.hscroll_rel) > s:
                 if self.hscroll_rel > 0:
-                    self.scroll_right()
+                    self.scroll_right(delta=int(abs(self.hscroll_rel) / s))
                 else:
-                    self.scroll_left()
+                    self.scroll_left(delta=int(abs(self.hscroll_rel) / s))
                 self.hscroll_rel = 0
         PaletteView.mouse_drag(self, event)
 

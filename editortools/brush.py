@@ -347,7 +347,7 @@ class BrushPanel(Panel):
 
 class BrushToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         alphaField = FloatField(ref=ItemRef(tool.settings, 'brushAlpha'), min=0.0, max=1.0, width=60)
         alphaField.increment = 0.1
         alphaRow = Row((Label("Alpha: "), alphaField))

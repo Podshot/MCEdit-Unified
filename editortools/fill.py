@@ -151,7 +151,7 @@ class FillToolPanel(Panel):
 
 class FillToolOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         self.autoChooseCheckBoxFill = CheckBoxLabel("Open Block Picker for Fill",
                                                 ref=config.fill.chooseBlockImmediately,

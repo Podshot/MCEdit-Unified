@@ -958,7 +958,7 @@ class PlayerPositionTool(EditorTool):
 
 class PlayerSpawnPositionOptions(ToolOptions):
     def __init__(self, tool):
-        Panel.__init__(self)
+        ToolOptions.__init__(self)
         self.tool = tool
         self.spawnProtectionCheckBox = CheckBox(ref=AttrRef(tool, "spawnProtection"))
         self.spawnProtectionLabel = Label("Spawn Position Safety")

@@ -935,12 +935,12 @@ o442 Savanna
 t442 Savann
 o443 Savanna Plateau
 t443 Savann Platå
-o444 Messa
-t444 Messa
-o445 Messa Plateau F
-t445 Messa Platå F
-o446 Messa Plateau
-t446 Messa Platå
+o444 Mesa
+t444 Mesa
+o445 Mesa Plateau F
+t445 Mesa Platå F
+o446 Mesa Plateau
+t446 Mesa Platå
 o447 Sunflower Plains
 t447 Solros Slätter
 o448 Desert M
@@ -1999,3 +1999,5 @@ o954 Edit Skull Data
 t954 
 o955 Found a previous fixed installation
 t955 
+o956 Left-Click and drag to the left or the right
+t956 

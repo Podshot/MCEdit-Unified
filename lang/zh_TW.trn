@@ -940,11 +940,11 @@ o442 Savanna
 t442 熱帶草原
 o443 Savanna Plateau
 t443 熱帶高原
-o444 Messa
+o444 Mesa
 t444 平頂山
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 平頂山高原F
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 平頂山高原
 o447 Sunflower Plains
 t447 向日葵草原
@@ -2026,3 +2026,5 @@ o954 Edit Skull Data
 t954 
 o955 Found a previous fixed installation
 t955 
+o956 Left-Click and drag to the left or the right
+t956 

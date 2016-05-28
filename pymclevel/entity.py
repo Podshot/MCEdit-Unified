@@ -11,6 +11,8 @@ from copy import deepcopy
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
+UNKNOWN_ENTITY_MASK = 1000
+
 
 class TileEntity(object):
     baseStructures = {
@@ -636,13 +638,11 @@ class Entity(object):
 
     @classmethod
     def getId(cls, v):
-        for entity in Entity.entityList.keys():
-            if v == entity:
-                return Entity.entityList[entity]
-        return "No ID"
+        return cls.entityList.get(v, 'No ID')
 
 
 class PocketEntity(Entity):
+    unknown_entity_top = UNKNOWN_ENTITY_MASK + 0
     entityList = {"Chicken": 10,
                   "Cow": 11,
                   "Pig": 12,
@@ -681,7 +681,25 @@ class PocketEntity(Entity):
                   "Fireball": 85,
                   "Boat": 90,
                   "Player": 63,
-                  "Entity": 69}
+                  "Entity": 69,
+                  "Minecart with Hopper": 96,
+                  "Minecart with TNT": 97,
+                  "Minecart with Chest": 98,
+                  "Blaze Fireball": 94,
+                  "Lightning": 93}
+
+    @classmethod
+    def getNumId(cls, v):
+        """Retruns the numeric ID of an entity, or a generated one if the entity is not known.
+        The generated one is generated like this: 'UNKNOWN_ENTITY_MASK + X', where 'X' is a number.
+        The first unknown entity will have the numerical ID 1001, the second one 1002, and so on.
+        :v: the entity string ID to search for."""
+        id = cls.getId(v)
+        if type(id) != int and v not in cls.entityList.keys():
+            id = cls.unknown_entity_top + 1
+            cls.entityList[v] = cls.entityList['Entity %s'%id] = id
+            cls.unknown_entity_top += 1
+        return id
 
 
 class TileTick(object):

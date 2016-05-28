@@ -142,6 +142,8 @@ class MCLevel(object):
     parentWorld = None
     world = None
 
+    entityClass = Entity
+
     @classmethod
     def isLevel(cls, filename):
         """Tries to find out whether the given filename can be loaded

@@ -927,11 +927,11 @@ o442 Savanna
 t442 
 o443 Savanna Plateau
 t443 
-o444 Messa
+o444 Mesa
 t444 
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 
 o447 Sunflower Plains
 t447 
@@ -1975,7 +1975,8 @@ t946
 o947 Click to import this item.
 t947 
 o948 Menu
-t948 o949 for
+t948 
+o949 for
 t949 
 o950 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
@@ -1990,3 +1991,5 @@ o954 Edit Skull Data
 t954 
 o955 Found a previous fixed installation
 t955 
+o956 Left-Click and drag to the left or the right
+t956 
