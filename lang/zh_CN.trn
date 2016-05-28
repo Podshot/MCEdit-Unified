@@ -1844,7 +1844,7 @@ t853
 o854 Show Commands
 t854 显示命令
 o855 Show the command in a Command Block when hovering over it.
-t855 指针悬浮在命令方块上是显示它的命令
+t855 指针悬停在命令方块上时显示它的命令
 o856 [Empty]
 t856 [空]
 o857 Couldn't open the file
@@ -2054,3 +2054,9 @@ o955 Found a previous fixed installation
 t955 发现以前的固定式安装文件
 o956 Left-Click and drag to the left or the right
 t956 鼠标左键朝左右拖动来调整
+o957 Cancel Command Block Offset
+t957 关闭命令方块坐标偏移
+o958 Cancels the command blocks coords changed when copied.
+t958 禁止命令方块被复制时其命令里的坐标被自动偏移.
+o959 Weird stuff happen!
+t959 奇怪的事情会发生！
