@@ -11,6 +11,10 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+# Moving this here to get log entries ASAP -- D.C.-G.
+import logging
+log = logging.getLogger(__name__)
+
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
 from editortools.thumbview import ThumbView 
@@ -48,7 +52,6 @@ import numpy
 from config import config
 from config import DEF_ENC
 import frustum
-import logging
 import glutils
 import release
 import mceutils
@@ -1318,10 +1321,14 @@ class LevelEditor(GLViewport):
 
     def initWindowCaption(self):
         filename = self.level.filename
-        s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
-        if DEF_ENC != "UTF-8":
-            title = title.encode('utf-8')
+#         s = os.path.split(filename)
+#         title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
+        last_dir, f_name = os.path.split(filename)
+        last_dir = os.path.basename(last_dir)
+        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version()%_("for"))
+#        if DEF_ENC != "UTF-8":
+#            title = title.encode('utf-8')
+        title = title.encode('utf-8')
         display.set_caption(title)
 
     @mceutils.alertException
@@ -3558,3 +3565,4 @@ from albow.resource import get_image
 #             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
 #             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
 #         if "Re-acquired session lock" in message:
+
