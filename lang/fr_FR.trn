@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -2062,3 +2062,5 @@ o958 Cancels the command blocks coords changed when copied.
 t958 Annule le changement des coordonnées des blocs de commandes quand ils sont copiés.
 o959 Weird stuff happen!
 t959 Il se passe de drôles de choses...
+o960 Enable Custom Name
+t960 Activer nom personnalisé
