@@ -1214,6 +1214,48 @@ blocks:
           TOP: [16, 3]
           BOTTOM: [16, 3]
     opacity: 0
+    
+  - id: 55
+    idStr: redstone_wire
+    name: Redstone Dust
+    search: wire
+    mapcolor: [245, 50, 50]
+    tex: [31, 31]
+    type: FLOOR
+    opacity: 0
+    data:
+      0:
+        name: Redstone Dust (Power 0)
+      1:
+        name: Redstone Dust (Power 1)
+      2:
+        name: Redstone Dust (Power 2)
+      3:
+        name: Redstone Dust (Power 3)
+      4:
+        name: Redstone Dust (Power 4)
+      5:
+        name: Redstone Dust (Power 5)
+      6:
+        name: Redstone Dust (Power 6)
+      7:
+        name: Redstone Dust (Power 7)
+      8:
+        name: Redstone Dust (Power 8)
+      9:
+        name: Redstone Dust (Power 9)
+      10:
+        name: Redstone Dust (Power 10)
+      11:
+        name: Redstone Dust (Power 11)
+      12:
+        name: Redstone Dust (Power 12)
+      13:
+        name: Redstone Dust (Power 13)
+      14:
+        name: Redstone Dust (Power 14)
+      15:
+        name: Redstone Dust (Power 15)
 
   - id: 56
     idStr: diamond_ore
