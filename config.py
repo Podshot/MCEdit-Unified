@@ -482,6 +482,9 @@ definitions = {
         ("targetFPS", "Target FPS", 30),
         ("windowWidth", "window width", 1152),
         ("windowHeight", "window height", 864),
+        ("windowMaximized", "window maximized", False),
+        ("windowMaximizedHeight", "window maximized height", 0),
+        ("windowMaximizedWidth", "window maximized width", 0),
         ("windowX", "window x", 0),
         ("windowY", "window y", 0),
         ("windowShowCmd", "window showcmd", 1),
@@ -520,7 +523,8 @@ definitions = {
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
         ("showCommands", "Show Commands when hovering", True),
-        ("savePositionOnClose", "Save camera position on close", False)
+        ("savePositionOnClose", "Save camera position on close", False),
+        ("showWindowSizeWarning", "Show window size warning", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
@@ -587,6 +591,7 @@ definitions = {
         ("useBulletStyles", "Use Bullet Styles", True),
         ("useBulletText", "Use Bullet Text", False),
         ("useBulletImages", "Use Bullet Images", True),
+        ("defaultBulletImages", "Default Bullet Images", True),
         ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
         ("showAllTags", "Show all the tags in the tree", False),
     ],
@@ -595,9 +600,12 @@ definitions = {
         ("override", "Override", False)
     ],
     ("commands", "Commands"): [
-        ("sorting", "Sorting", "xz"),
+        ("sorting", "Sorting", "chain"),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
+    ],
+    ("schematicCopying", "Schematics Copying"): [
+        ("cancelCommandBlockOffset", "Cancel Command Block Offset", False)
     ]
 }
 

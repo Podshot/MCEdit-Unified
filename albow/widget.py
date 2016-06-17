@@ -113,11 +113,11 @@ class Widget(object):
     def get_update_translation(self):
         return self.__update_translation
 
-    def set_update_translation(self, v):
+    def set_update_ui(self, v):
         if v:
             self.font = self.predict_font({})
             for widget in self.subwidgets:
-                widget.set_update_translation(v)
+                widget.set_update_ui(v)
             if self.shrink_wrapped:
                 self.shrink_wrap()
             if hasattr(self, 'calc_size'):
@@ -242,7 +242,8 @@ class Widget(object):
         if resize:
             if debug_resize:
                 print "Widget.parent_resized: changing rect to", (left, top, width, height)
-            self.rect = (left, top, width, height)
+            r = Rect((left, top, width, height))
+            self.rect = Rect((left, top, width, height))
         elif move:
             if debug_resize:
                 print "Widget.parent_resized: moving to", (left, top)
@@ -418,7 +419,7 @@ class Widget(object):
     def dispatch_key(self, name, event):
         if self.visible:
 
-            if event.cmd and event.type == KEYDOWN:
+            if event.type == KEYDOWN:
                 menubar = self._menubar
                 if menubar and menubar.handle_command_key(event):
                     return

@@ -10,7 +10,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -43,7 +43,7 @@ t12 Draai blok met borstel
 o13 Window Resize Alert
 t13 Scherm verandering bericht
 o14 Long-Distance Mode
-t14 Langeafstands modus
+t14 Langeafstands Modus
 o15 Fly Mode
 t15 Vlieg modus
 o16 Language
@@ -51,7 +51,7 @@ t16 Taal
 o17 Static Coords While Nudging
 t17 Statische Coords Terwijl Duwen
 o18 Change Spawners While Nudging
-t18 Verander haringbestand Terwijl Duwen
+t18 Verander Monsterkooi Terwijl Duwen
 o19 Change
 t19 Veranderen
 o20 Options
@@ -65,19 +65,19 @@ t23 FPS doel:
 o24 Vertex Buffer Limit (MB): 
 t24 Buffer limiet (MB): 
 o25 Fast Leaves
-t25 Snelle bladeren
+t25 Snelle Bladeren
 o26 Rough Graphics
 t26 Ruige Graphics
 o27 Enable Mouse Lag
-t27 Activeer trage muis
+t27 Activeer Trage Muis
 o28 Default
-t28 Verzuim
+t28 Standaard
 o29 Settings
 t29 Instellingen
 o30 Command
 t30 Commando
 o31 Assigned Key
-t31 Toets
+t31 Toegewezen Toets
 o32 Assign Key...
 t32 Kies Toets
 o33 Done
@@ -165,15 +165,15 @@ t73 Open...
 o74 Save
 t74 Opslaan
 o75 Reload
-t75 Recharger
+t75 Herladen
 o76 Close
-t76 Fermer
+t76 Sluiten
 o77 World Info
-t77 Info monde
+t77 Wereld Info
 o78 Undo
-t78 Annuler
+t78 Ongedaan Maken
 o79 Redo
-t79 Klaar
+t79 Herdoen
 o80 Select All
 t80 Alles selecteren
 o81 Deselect
@@ -207,7 +207,7 @@ t94 Houdt {0} ingedrukt for details
 o95 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t95 Waarschuwing: Open een wereld maar in Ã©Ã©n programma tegelijkertijd. Als je een wereld in meerdere programma's opent, zul je je werk verliezen en miscchien je wereld corrumperen.
+t95 Waarschuwing: Open een wereld maar in één programma tegelijkertijd. Als je een wereld in meerdere programma's opent, zul je je werk verliezen en miscchien je wereld corrupteren.
 
  Als je Minecraft 1.3 of eerder gebruikt, moet je Minecraft compleet afsluiten voor je MCEdit gebruikt.
 o96 Don't remind me again.
@@ -309,17 +309,17 @@ t143 Sluit wereld
 o144 Debug Overlay
 t144 Debug Overlay
 o145 Show Block Info (Hold)
-t145 Laat blokinfo zien
+t145 Laat blokinfo zien (Houd)
 o146 Pick Block (Hold + Click)
-t146 Kies blok
+t146 Kies blok (Houd + Klik)
 o147 Select Chunks (Hold)
-t147 Selecteer chunks
+t147 Selecteer chunks (Houd)
 o148 Deselect Chunks (Hold)
-t148 
+t148 Deselecteer Chunks (Houd)
 o149 Snap Clone to Axis (Hold)
-t149 Plak kloon aan as
+t149 Plak kloon aan as (Houd)
 o150 Blocks-Only Modifier (Hold)
-t150 Enkel-blokken toets
+t150 Enkel-blokken toets (Houd)
 o151 Fast Increment Modifier (Hold)
 t151 
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
@@ -365,7 +365,7 @@ t171 Herstart
 o172 Later
 t172 Later
 o173 Loading 
-t173 
+t173 Laden
 o174  - MCEdit 
 t174  - MCEdit
 o175 Overworld
@@ -436,12 +436,13 @@ t206 Extraheer deze chunks naar individuele bestanden
 o207 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
 t207 Markeer deze chunks voor herpopulatie. De volgende keer dat Minecraft deze chunks laad, worden alle ertsen en bomen opnieuw gegenereerd.
 o208 Unmark the selected chunks. They will not repopulate the next time you play the game.
-t208 Markeer de geselecteerde chunks niet te herpopuleren.
+t208 Onmarkeer de geselecteerde chunks. Ze zullen niet herpopuleren de volgende keer dat je de game speelt.
 o209 ...
 t209 ...
 o210 Select
 Right-click for options
-t210 
+t210 Selecteer
+Rechterklik voor opties
 o211 Remove the selection. Shortcut: {0}
 t211 Verwijder alle entities in de selectie
 o212 Fill the selection with Air. Shortcut: {0}
@@ -743,7 +744,7 @@ Klik op de kist die je wilt en kies wat je wilt, klik dan op Enter
 *Alle Items moeten in dezelfde rij zijn* 
  
 o351 Notes
-t351 
+t351 Notities
 o352 Include position data
 t352 Voeg positiedata toe
 o353 Both
@@ -935,11 +936,11 @@ o442 Savanna
 t442 Savanne
 o443 Savanna Plateau
 t443 Savanne Plateau
-o444 Messa
+o444 Mesa
 t444 Mesa
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 Mesa Plateau F
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 Mesa Plateau
 o447 Sunflower Plains
 t447 Zonnebloemvelden
@@ -1002,11 +1003,11 @@ t475 Spelernaam
 o476 Player: 
 t476 Speler:
 o477 Goto
-t477 
+t477 Ga Naar
 o478 Goto View
-t478 
+t478 Ga Naar Zicht
 o479 Move
-t479 
+t479 Beweeg
 o480 Align to Camera
 t480 
 o481 Player (Single Player)
@@ -1038,31 +1039,31 @@ t492 Geen opgeslagen Presets
 o493 Select preset to delete
 t493 Selecteer Preset om te verwijderen
 o494 Version {} is available
-t494 
+t494 Versie {} is beschikbaar
 o495 Download
 t495 
 o496 View
-t496 
+t496 Bekijk
 o497 Ignore
-t497 
+t497 Negeer
 o498 Space
-t498 
+t498 Spatie
 o499 Tab
 t499 
 o500 Delete
-t500 
+t500 Verwijder
 o501 Scroll Up
-t501 
+t501 Scroll Omhoog
 o502 Scroll Down
-t502 
+t502 Scroll Omlaag
 o503 Button 3
-t503 
+t503 Knop 3
 o504 Alt
 t504 
 o505 Ctrl
 t505 
 o506 Creating a new world.
-t506 
+t506 Nieuwe wereld creeën
 o507 Minecraft Server
 t507 
 o508 Flatland
@@ -1070,17 +1071,17 @@ t508
 o509 Generator:
 t509 
 o510 Will automatically download and use the latest version
-t510 
+t510 Download en gebruik de laatste versie automatisch
 o511 Height: 
-t511 
+t511 Hoogte:
 o512 Grass
-t512 
+t512 Gras
 o513 Server version:
-t513 
+t513 Server versie
 o514 or
-t514 
+t514 of
 o515 Check for Updates
-t515 
+t515 Controleer op Updates
 o516 Advanced
 t516 
 o517 Open Server Storage
@@ -1088,13 +1089,13 @@ t517
 o518 Reveal World Cache
 t518 
 o519 Delete World Cache
-t519 
+t519 Verwijder World Cache
 o520 Advanced...
 t520 
 o521 Simulate world
 t521 
 o522 Use snapshot versions
-t522 
+t522 Gebruik snapshot versies
 o523 X: 
 t523 
 o524 Y: 
@@ -1106,9 +1107,9 @@ t526
 o527 Seed: 
 t527 
 o528 East-West Chunks: 
-t528 
+t528 Oost-West Chunks:
 o529 North-South Chunks: 
-t529 
+t529 Noord-Zuid Chunks
 o530 Survival
 t530 
 o531 Cancel
@@ -1172,17 +1173,17 @@ t559
 o560 Copy Stack Size: 
 t560 
 o561 Remove
-t561 
+t561 Verwijder
 o562 Reload Skins
-t562 
+t562 Herlaad Skins
 o563 Previous Page
-t563 
+t563 Vorige Pagina
 o564 Next Page
-t564 
+t564 Volgende Pagina
 o565 Super Secret Settings
 t565 
 o566 Default Resource Pack
-t566 
+t566 Standaard Resource Pack
 o567 Square
 t567 
 o568 Record Macro
@@ -1240,17 +1241,20 @@ t593
 o594 Width of points movement: 
 t594 
 o595 Do you want to save your changes?
-t595 
+t595 Wil je je wijzigingen opslaan? 
 o596 Don't Save
 t596 
 o597 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
-t597 
+t597 Druk op een toets voor de actie "{0}"
+
+Druk op ESC voor te anuleren.
 o598 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t598 
+t598 Geen toets betekend rechter klik voor fast nudge.
+Druk op ESC voor te anuleren.
 o599 {0} is not a modifier. Press a new key.
 
 Press ESC to cancel.
@@ -1264,9 +1268,9 @@ o601 You can't use the key {0}. Press a new key.
 Press ESC to cancel.
 t601 
 o602 Reset to default
-t602 
+t602 Reset naar standaardwaare
 o603 Do you want to keep your changes?
-t603 
+t603 Wil je je veranderingen bijhouden?
 o604 Screenshots
 t604 
 o605 Uses the Latest Snapshot Terrain Generation
@@ -1274,13 +1278,13 @@ t605
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
 t606 
 o607 Last Played
-t607 
+t607 Laatst Gespeeld
 o608 Level Name (filename)
 t608 
 o609 Load
-t609 
+t609 Laad
 o610 Maximum number of copied objects.
-t610 
+t610 Maximaal numer van gekopieerde objecten.
 o611 Try to save and restore the window position.
 t611 
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
@@ -1296,15 +1300,15 @@ t616
 o617 (click anywhere to teleport)
 t617 
 o618 Format:
-t618 
+t618 Formaat:
 o619 Name:
-t619 
+t619 Naam:
 o620 Minecraft Infinite World (Anvil Format)
 t620 
 o621 Day: 
-t621 
+t621 Dag: 
 o622 Time of day:
-t622 
+t622 Tijd van dag:
 o623 RandomSeed:
 t623 
 o624 Game Type:
@@ -1322,7 +1326,7 @@ t629
 o630 id
 t630 
 o631 Count
-t631 
+t631 Aantal
 o632 Damage
 t632 
 o633 NBT Explorer
@@ -1336,7 +1340,7 @@ t636
 o637 -> Name
 t637 
 o638 Double-click to edit
-t638 
+t638 Dubbel-klik voor edit
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
@@ -1395,13 +1399,13 @@ t663
 o664 Item Type: %s
 t664 
 o665 Value
-t665 
+t665 Waarde
 o666 This item type is a container. Add chlidren later.
 t666 
 o667 Choose item type
-t667 
+t667 Kies een item type
 o668 Choose a name
-t668 
+t668 Kies een naam
 o669 Byte
 t669 
 o670 Long
@@ -1430,25 +1434,25 @@ Press a key to assign to the filter "{2}"
 Press ESC to cancel.
 t679 
 o680 [No players]
-t680 
+t680 [Geen spelers]
 o681 Press to unbind
 t681 
 o682 Are you sure you want to delete the default player?
-t682 
+t682 Ben je zeker dat je de standaard speler wilt verwijderen?
 o683 Double-click or use the button below to edit the NBT Data.
 t683 
 o684 Go Back
-t684 
+t684 Ga Terug
 o685 Upload to FTP Server
-t685 
+t685 Upload naar FTP Server
 o686 There are {0} unsaved changes.
-t686 
+t686 Er zijn {} niet opgeslagen veranderingen.
 o687 Save and Quit
 t687 
 o688 Refresh Player Names
 t688 
 o689 Results
-t689 
+t689 Resultaten
 o690 Smooth - 3D
 t690 
 o691 Smoothing
@@ -1472,13 +1476,13 @@ o698 Spawn point fixed. Changes:
 
 t698 
 o699 <Selection>
-t699 
+t699 <Selectie>
 o700 <Miscellaneous>
 t700 
 o701 Take Screenshot
-t701 
+t701 Neem Screenshot
 o702 Double-click to go to this item.
-t702 
+t702 Dubbel-klik voor naar dit item te gaan.
 o703 Save and Restart
 t703 
 o704 From FTP Server
@@ -1486,7 +1490,7 @@ t704
 o705 <Chunk Control Tool>
 t705 
 o706 Select Chunks
-t706 
+t706 Selecteer Chunks
 o707 
 No matching blocks/tile entities found
 t707 
@@ -1515,11 +1519,11 @@ t716
 o717 Checking for server updates...
 t717 
 o718 Time left: {0}
-t718 
+t718 Resterende tijd: {0}
 o719 Untitled World
 t719 
 o720 Name this new world.
-t720 
+t720 Benoem deze nieuwe wereld.
 o721 Minecraft World *.*  
 t721 
 o722 Generating chunks...
@@ -1531,9 +1535,9 @@ t724
 o725 Save to file...
 t725 
 o726 Fill with Air
-t726 
+t726 Vul met Lucht
 o727 Delete Chunks
-t727 
+t727 Verwijder Chunks
 o728 Recording undo...
 t728 
 o729 Replacing blocks...
@@ -1543,17 +1547,17 @@ t730
 o731 Copying chunk %s...
 t731 
 o732 Continue with undo disabled?
-t732 
+t732 Doorgaan met undo uitgeschakeld?
 o733 Continue
-t733 
+t733 Ga door
 o734 Canceled
-t734 
+t734 geannuleerd
 o735 DELETING - 
-t735 
+t735 VERWIJDEREN -
 o736 Deleting {0} blocks
 t736 
 o737 WORKING - 
-t737 
+t737 WERKEN -
 o738 Removing Tile Ticks...
 t738 
 o739 Removing entities...
@@ -1590,7 +1594,7 @@ o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t754 
 o755 Save As
-t755 
+t755 Opslaan Als
 o756 Name the new copy:
 t756 
 o757 Copying %0.1f million blocks
@@ -1688,7 +1692,7 @@ o801 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
 t801 
 o802 Create Chunks
-t802 
+t802 Creeër Chunks
 o803 Replace Only:
 t803 
 o804 Make Villager Silent
@@ -1698,7 +1702,7 @@ t805
 o806 SAVING - 
 t806 
 o807 World Type:
-t807 
+t807 Wereld Type
 o808 Amplified
 t808 
 o809 Large Biomes
@@ -1794,13 +1798,13 @@ t852
 o853 Del
 t853 
 o854 Show Commands
-t854 
+t854 Toon Commando's
 o855 Show the command in a Command Block when hovering over it.
 t855 
 o856 [Empty]
-t856 
+t856 [Leeg]
 o857 Couldn't open the file
-t857 
+t857 Kon het bestand niet openen
 o858 Edit Command Block
 t858 
 o859 Command:
@@ -1822,21 +1826,21 @@ t866
 o867 DMG: 
 t867 
 o868 Count: 
-t868 
+t868 Aantal: 
 o869 New Item (1.7+)
-t869 
+t869 Nieuw Item (1.7+)
 o870 Delete This Item
-t870 
+t870 Verwijder Dit Item
 o871 Delete All Instances Of This Item From World
 t871 
 o872 Unknown Item
-t872 
+t872 Onbekend Item
 o873 Edit Enchantment Table
 t873 
 o874 Custom Name
 t874 
 o875 Edit Flower Pot
-t875 
+t875 Wijzig Bloempot
 o876 Item
 t876 
 o877 Data
@@ -1844,7 +1848,7 @@ t877
 o878 Current: 
 t878 
 o879 Change to: 
-t879 
+t879 Verander naar:
 o880 F# (0.5)
 t880 
 o881 G (0.53)
@@ -1896,11 +1900,11 @@ t903
 o904 F# (2.0)
 t904 
 o905 Only delete items with the same damage value
-t905 
+t905 Verwijder enkel items met dezelfde damage waarde
 o906 Also delete blocks placed in the world
-t906 
+t906 Verwijder ook de geplaatste blokken in de wereld
 o907 No command blocks found
-t907 
+t907 Geen commando blokken gevonden
 o908 Analysis
 t908 
 o909 Click to set the spawn position.
@@ -1910,47 +1914,47 @@ t910
 o911 Edit Sign
 t911 
 o912 Add Color Code...
-t912 
+t912 Voeg Kleurencode toe...
 o913 §0  Black
-t913 
+t913 §0  Zwart
 o914 §1  Dark Blue
-t914 
+t914 §1  Donker Blauw
 o915 §2  Dark Green
-t915 
+t915 §2  Donker Groen
 o916 §3  Dark Aqua
-t916 
+t916 §3  Donker Aque
 o917 §4  Dark Red
-t917 
+t917 §4  Donker Rood
 o918 §5  Dark Purple
-t918 
+t918 §5  Donker Paars
 o919 §6  Gold
-t919 
+t919 §6  Goud
 o920 §7  Gray
-t920 
+t920 §7  Grijs
 o921 §8  Dark Gray
-t921 
+t921 §8  Donker Grijs
 o922 §9  Blue
-t922 
+t922 §9  Blauw
 o923 §a  Green
-t923 
+t923 §a  Groen
 o924 §b  Aqua
-t924 
+t924 §b  Aqua
 o925 §c  Red
-t925 
+t925 §c  Rood
 o926 §d  Light Purple
-t926 
+t926 §d  Licht Paars
 o927 §e  Yellow
-t927 
+t927 §e  Geel
 o928 §f  White
-t928 
+t928 §f  Wit
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 
 o931 Right mouse
-t931 
+t931 Rechter muis
 o932 Deleting the item {0} from the entire world ({1} chunks)
-t932 
+t932 Item {0} van de hele wereld ({1} chunks) aan het verwijderen
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 
 o934 Check to show/hide specific ores using the settings below.
@@ -1958,11 +1962,11 @@ t934
 o935 NBTEdit
 t935 
 o936 Save camera position on close
-t936 
+t936 Bewaar camera positie bij sluiten
 o937 Waypoints
 t937 
 o938 Empty
-t938 
+t938 Leeg
 o939 Create Waypoint
 t939 
 o940 Goto Waypoint
@@ -1970,16 +1974,46 @@ t940
 o941 Delete Waypoint
 t941 
 o942 Save Camera position on world close
-t942 
+t942 Bewaar Camera positie als wereld sluit
 o943 Save Rotation
-t943 
+t943 Bewaar Rotatie
 o944 Waypoint Name:
 t944 
 o945 Session lock lost. This world is being accessed from another location.
-t945 
+t945 Session lock lost. Deze wereld wordt van een andere locatie gebruikt.
 o946 
 
 Your changes cannot be saved.
 t946 
+
+Je veranderingen kunnen niet worden opgeslaan.
 o947 Click to import this item.
-t947 
+t947 Klik voor dit item te importeren.
+o948 Menu
+t948 Menu
+o949 for
+t949 voor
+o950 MCEdit does not support window resolutions below 1000x700.
+You may not be able to access all functions at this resolution.
+t950 MCEdit ondersteunt geen scherm resoluties onder 1000X700.
+Het is mogelijk dat niet alle functies toegankelijk zijn in deze resolutie.
+o951 Found a previous portable installation
+t951 
+o952 Use
+t952 
+o953 Overwrite
+t953 
+o954 Edit Skull Data
+t954 
+o955 Found a previous fixed installation
+t955 
+o956 Left-Click and drag to the left or the right
+t956 
+o957 Cancel Command Block Offset
+t957 
+o958 Cancels the command blocks coords changed when copied.
+t958 
+o959 Weird stuff happen!
+t959 
+o960 Enable Custom Name
+t960 

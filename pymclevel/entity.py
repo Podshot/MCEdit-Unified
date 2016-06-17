@@ -11,6 +11,8 @@ from copy import deepcopy
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
+UNKNOWN_ENTITY_MASK = 1000
+
 
 class TileEntity(object):
     baseStructures = {
@@ -27,7 +29,7 @@ class TileEntity(object):
             ("Text4", nbt.TAG_String),
         ),
         "MobSpawner": (
-            ("Items", nbt.TAG_List),
+            ("EntityId", nbt.TAG_String),
         ),
         "Chest": (
             ("Items", nbt.TAG_List),
@@ -82,7 +84,7 @@ class TileEntity(object):
         "Monster Spawner": "MobSpawner",
         "Chest": "Chest",
         "Note Block": "Music",
-        "Trapped Chest": "Trap",
+        "Trapped Chest": "Chest",
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
         "Cauldron": "Cauldron",
@@ -103,7 +105,7 @@ class TileEntity(object):
         "chest": "Chest",
         "ender_chest": "Chest",
         "noteblock": "Music",
-        "trapped_chest": "Trap",
+        "trapped_chest": "Chest",
         "jukebox": "RecordPlayer",
         "sticky_piston": "Piston",
         "piston": "Piston",
@@ -155,6 +157,9 @@ class TileEntity(object):
                         tileEntityTag[name] = nbt.TAG_String("@")
                     elif name == "SuccessCount":
                         tileEntityTag[name] = nbt.TAG_Int(0)
+                elif tileEntityID == "MobSpawner":
+                    if name == "EntityId":
+                        tileEntityTag[name] = nbt.TAG_String("Pig")
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
@@ -169,7 +174,7 @@ class TileEntity(object):
             tag[a] = nbt.TAG_Int(p)
 
     @classmethod
-    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first):
+    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first, cancelCommandBlockOffset=False):
         # You'll need to use this function twice
         # The first time with first equals to True
         # The second time with first equals to False
@@ -225,12 +230,17 @@ class TileEntity(object):
 
         if eTag['id'].value == 'MobSpawner':
             mobs = []
-            mob = eTag.get('SpawnData')
-            if mob:
-                mobs.append(mob)
-            potentials = eTag.get('SpawnPotentials')
-            if potentials:
-                mobs.extend(p["Properties"] for p in potentials)
+            if 'SpawnData' in eTag:
+                mob = eTag['SpawnData']
+                if mob:
+                    mobs.append(mob)
+            if 'SpawnPotentials' in eTag:
+                potentials = eTag['SpawnPotentials']
+                for p in potentials:
+                    if 'properties' in p:
+                        mobs.extend(p["Properties"])
+                    elif 'Entity' in p:
+                        mobs.extend(p["Entity"])
 
             for mob in mobs:
                 if "Pos" in mob:
@@ -257,7 +267,7 @@ class TileEntity(object):
                         pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
                         Entity.setpos(mob, pos)
 
-        if eTag['id'].value == "Control":
+        if eTag['id'].value == "Control" and not cancelCommandBlockOffset:
             command = eTag['Command'].value
             oldCommand = command
 
@@ -628,13 +638,11 @@ class Entity(object):
 
     @classmethod
     def getId(cls, v):
-        for entity in Entity.entityList.keys():
-            if v == entity:
-                return Entity.entityList[entity]
-        return "No ID"
+        return cls.entityList.get(v, 'No ID')
 
 
 class PocketEntity(Entity):
+    unknown_entity_top = UNKNOWN_ENTITY_MASK + 0
     entityList = {"Chicken": 10,
                   "Cow": 11,
                   "Pig": 12,
@@ -643,7 +651,11 @@ class PocketEntity(Entity):
                   "Villager": 15,
                   "Mooshroom": 16,
                   "Squid": 17,
+                  "Rabbit": 18,
                   "Bat": 19,
+                  "Iron Golem": 20,
+                  "Snow Golem": 21,
+                  "Ocelot": 22,
                   "Zombie": 32,
                   "Creeper": 33,
                   "Skeleton": 34,
@@ -655,6 +667,8 @@ class PocketEntity(Entity):
                   "Cave Spider": 40,
                   "Ghast": 41,
                   "Magma Cube": 42,
+                  "Blaze": 43,
+                  "Zombie Villager": 44,
                   "Item": 64,
                   "PrimedTnt": 65,
                   "FallingSand": 66,
@@ -666,7 +680,26 @@ class PocketEntity(Entity):
                   "MinecartRideable": 84,
                   "Fireball": 85,
                   "Boat": 90,
-                  "Player": 63}
+                  "Player": 63,
+                  "Entity": 69,
+                  "Minecart with Hopper": 96,
+                  "Minecart with TNT": 97,
+                  "Minecart with Chest": 98,
+                  "Blaze Fireball": 94,
+                  "Lightning": 93}
+
+    @classmethod
+    def getNumId(cls, v):
+        """Retruns the numeric ID of an entity, or a generated one if the entity is not known.
+        The generated one is generated like this: 'UNKNOWN_ENTITY_MASK + X', where 'X' is a number.
+        The first unknown entity will have the numerical ID 1001, the second one 1002, and so on.
+        :v: the entity string ID to search for."""
+        id = cls.getId(v)
+        if type(id) != int and v not in cls.entityList.keys():
+            id = cls.unknown_entity_top + 1
+            cls.entityList[v] = cls.entityList['Entity %s'%id] = id
+            cls.unknown_entity_top += 1
+        return id
 
 
 class TileTick(object):

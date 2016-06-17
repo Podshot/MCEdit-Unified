@@ -173,7 +173,8 @@ class FurnaceDispenserChest:
         alphaMaterials.Furnace.ID,
         alphaMaterials.LitFurnace.ID,
         alphaMaterials.Chest.ID,
-        alphaMaterials.EnderChest.ID
+        alphaMaterials.EnderChest.ID,
+        alphaMaterials.TrappedChest.ID
     ]
     East = 2
     West = 3
@@ -505,10 +506,9 @@ class Log:
     Type1EastWest = 8
     Type2EastWest = 9
     Type3EastWest = 10
-    Type4EastWest = 11
-
-    rotateLeft = arange(16, dtype='uint8')
-
+    Type4EastWest = 11  
+    
+Log.rotateLeft = arange(16, dtype='uint8')
 Log.rotateLeft[Log.Type1NorthSouth] = Log.Type1EastWest
 Log.rotateLeft[Log.Type1EastWest] = Log.Type1NorthSouth
 Log.rotateLeft[Log.Type2NorthSouth] = Log.Type2EastWest
@@ -709,20 +709,6 @@ class NetherPortal:
     South = 2
 
 
-class Wood:
-    blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]
-
-    East = 0
-    South = 1
-    West = 2
-    North = 3
-
-
-genericFlipRotation(Anvil)
-applyAnvilBit = applyBit8
-applyAnvilBit(Anvil)
-
-
 class FenceGate:
     blocktypes = [materials.alphaMaterials.FenceGate.ID,
                   materials.alphaMaterials.SpruceFenceGate.ID,
@@ -763,21 +749,19 @@ class CocoaPlant:
 
 applyBits48(CocoaPlant)  # growth state
 
-
 @genericFlipRotation
 class TripwireHook:
     blocktypes = [alphaMaterials.TripwireHook.ID]
 
-    South = 0
-    West = 1
-    North = 2
-    East = 3
+    South = 1
+    West = 2
+    North = 3
+    East = 0
 
-
-applyBits48(TripwireHook)  # activation/ready state
-
+applyBits48(TripwireHook)
 
 @genericFlipRotation
+
 class MobHead:
     blocktypes = [alphaMaterials.MobHead.ID]
 
@@ -796,14 +780,21 @@ class Hopper:
     North = 4
     South = 5
 
+applyBit8(Hopper)
 Hopper.roll = arange(16, dtype='uint8')
 Hopper.roll[Hopper.Down] = Hopper.South
 Hopper.roll[Hopper.North] = Hopper.Down
 
 
 @genericFlipRotation
-class Dropper:
-    blocktypes = [alphaMaterials.Dropper.ID, alphaMaterials.Dispenser.ID]
+class DropperCommandblock:
+    blocktypes = [
+        alphaMaterials.Dropper.ID, 
+        alphaMaterials.Dispenser.ID, 
+        alphaMaterials.CommandBlock.ID,
+        alphaMaterials.CommandBlockRepeating.ID, 
+        alphaMaterials.CommandBlockChain.ID
+    ]
     Down = 0
     Up = 1
     East = 2
@@ -811,7 +802,7 @@ class Dropper:
     North = 4
     South = 5
 
-applyBit8(Dropper)
+applyBit8(DropperCommandblock)
 
 
 @genericFlipRotation 

@@ -154,6 +154,9 @@ class Tree(Column):
             global map_types_item
             self.map_types_item = setup_map_types_item()
         self.selected_item_index = None
+        # cached_item_index is set to False during startup to avoid a predefined selected item to be unselected when closed
+        # the first time.
+        self.cached_selected_item_index = False
         self.selected_item = None
         self.clicked_item = None
         self.copyBuffer = kwargs.pop('copyBuffer', None)
@@ -445,24 +448,30 @@ class Tree(Column):
         self.rows = rows
         return rows
 
-    def deploy(self, id):
-        p = None
-        if self.selected_item:
-            s_idx = 0 + self.selected_item_index
-            num_rows = len(self.rows)
+    def deploy(self, n):
+        id = self.rows[n][6]
         if id in self.deployed:
-            self.deployed.remove(id)
-            if self.selected_item:
-                if self.selected_item[4] == id:
-                    p = self.get_item_parent(self.selected_item)
-                    p_idx = self.rows.index(p)
+            while id in self.deployed:
+                self.deployed.remove(id)
         else:
             self.deployed.append(id)
         self.build_layout()
-        if p:
-            self.select_item(p_idx)
-        elif self.selected_item and s_idx > id:
-            self.select_item(s_idx + (len(self.rows) - num_rows))
+        l = (self.selected_item[3], self.selected_item[4])
+        if type(self.cached_selected_item_index) != bool:
+            if self.cached_selected_item_index and self.cached_selected_item_index < self.num_rows():
+                r = self.rows[self.cached_selected_item_index]
+                r = (r[3], r[4])
+            else:
+                r = (-1, -1)
+        else:
+            r = l
+            self.cached_selected_item_index = self.selected_item_index
+
+        if l == r:
+            self.selected_item_index = self.cached_selected_item_index
+        else:
+            self.cached_selected_item_index = self.selected_item_index
+            self.selected_item_index = None
 
     def click_item(self, n, pos):
         """..."""
@@ -470,8 +479,7 @@ class Tree(Column):
         r = self.get_bullet_rect(row[0], row[8])
         x = pos[0]
         if self.margin + r.left - self.treeRow.hscroll <= x <= self.margin + self.treeRow.margin + r.right - self.treeRow.hscroll:
-            id = row[6]
-            self.deploy(id)
+            self.deploy(n)
         else:
             self.select_item(n)
 

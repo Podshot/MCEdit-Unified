@@ -262,7 +262,7 @@ class CameraViewport(GLViewport):
     def setModelview(self):
         pos = self.cameraPosition
         look = numpy.array(self.cameraPosition)
-        look += self.cameraVector
+        look = look.astype(float) + self.cameraVector
         up = (0, 1, 0)
         GLU.gluLookAt(pos[0], pos[1], pos[2],
                       look[0], look[1], look[2],
@@ -543,7 +543,12 @@ class CameraViewport(GLViewport):
             mobs[mobTable.selectedIndex] = id
             panel.dismiss()
 
-        id = tileEntity["EntityId"].value
+        if "EntityId" in tileEntity:
+            id = tileEntity["EntityId"].value
+        elif "SpawnData" in tileEntity:
+            id = tileEntity["SpawnData"]["id"].value
+        else:
+            id = "[Custom]"
         addMob(id)
 
         mobTable.selectedIndex = mobs.index(id)
@@ -581,6 +586,8 @@ class CameraViewport(GLViewport):
 
         if id != selectedMob():
             tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+            tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
@@ -873,7 +880,7 @@ class CameraViewport(GLViewport):
                 oldText = '"{}"'.format(tileEntity[l])
                 # Double quotes handling
 #                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
+                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255])
                 if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
@@ -1005,7 +1012,7 @@ class CameraViewport(GLViewport):
         titleLabel = Label("Edit Command Block")
         commandField = TextFieldWrapped(width=650)
         nameField = TextFieldWrapped(width=200)
-        successField = IntInputRow("SuccessCount")
+        successField = IntInputRow("SuccessCount", min=0, max=15)
         trackOutput = CheckBox()
 
         # Fix for the '§ is Ä§' issue
@@ -1020,8 +1027,8 @@ class CameraViewport(GLViewport):
         oldTrackOutput = trackOutput.value
         nameField.value = tileEntity.get("CustomName", TAG_String("@")).value
         oldNameField = nameField.value
-        successField.value = tileEntity["SuccessCount"].value
-        oldSuccess = successField.value
+        successField.subwidgets[1].value = tileEntity.get("SuccessCount", pymclevel.TAG_Int(0)).value
+        oldSuccess = successField.subwidgets[1].value
 
         class CommandBlockEditOperation(Operation):
             def __init__(self, tool, level):
@@ -1047,11 +1054,11 @@ class CameraViewport(GLViewport):
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateCommandBlock():
-            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.value:
+            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.subwidgets[1].value:
                 tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
-                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.value)
+                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.subwidgets[1].value)
 
                 op = CommandBlockEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
@@ -1169,9 +1176,9 @@ class CameraViewport(GLViewport):
             IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
             BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
-            IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
-            IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
-            # This button is unactivated for now, because we need to work with different IDs types:
+            IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=0, max=32767),
+            IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-1, max=64),
+            # This button is inactive for now, because we need to work with different IDs types:
             # * The 'human' IDs: Stone, Glass, Swords...
             # * The MC ones: minecraft:stone, minecraft:air...
             # * The PE ones: 0:0, 1:0...
@@ -1460,7 +1467,7 @@ class CameraViewport(GLViewport):
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        if not self.should_lock:
+        if not self.should_lock and self.editor.level:
             self.toggleMouseLook()
         # if self.rightMouseDragStart is None:
         #     return
@@ -1590,7 +1597,7 @@ class CameraViewport(GLViewport):
 
         def showCommands():
             try:
-                if point:
+                if point and self.editor.level:
                     block = self.editor.level.blockAt(*point)
                     if block == pymclevel.alphaMaterials.CommandBlock.ID or block == 210 or block == 211:
                         self.hoveringCommandBlock[0] = True

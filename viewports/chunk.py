@@ -26,6 +26,8 @@ class ChunkViewport(CameraViewport):
 
     def zoom(self, f):
         x, y, z = self.cameraPosition
+        if self.blockFaceUnderCursor[0] is None:
+            return
         mx, my, mz = self.blockFaceUnderCursor[0]
         dx, dz = mx - x, mz - z
         s = min(4.0, max(1 / 16., self.defaultScale / f))

@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -935,12 +935,12 @@ o442 Savanna
 t442 Savann
 o443 Savanna Plateau
 t443 Savann Platå
-o444 Messa
-t444 Messa
-o445 Messa Plateau F
-t445 Messa Platå F
-o446 Messa Plateau
-t446 Messa Platå
+o444 Mesa
+t444 Mesa
+o445 Mesa Plateau F
+t445 Mesa Platå F
+o446 Mesa Plateau
+t446 Mesa Platå
 o447 Sunflower Plains
 t447 Solros Slätter
 o448 Desert M
@@ -1982,3 +1982,30 @@ Your changes cannot be saved.
 t946 
 o947 Click to import this item.
 t947 
+o948 Menu
+t948 Meny
+o949 for
+t949 
+o950 MCEdit does not support window resolutions below 1000x700.
+You may not be able to access all functions at this resolution.
+t950 
+o951 Found a previous portable installation
+t951 
+o952 Use
+t952 
+o953 Overwrite
+t953 
+o954 Edit Skull Data
+t954 
+o955 Found a previous fixed installation
+t955 
+o956 Left-Click and drag to the left or the right
+t956 
+o957 Cancel Command Block Offset
+t957 
+o958 Cancels the command blocks coords changed when copied.
+t958 
+o959 Weird stuff happen!
+t959 
+o960 Enable Custom Name
+t960 

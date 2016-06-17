@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -51,7 +51,7 @@ t15 Mode vol
 o16 Language
 t16 Langue
 o17 Static Coords While Nudging
-t17 Coords statique en poussant
+t17 Coords statiques en poussant
 o18 Change Spawners While Nudging
 t18 Changer spawners en poussant
 o19 Change
@@ -105,7 +105,7 @@ t42 Voir...
 o43 Camera View
 t43 Vue caméra
 o44 Record Undo
-t44 Enregidtrer histo.
+t44 Enregistrer histo.
 o45 View Distance:
 t45 Distance de vue :
 o46 [UNDEFINED]
@@ -131,7 +131,7 @@ t55 Noir
 o56 Color: 
 t56 Couleur : 
 o57 Show Previous Selection
-t57 Voir séléction précédante
+t57 Voir sélection précédente
 o58 R:
 t58 R:
 o59 G:
@@ -153,7 +153,7 @@ t66 RÀZ distance quand la taille de brosse change
 o67 Brush Options
 t67 Option de brosse
 o68 Fill and Replace Options
-t68 Otption de remplissage et remplacement
+t68 Option de remplissage et remplacement
 o69 Spawn Position Safety
 t69 Sécurité position de spawn
 o70 Spawn Point Options
@@ -195,11 +195,11 @@ t87 Dernier changements
 o88 License
 t88 Licence
 o89 Config Files
-t89 Fichers config.
+t89 Fichiers config.
 o90 {0}/{1}/{2}/{3}/{4}/{5} to move
 t90 {0}/{1}/{2}/{3}/{4}/{5} pour déplacement
 o91 {0} to slow down
-t91 {0} pour rallentir
+t91 {0} pour ralentir
 o92 Right-click to toggle camera control
 t92 Clic-droit pour activer le contrôle caméra
 o93 Mousewheel to control tool distance
@@ -211,7 +211,7 @@ o95 Warning: Only open a world in one program at a time. If you open a world at 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
 t95 Attention: n'ouvrez un monde que dans un seul programme simultanément. Si vous ouvrez un monde en même temps avec MCEdit et Minecraft, vous perdrez votre travail et endommagerez éventuellement votre sauvegarde.
 
- Si vous utilisez Minecraft 1.3 ou inférieur, vous devez quiter complettement le jeu avant d'utiliser MCEdit.
+ Si vous utilisez Minecraft 1.3 ou inférieur, vous devez quitter complètement le jeu avant d'utiliser MCEdit.
 o96 Don't remind me again.
 t96 Ne pas me le rappeler.
 o97 <Movement>
@@ -229,7 +229,7 @@ t102 Haut
 o103 Down
 t103 Bas
 o104 Brake
-t104 Rallentir
+t104 Ralentir
 o105 <Camera>
 t105 <Caméra>
 o106 Pan Up
@@ -273,7 +273,7 @@ t124 Tourner (Clone)
 o125 Flip
 t125 Retourner
 o126 Mirror
-t126 Mirroir
+t126 Miroir
 o127 <Brush Tool>
 t127 <Outil Brosse>
 o128 Rotate (Brush)
@@ -287,7 +287,7 @@ t131 Diminuer taille
 o132 <Fill and Replace Tool>
 t132 <Outil Remplir et remplacer>
 o133 Replace Shortcut
-t133 Racourci remplacer
+t133 Raccourci remplacer
 o134 <Function>
 t134 <Fonction>
 o135 Cut
@@ -347,11 +347,11 @@ t161 Changer la pos. des monstres dans les spawner en poussant.
 o162 Change static coordinates in command blocks while nudging.
 t162 Changer les coords statiques dans des blocs de commande en poussant.
 o163 Always target the farthest block under the cursor, even in mouselook mode.
-t163 Toujours viser le bloc le plus loin avec le curseur, même an vue souris
+t163 Toujours viser le bloc le plus loin avec le curseur, même en vue souris
 o164 Moving forward and Backward will not change your altitude in Fly Mode.
 t164 Le déplacement avant/arrière ne modifie pas l'altitude en mode vol.
 o165 Apply brake when not pressing movement keys
-t165 Rallentir quand aucune touche de mouvement n'est appuyée
+t165 Ralentir quand aucune touche de mouvement n'est appuyée
 o166 Reverse the up and down motion of the mouse.
 t166 Inverser les mouvements haut et bas de la souris.
 o167 When rotating your brush, also rotate the orientation of the block your brushing with
@@ -359,7 +359,7 @@ t167 Les blocs de la brosse suivent sa rotation.
 o168 Choose your language.
 t168 Choisissez votre langue.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 Cliquez pour faire de MCEdit une appilcation portable en déplaçant les fichiers schematic et de configuration dans le dossier du programme
+t169 Cliquez pour faire de MCEdit une application portable en déplaçant les fichiers schematic et de configuration dans le dossier du programme
 o170 You must restart MCEdit to see language changes
 t170 Vous devez redémarrer MCEdit pour voir les changements.
 o171 Restart
@@ -381,14 +381,14 @@ t178 Cliquez ou glissez pour sélectionner. Traîner les faces de la sélection 
 o179 Chunk View
 t179 Vue chunks
 o180 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
-t180 Relâchez le boutton pour placer le point de sélection {0}. Appuyez sur {1} pour inverser les points.
+t180 Relâchez le bouton pour placer le point de sélection {0}. Appuyez sur {1} pour inverser les points.
 o181 Release the mouse button to finish the selection
 t181 Relâchez le bouton pour finir la sélection
 o182 Nudge
 t182 Pousser
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
-t183 Cliquer et maintenir pour déplacer grâce aux touches de déplacement ({0}/{1}/{2}/{3}/{4}/{5}). Bouton gauche pour pousser d'un bloc, boutton droit pour plus.
+t183 Cliquer et maintenir pour déplacer grâce aux touches de déplacement ({0}/{1}/{2}/{3}/{4}/{5}). Bouton gauche pour pousser d'un bloc, bouton droit pour plus.
 {6} pour glisser sur une plus grande distance.
 o184 {0:n} blocks
 t184 {0:n} blocs
@@ -403,7 +403,7 @@ t188 Supprimer tous les 'Tile Ticks' de la sélection. Ce sont des MàJ de blocs
 o189 Analyze
 t189 Analyser
 o190 Count the different blocks and entities in the selection and display the totals.
-t190 Compte les blocks et entités dans la sélection, et affiche les totaux.
+t190 Compte les blocs et entités dans la sélection, et affiche les totaux.
 o191 Export
 t191 Exporter
 o192 Expand the selection to the edges of the chunks within
@@ -423,7 +423,7 @@ t198 Repop
 o199 Don't Repop
 t199 Pas de repop
 o200 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
-t200 Cliquer et glisser pour sélectionner des chunks. Maintenir {0} pour déselectionner. Maintenir {1} pour sélecctionner.
+t200 Cliquer et glisser pour sélectionner des chunks. Maintenir {0} pour déselectionner. Maintenir {1} pour sélectionner.
 o201 {0} chunks
 t201 {0} chunks
 o202 Create new chunks within the selection.
@@ -451,7 +451,7 @@ t211 Suppr. sélection. Raccourci : {0}
 o212 Fill the selection with Air. Shortcut: {0}
 t212 Remplir la sélection avec de l'air. Raccourci : {0}
 o213 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t213 Fait une copie des blocks et entités de la sélection, puis supprime le contenu de cette sélection. Raccourci : {0}
+t213 Fait une copie des blocs et entités de la sélection, puis supprime le contenu de cette sélection. Raccourci : {0}
 o214 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t214 Fait une copie des blocs et entités de la sélection. Raccourci : {0}
 o215 Import the last item taken by Cut or Copy. Shortcut: {0}
@@ -471,7 +471,7 @@ t219 Remplir
 o220 Varied Fill
 t220 Remplir varié
 o221 Flood Fill
-t221 Innonder
+t221 Inonder
 o222 Replace
 t222 Remplacer
 o223 Varied Replace
@@ -531,7 +531,7 @@ t248 Rotation
 o249 Roll
 t249 Tourner
 o250 Chunk Align
-t250 Alignement aux chunk
+t250 Alignement aux chunks
 o251 Repeat
 t251 Répéter
 o252 Scale Factor
@@ -543,7 +543,7 @@ t254 Copier l'eau
 o255 Copy Biome(s)
 t255 Copier les biomes
 o256 Update Command Block Coords
-t256 MàJ coords. bolcs de commandes
+t256 MàJ coords. blocs de commandes
 o257 Update Spawner Coords
 t257 MàJ coords. spawners
 o258 Clone
@@ -554,11 +554,11 @@ o260 Shortcut: Alt-2
 t260 Raccourci : Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 Mettre à jour automatiquement les coordonées (x, y, z) de la commande d'un bloc de commandes lorsqu'il est déplacé.
+t261 Mettre à jour automatiquement les coordonnées (x, y, z) de la commande d'un bloc de commandes lorsqu'il est déplacé.
 Raccourci : Alt-4
 o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
-t262 Mettre à jour automatiquement les coordonées de spawn lorsque qu'un spawner est déplacé.
+t262 Mettre à jour automatiquement les coordonnées de spawn lorsque qu'un spawner est déplacé.
 Raccourci : Alt-5
 o263 Shortcut: Enter
 t263 Raccourci : Entrée
@@ -625,7 +625,7 @@ t292 Changer prop. des monstres
 o293 Chunk Surface Repair
 t293 Réparer surface des chunks
 o294 Classic Water Flood
-t294 Innondation classique
+t294 Inondation classique
 o295 Colorwires
 t295 Fils colorés
 o296 Create Busses
@@ -701,7 +701,7 @@ t330 Enfant/Adulte
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 Répare les surfaces crées par les anciennes versions de Minecraft.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 Fait couler l'eau de la région vers l'extérieur et le bas. Elle est ransformée en blocs sources. Équivalent à "Classic Water" dans Minecraft.
+t332 Fait couler l'eau de la région vers l'extérieur et le bas. Elle est transformée en blocs sources. Équivalent à "Classic Water" dans Minecraft.
 o333 Flood Water
 t333 Remplir eau
 o334 Flood Lava
@@ -713,7 +713,7 @@ t336 Profession
 o337 Add Stopping Trade
 t337 Ajouter arrêter commerce
 o338 Invulnerable Villager
-t338 Villageois invulnerable
+t338 Villageois invulnérable
 o339 Make Unlimited Trades
 t339 Échanges illimités
 o340 Give Experience per a Trade
@@ -744,7 +744,7 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-t350 Pour créer un magasin, mettez d'abord votre achat dans le slot suppérieur du coffre.
+t350 Pour créer un magasin, mettez d'abord votre achat dans le slot supérieur du coffre.
 Ensuite, mettez un autre achat dans le slot du milieu.
 Terminez en mettant un troisième dans celui du bas.
 Cliquez sur le coffre que vous voulez et choisissez ce que vous voulez et appuyez 'Entrée'.
@@ -812,7 +812,7 @@ Il peut aussi être utilisé pour chercher des blocs.
 La recherche des entités et des TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné).
 Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).
 Les recherches de TileEntities avec un type de bloc sont plus rapides.
-La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
+La recherche de bloc peut également trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
 Utiliser "Nouvelle recherche" pour chercher à nouveau dans la sélection. "Suivant" parcours les résultats.
 o376 Documentation
 t376 Documentation
@@ -950,11 +950,11 @@ o442 Savanna
 t442 Savane
 o443 Savanna Plateau
 t443 Plateau de la savane
-o444 Messa
+o444 Mesa
 t444 Mesa
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 Mesa Plateau F
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 Mesa Plateau
 o447 Sunflower Plains
 t447 Plaine de tournesols
@@ -1023,7 +1023,7 @@ t478 Aller à la vue
 o479 Move
 t479 Déplacer
 o480 Align to Camera
-t480 Alinger à la caméra
+t480 Aligner à la caméra
 o481 Player (Single Player)
 t481 Joueur (jeu solo)
 o482 Chunk Control
@@ -1051,9 +1051,9 @@ t491 Caractère non-valide dans le nom de fichier
 o492 No presets saved
 t492 Aucun préréglage sauvé
 o493 Select preset to delete
-t493 Chosissez un préréglage à supprimer
+t493 Choisissez un préréglage à supprimer
 o494 Version {} is available
-t494 La version {} est disponnible.
+t494 La version {} est disponible.
 o495 Download
 t495 Télécharger
 o496 View
@@ -1071,7 +1071,7 @@ t501 Défil. haut
 o502 Scroll Down
 t502 Défil. bas
 o503 Button 3
-t503 Boutton 3
+t503 Bouton 3
 o504 Alt
 t504 Alt
 o505 Ctrl
@@ -1103,7 +1103,7 @@ t517 Ouvrir stockage des serveurs
 o518 Reveal World Cache
 t518 Révéler cache des mondes
 o519 Delete World Cache
-t519 Effacer cahche des mondes
+t519 Effacer cache des mondes
 o520 Advanced...
 t520 Avancé...
 o521 Simulate world
@@ -1141,7 +1141,7 @@ t536 L
 o537 Minimum Spacing
 t537 Espacement min.
 o538 Regenerate Entity UUID
-t538 Regénrérer UUID des entités
+t538 Régénérer UUID des entités
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 Remplacer les blocs avec toute valeur. Utile seulement pour le remplacement.
 o540 Entities
@@ -1213,7 +1213,7 @@ t572 Invisibilité
 o573 Slowness
 t573 Lenteur
 o574 Absorption
-t574 Absorbtion
+t574 Absorption
 o575 Night Vision (no mob effect)
 t575 Vision nocturne (joueur seul)
 o576 Speed
@@ -1297,7 +1297,7 @@ t604 Captures d'écran
 o605 Uses the Latest Snapshot Terrain Generation
 t605 Utiliser la génération de terrain de la dernière snapshot
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t606 Simuler le monde pendant quelques secondes après sa génération. Réduis la taille de la sauvegarde en exécutant les TileTicks.
+t606 Simuler le monde pendant quelques secondes après sa génération. Réduit la taille de la sauvegarde en exécutant les TileTicks.
 o607 Last Played
 t607 Joué le...
 o608 Level Name (filename)
@@ -1365,7 +1365,7 @@ t638 Double-clic pour éditer
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t639 Exporateur NBT
+t639 Explorateur NBT
 Plongez au cœur de la structure NBT.
 Clic-droit pour les options
 o640 Save your change in the NBT data.
@@ -1415,7 +1415,7 @@ t658 Composé
 o659 Integer
 t659 Intégral
 o660 Floating point
-t660 Virgule flotante
+t660 Virgule flottante
 o661 Text
 t661 Texte
 o662 Boolean
@@ -1479,7 +1479,7 @@ t685 Envoyer à un serveur FTP
 o686 There are {0} unsaved changes.
 t686 {0} changement non sauvegardés.
 o687 Save and Quit
-t687 Sauver et quiter
+t687 Sauver et quitter
 o688 Refresh Player Names
 t688 Rafraîchir les noms de joueurs
 o689 Results
@@ -1531,7 +1531,7 @@ No matching blocks/tile entities found
 t707 
 Aucune correspondance trouvée
 o708 Choose a filter, then click Filter or press Enter to apply it.
-t708 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appiquer.
+t708 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appliquer.
 o709 Click to set this item down.
 t709 Cliquez pour placer cet objet.
 o710 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
@@ -1632,7 +1632,7 @@ o753 Fonts Proportion (%):
 t753 Proportion polices (%) : 
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t754 Proportion des tailles de polices. En pourcents.
+t754 Proportion des tailles de polices. En pour-cents.
 Redémarrage nécessaire !
 o755 Save As
 t755 Sauver sous
@@ -1641,7 +1641,7 @@ t756 Nom de la copie :
 o757 Copying %0.1f million blocks
 t757 Copie de %0.1f millions de blocs
 o758 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t758 Minecraft déplace votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
+t758 Minecraft déplace votre point de spawn s'il est dans une colonne où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
 o759 Keep Data Intact
 t759 Conserver les données
 o760 This pulls skins from the online server, so this may take a while
@@ -1663,7 +1663,7 @@ t767 Densité de la brume (%) :
 o768 Toggle compass
 t768 Activer boussole
 o769 Width of blocks movement: 
-t769 Taille des dépl. des blcos : 
+t769 Taille des dépl. des blocs : 
 o770 Width of selection movement: 
 t770 Taille des dépl. de la sélection : 
 o771 Import
@@ -1699,13 +1699,13 @@ t783 Nom de la macro :
 o784 Enter a Player Name: 
 t784 Entrer un nom de joueur
 o785 Click the mouse button again to place the other selection corner.
-t785 Cliquez encore pour palcer l'autre coin de la sélection.
+t785 Cliquez encore pour placer l'autre coin de la sélection.
 o786 Stop recording
 t786 Arrêter enregistrement
 o787 Currently recording a macro
 t787 En cours d'enregistrement de macro
 o788 Choose a custom head for the villagers you make
-t788 Choisissez une tête pour les villagois que vous créez
+t788 Choisissez une tête pour les villageois que vous créez
 o789 Custom Head
 t789 Tête personnalisée
 o790 Skull Type
@@ -1759,7 +1759,7 @@ t811 Copie des chunks
 o812 Lighting chunks
 t812 Éclairage des chunks
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t813 Ce mobde n'a pas été téléchargé depuis un serveur FTP. Il n'est pas encore possible d'envoyer des mondes vers un serveur FTP s'ils n'en viennent pas
+t813 Ce monde n'a pas été téléchargé depuis un serveur FTP. Il n'est pas encore possible d'envoyer des mondes vers un serveur FTP s'ils n'en viennent pas
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
 t814 La fenêtre a été agrandie. Vous pouvez avoir du mal à utiliser la souris tant que MCEdit n'est pas redémarré.
 o815 FTP Server IP:
@@ -1795,7 +1795,7 @@ t829 Impossible de trouver le fichier server.properties ! Le client FTP ne pourr
 o830 Could not find the world folder from the server.properties file
 t830 Impossible de trouver le dossier du monde dans le fichier server.properties
 o831 Choose Block Immediately for Replace
-t831 Choisir imédiateme un block pour le remplacement
+t831 Choisir immédiatement un bloc pour le remplacement
 o832 Open Block Picker for Fill
 t832 Ouvrir le sélecteur de bloc pour le remplissage
 o833 Open Block Picker for Replace
@@ -1803,7 +1803,7 @@ t833 Ouvrir le sélecteur de bloc pour le remplacement
 o834 When the replace tool is chosen, prompt for a block type.
 t834 Demande un type de bloc quand l'outil de remplissage est choisi.
 o835 Matching Coordinates
-t835 Coordonnées corespondantes
+t835 Coordonnées correspondantes
 o836 Session Lock Options
 t836 Options Verrou de Session
 o837 Override Minecraft Changes (Not Recommended)
@@ -1813,7 +1813,7 @@ t838 Toujours écraser les changements faits dans Minecraft quand le monde est o
 o839 Player Heads
 t839 Têtes des joueurs
 o840 Sprint
-t840 Accelérer
+t840 Accélérer
 o841 Select
 t841 Sélection
 o842 Brush
@@ -1827,7 +1827,7 @@ t845 Commandes BC
 o846 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t846 Ouvre un fichier texte contenant toutes les commandes des blocks e commandes de la zone sélectionnée.
+t846 Ouvre un fichier texte contenant toutes les commandes des blocs de commandes de la zone sélectionnée.
 Sauvegarder le fichier mets à jours les blocs.
 Clic-droit pour les options
 o847 Command Blocks Commands Options
@@ -1847,7 +1847,7 @@ t853 Suppr
 o854 Show Commands
 t854 Voir commandes
 o855 Show the command in a Command Block when hovering over it.
-t855 Voir les commandes d'un block lorsque le pointeur passe au-dessus.
+t855 Voir les commandes d'un bloc lorsque le pointeur passe au-dessus.
 o856 [Empty]
 t856 [Vide]
 o857 Couldn't open the file
@@ -1879,7 +1879,7 @@ t869 Nouvel objet (1.7+)
 o870 Delete This Item
 t870 Suppr. objet
 o871 Delete All Instances Of This Item From World
-t871 Suppr. toutes les instance de l'objet dans la monde
+t871 Suppr. toutes les instance de l'objet dans le monde
 o872 Unknown Item
 t872 Objet inconnu
 o873 Edit Enchantment Table
@@ -1951,11 +1951,11 @@ t905 Supprimer seulement les objets avec la même valeur de dommages
 o906 Also delete blocks placed in the world
 t906 Supprimer aussi les blocs placés dans le monde
 o907 No command blocks found
-t907 Aucun bloc de command trouvé
+t907 Aucun bloc de commandes trouvé
 o908 Analysis
 t908 Analyse
 o909 Click to set the spawn position.
-t909 Cliquer pour definir le point de spawn.
+t909 Cliquer pour définir le point de spawn.
 o910 <Toolbar>
 t910 <Barre d'outils>
 o911 Edit Sign
@@ -1997,19 +1997,19 @@ t928 §f  Blanc
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Importer ou appuyez sur Entrée pour confirmer.
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 Entrez un ID d'entié pour ce spawner. Les IDs invalides peuvent crasher Minecraft.
+t930 Entrez un ID d'entité pour ce spawner. Les IDs invalides peuvent crasher Minecraft.
 o931 Right mouse
 t931 Bouton droit
 o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 Suppression de l'objet {0} du monde ({1} chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t933 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible de retourner en arrière. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ansi que les objets au sol ?
+t933 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible d'annuler. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ainsi que les objets au sol ?
 o934 Check to show/hide specific ores using the settings below.
 t934 Cochez cette case pour afficher les minerais cachés.
 o935 NBTEdit
 t935 
 o936 Save camera position on close
-t936 Sauver la position de la caméra en quitant
+t936 Sauver la position de la caméra en quittant
 o937 Waypoints
 t937 Pts. de passage
 o938 Empty
@@ -2021,13 +2021,13 @@ t940 Aller au point
 o941 Delete Waypoint
 t941 Suppr. point
 o942 Save Camera position on world close
-t942 Sauver la position de la caméra en quitant
+t942 Sauver la position de la caméra en quittant
 o943 Save Rotation
 t943 Sauvegarder rotation
 o944 Waypoint Name:
 t944 Nom du point :
 o945 Session lock lost. This world is being accessed from another location.
-t945 La session est verrouilée par une autre application.
+t945 La session est verrouillée par une autre application.
 o946 
 
 Your changes cannot be saved.
@@ -2035,4 +2035,32 @@ t946
 
 Vos changements ne peuvent être sauvegardés.
 o947 Click to import this item.
-t947 
+t947 Cliquer pour importer cet objet.
+o948 Menu
+t948 
+o949 for
+t949 pour
+o950 MCEdit does not support window resolutions below 1000x700.
+You may not be able to access all functions at this resolution.
+t950 La taille minimum de la fenêtre pour MCEDit est de 1000x700.
+Il est possible que certaines fonctionnalités soient inaccessibles.
+o951 Found a previous portable installation
+t951 Une installation portable existe déjà
+o952 Use
+t952 Utiliser
+o953 Overwrite
+t953 Écraser
+o954 Edit Skull Data
+t954 Éditer crâne
+o955 Found a previous fixed installation
+t955 Une installation résidente existe déjà
+o956 Left-Click and drag to the left or the right
+t956 Maintenir le bouton gauche enfoncé, puis aller à gauche ou à droite.
+o957 Cancel Command Block Offset
+t957 Annuler offset blocs de commandes
+o958 Cancels the command blocks coords changed when copied.
+t958 Annule le changement des coordonnées des blocs de commandes quand ils sont copiés.
+o959 Weird stuff happen!
+t959 Il se passe de drôles de choses...
+o960 Enable Custom Name
+t960 Activer nom personnalisé

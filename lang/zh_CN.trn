@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -397,9 +397,9 @@ t185 删除实体
 o186 Remove all entities within the selection
 t186 删除选区内所有实体
 o187 Delete Tile Ticks
-t187 删除Tile Ticks
+t187 删除方块刻
 o188 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t188 删除选取内所有Tile Ticks. Tile Ticks决定从区块被载入到区块内方块更新的时间
+t188 删除选取内所有方块刻. 方块刻决定从区块被载入到区块内方块更新的时间
 o189 Analyze
 t189 统计
 o190 Count the different blocks and entities in the selection and display the totals.
@@ -761,7 +761,7 @@ t355 仅抬升
 o356 Raise/Lower
 t356 抬升/降低
 o357 TileEntity
-t357 
+t357 方块实体
 o358 Entity
 t358 实体
 o359 Block
@@ -769,13 +769,13 @@ t359 方块
 o360 Match by:
 t360 搜索依据：
 o361 Match block type (for TileEntity searches):
-t361 仅搜索指定的方块类型（搜索TileEntity时有效）：
+t361 仅搜索指定的方块类型（搜索方块实体时有效）：
 o362 Match block:
 t362 指定方块类型：
 o363 Match block data:
 t363 仅搜索相同的方块数据值：
 o364 Match tile entities (for Block searches):
-t364 仅搜索指定的TileEntity（搜索方块时有效）：
+t364 仅搜索指定的方块实体（搜索方块时有效）：
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
 t365 在名字或值中输入“None”则会搜索所有的标签名字或值.
 o366 Match Tag Name:
@@ -804,12 +804,12 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 这个滤镜可以用于搜索实体或者TileEntity的NBT标签.
+t375 这个滤镜可以用于搜索实体或者方块实体的NBT标签.
 它也可以用于搜索方块.
 “搜索依据”决定上述哪种元素被作为搜索的对象.
-相较而言，实体和TileEntity会搜索得较快，方块的搜索速度很大程度上取决于选区的大小（因为区块内每一个方块都会被检查一遍）.
-实体的搜索会忽略方块的信息；如果搜索TileEntity时，勾选了“仅搜索指定的方块类型”，则会只搜索指定方块的TileEntity；如果搜索方块时，勾选了“仅搜索指定的TileEntity”；则会只搜索含指定TileEntity的方块.
-依据TileEntity搜索，并指定方块类型，要比颠倒过来更快.
+相较而言，实体和方块实体会搜索得较快，方块的搜索速度很大程度上取决于选区的大小（因为区块内每一个方块都会被检查一遍）.
+实体的搜索会忽略方块的信息；如果搜索方块实体时，勾选了“仅搜索指定的方块类型”，则会只搜索指定方块的方块实体；如果搜索方块时，勾选了“仅搜索指定的方块实体”；则会只搜索含指定方块实体的方块.
+依据方块实体搜索，并指定方块类型，要比颠倒过来更快.
 方块的搜索还可以选择性地指定方块数据值，例如搜索所有的火把，或搜索指定朝向的火把.
 o376 Documentation
 t376 参考
@@ -947,11 +947,11 @@ o442 Savanna
 t442 热带草原
 o443 Savanna Plateau
 t443 热带高原
-o444 Messa
+o444 Mesa
 t444 平顶山
-o445 Messa Plateau F
+o445 Mesa Plateau F
 t445 平顶山高原F
-o446 Messa Plateau
+o446 Mesa Plateau
 t446 平顶山高原
 o447 Sunflower Plains
 t447 向日葵草原
@@ -1130,11 +1130,11 @@ t532 创造
 o533 Style:
 t533 形状：
 o534 H
-t534 
+t534 高
 o535 L
-t535 
+t535 长
 o536 W
-t536 
+t536 宽
 o537 Minimum Spacing
 t537 笔刷间隔
 o538 Regenerate Entity UUID
@@ -1146,9 +1146,9 @@ t540 实体
 o541 Items
 t541 掉落物
 o542 TileEntities
-t542 
+t542 方块实体
 o543 TileTicks
-t543 
+t543 方块刻
 o544 Unpopulated Chunks
 t544 未重置的区块
 o545 Sky
@@ -1294,7 +1294,7 @@ t604 截屏文件目录
 o605 Uses the Latest Snapshot Terrain Generation
 t605 使用最新的快照版地形生成器
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t606 生成世界后模拟数秒钟. 处理所有的TileTicks来减小文件体积.
+t606 生成世界后模拟数秒钟. 处理所有的方块刻来减小文件体积.
 o607 Last Played
 t607 最后游玩
 o608 Level Name (filename)
@@ -1596,7 +1596,7 @@ t736 删除{0}个方块
 o737 WORKING - 
 t737 工作中 - 
 o738 Removing Tile Ticks...
-t738 移除Tile Ticks中...
+t738 移除方块刻中...
 o739 Removing entities...
 t739 移除实体中...
 o740 Copying {0:n} blocks...
@@ -1844,7 +1844,7 @@ t853
 o854 Show Commands
 t854 显示命令
 o855 Show the command in a Command Block when hovering over it.
-t855 指针悬浮在命令方块上是显示它的命令
+t855 指针悬停在命令方块上时显示它的命令
 o856 [Empty]
 t856 [空]
 o857 Couldn't open the file
@@ -2025,10 +2025,40 @@ t943 保存镜头朝向
 o944 Waypoint Name:
 t944 路径点名字：
 o945 Session lock lost. This world is being accessed from another location.
-t945 
+t945 会话锁丢失。这个世界正在被另一个软件读写.
 o946 
 
 Your changes cannot be saved.
 t946 
+
+你的更改不会被保存.
 o947 Click to import this item.
-t947 
+t947 点击来导入这个物品.
+o948 Menu
+t948 菜单
+o949 for
+t949 适用于
+o950 MCEdit does not support window resolutions below 1000x700.
+You may not be able to access all functions at this resolution.
+t950 MCEdit不支持1000x700以下的分辨率窗口.
+在此分辨率下你可能无法使用全部功能.
+o951 Found a previous portable installation
+t951 发现以前的便携式安装文件
+o952 Use
+t952 使用
+o953 Overwrite
+t953 覆盖
+o954 Edit Skull Data
+t954 编辑头颅数据
+o955 Found a previous fixed installation
+t955 发现以前的固定式安装文件
+o956 Left-Click and drag to the left or the right
+t956 鼠标左键朝左右拖动来调整
+o957 Cancel Command Block Offset
+t957 关闭命令方块坐标偏移
+o958 Cancels the command blocks coords changed when copied.
+t958 禁止命令方块被复制时其命令里的坐标被自动偏移.
+o959 Weird stuff happen!
+t959 奇怪的事情会发生！
+o960 Enable Custom Name
+t960 

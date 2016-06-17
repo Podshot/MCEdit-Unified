@@ -42,6 +42,8 @@ class ScrollRow(PaletteView):
         self.hscrolling = kwargs.pop('hscrolling', True)
         self.hscroll = 0
         self.virtual_width = 1000
+        self.dragging_hhover = False
+        self.hscroll_rel = 0
         PaletteView.__init__(self, cell_size, nrows, 1, scrolling=scrolling)
         if self.hscrolling:
             self.height += self.scroll_button_size
@@ -129,6 +131,30 @@ class ScrollRow(PaletteView):
         r.inflate_ip(-4, -4)
         return r
 
+    def hscrollbar_rect(self):
+        # Get the distance between the scroll buttons (d)
+        slr, slt = self.scroll_left_rect().topright
+        d = self.scroll_right_rect().left - slr
+        # The predefined step value
+        _s = self.cell_size[1]
+        # Get the total step number
+        n = float(self.virtual_width) / _s
+        # Get the visible step number
+        v = float(self.width) / _s
+        s = float(d) / n
+        w = s * v
+        if type(w) == float:
+            if w - int(w) > 0:
+                w += 1
+
+        left = max(slr, slr + (d * (float(self.hscroll) / self.virtual_width)) + self.hscroll_rel)
+        r = Rect(left, slt, w, self.scroll_button_size)
+        r.right = min(r.right, d + slr)
+        r.inflate_ip(-4, -4)
+        if r.w < 1:
+            r.w = int(w)
+        return r
+
     def can_scroll_left(self):
         return self.hscrolling and self.hscroll > 0
 
@@ -145,34 +171,55 @@ class ScrollRow(PaletteView):
         c = self.scroll_button_color
         draw.polygon(surface, c, [r.topleft, r.midright, r.bottomleft])
 
+    def draw_hscrollbar(self, surface):
+        r = self.hscrollbar_rect()
+        c = map(lambda x: min(255, max(0, x + 10)), self.scroll_button_color)
+        draw.rect(surface, c, r)
+
     def draw(self, surface):
         for row in xrange(self.num_rows()):
             for col in xrange(self.num_cols()):
                 r = self.cell_rect(row, col)
                 self.draw_cell(surface, row, col, r)
 
+        u = False
+        d = False
+        l = False
+        r = False
         if self.can_scroll_up():
+            u = True
             self.draw_scroll_up_button(surface)
         if self.can_scroll_down():
+            d = True
             self.draw_scroll_down_button(surface)
         if self.can_scroll_left():
+            l = True
             self.draw_scroll_left_button(surface)
         if self.can_scroll_right():
+            r = True
             self.draw_scroll_right_button(surface)
 
-    def scroll_left(self):
-        if self.can_scroll_left():
-            self.hscroll -= self.cell_size[1]
+        if u or d:
+            self.draw_scrollbar(surface)
+        if l or r:
+            self.draw_hscrollbar(surface)
 
-    def scroll_right(self):
+    def scroll_left(self, delta=1):
+        if self.can_scroll_left():
+            self.hscroll -= self.cell_size[1] * delta
+
+    def scroll_right(self, delta=1):
         if self.can_scroll_right():
-            self.hscroll += self.cell_size[1]
+            self.hscroll += self.cell_size[1] * delta
 
     def mouse_down(self, event):
         if event.button == 1:
             if self.hscrolling:
                 p = event.local
-                if self.scroll_left_rect().collidepoint(p):
+                if self.hscrollbar_rect().collidepoint(p):
+                    self.dragging_hhover = True
+                    return
+                elif self.scroll_left_rect().collidepoint(p):
                     self.scroll_left()
                     return
                 elif self.scroll_right_rect().collidepoint(p):
@@ -185,6 +232,28 @@ class ScrollRow(PaletteView):
             if self.hscrolling:
                 self.scroll_right()
         PaletteView.mouse_down(self, event)
+
+    def mouse_drag(self, event):
+        if self.dragging_hhover:
+            self.hscroll_rel += event.rel[0]
+            slr, slt = self.scroll_left_rect().topright
+            d = self.scroll_right_rect().left - slr
+            _s = self.cell_size[1]
+            n = float(self.virtual_width) / _s
+            s = float(d) / n
+            if abs(self.hscroll_rel) > s:
+                if self.hscroll_rel > 0:
+                    self.scroll_right(delta=int(abs(self.hscroll_rel) / s))
+                else:
+                    self.scroll_left(delta=int(abs(self.hscroll_rel) / s))
+                self.hscroll_rel = 0
+        PaletteView.mouse_drag(self, event)
+
+    def mouse_up(self, event):
+        if self.dragging_hhover:
+            self.dragging_hhover = False
+            self.hscroll_rel = 0
+        PaletteView.mouse_up(self, event)
 
     def cell_rect(self, row, col):
         w, h = self.cell_size

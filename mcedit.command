@@ -34,7 +34,8 @@ ask() {
 
 cd "$(dirname "$0")"
 if ! type "python2" > /dev/null; then
-    python -B mcedit.py
+    # Just let all command line parameter be sent to the program.
+    python -B mcedit.py    
 else
     python2 -B mcedit.py
 fi

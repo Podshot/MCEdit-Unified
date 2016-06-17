@@ -261,7 +261,7 @@ class PocketLeveldbDatabase(object):
             while it.Valid():
                 key = it.key()
 
-                if len(key) < 9:
+                if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
                     it.Next()
                     continue
                     
@@ -331,6 +331,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     _playerData = None
     playerTagCache = {}
     _playerList = None
+
+    entityClass = entity.PocketEntity
 
     @property
     def LevelName(self):
@@ -601,6 +603,9 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.saving = True
         batch = leveldb_mcpe.WriteBatch()
         dirtyChunkCount = 0
+        for c in self.chunksNeedingLighting:
+            self.getChunk(*c).genFastLights()
+
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
                 dirtyChunkCount += 1
@@ -1003,7 +1008,14 @@ class PocketLeveldbChunk(LightedChunk):
                 # Whenever we save an entity, we need to make sure to swap back.
                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
                 for ent in Entities:
-                    ent["id"] = nbt.TAG_String(invertEntities[ent["id"].value])
+                    # Get the string id, or a build one
+                    v = ent["id"].value
+                    id = invertEntities.get(v, "Entity %s"%v)
+                    # Add the built one to the entities
+                    if id not in entity.PocketEntity.entityList.keys():
+                        logger.warning("Found unknown entity '%s'"%v)
+                        entity.PocketEntity.entityList[id] = v
+                    ent["id"] = nbt.TAG_String(id)
                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
 
             self.Blocks, terrain = terrain[:32768], terrain[32768:]
@@ -1079,7 +1091,14 @@ class PocketLeveldbChunk(LightedChunk):
 
             for ent in self.Entities:
                 v = ent["id"].value
-                ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+#                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+                id = entity.PocketEntity.getNumId(v)
+#                 print id
+                if id >= 1000:
+                    print id
+                    print type(ent)
+                    print ent
+                ent['id'] = nbt.TAG_Int(id)
                 entityData += ent.save(compressed=False)
                 # We have to re-invert after saving otherwise the next save will fail.
                 ent["id"] = nbt.TAG_String(v)
@@ -1119,3 +1138,4 @@ class PocketLeveldbChunk(LightedChunk):
         :return:
         """
         self._TileEntities = TileEntities
+

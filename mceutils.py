@@ -25,7 +25,7 @@ Exception catching, some basic box drawing, texture pack loading, oddball UI ele
 #!# This stuff will then be available for components base classes in this GUI module.
 #!# And make albow/widgets more coherent to use.
 #!#
-import resource_packs
+from resource_packs import ResourcePackHandler
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
 from albow.translate import _
@@ -272,7 +272,7 @@ def drawTerrainCuttingWire(box,
 def loadAlphaTerrainTexture():
     pngFile = None
 
-    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack().terrain_path()))
+    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(),  ResourcePackHandler.Instance().get_selected_resource_pack().terrain_path()))
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)

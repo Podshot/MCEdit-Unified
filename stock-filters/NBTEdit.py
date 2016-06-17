@@ -32,11 +32,12 @@ def nbttree_mouse_down(e):
     tree.treeRow.__class__.mouse_down(tree.treeRow, e)
     
 def nbt_ok_action():
-    for chunk in chunks:
-        chunk.dirty = True
-    editor.removeUnsavedEdit()
-    editor.addUnsavedEdit()
-    editor.invalidateBox(boundingBox)
+    if chunks:
+        for chunk in chunks:
+            chunk.dirty = True
+        editor.removeUnsavedEdit()
+        editor.addUnsavedEdit()
+        editor.invalidateBox(boundingBox)
 
 def perform(level, box, options):
     global chunks

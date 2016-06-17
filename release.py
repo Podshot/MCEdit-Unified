@@ -6,40 +6,48 @@ import sys
 from sys import platform as _platform
 
 
-def get_version():
+VERSION = None
+TAG = None
+DEV = None
+
+
+def build_version_tag_dev():
     '''
-    Gets the name of the current version
+    Get and return the name of the current version, the stage of development
+    MCEdit-Unified is in, and if the program is in development mode.
     '''
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return current["name"].replace("{tag_name}",current["tag_name"])
+            return (current["name"].replace("{tag_name}",current["tag_name"]).replace("{mc_versions}", current["mc_versions"]).replace("{pe_versions}", current["pe_versions"]),
+                    current["tag_name"],
+                    current["development"])
     except:
         raise
+
+
+VERSION, TAG, DEV = build_version_tag_dev()
+
+
+def get_version():
+    '''
+    Returns the name of the current version
+    '''
+    return VERSION
 
 
 def get_release_tag():
     '''
-    Gets the stage of development MCEdit-Unified is in
+    Returns the stage of development MCEdit-Unified is in
     '''
-    try:
-        with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
-            current = json.load(jsonString)
-            return current["tag_name"]
-    except:
-        raise
+    return TAG
 
 
 def is_dev():
     '''
-    Checks if MCEdit-Unified is in development mode
+    Returns if MCEdit-Unified is in development mode
     '''
-    try:
-        with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
-            current = json.load(jsonString)
-            return current["development"]
-    except:
-        raise
+    return DEV
 
 
 def fetch_new_version_info():
@@ -54,7 +62,7 @@ def check_for_new_version(release_api_response):
         if not is_dev():
             # release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
             version = release_api_response[0]
-            if version["tag_name"] != get_release_tag():
+            if version["tag_name"] > get_release_tag():
                 is_64bit = sys.maxsize > 2**32
                 assets = version["assets"]
                 for asset in assets:
