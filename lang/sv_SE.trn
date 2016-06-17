@@ -1228,7 +1228,7 @@ t587
 o588 Width of import movement: 
 t588 
 o589 Import Options
-t589 
+t589 Importera Inställningar
 o590 Blocks Fast Nudge Settings:
 t590 
 o591 Selection Fast Nudge Settings:
@@ -1266,9 +1266,9 @@ t601
 o602 Reset to default
 t602 
 o603 Do you want to keep your changes?
-t603 
+t603 Vill du spara dina ändringar?
 o604 Screenshots
-t604 
+t604 Bilder
 o605 Uses the Latest Snapshot Terrain Generation
 t605 
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
@@ -1278,7 +1278,7 @@ t607
 o608 Level Name (filename)
 t608 
 o609 Load
-t609 
+t609 Ladda
 o610 Maximum number of copied objects.
 t610 
 o611 Try to save and restore the window position.
@@ -1286,29 +1286,29 @@ t611
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
 t612 
 o613 MCEditData
-t613 
+t613 MCEditData
 o614 This will move your settings and schematics to your Documents folder. Continue?
 t614 
 o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t615 
 o616 Goto Position:
-t616 
+t616 Gå till position:
 o617 (click anywhere to teleport)
-t617 
+t617 (klicka var som helst för att teleportera)
 o618 Format:
-t618 
+t618 Format:
 o619 Name:
-t619 
+t619 Namn:
 o620 Minecraft Infinite World (Anvil Format)
 t620 
 o621 Day: 
-t621 
+t621 Dag: 
 o622 Time of day:
-t622 
+t622 Tid på dagen:
 o623 RandomSeed:
 t623 
 o624 Game Type:
-t624 
+t624 Spel Typ:
 o625 Number of chunks: {0}
 t625 
 o626 Number of regions: {0}
@@ -1316,7 +1316,7 @@ t626
 o627 Repair regions
 t627 
 o628 Open Folder
-t628 
+t628 Öppna Mapp
 o629 Inventory Slot #%s
 t629 
 o630 id
@@ -1332,11 +1332,11 @@ t634
 o635 Reset ALL your changes in the NBT data.
 t635 
 o636 Data Type:
-t636 
+t636 Data Typ:
 o637 -> Name
-t637 
+t637 -> Namn
 o638 Double-click to edit
-t638 
+t638 Dubbel-klicka för att ändra
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
@@ -1346,13 +1346,13 @@ t640
 o641 Save unsaved edits before loading?
 t641 
 o642 {0} unsaved edits.  {1} to save.  {2}
-t642 
+t642 {0} osparade ändringar.  {1} för att spara.  {2}
 o643 (UNDO DISABLED)
 t643 
 o644 Save unsaved edits before closing?
 t644 
 o645 Load NBT file...
-t645 
+t645 Ladda NBT fil...
 o646 NBT Tree Settings
 t646 
 o647 Use Bullet Styles
@@ -1364,14 +1364,15 @@ t649
 o650 Bullet Images File
 t650 
 o651 Choose an image file...
-t651 
+t651 Välj en bild fil...
 o652 Select a NBT (.dat) file...
-t652 
+t652 Välj en NBT (.dat) fil...
 o653 File already exists.
 Click 'OK' to choose one.
-t653 
+t653 Fil existerar redan.
+Klicka på 'OK' för att välja en.
 o654 Choose a NBT file...
-t654 
+t654 Välj en NBT fil...
 o655 The selected object is not a file.
 Can't load it.
 t655 
@@ -1387,7 +1388,7 @@ t659
 o660 Floating point
 t660 
 o661 Text
-t661 
+t661 Text
 o662 Boolean
 t662 
 o663 Choose default data
@@ -1395,13 +1396,13 @@ t663
 o664 Item Type: %s
 t664 
 o665 Value
-t665 
+t665 Värde
 o666 This item type is a container. Add chlidren later.
 t666 
 o667 Choose item type
 t667 
 o668 Choose a name
-t668 
+t668 Välj ett namn
 o669 Byte
 t669 
 o670 Long
@@ -1430,7 +1431,7 @@ Press a key to assign to the filter "{2}"
 Press ESC to cancel.
 t679 
 o680 [No players]
-t680 
+t680 [Inga spelare]
 o681 Press to unbind
 t681 
 o682 Are you sure you want to delete the default player?
@@ -1438,27 +1439,27 @@ t682
 o683 Double-click or use the button below to edit the NBT Data.
 t683 
 o684 Go Back
-t684 
+t684 Gå Tillbaks
 o685 Upload to FTP Server
-t685 
+t685 Ladda upp till FTP Server
 o686 There are {0} unsaved changes.
 t686 
 o687 Save and Quit
-t687 
+t687 Spara och Avsluta
 o688 Refresh Player Names
 t688 
 o689 Results
-t689 
+t689 Resultat
 o690 Smooth - 3D
 t690 
 o691 Smoothing
 t691 
 o692 Made by Sethbling
-t692 
+t692 Gjord av Sethbling
 o693 NBT Data
-t693 
+t693 NBT Data
 o694 Edit NBT
-t694 
+t694 Ändra NBT
 o695 Open the NBT Explorer to edit player's attributes and inventory
 t695 
 o696 Not yet implemented.
@@ -1476,13 +1477,13 @@ t699
 o700 <Miscellaneous>
 t700 
 o701 Take Screenshot
-t701 
+t701 Ta Bild
 o702 Double-click to go to this item.
 t702 
 o703 Save and Restart
-t703 
+t703 Spara och starta om
 o704 From FTP Server
-t704 
+t704 Från FTP Server
 o705 <Chunk Control Tool>
 t705 
 o706 Select Chunks
@@ -1513,47 +1514,47 @@ o716 I don't know how to open {0}:
 {1!r}
 t716 
 o717 Checking for server updates...
-t717 
+t717 Letar efter server uppdateringar...
 o718 Time left: {0}
-t718 
+t718 Tid kvar: {0}
 o719 Untitled World
 t719 
 o720 Name this new world.
-t720 
+t720 Namnge den här världen.
 o721 Minecraft World *.*  
-t721 
+t721 Minecraft Värld *.*
 o722 Generating chunks...
-t722 
+t722 Genererar chunks...
 o723 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
 t723 
 o724 Analyzing {0} blocks...
-t724 
+t724 Analyserar {0} block...
 o725 Save to file...
-t725 
+t725 Spara till fil...
 o726 Fill with Air
-t726 
+t726 Fyll med Luft
 o727 Delete Chunks
-t727 
+t727 Radera Chunks
 o728 Recording undo...
 t728 
 o729 Replacing blocks...
-t729 
+t729 Ersätter block...
 o730 REPLACING - 
-t730 
+t730 ERSÄTTER - 
 o731 Copying chunk %s...
-t731 
+t731 Kopierar chunk %s...
 o732 Continue with undo disabled?
 t732 
 o733 Continue
-t733 
+t733 Fortsätt
 o734 Canceled
 t734 
 o735 DELETING - 
-t735 
+t735 RADERAR - 
 o736 Deleting {0} blocks
-t736 
+t736 Raderar {0} block
 o737 WORKING - 
-t737 
+t737 ARBETAR - 
 o738 Removing Tile Ticks...
 t738 
 o739 Removing entities...
@@ -1573,11 +1574,11 @@ t745
 o746 Create chunks using the settings above? This cannot be undone.
 t746 
 o747 Add
-t747 
+t747 Lägg till
 o748 New child
 t748 
 o749 Rename
-t749 
+t749 Byt namn
 o750 Paste as child
 t750 
 o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
@@ -1590,7 +1591,7 @@ o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t754 
 o755 Save As
-t755 
+t755 Spara Som
 o756 Name the new copy:
 t756 
 o757 Copying %0.1f million blocks
@@ -1608,13 +1609,13 @@ t762
 o763 Session Lock is being used by MCEdit
 t763 
 o764 Show Player Skins
-t764 
+t764 Visa Spelarnas Skins
 o765 Show player skins while editing the world
-t765 
+t765 Visa spelarnas skins när du ändrar på världen
 o766 Compass Size (%): 
-t766 
+t766 Kompass Storlek (%): 
 o767 Fog Intensity (%): 
-t767 
+t767 Intensitet av dimma (%): 
 o768 Toggle compass
 t768 
 o769 Width of blocks movement: 
@@ -1622,13 +1623,13 @@ t769
 o770 Width of selection movement: 
 t770 
 o771 Import
-t771 
+t771 Importera
 o772 Old (Messy)
 t772 
 o773 Click to open filters folder
 t773 
 o774 Head
-t774 
+t774 Huvud
 o775 Exception during filter operation. See console for details.
 
 {0}
@@ -1670,13 +1671,13 @@ t792
 o793 Zombie Skull
 t793 
 o794 Player Skull
-t794 
+t794 Spelarhuvud
 o795 Creeper Skull
 t795 
 o796 If Player Skull
 t796 
 o797 Player's Name
-t797 
+t797 Spelares Namn
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
 t798 
@@ -1688,25 +1689,25 @@ o801 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
 t801 
 o802 Create Chunks
-t802 
+t802 Skapa Chunks
 o803 Replace Only:
-t803 
+t803 Ersätt Bara:
 o804 Make Villager Silent
-t804 
+t804 Gör Bybo Tyst
 o805 Install Mode
-t805 
+t805 Installeringsläge
 o806 SAVING - 
-t806 
+t806 SPARAR - 
 o807 World Type:
-t807 
+t807 Världstyp:
 o808 Amplified
 t808 
 o809 Large Biomes
-t809 
+t809 Stora Biomer
 o810 Superflat
-t810 
+t810 Superflat
 o811 Copying chunks
-t811 
+t811 Kopierar chunks
 o812 Lighting chunks
 t812 
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
@@ -1714,11 +1715,11 @@ t813
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
 t814 
 o815 FTP Server IP:
-t815 
+t815 FTP Server IP:
 o816 FTP Username:
-t816 
+t816 FTP Användarnamn:
 o817 FTP Password:
-t817 
+t817 FTP Lösernord:
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
 t818 
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
@@ -1730,7 +1731,7 @@ t821
 o822 Directory: 
 t822 
 o823 Files: 
-t823 
+t823 Filer: 
 o824 Host: 
 t824 
 o825 Client: 
@@ -1738,9 +1739,9 @@ t825
 o826 Target: 
 t826 
 o827 Error: {0}
-t827 
+t827 Error: {0}
 o828 Incorrect username or password
-t828 
+t828 Fel användarnamn eller lösenord
 o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
 t829 
 o830 Could not find the world folder from the server.properties file
@@ -1758,19 +1759,19 @@ t835
 o836 Session Lock Options
 t836 
 o837 Override Minecraft Changes (Not Recommended)
-t837 
+t837 Skriv över Minecraft ändringar (Inte rekommenderat)
 o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
 t838 
 o839 Player Heads
-t839 
+t839 Spelarhuvud
 o840 Sprint
 t840 
 o841 Select
 t841 
 o842 Brush
-t842 
+t842 Pensel
 o843 Fill and Replace
-t843 
+t843 Fyll och Ersätt
 o844 World Spawnpoint
 t844 
 o845 CB Commands
@@ -1788,23 +1789,23 @@ t849
 o850 Make space between the lines
 t850 
 o851 File format
-t851 
+t851 Filformat
 o852 Choose the file format for the files
-t852 
+t852 Välj filformatet för filerna
 o853 Del
 t853 
 o854 Show Commands
-t854 
+t854 Visa Kommandon
 o855 Show the command in a Command Block when hovering over it.
-t855 
+t855 Visa kommandot i ett Kommandoblock när man håller musen över det.
 o856 [Empty]
-t856 
+t856 [Tom]
 o857 Couldn't open the file
-t857 
+t857 Kunde inte öppna filen
 o858 Edit Command Block
-t858 
+t858 Ändra Kommandoblock
 o859 Command:
-t859 
+t859 Kommando:
 o860 Custom Name:
 t860 
 o861 Track Output
@@ -1840,7 +1841,7 @@ t875
 o876 Item
 t876 
 o877 Data
-t877 
+t877 Data
 o878 Current: 
 t878 
 o879 Change to: 
@@ -1898,57 +1899,57 @@ t904
 o905 Only delete items with the same damage value
 t905 
 o906 Also delete blocks placed in the world
-t906 
+t906 Radera också block placerade i världen
 o907 No command blocks found
-t907 
+t907 Hittade inga kommandoblock.
 o908 Analysis
-t908 
+t908 Analys
 o909 Click to set the spawn position.
-t909 
+t909 Klicka för att sätta spawn positionen.
 o910 <Toolbar>
 t910 
 o911 Edit Sign
-t911 
+t911 Ändra Skylt
 o912 Add Color Code...
-t912 
+t912 Lägg till Färgkod...
 o913 §0  Black
-t913 
+t913 §0  Svart
 o914 §1  Dark Blue
-t914 
+t914 §1  Mörk Blå
 o915 §2  Dark Green
-t915 
+t915 §2  Mörk Grön
 o916 §3  Dark Aqua
 t916 
 o917 §4  Dark Red
-t917 
+t917 §4  Mörk Röd
 o918 §5  Dark Purple
-t918 
+t918 §5  Mörk Lila
 o919 §6  Gold
-t919 
+t919 §6  Guld
 o920 §7  Gray
-t920 
+t920 §7  Grå
 o921 §8  Dark Gray
-t921 
+t921 §8  Mörk Grå
 o922 §9  Blue
-t922 
+t922 §9  Blå
 o923 §a  Green
-t923 
+t923 §a  Grön
 o924 §b  Aqua
 t924 
 o925 §c  Red
-t925 
+t925 §c  Röd
 o926 §d  Light Purple
-t926 
+t926 §d  Ljus Lila
 o927 §e  Yellow
-t927 
+t927 §e  Gul
 o928 §f  White
-t928 
+t928 §f  Vit
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 
 o931 Right mouse
-t931 
+t931 Höger mus
 o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
@@ -1956,13 +1957,13 @@ t933
 o934 Check to show/hide specific ores using the settings below.
 t934 
 o935 NBTEdit
-t935 
+t935 NBTEdit
 o936 Save camera position on close
 t936 
 o937 Waypoints
 t937 
 o938 Empty
-t938 
+t938 Tom
 o939 Create Waypoint
 t939 
 o940 Goto Waypoint
@@ -1970,9 +1971,9 @@ t940
 o941 Delete Waypoint
 t941 
 o942 Save Camera position on world close
-t942 
+t942 Spara Kamera position när världen stängs
 o943 Save Rotation
-t943 
+t943 Spara Rotation
 o944 Waypoint Name:
 t944 
 o945 Session lock lost. This world is being accessed from another location.
@@ -1986,16 +1987,17 @@ t947
 o948 Menu
 t948 Meny
 o949 for
-t949 
+t949 för
 o950 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t950 
+t950 MCEdit stöder inte skärmupplösningar under 1000x700.
+Du kommer kanske inte att kunna använda alla funktioner med den här upplösningen.
 o951 Found a previous portable installation
-t951 
+t951 Hittade en föregående portabel installation
 o952 Use
-t952 
+t952 Använd
 o953 Overwrite
-t953 
+t953 Skriv över
 o954 Edit Skull Data
 t954 
 o955 Found a previous fixed installation
