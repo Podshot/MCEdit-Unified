@@ -992,34 +992,35 @@ t470 Biom
 o471 Repeat count
 t471 
 o472 Depth
-t472 
+t472 Djup
 o473 Pick a block:
-t473 
+t473 Välj ett block:
 o474 Players
-t474 
+t474 Spelare
 o475 Player Name
-t475 
+t475 Spelarnamn
 o476 Player: 
-t476 
+t476 Spelare: 
 o477 Goto
-t477 
+t477 Gå till
 o478 Goto View
-t478 
+t478 Gå till visning
 o479 Move
-t479 
+t479 Flytta
 o480 Align to Camera
 t480 
 o481 Player (Single Player)
-t481 
+t481 Spelare (Single Player)
 o482 Chunk Control
-t482 
+t482 Chunk Kontrol
 o483 Move Spawn Point
 Right-click for options
-t483 
+t483 Flytta Spawn Point
+Höger-klicka för inställningar
 o484 Goto Spawn
-t484 
+t484 Gå till Spawn
 o485 Take a Screenshot
-t485 
+t485 Ta ett kort
 o486 Load Preset
 t486 
 o487 Remove Presets
@@ -1037,97 +1038,97 @@ t492
 o493 Select preset to delete
 t493 
 o494 Version {} is available
-t494 
+t494 Version {} är tillgänglig
 o495 Download
-t495 
+t495 Ladda ner
 o496 View
-t496 
+t496 Visa
 o497 Ignore
-t497 
+t497 Ignorera
 o498 Space
-t498 
+t498 Mellanslag
 o499 Tab
-t499 
+t499 Tab
 o500 Delete
-t500 
+t500 Radera
 o501 Scroll Up
-t501 
+t501 Scrolla Upp
 o502 Scroll Down
-t502 
+t502 Scrolla Ner
 o503 Button 3
-t503 
+t503 Knapp 3
 o504 Alt
-t504 
+t504 Alt
 o505 Ctrl
-t505 
+t505 Ctrl
 o506 Creating a new world.
-t506 
+t506 Skapar en ny värld.
 o507 Minecraft Server
-t507 
+t507 Minecraft Server
 o508 Flatland
-t508 
+t508 Flatland
 o509 Generator:
-t509 
+t509 Generator:
 o510 Will automatically download and use the latest version
-t510 
+t510 Kommer automatiskt ladda ner och använda den senaste versionen
 o511 Height: 
-t511 
+t511 Höjd: 
 o512 Grass
-t512 
+t512 Gräs
 o513 Server version:
-t513 
+t513 Server version:
 o514 or
-t514 
+t514 eller
 o515 Check for Updates
-t515 
+t515 Leta efter Uppdateringar
 o516 Advanced
-t516 
+t516 Avancerat
 o517 Open Server Storage
-t517 
+t517 Öppna Server Storage
 o518 Reveal World Cache
 t518 
 o519 Delete World Cache
-t519 
+t519 Radera Värld Cache
 o520 Advanced...
-t520 
+t520 Avancerat...
 o521 Simulate world
-t521 
+t521 Simulera värld
 o522 Use snapshot versions
-t522 
+t522 Använd snapshot versioner
 o523 X: 
-t523 
+t523 X:
 o524 Y: 
-t524 
+t524 Y:
 o525 Z: 
-t525 
+t525 Z:
 o526 f: 
-t526 
+t526 f:
 o527 Seed: 
-t527 
+t527 Seed:
 o528 East-West Chunks: 
-t528 
+t528 Öst-Västra Chunks: 
 o529 North-South Chunks: 
-t529 
+t529 Nord-södra Chunks: 
 o530 Survival
-t530 
+t530 Överlevnad
 o531 Cancel
-t531 
+t531 Avbryt
 o532 Creative
-t532 
+t532 Kreativt
 o533 Style:
-t533 
+t533 Stil:
 o534 H
-t534 
+t534 H
 o535 L
-t535 
+t535 L
 o536 W
-t536 
+t536 W
 o537 Minimum Spacing
 t537 
 o538 Regenerate Entity UUID
-t538 
+t538 Regenerera Entity UUID
 o539 Replace blocks with any data value. Only useful for Replace operations.
-t539 
+t539 Byt ut block med vilket som helst data värde. Bara användbar för "Byt ut" operationer.
 o540 Entities
 t540 
 o541 Items
@@ -1139,31 +1140,31 @@ t543
 o544 Unpopulated Chunks
 t544 
 o545 Sky
-t545 
+t545 Himmel
 o546 Fog
-t546 
+t546 Dimma
 o547 Ceiling
-t547 
+t547 Tak
 o548 Chunk Redraw
 t548 
 o549 Hidden Ores
-t549 
+t549 Gömd Malm
 o550 Bedrock
-t550 
+t550 Berggrund
 o551 Coal
-t551 
+t551 Kol
 o552 Iron
-t552 
+t552 Järn
 o553 Lapis Lazuli
-t553 
+t553 Lapis Lazuli
 o554 Redstone
-t554 
+t554 Rödsten
 o555 Gold
-t555 
+t555 Guld
 o556 Diamond
-t556 
+t556 Diamant
 o557 Nether Quartz
-t557 
+t557 Nether Kvarts
 o558 Shortcut: {0}
 t558 
 o559 View Distance ({0})
@@ -1171,15 +1172,15 @@ t559
 o560 Copy Stack Size: 
 t560 
 o561 Remove
-t561 
+t561 Ta bort
 o562 Reload Skins
-t562 
+t562 Ladda om Skins
 o563 Previous Page
-t563 
+t563 Förra sidan
 o564 Next Page
-t564 
+t564 Nästa sida
 o565 Super Secret Settings
-t565 
+t565 Super Hemliga Inställningar
 o566 Default Resource Pack
 t566 
 o567 Square
@@ -1193,7 +1194,7 @@ t570
 o571 Wither
 t571 
 o572 Invisibility
-t572 
+t572 Osynlighet
 o573 Slowness
 t573 
 o574 Absorption
@@ -1201,11 +1202,11 @@ t574
 o575 Night Vision (no mob effect)
 t575 
 o576 Speed
-t576 
+t576 Hastighet
 o577 Mining Fatigue (no mob effect)
 t577 
 o578 Player Name(s):
-t578 
+t578 Spelarnamn:
 o579 Chunks Borders
 t579 
 o580 Fast Nudge
@@ -1239,9 +1240,9 @@ t593
 o594 Width of points movement: 
 t594 
 o595 Do you want to save your changes?
-t595 
+t595 Vill du spara dina ändringar?
 o596 Don't Save
-t596 
+t596 Spara Inte
 o597 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
