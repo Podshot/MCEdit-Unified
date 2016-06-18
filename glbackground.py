@@ -19,6 +19,7 @@ A UI element that only draws a single OpenGL quad.
 """
 
 from albow.openglwidgets import GLOrtho
+from albow import unparented
 from OpenGL.GL import glEnable, glColor, glVertexPointer, glDrawArrays, glDisable, GL_BLEND, GL_FLOAT, GL_QUADS
 from numpy import array
 
@@ -42,4 +43,12 @@ class GLBackground(GLOrtho):
 
 
 class Panel(GLBackground):
-    pass
+    def __init__(self, *args, **kwargs):
+        GLBackground.__init__(self, *args, **kwargs)
+        if not self.parent:
+            name = kwargs.get('name', repr(self))
+            # Destroy the former widget with the same name.
+            w = unparented.get(name, None)
+            if w:
+                del w
+            unparented[name] = self

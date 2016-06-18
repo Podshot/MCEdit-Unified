@@ -234,7 +234,7 @@ class CloneToolPanel(Panel):
         return not isinstance(self.tool.level, pymclevel.MCInfdevOldLevel)
 
     def __init__(self, tool, editor, _parent=None):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.CloneToolPanel')
         self.tool = tool
 
         rotaterollRow = Row((
@@ -381,7 +381,7 @@ class CloneToolPanel(Panel):
 
 class CloneToolOptions(ToolOptions):
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.CloneToolOptions')
         self.tool = tool
         self.autoPlaceCheckBox = CheckBox(ref=AttrRef(tool, "placeImmediately"))
         self.autoPlaceLabel = Label("Place Immediately")
@@ -1111,7 +1111,7 @@ class ConstructionToolPanel(CloneToolPanel):
 
 class ConstructionToolOptions(ToolOptions):
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.ConstructionToolOptions')
         self.tool = tool
 
         importNudgeLabel = Label("Import Fast Nudge Settings:")

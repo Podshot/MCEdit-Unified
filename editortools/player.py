@@ -402,7 +402,7 @@ class PlayerSpawnMoveOperation(Operation):
 
 class PlayerPositionPanel(Panel):
     def __init__(self, tool):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.PlayerPositionPanel')
         self.tool = tool
         self.player_UUID = {"UUID": [], "Name": []}
         self.level = tool.editor.level
@@ -958,7 +958,7 @@ class PlayerPositionTool(EditorTool):
 
 class PlayerSpawnPositionOptions(ToolOptions):
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.PlayerSpawnPositionOptions')
         self.tool = tool
         self.spawnProtectionCheckBox = CheckBox(ref=AttrRef(tool, "spawnProtection"))
         self.spawnProtectionLabel = Label("Spawn Position Safety")
@@ -987,7 +987,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         return self.editor.level.dimNo == 0
 
     def showPanel(self):
-        self.panel = Panel()
+        self.panel = Panel(name='Panel.PlayerSpawnPositionTool')
         button = Button("Goto Spawn", action=self.gotoSpawn)
         self.panel.add(button)
         self.panel.shrink_wrap()

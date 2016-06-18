@@ -62,7 +62,7 @@ class SelectionToolOptions(ToolOptions):
         self.colorPopupButton.choiceIndex = names.index(color.lower())
 
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.SelectionToolOptions')
         self.tool = tool
 
         self.colorPopupButton = ChoiceButton([], choose=self.colorChanged)
@@ -146,7 +146,7 @@ class SelectionToolOptions(ToolOptions):
 
 class SelectionToolPanel(Panel):
     def __init__(self, tool, editor):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.SelectionToolPanel')
         self.tool = tool
         self.editor = editor
 
@@ -435,7 +435,7 @@ class SelectionTool(EditorTool):
             return
 
         if self.nudgePanel is None:
-            self.nudgePanel = Panel()
+            self.nudgePanel = Panel(name='Panel.SelectionTool.nudgePanel')
 
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
@@ -1289,7 +1289,7 @@ class SelectionTool(EditorTool):
 
 class CBCommandsOptionsPanel(ToolOptions):
     def __init__(self):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.CBCommandsOptionsPanel')
 
         empty = Label("")
 

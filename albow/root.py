@@ -570,8 +570,8 @@ class RootWidget(Widget):
 
             self.currentTooltip = None
 
-        def TextTooltip(text):
-            tooltipBacking = Panel()
+        def TextTooltip(text, name):
+            tooltipBacking = Panel(name=name)
             tooltipBacking.bg_color = (0.0, 0.0, 0.0, 0.8)
             tooltipBacking.add(self.labelClass(text))
             tooltipBacking.shrink_wrap()
@@ -596,7 +596,7 @@ class RootWidget(Widget):
         else:
             ttext = widget.tooltipText
             if ttext is not None:
-                tip = TextTooltip(ttext)
+                tip = TextTooltip(ttext, 'Panel.%s'%(repr(widget)))
                 showTip(tip)
 
     def update_tooltip(self, pos=None):

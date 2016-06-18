@@ -35,6 +35,8 @@ from albow.dialogs import Dialog
 
 class ChunkToolPanel(Panel):
     def __init__(self, tool, *a, **kw):
+        if 'name' not in kw.keys():
+            kw['name'] = 'Panel.ChunkToolPanel'
         Panel.__init__(self, *a, **kw)
 
         self.tool = tool

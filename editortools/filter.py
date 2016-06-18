@@ -449,7 +449,7 @@ class FilterToolPanel(Panel):
     macros would not be saved."""
 
     def __init__(self, tool):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.FilterToolPanel')
         self.macro_steps = []
         self.current_step = 0
         self._filter_json = None
@@ -673,7 +673,7 @@ class FilterToolPanel(Panel):
         self.reload()
 
     def bind_key(self, message=None):
-        panel = Panel()
+        panel = Panel(name='Panel.FilterToolPanel.bind_key')
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
         if not message:
             message = _("Press a key to assign to the filter \"{0}\"\n\n"
@@ -813,7 +813,7 @@ class FilterTool(EditorTool):
         self.filterModules = {}
         self.savedOptions = {}
 
-        self.updatePanel = Panel()
+        self.updatePanel = Panel(name='Panel.FilterTool.updatePanel')
         updateButton = Button("Update Filters", action=self.updateFilters)
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()

@@ -74,7 +74,8 @@ from collections import defaultdict, deque
 from OpenGL import GL
 
 from albow import alert, ask, AttrRef, Button, Column, input_text, IntField, Row, \
-    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
+    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox, \
+    unparented
 import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
@@ -331,6 +332,10 @@ class LevelEditor(GLViewport):
             self.statusLabel.width = self.width
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
+            # Update the unparented widgets.
+#             print unparented
+            print len(unparented)
+            [a.set_update_ui(v) for a in unparented.values()]
     #-#
 
     def __del__(self):
@@ -427,8 +432,8 @@ class LevelEditor(GLViewport):
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
-            def __init__(self):
-                Panel.__init__(self)
+            def __init__(self, parent):
+                Panel.__init__(self, parent)
                 self.autoChooseCheckBox = CheckBoxLabel("Override Minecraft Changes (Not Recommended)",
                                                         ref=config.session.override,
                                                         tooltipText="Always override Minecraft changes when map is open in MCEdit. (Not recommended)")
@@ -439,7 +444,7 @@ class LevelEditor(GLViewport):
                 self.shrink_wrap()
 
         if evt.button == 3:
-            sessionLockPanel = SessionLockOptions()
+            sessionLockPanel = SessionLockOptions(self)
             sessionLockPanel.present()
 
     _viewMode = None
@@ -2965,7 +2970,7 @@ class LevelEditor(GLViewport):
                 col = Column((label, progress), align="l", width=200)
                 infos.append(col)
 
-        panel = Panel()
+        panel = Panel(parent=self)
         if len(infos):
             panel.add(Column(infos))
             panel.shrink_wrap()

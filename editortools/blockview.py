@@ -78,6 +78,8 @@ class BlockButton(ButtonBase, Panel):
 
     def __init__(self, materials, blockInfo=None, ref=None, recentBlocks=None, *a, **kw):
         self.allowWildcards = False
+        if 'name' not in kw.keys():
+            kw['name'] = 'Panel.BlockButton'
         Panel.__init__(self, *a, **kw)
 
         self.bg_color = (1, 1, 1, 0.25)
