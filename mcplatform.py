@@ -60,6 +60,8 @@ import re
 import subprocess
 
 try:
+    import pygtk
+    pygtk.require('2.0')
     import gtk
     if gtk.pygtk_version < (2,3,90):
         raise ImportError
@@ -293,37 +295,42 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
 
 
 def askOpenFileGtk(title, suffixes, initialDir):
-    chooser = gtk.FileChooserDialog(title,
-                                    None, gtk.FILE_CHOOSER_ACTION_SAVE,
-                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    fls = []
+    def run_dlg():
+        chooser = gtk.FileChooserDialog(title,
+                                        None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_current_folder(initialDir)
+        chooser.set_current_name("world") #For some reason the Windows isn't closing if this line ins missing or the parameter is ""
 
-    chooser.set_default_response(gtk.RESPONSE_OK)
-    chooser.set_current_folder(initialDir)
-    chooser.set_current_name("world") #For some reason the Windows isn't closing if this line ins missing or the parameter is ""
+        #Add custom Filter
+        filter = gtk.FileFilter()
+        filter.set_name("Levels and Schematics")
+        for suffix in suffixes:
+            filter.add_pattern("*."+suffix)
+        chooser.add_filter(filter)
 
-    #Add custom Filter
-    filter = gtk.FileFilter()
-    filter.set_name("Levels and Schematics")
-    for suffix in suffixes:
-        filter.add_pattern("*."+suffix)
-    chooser.add_filter(filter)
+        #Add "All files" Filter
+        filter = gtk.FileFilter()
+        filter.set_name("All files")
+        filter.add_pattern("*")
+        chooser.add_filter(filter)
 
-    #Add "All files" Filter
-    filter = gtk.FileFilter()
-    filter.set_name("All files")
-    filter.add_pattern("*")
-    chooser.add_filter(filter)
-
-    response = chooser.run()
-    if response == gtk.RESPONSE_OK:
-        filename = chooser.get_filename()
-    else:
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            fls.append(chooser.get_filename())
+        else:
+            fls.append(None)
         chooser.destroy()
-        return  # pressed cancel
-    chooser.destroy()
+        gtk.main_quit()
 
-    return filename
+    gtk.idle_add(run_dlg)
+    gtk.main()
+
+    return fls[0]
 
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
@@ -374,35 +381,42 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             pass
 
     elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
-        chooser = gtk.FileChooserDialog(title,
-                                        None, gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        chooser.set_current_folder(initialDir)
-        chooser.set_current_name(defaultName)
+        fls = []
+        def run_dlg():
+            chooser = gtk.FileChooserDialog(title,
+                                            None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                            gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+    
+            chooser.set_default_response(gtk.RESPONSE_OK)
+            chooser.set_current_folder(initialDir)
+            chooser.set_current_name(defaultName)
 
-        #Add custom Filter
-        filter = gtk.FileFilter()
-        filter.set_name(filetype[:filetype.index("\0")])
-        filter.add_pattern("*." + suffix)
-        chooser.add_filter(filter)
+            #Add custom Filter
+            filter = gtk.FileFilter()
+            filter.set_name(filetype[:filetype.index("\0")])
+            filter.add_pattern("*." + suffix)
+            chooser.add_filter(filter)
 
-        #Add "All files" Filter
-        filter = gtk.FileFilter()
-        filter.set_name("All files")
-        filter.add_pattern("*")
-        chooser.add_filter(filter)
+            #Add "All files" Filter
+            filter = gtk.FileFilter()
+            filter.set_name("All files")
+            filter.add_pattern("*")
+            chooser.add_filter(filter)
 
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            filename = chooser.get_filename()
-        else:
+            response = chooser.run()
+            if response == gtk.RESPONSE_OK:
+                fls.append(chooser.get_filename())
+            else:
+                fls.append(None)
             chooser.destroy()
-            return # pressed cancel
+            gtk.main_quit()
 
-        chooser.destroy()
+        gtk.idle_add(run_dlg)
+        gtk.main()
+
+        filename = fls[0]
 
     else: #Fallback
         log.debug("Calling internal file chooser.")
@@ -448,25 +462,29 @@ def askOpenFolderWin32(title, initialDir):
 
 def askOpenFolderGtk(title, initialDir):
     if hasGtk:
-        chooser = gtk.FileChooserDialog(title,
-                                    None, gtk.FILE_CHOOSER_ACTION_SAVE,
-                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        fls = []
+        def run_dlg():
+            chooser = gtk.FileChooserDialog(title,
+                                        None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
-        chooser.set_default_response(gtk.RESPONSE_OK)
-        chooser.set_current_folder(initialDir)
-        chooser.set_current_name("world")
-        chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
-    
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            filename = chooser.get_filename() # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
-        else:
+            chooser.set_default_response(gtk.RESPONSE_OK)
+            chooser.set_current_folder(initialDir)
+            chooser.set_current_name("world")
+            chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+
+            response = chooser.run()
+            if response == gtk.RESPONSE_OK:
+                fls.append(chooser.get_filename()) # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
+            else:
+                fls.append(None)
             chooser.destroy()
-            return  # pressed cancel
-        chooser.destroy()
+            gtk.main_quit()
 
-        return filename
+        gtk.idle_add(run_dlg)
+        gtk.main()
+        return fls[0]
     else:
         print "You currently need gtk to use an Open Folder Dialog!"
 
