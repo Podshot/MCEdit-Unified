@@ -1638,7 +1638,7 @@ class GenericBlockRenderer(BlockRenderer):
 
 
 class LeafBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Leaves.ID, pymclevel.materials.alphaMaterials.AcaciaLeaves.ID]
+    blocktypes = [block.ID for block in pymclevel.materials.alphaMaterials.blocksByType["LEAVES"]]
 
     @property
     def renderstate(self):
@@ -2000,11 +2000,12 @@ class LeverBlockRenderer(BlockRenderer):
     
 
 class RailBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID,
-                  pymclevel.materials.alphaMaterials.PoweredRail.ID,
-                  pymclevel.materials.alphaMaterials.DetectorRail.ID,
-                  pymclevel.materials.alphaMaterials.ActivatorRail.ID
-    ]
+    #blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID,
+    #              pymclevel.materials.alphaMaterials.PoweredRail.ID,
+    #              pymclevel.materials.alphaMaterials.DetectorRail.ID,
+    #              pymclevel.materials.alphaMaterials.ActivatorRail.ID
+    #]
+    blocktypes = [block.ID for block in pymclevel.materials.alphaMaterials.blocksByType["SIMPLE_RAIL"]]
     renderstate = ChunkCalculator.renderstateAlphaTest
 
     railTextures = numpy.array([
