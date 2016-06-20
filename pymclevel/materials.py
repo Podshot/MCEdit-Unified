@@ -8,7 +8,7 @@ import mclangres
 import json
 import os
 
-NOTEX = (0x1F0, 0x1F0)
+NOTEX = (496, 496)
 
 import yaml
 
@@ -57,7 +57,7 @@ id_limit = 4096
 
 
 class MCMaterials(object):
-    defaultColor = (0xc9, 0x77, 0xf0, 0xff)
+    defaultColor = (201, 119, 240, 255)
     defaultBrightness = 0
     defaultOpacity = 15
     defaultTexture = NOTEX
@@ -95,10 +95,11 @@ class MCMaterials(object):
         self.color = self.flatColors
         self.brightness = self.lightEmission
         self.opacity = self.lightAbsorption
+        self.types = {}
 
         self.Air = self.addBlock(0,
                                  name="Air",
-                                 texture=(0x0, 0x150),
+                                 texture=(0, 336),
                                  opacity=0,
         )
 

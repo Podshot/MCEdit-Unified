@@ -659,7 +659,7 @@
 			"idStr": "leaves",
 			"tex": [5,3],
 			"mapcolor": [60,192,41],
-			"type": "GLASS",
+			"type": "LEAVES",
 			"id": 18
 		},{
 			"name": "Sponge",
@@ -7946,6 +7946,7 @@
 			"idStr": "beetroots",
 			"mapcolor": [120,120,120],
 			"type": "CROPS",
+			"opacity": 0,
 			"id": 207
 		},{
 			"tex_direction": {
