@@ -5,7 +5,7 @@ from os.path import join
 from collections import defaultdict
 from pprint import pformat
 import mclangres
-
+import json
 import os
 
 NOTEX = (0x1F0, 0x1F0)
@@ -1083,5 +1083,56 @@ for b in alphaMaterials:
     if b.ID == 0:
         b.stringID = "air"
     block_map[b.ID] = "minecraft:"+b.stringID
+  
+fp = open(os.path.join("pymclevel","blockstate_definitions.json"))
+blockstates = json.load(fp)
+fp.close()
+
+def idToBlockstate(bid, data):
+    '''
+    Converts from a numerical ID to a BlockState string
+    
+    :param bid: The ID of the block
+    :type bid: int
+    :param data: The data value of the block
+    :type data: int
+    :return: The BlockState string
+    :rtype: str
+    '''
+    
+    name = block_map[bid].replace("minecraft:", "")
+    result = name + "["
+    for prop in blockstates["minecraft"][name]["properties"]: # TODO: Change this if MCEdit's mod support ever improves
+        if prop["<data>"] == data:
+            for field in prop.keys():
+                if field == "data":
+                    continue
+                result += field + "=" + str(prop[field]) + ","
+            return "".join(result[:-1]) + "]"
+            
+
+def blockstateToID(name, properties):
+    '''
+    Converts from a BlockState to a numerical ID/Data pair
+    
+    :param name: The BlockState name
+    :type name: str
+    :param properties: A list of Property/Value pairs in dict form
+    :type properties: list
+    :return: A tuple containing the numerical ID/Data pair (<id>, <data>)
+    :rtype: tuple
+    '''
+    if ":" in name:
+        prefix, name = name.split(":")
+    else:
+        prefix = "minecraft"
+    bid = blockstates[prefix][name]["id"]
+    for prop in blockstates[prefix][name]["properties"]:
+        correct = True
+        for (key, value) in properties.iteritems():
+            if key in prop:
+                correct = correct and (prop[key] == value)
+        if correct:
+            return (bid, prop["<data>"])
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")
