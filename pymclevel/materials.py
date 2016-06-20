@@ -1101,15 +1101,15 @@ def idToBlockstate(bid, data):
     '''
     
     name = block_map[bid].replace("minecraft:", "")
-    result = name + "["
+
+    properties = {}
     for prop in blockstates["minecraft"][name]["properties"]: # TODO: Change this if MCEdit's mod support ever improves
         if prop["<data>"] == data:
             for field in prop.keys():
-                if field == "data":
+                if field == "<data>":
                     continue
-                result += field + "=" + str(prop[field]) + ","
-            return "".join(result[:-1]) + "]"
-            
+                properties[field] = prop[field]
+            return (name, properties)            
 
 def blockstateToID(name, properties):
     '''
