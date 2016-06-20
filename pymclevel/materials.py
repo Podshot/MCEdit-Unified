@@ -610,6 +610,7 @@ alphaMaterials.EndGateway = alphaMaterials[209, 0]
 alphaMaterials.CommandBlockRepeating = alphaMaterials[210, 0]
 alphaMaterials.CommandBlockChain = alphaMaterials[211, 0]
 alphaMaterials.FrostedIce = alphaMaterials[212, 0]
+alphaMaterials.StructureVoid = alphaMaterials[217, 0]
 alphaMaterials.StructureBlock = alphaMaterials[255, 0]
 
 # --- Classic static block defs ---

@@ -775,6 +775,7 @@ class ChunkCalculator(object):
     def addTransparentMaterials(self, mats, materialCount):
         transparentMaterials = [
             alphaMaterials.Glass,
+            alphaMaterials.StructureVoid,
             alphaMaterials.GlassPane,
             alphaMaterials.IronBars,
             alphaMaterials.MonsterSpawner,
