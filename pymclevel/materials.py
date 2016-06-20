@@ -197,12 +197,8 @@ class MCMaterials(object):
             f = file(path)
         try:
             log.info(u"Loading block info from %s", f)
-            try:
-                log.debug("Trying YAML CLoader")
-                blockyaml = yaml.load(f, Loader=yaml.CLoader)
-            except:
-                log.debug("CLoader not preset, falling back to Python YAML")
-                blockyaml = yaml.load(f)
+            blockyaml = json.load(f)
+            #blockyaml = yaml.load(f)
             self.addYamlBlocks(blockyaml)
 
         except Exception, e:
@@ -285,7 +281,11 @@ class MCMaterials(object):
                 self.blockTextures[blockID][data] = texture
 
     def addBlock(self, blockID, blockData=0, **kw):
-        name = kw.pop('name', self.names[blockID][blockData])
+        blockData = int(blockData)
+        try:
+            name = kw.pop('name', self.names[blockID][blockData])
+        except:
+            print (blockID, blockData)
         stringName = kw.pop('idStr', '')
 
         self.lightEmission[blockID] = kw.pop('brightness', self.defaultBrightness)
@@ -321,19 +321,19 @@ class MCMaterials(object):
 
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
-alphaMaterials.addYamlBlocksFromFile("minecraft.yaml")
+alphaMaterials.addYamlBlocksFromFile("minecraft.json")
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
-classicMaterials.addYamlBlocksFromFile("classic.yaml")
+classicMaterials.addYamlBlocksFromFile("classic.json")
 
 indevMaterials = MCMaterials(defaultName="Not present in Indev")
 indevMaterials.name = "Indev"
-indevMaterials.addYamlBlocksFromFile("indev.yaml")
+indevMaterials.addYamlBlocksFromFile("indev.json")
 
 pocketMaterials = MCMaterials()
 pocketMaterials.name = "Pocket"
-pocketMaterials.addYamlBlocksFromFile("pocket.yaml")
+pocketMaterials.addYamlBlocksFromFile("pocket.json")
 
 # --- Static block defs ---
 
