@@ -800,8 +800,8 @@ class ChunkCalculator(object):
             pymclevel.materials.alphaMaterials.JungleFenceGate,
             pymclevel.materials.alphaMaterials.DarkOakFenceGate,
             pymclevel.materials.alphaMaterials.AcaciaFenceGate,
-            pymclevel.materials.alphaMaterials.Sign
-
+            pymclevel.materials.alphaMaterials.Sign,
+            pymclevel.materials.alphaMaterials.StructureVoid
         ]
         for b in transparentMaterials:
             mats[b.ID] = materialCount

@@ -333,6 +333,7 @@ textureSlots = {
     "command_block_conditional": (step(20),step(11)),
     "command_block_front": (step(21),step(11)),
     "command_block_side": (step(22),step(11)),
+    "bone_block_top": (step(19),step(11)),
     # End Twelfth Row
 
     # Start Thriteenth Row
@@ -359,6 +360,7 @@ textureSlots = {
     "repeating_command_block_conditional": (step(20),step(12)),
     "repeating_command_block_front": (step(21),step(12)),
     "repeating_command_block_side": (step(22),step(12)),
+    "bone_block_side": (step(19),step(12)),
     # End Thriteenth Row
 
     # Start Fourteenth Row
@@ -377,6 +379,7 @@ textureSlots = {
     "coal_block": (step(12),step(13)),
     "log_acacia_top": (step(13),step(13)),
     "piston_left": (step(14),step(13)),
+    "magma": (step(18),step(13)),
     #
     "double_plant_rose_bottom": (step(16),step(13)),
     "double_plant_rose_top": (step(17),step(13)),
@@ -405,6 +408,7 @@ textureSlots = {
     #
     "double_plant_paeonia_bottom": (step(16),step(14)),
     "double_plant_paeonia_top": (step(17),step(14)),
+    "nether_wart_block": (step(18),step(14)),
     # End Fifteenth Row
 
     # Start Sixteenth Row
@@ -426,6 +430,7 @@ textureSlots = {
     #
     #
     "slime": (step(17),step(15)),
+    "red_nether_brick": (step(18),step(15)),
     # End Sixteenth Row
 
     # Start Seventeenth Row
