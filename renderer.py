@@ -3038,35 +3038,7 @@ class IceBlockRenderer(BlockRenderer):
         return vertexArray
 
     makeFaceVertices = iceFaceVertices
-    
-class Renderer(object):
-    
-    @classmethod
-    def _getSubclasses(cls, clas):
-        subclasses = []
-        
-        for subclass in clas.__subclasses__():
-            subclasses.append(subclass())
-            subclasses.extend(cls._getSubclasses(subclass))
-        
-        return subclasses    
-    
-    @classmethod
-    def getRenderers(cls):
-        return cls._getSubclasses(cls)
-    
-    def draw(self):
-        raise NotImplementedError()
-    
-class TestRenderer(Renderer):
-    
-    def draw(self):
-        GL.glEnable(GL.GL_CULL_FACE)
-        GL.glEnable(GL.GL_DEPTH_TEST)
-        GL.glColor3f(255,0,0)
-        mceutils.drawCube(pymclevel.FloatBox(size=(1,1,1),origin=(0,-2,0)))
-        GL.glDisable(GL.GL_CULL_FACE)
-        GL.glDisable(GL.GL_DEPTH_TEST)
+
 
 from glutils import DisplayList
 
@@ -3697,9 +3669,6 @@ class MCRenderer(object):
         if self.level.materials.name in ("Pocket", "Alpha"):
             GL.glMatrixMode(GL.GL_TEXTURE)
             GL.glScalef(2., 2., 2.)
-            
-        for renderer in Renderer.getRenderers():
-            renderer.draw()
 
     renderErrorHandled = False
 
