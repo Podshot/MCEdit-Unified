@@ -31647,6 +31647,10 @@
                 }
             ]
         },
+		"structure_void": {
+			"id": 217,
+			"properties":[]
+		},
         "structure_block":{
             "id":255,
             "properties":[

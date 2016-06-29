@@ -325,11 +325,13 @@ class FilterModuleOptions(Widget):
 
             elif isinstance(optionType, (int, float)):
                 rows.append(addNumField(self, optionName, oName, optionType))
-
-            elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
+                
+            elif optionType == "blocktype" or optionType.startswith("minecraft:") or isinstance(optionType, pymclevel.materials.Block):
                 blockButton = BlockButton(tool.editor.level.materials)
                 if isinstance(optionType, pymclevel.materials.Block):
                     blockButton.blockInfo = optionType
+                else:
+                    blockButton.blockInfo = pymclevel.materials.alphaMaterials[optionType]
 
                 row = Column((Label(oName, doNotTranslate=True), blockButton))
                 page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
