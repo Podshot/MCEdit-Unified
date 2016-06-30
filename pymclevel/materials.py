@@ -140,9 +140,17 @@ class MCMaterials(object):
                 if b.name == key:
                     return b
             if "[" not in key:
+                lowest_block = None
                 for b in self.allBlocks:
-                    if ("minecraft:{}".format(b.idStr) == key or b.idStr == key) and b.blockData == 0:
-                        return b
+                    if ("minecraft:{}".format(b.idStr) == key or b.idStr == key):
+                        if b.blockData == 0:
+                            return b
+                        elif not lowest_block:
+                            lowest_block = b
+                        elif lowest_block.blockData > b.blockData:
+                            lowest_block = b
+                if lowest_block:
+                    return lowest_block
             else:
                 name, properties = _BlockstateAPI.deStringifyBlockstate(key)
                 return self[_BlockstateAPI.blockstateToID(name, properties)]
@@ -1132,6 +1140,7 @@ class _BlockstateAPI:
                         continue
                     properties[field] = prop[field]
                 return (name, properties)
+        return (name, properties)
             
     @classmethod
     def blockstateToID(cls, name, properties):
@@ -1166,19 +1175,31 @@ class _BlockstateAPI:
                     correct = correct and (prop[key] == value)
             if correct:
                 return (bid, prop["<data>"])
+        return (bid, 0)
     
-    @classmethod    
-    def stringifyBlockstate(cls, name, properties):
-        if "minecraft:" not in name:
+    @staticmethod
+    def stringifyBlockstate(name, properties):
+        if not name.startswith("minecraft:"):
             name = "minecraft:" + name # This should be changed as soon as possible
         result = name + "["
         for (key, value) in properties.iteritems():
             result += "{}={},".format(key, value)
         return result[:-1] + "]"
     
-    @classmethod
-    def deStringifyBlockstate(cls, blockstate):
-        name, props = blockstate.split("[")
+    @staticmethod
+    def deStringifyBlockstate(blockstate):
+        seperated = blockstate.split("[")
+        
+        if len(seperated) == 1:
+            if not seperated[0].startswith("minecraft:"):
+                seperated[0] = "minecraft:" + seperated[0] 
+            return (seperated[0], {})
+        
+        name, props = seperated
+        
+        if not name.startswith("minecraft:"):
+            name = "minecraft:" + name
+            
         properties = {}
     
         props = props[:-1]
@@ -1199,5 +1220,7 @@ for block in alphaMaterials.allBlocks:
     if block == alphaMaterials.Air:
         continue
     setattr(block, "Blockstate", idToBlockstate(block.ID, block.blockData))
+    
+print deStringifyBlockstate("minecraft:anvil")
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")

@@ -11,7 +11,6 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-import mceutils
 
 """
 renderer.py
@@ -1141,12 +1140,12 @@ class BlockRenderer(object):
         pymclevel.faces.FaceZIncreasing: numpy.s_[1:-1, 2:, 1:-1],
     }
     renderstate = ChunkCalculator.renderstateAlphaTest
+    used = False
 
     def __init__(self, cc):
         self.makeTemplate = cc.makeTemplate
         self.chunkCalculator = cc
         self.vertexArrays = []
-
         pass
 
     @classmethod
@@ -1209,7 +1208,7 @@ class BlockRenderer(object):
         if 0 == len(buf):
             return
         stride = elementByteLength
-
+        
         GL.glVertexPointer(3, GL.GL_FLOAT, stride, (buf.ravel()))
         GL.glTexCoordPointer(2, GL.GL_FLOAT, stride, (buf.ravel()[3:]))
         GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, stride, (buf.view(dtype=numpy.uint8).ravel()[20:]))
@@ -1939,7 +1938,7 @@ class TorchBlockRenderer(BlockRenderer):
     makeVertices = makeTorchVertices
     
 class LeverBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Lever.ID]
+    blocktypes = [alphaMaterials["minecraft:lever"].ID]
     
     leverBaseTemplate = makeVertexTemplatesFromJsonModel((5, 0, 4), (11, 3, 12), {
         "down": (10, 0, 16, 8),
@@ -2082,7 +2081,7 @@ class RailBlockRenderer(BlockRenderer):
 
 
 class LadderBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Ladder.ID]
+    blocktypes = [alphaMaterials["minecraft:ladder"].ID]
 
     ladderOffsets = numpy.array([
                                     [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
@@ -2127,7 +2126,7 @@ class LadderBlockRenderer(BlockRenderer):
 
 
 class WallSignBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.WallSign.ID]
+    blocktypes = [alphaMaterials["minecraft:wall_sign"].ID]
     
     wallSignTemplate = makeVertexTemplatesFromJsonModel((0, 4.5, 0), (16, 13.5, 2), {
         "down": (0, 11, 18, 13),
@@ -2152,7 +2151,7 @@ class WallSignBlockRenderer(BlockRenderer):
     makeVertices = makeVerticesFromModel(wallSignTemplates, 7)
     
 class StandingSignRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Sign.ID]
+    blocktypes = [alphaMaterials["minecraft:standing_sign"].ID]
     
     signTemplate = makeVertexTemplatesFromJsonModel((0, 7, 7), (16, 16, 9), {
         "down": (0, 14, 16, 16),
@@ -2186,7 +2185,7 @@ class StandingSignRenderer(BlockRenderer):
 
 
 class SnowBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.SnowLayer.ID]
+    blocktypes = [alphaMaterials["minecraft:snow_layer"].ID]
 
     def makeSnowVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2225,8 +2224,8 @@ class SnowBlockRenderer(BlockRenderer):
 
 
 class CarpetBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Carpet.ID,  #Separate before implementing layers
-                  alphaMaterials.Lilypad.ID]
+    blocktypes = [alphaMaterials["minecraft:carpet"].ID,  #Separate before implementing layers
+                  alphaMaterials["minecraft:waterlily"].ID]
 
     def makeCarpetVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2265,7 +2264,7 @@ class CarpetBlockRenderer(BlockRenderer):
 
 
 class CactusBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Cactus.ID]
+    blocktypes = [alphaMaterials["minecraft:cactus"].ID]
 
     def makeCactusVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2368,8 +2367,8 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
 
 class EnchantingBlockRenderer(
     BlockRenderer):  #Note: Enderportal frame side sprite has been lowered 1 pixel to use this renderer, will need separate renderer for eye.
-    blocktypes = [alphaMaterials.EnchantmentTable.ID,
-                  alphaMaterials.PortalFrame.ID]
+    blocktypes = [alphaMaterials["minecraft:enchanting_table"].ID,
+                  alphaMaterials["minecraft:end_portal"].ID]
 
     def makeEnchantingVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2400,7 +2399,7 @@ class EnchantingBlockRenderer(
 
 
 class DaylightBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.DaylightSensor.ID,
+    blocktypes = [alphaMaterials["minecraft:daylight_detector"].ID,
                   alphaMaterials.DaylightSensorOn.ID]
 
     def makeDaylightVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
@@ -2435,7 +2434,7 @@ class DaylightBlockRenderer(BlockRenderer):
 
 
 class BedBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Bed.ID]
+    blocktypes = [alphaMaterials["minecraft:bed"].ID]
 
     def makeBedVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2466,7 +2465,7 @@ class BedBlockRenderer(BlockRenderer):
 
 
 class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
-    blocktypes = [alphaMaterials.Cake.ID]
+    blocktypes = [alphaMaterials["minecraft:cake"].ID]
 
     def makeCakeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2536,7 +2535,7 @@ class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
 
 
 class RedstoneBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.RedstoneWire.ID]
+    blocktypes = [alphaMaterials["minecraft:redstone_wire"].ID]
 
     def redstoneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         blockIndices = self.getMaterialIndices(blockMaterials)
@@ -2566,13 +2565,13 @@ class RedstoneBlockRenderer(BlockRenderer):
 # button, floor plate, door -> 1-cube features
 
 class DoorRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.WoodenDoor.ID,
-                  alphaMaterials.IronDoor.ID,
-                  alphaMaterials.SpruceDoor.ID,
-                  alphaMaterials.BirchDoor.ID,
-                  alphaMaterials.JungleDoor.ID,
-                  alphaMaterials.AcaciaDoor.ID,
-                  alphaMaterials.DarkOakDoor.ID]
+    blocktypes = [alphaMaterials["minecraft:wooden_door"].ID,
+                  alphaMaterials["minecraft:iron_door"].ID,
+                  alphaMaterials["minecraft:spruce_door"].ID,
+                  alphaMaterials["minecraft:birch_door"].ID,
+                  alphaMaterials["minecraft:jungle_door"].ID,
+                  alphaMaterials["minecraft:acacia_door"].ID,
+                  alphaMaterials["minecraft:dark_oak_door"].ID]
 
     doorTemplate = makeVertexTemplatesFromJsonModel(
         (0, 0, 0), (3, 16, 16),
@@ -2880,7 +2879,7 @@ class StairBlockRenderer(BlockRenderer):
 
 
 class VineBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.Vines.ID]
+    blocktypes = [alphaMaterials["minecraft:vine"].ID]
 
     SouthBit = 1  #FaceZIncreasing
     WestBit = 2  #FaceXDecreasing
@@ -2930,10 +2929,10 @@ class VineBlockRenderer(BlockRenderer):
 
 
 class SlabBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.OakWoodSlab.ID,
-                  alphaMaterials.StoneSlab.ID,
-                  alphaMaterials.RedSandstoneSlab.ID,
-                  alphaMaterials.PurpurSlab.ID]
+    blocktypes = [alphaMaterials["minecraft:wooden_slab"].ID,
+                  alphaMaterials["minecraft:stone_slab"].ID,
+                  alphaMaterials["minecraft:stone_slab2"].ID,
+                  alphaMaterials["minecraft:purpur_slab"].ID]
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -2966,7 +2965,7 @@ class SlabBlockRenderer(BlockRenderer):
 
 # 1.9 renderer's
 class EndRodRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials.EndRod.ID]
+    blocktypes = [alphaMaterials["minecraft:end_rod"].ID]
 
     rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
         "down": (4, 2, 2, 0),
@@ -3009,8 +3008,8 @@ class EndRodRenderer(BlockRenderer):
     makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
 
 class WaterBlockRenderer(BlockRenderer):
-    waterID = alphaMaterials.Water.ID
-    blocktypes = [alphaMaterials.WaterActive.ID, waterID]
+    waterID = alphaMaterials["minecraft:water"].ID
+    blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, waterID]
     renderstate = ChunkCalculator.renderstateWater
 
     def waterFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
@@ -3025,7 +3024,7 @@ class WaterBlockRenderer(BlockRenderer):
 
 
 class IceBlockRenderer(BlockRenderer):
-    iceID = alphaMaterials.Ice.ID
+    iceID = alphaMaterials["minecraft:ice"].ID
     blocktypes = [iceID]
     renderstate = ChunkCalculator.renderstateIce
 
@@ -3038,7 +3037,6 @@ class IceBlockRenderer(BlockRenderer):
         return vertexArray
 
     makeFaceVertices = iceFaceVertices
-
 
 from glutils import DisplayList
 
