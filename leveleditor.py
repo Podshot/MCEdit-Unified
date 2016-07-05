@@ -167,6 +167,10 @@ class LevelEditor(GLViewport):
 
         self.level = None
 
+        # Tracking the dimension changes.
+        self.prev_dimension = None
+        self.new_dimension = None
+
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
         self.movements = [
@@ -1267,9 +1271,13 @@ class LevelEditor(GLViewport):
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
-            #!# Adding waypoints handling for all world types
-        self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-        self.waypointManager.load()
+        #!# Adding waypoints handling for all world types
+        # Need to take care of the dimension.
+        # If the camera last position was saved, changing dimension is broken; the view is sticked to the overworld.
+        #!#
+        if self.prev_dimension == self.new_dimension:
+            self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+            self.waypointManager.load()
 
 
         if len(list(self.level.allChunks)) == 0:
@@ -1308,7 +1316,10 @@ class LevelEditor(GLViewport):
     def gotoDimension(self, dimNo):
         if dimNo == self.level.dimNo:
             return
-        elif dimNo == -1 and self.level.dimNo == 0:
+        else:
+            # Record the new dimension
+            self.new_dimension = dimNo
+        if dimNo == -1 and self.level.dimNo == 0:
             self.gotoNether()
         elif dimNo == 0 and self.level.dimNo == -1:
             self.gotoEarth()
