@@ -223,6 +223,8 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             _suffixes.append("zip")
 
             _suffixes.append("inv")
+            
+            _suffixes.append("nbt")
 
             # BO support
             _suffixes.append("bo2")
@@ -263,7 +265,7 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         # if schematics:
         if not suffixes:
-            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
+            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' +
              '*.*\0*.*\0\0')
         else:
             f = "All\0"

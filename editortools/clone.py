@@ -1219,6 +1219,9 @@ class ConstructionTool(CloneTool):
         if clipFilename:
             if unicode(clipFilename).split(".")[-1] in ("schematic", "schematic.gz", "zip", "inv"):
                 self.loadSchematic(clipFilename)
+            elif unicode(clipFilename).split(".")[-1].lower() == "nbt":
+                structure = pymclevel.schematic.StructureNBT(filename=clipFilename)
+                self.loadLevel(structure.toSchematic())
             elif unicode(clipFilename).split(".")[-1].lower() == "bo2":
                 self.loadLevel(BOParser.BO2(clipFilename).getSchematic())
             elif unicode(clipFilename).split(".")[-1].lower() == "bo3":

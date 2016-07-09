@@ -1,5 +1,9 @@
 {
     "minecraft":{
+		"air":{
+			"id": 0,
+			"properties": []
+		},
         "stone":{
             "id":1,
             "properties":[

@@ -14,10 +14,10 @@ import blockrotation
 from box import BoundingBox
 import infiniteworld
 from level import MCLevel, EntityLevel
-from materials import alphaMaterials, MCMaterials, namedMaterials
+from materials import alphaMaterials, MCMaterials, namedMaterials, blockstateToID
 from mclevelbase import exhaust
 import nbt
-from numpy import array, swapaxes, uint8, zeros, resize
+from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
 
 log = getLogger(__name__)
 
@@ -697,6 +697,154 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     @classmethod
     def _isLevel(cls, filename):
         return zipfile.is_zipfile(filename)
+    
+class StructureNBT(object):
+    
+    class StructureTooBigException(Exception):
+        pass
+    
+    def __init__(self, filename=None, root_tag=None):     
+        if filename:
+            root_tag = nbt.load(filename)
+        
+        if root_tag:
+            self._root_tag = root_tag
+            self._size = (self._root_tag["size"][0].value, self._root_tag["size"][1].value, self._root_tag["size"][2].value)
+            
+            for axis in self._size:
+                if axis > 32:
+                    raise self.StructureTooBigException()
+                
+            self._palette = self.__toPythonPrimitive(self._root_tag["palette"])
+            
+            self._blocks = zeros(self.Size, dtype=int)
+            self._blocks.fill(self.get_palette_index("minecraft:air"))
+            self._entities = []
+            self._tile_entities = zeros(self.Size, dtype=nbt.TAG_Compound)
+            self._tile_entities.fill({})
+            
+            for block in self._root_tag["blocks"]:
+                x, y, z = [ p.value for p in block["pos"].value ]
+                self._blocks[x,y,z] = block["state"].value
+                if "nbt" in block:
+                    print self.__toPythonPrimitive(block["nbt"])
+                    compound = nbt.TAG_Compound()
+                    compound.update(block["nbt"])
+                    self._tile_entities[x,y,z] = compound
+            self.toSchematic()
+            
+    def toSchematic(self):
+        schem = MCSchematic(shape=self.Size)
+        for (x,y,z), value in ndenumerate(self._blocks):
+            b_id, b_data = blockstateToID(*self.get_state(value))
+            schem.Blocks[x,z,y] = b_id
+            schem.Data[x,z,y] = b_data
+            
+        for (x,y,z), value in ndenumerate(self._tile_entities):
+            if not value:
+                continue
+            tag = value
+            tag["x"] = nbt.TAG_Int(x)
+            tag["y"] = nbt.TAG_Int(y)
+            tag["z"] = nbt.TAG_Int(z)
+            schem.addTileEntity(tag)
+            
+        return schem
+    
+    def __toPythonPrimitive(self, _nbt):
+        if isinstance(_nbt, nbt.TAG_Compound):
+            d = {}
+            for key in _nbt.keys():
+                if isinstance(_nbt[key], nbt.TAG_Compound):
+                    d[key] = self.__toPythonPrimitive(_nbt[key])
+                elif isinstance(_nbt[key], nbt.TAG_List):
+                    l = []
+                    for value in _nbt[key]:
+                        if isinstance(value, nbt.TAG_Compound):
+                            l.append(self.__toPythonPrimitive(value))
+                        else:
+                            l.append(value.value)
+                    d[key] = l
+                else:
+                    d[key] = _nbt[key].value
+            return d
+        elif isinstance(_nbt, nbt.TAG_List):
+            l = []
+            for tag in _nbt:
+                if isinstance(tag, nbt.TAG_Compound):
+                    l.append(self.__toPythonPrimitive(tag))
+                elif isinstance(tag, nbt.TAG_List):
+                    l.append(self.__toPythonPrimitive(tag))
+                else:
+                    l.append(tag.value)
+            return l
+    
+    def __convertPaletteToDict(self):
+        palette = []
+        for state in self._root_tag["palette"]:
+            block = {}
+            block["Name"] = state["Name"].value
+            if "Properties" in state:
+                block["Properties"] = {}
+                for (key, value) in state["Properties"].iteritems():
+                    block["Properties"][key] = value.value
+            palette.append(block)
+        return palette
+    
+    def get_state(self, index):
+        if index > (len(self._palette) - 1):
+            raise IndexError()
+        return (self._palette[index]["Name"], self._palette[index].get("Properties", {}))
+            
+    def get_palette_index(self, name, properties=None): # TODO: Switch to string comparison of properties, instead of dict comparison
+        for i in range(len(self._palette)):
+            if self._palette[i]["Name"] == name:
+                if properties and "Properties" in self._palette[i]:
+                    for (key, value) in properties.iteritems():
+                        if not self._palette[i]["Properties"].get(key, None) == value:
+                            continue
+                    return i
+                else:
+                    return i
+        return -1
+        
+    def _find_air(self):
+        for i in range(len(self._palette)):
+            if self._palette[i]["Name"] == "minecraft:air":
+                return i
+        return -1
+            
+        
+    @property
+    def Version(self):
+        return self._root_tag["version"].value
+    
+    @property
+    def Author(self):
+        return self._root_tag["author"].value
+    
+    @property
+    def Size(self):
+        return self._size
+    
+    @property
+    def Blocks(self):
+        return self._blocks
+    
+    @property
+    def Entities(self):
+        return self._entities
+        
+    @property
+    def Palette(self):
+        return self._palette
+    
+    #Blocks = property(fget=get_Blocks, fset=set_Blocks)
+        
+struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\Coords.nbt")
+#struct.Blocks[1,1,1] = 2
+#print struct.Size
+#print struct.Blocks[1,1,1]
 
 
 def adjustExtractionParameters(self, box):
