@@ -31,7 +31,7 @@ class GLDisplayContext(object):
 
     @staticmethod
     def displayMode():
-        return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
+        return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.OPENGLBLIT
 
     def reset(self, splash=None, caption=("", "")):
         pygame.key.set_repeat(500, 100)
@@ -50,10 +50,11 @@ class GLDisplayContext(object):
             print "wwh 1", wwh
         d = display.set_mode(wwh, self.displayMode())
 
+        # Let initialize OpenGL stuff after the splash.
         GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
         GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
         GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-
+ 
         # textures are 256x256, so with this we can specify pixel coordinates
         GL.glMatrixMode(GL.GL_TEXTURE)
         GL.glScale(1 / 256., 1 / 256., 1 / 256.)
@@ -101,8 +102,10 @@ class GLDisplayContext(object):
                 print "wwh 2", wwh
 
         if splash:
-            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-            GL.glWindowPos2d(0, 0)
+            # Let initialize OpenGL stuff after the splash.
+#             GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            #!# The next line can be removed (Linux, from source).
+            # GL.glWindowPos2d(0, 0)
             back = Surface(wwh)
             back.fill((0, 0, 0))
             GL.glDrawPixels(wwh[0], wwh[1], GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
@@ -114,6 +117,7 @@ class GLDisplayContext(object):
             GL.glWindowPos2d(_x, _y)
             GL.glDrawPixels(w, h,
                             GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, numpy.fromstring(data, dtype='uint8'))
+#             d.blit(splash, (0, 0))
 
         if splash:
             display.flip()
@@ -126,6 +130,18 @@ class GLDisplayContext(object):
             self.win.set_position((x, y), update=True)
             if DEBUG_WM:
                 print "* self.win.get_position()", self.win.get_position()
+
+        # Initialize OpenGL stuff now.
+#         GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
+#         GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
+#         GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+# 
+#         # textures are 256x256, so with this we can specify pixel coordinates
+#         GL.glMatrixMode(GL.GL_TEXTURE)
+#         GL.glScale(1 / 256., 1 / 256., 1 / 256.)
+#         
+#         GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+
 
         try:
             iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
@@ -185,3 +201,4 @@ class GLDisplayContext(object):
                     functools.partial(makeTerrainTexture, mats)
                 )
             mats.terrainTexture = self.terrainTextures[mats.name]
+
