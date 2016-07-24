@@ -619,6 +619,9 @@ class Entity(object):
     def copyWithOffset(cls, entity, copyOffset, regenerateUUID=False):
         eTag = deepcopy(entity)
 
+        # Need to check the content of the copy to regenerate the possible sub entities UUIDs.
+        # A simple fix for the 1.9+ minecarts is proposed.
+
         positionTags = map(lambda p, co: nbt.TAG_Double(p.value + co), eTag["Pos"], copyOffset)
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
@@ -629,6 +632,14 @@ class Entity(object):
 
         if "Riding" in eTag:
             eTag["Riding"] = Entity.copyWithOffset(eTag["Riding"], copyOffset)
+
+        # # Fix for 1.9+ minecarts
+        if "Passengers" in eTag:
+            passengers = nbt.TAG_List()
+            for passenger in eTag["Passengers"]:
+                passengers.append(Entity.copyWithOffset(passenger, copyOffset, regenerateUUID))
+            eTag["Passengers"] = passengers
+        # #
 
         if regenerateUUID:
             # Courtesy of SethBling
