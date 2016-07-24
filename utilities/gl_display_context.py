@@ -102,14 +102,11 @@ class GLDisplayContext(object):
                 print "wwh 2", wwh
 
         if splash:
-            back = Surface(wwh)
-            back.fill((0, 0, 0))
-
             # Setup the OGL display
             GL.glLoadIdentity()
             GLU.gluOrtho2D(0, wwh[0], 0, wwh[1])
-            GL.glDrawPixels(wwh[0], wwh[1], GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
-                            numpy.fromstring(image.tostring(back, 'RGBA'), dtype='uint8'))
+            GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)
+
             swh = splash.get_size()
             _x, _y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
             w, h = swh
