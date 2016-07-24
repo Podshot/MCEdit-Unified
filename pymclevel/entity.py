@@ -243,7 +243,8 @@ class TileEntity(object):
                         mobs.extend(p["Entity"])
 
             for mob in mobs:
-                if "Pos" in mob:
+                # Why do we get a unicode object as tag 'mob'?
+                if "Pos" in mob and mob != "Pos":
                     if first:
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]

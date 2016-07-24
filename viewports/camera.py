@@ -585,9 +585,36 @@ class CameraViewport(GLViewport):
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         if id != selectedMob():
-            tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
-            tileEntity["SpawnData"] = pymclevel.TAG_Compound()
-            tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
+            if "EntityId" in tileEntity:
+                tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            if "SpawnData" in tileEntity:
+                tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+                tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
+            if "SpawnPotentials" in tileEntity:
+                for potential in tileEntity["SpawnPotentials"]:
+                    if "Entity" in potential:
+                        # MC 1.9+
+                        if potential["Entity"]["id"].value == id or potential["Entity"]["EntityId"].value == id:
+                            potential["Entity"] = pymclevel.TAG_Compound()
+                            potential["Entity"]["id"] = pymclevel.TAG_String(selectedMob())
+                    elif "Properties" in potential:
+                        # MC before 1.9
+                        if "Type" in potential and potential["Type"].value == id:
+                            potential["Type"] = pymclevel.TAG_String(selectedMob())
+                        # We also can change some other values in the Properties tag, but it is useless in MC 1.8+.
+                        # The fact is this data will not be updated by the game after the mob type is changed, but the old mob will not spawn.
+#                         put_entityid = False
+#                         put_id = False
+#                         if "EntityId" in potential["Properties"] and potential["Properties"]["EntityId"].value == id:
+#                             put_entityid = True
+#                         if "id" in potential["Properties"] and potential["Properties"]["id"].value == id:
+#                             put_id = True
+#                         new_props = pymclevel.TAG_Compound()
+#                         if put_entityid:
+#                             new_props["EntityId"] = pymclevel.TAG_String(selectedMob())
+#                         if put_id:
+#                             new_props["id"] = pymclevel.TAG_String(selectedMob())
+#                         potential["Properties"] = new_props
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
