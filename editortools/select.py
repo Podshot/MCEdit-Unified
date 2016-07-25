@@ -22,7 +22,7 @@ from OpenGL import GL
 import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, \
-    showProgress, TextInputRow
+    showProgress, TextInputRow, Dialog, TextFieldWrapped
 from albow.translate import _
 from config import config
 from depths import DepthOffset
@@ -1221,8 +1221,13 @@ class SelectionTool(EditorTool):
     @alertException
     def exportSelection(self):
         schematic = self._copySelection()
+        
         if schematic:
-            self.editor.exportSchematic(schematic)
+            result = ask("Select a format:", ["schematic", "structure", "Cancel"])
+            if result == "schematic":
+                self.editor.exportSchematic(schematic)
+            elif result == "structure":
+                print "Author: {}".format(author)
 
     @alertException
     def openCommands(self):

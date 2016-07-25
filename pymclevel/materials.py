@@ -1184,6 +1184,8 @@ class _BlockstateAPI:
         result = name + "["
         for (key, value) in properties.iteritems():
             result += "{}={},".format(key, value)
+        if result.endswith("["):
+            return result[:-1]
         return result[:-1] + "]"
     
     @staticmethod
