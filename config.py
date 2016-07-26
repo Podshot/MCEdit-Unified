@@ -93,6 +93,18 @@ class Config(object):
             self.reset()
             return
 
+        """if version == "1.1.2.0":
+            if self.config.get("Commands","sorting") == "xz":
+                self.config.set("Commands","Sorting","xyz")
+            elif self.config.get("Commands","sorting") == "zx":
+                self.config.set("Commands","Sorting","zyx")
+            elif self.config.get("Commands","sorting") == "chain":
+                self.config.set("Commands","Sorting","xyz")
+            else:
+                self.config.set("Commands","Sorting","xyz")
+            version = "1.1.2.1"
+            self.config.set("Version", "version", version)
+            self.save()"""
         if version == "1.1.1.1":
             n = 1
             for (name, value) in self.config.items("Keys"):
@@ -600,7 +612,11 @@ definitions = {
         ("override", "Override", False)
     ],
     ("commands", "Commands"): [
-        ("sorting", "Sorting", "chain"),
+        ("sorting", "Sorting","xyz"),
+        ("invertX", "Invert X", False),
+        ("invertY", "Invert Y", False),
+        ("invertZ", "Invert Z", False),
+        ("groupchains", "Group Chains", True),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
     ],
