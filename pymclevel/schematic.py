@@ -707,13 +707,19 @@ class StructureNBT(object):
     class StructureTooBigException(Exception):
         pass
     
-    def __init__(self, filename=None, root_tag=None):
+    def _check_bounds(self, bounds):
+        for axis in bounds:
+            if axis > 32:
+                raise self.StructureTooBigException()
+    
+    def __init__(self, filename=None, root_tag=None, size=None):
         self._author = None
         self._blocks = None
         self._palette = None
         self._entities = []
         self._tile_entities = None
         self._size = None
+        self._version = None
         
         if filename:
             root_tag = nbt.load(filename)
@@ -722,9 +728,7 @@ class StructureNBT(object):
             self._root_tag = root_tag
             self._size = (self._root_tag["size"][0].value, self._root_tag["size"][1].value, self._root_tag["size"][2].value)
             
-            for axis in self._size:
-                if axis > 32:
-                    raise self.StructureTooBigException()
+            self._check_bounds(self._size)
                 
             self._author = self._root_tag.get("author", nbt.TAG_String()).value
             self._version = self._root_tag.get("version", nbt.TAG_Int()).value
@@ -741,7 +745,6 @@ class StructureNBT(object):
                 x, y, z = [ p.value for p in block["pos"].value ]
                 self._blocks[x,y,z] = blockstateToID(*self.get_state(block["state"].value))
                 if "nbt" in block:
-                    print self.__toPythonPrimitive(block["nbt"])
                     compound = nbt.TAG_Compound()
                     compound.update(block["nbt"])
                     self._tile_entities[x,y,z] = compound
@@ -750,8 +753,16 @@ class StructureNBT(object):
                 entity = e["nbt"]
                 entity["Pos"] = e["pos"]
                 self._entities.append(entity)
-            #self.toSchematic()
-            self.save("test_save_1.nbt")
+        elif size:
+            self._root_tag = nbt.TAG_Compound()
+            self._size = size
+            self._check_bounds(self._size)
+            
+            self._blocks = zeros(self.Size, dtype=tuple)
+            self._blocks.fill((0, 0))
+            self._entities = []
+            self._tile_entities = zeros(self.Size, dtype=nbt.TAG_Compound)
+            self._tile_entities.fill({})
             
     def toSchematic(self):
         schem = MCSchematic(shape=self.Size)
@@ -778,8 +789,23 @@ class StructureNBT(object):
     
     @classmethod
     def fromSchematic(cls, schematic):
-        structure = cls()
-        print structure
+        structure = cls(size=(schematic.Width, schematic.Height, schematic.Length))
+        
+        for (x,z,y), b_id in ndenumerate(schematic.Blocks):
+            data = schematic.Data[x,z,y]
+            structure._blocks[x,y,z] = (b_id, data)
+            
+        for te in schematic.TileEntities:
+            x, y, z = te["x"].value, te["y"].value, te["z"].value
+            del te["x"]
+            del te["y"]
+            del te["z"]
+            structure._tile_entities[x,y,z] = te
+            
+        for e in schematic.Entities:
+            structure._entities.append(e)
+        return structure
+        
     
     def __toPythonPrimitive(self, _nbt):
         if isinstance(_nbt, nbt.TAG_Compound):
@@ -870,21 +896,21 @@ class StructureNBT(object):
                                               ]
                                              )
         
-        print self._blocks
-        print self._blocks.shape
-        #self._blocks = swapaxes(self._blocks, 2, 0)
-        for (x,y,z), value in ndenumerate(self._blocks):
-            print value
-            name, properties = idToBlockstate(*value)
-            blockstate = stringifyBlockstate(name, properties)
+        for z in range(self._blocks.shape[2]): # For some reason, ndenumerate() didn't work, but this does
+            for x in range(self._blocks.shape[0]):
+                for y in range(self._blocks.shape[1]):
+                    
+                    value = self._blocks[x,y,z]
+                    name, properties = idToBlockstate(*value)
+                    blockstate = stringifyBlockstate(name, properties)
             
-            if blockstate not in index_table:
-                index_table[blockstate] = len(index_table)
-            index = index_table[blockstate]
+                    if blockstate not in index_table:
+                        index_table[blockstate] = len(index_table)
+                    index = index_table[blockstate]
             
-            block = nbt.TAG_Compound()
-            block["state"] = nbt.TAG_Int(index)
-            block["pos"] = nbt.TAG_List(
+                    block = nbt.TAG_Compound()
+                    block["state"] = nbt.TAG_Int(index)
+                    block["pos"] = nbt.TAG_List(
                                         [
                                          nbt.TAG_Int(x),
                                          nbt.TAG_Int(y),
@@ -892,10 +918,10 @@ class StructureNBT(object):
                                          ]
                                         )
             
-            if self._tile_entities[x,y,z]:
-                block["nbt"] = self._tile_entities[x,y,z]
+                    if self._tile_entities[x,y,z]:
+                        block["nbt"] = self._tile_entities[x,y,z]
             
-            blocks_tag.append(block)
+                    blocks_tag.append(block)
         structure_tag["blocks"] = blocks_tag
         
         for blockstate in index_table.keys():
@@ -913,13 +939,20 @@ class StructureNBT(object):
             palette_tag.insert(index_table[blockstate], state)
         structure_tag["palette"] = palette_tag
         
-        print index_table
-        print blocks_tag
-        print "====="
-        print structure_tag
-        structure_tag.save(filename)
-        
+        for e in self._entities:
+            entity = nbt.TAG_Compound()
+            pos = e["Pos"]
+            entity["pos"] = pos
+            entity["nbt"] = e
+            blockPos = nbt.TAG_List()
+            for coord in pos:
+                blockPos.append(nbt.TAG_Int(int(coord.value)))
+            entity["blockPos"] = blockPos
             
+            entities_tag.append(entity)
+            
+        structure_tag["entities"] = entities_tag
+        structure_tag.save(filename)
         
     @property
     def Version(self):
@@ -947,7 +980,7 @@ class StructureNBT(object):
     
     #Blocks = property(fget=get_Blocks, fset=set_Blocks)
         
-struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\Coords.nbt")
+struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\NBT Test 2.nbt")
 #struct.Blocks[1,1,1] = 2
 #print struct.Size
 #print struct.Blocks[1,1,1]

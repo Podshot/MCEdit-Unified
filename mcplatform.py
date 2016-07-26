@@ -203,6 +203,16 @@ def OSXVersionChecker(name,compare):
 lastSchematicsDir = None
 lastSaveDir = None
 
+def buildFileTypes(filetypes):
+    result = ""
+    for key in filetypes[0]:
+        ftypes = []
+        result += key + " ("
+        for ftype in filetypes[0][key]:
+            ftypes.append("*." + ftype)
+        result += ",".join(ftypes) + ")\0"
+        result += ";".join(ftypes) + "\0"
+    return result + "\0"
 
 def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=None):
     global lastSchematicsDir, lastSaveDir
@@ -333,14 +343,17 @@ def askOpenFileGtk(title, suffixes, initialDir):
     gtk.main()
 
     return fls[0]
+        
+print buildFileTypes(({"Minecraft Schematics": ["schematic"]},[]))
 
-
-def askSaveSchematic(initialDir, displayName, fileFormat):
+def askSaveSchematic(initialDir, displayName, fileFormats):
+    fileFormat = buildFileTypes(fileFormats)
+    
     dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
     return askSaveFile(initialDir,
                        title=_('Save this schematic...'),
-                       defaultName=displayName + "_" + dt + "." + fileFormat,
-                       filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
+                       defaultName=displayName + "_" + dt + "." + fileFormats[0][fileFormats[0].keys()[0]][0],
+                       filetype=fileFormat,
                        suffix=fileFormat,
     )
 

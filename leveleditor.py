@@ -13,6 +13,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 # Moving this here to get log entries ASAP -- D.C.-G.
 import logging
+from pymclevel.schematic import StructureNBT
 log = logging.getLogger(__name__)
 
 #-# Modified by D.C.-G. for translation purpose
@@ -830,10 +831,13 @@ class LevelEditor(GLViewport):
 
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
-            directories.schematicsDir, self.level.displayName, "schematic")
+            directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
 
         if filename:
-            schematic.saveToFile(filename)
+            if filename.endswith(".schematic"):
+                schematic.saveToFile(filename)
+            elif filename.endswith(".nbt"):
+                StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
         if len(self.copyStack) == 0:

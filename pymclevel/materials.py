@@ -1222,7 +1222,5 @@ for block in alphaMaterials.allBlocks:
     if block == alphaMaterials.Air:
         continue
     setattr(block, "Blockstate", idToBlockstate(block.ID, block.blockData))
-    
-print deStringifyBlockstate("minecraft:anvil")
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")
