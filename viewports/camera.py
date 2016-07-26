@@ -843,6 +843,18 @@ class CameraViewport(GLViewport):
 
         linekeys = ["Text" + str(i) for i in range(1, 5)]
 
+        # From version 1.8, signs accept Json format.
+        # 1.9 does no more support the old raw string fomat.
+        splitVersion = self.editor.level.gameVersion.split('.')
+        newFmtVersion = ['1','9']
+        fmt = ""
+        json_fmt = False
+
+        f = lambda a,b: (a + (['0'] * max(len(b) - len(a), 0)), b + (['0'] * max(len(a) - len(b), 0)))
+        if False not in map(lambda x,y: (int(x) if x.isdigit() else x) >= (int(y) if y.isdigit() else y),*f(splitVersion, newFmtVersion))[:2]:
+            json_fmt = True
+            fmt = '{"text":""}'
+
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
             tileEntity["id"] = pymclevel.TAG_String("Sign")
@@ -850,7 +862,7 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             for l in linekeys:
-                tileEntity[l] = pymclevel.TAG_String("")
+                tileEntity[l] = pymclevel.TAG_String(fmt)
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -858,16 +870,13 @@ class CameraViewport(GLViewport):
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
 
-            #Fix for the '§ is Ä§' issue
-#             try:
-#                 f.value = tileEntity[l].value.decode("unicode-escape")
-#             except:
-#                 f.value = tileEntity[l].value
             f.value = tileEntity[l].value
 
-            # Double quotes handling
+            # Double quotes handling for olf sign text format.
             if f.value == 'null':
-                f.value = ''
+                f.value = fmt
+            elif json_fmt and f.value == '':
+                f.value = fmt
             else:
                 if f.value.startswith('"') and f.value.endswith('"'):
                     f.value = f.value[1:-1]
@@ -894,8 +903,6 @@ class CameraViewport(GLViewport):
         ]
 
         def menu_picked(index):
-            # Fix for the '§ is Ä§' issue
-#             c = u'\xa7' + hex(index)[-1]
             c = u"§%d"%index
             currentField = panel.focus_switch.focus_switch
             currentField.text += c  # xxx view hierarchy
@@ -903,12 +910,15 @@ class CameraViewport(GLViewport):
 
         def changeSign():
             unsavedChanges = False
+            fmt = '"{}"'
+            u_fmt = u'"%s"'
+            if json_fmt:
+                fmt = '{}'
+                u_fmt = u'%s'
             for l, f in zip(linekeys, lineFields):
-                oldText = '"{}"'.format(tileEntity[l])
-                # Double quotes handling
-#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255])
-                if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
+                oldText = fmt.format(tileEntity[l])
+                tileEntity[l] = pymclevel.TAG_String(u_fmt%f.value[:255])
+                if fmt.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
                 op = SignEditOperation(self.editor, self.editor.level, tileEntity, undoBackupEntityTag)

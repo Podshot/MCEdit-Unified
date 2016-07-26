@@ -337,8 +337,6 @@ class LevelEditor(GLViewport):
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
             # Update the unparented widgets.
-#             print unparented
-            print len(unparented)
             [a.set_update_ui(v) for a in unparented.values()]
     #-#
 
@@ -1190,6 +1188,8 @@ class LevelEditor(GLViewport):
                 self.mainViewport.pitch = 0.0
 
         self.removeNetherPanel()
+
+        log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: level.gameVersion}[level.gameVersion == 'Unknown']))
 
         self.loadLevel(level)
 

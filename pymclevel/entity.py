@@ -22,7 +22,6 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
         ),
         "Sign": (
-            ("id", nbt.TAG_String),
             ("Text1", nbt.TAG_String),
             ("Text2", nbt.TAG_String),
             ("Text3", nbt.TAG_String),
