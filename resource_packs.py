@@ -408,6 +408,7 @@ textureSlots = {
     #
     "double_plant_paeonia_bottom": (step(16),step(14)),
     "double_plant_paeonia_top": (step(17),step(14)),
+    "nether_wart_block": (step(18),step(14)),
     # End Fifteenth Row
 
     # Start Sixteenth Row
@@ -429,6 +430,7 @@ textureSlots = {
     #
     #
     "slime": (step(17),step(15)),
+    "red_nether_brick": (step(18),step(15)),
     # End Sixteenth Row
 
     # Start Seventeenth Row

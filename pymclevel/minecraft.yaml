@@ -6627,6 +6627,57 @@ blocks:
       3:
         name: Frosted Ice (Stage 3 Cracks)
         
+  - id: 213
+    idStr: magma_block
+    name: Magma Block
+    tex: [18, 13]
+    
+  - id: 214
+    idStr: nether_wart_block
+    name: Nether Wart Block
+    tex: [18, 14]
+    
+  - id: 215
+    idStr: red_nether_brick
+    name: Red Nether Brick
+    tex: [18, 15]
+    
+  - id: 216
+    idStr: bone_block
+    name: Bone Block
+    data:
+      0:
+        name: Bone Block (Upright)
+        tex_direction:
+          TOP: [19, 11]
+          BOTTOM: [19, 11]
+          SIDES: [19, 12]
+          FORWARD: [19, 12]
+          BACKWARD: [19, 12]
+      4:
+        name: Bone Block (East/West)
+        tex_direction:
+          TOP: [19, 12]
+          BOTTOM: [19, 12]
+          SIDES: [19, 11]
+          FORWARD: [19, 12]
+          BACKWARD: [19, 12]
+      8:
+        name: Bone Block (North/South)
+        tex_direction:
+          TOP: [19, 12]
+          BOTTOM: [19, 12]
+          SIDES: [19, 12]
+          FORWARD: [19, 11]
+          BACKWARD: [19, 11]
+          
+  - id: 217
+    idStr: structure_void
+    name: Structure Void
+    opacity: 0
+    type: GLASS
+    tex: [19, 13]
+        
   - id: 255
     idStr: structure_block
     name: Structure Block

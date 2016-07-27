@@ -802,8 +802,8 @@ class ChunkCalculator(object):
             alphaMaterials.JungleFenceGate,
             alphaMaterials.DarkOakFenceGate,
             alphaMaterials.AcaciaFenceGate,
-            alphaMaterials.Sign
-
+            alphaMaterials.Sign,
+            alphaMaterials.StructureVoid
         ]
         for b in transparentMaterials:
             mats[b.ID] = materialCount
