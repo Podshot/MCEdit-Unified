@@ -220,10 +220,10 @@ class RootWidget(Widget):
 
             while modal_widget.modal_result is None:
                 try:
-                    #if not self.mcedit.version_checked:
-                    #    if not self.mcedit.version_lock.locked():
-                    #        self.mcedit.version_checked = True
-                    #        self.mcedit.check_for_version()
+                    if not self.mcedit.version_checked:
+                        if not self.mcedit.version_lock.locked():
+                            self.mcedit.version_checked = True
+                            self.mcedit.check_for_version()
 
                     self.hover_widget = self.find_widget(pygame.mouse.get_pos())
                     if not self.bonus_draw_time:
