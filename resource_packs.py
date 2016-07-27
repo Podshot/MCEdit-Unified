@@ -44,8 +44,8 @@ def step(slot):
     :param slot: Texture slot
     :type slot: int
     '''
-    texSlot = slot*16
-    return texSlot
+    return slot << 4
+
 '''
 Empty comment lines like:
 #

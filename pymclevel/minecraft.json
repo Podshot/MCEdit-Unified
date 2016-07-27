@@ -1,0 +1,8318 @@
+{
+	"blocks": [{
+			"id": 1,
+			"name": "Stone",
+			"idStr": "stone",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"data": {
+				"0": {
+					"tex": [1,0],
+					"mapcolor": [120,120,120],
+					"name": "Stone"
+				},
+				"1": {
+					"tex": [4,16],
+					"name": "Granite"
+				},
+				"3": {
+					"tex": [6,16],
+					"name": "Diorite"
+				},
+				"2": {
+					"tex": [5,16],
+					"search": "smooth",
+					"name": "Polished Granite"
+				},
+				"5": {
+					"tex": [8,16],
+					"name": "Andesite"
+				},
+				"4": {
+					"tex": [7,16],
+					"search": "smooth",
+					"name": "Polished Diorite"
+				},
+				"6": {
+					"tex": [9,16],
+					"search": "smooth",
+					"name": "Polished Andesite"
+				}
+			}
+		},{
+			"tex_direction": {
+				"TOP": [0,0],
+				"BOTTOM": [2,0]
+			},
+			"name": "Grass Block",
+			"idStr": "grass",
+			"tex": [3,0],
+			"mapcolor": [117,176,73],
+			"id": 2
+		},{
+			"id": 3,
+			"name": "Dirt",
+			"idStr": "dirt",
+			"tex": [2,0],
+			"mapcolor": [134,96,67],
+			"data": {
+				"1": {
+					"name": "Coarse",
+					"tex": [19,5]
+				},
+				"0": {
+				    "name": "Dirt",
+					"tex": [2,0]
+				},
+				"2": {
+					"name": "Podzol",
+					"tex": [9,3],
+					"tex_direction": {
+						"FORWARD": [10,3],
+						"BACKWARD": [10,3],
+						"SIDES": [10,3],
+						"BOTTOM": [2,0]
+					}
+				}
+			}
+		},{
+			"id": 4,
+			"name": "Cobblestone",
+			"tex": [0,1],
+			"mapcolor": [115,115,115],
+			"idStr": "cobblestone"
+		},{
+			"name": "Wood Planks",
+			"idStr": "planks",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"tex": [6,12],
+					"name": "Spruce Wood Planks"
+				},
+				"0": {
+					"tex": [4,0],
+					"name": "Oak Wood Planks"
+				},
+				"3": {
+					"tex": [7,12],
+					"name": "Jungle Wood Planks"
+				},
+				"2": {
+					"tex": [6,13],
+					"name": "Birch Wood Planks"
+				},
+				"5": {
+					"tex": [1,15],
+					"name": "Dark Oak Wood Planks"
+				},
+				"4": {
+					"tex": [0,15],
+					"name": "Acacia Wood Planks"
+				}
+			},
+			"id": 5
+		},{
+			"opacity": 0,
+			"name": "Sapling",
+			"data": {
+				"11": {
+					"tex": [14,1],
+					"name": "Jungle Sapling (Stage 1)"
+				},
+				"10": {
+					"tex": [15,4],
+					"name": "Birch Sapling (Stage 1)"
+				},
+				"13": {
+					"tex": [20,0],
+					"name": "Dark Oak Sapling (Stage 1)"
+				},
+				"12": {
+					"tex": [20,1],
+					"name": "Acacia Sapling (Stage 1)"
+				},
+				"1": {
+					"tex": [15,3],
+					"name": "Spruce Sapling (Stage 0)"
+				},
+				"0": {
+					"tex": [15,0],
+					"name": "Oak Sapling (Stage 0)"
+				},
+				"3": {
+					"tex": [14,1],
+					"name": "Jungle Sapling (Stage 0)"
+				},
+				"2": {
+					"tex": [15,4],
+					"name": "Birch Sapling (Stage 0)"
+				},
+				"5": {
+					"tex": [20,0],
+					"name": "Dark Oak Sapling (Stage 0)"
+				},
+				"4": {
+					"tex": [20,1],
+					"name": "Acacia Sapling (Stage 0)"
+				},
+				"9": {
+					"tex": [15,3],
+					"name": "Spruce Sapling (Stage 1)"
+				},
+				"8": {
+					"tex": [15,0],
+					"name": "Oak Sapling (Stage 1)"
+				}
+			},
+			"idStr": "sapling",
+			"tex": [15,0],
+			"mapcolor": [120,120,120],
+			"type": "DECORATION_CROSS",
+			"id": 6
+		},{
+			"search": "Adminium",
+			"name": "Bedrock",
+			"idStr": "bedrock",
+			"tex": [1,1],
+			"mapcolor": [84,84,84],
+			"id": 7
+		},{
+			"opacity": 3,
+			"name": "Water (Flowing)",
+			"data": {
+				"11": {
+					"name": "Water (Flowing, Level 12)"
+				},
+				"10": {
+					"name": "Water (Flowing, Level 13)"
+				},
+				"13": {
+					"name": "Water (Flowing, Level 10)"
+				},
+				"12": {
+					"name": "Water (Flowing, Level 11)"
+				},
+				"15": {
+					"name": "Water (Flowing, Level 8)"
+				},
+				"14": {
+					"name": "Water (Flowing, Level 9)"
+				},
+				"1": {
+					"name": "Water (Flowing, Level 6)"
+				},
+				"0": {
+					"name": "Water (Flowing, Level 7 (Source))"
+				},
+				"3": {
+					"name": "Water (Flowing, Level 4)"
+				},
+				"2": {
+					"name": "Water (Flowing, Level 5)"
+				},
+				"5": {
+					"name": "Water (Flowing, Level 2)"
+				},
+				"4": {
+					"name": "Water (Flowing, Level 3)"
+				},
+				"7": {
+					"name": "Water (Flowing, Level 0)"
+				},
+				"6": {
+					"name": "Water (Flowing, Level 1)"
+				},
+				"9": {
+					"name": "Water (Flowing, Level 14)"
+				},
+				"8": {
+					"name": "Water (Flowing, Level 15)"
+				}
+			},
+			"idStr": "flowing_water",
+			"tex": [13,12],
+			"mapcolor": [38,92,255],
+			"type": "WATER",
+			"id": 8
+		},{
+			"opacity": 3,
+			"name": "Water (Still)",
+			"data": {
+				"11": {
+					"name": "Water (Still, Level 12)"
+				},
+				"10": {
+					"name": "Water (Still, Level 13)"
+				},
+				"13": {
+					"name": "Water (Still, Level 10)"
+				},
+				"12": {
+					"name": "Water (Still, Level 11)"
+				},
+				"15": {
+					"name": "Water (Still, Level 8)"
+				},
+				"14": {
+					"name": "Water (Still, Level 9)"
+				},
+				"1": {
+					"name": "Water (Still, Level 6)"
+				},
+				"0": {
+					"name": "Water (Still, Level 7 (Source))"
+				},
+				"3": {
+					"name": "Water (Still, Level 4)"
+				},
+				"2": {
+					"name": "Water (Still, Level 5)"
+				},
+				"5": {
+					"name": "Water (Still, Level 2)"
+				},
+				"4": {
+					"name": "Water (Still, Level 3)"
+				},
+				"7": {
+					"name": "Water (Still, Level 0)"
+				},
+				"6": {
+					"name": "Water (Still, Level 1)"
+				},
+				"9": {
+					"name": "Water (Still, Level 14)"
+				},
+				"8": {
+					"name": "Water (Still, Level 15)"
+				}
+			},
+			"idStr": "water",
+			"tex": [13,12],
+			"mapcolor": [38,92,255],
+			"type": "WATER",
+			"id": 9
+		},{
+			"opacity": 0,
+			"name": "Lava (Flowing)",
+			"brightness": 15,
+			"data": {
+				"11": {
+					"name": "Lava (Flowing, Level 12)"
+				},
+				"10": {
+					"name": "Lava (Flowing, Level 13)"
+				},
+				"13": {
+					"name": "Lava (Flowing, Level 10)"
+				},
+				"12": {
+					"name": "Lava (Flowing, Level 11)"
+				},
+				"15": {
+					"name": "Lava (Flowing, Level 8)"
+				},
+				"14": {
+					"name": "Lava (Flowing, Level 9)"
+				},
+				"1": {
+					"name": "Lava (Flowing, Level 6)"
+				},
+				"0": {
+					"name": "Lava (Flowing, Level 7 (Source))"
+				},
+				"3": {
+					"name": "Lava (Flowing, Level 4)"
+				},
+				"2": {
+					"name": "Lava (Flowing, Level 5)"
+				},
+				"5": {
+					"name": "Lava (Flowing, Level 2)"
+				},
+				"4": {
+					"name": "Lava (Flowing, Level 3)"
+				},
+				"7": {
+					"name": "Lava (Flowing, Level 0)"
+				},
+				"6": {
+					"name": "Lava (Flowing, Level 1)"
+				},
+				"9": {
+					"name": "Lava (Flowing, Level 14)"
+				},
+				"8": {
+					"name": "Lava (Flowing, Level 15)"
+				}
+			},
+			"idStr": "flowing_lava",
+			"tex": [13,14],
+			"mapcolor": [255,90,0],
+			"type": "SEMISOLID",
+			"id": 10
+		},{
+			"opacity": 0,
+			"name": "Lava (Still)",
+			"brightness": 15,
+			"data": {
+				"11": {
+					"name": "Lava (Still, Level 12)"
+				},
+				"10": {
+					"name": "Lava (Still, Level 13)"
+				},
+				"13": {
+					"name": "Lava (Still, Level 10)"
+				},
+				"12": {
+					"name": "Lava (Still, Level 11)"
+				},
+				"15": {
+					"name": "Lava (Still, Level 8)"
+				},
+				"14": {
+					"name": "Lava (Still, Level 9)"
+				},
+				"1": {
+					"name": "Lava (Still, Level 6)"
+				},
+				"0": {
+					"name": "Lava (Still, Level 7 (Source))"
+				},
+				"3": {
+					"name": "Lava (Still, Level 4)"
+				},
+				"2": {
+					"name": "Lava (Still, Level 5)"
+				},
+				"5": {
+					"name": "Lava (Still, Level 2)"
+				},
+				"4": {
+					"name": "Lava (Still, Level 3)"
+				},
+				"7": {
+					"name": "Lava (Still, Level 0)"
+				},
+				"6": {
+					"name": "Lava (Still, Level 1)"
+				},
+				"9": {
+					"name": "Lava (Still, Level 14)"
+				},
+				"8": {
+					"name": "Lava (Still, Level 15)"
+				}
+			},
+			"idStr": "lava",
+			"tex": [13,14],
+			"mapcolor": [255,90,0],
+			"type": "SEMISOLID",
+			"id": 11
+		},{
+			"name": "Sand",
+			"idStr": "sand",
+			"tex": [2,1],
+			"mapcolor": [218,210,158],
+			"data": {
+				"1": {
+					"tex": [11,1],
+					"name": "Red Sand"
+				},
+				"0": {
+					"tex": [2,1],
+					"name": "Sand"
+				}
+			},
+			"id": 12
+		},{
+			"tex": [3,1],
+			"mapcolor": [136,126,126],
+			"idStr": "gravel",
+			"name": "Gravel",
+			"id": 13
+		},{
+			"tex": [0,2],
+			"mapcolor": [143,140,125],
+			"idStr": "gold_ore",
+			"name": "Gold Ore",
+			"id": 14
+		},{
+			"tex": [1,2],
+			"mapcolor": [136,130,127],
+			"idStr": "iron_ore",
+			"name": "Iron Ore",
+			"id": 15
+		},{
+			"tex": [2,2],
+			"mapcolor": [115,115,115],
+			"idStr": "coal_ore",
+			"name": "Coal Ore",
+			"id": 16
+		},{
+			"search": "log",
+			"name": "Wood",
+			"idStr": "log",
+			"tex": [4,1],
+			"mapcolor": [102,81,51],
+			"data": {
+				"11": {
+					"tex": [9,9],
+					"tex_direction": {
+						"FORWARD": [11,14],
+						"BACKWARD": [11,14]
+					},
+					"name": "Jungle Wood (North/South)"
+				},
+				"10": {
+					"tex": [5,7],
+					"tex_direction": {
+						"FORWARD": [10,14],
+						"BACKWARD": [10,14]
+					},
+					"name": "Birch Wood (North/South)"
+				},
+				"13": {
+					"tex": [4,7],
+					"name": "Spruce Wood (Bark Only)"
+				},
+				"12": {
+					"tex": [4,1],
+					"name": "Oak Wood (Bark Only)"
+				},
+				"15": {
+					"tex": [9,9],
+					"name": "Jungle Wood (Bark Only)"
+				},
+				"14": {
+					"tex": [5,7],
+					"name": "Birch Wood (Bark Only)"
+				},
+				"1": {
+					"tex": [4,7],
+					"tex_direction": {
+						"TOP": [9,14],
+						"BOTTOM": [9,14]
+					},
+					"name": "Spruce Wood (Upright)"
+				},
+				"0": {
+					"tex": [4,1],
+					"tex_direction": {
+						"TOP": [5,1],
+						"BOTTOM": [5,1]
+					},
+					"variant": "Oak",
+					"name": "Oak Wood (Upright)",
+					"axis": "x"
+				},
+				"3": {
+					"tex": [9,9],
+					"tex_direction": {
+						"TOP": [11,14],
+						"BOTTOM": [11,14]
+					},
+					"name": "Jungle Wood (Upright)"
+				},
+				"2": {
+					"tex": [5,7],
+					"tex_direction": {
+						"TOP": [10,14],
+						"BOTTOM": [10,14]
+					},
+					"name": "Birch Wood (Upright)"
+				},
+				"5": {
+					"tex": [4,7],
+					"tex_direction": {
+						"SIDES": [9,14]
+					},
+					"name": "Spruce Wood (East/West)"
+				},
+				"4": {
+					"tex": [4,1],
+					"tex_direction": {
+						"SIDES": [5,1]
+					},
+					"name": "Oak Wood (East/West)"
+				},
+				"7": {
+					"tex": [9,9],
+					"tex_direction": {
+						"SIDES": [11,14]
+					},
+					"name": "Jungle Wood (East/West)"
+				},
+				"6": {
+					"tex": [5,7],
+					"tex_direction": {
+						"SIDES": [10,14]
+					},
+					"name": "Birch Wood (East/West)"
+				},
+				"9": {
+					"tex": [4,7],
+					"tex_direction": {
+						"FORWARD": [9,14],
+						"BACKWARD": [9,14]
+					},
+					"name": "Spruce Wood (North/South)"
+				},
+				"8": {
+					"tex": [4,1],
+					"tex_direction": {
+						"FORWARD": [11,14],
+						"BACKWARD": [11,14]
+					},
+					"name": "Oak Wood (North/South)"
+				}
+			},
+			"id": 17
+		},{
+			"opacity": 1,
+			"name": "Leaves",
+			"data": {
+				"11": {
+					"tex": [5,12],
+					"mapcolor": [74,131,66],
+					"name": "Jungle Leaves (Decaying)"
+				},
+				"10": {
+					"tex": [5,3],
+					"mapcolor": [89,151,76],
+					"name": "Birch Leaves (Decaying)"
+				},
+				"13": {
+					"tex": [5,8],
+					"mapcolor": [74,131,66],
+					"name": "Spruce Leaves (No Decay, Unused)"
+				},
+				"12": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Oak Leaves (No Decay, Unused)"
+				},
+				"15": {
+					"tex": [5,12],
+					"mapcolor": [74,131,66],
+					"name": "Jungle Leaves (No Decay, Unused)"
+				},
+				"14": {
+					"tex": [5,3],
+					"mapcolor": [89,151,76],
+					"name": "Birch Leaves (No Decay, Unused)"
+				},
+				"1": {
+					"tex": [5,8],
+					"mapcolor": [74,131,66],
+					"name": "Spruce Leaves (Decay after Tree Update)"
+				},
+				"0": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Oak Leaves (Decay after Tree Update)"
+				},
+				"3": {
+					"tex": [5,12],
+					"mapcolor": [74,131,66],
+					"name": "Jungle Leaves (Decay after Tree Update)"
+				},
+				"2": {
+					"tex": [5,3],
+					"mapcolor": [89,151,76],
+					"name": "Birch Leaves (Decay after Tree Update)"
+				},
+				"5": {
+					"tex": [5,8],
+					"mapcolor": [74,131,66],
+					"name": "Spruce Leaves (No Decay)"
+				},
+				"4": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Oak Leaves (No Decay)"
+				},
+				"7": {
+					"tex": [5,12],
+					"mapcolor": [74,131,66],
+					"name": "Jungle Leaves (No Decay)"
+				},
+				"6": {
+					"tex": [5,3],
+					"mapcolor": [89,151,76],
+					"name": "Birch Leaves (No Decay)"
+				},
+				"9": {
+					"tex": [5,8],
+					"mapcolor": [74,131,66],
+					"name": "Spruce Leaves (Decaying)"
+				},
+				"8": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Oak Leaves (Decaying)"
+				}
+			},
+			"idStr": "leaves",
+			"tex": [5,3],
+			"mapcolor": [60,192,41],
+			"type": "LEAVES",
+			"id": 18
+		},{
+			"name": "Sponge",
+			"idStr": "sponge",
+			"tex": [0,3],
+			"mapcolor": [193,193,57],
+			"data": {
+				"1": {
+					"tex": [16,18],
+					"name": "Wet Sponge"
+				},
+				"0": {
+					"name": "Sponge"
+				}
+			},
+			"id": 19
+		},{
+			"opacity": 0,
+			"name": "Glass",
+			"idStr": "glass",
+			"tex": [1,3],
+			"aka": "Block",
+			"mapcolor": [255,255,255],
+			"type": "GLASS",
+			"id": 20
+		},{
+			"tex": [0,10],
+			"mapcolor": [27,70,161],
+			"idStr": "lapis_ore",
+			"name": "Lapis Lazuli Ore",
+			"id": 21
+		},{
+			"tex": [0,9],
+			"mapcolor": [0,0,0],
+			"idStr": "lapis_block",
+			"name": "Lapis Lazuli Block",
+			"id": 22
+		},{
+			"name": "Dispenser",
+			"idStr": "dispenser",
+			"tex": [13,2],
+			"mapcolor": [96,96,96],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [14,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [14,2]
+					},
+					"name": "Dispenser (On ,West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,5],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,5]
+					},
+					"name": "Dispenser (Off, Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [14,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [14,2]
+					},
+					"name": "Dispenser (Off, West)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,5],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,5]
+					},
+					"name": "Dispenser (On, Down)"
+				}
+			},
+			"id": 23
+		},{
+			"tex_direction": {
+				"TOP": [0,11],
+				"BOTTOM": [0,13]
+			},
+			"name": "Sandstone",
+			"idStr": "sandstone",
+			"mapcolor": [218,210,158],
+			"data": {
+				"1": {
+					"tex": [5,14],
+					"mapcolor": [218,210,158],
+					"name": "Chiseled Sandstone"
+				},
+				"0": {
+					"tex": [0,12],
+					"mapcolor": [218,210,158],
+					"name": "Sandstone"
+				},
+				"2": {
+					"tex": [6,14],
+					"mapcolor": [218,210,158],
+					"name": "Smooth Sandstone"
+				}
+			},
+			"id": 24
+		},{
+			"search": "noteblock",
+			"name": "Note Block",
+			"idStr": "noteblock",
+			"tex": [10,4],
+			"mapcolor": [114,88,56],
+			"id": 25
+		},{
+			"opacity": 0,
+			"name": "Bed",
+			"type": "BED",
+			"idStr": "bed",
+			"mapcolor": [255,0,0],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"RIGHT": [8,9],
+						"BOTTOM": [7,8],
+						"TOP": [7,8],
+						"FORWARD": [1,21],
+						"BACKWARD": [7,9],
+						"LEFT": [0,21]
+					},
+					"name": "Bed (Head)"
+				},
+				"10": {
+					"tex_direction": {
+						"RIGHT": [7,9],
+						"BOTTOM": [7,8],
+						"TOP": [4,21],
+						"FORWARD": [8,9],
+						"BACKWARD": [0,21],
+						"LEFT": [1,21]
+					},
+					"name": "Bed (Head)"
+				},
+				"13": {
+					"tex_direction": {
+						"RIGHT": [0,21],
+						"BOTTOM": [7,8],
+						"TOP": [1,22],
+						"FORWARD": [7,9],
+						"BACKWARD": [1,21],
+						"LEFT": [8,9]
+					},
+					"name": "Bed (Head, Occupied)"
+				},
+				"12": {
+					"tex_direction": {
+						"RIGHT": [1,21],
+						"BOTTOM": [7,8],
+						"TOP": [3,22],
+						"FORWARD": [0,21],
+						"BACKWARD": [8,9],
+						"LEFT": [7,9]
+					},
+					"name": "Bed (Head, Occupied)"
+				},
+				"15": {
+					"tex_direction": {
+						"RIGHT": [8,9],
+						"BOTTOM": [7,8],
+						"TOP": [7,8],
+						"FORWARD": [1,21],
+						"BACKWARD": [7,9],
+						"LEFT": [0,21]
+					},
+					"name": "Bed (Head, Occupied)"
+				},
+				"14": {
+					"tex_direction": {
+						"RIGHT": [7,9],
+						"BOTTOM": [7,8],
+						"TOP": [4,21],
+						"FORWARD": [8,9],
+						"BACKWARD": [0,21],
+						"LEFT": [1,21]
+					},
+					"name": "Bed (Head, Occupied)"
+				},
+				"1": {
+					"tex_direction": {
+						"RIGHT": [5,9],
+						"BOTTOM": [6,8],
+						"TOP": [2,22],
+						"FORWARD": [6,9],
+						"BACKWARD": [2,21],
+						"LEFT": [0,21]
+					},
+					"name": "Bed (Foot)"
+				},
+				"0": {
+					"tex_direction": {
+						"RIGHT": [2,21],
+						"BOTTOM": [6,8],
+						"TOP": [3,21],
+						"FORWARD": [5,9],
+						"BACKWARD": [0,21],
+						"LEFT": [6,9]
+					},
+					"name": "Bed (Foot)"
+				},
+				"3": {
+					"tex_direction": {
+						"RIGHT": [0,21],
+						"BOTTOM": [6,8],
+						"TOP": [6,8],
+						"FORWARD": [2,21],
+						"BACKWARD": [6,9],
+						"LEFT": [5,9]
+					},
+					"name": "Bed (Foot)"
+				},
+				"2": {
+					"tex_direction": {
+						"RIGHT": [6,9],
+						"BOTTOM": [6,8],
+						"TOP": [4,22],
+						"FORWARD": [0,21],
+						"BACKWARD": [5,9],
+						"LEFT": [2,21]
+					},
+					"name": "Bed (Foot)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [0,21],
+						"BOTTOM": [7,8],
+						"TOP": [1,22],
+						"FORWARD": [7,9],
+						"BACKWARD": [1,21],
+						"LEFT": [8,9]
+					},
+					"name": "Bed (Head)"
+				},
+				"8": {
+					"tex_direction": {
+						"RIGHT": [1,21],
+						"BOTTOM": [7,8],
+						"TOP": [3,22],
+						"FORWARD": [0,21],
+						"BACKWARD": [8,9],
+						"LEFT": [7,9]
+					},
+					"name": "Bed (Head)"
+				}
+			},
+			"id": 26
+		},{
+			"opacity": 0,
+			"search": "golden",
+			"name": "Powered Rail",
+			"data": {
+				"11": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, Ascending, West)"
+				},
+				"10": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, Ascending, East)"
+				},
+				"13": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, Ascending, South)"
+				},
+				"12": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, Ascending, North)"
+				},
+				"1": {
+					"name": "Powered Rail (Unpowered, East/West)"
+				},
+				"0": {
+					"name": "Powered Rail (Unpowered, North/South)"
+				},
+				"3": {
+					"name": "Powered Rail (Unpowered, Ascending, West)"
+				},
+				"2": {
+					"name": "Powered Rail (Unpowered, Ascending, East)"
+				},
+				"5": {
+					"name": "Powered Rail (Unpowered, Ascending, South)"
+				},
+				"4": {
+					"name": "Powered Rail (Unpowered, Ascending, North)"
+				},
+				"9": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, East/West)"
+				},
+				"8": {
+					"tex": [3,11],
+					"name": "Powered Rail (Powered, North/South)"
+				}
+			},
+			"idStr": "golden_rail",
+			"tex": [3,10],
+			"tex_extra": {
+				"powered": [3,11]
+			},
+			"mapcolor": [120,53,28],
+			"type": "SIMPLE_RAIL",
+			"id": 27
+		},{
+			"opacity": 0,
+			"name": "Detector Rail",
+			"data": {
+				"11": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, West)"
+				},
+				"10": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, East)"
+				},
+				"13": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, South)"
+				},
+				"12": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, North)"
+				},
+				"1": {
+					"name": "Detector Rail (Unpowered, East/West)"
+				},
+				"0": {
+					"name": "Detector Rail (Unpowered, North/South)"
+				},
+				"3": {
+					"name": "Detector Rail (Unpowered, Ascending, West)"
+				},
+				"2": {
+					"name": "Detector Rail (Unpowered, Ascending, East)"
+				},
+				"5": {
+					"name": "Detector Rail (Unpowered, Ascending, South)"
+				},
+				"4": {
+					"name": "Detector Rail (Unpowered, Ascending, North)"
+				},
+				"9": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, East/West)"
+				},
+				"8": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, North/South)"
+				}
+			},
+			"idStr": "detector_rail",
+			"tex": [3,12],
+			"tex_extra": {
+				"powered": [3,12]
+			},
+			"mapcolor": [200,189,189],
+			"type": "SIMPLE_RAIL",
+			"id": 28
+		},{
+			"opacity": 0,
+			"name": "Sticky Piston",
+			"data": {
+				"11": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,3],
+						"BOTTOM": [29,2],
+						"TOP": [29,2],
+						"FORWARD": [14,3],
+						"BACKWARD": [14,6],
+						"LEFT": [29,1]
+					},
+					"name": "Sticky Piston (Extended, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"RIGHT": [29,1],
+						"BOTTOM": [29,0],
+						"TOP": [29,0],
+						"FORWARD": [14,6],
+						"BACKWARD": [14,3],
+						"LEFT": [29,3]
+					},
+					"name": "Sticky Piston (Extended, North)"
+				},
+				"13": {
+					"tex": [14,12],
+					"tex_direction": {
+						"RIGHT": [14,6],
+						"BOTTOM": [29,1],
+						"TOP": [29,1],
+						"FORWARD": [29,3],
+						"BACKWARD": [29,1],
+						"LEFT": [14,3]
+					},
+					"name": "Sticky Piston (Extended, East)"
+				},
+				"12": {
+					"tex": [14,13],
+					"tex_direction": {
+						"RIGHT": [14,3],
+						"BOTTOM": [29,3],
+						"TOP": [29,3],
+						"FORWARD": [29,1],
+						"BACKWARD": [29,3],
+						"LEFT": [14,6]
+					},
+					"name": "Sticky Piston (Extended, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [10,6],
+						"BOTTOM": [14,3]
+					},
+					"name": "Sticky Piston (Up)"
+				},
+				"0": {
+					"tex": [15,12],
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [10,6]
+					},
+					"name": "Sticky Piston (Down)"
+				},
+				"3": {
+					"tex": [15,12],
+					"tex_direction": {
+						"FORWARD": [14,3],
+						"RIGHT": [14,13],
+						"BACKWARD": [10,6],
+						"LEFT": [14,12]
+					},
+					"name": "Sticky Piston (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,6],
+						"RIGHT": [14,12],
+						"BACKWARD": [14,3],
+						"LEFT": [14,13]
+					},
+					"name": "Sticky Piston (North)"
+				},
+				"5": {
+					"tex": [14,12],
+					"tex_direction": {
+						"FORWARD": [14,13],
+						"RIGHT": [10,6],
+						"LEFT": [14,3]
+					},
+					"name": "Sticky Piston (East)"
+				},
+				"4": {
+					"tex": [14,13],
+					"tex_direction": {
+						"FORWARD": [14,12],
+						"RIGHT": [14,3],
+						"LEFT": [10,6]
+					},
+					"name": "Sticky Piston (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [29,0],
+						"BOTTOM": [14,3],
+						"TOP": [14,6],
+						"FORWARD": [29,0],
+						"BACKWARD": [29,0],
+						"LEFT": [29,0]
+					},
+					"name": "Sticky Piston (Extended, Up)"
+				},
+				"8": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,2],
+						"BOTTOM": [14,6],
+						"TOP": [14,3],
+						"FORWARD": [29,2],
+						"BACKWARD": [29,2],
+						"LEFT": [29,2]
+					},
+					"name": "Sticky Piston (Extended, Down)"
+				}
+			},
+			"idStr": "sticky_piston",
+			"tex": [12,6],
+			"mapcolor": [132,132,132],
+			"type": "PISTON_BODY",
+			"id": 29
+		},{
+			"opacity": 1,
+			"name": "Cobweb",
+			"idStr": "web",
+			"tex": [11,0],
+			"mapcolor": [255,255,255],
+			"type": "DECORATION_CROSS",
+			"id": 30
+		},{
+			"opacity": 0,
+			"name": "Tall Grass",
+			"type": "DECORATION_CROSS",
+			"idStr": "tallgrass",
+			"tex": [7,2],
+			"mapcolor": [104,156,53],
+			"data": {
+				"1": {
+					"tex": [7,2],
+					"search": "tall",
+					"name": "Grass"
+				},
+				"0": {
+					"tex": [7,3],
+					"search": "shrub",
+					"name": "Dead Bush (Drops Seeds)"
+				},
+				"2": {
+					"tex": [8,3],
+					"name": "Fern"
+				}
+			},
+			"id": 31
+		},{
+			"opacity": 0,
+			"search": "shrub",
+			"name": "Dead Bush",
+			"idStr": "deadbush",
+			"tex": [7,3],
+			"mapcolor": [148,100,40],
+			"type": "DECORATION_CROSS",
+			"id": 32
+		},{
+			"opacity": 0,
+			"name": "Piston",
+			"data": {
+				"11": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,3],
+						"BOTTOM": [29,2],
+						"TOP": [29,2],
+						"FORWARD": [14,3],
+						"BACKWARD": [14,6],
+						"LEFT": [29,1]
+					},
+					"name": "Piston (Extended, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"RIGHT": [29,1],
+						"BOTTOM": [29,0],
+						"TOP": [29,0],
+						"FORWARD": [14,6],
+						"BACKWARD": [14,3],
+						"LEFT": [29,3]
+					},
+					"name": "Piston (Extended, North)"
+				},
+				"13": {
+					"tex": [14,12],
+					"tex_direction": {
+						"RIGHT": [14,6],
+						"BOTTOM": [29,1],
+						"TOP": [29,1],
+						"FORWARD": [29,3],
+						"BACKWARD": [29,1],
+						"LEFT": [14,3]
+					},
+					"name": "Piston (Extended, East)"
+				},
+				"12": {
+					"tex": [14,13],
+					"tex_direction": {
+						"RIGHT": [14,3],
+						"BOTTOM": [29,3],
+						"TOP": [29,3],
+						"FORWARD": [29,1],
+						"BACKWARD": [29,3],
+						"LEFT": [14,6]
+					},
+					"name": "Piston (Extended, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [11,6],
+						"BOTTOM": [14,3]
+					},
+					"name": "Piston (Up)"
+				},
+				"0": {
+					"tex": [15,12],
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [11,6]
+					},
+					"name": "Piston (Down)"
+				},
+				"3": {
+					"tex": [15,12],
+					"tex_direction": {
+						"FORWARD": [14,3],
+						"RIGHT": [14,13],
+						"BACKWARD": [11,6],
+						"LEFT": [14,12]
+					},
+					"name": "Piston (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [11,6],
+						"RIGHT": [14,12],
+						"BACKWARD": [14,3],
+						"LEFT": [14,13]
+					},
+					"name": "Piston (North)"
+				},
+				"5": {
+					"tex": [14,12],
+					"tex_direction": {
+						"FORWARD": [14,13],
+						"RIGHT": [11,6],
+						"LEFT": [14,3]
+					},
+					"name": "Piston (East)"
+				},
+				"4": {
+					"tex": [14,13],
+					"tex_direction": {
+						"FORWARD": [14,12],
+						"RIGHT": [14,3],
+						"LEFT": [11,6]
+					},
+					"name": "Piston (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [29,0],
+						"BOTTOM": [14,3],
+						"TOP": [14,6],
+						"FORWARD": [29,0],
+						"BACKWARD": [29,0],
+						"LEFT": [29,0]
+					},
+					"name": "Piston (Extended, Up)"
+				},
+				"8": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,2],
+						"BOTTOM": [14,6],
+						"TOP": [14,3],
+						"FORWARD": [29,2],
+						"BACKWARD": [29,2],
+						"LEFT": [29,2]
+					},
+					"name": "Piston (Extended, Down)"
+				}
+			},
+			"idStr": "piston",
+			"tex": [12,6],
+			"tex_extra": {
+				"front": [14,6],
+				"head": [11,6],
+				"back": [13,6]
+			},
+			"mapcolor": [132,132,132],
+			"type": "PISTON_BODY",
+			"id": 33
+		},{
+			"opacity": 0,
+			"name": "Piston Head",
+			"data": {
+				"11": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, South)"
+				},
+				"10": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, North)"
+				},
+				"13": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, East)"
+				},
+				"12": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, West)"
+				},
+				"1": {
+					"name": "Piston Head (Up)"
+				},
+				"0": {
+					"name": "Piston Head (Down)"
+				},
+				"3": {
+					"name": "Piston Head (South)"
+				},
+				"2": {
+					"name": "Piston Head (North)"
+				},
+				"5": {
+					"name": "Piston Head (East)"
+				},
+				"4": {
+					"name": "Piston Head (West)"
+				},
+				"9": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, Up)"
+				},
+				"8": {
+					"tex": [10,6],
+					"name": "Piston Head (Sticky, Down)"
+				}
+			},
+			"idStr": "piston_head",
+			"tex": [11,6],
+			"tex_extra": {
+				"body": [12,6],
+				"head_sticky": [10,6]
+			},
+			"mapcolor": [119,92,53],
+			"type": "PISTON_HEAD",
+			"id": 34
+		},{
+			"name": "White Wool",
+			"idStr": "wool",
+			"tex": [0,4],
+			"mapcolor": [222,222,222],
+			"data": {
+				"11": {
+					"tex": [1,11],
+					"mapcolor": [39,51,161],
+					"name": "Blue Wool"
+				},
+				"10": {
+					"tex": [1,12],
+					"mapcolor": [129,54,196],
+					"name": "Purple Wool"
+				},
+				"13": {
+					"tex": [1,9],
+					"mapcolor": [56,77,24],
+					"name": "Green Wool"
+				},
+				"12": {
+					"tex": [1,10],
+					"mapcolor": [86,51,28],
+					"name": "Brown Wool"
+				},
+				"15": {
+					"tex": [1,7],
+					"mapcolor": [0,0,0],
+					"name": "Black Wool"
+				},
+				"14": {
+					"tex": [1,8],
+					"mapcolor": [164,45,41],
+					"name": "Red Wool"
+				},
+				"1": {
+					"tex": [2,13],
+					"mapcolor": [234,127,55],
+					"name": "Orange Wool"
+				},
+				"0": {
+					"tex": [0,4],
+					"mapcolor": [222,222,222],
+					"name": "Wool (White)"
+				},
+				"3": {
+					"tex": [2,11],
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Wool"
+				},
+				"2": {
+					"tex": [2,12],
+					"mapcolor": [191,75,201],
+					"name": "Magenta Wool"
+				},
+				"5": {
+					"tex": [2,9],
+					"mapcolor": [59,189,48],
+					"name": "Lime Wool"
+				},
+				"4": {
+					"tex": [2,10],
+					"mapcolor": [104,139,212],
+					"name": "Yellow Wool"
+				},
+				"7": {
+					"tex": [2,7],
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Wool"
+				},
+				"6": {
+					"tex": [2,8],
+					"mapcolor": [217,131,155],
+					"name": "Pink Wool"
+				},
+				"9": {
+					"tex": [1,13],
+					"mapcolor": [39,117,149],
+					"name": "Cyan Wool"
+				},
+				"8": {
+					"tex": [1,14],
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Wool"
+				}
+			},
+			"id": 35
+		},{
+			"opacity": 0,
+			"name": "Piston Extension",
+			"idStr": "piston_extension",
+			"tex": [0,0],
+			"aka": "Block 36",
+			"mapcolor": [0,0,0],
+			"data": {
+				"11": {
+					"name": "Piston Extension (Sticky, South)"
+				},
+				"10": {
+					"name": "Piston Extension (Sticky, North)"
+				},
+				"13": {
+					"name": "Piston Extension (Sticky, East)"
+				},
+				"12": {
+					"name": "Piston Extension (Sticky, West)"
+				},
+				"1": {
+					"name": "Piston Extension (Up)"
+				},
+				"0": {
+					"name": "Piston Extension (Down)"
+				},
+				"3": {
+					"name": "Piston Extension (South)"
+				},
+				"2": {
+					"name": "Piston Extension (North)"
+				},
+				"5": {
+					"name": "Piston Extension (East)"
+				},
+				"4": {
+					"name": "Piston Extension (West)"
+				},
+				"9": {
+					"name": "Piston Extension (Sticky, Up)"
+				},
+				"8": {
+					"name": "Piston Extension (Sticky, Down)"
+				}
+			},
+			"id": 36
+		},{
+			"opacity": 0,
+			"search": "flower, yellow",
+			"name": "Dandelion",
+			"idStr": "yellow_flower",
+			"tex": [13,0],
+			"mapcolor": [255,255,0],
+			"type": "DECORATION_CROSS",
+			"id": 37
+		},{
+			"opacity": 0,
+			"data": {
+				"1": {
+					"tex": [16,0],
+					"search": "flower",
+					"name": "Blue Orchid"
+				},
+				"0": {
+					"search": "flower, red",
+					"name": "Poppy"
+				},
+				"3": {
+					"tex": [18,0],
+					"search": "flower",
+					"aka": "Houstonia",
+					"name": "Azure Bluet"
+				},
+				"2": {
+					"tex": [17,0],
+					"search": "flower",
+					"name": "Allium"
+				},
+				"5": {
+					"tex": [16,1],
+					"search": "flower",
+					"name": "Orange Tulip"
+				},
+				"4": {
+					"tex": [19,0],
+					"search": "flower",
+					"name": "Red Tulip"
+				},
+				"7": {
+					"tex": [18,1],
+					"search": "flower",
+					"name": "Pink Tulip"
+				},
+				"6": {
+					"tex": [17,1],
+					"search": "flower",
+					"name": "White Tulip"
+				},
+				"8": {
+					"tex": [19,1],
+					"search": "flower",
+					"name": "Oxeye Daisy"
+				}
+			},
+			"idStr": "red_flower",
+			"tex": [12,0],
+			"mapcolor": [255,0,0],
+			"type": "DECORATION_CROSS",
+			"id": 38
+		},{
+			"opacity": 0,
+			"name": "Mushroom (Brown)",
+			"brightness": 1,
+			"idStr": "brown_mushroom",
+			"tex": [13,1],
+			"mapcolor": [145,109,85],
+			"type": "DECORATION_CROSS",
+			"id": 39
+		},{
+			"opacity": 0,
+			"name": "Mushroom (Red)",
+			"idStr": "red_mushroom",
+			"tex": [12,1],
+			"mapcolor": [226,18,18],
+			"type": "DECORATION_CROSS",
+			"id": 40
+		},{
+			"tex": [7,1],
+			"mapcolor": [231,165,45],
+			"idStr": "gold_block",
+			"name": "Block of Gold",
+			"id": 41
+		},{
+			"tex": [6,1],
+			"mapcolor": [191,191,191],
+			"idStr": "iron_block",
+			"name": "Block of Iron",
+			"id": 42
+		},{
+			"tex": [6,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex": [0,1],
+					"name": "Cobblestone Double Slab (Seamless)"
+				},
+				"10": {
+					"tex": [4,0],
+					"aka": "Old Wood",
+					"name": "Wooden Double Slab (Seamless)"
+				},
+				"13": {
+					"tex": [6,3],
+					"name": "Stone Brick Double Slab (Seamless)"
+				},
+				"12": {
+					"tex": [7,0],
+					"name": "Brick Double Slab (Seamless)"
+				},
+				"15": {
+					"tex": [9,13],
+					"name": "Quartz Double Slab (Seamless)"
+				},
+				"14": {
+					"tex": [0,14],
+					"name": "Nether Brick Double Slab (Seamless)"
+				},
+				"1": {
+					"tex": [0,12],
+					"tex_direction": {
+						"TOP": [0,11],
+						"BOTTOM": [0,13]
+					},
+					"name": "Sandstone Double Slab (Seamed)"
+				},
+				"0": {
+					"tex": [5,0],
+					"tex_direction": {
+						"TOP": [6,0],
+						"BOTTOM": [6,0]
+					},
+					"name": "Stone Double Slab (Seamed)"
+				},
+				"3": {
+					"tex": [0,1],
+					"name": "Cobblestone Double Slab (Seamed)"
+				},
+				"2": {
+					"tex": [4,0],
+					"aka": "Old Wood",
+					"name": "Wooden Double Slab (Seamed)"
+				},
+				"5": {
+					"tex": [6,3],
+					"name": "Stone Brick Double Slab (Seamed)"
+				},
+				"4": {
+					"tex": [7,0],
+					"name": "Brick Double Slab (Seamed)"
+				},
+				"7": {
+					"tex": [9,13],
+					"name": "Quartz Stone Double Slab (Seamed)"
+				},
+				"6": {
+					"tex": [0,14],
+					"name": "Nether Brick Double Slab (Seamed)"
+				},
+				"9": {
+					"tex": [0,11],
+					"name": "Sandstone Double Slab (Seamless)"
+				},
+				"8": {
+					"tex": [6,0],
+					"name": "Stone Double Slab (Seamless)"
+				}
+			},
+			"id": 43,
+			"idStr": "double_stone_slab"
+		},{
+			"tex": [6,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex": [0,1],
+					"name": "Cobblestone Slab (Top)"
+				},
+				"10": {
+					"tex": [4,0],
+					"aka": "Old Wood",
+					"name": "Wooden Slab (Top)"
+				},
+				"13": {
+					"tex": [6,3],
+					"name": "Stone Brick Slab (Top)"
+				},
+				"12": {
+					"tex": [7,0],
+					"name": "Brick Slab (Top)"
+				},
+				"15": {
+					"tex": [9,13],
+					"name": "Quartz Slab (Top)"
+				},
+				"14": {
+					"tex": [0,14],
+					"name": "Nether Brick Slab (Top)"
+				},
+				"1": {
+					"tex": [0,12],
+					"tex_direction": {
+						"TOP": [0,11],
+						"BOTTOM": [0,13]
+					},
+					"name": "Sandstone Slab (Bottom)"
+				},
+				"0": {
+					"tex": [5,0],
+					"tex_direction": {
+						"TOP": [6,0],
+						"BOTTOM": [6,0]
+					},
+					"name": "Stone Slab (Bottom)"
+				},
+				"3": {
+					"tex": [0,1],
+					"name": "Cobblestone Slab (Bottom)"
+				},
+				"2": {
+					"tex": [4,0],
+					"aka": "Old Wood",
+					"name": "Wooden Slab (Bottom)"
+				},
+				"5": {
+					"tex": [6,3],
+					"name": "Stone Brick Slab (Bottom)"
+				},
+				"4": {
+					"tex": [7,0],
+					"name": "Brick Slab (Bottom)"
+				},
+				"7": {
+					"tex": [9,13],
+					"name": "Quartz Slab (Bottom)"
+				},
+				"6": {
+					"tex": [0,14],
+					"name": "Nether Brick Slab (Bottom)"
+				},
+				"9": {
+					"tex": [0,12],
+					"tex_direction": {
+						"TOP": [0,11],
+						"BOTTOM": [0,13]
+					},
+					"name": "Sandstone Slab (Top)"
+				},
+				"8": {
+					"tex": [5,0],
+					"tex_direction": {
+						"TOP": [6,0],
+						"BOTTOM": [6,0]
+					},
+					"name": "Stone Slab (Top)"
+				}
+			},
+			"id": 44,
+			"idStr": "stone_slab"
+		},{
+			"name": "Bricks",
+			"idStr": "brick_block",
+			"tex": [7,0],
+			"aka": "Block",
+			"mapcolor": [170,86,62],
+			"id": 45
+		},{
+			"name": "TNT",
+			"idStr": "tnt",
+			"tex": [8,0],
+			"mapcolor": [160,83,65],
+			"data": {
+				"1": {
+					"tex": [16,16],
+					"tex_direction": {
+						"TOP": [17,16],
+						"BOTTOM": [18,16]
+					},
+					"name": "TNT (Primed when Punched)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [9,0],
+						"BOTTOM": [10,0]
+					},
+					"name": "TNT"
+				}
+			},
+			"id": 46
+		},{
+			"tex_direction": {
+				"TOP": [4,0],
+				"BOTTOM": [4,0]
+			},
+			"name": "Bookshelf",
+			"idStr": "bookshelf",
+			"tex": [3,2],
+			"mapcolor": [188,152,98],
+			"id": 47
+		},{
+			"search": "mossy, cobblestone",
+			"name": "Moss Stone",
+			"idStr": "mossy_cobblestone",
+			"tex": [4,2],
+			"mapcolor": [115,169,115],
+			"id": 48
+		},{
+			"tex": [5,2],
+			"mapcolor": [26,11,43],
+			"idStr": "obsidian",
+			"name": "Obsidian",
+			"id": 49
+		},{
+			"opacity": 0,
+			"brightness": 14,
+			"data": {
+				"1": {
+					"name": "Torch (East)"
+				},
+				"3": {
+					"name": "Torch (South)"
+				},
+				"2": {
+					"name": "Torch (West)"
+				},
+				"5": {
+					"name": "Torch (Up)"
+				},
+				"4": {
+					"name": "Torch (North)"
+				}
+			},
+			"idStr": "torch",
+			"tex": [0,5],
+			"explored": true,
+			"mapcolor": [245,220,50],
+			"type": "TORCH",
+			"id": 50
+		},{
+			"opacity": 0,
+			"brightness": 15,
+			"data": {
+				"11": {
+					"name": "Fire (Age 11)"
+				},
+				"10": {
+					"name": "Fire (Age 10)"
+				},
+				"13": {
+					"name": "Fire (Age 13)"
+				},
+				"12": {
+					"name": "Fire (Age 12)"
+				},
+				"15": {
+					"name": "Fire (Age 15)"
+				},
+				"14": {
+					"name": "Fire (Age 14)"
+				},
+				"1": {
+					"name": "Fire (Age 1)"
+				},
+				"0": {
+					"name": "Fire (Age 0)"
+				},
+				"3": {
+					"name": "Fire (Age 3)"
+				},
+				"2": {
+					"name": "Fire (Age 2)"
+				},
+				"5": {
+					"name": "Fire (Age 5)"
+				},
+				"4": {
+					"name": "Fire (Age 4)"
+				},
+				"7": {
+					"name": "Fire (Age 7)"
+				},
+				"6": {
+					"name": "Fire (Age 6)"
+				},
+				"9": {
+					"name": "Fire (Age 9)"
+				},
+				"8": {
+					"name": "Fire (Age 8)"
+				}
+			},
+			"idStr": "fire",
+			"tex": [15,1],
+			"mapcolor": [255,170,30],
+			"type": "SEMISOLID",
+			"id": 51
+		},{
+			"opacity": 0,
+			"search": "mob",
+			"name": "Monster Spawner",
+			"idStr": "mob_spawner",
+			"tex": [1,4],
+			"mapcolor": [25,82,122],
+			"type": "SEMISOLID",
+			"id": 52
+		},{
+			"name": "Oak Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "oak_stairs",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Oak Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Oak Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Oak Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Oak Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Oak Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Oak Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Oak Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Oak Wood Stairs (Top, South)"
+				}
+			},
+			"id": 53
+		},{
+			"opacity": 0,
+			"name": "Chest",
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [16,3],
+						"BACKWARD": [18,3],
+						"BOTTOM": [16,3]
+					},
+					"name": "Chest (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [18,3],
+						"TOP": [16,3],
+						"BOTTOM": [16,3]
+					},
+					"name": "Chest (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [16,3],
+						"RIGHT": [18,3],
+						"BOTTOM": [16,3]
+					},
+					"name": "Chest (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [16,3],
+						"BOTTOM": [16,3],
+						"LEFT": [18,3]
+					},
+					"name": "Chest (West)"
+				}
+			},
+			"idStr": "chest",
+			"tex": [17,3],
+			"mapcolor": [125,91,38],
+			"type": "CHEST",
+			"id": 54
+		},{
+			"opacity": 0,
+			"search": "wire",
+			"name": "Redstone Dust",
+			"data": {
+				"11": {
+					"name": "Redstone Dust (Power 11)"
+				},
+				"10": {
+					"name": "Redstone Dust (Power 10)"
+				},
+				"13": {
+					"name": "Redstone Dust (Power 13)"
+				},
+				"12": {
+					"name": "Redstone Dust (Power 12)"
+				},
+				"15": {
+					"name": "Redstone Dust (Power 15)"
+				},
+				"14": {
+					"name": "Redstone Dust (Power 14)"
+				},
+				"1": {
+					"name": "Redstone Dust (Power 1)"
+				},
+				"0": {
+					"name": "Redstone Dust (Power 0)"
+				},
+				"3": {
+					"name": "Redstone Dust (Power 3)"
+				},
+				"2": {
+					"name": "Redstone Dust (Power 2)"
+				},
+				"5": {
+					"name": "Redstone Dust (Power 5)"
+				},
+				"4": {
+					"name": "Redstone Dust (Power 4)"
+				},
+				"7": {
+					"name": "Redstone Dust (Power 7)"
+				},
+				"6": {
+					"name": "Redstone Dust (Power 6)"
+				},
+				"9": {
+					"name": "Redstone Dust (Power 9)"
+				},
+				"8": {
+					"name": "Redstone Dust (Power 8)"
+				}
+			},
+			"idStr": "redstone_wire",
+			"tex": [4,10],
+			"mapcolor": [245,50,50],
+			"type": "FLOOR",
+			"id": 55
+		},{
+			"tex": [2,3],
+			"mapcolor": [129,140,143],
+			"idStr": "diamond_ore",
+			"name": "Diamond Ore",
+			"id": 56
+		},{
+			"tex": [8,1],
+			"mapcolor": [45,166,152],
+			"idStr": "diamond_block",
+			"name": "Block of Diamond",
+			"id": 57
+		},{
+			"tex_direction": {
+				"TOP": [11,2],
+				"SIDES": [11,3],
+				"BOTTOM": [4,0]
+			},
+			"search": "workbench",
+			"name": "Crafting Table",
+			"idStr": "crafting_table",
+			"tex": [12,3],
+			"mapcolor": [114,88,56],
+			"id": 58
+		},{
+			"opacity": 0,
+			"search": "crops",
+			"name": "Wheat",
+			"data": {
+				"1": {
+					"tex": [9,5],
+					"name": "Wheat (Age 1)"
+				},
+				"0": {
+					"tex": [8,5],
+					"name": "Wheat (Age 0)"
+				},
+				"3": {
+					"tex": [11,5],
+					"name": "Wheat (Age 3)"
+				},
+				"2": {
+					"tex": [10,5],
+					"name": "Wheat (Age 2)"
+				},
+				"5": {
+					"tex": [13,5],
+					"name": "Wheat (Age 5)"
+				},
+				"4": {
+					"tex": [12,5],
+					"name": "Wheat (Age 4)"
+				},
+				"7": {
+					"tex": [15,5],
+					"name": "Wheat (Age 7 (Max))"
+				},
+				"6": {
+					"tex": [14,5],
+					"name": "Wheat (Age 6)"
+				}
+			},
+			"idStr": "wheat",
+			"tex": [15,5],
+			"mapcolor": [146,192,0],
+			"type": "CROPS",
+			"id": 59
+		},{
+			"tex_direction": {
+				"TOP": [7,5]
+			},
+			"search": "tilled",
+			"name": "Farmland",
+			"idStr": "farmland",
+			"tex": [2,0],
+			"mapcolor": [95,58,30],
+			"data": {
+				"1": {
+					"name": "Farmland (Dry, Moisture 1)"
+				},
+				"0": {
+					"name": "Farmland (Dry, Moisture 0)"
+				},
+				"3": {
+					"name": "Farmland (Dry, Moisture 3)"
+				},
+				"2": {
+					"name": "Farmland (Dry, Moisture 2)"
+				},
+				"5": {
+					"name": "Farmland (Dry, Moisture 5)"
+				},
+				"4": {
+					"name": "Farmland (Dry, Moisture 4)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [6,5]
+					},
+					"name": "Farmland (Wet, Moisture 7)"
+				},
+				"6": {
+					"name": "Farmland (Dry, Moisture 6)"
+				}
+			},
+			"id": 60
+		},{
+			"name": "Furnace",
+			"idStr": "furnace",
+			"tex": [13,2],
+			"mapcolor": [96,96,96],
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [12,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Furnace (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [12,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Furnace (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [12,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Furnace (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [12,2]
+					},
+					"name": "Furnace (West)"
+				}
+			},
+			"id": 61
+		},{
+			"name": "Lit Furnace",
+			"brightness": 13,
+			"idStr": "lit_furnace",
+			"tex": [13,2],
+			"mapcolor": [96,96,96],
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [13,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Lit Furnace (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [13,3],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Lit Furnace (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [13,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Lit Furnace (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [13,3]
+					},
+					"name": "Lit Furnace (West)"
+				}
+			},
+			"id": 62
+		},{
+			"opacity": 0,
+			"name": "Standing Sign",
+			"data": {
+				"11": {
+					"name": "Standing Sign (East-NorthEast)"
+				},
+				"10": {
+					"name": "Standing Sign (NorthEast)"
+				},
+				"13": {
+					"name": "Standing Sign (East-SouthEast)"
+				},
+				"12": {
+					"name": "Standing Sign (East)"
+				},
+				"15": {
+					"name": "Standing Sign (South-SouthEast)"
+				},
+				"14": {
+					"name": "Standing Sign (SouthEast)"
+				},
+				"1": {
+					"name": "Standing Sign (South-SouthWest)"
+				},
+				"0": {
+					"name": "Standing Sign (South)"
+				},
+				"3": {
+					"name": "Standing Sign (West-SouthWest)"
+				},
+				"2": {
+					"name": "Standing Sign (SouthWest)"
+				},
+				"5": {
+					"name": "Standing Sign (West-NorthWest)"
+				},
+				"4": {
+					"name": "Standing Sign (West)"
+				},
+				"7": {
+					"name": "Standing Sign (North-NorthWest)"
+				},
+				"6": {
+					"name": "Standing Sign (NorthWest)"
+				},
+				"9": {
+					"name": "Standing Sign (North-NorthEast)"
+				},
+				"8": {
+					"name": "Standing Sign (North)"
+				}
+			},
+			"idStr": "standing_sign",
+			"tex": [20,5],
+			"mapcolor": [111,91,54],
+			"type": "SIGNPOST",
+			"id": 63
+		},{
+			"opacity": 0,
+			"name": "Oak Door",
+			"data": {
+				"11": {
+					"name": "Oak Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Oak Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [1,5],
+					"invalid": true
+				},
+				"12": {
+					"tex": [1,5],
+					"invalid": true
+				},
+				"15": {
+					"tex": [1,5],
+					"invalid": true
+				},
+				"14": {
+					"tex": [1,5],
+					"invalid": true
+				},
+				"1": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [1,6],
+					"name": "Oak Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Oak Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Oak Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"idStr": "wooden_door",
+			"tex": [1,5],
+			"tex_extra": {
+				"bottom": [1,6]
+			},
+			"mapcolor": [136,109,67],
+			"type": "DOOR",
+			"id": 64
+		},{
+			"opacity": 0,
+			"name": "Ladder",
+			"data": {
+				"3": {
+					"name": "Ladder (South)"
+				},
+				"2": {
+					"name": "Ladder (North)"
+				},
+				"5": {
+					"name": "Ladder (East)"
+				},
+				"4": {
+					"name": "Ladder (West)"
+				}
+			},
+			"idStr": "ladder",
+			"tex": [3,5],
+			"mapcolor": [181,140,64],
+			"type": "LADDER",
+			"id": 65
+		},{
+			"opacity": 0,
+			"search": "minecart, track",
+			"name": "Rail",
+			"data": {
+				"1": {
+					"name": "Rail (East/West)"
+				},
+				"0": {
+					"name": "Rail (North/South)"
+				},
+				"3": {
+					"name": "Rail (Ascending, West)"
+				},
+				"2": {
+					"name": "Rail (Ascending, East)"
+				},
+				"5": {
+					"name": "Rail (Ascending, South)"
+				},
+				"4": {
+					"name": "Rail (Ascending, North)"
+				},
+				"7": {
+					"name": "Rail (Curved, South/West)"
+				},
+				"6": {
+					"name": "Rail (Curved, South/East)"
+				},
+				"9": {
+					"name": "Rail (Curved, North/East)"
+				},
+				"8": {
+					"name": "Rail (Curved, North/West)"
+				}
+			},
+			"idStr": "rail",
+			"tex": [0,8],
+			"tex_extra": {
+				"curve": [0,7]
+			},
+			"mapcolor": [150,134,102],
+			"type": "MINECART_TRACKS",
+			"id": 66
+		},{
+			"name": "Cobblestone Stairs",
+			"type": "STAIRS",
+			"idStr": "stone_stairs",
+			"tex": [0,1],
+			"mapcolor": [115,115,115],
+			"data": {
+				"1": {
+					"name": "Cobblestone Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Cobblestone Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Cobblestone Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Cobblestone Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Cobblestone Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Cobblestone Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Cobblestone Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Cobblestone Stairs (Top, South)"
+				}
+			},
+			"id": 67
+		},{
+			"opacity": 0,
+			"name": "Wall Sign",
+			"data": {
+				"3": {
+					"name": "Wall Sign (South)"
+				},
+				"2": {
+					"name": "Wall Sign (North)"
+				},
+				"5": {
+					"name": "Wall Sign (East)"
+				},
+				"4": {
+					"name": "Wall Sign (West)"
+				}
+			},
+			"idStr": "wall_sign",
+			"tex": [4,0],
+			"mapcolor": [111,91,54],
+			"type": "WALLSIGN",
+			"id": 68
+		},{
+			"opacity": 0,
+			"name": "Lever",
+			"data": {
+				"11": {
+					"name": "Lever (Powered, South)"
+				},
+				"10": {
+					"name": "Lever (Powered, West)"
+				},
+				"13": {
+					"name": "Lever (Powered, Up_z)"
+				},
+				"12": {
+					"name": "Lever (Powered, North)"
+				},
+				"15": {
+					"name": "Lever (Powered, Down_z)"
+				},
+				"14": {
+					"name": "Lever (Powered, Up_x)"
+				},
+				"1": {
+					"name": "Lever (East)"
+				},
+				"0": {
+					"name": "Lever (Down_x)"
+				},
+				"3": {
+					"name": "Lever (South)"
+				},
+				"2": {
+					"name": "Lever (West)"
+				},
+				"5": {
+					"name": "Lever (Up_z)"
+				},
+				"4": {
+					"name": "Lever (North)"
+				},
+				"7": {
+					"name": "Lever (Down_z)"
+				},
+				"6": {
+					"name": "Lever (Up_x)"
+				},
+				"9": {
+					"name": "Lever (Powered, East)"
+				},
+				"8": {
+					"name": "Lever (Powered, Down_x)"
+				}
+			},
+			"idStr": "lever",
+			"tex": [0,6],
+			"tex_extra": {
+				"base": [0,1]
+			},
+			"mapcolor": [124,98,62],
+			"type": "LEVER",
+			"id": 69
+		},{
+			"opacity": 0,
+			"name": "Stone Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Stone Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Stone Pressure Plate"
+				}
+			},
+			"idStr": "stone_pressure_plate",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"type": "PRESSURE_PLATE",
+			"id": 70
+		},{
+			"opacity": 0,
+			"name": "Iron Door",
+			"data": {
+				"11": {
+					"name": "Iron Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Iron Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [2,5],
+					"invalid": true
+				},
+				"12": {
+					"tex": [2,5],
+					"invalid": true
+				},
+				"15": {
+					"tex": [2,5],
+					"invalid": true
+				},
+				"14": {
+					"tex": [2,5],
+					"invalid": true
+				},
+				"1": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [2,6],
+					"name": "Iron Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Iron Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Iron Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"idStr": "iron_door",
+			"tex": [2,5],
+			"tex_extra": {
+				"bottom": [2,6]
+			},
+			"mapcolor": [191,191,191],
+			"type": "DOOR",
+			"id": 71
+		},{
+			"opacity": 0,
+			"name": "Wooden Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Wooden Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Wooden Pressure Plate"
+				}
+			},
+			"idStr": "wooden_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 72
+		},{
+			"tex": [3,3],
+			"mapcolor": [131,107,107],
+			"idStr": "redstone_ore",
+			"name": "Redstone Ore",
+			"id": 73
+		},{
+			"name": "Lit Redstone Ore",
+			"brightness": 9,
+			"idStr": "lit_redstone_ore",
+			"tex": [20,4],
+			"mapcolor": [131,107,107],
+			"id": 74
+		},{
+			"opacity": 0,
+			"name": "Redstone Torch (Off)",
+			"data": {
+				"1": {
+					"name": "Unlit Redstone Torch (East)"
+				},
+				"3": {
+					"name": "Unlit Redstone Torch (South)"
+				},
+				"2": {
+					"name": "Unlit Redstone Torch (West)"
+				},
+				"5": {
+					"name": "Unlit Redstone Torch (Up)"
+				},
+				"4": {
+					"name": "Unlit Redstone Torch (North)"
+				}
+			},
+			"idStr": "unlit_redstone_torch",
+			"tex": [3,7],
+			"explored": true,
+			"mapcolor": [181,140,64],
+			"type": "TORCH",
+			"id": 75
+		},{
+			"opacity": 0,
+			"search": "lit",
+			"name": "Redstone Torch (On)",
+			"brightness": 7,
+			"data": {
+				"1": {
+					"name": "Redstone Torch (East)"
+				},
+				"3": {
+					"name": "Redstone Torch (South)"
+				},
+				"2": {
+					"name": "Redstone Torch (West)"
+				},
+				"5": {
+					"name": "Redstone Torch (Up)"
+				},
+				"4": {
+					"name": "Redstone Torch (North)"
+				}
+			},
+			"idStr": "redstone_torch",
+			"tex": [3,6],
+			"explored": true,
+			"mapcolor": [255,0,0],
+			"type": "TORCH",
+			"id": 76
+		},{
+			"opacity": 0,
+			"name": "Stone Button",
+			"data": {
+				"11": {
+					"name": "Stone Button (Powered, South)"
+				},
+				"10": {
+					"name": "Stone Button (Powered, West)"
+				},
+				"13": {
+					"name": "Stone Button (Powered, Up)"
+				},
+				"12": {
+					"name": "Stone Button (Powered, North)"
+				},
+				"1": {
+					"name": "Stone Button (East)"
+				},
+				"0": {
+					"name": "Stone Button (Down)"
+				},
+				"3": {
+					"name": "Stone Button (South)"
+				},
+				"2": {
+					"name": "Stone Button (West)"
+				},
+				"5": {
+					"name": "Stone Button (Up)"
+				},
+				"4": {
+					"name": "Stone Button (North)"
+				},
+				"9": {
+					"name": "Stone Button (Powered, East)"
+				},
+				"8": {
+					"name": "Stone Button (Powered, Down)"
+				}
+			},
+			"idStr": "stone_button",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"type": "BUTTON",
+			"id": 77
+		},{
+			"opacity": 0,
+			"name": "Snow Layer",
+			"data": {
+				"1": {
+					"name": "Snow Layer (2)"
+				},
+				"0": {
+					"name": "Snow Layer (1)"
+				},
+				"3": {
+					"name": "Snow Layer (4)"
+				},
+				"2": {
+					"name": "Snow Layer (3)"
+				},
+				"5": {
+					"name": "Snow Layer (6)"
+				},
+				"4": {
+					"name": "Snow Layer (5)"
+				},
+				"7": {
+					"name": "Snow Layer (8)"
+				},
+				"6": {
+					"name": "Snow Layer (7)"
+				}
+			},
+			"idStr": "snow_layer",
+			"tex": [2,4],
+			"mapcolor": [255,255,255],
+			"type": "THINSLICE",
+			"id": 78
+		},{
+			"opacity": 3,
+			"name": "Ice",
+			"idStr": "ice",
+			"tex": [3,4],
+			"mapcolor": [83,113,163],
+			"type": "WATER",
+			"id": 79
+		},{
+			"tex": [2,4],
+			"mapcolor": [250,250,250],
+			"idStr": "snow",
+			"name": "Snow",
+			"id": 80
+		},{
+			"tex_direction": {
+				"TOP": [5,4],
+				"BOTTOM": [5,4]
+			},
+			"opacity": 0,
+			"name": "Cactus",
+			"idStr": "cactus",
+			"tex": [6,4],
+			"mapcolor": [25,120,25],
+			"data": {
+				"11": {
+					"name": "Cactus (Age 11)"
+				},
+				"10": {
+					"name": "Cactus (Age 10)"
+				},
+				"13": {
+					"name": "Cactus (Age 13)"
+				},
+				"12": {
+					"name": "Cactus (Age 12)"
+				},
+				"15": {
+					"name": "Cactus (Age 15)"
+				},
+				"14": {
+					"name": "Cactus (Age 14)"
+				},
+				"1": {
+					"name": "Cactus (Age 1)"
+				},
+				"0": {
+					"name": "Cactus (Age 0)"
+				},
+				"3": {
+					"name": "Cactus (Age 3)"
+				},
+				"2": {
+					"name": "Cactus (Age 2)"
+				},
+				"5": {
+					"name": "Cactus (Age 5)"
+				},
+				"4": {
+					"name": "Cactus (Age 4)"
+				},
+				"7": {
+					"name": "Cactus (Age 7)"
+				},
+				"6": {
+					"name": "Cactus (Age 6)"
+				},
+				"9": {
+					"name": "Cactus (Age 9)"
+				},
+				"8": {
+					"name": "Cactus (Age 8)"
+				}
+			},
+			"id": 81
+		},{
+			"tex": [8,4],
+			"mapcolor": [151,157,169],
+			"idStr": "clay",
+			"name": "Clay",
+			"id": 82
+		},{
+			"opacity": 0,
+			"search": "reeds, papyrus",
+			"data": {
+				"11": {
+					"name": "Sugar Canes (Age 11)"
+				},
+				"10": {
+					"name": "Sugar Canes (Age 10)"
+				},
+				"13": {
+					"name": "Sugar Canes (Age 13)"
+				},
+				"12": {
+					"name": "Sugar Canes (Age 12)"
+				},
+				"15": {
+					"name": "Sugar Canes (Age 15)"
+				},
+				"14": {
+					"name": "Sugar Canes (Age 14)"
+				},
+				"1": {
+					"name": "Sugar Canes (Age 1)"
+				},
+				"0": {
+					"name": "Sugar Canes (Age 0)"
+				},
+				"3": {
+					"name": "Sugar Canes (Age 3)"
+				},
+				"2": {
+					"name": "Sugar Canes (Age 2)"
+				},
+				"5": {
+					"name": "Sugar Canes (Age 5)"
+				},
+				"4": {
+					"name": "Sugar Canes (Age 4)"
+				},
+				"7": {
+					"name": "Sugar Canes (Age 7)"
+				},
+				"6": {
+					"name": "Sugar Canes (Age 6)"
+				},
+				"9": {
+					"name": "Sugar Canes (Age 9)"
+				},
+				"8": {
+					"name": "Sugar Canes (Age 8)"
+				}
+			},
+			"idStr": "reeds",
+			"tex": [9,4],
+			"mapcolor": [100,67,50],
+			"type": "DECORATION_CROSS",
+			"id": 83
+		},{
+			"tex_direction": {
+				"TOP": [11,4]
+			},
+			"name": "Jukebox",
+			"idStr": "jukebox",
+			"tex": [10,4],
+			"mapcolor": [114,88,56],
+			"data": {
+				"1": {
+					"name": "Jukebox (Has Record)"
+				},
+				"0": {
+					"name": "Jukebox"
+				}
+			},
+			"id": 84
+		},{
+			"opacity": 0,
+			"name": "Oak Fence",
+			"idStr": "fence",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "FENCE",
+			"id": 85
+		},{
+			"name": "Pumpkin",
+			"idStr": "pumpkin",
+			"tex": [6,7],
+			"mapcolor": [227,144,29],
+			"data": {
+				"1": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"BOTTOM": [6,6],
+						"LEFT": [7,7]
+					},
+					"name": "Pumpkin (West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"BACKWARD": [7,7],
+						"BOTTOM": [6,6]
+					},
+					"name": "Pumpkin (South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"RIGHT": [7,7],
+						"BOTTOM": [6,6]
+					},
+					"name": "Pumpkin (East)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [7,7],
+						"TOP": [6,6],
+						"BOTTOM": [6,6]
+					},
+					"name": "Pumpkin (North)"
+				}
+			},
+			"id": 86
+		},{
+			"tex": [7,6],
+			"mapcolor": [104,8,8],
+			"idStr": "netherrack",
+			"name": "Netherrack",
+			"id": 87
+		},{
+			"search": "slow",
+			"name": "Soul Sand",
+			"idStr": "soul_sand",
+			"tex": [8,6],
+			"mapcolor": [106,82,68],
+			"id": 88
+		},{
+			"name": "Glowstone",
+			"brightness": 15,
+			"idStr": "glowstone",
+			"tex": [9,6],
+			"explored": true,
+			"mapcolor": [249,212,156],
+			"id": 89
+		},{
+			"opacity": 0,
+			"name": "Nether Portal",
+			"brightness": 11,
+			"data": {
+				"1": {
+					"name": "Nether Portal (East/West)"
+				},
+				"2": {
+					"name": "Nether Portal (North/South)"
+				}
+			},
+			"idStr": "portal",
+			"tex": [6,15],
+			"mapcolor": [214,127,255],
+			"type": "PORTAL",
+			"id": 90
+		},{
+			"search": "lit pumpkin",
+			"name": "Jack o'Lantern",
+			"brightness": 15,
+			"idStr": "lit_pumpkin",
+			"tex": [6,7],
+			"explored": true,
+			"mapcolor": [249,255,58],
+			"data": {
+				"1": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"BOTTOM": [6,6],
+						"LEFT": [8,7]
+					},
+					"name": "Jack o'Lantern (West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"BACKWARD": [8,7],
+						"BOTTOM": [6,6]
+					},
+					"name": "Jack o'Lantern (South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [6,6],
+						"RIGHT": [8,7],
+						"BOTTOM": [6,6]
+					},
+					"name": "Jack o'Lantern (East)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [8,7],
+						"TOP": [6,6],
+						"BOTTOM": [6,6]
+					},
+					"name": "Jack o'Lantern (North)"
+				}
+			},
+			"id": 91
+		},{
+			"tex_direction": {
+				"TOP": [9,7],
+				"BOTTOM": [12,7]
+			},
+			"opacity": 0,
+			"name": "Cake",
+			"data": {
+				"1": {
+					"name": "Cake (1 Bites)"
+				},
+				"0": {
+					"name": "Cake (0 Bites)"
+				},
+				"3": {
+					"name": "Cake (3 Bites)"
+				},
+				"2": {
+					"name": "Cake (2 Bites)"
+				},
+				"5": {
+					"name": "Cake (5 Bites)"
+				},
+				"4": {
+					"name": "Cake (4 Bites)"
+				},
+				"6": {
+					"name": "Cake (6 Bites)"
+				}
+			},
+			"idStr": "cake",
+			"tex": [10,7],
+			"mapcolor": [234,233,235],
+			"type": "CAKE",
+			"id": 92
+		},{
+			"opacity": 0,
+			"name": "Redstone Repeater",
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [18,9]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 3, East)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [18,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 3, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [18,7]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 4, West)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [3,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 4, South)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [18,9]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 4, East)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [18,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 4, North)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,7]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 1, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [3,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 1, South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [18,9]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 1, East)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [18,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 1, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [18,7]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 2, West)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [3,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 2, South)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [18,9]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 2, East)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [18,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 2, North)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,7]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 3, West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [3,8]
+					},
+					"name": "Redstone Repeater (Unpowered, Delay 3, South)"
+				}
+			},
+			"idStr": "unpowered_repeater",
+			"tex": [3,8],
+			"mapcolor": [245,50,50],
+			"type": "THINSLICE",
+			"id": 93
+		},{
+			"opacity": 0,
+			"name": "Redstone Repeater",
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [18,12]
+					},
+					"name": "Redstone Repeater (Powered, Delay 3, West)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [18,11]
+					},
+					"name": "Redstone Repeater (Powered, Delay 3, South)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [18,10]
+					},
+					"name": "Redstone Repeater (Powered, Delay 4, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [3,9]
+					},
+					"name": "Redstone Repeater (Powered, Delay 4, North)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [18,12]
+					},
+					"name": "Redstone Repeater (Powered, Delay 4, West)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [18,11]
+					},
+					"name": "Redstone Repeater (Powered, Delay 4, South)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,10]
+					},
+					"name": "Redstone Repeater (Powered, Delay 1, East)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [3,9]
+					},
+					"name": "Redstone Repeater (Powered, Delay 1, North)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [18,12]
+					},
+					"name": "Redstone Repeater (Powered, Delay 1, West)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [18,11]
+					},
+					"name": "Redstone Repeater (Powered, Delay 1, South)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [18,10]
+					},
+					"name": "Redstone Repeater (Powered, Delay 2, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [3,9]
+					},
+					"name": "Redstone Repeater (Powered, Delay 2, North)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [18,12]
+					},
+					"name": "Redstone Repeater (Powered, Delay 2, West)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [18,11]
+					},
+					"name": "Redstone Repeater (Powered, Delay 2, South)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,10]
+					},
+					"name": "Redstone Repeater (Powered, Delay 3, East)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [3,9]
+					},
+					"name": "Redstone Repeater (Powered, Delay 3, North)"
+				}
+			},
+			"idStr": "powered_repeater",
+			"tex": [3,9],
+			"mapcolor": [245,50,50],
+			"type": "THINSLICE",
+			"id": 94
+		},{
+			"opacity": 0,
+			"data": {
+				"11": {
+					"tex": [11,19],
+					"mapcolor": [39,51,161],
+					"name": "Blue Stained Glass"
+				},
+				"10": {
+					"tex": [10,19],
+					"mapcolor": [129,54,196],
+					"name": "Purple Stained Glass"
+				},
+				"13": {
+					"tex": [13,19],
+					"mapcolor": [56,77,24],
+					"name": "Green Stained Glass"
+				},
+				"12": {
+					"tex": [12,19],
+					"mapcolor": [86,51,28],
+					"name": "Brown Stained Glass"
+				},
+				"15": {
+					"tex": [15,19],
+					"mapcolor": [0,0,0],
+					"name": "Black Stained Glass"
+				},
+				"14": {
+					"tex": [14,19],
+					"mapcolor": [164,45,41],
+					"name": "Red Stained Glass"
+				},
+				"1": {
+					"tex": [1,19],
+					"mapcolor": [234,127,55],
+					"name": "Orange Stained Glass"
+				},
+				"0": {
+					"tex": [0,19],
+					"mapcolor": [222,222,222],
+					"name": "White Stained Glass"
+				},
+				"3": {
+					"tex": [3,19],
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Stained Glass"
+				},
+				"2": {
+					"tex": [2,19],
+					"mapcolor": [191,75,201],
+					"name": "Magenta Stained Glass"
+				},
+				"5": {
+					"tex": [5,19],
+					"mapcolor": [59,189,48],
+					"name": "Lime Stained Glass"
+				},
+				"4": {
+					"tex": [4,19],
+					"mapcolor": [104,139,212],
+					"name": "Yellow Stained Glass"
+				},
+				"7": {
+					"tex": [7,19],
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Stained Glass"
+				},
+				"6": {
+					"tex": [6,19],
+					"mapcolor": [217,131,155],
+					"name": "Pink Stained Glass"
+				},
+				"9": {
+					"tex": [9,19],
+					"mapcolor": [39,117,149],
+					"name": "Cyan Stained Glass"
+				},
+				"8": {
+					"tex": [8,19],
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Stained Glass"
+				}
+			},
+			"idStr": "stained_glass",
+			"tex": [0,19],
+			"type": "GLASS",
+			"id": 95
+		},{
+			"opacity": 0,
+			"name": "Wooden Trapdoor",
+			"data": {
+				"11": {
+					"name": "Wooden Trapdoor (Top, False, East)"
+				},
+				"10": {
+					"name": "Wooden Trapdoor (Top, False, West)"
+				},
+				"13": {
+					"name": "Wooden Trapdoor (Top, True, South)"
+				},
+				"12": {
+					"name": "Wooden Trapdoor (Top, True, North)"
+				},
+				"15": {
+					"name": "Wooden Trapdoor (Top, True, East)"
+				},
+				"14": {
+					"name": "Wooden Trapdoor (Top, True, West)"
+				},
+				"1": {
+					"name": "Wooden Trapdoor (Bottom, False, South)"
+				},
+				"0": {
+					"name": "Wooden Trapdoor (Bottom, False, North)"
+				},
+				"3": {
+					"name": "Wooden Trapdoor (Bottom, False, East)"
+				},
+				"2": {
+					"name": "Wooden Trapdoor (Bottom, False, West)"
+				},
+				"5": {
+					"name": "Wooden Trapdoor (Bottom, True, South)"
+				},
+				"4": {
+					"name": "Wooden Trapdoor (Bottom, True, North)"
+				},
+				"7": {
+					"name": "Wooden Trapdoor (Bottom, True, East)"
+				},
+				"6": {
+					"name": "Wooden Trapdoor (Bottom, True, West)"
+				},
+				"9": {
+					"name": "Wooden Trapdoor (Top, False, South)"
+				},
+				"8": {
+					"name": "Wooden Trapdoor (Top, False, North)"
+				}
+			},
+			"idStr": "trapdoor",
+			"tex": [4,5],
+			"mapcolor": [143,107,53],
+			"type": "TRAPDOOR",
+			"id": 96
+		},{
+			"search": "silverfish, block",
+			"name": "Monster Egg",
+			"idStr": "monster_egg",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"tex": [11,16],
+					"name": "Cobblestone Monster Egg"
+				},
+				"0": {
+					"tex": [10,16],
+					"name": "Stone Monster Egg"
+				},
+				"3": {
+					"tex": [13,16],
+					"name": "Mossy Stone Brick Monster Egg"
+				},
+				"2": {
+					"tex": [12,16],
+					"name": "Stone Brick Monster Egg"
+				},
+				"5": {
+					"tex": [15,16],
+					"name": "Chiseled Stone Brick Monster Egg"
+				},
+				"4": {
+					"tex": [14,16],
+					"name": "Cracked Stone Brick Monster Egg"
+				}
+			},
+			"id": 97
+		},{
+			"name": "Stone Bricks",
+			"idStr": "stonebrick",
+			"tex": [6,3],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"tex": [4,6],
+					"name": "Mossy Stone Bricks"
+				},
+				"0": {
+					"tex": [6,3],
+					"search": "block",
+					"name": "Stone Bricks"
+				},
+				"3": {
+					"tex": [5,13],
+					"name": "Chiseled Stone Bricks"
+				},
+				"2": {
+					"tex": [5,6],
+					"name": "Cracked Stone Bricks"
+				}
+			},
+			"id": 98
+		},{
+			"search": "huge",
+			"name": "Brown Mushroom Block",
+			"data": {
+				"10": {
+					"tex_direction": {
+						"RIGHT": [13,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,8],
+						"FORWARD": [13,8],
+						"BACKWARD": [13,8],
+						"LEFT": [13,8]
+					},
+					"name": "Brown Mushroom Block (Stem)"
+				},
+				"15": {
+					"tex": [13,8],
+					"name": "Brown Mushroom Block (All Stem)"
+				},
+				"14": {
+					"tex": [14,7],
+					"name": "Brown Mushroom Block (All Outside)"
+				},
+				"1": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,7],
+						"BACKWARD": [14,8],
+						"LEFT": [14,7]
+					},
+					"name": "Brown Mushroom Block (Northwest)"
+				},
+				"0": {
+					"tex": [14,8],
+					"name": "Brown Mushroom Block (All Inside)"
+				},
+				"3": {
+					"tex_direction": {
+						"RIGHT": [14,7],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,7],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (Northeast)"
+				},
+				"2": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,7],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (Center)"
+				},
+				"4": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [14,7]
+					},
+					"name": "Brown Mushroom Block (West)"
+				},
+				"7": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,7],
+						"LEFT": [14,7]
+					},
+					"name": "Brown Mushroom Block (Southwest)"
+				},
+				"6": {
+					"tex_direction": {
+						"RIGHT": [14,7],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (East)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [14,7],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,7],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (Southeast)"
+				},
+				"8": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,7],
+						"LEFT": [14,8]
+					},
+					"name": "Brown Mushroom Block (South)"
+				}
+			},
+			"idStr": "brown_mushroom_block",
+			"tex": [14,7],
+			"tex_extra": {
+				"pores": [14,8],
+				"stem": [13,8]
+			},
+			"mapcolor": [145,109,85],
+			"type": "HUGE_MUSHROOM",
+			"id": 99
+		},{
+			"search": "huge",
+			"name": "Red Mushroom Block",
+			"data": {
+				"10": {
+					"tex_direction": {
+						"RIGHT": [13,8],
+						"BOTTOM": [14,8],
+						"TOP": [14,8],
+						"FORWARD": [13,8],
+						"BACKWARD": [13,8],
+						"LEFT": [13,8]
+					},
+					"name": "Red Mushroom Block (Stem)"
+				},
+				"15": {
+					"tex": [13,8],
+					"name": "Red Mushroom Block (All Stem)"
+				},
+				"14": {
+					"tex": [13,7],
+					"name": "Red Mushroom Block (All Outside)"
+				},
+				"1": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [13,7],
+						"BACKWARD": [14,8],
+						"LEFT": [13,7]
+					},
+					"name": "Red Mushroom Block (Northwest)"
+				},
+				"0": {
+					"tex": [14,8],
+					"name": "Red Mushroom Block (All Inside)"
+				},
+				"3": {
+					"tex_direction": {
+						"RIGHT": [13,7],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [13,7],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (Northeast)"
+				},
+				"2": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [13,7],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (Center)"
+				},
+				"4": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [13,7]
+					},
+					"name": "Red Mushroom Block (West)"
+				},
+				"7": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [13,7],
+						"LEFT": [13,7]
+					},
+					"name": "Red Mushroom Block (Southwest)"
+				},
+				"6": {
+					"tex_direction": {
+						"RIGHT": [13,7],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [14,8],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (East)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [13,7],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [13,7],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (Southeast)"
+				},
+				"8": {
+					"tex_direction": {
+						"RIGHT": [14,8],
+						"BOTTOM": [14,8],
+						"TOP": [13,7],
+						"FORWARD": [14,8],
+						"BACKWARD": [13,7],
+						"LEFT": [14,8]
+					},
+					"name": "Red Mushroom Block (South)"
+				}
+			},
+			"idStr": "red_mushroom_block",
+			"tex": [13,7],
+			"tex_extra": {
+				"pores": [14,8],
+				"stem": [13,8]
+			},
+			"mapcolor": [181,29,27],
+			"type": "HUGE_MUSHROOM",
+			"id": 100
+		},{
+			"tex_direction": {
+				"TOP": [4,11],
+				"BOTTOM": [4,11]
+			},
+			"opacity": 0,
+			"name": "Iron Bars",
+			"idStr": "iron_bars",
+			"tex": [5,5],
+			"mapcolor": [77,77,78],
+			"type": "SOLID_PANE",
+			"id": 101
+		},{
+			"tex_direction": {
+				"TOP": [4,9],
+				"BOTTOM": [4,9]
+			},
+			"opacity": 0,
+			"name": "Glass Pane",
+			"idStr": "glass_pane",
+			"tex": [1,3],
+			"mapcolor": [255,255,255],
+			"type": "SOLID_PANE",
+			"id": 102
+		},{
+			"tex_direction": {
+				"TOP": [9,8],
+				"BOTTOM": [9,8]
+			},
+			"search": "watermelon, block",
+			"name": "Melon",
+			"idStr": "melon_block",
+			"tex": [8,8],
+			"mapcolor": [190,184,41],
+			"id": 103
+		},{
+			"opacity": 0,
+			"name": "Pumpkin Stem",
+			"data": {
+				"1": {
+					"name": "Pumpkin Stem (Age 1)"
+				},
+				"0": {
+					"name": "Pumpkin Stem (Age 0)"
+				},
+				"3": {
+					"name": "Pumpkin Stem (Age 3)"
+				},
+				"2": {
+					"name": "Pumpkin Stem (Age 2)"
+				},
+				"5": {
+					"name": "Pumpkin Stem (Age 5)"
+				},
+				"4": {
+					"name": "Pumpkin Stem (Age 4)"
+				},
+				"7": {
+					"name": "Pumpkin Stem (Age 7 (Max))"
+				},
+				"6": {
+					"name": "Pumpkin Stem (Age 6)"
+				}
+			},
+			"idStr": "pumpkin_stem",
+			"tex": [15,6],
+			"tex_extra": {
+				"curve": [15,7]
+			},
+			"mapcolor": [227,144,29],
+			"type": "STEM",
+			"id": 104
+		},{
+			"opacity": 0,
+			"search": "watermelon",
+			"name": "Melon Stem",
+			"data": {
+				"1": {
+					"name": "Melon Stem (Age 1)"
+				},
+				"0": {
+					"name": "Melon Stem (Age 0)"
+				},
+				"3": {
+					"name": "Melon Stem (Age 3)"
+				},
+				"2": {
+					"name": "Melon Stem (Age 2)"
+				},
+				"5": {
+					"name": "Melon Stem (Age 5)"
+				},
+				"4": {
+					"name": "Melon Stem (Age 4)"
+				},
+				"7": {
+					"name": "Melon Stem (Age 7 (Max))"
+				},
+				"6": {
+					"name": "Melon Stem (Age 6)"
+				}
+			},
+			"idStr": "melon_stem",
+			"tex": [15,6],
+			"tex_extra": {
+				"curve": [15,7]
+			},
+			"mapcolor": [190,184,41],
+			"type": "STEM",
+			"id": 105
+		},{
+			"opacity": 0,
+			"name": "Vines",
+			"data": {
+				"11": {
+					"name": "Vines (East/South/West)"
+				},
+				"10": {
+					"name": "Vines (East/West)"
+				},
+				"13": {
+					"name": "Vines (East/North/South)"
+				},
+				"12": {
+					"name": "Vines (East/North)"
+				},
+				"15": {
+					"name": "Vines (East/North/South/West)"
+				},
+				"14": {
+					"name": "Vines (East/North/West)"
+				},
+				"1": {
+					"name": "Vines (South)"
+				},
+				"0": {
+					"name": "Vines (None)"
+				},
+				"3": {
+					"name": "Vines (South/West)"
+				},
+				"2": {
+					"name": "Vines (West)"
+				},
+				"5": {
+					"name": "Vines (North/South)"
+				},
+				"4": {
+					"name": "Vines (North)"
+				},
+				"7": {
+					"name": "Vines (North/South/West)"
+				},
+				"6": {
+					"name": "Vines (North/West)"
+				},
+				"9": {
+					"name": "Vines (East/South)"
+				},
+				"8": {
+					"name": "Vines (East)"
+				}
+			},
+			"idStr": "vine",
+			"tex": [15,8],
+			"mapcolor": [117,176,73],
+			"type": "VINE",
+			"id": 106
+		},{
+			"tex_direction": {
+				"TOP": [4,0]
+			},
+			"opacity": 0,
+			"name": "Oak Fence Gate",
+			"data": {
+				"11": {
+					"name": "Oak Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Oak Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Oak Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Oak Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Oak Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Oak Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Oak Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Oak Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Oak Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Oak Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Oak Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Oak Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Oak Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Oak Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Oak Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Oak Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "fence_gate",
+			"tex": [21,0],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 107
+		},{
+			"name": "Brick Stairs",
+			"type": "STAIRS",
+			"idStr": "brick_stairs",
+			"tex": [7,0],
+			"mapcolor": [170,86,62],
+			"data": {
+				"1": {
+					"name": "Brick Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Brick Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Brick Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Brick Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Brick Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Brick Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Brick Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Brick Stairs (Top, South)"
+				}
+			},
+			"id": 108
+		},{
+			"name": "Stone Brick Stairs",
+			"type": "STAIRS",
+			"idStr": "stone_brick_stairs",
+			"tex": [6,3],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"name": "Stone Brick Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Stone Brick Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Stone Brick Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Stone Brick Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Stone Brick Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Stone Brick Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Stone Brick Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Stone Brick Stairs (Top, South)"
+				}
+			},
+			"id": 109
+		},{
+			"tex_direction": {
+				"TOP": [14,4],
+				"BOTTOM": [2,0]
+			},
+			"name": "Mycelium",
+			"idStr": "mycelium",
+			"tex": [13,4],
+			"mapcolor": [140,115,119],
+			"id": 110
+		},{
+			"opacity": 0,
+			"search": "waterlily",
+			"name": "Lily Pad",
+			"idStr": "waterlily",
+			"tex": [12,4],
+			"mapcolor": [117,176,73],
+			"type": "FLOOR",
+			"id": 111
+		},{
+			"name": "Nether Brick",
+			"idStr": "nether_brick",
+			"tex": [0,14],
+			"aka": "Block",
+			"mapcolor": [54,24,30],
+			"id": 112
+		},{
+			"opacity": 0,
+			"name": "Nether Brick Fence",
+			"idStr": "nether_brick_fence",
+			"tex": [0,14],
+			"mapcolor": [54,24,30],
+			"type": "FENCE",
+			"id": 113
+		},{
+			"name": "Nether Brick Stairs",
+			"type": "STAIRS",
+			"idStr": "nether_brick_stairs",
+			"tex": [0,14],
+			"mapcolor": [54,24,30],
+			"data": {
+				"1": {
+					"name": "Nether Brick Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Nether Brick Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Nether Brick Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Nether Brick Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Nether Brick Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Nether Brick Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Nether Brick Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Nether Brick Stairs (Top, South)"
+				}
+			},
+			"id": 114
+		},{
+			"opacity": 0,
+			"name": "Nether Wart",
+			"data": {
+				"1": {
+					"tex": [3,14],
+					"name": "Nether Wart (Age 1)"
+				},
+				"0": {
+					"tex": [2,14],
+					"name": "Nether Wart (Age 0)"
+				},
+				"3": {
+					"tex": [4,14],
+					"name": "Nether Wart (Age 3)"
+				},
+				"2": {
+					"tex": [3,14],
+					"name": "Nether Wart (Age 2)"
+				}
+			},
+			"idStr": "nether_wart",
+			"tex": [4,14],
+			"mapcolor": [112,8,28],
+			"type": "NETHER_WART",
+			"id": 115
+		},{
+			"opacity": 0,
+			"tex_direction": {
+				"TOP": [6,10],
+				"BOTTOM": [7,11]
+			},
+			"search": "enchanting",
+			"name": "Enchantment Table",
+			"idStr": "enchanting_table",
+			"tex": [6,11],
+			"mapcolor": [88,23,22],
+			"type": "ENCHANTMENT_TABLE",
+			"id": 116
+		},{
+			"opacity": 0,
+			"name": "Brewing Stand",
+			"brightness": 1,
+			"data": {
+				"1": {
+					"name": "Brewing Stand (Has Bottle 0)"
+				},
+				"0": {
+					"name": "Brewing Stand (Empty)"
+				},
+				"3": {
+					"name": "Brewing Stand (Has Bottle 0&1)"
+				},
+				"2": {
+					"name": "Brewing Stand (Has Bottle 1)"
+				},
+				"5": {
+					"name": "Brewing Stand (Has Bottle 0&2)"
+				},
+				"4": {
+					"name": "Brewing Stand (Has Bottle 2)"
+				},
+				"7": {
+					"name": "Brewing Stand (Has Bottle 0&1&2)"
+				},
+				"6": {
+					"name": "Brewing Stand (Has Bottle 1&2)"
+				}
+			},
+			"idStr": "brewing_stand",
+			"tex": [13,9],
+			"tex_extra": {
+				"base": [12,9]
+			},
+			"mapcolor": [189,163,82],
+			"type": "DECORATION_CROSS",
+			"id": 117
+		},{
+			"tex_direction": {
+				"TOP": [11,8],
+				"BOTTOM": [11,8]
+			},
+			"opacity": 0,
+			"name": "Cauldron",
+			"data": {
+				"1": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 1)"
+				},
+				"0": {
+					"name": "Cauldron (Level 0)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 3)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 2)"
+				}
+			},
+			"idStr": "cauldron",
+			"tex": [10,9],
+			"mapcolor": [79,79,79],
+			"type": "CAULDRON",
+			"id": 118
+		},{
+			"opacity": 0,
+			"name": "End Portal",
+			"idStr": "end_portal",
+			"tex": [16,15],
+			"mapcolor": [0,0,0],
+			"type": "ENDER_PORTAL",
+			"id": 119
+		},{
+			"tex_direction": {
+				"TOP": [14,9],
+				"BOTTOM": [15,10]
+			},
+			"opacity": 0,
+			"name": "End Portal Frame",
+			"brightness": 1,
+			"data": {
+				"1": {
+					"name": "End Portal Frame (No Eye, West)"
+				},
+				"0": {
+					"name": "End Portal Frame (No Eye, South)"
+				},
+				"3": {
+					"name": "End Portal Frame (No Eye, East)"
+				},
+				"2": {
+					"name": "End Portal Frame (No Eye, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [19,6]
+					},
+					"name": "End Portal Frame (Eye, West)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [19,6]
+					},
+					"name": "End Portal Frame (Eye, South)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [19,6]
+					},
+					"name": "End Portal Frame (Eye, East)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [19,6]
+					},
+					"name": "End Portal Frame (Eye, North)"
+				}
+			},
+			"idStr": "end_portal_frame",
+			"tex": [15,9],
+			"mapcolor": [55,142,215],
+			"type": "ENDER_PORTAL_FRAME",
+			"id": 120
+		},{
+			"tex": [15,10],
+			"mapcolor": [235,248,182],
+			"idStr": "end_stone",
+			"name": "End Stone",
+			"id": 121
+		},{
+			"opacity": 0,
+			"search": "ender",
+			"name": "Dragon Egg",
+			"brightness": 1,
+			"idStr": "dragon_egg",
+			"tex": [7,10],
+			"mapcolor": [45,1,51],
+			"id": 122
+		},{
+			"tex": [3,13],
+			"mapcolor": [156,104,54],
+			"idStr": "redstone_lamp",
+			"name": "Redstone Lamp (Off)",
+			"id": 123
+		},{
+			"search": "lit",
+			"name": "Redstone Lamp (On)",
+			"brightness": 15,
+			"idStr": "lit_redstone_lamp",
+			"tex": [4,13],
+			"mapcolor": [208,152,70],
+			"id": 124
+		},{
+			"name": "Double Wooden Slab",
+			"idStr": "double_wooden_slab",
+			"tex": [4,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"1": {
+					"tex": [6,12],
+					"name": "Spruce Double Slab"
+				},
+				"0": {
+					"tex": [4,0],
+					"name": "Oak Double Slab"
+				},
+				"3": {
+					"tex": [7,12],
+					"name": "Jungle Double Slab"
+				},
+				"2": {
+					"tex": [6,13],
+					"name": "Birch Double Slab"
+				},
+				"5": {
+					"tex": [1,15],
+					"name": "Dark Oak Double Slab"
+				},
+				"4": {
+					"tex": [0,15],
+					"name": "Acacia Double Slab"
+				}
+			},
+			"id": 125
+		},{
+			"name": "Wooden Slab",
+			"idStr": "wooden_slab",
+			"tex": [4,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex": [7,12],
+					"name": "Jungle Wood Slab (Top)"
+				},
+				"10": {
+					"tex": [6,13],
+					"name": "Birch Wood Slab (Top)"
+				},
+				"13": {
+					"tex": [1,15],
+					"name": "Dark Oak Wood Slab (Top)"
+				},
+				"12": {
+					"tex": [0,15],
+					"name": "Acacia Wood Slab (Top)"
+				},
+				"1": {
+					"tex": [6,12],
+					"name": "Spruce Wood Slab (Bottom)"
+				},
+				"0": {
+					"tex": [4,0],
+					"name": "Oak Wood Slab (Bottom)"
+				},
+				"3": {
+					"tex": [7,12],
+					"name": "Jungle Wood Slab (Bottom)"
+				},
+				"2": {
+					"tex": [6,13],
+					"name": "Birch Wood Slab (Bottom)"
+				},
+				"5": {
+					"tex": [1,15],
+					"name": "Dark Oak Wood Slab (Bottom)"
+				},
+				"4": {
+					"tex": [0,15],
+					"name": "Acacia Wood Slab (Bottom)"
+				},
+				"9": {
+					"tex": [6,12],
+					"name": "Spruce Wood Slab (Top)"
+				},
+				"8": {
+					"tex": [4,0],
+					"name": "Oak Wood Slab (Top)"
+				}
+			},
+			"id": 126
+		},{
+			"opacity": 0,
+			"name": "Cocoa",
+			"data": {
+				"11": {
+					"name": "Cocoa (Age 2, East)"
+				},
+				"10": {
+					"name": "Cocoa (Age 2, North)"
+				},
+				"1": {
+					"name": "Cocoa (Age 0, West)"
+				},
+				"0": {
+					"name": "Cocoa (Age 0, South)"
+				},
+				"3": {
+					"name": "Cocoa (Age 0, East)"
+				},
+				"2": {
+					"name": "Cocoa (Age 0, North)"
+				},
+				"5": {
+					"name": "Cocoa (Age 1, West)"
+				},
+				"4": {
+					"name": "Cocoa (Age 1, South)"
+				},
+				"7": {
+					"name": "Cocoa (Age 1, East)"
+				},
+				"6": {
+					"name": "Cocoa (Age 1, North)"
+				},
+				"9": {
+					"name": "Cocoa (Age 2, West)"
+				},
+				"8": {
+					"name": "Cocoa (Age 2, South)"
+				}
+			},
+			"idStr": "cocoa",
+			"tex": [10,10],
+			"mapcolor": [181,140,64],
+			"type": "CROPS",
+			"id": 127
+		},{
+			"tex_direction": {
+				"TOP": [0,11],
+				"BOTTOM": [0,13]
+			},
+			"name": "Sandstone Stairs",
+			"data": {
+				"1": {
+					"name": "Sandstone Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Sandstone Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Sandstone Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Sandstone Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Sandstone Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Sandstone Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Sandstone Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Sandstone Stairs (Top, South)"
+				}
+			},
+			"idStr": "sandstone_stairs",
+			"tex": [0,12],
+			"mapcolor": [157,128,79],
+			"type": "STAIRS",
+			"id": 128
+		},{
+			"tex": [11,10],
+			"mapcolor": [200,200,200],
+			"idStr": "emerald_ore",
+			"name": "Emerald Ore",
+			"id": 129
+		},{
+			"opacity": 0,
+			"name": "Ender Chest",
+			"brightness": 7,
+			"idStr": "ender_chest",
+			"tex": [18,2],
+			"mapcolor": [200,200,200],
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"BACKWARD": [16,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [16,2],
+						"TOP": [17,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"RIGHT": [16,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"BOTTOM": [19,2],
+						"LEFT": [16,2]
+					},
+					"name": "Ender Chest (West)"
+				}
+			},
+			"id": 130
+		},{
+			"opacity": 0,
+			"name": "Tripwire Hook",
+			"data": {
+				"11": {
+					"name": "Tripwire Hook (Unattached, Powered, East)"
+				},
+				"10": {
+					"name": "Tripwire Hook (Unattached, Powered, North)"
+				},
+				"13": {
+					"name": "Tripwire Hook (Attached, Powered, West)"
+				},
+				"12": {
+					"name": "Tripwire Hook (Attached, Powered, South)"
+				},
+				"15": {
+					"name": "Tripwire Hook (Attached, Powered, East)"
+				},
+				"14": {
+					"name": "Tripwire Hook (Attached, Powered, North)"
+				},
+				"1": {
+					"name": "Tripwire Hook (Unattached, Unpowered, West)"
+				},
+				"0": {
+					"name": "Tripwire Hook (Unattached, Unpowered, South)"
+				},
+				"3": {
+					"name": "Tripwire Hook (Unattached, Unpowered, East)"
+				},
+				"2": {
+					"name": "Tripwire Hook (Unattached, Unpowered, North)"
+				},
+				"5": {
+					"name": "Tripwire Hook (Attached, Unpowered, West)"
+				},
+				"4": {
+					"name": "Tripwire Hook (Attached, Unpowered, South)"
+				},
+				"7": {
+					"name": "Tripwire Hook (Attached, Unpowered, East)"
+				},
+				"6": {
+					"name": "Tripwire Hook (Attached, Unpowered, North)"
+				},
+				"9": {
+					"name": "Tripwire Hook (Unattached, Powered, West)"
+				},
+				"8": {
+					"name": "Tripwire Hook (Unattached, Powered, South)"
+				}
+			},
+			"idStr": "tripwire_hook",
+			"tex": [12,10],
+			"mapcolor": [200,200,200],
+			"type": "DECORATION_CROSS",
+			"id": 131
+		},{
+			"opacity": 0,
+			"name": "Tripwire",
+			"data": {
+				"11": {
+					"name": "Tripwire (Unattached, Disarmed, Powered, Suspended)"
+				},
+				"10": {
+					"name": "Tripwire (Unattached, Disarmed, Unpowered, Suspended)"
+				},
+				"13": {
+					"name": "Tripwire (Attached, Disarmed, Powered, Unsuspended)"
+				},
+				"12": {
+					"name": "Tripwire (Attached, Disarmed, Unpowered, Unsuspended)"
+				},
+				"15": {
+					"name": "Tripwire (Attached, Disarmed, Powered, Suspended)"
+				},
+				"14": {
+					"name": "Tripwire (Attached, Disarmed, Unpowered, Suspended)"
+				},
+				"1": {
+					"name": "Tripwire (Unattached, Armed, Powered, Unsuspended)"
+				},
+				"0": {
+					"name": "Tripwire (Unattached, Armed, Unpowered, Unsuspended)"
+				},
+				"3": {
+					"name": "Tripwire (Unattached, Armed, Powered, Suspended)"
+				},
+				"2": {
+					"name": "Tripwire (Unattached, Armed, Unpowered, Suspended)"
+				},
+				"5": {
+					"name": "Tripwire (Attached, Armed, Powered, Unsuspended)"
+				},
+				"4": {
+					"name": "Tripwire (Attached, Armed, Unpowered, Unsuspended)"
+				},
+				"7": {
+					"name": "Tripwire (Attached, Armed, Powered, Suspended)"
+				},
+				"6": {
+					"name": "Tripwire (Attached, Armed, Unpowered, Suspended)"
+				},
+				"9": {
+					"name": "Tripwire (Unattached, Disarmed, Powered, Unsuspended)"
+				},
+				"8": {
+					"name": "Tripwire (Unattached, Disarmed, Unpowered, Unsuspended)"
+				}
+			},
+			"idStr": "tripwire",
+			"tex": [13,10],
+			"mapcolor": [200,200,200],
+			"type": "DECORATION_CROSS",
+			"id": 132
+		},{
+			"tex": [9,1],
+			"mapcolor": [200,200,200],
+			"idStr": "emerald_block",
+			"name": "Block of Emerald",
+			"id": 133
+		},{
+			"name": "Spruce Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "spruce_stairs",
+			"tex": [6,12],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Spruce Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Spruce Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Spruce Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Spruce Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Spruce Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Spruce Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Spruce Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Spruce Wood Stairs (Top, South)"
+				}
+			},
+			"id": 134
+		},{
+			"name": "Birch Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "birch_stairs",
+			"tex": [6,13],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Birch Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Birch Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Birch Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Birch Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Birch Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Birch Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Birch Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Birch Wood Stairs (Top, South)"
+				}
+			},
+			"id": 135
+		},{
+			"name": "Jungle Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "jungle_stairs",
+			"tex": [7,12],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Jungle Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Jungle Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Jungle Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Jungle Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Jungle Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Jungle Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Jungle Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Jungle Wood Stairs (Top, South)"
+				}
+			},
+			"id": 136
+		},{
+			"search": "Impulse",
+			"name": "Command Block",
+			"idStr": "command_block",
+			"tex": [22,3],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"BOTTOM": [25,4],
+						"TOP": [25,4],
+						"RIGHT": [26,4],
+						"BACKWARD": [22,0],
+						"LEFT": [24,4]
+					},
+					"name": "Command Block (Conditional, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [22,0],
+						"BOTTOM": [23,4],
+						"TOP": [23,4],
+						"RIGHT": [24,4],
+						"LEFT": [26,4]
+					},
+					"name": "Command Block (Conditional, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"FORWARD": [26,4],
+						"TOP": [24,4],
+						"RIGHT": [22,0],
+						"BACKWARD": [24,4],
+						"BOTTOM": [24,4]
+					},
+					"name": "Command Block (Conditional, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"FORWARD": [24,4],
+						"BOTTOM": [26,4],
+						"TOP": [26,4],
+						"BACKWARD": [26,4],
+						"LEFT": [22,0]
+					},
+					"name": "Command Block (Conditional, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"FORWARD": [27,4],
+						"TOP": [22,0],
+						"BACKWARD": [27,4],
+						"SIDES": [27,4]
+					},
+					"name": "Command Block (Not Conditional, Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"FORWARD": [29,4],
+						"BACKWARD": [29,4],
+						"SIDES": [29,4],
+						"BOTTOM": [22,0]
+					},
+					"name": "Command Block (Not Conditional, Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"BOTTOM": [29,4],
+						"TOP": [29,4],
+						"RIGHT": [30,4],
+						"BACKWARD": [22,0],
+						"LEFT": [28,4]
+					},
+					"name": "Command Block (Not Conditional, South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [22,0],
+						"BOTTOM": [27,4],
+						"TOP": [27,4],
+						"RIGHT": [28,4],
+						"LEFT": [30,4]
+					},
+					"name": "Command Block (Not Conditional, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"FORWARD": [30,4],
+						"TOP": [28,4],
+						"RIGHT": [22,0],
+						"BACKWARD": [28,4],
+						"BOTTOM": [28,4]
+					},
+					"name": "Command Block (Not Conditional, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"FORWARD": [28,4],
+						"BOTTOM": [30,4],
+						"TOP": [30,4],
+						"BACKWARD": [30,4],
+						"LEFT": [22,0]
+					},
+					"name": "Command Block (Not Conditional, West)"
+				},
+				"9": {
+					"tex_direction": {
+						"FORWARD": [23,4],
+						"TOP": [22,0],
+						"BACKWARD": [23,4],
+						"SIDES": [23,4]
+					},
+					"name": "Command Block (Conditional, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"FORWARD": [25,4],
+						"BACKWARD": [25,4],
+						"SIDES": [25,4],
+						"BOTTOM": [22,0]
+					},
+					"name": "Command Block (Conditional, Down)"
+				}
+			},
+			"id": 137
+		},{
+			"tex_direction": {
+				"TOP": [20,7],
+				"BOTTOM": [20,8]
+			},
+			"opacity": 0,
+			"name": "Beacon",
+			"brightness": 15,
+			"idStr": "beacon",
+			"tex": [20,6],
+			"mapcolor": [200,200,200],
+			"id": 138
+		},{
+			"opacity": 0,
+			"name": "Cobblestone Wall",
+			"data": {
+				"1": {
+					"tex": [4,2],
+					"name": "Cobblestone Wall (Mossy)"
+				},
+				"0": {
+					"tex": [0,1],
+					"name": "Cobblestone Wall"
+				}
+			},
+			"idStr": "cobblestone_wall",
+			"tex": [0,1],
+			"mapcolor": [128,128,128],
+			"type": "FENCE",
+			"id": 139
+		},{
+			"opacity": 0,
+			"name": "Flower Pot",
+			"data": {
+				"11": {
+					"name": "Flower Pot (Legacy Data 11)"
+				},
+				"10": {
+					"name": "Flower Pot (Legacy Data 10)"
+				},
+				"13": {
+					"name": "Flower Pot (Legacy Data 13)"
+				},
+				"12": {
+					"name": "Flower Pot (Legacy Data 12)"
+				},
+				"15": {
+					"name": "Flower Pot (Legacy Data 15)"
+				},
+				"14": {
+					"name": "Flower Pot (Legacy Data 14)"
+				},
+				"1": {
+					"name": "Flower Pot (Legacy Data 1)"
+				},
+				"0": {
+					"name": "Flower Pot (Legacy Data 0)"
+				},
+				"3": {
+					"name": "Flower Pot (Legacy Data 3)"
+				},
+				"2": {
+					"name": "Flower Pot (Legacy Data 2)"
+				},
+				"5": {
+					"name": "Flower Pot (Legacy Data 5)"
+				},
+				"4": {
+					"name": "Flower Pot (Legacy Data 4)"
+				},
+				"7": {
+					"name": "Flower Pot (Legacy Data 7)"
+				},
+				"6": {
+					"name": "Flower Pot (Legacy Data 6)"
+				},
+				"9": {
+					"name": "Flower Pot (Legacy Data 9)"
+				},
+				"8": {
+					"name": "Flower Pot (Legacy Data 8)"
+				}
+			},
+			"idStr": "flower_pot",
+			"tex": [10,11],
+			"mapcolor": [200,200,200],
+			"type": "DECORATION_CROSS",
+			"id": 140
+		},{
+			"opacity": 0,
+			"name": "Carrots",
+			"data": {
+				"1": {
+					"tex": [8,12],
+					"name": "Carrots (Age 1)"
+				},
+				"0": {
+					"tex": [8,12],
+					"name": "Carrots (Age 0)"
+				},
+				"3": {
+					"tex": [9,12],
+					"name": "Carrots (Age 3)"
+				},
+				"2": {
+					"tex": [9,12],
+					"name": "Carrots (Age 2)"
+				},
+				"5": {
+					"tex": [10,12],
+					"name": "Carrots (Age 5)"
+				},
+				"4": {
+					"tex": [10,12],
+					"name": "Carrots (Age 4)"
+				},
+				"7": {
+					"tex": [11,12],
+					"name": "Carrots (Age 7)"
+				},
+				"6": {
+					"tex": [10,12],
+					"name": "Carrots (Age 6)"
+				}
+			},
+			"idStr": "carrots",
+			"tex": [11,12],
+			"mapcolor": [200,100,100],
+			"type": "CROPS",
+			"id": 141
+		},{
+			"opacity": 0,
+			"name": "Potatoes",
+			"data": {
+				"1": {
+					"tex": [8,12],
+					"name": "Potatoes (Age 1)"
+				},
+				"0": {
+					"tex": [8,12],
+					"name": "Potatoes (Age 0)"
+				},
+				"3": {
+					"tex": [9,12],
+					"name": "Potatoes (Age 3)"
+				},
+				"2": {
+					"tex": [9,12],
+					"name": "Potatoes (Age 2)"
+				},
+				"5": {
+					"tex": [10,12],
+					"name": "Potatoes (Age 5)"
+				},
+				"4": {
+					"tex": [10,12],
+					"name": "Potatoes (Age 4)"
+				},
+				"7": {
+					"tex": [12,12],
+					"name": "Potatoes (Age 7)"
+				},
+				"6": {
+					"tex": [10,12],
+					"name": "Potatoes (Age 6)"
+				}
+			},
+			"idStr": "potatoes",
+			"tex": [12,12],
+			"mapcolor": [200,100,100],
+			"type": "CROPS",
+			"id": 142
+		},{
+			"opacity": 0,
+			"name": "Wooden Button",
+			"data": {
+				"11": {
+					"name": "Wooden Button (Powered, South)"
+				},
+				"10": {
+					"name": "Wooden Button (Powered, West)"
+				},
+				"13": {
+					"name": "Wooden Button (Powered, Up)"
+				},
+				"12": {
+					"name": "Wooden Button (Powered, North)"
+				},
+				"1": {
+					"name": "Wooden Button (East)"
+				},
+				"0": {
+					"name": "Wooden Button (Down)"
+				},
+				"3": {
+					"name": "Wooden Button (South)"
+				},
+				"2": {
+					"name": "Wooden Button (West)"
+				},
+				"5": {
+					"name": "Wooden Button (Up)"
+				},
+				"4": {
+					"name": "Wooden Button (North)"
+				},
+				"9": {
+					"name": "Wooden Button (Powered, East)"
+				},
+				"8": {
+					"name": "Wooden Button (Powered, Down)"
+				}
+			},
+			"idStr": "wooden_button",
+			"tex": [4,0],
+			"mapcolor": [200,100,100],
+			"type": "BUTTON",
+			"id": 143
+		},{
+			"opacity": 0,
+			"search": "skull",
+			"name": "Mob Head",
+			"idStr": "skull",
+			"tex": [2,15],
+			"mapcolor": [200,100,100],
+			"data": {
+				"11": {
+					"name": "Mob Head (No Drop, South)"
+				},
+				"10": {
+					"name": "Mob Head (No Drop, North)"
+				},
+				"13": {
+					"name": "Mob Head (No Drop, East)"
+				},
+				"12": {
+					"name": "Mob Head (No Drop, West)"
+				},
+				"1": {
+					"name": "Mob Head (Drop, Up)"
+				},
+				"0": {
+					"name": "Mob Head (Drop, Down)"
+				},
+				"3": {
+					"name": "Mob Head (Drop, South)"
+				},
+				"2": {
+					"name": "Mob Head (Drop, North)"
+				},
+				"5": {
+					"name": "Mob Head (Drop, East)"
+				},
+				"4": {
+					"name": "Mob Head (Drop, West)"
+				},
+				"9": {
+					"name": "Mob Head (No Drop, Up)"
+				},
+				"8": {
+					"name": "Mob Head (No Drop, Down)"
+				}
+			},
+			"id": 144
+		},{
+			"opacity": 0,
+			"name": "Anvil",
+			"idStr": "anvil",
+			"tex": [7,15],
+			"mapcolor": [100,100,100],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [8,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Very Damaged, East)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [8,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Very Damaged, North)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [7,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [7,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [7,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (East)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [7,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [8,13],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Damaged, West)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [8,13],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Damaged, South)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [8,13],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Damaged, East)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [8,13],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Damaged, North)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [8,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Very Damaged, West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [8,14],
+						"BOTTOM": [7,13]
+					},
+					"name": "Anvil (Very Damaged, South)"
+				}
+			},
+			"id": 145
+		},{
+			"opacity": 0,
+			"name": "Trapped Chest",
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"BACKWARD": [18,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [18,6],
+						"TOP": [16,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"RIGHT": [18,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"BOTTOM": [16,6],
+						"LEFT": [18,6]
+					},
+					"name": "Trapped Chest (West)"
+				}
+			},
+			"idStr": "trapped_chest",
+			"tex": [17,6],
+			"mapcolor": [100,100,100],
+			"type": "CHEST",
+			"id": 146
+		},{
+			"opacity": 0,
+			"name": "Light Weighted Pressure Plate",
+			"data": {
+				"11": {
+					"name": "Light Weighted Pressure Plate (Power 11)"
+				},
+				"10": {
+					"name": "Light Weighted Pressure Plate (Power 10)"
+				},
+				"13": {
+					"name": "Light Weighted Pressure Plate (Power 13)"
+				},
+				"12": {
+					"name": "Light Weighted Pressure Plate (Power 12)"
+				},
+				"15": {
+					"name": "Light Weighted Pressure Plate (Power 15)"
+				},
+				"14": {
+					"name": "Light Weighted Pressure Plate (Power 14)"
+				},
+				"1": {
+					"name": "Light Weighted Pressure Plate (Power 1)"
+				},
+				"0": {
+					"name": "Light Weighted Pressure Plate (Power 0)"
+				},
+				"3": {
+					"name": "Light Weighted Pressure Plate (Power 3)"
+				},
+				"2": {
+					"name": "Light Weighted Pressure Plate (Power 2)"
+				},
+				"5": {
+					"name": "Light Weighted Pressure Plate (Power 5)"
+				},
+				"4": {
+					"name": "Light Weighted Pressure Plate (Power 4)"
+				},
+				"7": {
+					"name": "Light Weighted Pressure Plate (Power 7)"
+				},
+				"6": {
+					"name": "Light Weighted Pressure Plate (Power 6)"
+				},
+				"9": {
+					"name": "Light Weighted Pressure Plate (Power 9)"
+				},
+				"8": {
+					"name": "Light Weighted Pressure Plate (Power 8)"
+				}
+			},
+			"idStr": "light_weighted_pressure_plate",
+			"tex": [7,1],
+			"mapcolor": [231,165,45],
+			"type": "PRESSURE_PLATE",
+			"id": 147
+		},{
+			"opacity": 0,
+			"name": "Heavy Weighted Pressure Plate",
+			"data": {
+				"11": {
+					"name": "Heavy Weighted Pressure Plate (Power 11)"
+				},
+				"10": {
+					"name": "Heavy Weighted Pressure Plate (Power 10)"
+				},
+				"13": {
+					"name": "Heavy Weighted Pressure Plate (Power 13)"
+				},
+				"12": {
+					"name": "Heavy Weighted Pressure Plate (Power 12)"
+				},
+				"15": {
+					"name": "Heavy Weighted Pressure Plate (Power 15)"
+				},
+				"14": {
+					"name": "Heavy Weighted Pressure Plate (Power 14)"
+				},
+				"1": {
+					"name": "Heavy Weighted Pressure Plate (Power 1)"
+				},
+				"0": {
+					"name": "Heavy Weighted Pressure Plate (Power 0)"
+				},
+				"3": {
+					"name": "Heavy Weighted Pressure Plate (Power 3)"
+				},
+				"2": {
+					"name": "Heavy Weighted Pressure Plate (Power 2)"
+				},
+				"5": {
+					"name": "Heavy Weighted Pressure Plate (Power 5)"
+				},
+				"4": {
+					"name": "Heavy Weighted Pressure Plate (Power 4)"
+				},
+				"7": {
+					"name": "Heavy Weighted Pressure Plate (Power 7)"
+				},
+				"6": {
+					"name": "Heavy Weighted Pressure Plate (Power 6)"
+				},
+				"9": {
+					"name": "Heavy Weighted Pressure Plate (Power 9)"
+				},
+				"8": {
+					"name": "Heavy Weighted Pressure Plate (Power 8)"
+				}
+			},
+			"idStr": "heavy_weighted_pressure_plate",
+			"tex": [6,1],
+			"mapcolor": [191,191,191],
+			"type": "PRESSURE_PLATE",
+			"id": 148
+		},{
+			"opacity": 0,
+			"name": "Redstone Comparator (Off)",
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [27,3]
+					},
+					"name": "Redstone Comparator (On, Compare, East)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [27,2]
+					},
+					"name": "Redstone Comparator (On, Compare, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [28,1]
+					},
+					"name": "Redstone Comparator (On, Subtract, West)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [28,0]
+					},
+					"name": "Redstone Comparator (On, Subtract, South)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [28,3]
+					},
+					"name": "Redstone Comparator (On, Subtract, East)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [28,2]
+					},
+					"name": "Redstone Comparator (On, Subtract, North)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [25,1]
+					},
+					"name": "Redstone Comparator (Off, Compare, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [25,0]
+					},
+					"name": "Redstone Comparator (Off, Compare, South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [25,3]
+					},
+					"name": "Redstone Comparator (Off, Compare, East)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [25,2]
+					},
+					"name": "Redstone Comparator (Off, Compare, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [26,1]
+					},
+					"name": "Redstone Comparator (Off, Subtract, West)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [26,0]
+					},
+					"name": "Redstone Comparator (Off, Subtract, South)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [26,3]
+					},
+					"name": "Redstone Comparator (Off, Subtract, East)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [26,2]
+					},
+					"name": "Redstone Comparator (Off, Subtract, North)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [27,1]
+					},
+					"name": "Redstone Comparator (On, Compare, West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [27,0]
+					},
+					"name": "Redstone Comparator (On, Compare, South)"
+				}
+			},
+			"idStr": "unpowered_comparator",
+			"tex": [11,11],
+			"mapcolor": [100,100,100],
+			"type": "THINSLICE",
+			"id": 149
+		},{
+			"opacity": 0,
+			"name": "Redstone Comparator (On)",
+			"brightness": 8,
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [27,3]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, West)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [27,2]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, South)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [28,1]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [28,0]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, North)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [28,3]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, West)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [28,2]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, South)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [25,1]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [25,0]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, North)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [25,3]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, West)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [25,2]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, South)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [26,1]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [26,0]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, North)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [26,3]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, West)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [26,2]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, South)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [27,1]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, East)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [27,0]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, North)"
+				}
+			},
+			"idStr": "powered_comparator",
+			"tex": [12,11],
+			"mapcolor": [100,100,100],
+			"type": "THINSLICE",
+			"id": 150
+		},{
+			"tex_direction": {
+				"TOP": [13,11],
+				"BOTTOM": [13,11]
+			},
+			"opacity": 0,
+			"search": "detector",
+			"name": "Daylight Sensor",
+			"idStr": "daylight_detector",
+			"tex": [20,2],
+			"mapcolor": [255,100,255],
+			"data": {
+				"11": {
+					"name": "Daylight Sensor (Power 11)"
+				},
+				"10": {
+					"name": "Daylight Sensor (Power 10)"
+				},
+				"13": {
+					"name": "Daylight Sensor (Power 13)"
+				},
+				"12": {
+					"name": "Daylight Sensor (Power 12)"
+				},
+				"15": {
+					"name": "Daylight Sensor (Power 15)"
+				},
+				"14": {
+					"name": "Daylight Sensor (Power 14)"
+				},
+				"1": {
+					"name": "Daylight Sensor (Power 1)"
+				},
+				"0": {
+					"name": "Daylight Sensor (Power 0)"
+				},
+				"3": {
+					"name": "Daylight Sensor (Power 3)"
+				},
+				"2": {
+					"name": "Daylight Sensor (Power 2)"
+				},
+				"5": {
+					"name": "Daylight Sensor (Power 5)"
+				},
+				"4": {
+					"name": "Daylight Sensor (Power 4)"
+				},
+				"7": {
+					"name": "Daylight Sensor (Power 7)"
+				},
+				"6": {
+					"name": "Daylight Sensor (Power 6)"
+				},
+				"9": {
+					"name": "Daylight Sensor (Power 9)"
+				},
+				"8": {
+					"name": "Daylight Sensor (Power 8)"
+				}
+			},
+			"id": 151
+		},{
+			"tex": [14,11],
+			"mapcolor": [255,100,100],
+			"idStr": "redstone_block",
+			"name": "Block of Redstone",
+			"id": 152
+		},{
+			"tex": [15,11],
+			"mapcolor": [255,255,255],
+			"idStr": "quartz_ore",
+			"name": "Nether Quartz Ore",
+			"id": 153
+		},{
+			"opacity": 0,
+			"name": "Hopper",
+			"idStr": "hopper",
+			"tex": [12,15],
+			"mapcolor": [100,100,100],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BACKWARD": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [10,8],
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"RIGHT": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15],
+						"LEFT": [10,8]
+					},
+					"name": "Hopper (Disabled, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BACKWARD": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,8],
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"RIGHT": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15],
+						"LEFT": [10,8]
+					},
+					"name": "Hopper (West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, Down)"
+				}
+			},
+			"id": 154
+		},{
+			"name": "Block of Quartz",
+			"idStr": "quartz_block",
+			"tex": [9,13],
+			"mapcolor": [255,255,255],
+			"data": {
+				"1": {
+					"tex": [8,15],
+					"tex_direction": {
+						"TOP": [9,15],
+						"BOTTOM": [9,15]
+					},
+					"name": "Chiseled Quartz Block"
+				},
+				"0": {
+					"name": "Block of Quartz"
+				},
+				"3": {
+					"tex": [17,19],
+					"tex_direction": {
+						"SIDES": [11,15]
+					},
+					"name": "Pillar Quartz Block (East/West)"
+				},
+				"2": {
+					"tex": [10,15],
+					"tex_direction": {
+						"TOP": [11,15],
+						"BOTTOM": [11,15]
+					},
+					"name": "Pillar Quartz Block (Upright)"
+				},
+				"4": {
+					"tex": [10,15],
+					"tex_direction": {
+						"FORWARD": [11,15],
+						"BACKWARD": [11,15],
+						"SIDES": [17,19]
+					},
+					"name": "Pillar Quartz Block (North/South)"
+				}
+			},
+			"id": 155
+		},{
+			"name": "Quartz Stairs",
+			"idStr": "quartz_stairs",
+			"tex": [9,13],
+			"mapcolor": [255,255,255],
+			"data": {
+				"1": {
+					"name": "Quartz Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Quartz Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Quartz Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Quartz Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Quartz Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Quartz Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Quartz Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Quartz Stairs (Top, South)"
+				}
+			},
+			"id": 156
+		},{
+			"opacity": 0,
+			"name": "Activator Rail",
+			"data": {
+				"11": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, West)"
+				},
+				"10": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, East)"
+				},
+				"13": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, South)"
+				},
+				"12": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, North)"
+				},
+				"1": {
+					"name": "Activator Rail (Unpowered, East/West)"
+				},
+				"0": {
+					"name": "Activator Rail (Unpowered, North/South)"
+				},
+				"3": {
+					"name": "Activator Rail (Unpowered, Ascending, West)"
+				},
+				"2": {
+					"name": "Activator Rail (Unpowered, Ascending, East)"
+				},
+				"5": {
+					"name": "Activator Rail (Unpowered, Ascending, South)"
+				},
+				"4": {
+					"name": "Activator Rail (Unpowered, Ascending, North)"
+				},
+				"9": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, East/West)"
+				},
+				"8": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, North/South)"
+				}
+			},
+			"idStr": "activator_rail",
+			"tex": [10,13],
+			"tex_extra": {
+				"powered": [11,13]
+			},
+			"mapcolor": [100,100,100],
+			"type": "SIMPLE_RAIL",
+			"id": 157
+		},{
+			"opacity": 0,
+			"name": "Dropper",
+			"idStr": "dropper",
+			"tex": [13,2],
+			"mapcolor": [100,100,100],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [10,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [10,2]
+					},
+					"name": "Dropper (On, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,4],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,4]
+					},
+					"name": "Dropper (Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [10,2]
+					},
+					"name": "Dropper (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,4],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,4]
+					},
+					"name": "Dropper (On, Down)"
+				}
+			},
+			"id": 158
+		},{
+			"mapcolor": [150,100,50],
+			"data": {
+				"11": {
+					"tex": [11,18],
+					"mapcolor": [39,51,161],
+					"name": "Blue Stained Clay"
+				},
+				"10": {
+					"tex": [10,18],
+					"mapcolor": [129,54,196],
+					"name": "Purple Stained Clay"
+				},
+				"13": {
+					"tex": [13,18],
+					"mapcolor": [56,77,24],
+					"name": "Green Stained Clay"
+				},
+				"12": {
+					"tex": [12,18],
+					"mapcolor": [86,51,28],
+					"name": "Brown Stained Clay"
+				},
+				"15": {
+					"tex": [15,18],
+					"mapcolor": [0,0,0],
+					"name": "Black Stained Clay"
+				},
+				"14": {
+					"tex": [14,18],
+					"mapcolor": [164,45,41],
+					"name": "Red Stained Clay"
+				},
+				"1": {
+					"tex": [1,18],
+					"mapcolor": [234,127,55],
+					"name": "Orange Stained Clay"
+				},
+				"0": {
+					"tex": [0,18],
+					"mapcolor": [222,222,222],
+					"name": "White Stained Clay"
+				},
+				"3": {
+					"tex": [3,18],
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Stained Clay"
+				},
+				"2": {
+					"tex": [2,18],
+					"mapcolor": [191,75,201],
+					"name": "Magenta Stained Clay"
+				},
+				"5": {
+					"tex": [5,18],
+					"mapcolor": [59,189,48],
+					"name": "Lime Stained Clay"
+				},
+				"4": {
+					"tex": [4,18],
+					"mapcolor": [104,139,212],
+					"name": "Yellow Stained Clay"
+				},
+				"7": {
+					"tex": [7,18],
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Stained Clay"
+				},
+				"6": {
+					"tex": [6,18],
+					"mapcolor": [217,131,155],
+					"name": "Pink Stained Clay"
+				},
+				"9": {
+					"tex": [9,18],
+					"mapcolor": [39,117,149],
+					"name": "Cyan Stained Clay"
+				},
+				"8": {
+					"tex": [8,18],
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Stained Clay"
+				}
+			},
+			"id": 159,
+			"idStr": "stained_hardened_clay"
+		},{
+			"opacity": 0,
+			"name": "Stained Glass Pane",
+			"data": {
+				"11": {
+					"tex": [11,19],
+					"tex_direction": {
+						"TOP": [11,17],
+						"BOTTOM": [11,17]
+					},
+					"mapcolor": [39,51,161],
+					"name": "Blue Stained Glass Pane"
+				},
+				"10": {
+					"tex": [10,19],
+					"tex_direction": {
+						"TOP": [10,17],
+						"BOTTOM": [10,17]
+					},
+					"mapcolor": [129,54,196],
+					"name": "Purple Stained Glass Pane"
+				},
+				"13": {
+					"tex": [13,19],
+					"tex_direction": {
+						"TOP": [13,17],
+						"BOTTOM": [13,17]
+					},
+					"mapcolor": [56,77,24],
+					"name": "Green Stained Glass Pane"
+				},
+				"12": {
+					"tex": [12,19],
+					"tex_direction": {
+						"TOP": [12,17],
+						"BOTTOM": [12,17]
+					},
+					"mapcolor": [86,51,28],
+					"name": "Brown Stained Glass Pane"
+				},
+				"15": {
+					"tex": [15,19],
+					"tex_direction": {
+						"TOP": [15,17],
+						"BOTTOM": [15,17]
+					},
+					"mapcolor": [0,0,0],
+					"name": "Black Stained Glass Pane"
+				},
+				"14": {
+					"tex": [14,19],
+					"tex_direction": {
+						"TOP": [14,17],
+						"BOTTOM": [14,17]
+					},
+					"mapcolor": [164,45,41],
+					"name": "Red Stained Glass Pane"
+				},
+				"1": {
+					"tex": [1,19],
+					"tex_direction": {
+						"TOP": [1,17],
+						"BOTTOM": [1,17]
+					},
+					"mapcolor": [234,127,55],
+					"name": "Orange Stained Glass Pane"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [0,17],
+						"BOTTOM": [0,17]
+					},
+					"mapcolor": [222,222,222],
+					"name": "White Stained Glass Pane"
+				},
+				"3": {
+					"tex": [3,19],
+					"tex_direction": {
+						"TOP": [3,17],
+						"BOTTOM": [3,17]
+					},
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Stained Glass Pane"
+				},
+				"2": {
+					"tex": [2,19],
+					"tex_direction": {
+						"TOP": [2,17],
+						"BOTTOM": [2,17]
+					},
+					"mapcolor": [191,75,201],
+					"name": "Magenta Stained Glass Pane"
+				},
+				"5": {
+					"tex": [5,19],
+					"tex_direction": {
+						"TOP": [5,17],
+						"BOTTOM": [5,17]
+					},
+					"mapcolor": [59,189,48],
+					"name": "Lime Stained Glass Pane"
+				},
+				"4": {
+					"tex": [4,19],
+					"tex_direction": {
+						"TOP": [4,17],
+						"BOTTOM": [4,17]
+					},
+					"mapcolor": [104,139,212],
+					"name": "Yellow Stained Glass Pane"
+				},
+				"7": {
+					"tex": [7,19],
+					"tex_direction": {
+						"TOP": [7,17],
+						"BOTTOM": [7,17]
+					},
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Stained Glass Pane"
+				},
+				"6": {
+					"tex": [6,19],
+					"tex_direction": {
+						"TOP": [6,17],
+						"BOTTOM": [6,17]
+					},
+					"mapcolor": [217,131,155],
+					"name": "Pink Stained Glass Pane"
+				},
+				"9": {
+					"tex": [9,19],
+					"tex_direction": {
+						"TOP": [9,17],
+						"BOTTOM": [9,17]
+					},
+					"mapcolor": [39,117,149],
+					"name": "Cyan Stained Glass Pane"
+				},
+				"8": {
+					"tex": [8,19],
+					"tex_direction": {
+						"TOP": [8,17],
+						"BOTTOM": [8,17]
+					},
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Stained Glass Pane"
+				}
+			},
+			"idStr": "stained_glass_pane",
+			"tex": [0,19],
+			"mapcolor": [255,255,255],
+			"type": "SOLID_PANE",
+			"id": 160
+		},{
+			"opacity": 1,
+			"idStr": "leaves2",
+			"tex": [5,3],
+			"mapcolor": [60,192,41],
+			"data": {
+				"13": {
+					"tex": [5,8],
+					"mapcolor": [74,131,66],
+					"name": "Dark Oak Leaves (No Decay, Unused)"
+				},
+				"12": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Acacia Leaves (No Decay, Unused)"
+				},
+				"1": {
+					"tex": [5,3],
+					"mapcolor": [74,131,66],
+					"name": "Dark Oak Leaves (Decay after Tree Update)"
+				},
+				"0": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Acacia Leaves (Decay after Tree Update)"
+				},
+				"5": {
+					"tex": [5,3],
+					"mapcolor": [74,131,66],
+					"name": "Dark Oak Leaves (No Decay)"
+				},
+				"4": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Acacia Leaves (No Decay)"
+				},
+				"9": {
+					"tex": [5,3],
+					"mapcolor": [74,131,66],
+					"name": "Dark Oak Leaves (Decaying)"
+				},
+				"8": {
+					"tex": [5,3],
+					"mapcolor": [60,192,41],
+					"name": "Acacia Leaves (Decaying)"
+				}
+			},
+			"id": 161
+		},{
+			"search": "log",
+			"name": "Wood (Acacia/Dark Oak)",
+			"idStr": "log2",
+			"tex": [3,15],
+			"mapcolor": [102,81,51],
+			"data": {
+				"13": {
+					"tex": [4,15],
+					"name": "Dark Oak Wood (Bark Only, Dark Oak)"
+				},
+				"12": {
+					"tex": [3,15],
+					"name": "Acacia Wood (Bark Only, Acacia)"
+				},
+				"1": {
+					"tex": [4,15],
+					"tex_direction": {
+						"TOP": [12,14],
+						"BOTTOM": [12,14]
+					},
+					"name": "Dark Oak Wood (Upright, Dark Oak)"
+				},
+				"0": {
+					"tex": [3,15],
+					"tex_direction": {
+						"TOP": [13,13],
+						"BOTTOM": [13,13]
+					},
+					"name": "Acacia Wood (Upright, Acacia)"
+				},
+				"5": {
+					"tex": [4,15],
+					"tex_direction": {
+						"SIDES": [12,14]
+					},
+					"name": "Dark Oak Wood (East/West, Dark Oak)"
+				},
+				"4": {
+					"tex": [3,15],
+					"tex_direction": {
+						"SIDES": [13,13]
+					},
+					"name": "Acacia Wood (East/West, Acacia)"
+				},
+				"9": {
+					"tex": [4,15],
+					"tex_direction": {
+						"FORWARD": [12,14],
+						"BACKWARD": [12,14]
+					},
+					"name": "Dark Oak Wood (North/South, Dark Oak)"
+				},
+				"8": {
+					"tex": [3,15],
+					"tex_direction": {
+						"FORWARD": [13,13],
+						"BACKWARD": [13,13]
+					},
+					"name": "Acacia Wood (North/South, Acacia)"
+				}
+			},
+			"id": 162
+		},{
+			"name": "Acacia Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "acacia_stairs",
+			"tex": [0,15],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Acacia Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Acacia Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Acacia Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Acacia Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Acacia Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Acacia Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Acacia Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Acacia Wood Stairs (Top, South)"
+				}
+			},
+			"id": 163
+		},{
+			"name": "Dark Oak Wood Stairs",
+			"type": "STAIRS",
+			"idStr": "dark_oak_stairs",
+			"tex": [1,15],
+			"mapcolor": [157,128,79],
+			"data": {
+				"1": {
+					"name": "Dark Oak Wood Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Dark Oak Wood Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Dark Oak Wood Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Dark Oak Wood Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Dark Oak Wood Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Dark Oak Wood Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Dark Oak Wood Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Dark Oak Wood Stairs (Top, South)"
+				}
+			},
+			"id": 164
+		},{
+			"opacity": 0,
+			"name": "Slime Block",
+			"idStr": "slime",
+			"tex": [17,15],
+			"type": "SEMISOLID",
+			"id": 165
+		},{
+			"opacity": 0,
+			"search": "block",
+			"name": "Barrier",
+			"idStr": "barrier",
+			"tex": [10,1],
+			"mapcolor": [255,255,255],
+			"type": "GLASS",
+			"id": 166
+		},{
+			"opacity": 0,
+			"name": "Iron Trapdoor",
+			"data": {
+				"11": {
+					"name": "Iron Trapdoor (Top, False, East)"
+				},
+				"10": {
+					"name": "Iron Trapdoor (Top, False, West)"
+				},
+				"13": {
+					"name": "Iron Trapdoor (Top, True, South)"
+				},
+				"12": {
+					"name": "Iron Trapdoor (Top, True, North)"
+				},
+				"15": {
+					"name": "Iron Trapdoor (Top, True, East)"
+				},
+				"14": {
+					"name": "Iron Trapdoor (Top, True, West)"
+				},
+				"1": {
+					"name": "Iron Trapdoor (Bottom, False, South)"
+				},
+				"0": {
+					"name": "Iron Trapdoor (Bottom, False, North)"
+				},
+				"3": {
+					"name": "Iron Trapdoor (Bottom, False, East)"
+				},
+				"2": {
+					"name": "Iron Trapdoor (Bottom, False, West)"
+				},
+				"5": {
+					"name": "Iron Trapdoor (Bottom, True, South)"
+				},
+				"4": {
+					"name": "Iron Trapdoor (Bottom, True, North)"
+				},
+				"7": {
+					"name": "Iron Trapdoor (Bottom, True, East)"
+				},
+				"6": {
+					"name": "Iron Trapdoor (Bottom, True, West)"
+				},
+				"9": {
+					"name": "Iron Trapdoor (Top, False, South)"
+				},
+				"8": {
+					"name": "Iron Trapdoor (Top, False, North)"
+				}
+			},
+			"idStr": "iron_trapdoor",
+			"tex": [3,16],
+			"mapcolor": [191,191,191],
+			"type": "TRAPDOOR",
+			"id": 167
+		},{
+			"tex": [18,17],
+			"data": {
+				"1": {
+					"tex": [16,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Bricks"
+				},
+				"0": {
+					"tex": [18,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine"
+				},
+				"2": {
+					"tex": [17,17],
+					"mapcolor": [29,87,119],
+					"name": "Dark Prismarine"
+				}
+			},
+			"idStr": "prismarine",
+			"name": "Prismarine",
+			"id": 168
+		},{
+			"name": "Sea Lantern",
+			"brightness": 15,
+			"idStr": "sea_lantern",
+			"tex": [17,18],
+			"mapcolor": [49,127,159],
+			"id": 169
+		},{
+			"tex": [1,16],
+			"data": {
+				"0": {
+					"tex_direction": {
+						"TOP": [2,16],
+						"BOTTOM": [2,16]
+					},
+					"name": "Hay Bale (Upright)"
+				},
+				"4": {
+					"tex": [16,19],
+					"tex_direction": {
+						"SIDES": [2,16]
+					},
+					"name": "Hay Bale (East/West)"
+				},
+				"8": {
+					"tex_direction": {
+						"FORWARD": [2,16],
+						"BACKWARD": [2,16],
+						"SIDES": [16,19]
+					},
+					"name": "Hay Bale (North/South)"
+				}
+			},
+			"idStr": "hay_block",
+			"name": "Hay Bale",
+			"id": 170
+		},{
+			"opacity": 0,
+			"name": "Carpet",
+			"data": {
+				"11": {
+					"tex": [1,11],
+					"mapcolor": [39,51,161],
+					"name": "Blue Carpet"
+				},
+				"10": {
+					"tex": [1,12],
+					"mapcolor": [129,54,196],
+					"name": "Purple Carpet"
+				},
+				"13": {
+					"tex": [1,9],
+					"mapcolor": [56,77,24],
+					"name": "Green Carpet"
+				},
+				"12": {
+					"tex": [1,10],
+					"mapcolor": [86,51,28],
+					"name": "Brown Carpet"
+				},
+				"15": {
+					"tex": [1,7],
+					"mapcolor": [0,0,0],
+					"name": "Black Carpet"
+				},
+				"14": {
+					"tex": [1,8],
+					"mapcolor": [164,45,41],
+					"name": "Red Carpet"
+				},
+				"1": {
+					"tex": [2,13],
+					"mapcolor": [234,127,55],
+					"name": "Orange Carpet"
+				},
+				"0": {
+					"tex": [0,4],
+					"mapcolor": [222,222,222],
+					"name": "White Carpet"
+				},
+				"3": {
+					"tex": [2,11],
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Carpet"
+				},
+				"2": {
+					"tex": [2,12],
+					"mapcolor": [191,75,201],
+					"name": "Magenta Carpet"
+				},
+				"5": {
+					"tex": [2,9],
+					"mapcolor": [59,189,48],
+					"name": "Lime Carpet"
+				},
+				"4": {
+					"tex": [2,10],
+					"mapcolor": [104,139,212],
+					"name": "Yellow Carpet"
+				},
+				"7": {
+					"tex": [2,7],
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Carpet"
+				},
+				"6": {
+					"tex": [2,8],
+					"mapcolor": [217,131,155],
+					"name": "Pink Carpet"
+				},
+				"9": {
+					"tex": [1,13],
+					"mapcolor": [39,117,149],
+					"name": "Cyan Carpet"
+				},
+				"8": {
+					"tex": [1,14],
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Carpet"
+				}
+			},
+			"idStr": "carpet",
+			"tex": [0,4],
+			"type": "THINSLICE",
+			"id": 171
+		},{
+			"tex": [5,15],
+			"mapcolor": [96,61,38],
+			"idStr": "hardened_clay",
+			"name": "Hardened Clay",
+			"id": 172
+		},{
+			"tex": [12,13],
+			"mapcolor": [0,0,0],
+			"idStr": "coal_block",
+			"name": "Block of Coal",
+			"id": 173
+		},{
+			"tex": [0,16],
+			"mapcolor": [154,204,223],
+			"idStr": "packed_ice",
+			"name": "Packed Ice",
+			"id": 174
+		},{
+			"opacity": 0,
+			"data": {
+				"11": {
+					"tex": [5,3],
+					"name": "Double Plant (Upper Half, East)"
+				},
+				"10": {
+					"tex": [5,3],
+					"name": "Double Plant (Upper Half, North)"
+				},
+				"1": {
+					"tex": [16,10],
+					"name": "Lilac (Lower Half)"
+				},
+				"0": {
+					"tex": [16,9],
+					"name": "Sunflower (Lower Half)"
+				},
+				"3": {
+					"tex": [16,12],
+					"name": "Large Fern (Lower Half)"
+				},
+				"2": {
+					"tex": [16,11],
+					"name": "Double Tallgrass (Lower Half)"
+				},
+				"5": {
+					"tex": [16,14],
+					"name": "Peony (Lower Half)"
+				},
+				"4": {
+					"tex": [16,13],
+					"name": "Rose Bush (Lower Half)"
+				},
+				"9": {
+					"tex": [5,3],
+					"name": "Double Plant (Upper Half, West)"
+				},
+				"8": {
+					"tex": [5,3],
+					"name": "Double Plant (Upper Half, South)"
+				}
+			},
+			"idStr": "double_plant",
+			"tex": [16,9],
+			"mapcolor": [56,77,24],
+			"type": "DECORATION_CROSS",
+			"id": 175
+		},{
+			"opacity": 0,
+			"name": "Standing Banner",
+			"idStr": "standing_banner",
+			"tex": [19,3],
+			"mapcolor": [20,20,20],
+			"data": {
+				"11": {
+					"name": "Standing Banner (East-NorthEast)"
+				},
+				"10": {
+					"name": "Standing Banner (NorthEast)"
+				},
+				"13": {
+					"name": "Standing Banner (East-SouthEast)"
+				},
+				"12": {
+					"name": "Standing Banner (East)"
+				},
+				"15": {
+					"name": "Standing Banner (South-SouthEast)"
+				},
+				"14": {
+					"name": "Standing Banner (SouthEast)"
+				},
+				"1": {
+					"name": "Standing Banner (South-SouthWest)"
+				},
+				"0": {
+					"name": "Standing Banner (South)"
+				},
+				"3": {
+					"name": "Standing Banner (West-SouthWest)"
+				},
+				"2": {
+					"name": "Standing Banner (SouthWest)"
+				},
+				"5": {
+					"name": "Standing Banner (West-NorthWest)"
+				},
+				"4": {
+					"name": "Standing Banner (West)"
+				},
+				"7": {
+					"name": "Standing Banner (North-NorthWest)"
+				},
+				"6": {
+					"name": "Standing Banner (NorthWest)"
+				},
+				"9": {
+					"name": "Standing Banner (North-NorthEast)"
+				},
+				"8": {
+					"name": "Standing Banner (North)"
+				}
+			},
+			"id": 176
+		},{
+			"opacity": 0,
+			"search": "mount, mounted",
+			"name": "Wall Banner",
+			"idStr": "wall_banner",
+			"tex": [19,3],
+			"mapcolor": [20,20,20],
+			"data": {
+				"3": {
+					"name": "Wall Banner (South)"
+				},
+				"2": {
+					"name": "Wall Banner (North)"
+				},
+				"5": {
+					"name": "Wall Banner (East)"
+				},
+				"4": {
+					"name": "Wall Banner (West)"
+				}
+			},
+			"id": 177
+		},{
+			"tex_direction": {
+				"TOP": [19,4],
+				"BOTTOM": [13,11]
+			},
+			"opacity": 0,
+			"search": "detector",
+			"name": "Daylight Sensor Inverted",
+			"idStr": "daylight_detector_inverted",
+			"tex": [20,2],
+			"mapcolor": [255,100,255],
+			"data": {
+				"11": {
+					"name": "Daylight Sensor Inverted (Power 11)"
+				},
+				"10": {
+					"name": "Daylight Sensor Inverted (Power 10)"
+				},
+				"13": {
+					"name": "Daylight Sensor Inverted (Power 13)"
+				},
+				"12": {
+					"name": "Daylight Sensor Inverted (Power 12)"
+				},
+				"15": {
+					"name": "Daylight Sensor Inverted (Power 15)"
+				},
+				"14": {
+					"name": "Daylight Sensor Inverted (Power 14)"
+				},
+				"1": {
+					"name": "Daylight Sensor Inverted (Power 1)"
+				},
+				"0": {
+					"name": "Daylight Sensor Inverted (Power 0)"
+				},
+				"3": {
+					"name": "Daylight Sensor Inverted (Power 3)"
+				},
+				"2": {
+					"name": "Daylight Sensor Inverted (Power 2)"
+				},
+				"5": {
+					"name": "Daylight Sensor Inverted (Power 5)"
+				},
+				"4": {
+					"name": "Daylight Sensor Inverted (Power 4)"
+				},
+				"7": {
+					"name": "Daylight Sensor Inverted (Power 7)"
+				},
+				"6": {
+					"name": "Daylight Sensor Inverted (Power 6)"
+				},
+				"9": {
+					"name": "Daylight Sensor Inverted (Power 9)"
+				},
+				"8": {
+					"name": "Daylight Sensor Inverted (Power 8)"
+				}
+			},
+			"id": 178
+		},{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone",
+			"idStr": "red_sandstone",
+			"mapcolor": [140,90,90],
+			"data": {
+				"1": {
+					"tex": [1,20],
+					"name": "Chiseled Red Sandstone"
+				},
+				"0": {
+					"tex": [2,20],
+					"name": "Red Sandstone"
+				},
+				"2": {
+					"tex": [3,20],
+					"name": "Smooth Red Sandstone"
+				}
+			},
+			"id": 179
+		},{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone Stairs",
+			"data": {
+				"1": {
+					"name": "Red Sandstone Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Red Sandstone Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Red Sandstone Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Red Sandstone Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Red Sandstone Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Red Sandstone Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Red Sandstone Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Red Sandstone Stairs (Top, South)"
+				}
+			},
+			"idStr": "red_sandstone_stairs",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"type": "STAIRS",
+			"id": 180
+		},{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Double Red Sandstone Slab",
+			"idStr": "double_stone_slab2",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"data": {
+				"0": {
+					"name": "Red Sandstone Double Slab (Seamed)"
+				},
+				"8": {
+					"tex": [4,20],
+					"name": "Red Sandstone Double Slab (Seamless)"
+				}
+			},
+			"id": 181
+		},{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone Slab",
+			"data": {
+				"0": {
+					"name": "Red Sandstone Slab (Bottom)"
+				},
+				"8": {
+					"name": "Red Sandstone Slab (Top)"
+				}
+			},
+			"idStr": "stone_slab2",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"type": "HALFHEIGHT",
+			"id": 182
+		},{
+			"tex_direction": {
+				"TOP": [6,12]
+			},
+			"opacity": 0,
+			"name": "Spruce Fence Gate",
+			"data": {
+				"11": {
+					"name": "Spruce Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Spruce Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Spruce Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Spruce Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Spruce Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Spruce Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Spruce Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Spruce Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Spruce Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Spruce Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Spruce Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Spruce Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Spruce Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Spruce Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Spruce Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Spruce Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "spruce_fence_gate",
+			"tex": [21,1],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 183
+		},{
+			"tex_direction": {
+				"TOP": [6,13]
+			},
+			"opacity": 0,
+			"name": "Birch Fence Gate",
+			"data": {
+				"11": {
+					"name": "Birch Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Birch Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Birch Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Birch Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Birch Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Birch Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Birch Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Birch Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Birch Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Birch Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Birch Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Birch Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Birch Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Birch Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Birch Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Birch Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "birch_fence_gate",
+			"tex": [21,2],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 184
+		},{
+			"tex_direction": {
+				"TOP": [7,12]
+			},
+			"opacity": 0,
+			"name": "Jungle Fence Gate",
+			"data": {
+				"11": {
+					"name": "Jungle Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Jungle Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Jungle Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Jungle Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Jungle Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Jungle Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Jungle Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Jungle Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Jungle Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Jungle Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Jungle Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Jungle Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Jungle Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Jungle Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Jungle Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Jungle Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "jungle_fence_gate",
+			"tex": [21,3],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 185
+		},{
+			"tex_direction": {
+				"TOP": [1,15]
+			},
+			"opacity": 0,
+			"name": "Dark Oak Fence Gate",
+			"data": {
+				"11": {
+					"name": "Dark Oak Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Dark Oak Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Dark Oak Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Dark Oak Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Dark Oak Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Dark Oak Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Dark Oak Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Dark Oak Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Dark Oak Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Dark Oak Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Dark Oak Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Dark Oak Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Dark Oak Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Dark Oak Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Dark Oak Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Dark Oak Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "dark_oak_fence_gate",
+			"tex": [21,5],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 186
+		},{
+			"tex_direction": {
+				"TOP": [0,15]
+			},
+			"opacity": 0,
+			"name": "Acacia Fence Gate",
+			"data": {
+				"11": {
+					"name": "Acacia Fence Gate (Powered, Closed, East)"
+				},
+				"10": {
+					"name": "Acacia Fence Gate (Powered, Closed, North)"
+				},
+				"13": {
+					"name": "Acacia Fence Gate (Powered, Open, West)"
+				},
+				"12": {
+					"name": "Acacia Fence Gate (Powered, Open, South)"
+				},
+				"15": {
+					"name": "Acacia Fence Gate (Powered, Open, East)"
+				},
+				"14": {
+					"name": "Acacia Fence Gate (Powered, Open, North)"
+				},
+				"1": {
+					"name": "Acacia Fence Gate (Closed, West)"
+				},
+				"0": {
+					"name": "Acacia Fence Gate (Closed, South)"
+				},
+				"3": {
+					"name": "Acacia Fence Gate (Closed, East)"
+				},
+				"2": {
+					"name": "Acacia Fence Gate (Closed, North)"
+				},
+				"5": {
+					"name": "Acacia Fence Gate (Open, West)"
+				},
+				"4": {
+					"name": "Acacia Fence Gate (Open, South)"
+				},
+				"7": {
+					"name": "Acacia Fence Gate (Open, East)"
+				},
+				"6": {
+					"name": "Acacia Fence Gate (Open, North)"
+				},
+				"9": {
+					"name": "Acacia Fence Gate (Powered, Closed, West)"
+				},
+				"8": {
+					"name": "Acacia Fence Gate (Powered, Closed, South)"
+				}
+			},
+			"idStr": "acacia_fence_gate",
+			"tex": [21,4],
+			"mapcolor": [157,128,79],
+			"type": "FENCE_GATE",
+			"id": 187
+		},{
+			"opacity": 0,
+			"name": "Spruce Fence",
+			"idStr": "spruce_fence",
+			"tex": [6,12],
+			"mapcolor": [157,128,79],
+			"id": 188
+		},{
+			"opacity": 0,
+			"name": "Birch Fence",
+			"idStr": "birch_fence",
+			"tex": [6,13],
+			"mapcolor": [157,128,79],
+			"id": 189
+		},{
+			"opacity": 0,
+			"name": "Jungle Fence",
+			"idStr": "jungle_fence",
+			"tex": [7,12],
+			"mapcolor": [157,128,79],
+			"id": 190
+		},{
+			"opacity": 0,
+			"name": "Dark Oak Fence",
+			"idStr": "dark_oak_fence",
+			"tex": [1,15],
+			"mapcolor": [157,128,79],
+			"id": 191
+		},{
+			"opacity": 0,
+			"name": "Acacia Fence",
+			"idStr": "acacia_fence",
+			"tex": [0,15],
+			"mapcolor": [157,128,79],
+			"id": 192
+		},{
+			"opacity": 0,
+			"name": "Spruce Door",
+			"idStr": "spruce_door",
+			"tex": [5,20],
+			"mapcolor": [157,128,79],
+			"data": {
+				"11": {
+					"name": "Spruce Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Spruce Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [5,20],
+					"invalid": true
+				},
+				"12": {
+					"tex": [5,20],
+					"invalid": true
+				},
+				"15": {
+					"tex": [5,20],
+					"invalid": true
+				},
+				"14": {
+					"tex": [5,20],
+					"invalid": true
+				},
+				"1": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [5,21],
+					"name": "Spruce Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Spruce Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Spruce Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"id": 193
+		},{
+			"opacity": 0,
+			"name": "Birch Door",
+			"idStr": "birch_door",
+			"tex": [6,20],
+			"mapcolor": [157,128,79],
+			"data": {
+				"11": {
+					"name": "Birch Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Birch Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [6,20],
+					"invalid": true
+				},
+				"12": {
+					"tex": [6,20],
+					"invalid": true
+				},
+				"15": {
+					"tex": [6,20],
+					"invalid": true
+				},
+				"14": {
+					"tex": [6,20],
+					"invalid": true
+				},
+				"1": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [6,21],
+					"name": "Birch Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Birch Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Birch Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"id": 194
+		},{
+			"opacity": 0,
+			"name": "Jungle Door",
+			"idStr": "jungle_door",
+			"tex": [7,20],
+			"mapcolor": [157,128,79],
+			"data": {
+				"11": {
+					"name": "Jungle Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Jungle Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [7,20],
+					"invalid": true
+				},
+				"12": {
+					"tex": [7,20],
+					"invalid": true
+				},
+				"15": {
+					"tex": [7,20],
+					"invalid": true
+				},
+				"14": {
+					"tex": [7,20],
+					"invalid": true
+				},
+				"1": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [7,21],
+					"name": "Jungle Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Jungle Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Jungle Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"id": 195
+		},{
+			"opacity": 0,
+			"name": "Acacia Door",
+			"idStr": "acacia_door",
+			"tex": [8,20],
+			"mapcolor": [157,128,79],
+			"data": {
+				"11": {
+					"name": "Acacia Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Acacia Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [8,20],
+					"invalid": true
+				},
+				"12": {
+					"tex": [8,20],
+					"invalid": true
+				},
+				"15": {
+					"tex": [8,20],
+					"invalid": true
+				},
+				"14": {
+					"tex": [8,20],
+					"invalid": true
+				},
+				"1": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [8,21],
+					"name": "Acacia Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Acacia Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Acacia Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"id": 196
+		},{
+			"opacity": 0,
+			"name": "Dark Oak Door",
+			"idStr": "dark_oak_door",
+			"tex": [9,20],
+			"mapcolor": [157,128,79],
+			"data": {
+				"11": {
+					"name": "Dark Oak Door (Upper, Right Hinge, Powered)"
+				},
+				"10": {
+					"name": "Dark Oak Door (Upper, Left Hinge, Powered)"
+				},
+				"13": {
+					"tex": [9,20],
+					"invalid": true
+				},
+				"12": {
+					"tex": [9,20],
+					"invalid": true
+				},
+				"15": {
+					"tex": [9,20],
+					"invalid": true
+				},
+				"14": {
+					"tex": [9,20],
+					"invalid": true
+				},
+				"1": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Unopened, South)"
+				},
+				"0": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Unopened, East)"
+				},
+				"3": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Unopened, North)"
+				},
+				"2": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Unopened, West)"
+				},
+				"5": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Opened, South)"
+				},
+				"4": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Opened, East)"
+				},
+				"7": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Opened, North)"
+				},
+				"6": {
+					"tex": [9,21],
+					"name": "Dark Oak Door (Lower, Opened, West)"
+				},
+				"9": {
+					"name": "Dark Oak Door (Upper, Right Hinge, Unpowered)"
+				},
+				"8": {
+					"name": "Dark Oak Door (Upper, Left Hinge, Unpowered)"
+				}
+			},
+			"id": 197
+		},{
+			"name": "End Rod",
+			"brightness": 14,
+			"idStr": "end_rod",
+			"tex": [16,20],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"name": "End Rod (Up)"
+				},
+				"0": {
+					"name": "End Rod (Down)"
+				},
+				"3": {
+					"name": "End Rod (South)"
+				},
+				"2": {
+					"name": "End Rod (North)"
+				},
+				"5": {
+					"name": "End Rod (East)"
+				},
+				"4": {
+					"name": "End Rod (West)"
+				}
+			},
+			"id": 198
+		},{
+			"tex": [13,20],
+			"mapcolor": [120,120,120],
+			"idStr": "chorus_plant",
+			"name": "Chorus Plant",
+			"id": 199
+		},{
+			"name": "Chorus Flower",
+			"idStr": "chorus_flower",
+			"tex": [15,20],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"tex": [15,20],
+					"name": "Chorus Flower (Age 1)"
+				},
+				"0": {
+					"tex": [15,20],
+					"name": "Chorus Flower (Age 0)"
+				},
+				"3": {
+					"tex": [15,20],
+					"name": "Chorus Flower (Age 3)"
+				},
+				"2": {
+					"tex": [15,20],
+					"name": "Chorus Flower (Age 2)"
+				},
+				"5": {
+					"tex": [14,20],
+					"name": "Chorus Flower (Age 5)"
+				},
+				"4": {
+					"tex": [15,20],
+					"name": "Chorus Flower (Age 4)"
+				}
+			},
+			"id": 200
+		},{
+			"tex": [18,19],
+			"mapcolor": [120,120,120],
+			"idStr": "purpur_block",
+			"name": "Purpur Block",
+			"id": 201
+		},{
+			"name": "Purpur Pillar",
+			"idStr": "purpur_pillar",
+			"tex": [0,0],
+			"mapcolor": [120,120,120],
+			"data": {
+				"0": {
+					"tex": [19,17],
+					"tex_direction": {
+						"TOP": [19,18],
+						"BOTTOM": [19,18]
+					},
+					"name": "Purpur Pillar (Upright)"
+				},
+				"4": {
+					"tex": [19,19],
+					"tex_direction": {
+						"SIDES": [19,18]
+					},
+					"name": "Purpur Pillar (East/West)"
+				},
+				"8": {
+					"tex": [19,17],
+					"tex_direction": {
+						"FORWARD": [19,18],
+						"BACKWARD": [19,18],
+						"SIDES": [19,19]
+					},
+					"name": "Purpur Pillar (North/South)"
+				}
+			},
+			"id": 202
+		},{
+			"name": "Purpur Staris",
+			"type": "STAIRS",
+			"idStr": "purpur_stairs",
+			"tex": [18,19],
+			"mapcolor": [120,120,120],
+			"data": {
+				"1": {
+					"name": "Purpur Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Purpur Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Purpur Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Purpur Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Purpur Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Purpur Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Purpur Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Purpur Stairs (Top, South)"
+				}
+			},
+			"id": 203
+		},{
+			"tex": [18,19],
+			"mapcolor": [120,120,120],
+			"idStr": "purpur_double_slab",
+			"name": "Double Purpur Slabs",
+			"id": 204
+		},{
+			"tex": [18,19],
+			"mapcolor": [120,120,120],
+			"idStr": "purpur_slab",
+			"name": "Purpur Slab",
+			"id": 205
+		},{
+			"tex": [18,18],
+			"mapcolor": [120,120,120],
+			"idStr": "end_bricks",
+			"name": "End Stone Bricks",
+			"id": 206
+		},{
+			"name": "Beetroot",
+			"data": {
+				"1": {
+					"tex": [3,29],
+					"name": "Beetroot (Age 1)"
+				},
+				"0": {
+					"tex": [2,29],
+					"name": "Beetroot (Age 0)"
+				},
+				"3": {
+					"tex": [5,29],
+					"name": "Beetroot (Age 3)"
+				},
+				"2": {
+					"tex": [4,29],
+					"name": "Beetroot (Age 2)"
+				}
+			},
+			"idStr": "beetroots",
+			"mapcolor": [120,120,120],
+			"type": "CROPS",
+			"opacity": 0,
+			"id": 207
+		},{
+			"tex_direction": {
+				"RIGHT": [1,29],
+				"BOTTOM": [2,0],
+				"TOP": [0,29],
+				"FORWARD": [1,29],
+				"BACKWARD": [1,29],
+				"LEFT": [1,29]
+			},
+			"idStr": "grass_path",
+			"name": "Path",
+			"id": 208
+		},{
+			"idStr": "end_gateway",
+			"tex": [16,15],
+			"brightness": 15,
+			"id": 209,
+			"name": "End Gateway"
+		},{
+			"name": "Repeating Command Block",
+			"idStr": "repeating_command_block",
+			"tex": [22,4],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"BOTTOM": [25,5],
+						"TOP": [25,5],
+						"RIGHT": [26,5],
+						"BACKWARD": [22,1],
+						"LEFT": [24,5]
+					},
+					"name": "Repeating Command Block (Conditional, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [22,1],
+						"BOTTOM": [23,5],
+						"TOP": [23,5],
+						"RIGHT": [24,5],
+						"LEFT": [26,5]
+					},
+					"name": "Repeating Command Block (Conditional, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"FORWARD": [26,5],
+						"TOP": [24,5],
+						"RIGHT": [22,1],
+						"BACKWARD": [24,5],
+						"BOTTOM": [24,5]
+					},
+					"name": "Repeating Command Block (Conditional, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"FORWARD": [24,5],
+						"BOTTOM": [26,5],
+						"TOP": [26,5],
+						"BACKWARD": [26,5],
+						"LEFT": [22,1]
+					},
+					"name": "Repeating Command Block (Conditional, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"FORWARD": [27,5],
+						"TOP": [22,1],
+						"BACKWARD": [27,5],
+						"SIDES": [27,5]
+					},
+					"name": "Repeating Command Block (Not Conditional, Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"FORWARD": [29,5],
+						"BACKWARD": [29,5],
+						"SIDES": [29,5],
+						"BOTTOM": [22,1]
+					},
+					"name": "Repeating Command Block (Not Conditional, Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"BOTTOM": [29,5],
+						"TOP": [29,5],
+						"RIGHT": [30,5],
+						"BACKWARD": [22,1],
+						"LEFT": [28,5]
+					},
+					"name": "Repeating Command Block (Not Conditional, South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [22,1],
+						"BOTTOM": [27,5],
+						"TOP": [27,5],
+						"RIGHT": [28,5],
+						"LEFT": [30,5]
+					},
+					"name": "Repeating Command Block (Not Conditional, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"FORWARD": [30,5],
+						"TOP": [28,5],
+						"RIGHT": [22,1],
+						"BACKWARD": [28,5],
+						"BOTTOM": [28,5]
+					},
+					"name": "Repeating Command Block (Not Conditional, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"FORWARD": [28,5],
+						"BOTTOM": [30,5],
+						"TOP": [30,5],
+						"BACKWARD": [30,5],
+						"LEFT": [22,1]
+					},
+					"name": "Repeating Command Block (Not Conditional, West)"
+				},
+				"9": {
+					"tex_direction": {
+						"FORWARD": [23,5],
+						"TOP": [22,1],
+						"BACKWARD": [23,5],
+						"SIDES": [23,5]
+					},
+					"name": "Repeating Command Block (Conditional, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"FORWARD": [25,5],
+						"BACKWARD": [25,5],
+						"SIDES": [25,5],
+						"BOTTOM": [22,1]
+					},
+					"name": "Repeating Command Block (Conditional, Down)"
+				}
+			},
+			"id": 210
+		},{
+			"name": "Chain Command Block",
+			"idStr": "chain_command_block",
+			"tex": [22,5],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"BOTTOM": [25,6],
+						"TOP": [25,6],
+						"RIGHT": [26,6],
+						"BACKWARD": [22,2],
+						"LEFT": [24,6]
+					},
+					"name": "Chain Command Block (Conditional, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [22,2],
+						"BOTTOM": [23,6],
+						"TOP": [23,6],
+						"RIGHT": [24,6],
+						"LEFT": [26,6]
+					},
+					"name": "Chain Command Block (Conditional, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"FORWARD": [26,6],
+						"TOP": [24,6],
+						"RIGHT": [22,2],
+						"BACKWARD": [24,6],
+						"BOTTOM": [24,6]
+					},
+					"name": "Chain Command Block (Conditional, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"FORWARD": [24,6],
+						"BOTTOM": [26,6],
+						"TOP": [26,6],
+						"BACKWARD": [26,6],
+						"LEFT": [22,2]
+					},
+					"name": "Chain Command Block (Conditional, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"FORWARD": [27,6],
+						"TOP": [22,2],
+						"BACKWARD": [27,6],
+						"SIDES": [27,6]
+					},
+					"name": "Chain Command Block (Not Conditional, Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"FORWARD": [29,6],
+						"BACKWARD": [29,6],
+						"SIDES": [29,6],
+						"BOTTOM": [22,2]
+					},
+					"name": "Chain Command Block (Not Conditional, Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"BOTTOM": [29,6],
+						"TOP": [29,6],
+						"RIGHT": [30,6],
+						"BACKWARD": [22,2],
+						"LEFT": [28,6]
+					},
+					"name": "Chain Command Block (Not Conditional, South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [22,2],
+						"BOTTOM": [27,6],
+						"TOP": [27,6],
+						"RIGHT": [28,6],
+						"LEFT": [30,6]
+					},
+					"name": "Chain Command Block (Not Conditional, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"FORWARD": [30,6],
+						"TOP": [28,6],
+						"RIGHT": [22,2],
+						"BACKWARD": [28,6],
+						"BOTTOM": [28,6]
+					},
+					"name": "Chain Command Block (Not Conditional, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"FORWARD": [28,6],
+						"BOTTOM": [30,6],
+						"TOP": [30,6],
+						"BACKWARD": [30,6],
+						"LEFT": [22,2]
+					},
+					"name": "Chain Command Block (Not Conditional, West)"
+				},
+				"9": {
+					"tex_direction": {
+						"FORWARD": [23,6],
+						"TOP": [22,2],
+						"BACKWARD": [23,6],
+						"SIDES": [23,6]
+					},
+					"name": "Chain Command Block (Conditional, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"FORWARD": [25,6],
+						"BACKWARD": [25,6],
+						"SIDES": [25,6],
+						"BOTTOM": [22,2]
+					},
+					"name": "Chain Command Block (Conditional, Down)"
+				}
+			},
+			"id": 211
+		},{
+			"tex": [19,16],
+			"data": {
+				"1": {
+					"name": "Frosted Ice (Stage 1 Cracks)"
+				},
+				"0": {
+					"name": "Frosted Ice"
+				},
+				"3": {
+					"name": "Frosted Ice (Stage 3 Cracks)"
+				},
+				"2": {
+					"name": "Frosted Ice (Stage 2 Cracks)"
+				}
+			},
+			"idStr": "frosted_ice",
+			"name": "Frosted Ice",
+			"id": 212
+		},{
+			"id": 213,
+			"name": "Magma Block",
+			"idStr": "magma",
+			"tex": [18,13]
+		},{
+			"id": 214,
+			"name": "Nether Wart Block",
+			"idStr": "nether_wart_block",
+			"tex": [18,14]
+		},{
+			"id": 215,
+			"name": "Red Nether Brick",
+			"idStr": "red_nether_brick",
+			"tex": [18,15]
+		},{
+			"id": 216,
+			"name": "Bone Block",
+			"idStr": "bone_block",
+			"data": {
+				"0": {
+					"tex_direction": {
+						"TOP": [19,11],
+						"BOTTOM": [19,11],
+						"SIDES": [19,12],
+						"FORWARD": [19,12],
+						"BACKWARD": [19,12]
+					},
+					"name": "Bone Block (Upright)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [19,12],
+						"BOTTOM": [19,12],
+						"SIDES": [19,11],
+						"FORWARD": [19,12],
+						"BACKWARD": [19,12]
+					},
+					"name": "Bone Block (East/West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [19,12],
+						"BOTTOM": [19,12],
+						"SIDES": [19,12],
+						"FORWARD": [19,11],
+						"BACKWARD": [19,11]
+					},
+					"name": "Bone Block (North/South)"
+				}
+			}
+		},{
+			"id": 217,
+			"name": "Structure Void",
+			"opacity": 0,
+			"type": "GLASS",
+			"idStr": "structure_void",
+			"tex": [19,13]
+		},{
+			"data": {
+				"1": {
+					"tex": [20,10],
+					"name": "Structure Block (Load)"
+				},
+				"0": {
+					"tex": [19,10],
+					"name": "Structure Block (Save)"
+				},
+				"3": {
+					"tex": [19,9],
+					"name": "Structure Block (Data)"
+				},
+				"2": {
+					"tex": [20,9],
+					"name": "Structure Block (Corner)"
+				}
+			},
+			"idStr": "structure_block",
+			"name": "Structure Block",
+			"id": 255
+		}],
+	"name": "Vanilla Minecraft Block Types"
+}

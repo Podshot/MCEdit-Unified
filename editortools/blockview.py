@@ -86,7 +86,7 @@ class BlockButton(ButtonBase, Panel):
         self._ref = ref
         if blockInfo is None and ref is not None:
             blockInfo = ref.get()
-        blockInfo = blockInfo or materials.Air
+        blockInfo = blockInfo or materials["Air"]
 
         if recentBlocks is not None:
             self.recentBlocks = recentBlocks
