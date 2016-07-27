@@ -22,7 +22,7 @@ from OpenGL import GL
 import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, \
-    showProgress, TextInputRow, Dialog, TextFieldWrapped
+    showProgress, TextInputRow
 from albow.translate import _
 from config import config
 from depths import DepthOffset

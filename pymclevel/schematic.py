@@ -877,7 +877,7 @@ class StructureNBT(object):
         entities_tag = nbt.TAG_List()
         
         
-        index_table = {}
+        palette = []
         
         if not self._author:
             self._author = "MCEdit-Unified v{}".format(RELEASE_TAG)
@@ -904,9 +904,12 @@ class StructureNBT(object):
                     name, properties = idToBlockstate(*value)
                     blockstate = stringifyBlockstate(name, properties)
             
-                    if blockstate not in index_table:
-                        index_table[blockstate] = len(index_table)
-                    index = index_table[blockstate]
+                    #if blockstate not in index_table:
+                    #    index_table[blockstate] = len(index_table)
+                    #index = index_table[blockstate]
+                    if blockstate not in palette:
+                        palette.append(blockstate)
+                    index = palette.index(blockstate)
             
                     block = nbt.TAG_Compound()
                     block["state"] = nbt.TAG_Int(index)
@@ -924,7 +927,7 @@ class StructureNBT(object):
                     blocks_tag.append(block)
         structure_tag["blocks"] = blocks_tag
         
-        for blockstate in index_table.keys():
+        for blockstate in palette:
             name, properties = deStringifyBlockstate(blockstate)
             
             state = nbt.TAG_Compound()
@@ -936,7 +939,7 @@ class StructureNBT(object):
                     props[key] = nbt.TAG_String(value)
                 state["Properties"] = props
                 
-            palette_tag.insert(index_table[blockstate], state)
+            palette_tag.insert(palette.index(blockstate), state)
         structure_tag["palette"] = palette_tag
         
         for e in self._entities:
