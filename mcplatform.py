@@ -319,17 +319,17 @@ def askOpenFileGtk(title, suffixes, initialDir):
         chooser.set_current_name("world")  # For some reason the Windows isn't closing if this line ins missing or the parameter is ""
 
         # Add custom Filter
-        filter = gtk.FileFilter()
-        filter.set_name("Levels and Schematics")
+        file_filter = gtk.FileFilter()
+        file_filter.set_name("Levels and Schematics")
         for suffix in suffixes:
-            filter.add_pattern("*." + suffix)
-        chooser.add_filter(filter)
+            file_filter.add_pattern("*." + suffix)
+        chooser.add_filter(file_filter)
 
         # Add "All files" Filter
-        filter = gtk.FileFilter()
-        filter.set_name("All files")
-        filter.add_pattern("*")
-        chooser.add_filter(filter)
+        file_filter = gtk.FileFilter()
+        file_filter.set_name("All files")
+        file_filter.add_pattern("*")
+        chooser.add_filter(file_filter)
 
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
@@ -343,8 +343,6 @@ def askOpenFileGtk(title, suffixes, initialDir):
     gtk.main()
 
     return fls[0]
-        
-print buildFileTypes(({"Minecraft Schematics": ["schematic"]}, []))
 
 def askSaveSchematic(initialDir, displayName, fileFormats):
     fileFormat = buildFileTypes(fileFormats)
@@ -409,16 +407,16 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             chooser.set_current_name(defaultName)
 
             # Add custom Filter
-            filter = gtk.FileFilter()
-            filter.set_name(filetype[:filetype.index("\0")])
-            filter.add_pattern("*." + suffix)
-            chooser.add_filter(filter)
+            file_filter = gtk.FileFilter()
+            file_filter.set_name(filetype[:filetype.index("\0")])
+            file_filter.add_pattern("*." + suffix)
+            chooser.add_filter(file_filter)
 
             # Add "All files" Filter
-            filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
-            chooser.add_filter(filter)
+            file_filter = gtk.FileFilter()
+            file_filter.set_name("All files")
+            file_filter.add_pattern("*")
+            chooser.add_filter(file_filter)
 
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
