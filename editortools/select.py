@@ -1223,10 +1223,10 @@ class SelectionTool(EditorTool):
         schematic = self._copySelection()
         
         if schematic:
-            #result = ask("Select a format:", ["schematic", "structure", "Cancel"])
-            #if result == "schematic":
+            # result = ask("Select a format:", ["schematic", "structure", "Cancel"])
+            # if result == "schematic":
             self.editor.exportSchematic(schematic)
-            #elif result == "structure":
+            # elif result == "structure":
             #    print "Author: {}".format(author)
 
     @alertException
@@ -1247,20 +1247,20 @@ class SelectionTool(EditorTool):
             chainStored = []
             for coords in GetSort(self.editor.selectionBox(), sorting):
                 (x, y, z) = coords
-                if (x,y,z) in skip:
-                    skip.remove((x,y,z))
+                if (x, y, z) in skip:
+                    skip.remove((x, y, z))
                     continue
                 blockID = self.editor.level.blockAt(x, y, z)
                 if blockID == 211:
                     chainStored.append((x, y, z))
                     continue
                 if blockID == 137 or blockID == 210:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                    edit.writeCommandInFile(first, space, (x, y, z), file, skip, True, done, order)
                     first = False
             for (x, y, z) in chainStored:
                 if (x, y, z) in done:
                     continue
-                edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                edit.writeCommandInFile(first, space, (x, y, z), file, skip, True, done, order)
 
         else:
             for coords in GetSort(self.editor.selectionBox(), sorting):
@@ -1270,7 +1270,7 @@ class SelectionTool(EditorTool):
                     (z, y, x) = coords
                 blockID = self.editor.level.blockAt(x, y, z)
                 if blockID == 137 or blockID == 210 or blockID == 211:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, None, False, None, order)
+                    edit.writeCommandInFile(first, space, (x, y, z), file, None, False, None, order)
                     first = False
         file.close()
         if first:

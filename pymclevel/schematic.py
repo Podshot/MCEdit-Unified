@@ -18,7 +18,7 @@ from materials import alphaMaterials, MCMaterials, namedMaterials, blockstateToI
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
-from pymclevel.materials import idToBlockstate, stringifyBlockstate,\
+from pymclevel.materials import idToBlockstate, stringifyBlockstate, \
     deStringifyBlockstate
 from release import TAG as RELEASE_TAG
 
@@ -702,7 +702,7 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
         return zipfile.is_zipfile(filename)
     
 class StructureNBT(object):
-    SUPPORTED_VERSIONS = [1,]
+    SUPPORTED_VERSIONS = [1, ]
     
     class StructureTooBigException(Exception):
         pass
@@ -743,11 +743,11 @@ class StructureNBT(object):
             
             for block in self._root_tag["blocks"]:
                 x, y, z = [ p.value for p in block["pos"].value ]
-                self._blocks[x,y,z] = blockstateToID(*self.get_state(block["state"].value))
+                self._blocks[x, y, z] = blockstateToID(*self.get_state(block["state"].value))
                 if "nbt" in block:
                     compound = nbt.TAG_Compound()
                     compound.update(block["nbt"])
-                    self._tile_entities[x,y,z] = compound
+                    self._tile_entities[x, y, z] = compound
                     
             for e in self._root_tag["entities"]:
                 entity = e["nbt"]
@@ -766,12 +766,12 @@ class StructureNBT(object):
             
     def toSchematic(self):
         schem = MCSchematic(shape=self.Size)
-        for (x,y,z), value in ndenumerate(self._blocks):
+        for (x, y, z), value in ndenumerate(self._blocks):
             b_id, b_data = value
-            schem.Blocks[x,z,y] = b_id
-            schem.Data[x,z,y] = b_data
+            schem.Blocks[x, z, y] = b_id
+            schem.Data[x, z, y] = b_data
             
-        for (x,y,z), value in ndenumerate(self._tile_entities):
+        for (x, y, z), value in ndenumerate(self._tile_entities):
             if not value:
                 continue
             tag = value
@@ -791,16 +791,16 @@ class StructureNBT(object):
     def fromSchematic(cls, schematic):
         structure = cls(size=(schematic.Width, schematic.Height, schematic.Length))
         
-        for (x,z,y), b_id in ndenumerate(schematic.Blocks):
-            data = schematic.Data[x,z,y]
-            structure._blocks[x,y,z] = (b_id, data)
+        for (x, z, y), b_id in ndenumerate(schematic.Blocks):
+            data = schematic.Data[x, z, y]
+            structure._blocks[x, y, z] = (b_id, data)
             
         for te in schematic.TileEntities:
             x, y, z = te["x"].value, te["y"].value, te["z"].value
             del te["x"]
             del te["y"]
             del te["z"]
-            structure._tile_entities[x,y,z] = te
+            structure._tile_entities[x, y, z] = te
             
         for e in schematic.Entities:
             structure._entities.append(e)
@@ -852,7 +852,7 @@ class StructureNBT(object):
             raise IndexError()
         return (self._palette[index]["Name"], self._palette[index].get("Properties", {}))
             
-    def get_palette_index(self, name, properties=None): # TODO: Switch to string comparison of properties, instead of dict comparison
+    def get_palette_index(self, name, properties=None):  # TODO: Switch to string comparison of properties, instead of dict comparison
         for i in range(len(self._palette)):
             if self._palette[i]["Name"] == name:
                 if properties and "Properties" in self._palette[i]:
@@ -896,11 +896,11 @@ class StructureNBT(object):
                                               ]
                                              )
         
-        for z in range(self._blocks.shape[2]): # For some reason, ndenumerate() didn't work, but this does
+        for z in range(self._blocks.shape[2]):  # For some reason, ndenumerate() didn't work, but this does
             for x in range(self._blocks.shape[0]):
                 for y in range(self._blocks.shape[1]):
                     
-                    value = self._blocks[x,y,z]
+                    value = self._blocks[x, y, z]
                     name, properties = idToBlockstate(*value)
                     blockstate = stringifyBlockstate(name, properties)
             
@@ -918,8 +918,8 @@ class StructureNBT(object):
                                          ]
                                         )
             
-                    if self._tile_entities[x,y,z]:
-                        block["nbt"] = self._tile_entities[x,y,z]
+                    if self._tile_entities[x, y, z]:
+                        block["nbt"] = self._tile_entities[x, y, z]
             
                     blocks_tag.append(block)
         structure_tag["blocks"] = blocks_tag
@@ -978,12 +978,12 @@ class StructureNBT(object):
     def Palette(self):
         return self._palette
     
-    #Blocks = property(fget=get_Blocks, fset=set_Blocks)
+    # Blocks = property(fget=get_Blocks, fset=set_Blocks)
         
 struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\NBT Test 2.nbt")
-#struct.Blocks[1,1,1] = 2
-#print struct.Size
-#print struct.Blocks[1,1,1]
+# struct.Blocks[1,1,1] = 2
+# print struct.Size
+# print struct.Blocks[1,1,1]
 
 
 def adjustExtractionParameters(self, box):

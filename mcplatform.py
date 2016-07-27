@@ -11,8 +11,8 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-#-# Modified by D.C.-G. for translation purpose
-#!# Tests for file chooser
+# -# Modified by D.C.-G. for translation purpose
+# !# Tests for file chooser
 
 """
 mcplatform.py
@@ -63,20 +63,20 @@ try:
     import pygtk
     pygtk.require('2.0')
     import gtk
-    if gtk.pygtk_version < (2,3,90):
+    if gtk.pygtk_version < (2, 3, 90):
         raise ImportError
     hasGtk = True
 except ImportError:
-    hasGtk = False  #Using old method as fallback
+    hasGtk = False  # Using old method as fallback
 
 
 texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
-#Compatibility layer for filters:
+# Compatibility layer for filters:
 filtersDir = directories.filtersDir
 schematicsDir = directories.schematicsDir
 
-#!# Disabling platform specific file chooser:
-#!# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
+# !# Disabling platform specific file chooser:
+# !# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
 # platChooser = sys.platform in ('linux2', 'darwin')
 platChooser = sys.platform == 'darwin'
 
@@ -122,7 +122,7 @@ else:
     option_name = "Alt"
 
 
-def OSXVersionChecker(name,compare):
+def OSXVersionChecker(name, compare):
     """Rediculously complicated function to compare current System version to inputted version."""
     if compare != 'gt' and compare != 'lt' and compare != 'eq' and compare != 'gteq' and compare != 'lteq':
         print "Invalid version check {}".format(compare)
@@ -240,25 +240,25 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             _suffixes.append("bo2")
             _suffixes.append("bo3")
 
-        if sys.platform == "win32": #!#
+        if sys.platform == "win32":  # !#
             if suffixesChanged:
                 sendSuffixes = _suffixes
             else:
                 sendSuffixes = None
             return askOpenFileWin32(title, schematics, initialDir, sendSuffixes)
 
-        elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
+        elif hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
             return askOpenFileGtk(title, _suffixes, initialDir)
 
         else:
             log.debug("Calling internal file chooser.")
-            log.debug("'initialDir' is %s (%s)"%(repr(initialDir), type(initialDir)))
+            log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
             try:
                 iDir = initialDir.encode(enc)
             except Exception, e:
                 iDir = initialDir
-                log.debug("Could not encode 'initialDir' %s"%repr(initialDir))
-                log.debug("Encode function returned: %s"%e)
+                log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
+                log.debug("Encode function returned: %s" % e)
             return request_old_filename(suffixes=_suffixes, directory=iDir)
 
     filename = _askOpen(suffixes)
@@ -275,7 +275,7 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         # if schematics:
         if not suffixes:
-            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' +
+            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' + 
              '*.*\0*.*\0\0')
         else:
             f = "All\0"
@@ -300,7 +300,7 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
             Filter=f,
         )
     except Exception:
-        #print "Open File: ", e
+        # print "Open File: ", e
         pass
     else:
         return filename
@@ -316,16 +316,16 @@ def askOpenFileGtk(title, suffixes, initialDir):
     
         chooser.set_default_response(gtk.RESPONSE_OK)
         chooser.set_current_folder(initialDir)
-        chooser.set_current_name("world") #For some reason the Windows isn't closing if this line ins missing or the parameter is ""
+        chooser.set_current_name("world")  # For some reason the Windows isn't closing if this line ins missing or the parameter is ""
 
-        #Add custom Filter
+        # Add custom Filter
         filter = gtk.FileFilter()
         filter.set_name("Levels and Schematics")
         for suffix in suffixes:
-            filter.add_pattern("*."+suffix)
+            filter.add_pattern("*." + suffix)
         chooser.add_filter(filter)
 
-        #Add "All files" Filter
+        # Add "All files" Filter
         filter = gtk.FileFilter()
         filter.set_name("All files")
         filter.add_pattern("*")
@@ -344,7 +344,7 @@ def askOpenFileGtk(title, suffixes, initialDir):
 
     return fls[0]
         
-print buildFileTypes(({"Minecraft Schematics": ["schematic"]},[]))
+print buildFileTypes(({"Minecraft Schematics": ["schematic"]}, []))
 
 def askSaveSchematic(initialDir, displayName, fileFormats):
     fileFormat = buildFileTypes(fileFormats)
@@ -374,7 +374,7 @@ def askCreateWorld(initialDir):
 
 
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
-    if sys.platform == "win32": #!#
+    if sys.platform == "win32":  # !#
         try:
             (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
                 hwndOwner=display.get_wm_info()['window'],
@@ -395,7 +395,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         except:
             pass
 
-    elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
+    elif hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
 
         fls = []
         def run_dlg():
@@ -408,13 +408,13 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             chooser.set_current_folder(initialDir)
             chooser.set_current_name(defaultName)
 
-            #Add custom Filter
+            # Add custom Filter
             filter = gtk.FileFilter()
             filter.set_name(filetype[:filetype.index("\0")])
             filter.add_pattern("*." + suffix)
             chooser.add_filter(filter)
 
-            #Add "All files" Filter
+            # Add "All files" Filter
             filter = gtk.FileFilter()
             filter.set_name("All files")
             filter.add_pattern("*")
@@ -433,22 +433,22 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
 
         filename = fls[0]
 
-    else: #Fallback
+    else:  # Fallback
         log.debug("Calling internal file chooser.")
-        log.debug("'initialDir' is %s (%s)"%(repr(initialDir), type(initialDir)))
-        log.debug("'defaultName' is %s (%s)"%(repr(defaultName), type(defaultName)))
+        log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
+        log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
         try:
             iDir = initialDir.encode(enc)
         except:
             iDir = initialDir
-            log.debug("Could not encode 'initialDir' %s"%repr(initialDir))
-            log.debug("Encode function returned: %s"%e)
+            log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
+            log.debug("Encode function returned: %s" % e)
         try:
             dName = defaultName.encode(enc)
         except:
             dName = defaultName
-            log.debug("Could not encode 'defaultName' %s"%repr(defaultName))
-            log.debug("Encode function returned: %s"%e)
+            log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
+            log.debug("Encode function returned: %s" % e)
         filename = request_new_filename(prompt=title,
                                     suffix=("." + suffix) if suffix else "",
                                     directory=iDir,
@@ -491,7 +491,7 @@ def askOpenFolderGtk(title, initialDir):
 
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
-                fls.append(chooser.get_filename()) # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
+                fls.append(chooser.get_filename())  # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
             else:
                 fls.append(None)
             chooser.destroy()
@@ -588,7 +588,7 @@ FULLSCREEN = 3
 # Tweaked, of course ;)
 #
 def get_desktop_environment():
-        #From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment
+        # From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment
         # and http://ubuntuforums.org/showthread.php?t=652320
         # and http://ubuntuforums.org/showthread.php?t=652320
         # and http://ubuntuforums.org/showthread.php?t=1139057
@@ -596,19 +596,19 @@ def get_desktop_environment():
             return "windows"
         elif sys.platform == "darwin":
             return "mac"
-        else: #Most likely either a POSIX system or something not much common
+        else:  # Most likely either a POSIX system or something not much common
             ds = os.environ.get("DESKTOP_SESSION", None)
             if ds in ('default', None):
                 ds = os.environ.get("XDG_CURRENT_DESKTOP", None)
-            if ds is not None: #easier to match if we doesn't have  to deal with caracter cases
+            if ds is not None:  # easier to match if we doesn't have  to deal with caracter cases
                 desktop_session = ds.lower()
                 found = re.findall(r"gnome|unity|cinnamon|mate|xfce4|lxde|fluxbox|blackbox|openbox|icewm|jwm|afterstep|trinity|kde", desktop_session, re.I)
                 if len(found) == 1:
                     return found[0]
                 elif len(found) > 1:
-                    print "Houston? We have a problem...\n\nThe desktop environment can't be found: '%s' has been detected to be %s alltogeteher."%(ds, " and ".join((", ".join(found[:-1]), found[-1])))
+                    print "Houston? We have a problem...\n\nThe desktop environment can't be found: '%s' has been detected to be %s alltogeteher." % (ds, " and ".join((", ".join(found[:-1]), found[-1])))
                     return 'unknown'
-                ## Special cases ##
+                # # Special cases ##
                 # Canonical sets $DESKTOP_SESSION to Lubuntu rather than LXDE if using LXDE.
                 # There is no guarantee that they will not do the same with the other desktop environments.
                 elif "xfce" in desktop_session or desktop_session.startswith("xubuntu"):
@@ -619,9 +619,9 @@ def get_desktop_environment():
                     return "lxde" 
                 elif desktop_session.startswith("kubuntu"): 
                     return "kde" 
-                elif desktop_session.startswith("razor"): # e.g. razorkwin
+                elif desktop_session.startswith("razor"):  # e.g. razorkwin
                     return "razor-qt"
-                elif desktop_session.startswith("wmaker"): # e.g. wmaker-common
+                elif desktop_session.startswith("wmaker"):  # e.g. wmaker-common
                     return "windowmaker"
                 
             if os.environ.get('KDE_FULL_SESSION', None) == 'true':
@@ -629,7 +629,7 @@ def get_desktop_environment():
             elif os.environ.get('GNOME_DESKTOP_SESSION_ID', None):
                 if not "deprecated" in os.environ.get('GNOME_DESKTOP_SESSION_ID', None):
                     return "gnome2"
-            #From http://ubuntuforums.org/showthread.php?t=652320
+            # From http://ubuntuforums.org/showthread.php?t=652320
             elif is_running("xfce-mcs-manage"):
                 return "xfce4"
             elif is_running("ksmserver"):
@@ -637,12 +637,12 @@ def get_desktop_environment():
         return "unknown"
 
 def is_running(process):
-    #From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/
+    # From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/
     # and http://richarddingwall.name/2009/06/18/windows-equivalents-of-ps-and-kill-commands/
-    try: #Linux/Unix
-        s = subprocess.Popen(["ps", "axw"],stdout=subprocess.PIPE)
-    except: #Windows
-        s = subprocess.Popen(["tasklist", "/v"],stdout=subprocess.PIPE)
+    try:  # Linux/Unix
+        s = subprocess.Popen(["ps", "axw"], stdout=subprocess.PIPE)
+    except:  # Windows
+        s = subprocess.Popen(["tasklist", "/v"], stdout=subprocess.PIPE)
     for x in s.stdout:
         if re.search(process, x):
             return True
@@ -669,7 +669,7 @@ USE_WM = True
 # The two last ones tell whether these pixels shall be added only once (at program startup) or always.
 #
 desktops = {'linux2': {
-        'cinnamon': { # Actually, there's a bug when resizing on XCinnamon.
+        'cinnamon': {  # Actually, there's a bug when resizing on XCinnamon.
             'position_setter': 'parent',
             'position_getter': 'parent.parent',
             'position_gap': (9, 8, True, True),
@@ -790,7 +790,7 @@ class XWindowHandler(BaseWindowHandler):
             # Print pygame_win and active_win styff
             for (win, name) in ((pygame_win, 'pygame_win'), (active_win, 'active_win')):
                 print "=" * 72
-                print "%s guts"%name, "(ID %s)"%win.id
+                print "%s guts" % name, "(ID %s)" % win.id
                 print "-" * 72
                 print "* State"
                 prop = win.get_full_property(dis.intern_atom("_NET_WM_STATE"), 4)
@@ -800,7 +800,7 @@ class XWindowHandler(BaseWindowHandler):
                 print "* Geometry"
                 print " ", win.get_geometry()
                 parent = win.query_tree().parent
-                p = '%s.parent'%name
+                p = '%s.parent' % name
                 while parent.id != root.id:
                     print "-" * 72
                     print p, "ID", parent.id
@@ -908,7 +908,7 @@ class XWindowHandler(BaseWindowHandler):
                 self.sync()
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%size
+            raise TypeError, "%s is not a list or a tuple." % size
 
     def get_position(self):
         """Return the window actual position as a tuple."""
@@ -939,7 +939,7 @@ class XWindowHandler(BaseWindowHandler):
                 self.sync()
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%pos
+            raise TypeError, "%s is not a list or a tuple." % pos
 
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
@@ -982,9 +982,9 @@ class XWindowHandler(BaseWindowHandler):
         :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.
               If one element is -1 it is replaced by the corresponding valur from self.get_position().
         :update: bool: whether to call the internal flush method."""
-        if state not in (0, MINIMIZED, 'minimized',1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
+        if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
-            raise ValueError, "Invalid state argument: %s is not a correct value"%state
+            raise ValueError, "Invalid state argument: %s is not a correct value" % state
         if type(size) not in (list, tuple):
             raise TypeError, "Invalid size argument: %s is not a list or a tuple."
         if type(pos) not in (list, tuple):
@@ -1110,7 +1110,7 @@ class WWindowHandler(BaseWindowHandler):
             win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%repr(size)
+            raise TypeError, "%s is not a list or a tuple." % repr(size)
 
     def get_position(self):
         """Return the window actual position as a tuple."""
@@ -1142,7 +1142,7 @@ class WWindowHandler(BaseWindowHandler):
                 win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%repr(pos)
+            raise TypeError, "%s is not a list or a tuple." % repr(pos)
 
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
@@ -1173,9 +1173,9 @@ class WWindowHandler(BaseWindowHandler):
         :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.
               If one element is -1 it is replaced by the corresponding valur from self.get_position().
         :update: bool: whether to call the internal flush method."""
-        if state not in (0, MINIMIZED, 'minimized',1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
+        if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
-            raise ValueError, "Invalid state argument: %s is not a correct value"%state
+            raise ValueError, "Invalid state argument: %s is not a correct value" % state
         if type(size) not in (list, tuple):
             raise TypeError, "Invalid size argument: %s is not a list or a tuple."
         if type(pos) not in (list, tuple):
