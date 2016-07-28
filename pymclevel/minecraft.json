@@ -2508,7 +2508,7 @@
 				"curve": [0,7]
 			},
 			"mapcolor": [150,134,102],
-			"type": "MINECART_TRACKS",
+			"type": "SIMPLE_RAIL",
 			"id": 66
 		},{
 			"name": "Cobblestone Stairs",
