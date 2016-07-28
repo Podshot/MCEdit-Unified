@@ -980,14 +980,6 @@ class StructureNBT(object):
     @property
     def Palette(self):
         return self._palette
-    
-    # Blocks = property(fget=get_Blocks, fset=set_Blocks)
-        
-struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\NBT Test 2.nbt")
-# struct.Blocks[1,1,1] = 2
-# print struct.Size
-# print struct.Blocks[1,1,1]
-
 
 def adjustExtractionParameters(self, box):
     x, y, z = box.origin
