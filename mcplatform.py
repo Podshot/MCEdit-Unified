@@ -80,6 +80,25 @@ schematicsDir = directories.schematicsDir
 # platChooser = sys.platform in ('linux2', 'darwin')
 platChooser = sys.platform == 'darwin'
 
+def dynamic_arguments(func_to_replace, askFile_func):
+    def wrapper(initialDir, displayName, fileFormat):
+        if isinstance(fileFormat, tuple):
+            print "Using dict args"
+            return func_to_replace(initialDir, displayName, fileFormat)
+        else:
+            
+            def old_askSaveSchematic(initialDir, displayName, fileFormat):
+                dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
+                return askFile_func(initialDir,
+                                   title=_('Save this schematic...'),
+                                   defaultName=displayName + "_" + dt + "." + fileFormat,
+                                   filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
+                                   suffix=fileFormat,
+                                   )
+            print "Using str args"
+            return old_askSaveSchematic(initialDir, displayName, fileFormat)
+    return wrapper
+
 def getTexturePacks():
     try:
         return os.listdir(texturePacksDir)
@@ -355,7 +374,6 @@ def askSaveSchematic(initialDir, displayName, fileFormats):
                        suffix=fileFormat,
     )
 
-
 def askCreateWorld(initialDir):
     defaultName = name = _("Untitled World")
     i = 0
@@ -453,6 +471,8 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                                     filename=dName,
                                     pathname=None)
     return filename
+
+askSaveSchematic = dynamic_arguments(askSaveSchematic, askSaveFile)
 
 # Start Open Folder Dialogs
 # TODO: Possibly get an OS X dialog
