@@ -1422,7 +1422,8 @@ class LevelEditor(GLViewport):
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
-                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+                                        shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+#                                           shortName + " - Copy", "", "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
