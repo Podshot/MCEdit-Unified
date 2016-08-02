@@ -292,7 +292,7 @@ class MCMaterials(object):
             for data, dir in tex_direction_data.items():
                 for _i in range(texDirMap.get(dir, 0)):
                     rot90cw()
-                self.blockTextures[blockID][data] = texture
+                self.blockTextures[blockID][int(data)] = texture
 
     def addBlock(self, blockID, blockData=0, **kw):
         blockData = int(blockData)
