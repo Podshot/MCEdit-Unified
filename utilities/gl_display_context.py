@@ -51,9 +51,9 @@ class GLDisplayContext(object):
         d = display.set_mode(wwh, self.displayMode())
 
         # Let initialize OpenGL stuff after the splash.
-#        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
-#        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
-#        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
+        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
+        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
  
         # textures are 256x256, so with this we can specify pixel coordinates
 #        GL.glMatrixMode(GL.GL_TEXTURE)
@@ -107,10 +107,18 @@ class GLDisplayContext(object):
             GLU.gluOrtho2D(0, wwh[0], 0, wwh[1])
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)
 
+            back = Surface(wwh)
+            back.fill((255,255,255))
+
             swh = splash.get_size()
             _x, _y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
             w, h = swh
-            data = image.tostring(splash, 'RGBA', 1)
+            try:
+                data = image.tostring(splash, 'RGBA_PREMULT', 1)
+            except ValueError:
+                data = image.tostring(splash, 'RGBA', 1)
+            except ValueError:
+                data = image.tostring(splash, 'RGB', 1)
 
             # Set the raster position
             GL.glRasterPos(_x, _y)
@@ -139,9 +147,9 @@ class GLDisplayContext(object):
             logging.warning('Unable to set icon: {0!r}'.format(e))
 
         # Let initialize OpenGL stuff after the splash.
-        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
-        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
-        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+#         GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
+#         GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
+#         GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
  
         # textures are 256x256, so with this we can specify pixel coordinates
         GL.glMatrixMode(GL.GL_TEXTURE)
