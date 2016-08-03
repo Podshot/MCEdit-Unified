@@ -107,12 +107,10 @@ class GLDisplayContext(object):
             GLU.gluOrtho2D(0, wwh[0], 0, wwh[1])
             GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)
 
-            back = Surface(wwh)
-            back.fill((255,255,255))
-
             swh = splash.get_size()
             _x, _y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
             w, h = swh
+
             try:
                 data = image.tostring(splash, 'RGBA_PREMULT', 1)
             except ValueError:
