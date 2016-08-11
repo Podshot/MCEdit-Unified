@@ -139,7 +139,7 @@ def getMinecraftProfileJSON():
     if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
         try:
             with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")) as jsonString:
-                minecraftProfilesJSON = json.load(jsonString)
+                minecraftProfilesJSON = json.loads(unicode(jsonString.read()))
             return minecraftProfilesJSON
         except:
             traceback.print_exc() # Remove before release
