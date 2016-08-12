@@ -270,8 +270,6 @@ def drawTerrainCuttingWire(box,
 
 
 def loadAlphaTerrainTexture():
-    pngFile = None
-
     texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(),  ResourcePackHandler.Instance().get_selected_resource_pack().terrain_path()))
 
     def _loadFunc():
