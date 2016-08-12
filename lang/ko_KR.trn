@@ -2034,12 +2034,14 @@ t953 덮어쓰기
 o954 Edit Skull Data
 t954 해골 정보 수정
 o955 Found a previous fixed installation
-t955 이전 버전의 고정 설치본을 찾았습니다.햐 
+t955 이전 버전의 고정 설치본을 찾았습니다.
 o956 Left-Click and drag to the left or the right
-t956 
+t956 클릭하고 좌우로 드래그하세요.
 o957 Cancel Command Block Offset
-t957 
+t957 커맨드 블록 오프셋 취소
 o958 Cancels the command blocks coords changed when copied.
-t958 
+t958 복사할 때 커맨드 블록 좌표가 변하는 것을 취소합니다.
 o959 Weird stuff happen!
-t959 
+t959 이상한 일이 일어나요!
+o960 Enable Custom Name
+t960 커스텀 이름 활성화

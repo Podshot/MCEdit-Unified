@@ -20,7 +20,7 @@ class ControlPanel(Panel):
         return header
 
     def __init__(self, editor):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.ControlPanel')
         self.editor = editor
 
         self.bg_color = (0, 0, 0, 0.8)

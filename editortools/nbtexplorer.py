@@ -379,7 +379,7 @@ class NBTTree(Tree):
 # -----------------------------------------------------------------------------
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.NBTExplorerOptions')
         self.tool = tool
         useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
@@ -688,7 +688,7 @@ class NBTExplorerToolPanel(Panel):
     def __init__(self, editor, nbtObject=None, fileName=None, savePolicy=0, dataKeyName='Data', close_text="Close",
                  load_text="Open", **kwargs):
         """..."""
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.NBTExplorerToolPanel')
         self.editor = editor
         self.nbtObject = nbtObject
         self.fileName = fileName

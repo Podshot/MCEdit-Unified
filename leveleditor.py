@@ -11,6 +11,11 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+# Moving this here to get log entries ASAP -- D.C.-G.
+import logging
+from pymclevel.schematic import StructureNBT
+log = logging.getLogger(__name__)
+
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
 from editortools.thumbview import ThumbView 
@@ -48,7 +53,6 @@ import numpy
 from config import config
 from config import DEF_ENC
 import frustum
-import logging
 import glutils
 import release
 import mceutils
@@ -71,7 +75,8 @@ from collections import defaultdict, deque
 from OpenGL import GL
 
 from albow import alert, ask, AttrRef, Button, Column, input_text, IntField, Row, \
-    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
+    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox, \
+    unparented
 import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
@@ -162,6 +167,10 @@ class LevelEditor(GLViewport):
         self.nbtCopyBuffer = mcedit.nbtCopyBuffer
 
         self.level = None
+
+        # Tracking the dimension changes.
+        self.prev_dimension = None
+        self.new_dimension = None
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
@@ -328,6 +337,8 @@ class LevelEditor(GLViewport):
             self.statusLabel.width = self.width
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
+            # Update the unparented widgets.
+            [a.set_update_ui(v) for a in unparented.values()]
     #-#
 
     def __del__(self):
@@ -424,8 +435,8 @@ class LevelEditor(GLViewport):
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
-            def __init__(self):
-                Panel.__init__(self)
+            def __init__(self, parent):
+                Panel.__init__(self, parent)
                 self.autoChooseCheckBox = CheckBoxLabel("Override Minecraft Changes (Not Recommended)",
                                                         ref=config.session.override,
                                                         tooltipText="Always override Minecraft changes when map is open in MCEdit. (Not recommended)")
@@ -436,7 +447,7 @@ class LevelEditor(GLViewport):
                 self.shrink_wrap()
 
         if evt.button == 3:
-            sessionLockPanel = SessionLockOptions()
+            sessionLockPanel = SessionLockOptions(self)
             sessionLockPanel.present()
 
     _viewMode = None
@@ -822,10 +833,13 @@ class LevelEditor(GLViewport):
 
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
-            directories.schematicsDir, self.level.displayName, "schematic")
+            directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
 
         if filename:
-            schematic.saveToFile(filename)
+            if filename.endswith(".schematic"):
+                schematic.saveToFile(filename)
+            elif filename.endswith(".nbt"):
+                StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
         if len(self.copyStack) == 0:
@@ -1179,6 +1193,8 @@ class LevelEditor(GLViewport):
 
         self.removeNetherPanel()
 
+        log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: level.gameVersion}[level.gameVersion == 'Unknown']))
+
         self.loadLevel(level)
 
         self.renderer.position = self.currentViewport.cameraPosition
@@ -1259,9 +1275,13 @@ class LevelEditor(GLViewport):
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
-            #!# Adding waypoints handling for all world types
-        self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-        self.waypointManager.load()
+        #!# Adding waypoints handling for all world types
+        # Need to take care of the dimension.
+        # If the camera last position was saved, changing dimension is broken; the view is sticked to the overworld.
+        #!#
+        if self.prev_dimension == self.new_dimension:
+            self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+            self.waypointManager.load()
 
 
         if len(list(self.level.allChunks)) == 0:
@@ -1300,7 +1320,10 @@ class LevelEditor(GLViewport):
     def gotoDimension(self, dimNo):
         if dimNo == self.level.dimNo:
             return
-        elif dimNo == -1 and self.level.dimNo == 0:
+        else:
+            # Record the new dimension
+            self.new_dimension = dimNo
+        if dimNo == -1 and self.level.dimNo == 0:
             self.gotoNether()
         elif dimNo == 0 and self.level.dimNo == -1:
             self.gotoEarth()
@@ -1318,10 +1341,14 @@ class LevelEditor(GLViewport):
 
     def initWindowCaption(self):
         filename = self.level.filename
-        s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
-        if DEF_ENC != "UTF-8":
-            title = title.encode('utf-8')
+#         s = os.path.split(filename)
+#         title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
+        last_dir, f_name = os.path.split(filename)
+        last_dir = os.path.basename(last_dir)
+        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version()%_("for"))
+#        if DEF_ENC != "UTF-8":
+#            title = title.encode('utf-8')
+        title = title.encode('utf-8')
         display.set_caption(title)
 
     @mceutils.alertException
@@ -1395,7 +1422,8 @@ class LevelEditor(GLViewport):
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
-                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+                                        shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+#                                           shortName + " - Copy", "", "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
@@ -2958,7 +2986,7 @@ class LevelEditor(GLViewport):
                 col = Column((label, progress), align="l", width=200)
                 infos.append(col)
 
-        panel = Panel()
+        panel = Panel(parent=self)
         if len(infos):
             panel.add(Column(infos))
             panel.shrink_wrap()
@@ -3558,3 +3586,4 @@ from albow.resource import get_image
 #             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
 #             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
 #         if "Re-acquired session lock" in message:
+

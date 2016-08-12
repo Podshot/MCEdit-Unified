@@ -1,0 +1,750 @@
+{
+    "blocks": [
+        {
+            "tex": [
+                1,
+                0
+            ],
+            "mapcolor": [
+                120,
+                120,
+                120
+            ],
+            "id": 1,
+            "name": "Stone"
+        },
+        {
+            "tex": [
+                0,
+                0
+            ],
+            "tex_direction": {
+                "FORWARD": [
+                    3,
+                    0
+                ],
+                "BACKWARD": [
+                    3,
+                    0
+                ],
+                "SIDES": [
+                    3,
+                    0
+                ],
+                "BOTTOM": [
+                    2,
+                    0
+                ]
+            },
+            "mapcolor": [
+                117,
+                176,
+                73
+            ],
+            "id": 2,
+            "name": "Grass"
+        },
+        {
+            "tex": [
+                2,
+                0
+            ],
+            "mapcolor": [
+                134,
+                96,
+                67
+            ],
+            "id": 3,
+            "name": "Dirt"
+        },
+        {
+            "tex": [
+                0,
+                1
+            ],
+            "mapcolor": [
+                115,
+                115,
+                115
+            ],
+            "id": 4,
+            "name": "Cobblestone"
+        },
+        {
+            "tex": [
+                4,
+                0
+            ],
+            "mapcolor": [
+                157,
+                128,
+                79
+            ],
+            "id": 5,
+            "name": "Wood Planks"
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                15,
+                0
+            ],
+            "name": "Sapling",
+            "mapcolor": [
+                120,
+                120,
+                120
+            ],
+            "type": "DECORATION_CROSS",
+            "id": 6
+        },
+        {
+            "tex": [
+                1,
+                1
+            ],
+            "aka": "Adminium",
+            "mapcolor": [
+                84,
+                84,
+                84
+            ],
+            "id": 7,
+            "name": "Bedrock"
+        },
+        {
+            "opacity": 3,
+            "tex": [
+                15,
+                12
+            ],
+            "name": "Water (active)",
+            "mapcolor": [
+                38,
+                92,
+                255
+            ],
+            "type": "WATER",
+            "id": 8
+        },
+        {
+            "opacity": 3,
+            "tex": [
+                15,
+                12
+            ],
+            "name": "Water",
+            "mapcolor": [
+                38,
+                92,
+                255
+            ],
+            "type": "WATER",
+            "id": 9
+        },
+        {
+            "tex": [
+                15,
+                14
+            ],
+            "mapcolor": [
+                255,
+                90,
+                0
+            ],
+            "type": "SEMISOLID",
+            "id": 10,
+            "name": "Lava (active)"
+        },
+        {
+            "tex": [
+                15,
+                14
+            ],
+            "mapcolor": [
+                255,
+                90,
+                0
+            ],
+            "type": "SEMISOLID",
+            "id": 11,
+            "name": "Lava"
+        },
+        {
+            "tex": [
+                2,
+                1
+            ],
+            "mapcolor": [
+                218,
+                210,
+                158
+            ],
+            "id": 12,
+            "name": "Sand"
+        },
+        {
+            "tex": [
+                3,
+                1
+            ],
+            "mapcolor": [
+                136,
+                126,
+                126
+            ],
+            "id": 13,
+            "name": "Gravel"
+        },
+        {
+            "tex": [
+                0,
+                2
+            ],
+            "mapcolor": [
+                143,
+                140,
+                125
+            ],
+            "id": 14,
+            "name": "Gold Ore"
+        },
+        {
+            "tex": [
+                1,
+                2
+            ],
+            "mapcolor": [
+                136,
+                130,
+                127
+            ],
+            "id": 15,
+            "name": "Iron Ore"
+        },
+        {
+            "tex": [
+                2,
+                2
+            ],
+            "mapcolor": [
+                115,
+                115,
+                115
+            ],
+            "id": 16,
+            "name": "Coal Ore"
+        },
+        {
+            "tex": [
+                4,
+                1
+            ],
+            "tex_direction": {
+                "TOP": [
+                    5,
+                    1
+                ],
+                "BOTTOM": [
+                    5,
+                    1
+                ]
+            },
+            "mapcolor": [
+                102,
+                81,
+                51
+            ],
+            "id": 17,
+            "name": "Wood"
+        },
+        {
+            "tex": [
+                5,
+                3
+            ],
+            "mapcolor": [
+                60,
+                192,
+                41
+            ],
+            "id": 18,
+            "name": "Leaves"
+        },
+        {
+            "tex": [
+                0,
+                3
+            ],
+            "mapcolor": [
+                193,
+                193,
+                57
+            ],
+            "id": 19,
+            "name": "Sponge"
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                1,
+                3
+            ],
+            "name": "Glass",
+            "mapcolor": [
+                255,
+                255,
+                255
+            ],
+            "type": "GLASS",
+            "id": 20
+        },
+        {
+            "tex": [
+                0,
+                4
+            ],
+            "mapcolor": [
+                164,
+                45,
+                41
+            ],
+            "id": 21,
+            "name": "Red Wool"
+        },
+        {
+            "tex": [
+                1,
+                4
+            ],
+            "mapcolor": [
+                234,
+                127,
+                55
+            ],
+            "id": 22,
+            "name": "Orange Wool"
+        },
+        {
+            "tex": [
+                2,
+                4
+            ],
+            "mapcolor": [
+                104,
+                139,
+                212
+            ],
+            "id": 23,
+            "name": "Yellow Wool"
+        },
+        {
+            "tex": [
+                3,
+                4
+            ],
+            "mapcolor": [
+                59,
+                189,
+                48
+            ],
+            "id": 24,
+            "name": "Lime Wool"
+        },
+        {
+            "tex": [
+                4,
+                4
+            ],
+            "mapcolor": [
+                56,
+                77,
+                24
+            ],
+            "id": 25,
+            "name": "Green Wool"
+        },
+        {
+            "tex": [
+                5,
+                4
+            ],
+            "mapcolor": [
+                104,
+                139,
+                212
+            ],
+            "id": 26,
+            "name": "Aqua Wool"
+        },
+        {
+            "tex": [
+                6,
+                4
+            ],
+            "mapcolor": [
+                39,
+                117,
+                149
+            ],
+            "id": 27,
+            "name": "Cyan Wool"
+        },
+        {
+            "tex": [
+                7,
+                4
+            ],
+            "mapcolor": [
+                39,
+                51,
+                161
+            ],
+            "id": 28,
+            "name": "Blue Wool"
+        },
+        {
+            "tex": [
+                8,
+                4
+            ],
+            "mapcolor": [
+                88,
+                54,
+                122
+            ],
+            "id": 29,
+            "name": "Purple Wool"
+        },
+        {
+            "tex": [
+                9,
+                4
+            ],
+            "id": 30,
+            "name": "Indigo Wool"
+        },
+        {
+            "tex": [
+                10,
+                4
+            ],
+            "mapcolor": [
+                129,
+                54,
+                196
+            ],
+            "id": 31,
+            "name": "Violet Wool"
+        },
+        {
+            "tex": [
+                11,
+                4
+            ],
+            "mapcolor": [
+                191,
+                75,
+                201
+            ],
+            "id": 32,
+            "name": "Magenta Wool"
+        },
+        {
+            "tex": [
+                12,
+                4
+            ],
+            "mapcolor": [
+                217,
+                131,
+                155
+            ],
+            "id": 33,
+            "name": "Pink Wool"
+        },
+        {
+            "tex": [
+                13,
+                4
+            ],
+            "mapcolor": [
+                0,
+                0,
+                0
+            ],
+            "id": 34,
+            "name": "Black Wool"
+        },
+        {
+            "tex": [
+                14,
+                4
+            ],
+            "mapcolor": [
+                66,
+                66,
+                66
+            ],
+            "id": 35,
+            "name": "Gray Wool"
+        },
+        {
+            "tex": [
+                15,
+                4
+            ],
+            "mapcolor": [
+                222,
+                222,
+                222
+            ],
+            "id": 36,
+            "name": "White Wool"
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                13,
+                0
+            ],
+            "name": "Flower",
+            "mapcolor": [
+                255,
+                255,
+                0
+            ],
+            "type": "DECORATION_CROSS",
+            "id": 37
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                12,
+                0
+            ],
+            "name": "Rose",
+            "mapcolor": [
+                255,
+                0,
+                0
+            ],
+            "type": "DECORATION_CROSS",
+            "id": 38
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                13,
+                1
+            ],
+            "name": "Brown Mushroom",
+            "mapcolor": [
+                145,
+                109,
+                85
+            ],
+            "type": "DECORATION_CROSS",
+            "id": 39
+        },
+        {
+            "opacity": 0,
+            "tex": [
+                12,
+                1
+            ],
+            "name": "Red Mushroom",
+            "mapcolor": [
+                226,
+                18,
+                18
+            ],
+            "type": "DECORATION_CROSS",
+            "id": 40
+        },
+        {
+            "tex": [
+                7,
+                1
+            ],
+            "mapcolor": [
+                231,
+                165,
+                45
+            ],
+            "id": 41,
+            "name": "Block of Gold"
+        },
+        {
+            "tex": [
+                6,
+                1
+            ],
+            "mapcolor": [
+                191,
+                191,
+                191
+            ],
+            "id": 42,
+            "name": "Block of Iron"
+        },
+        {
+            "tex_direction": {
+                "FORWARD": [
+                    5,
+                    0
+                ],
+                "TOP": [
+                    6,
+                    0
+                ],
+                "BACKWARD": [
+                    5,
+                    0
+                ],
+                "SIDES": [
+                    5,
+                    0
+                ],
+                "BOTTOM": [
+                    6,
+                    0
+                ]
+            },
+            "tex": [
+                5,
+                0
+            ],
+            "name": "Double Stone Slab",
+            "aka": "Step",
+            "mapcolor": [
+                200,
+                200,
+                200
+            ],
+            "id": 43
+        },
+        {
+            "tex_direction": {
+                "FORWARD": [
+                    5,
+                    0
+                ],
+                "TOP": [
+                    6,
+                    0
+                ],
+                "BACKWARD": [
+                    5,
+                    0
+                ],
+                "SIDES": [
+                    5,
+                    0
+                ],
+                "BOTTOM": [
+                    6,
+                    0
+                ]
+            },
+            "tex": [
+                6,
+                0
+            ],
+            "name": "Stone Slab",
+            "aka": "Single Half Step",
+            "mapcolor": [
+                200,
+                200,
+                200
+            ],
+            "id": 44
+        },
+        {
+            "tex": [
+                7,
+                0
+            ],
+            "mapcolor": [
+                170,
+                86,
+                62
+            ],
+            "id": 45,
+            "name": "Brick"
+        },
+        {
+            "tex": [
+                8,
+                0
+            ],
+            "tex_direction": {
+                "TOP": [
+                    9,
+                    0
+                ],
+                "BOTTOM": [
+                    10,
+                    0
+                ]
+            },
+            "mapcolor": [
+                160,
+                83,
+                65
+            ],
+            "id": 46,
+            "name": "TNT"
+        },
+        {
+            "tex": [
+                3,
+                2
+            ],
+            "tex_direction": {
+                "TOP": [
+                    4,
+                    0
+                ],
+                "BOTTOM": [
+                    4,
+                    0
+                ]
+            },
+            "mapcolor": [
+                188,
+                152,
+                98
+            ],
+            "id": 47,
+            "name": "Bookshelf"
+        },
+        {
+            "tex": [
+                4,
+                2
+            ],
+            "aka": "Mossy Cobblestone",
+            "mapcolor": [
+                115,
+                169,
+                115
+            ],
+            "id": 48,
+            "name": "Moss Stone"
+        },
+        {
+            "tex": [
+                5,
+                2
+            ],
+            "mapcolor": [
+                26,
+                11,
+                43
+            ],
+            "id": 49,
+            "name": "Obsidian"
+        }
+    ]
+}

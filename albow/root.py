@@ -9,7 +9,7 @@ import pygame
 
 from pygame import key
 from pygame.locals import *
-#from pygame.time import get_ticks
+# from pygame.time import get_ticks
 from pygame.event import Event
 
 from glbackground import *
@@ -22,12 +22,12 @@ from albow.translate import _
 
 from pymclevel.box import Vector
 
-#-# This need to be changed. We need albow.translate in the config module.
-#-# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
-#-# without importing it.
-#-# It can be a 'config' module built only for albow.
+# -# This need to be changed. We need albow.translate in the config module.
+# -# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
+# -# without importing it.
+# -# It can be a 'config' module built only for albow.
 from config import config
-#-#
+# -#
 import os
 import directories
 import time
@@ -140,14 +140,14 @@ class RootWidget(Widget):
             os.mkdir(os.path.join(directories.getCacheDir(), "screenshots"))
         except OSError:
             pass
-        screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
+        screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)") + ".png")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
-        lbl = Label(_("Screenshot taken and saved as '%s'")%screenshot_name, doNotTranslate=True)
+        lbl = Label(_("Screenshot taken and saved as '%s'") % screenshot_name, doNotTranslate=True)
         folderBtn = Button("Open Folder", action=self.open_screenshots_folder)
         btn = Button("Ok", action=self.screenshot_notify)
-        buttonsRow = Row((btn,folderBtn))
-        col = Column((lbl,buttonsRow))
+        buttonsRow = Row((btn, folderBtn))
+        col = Column((lbl, buttonsRow))
         self.diag.add(col)
         self.diag.shrink_wrap()
         self.diag.present()
@@ -170,8 +170,8 @@ class RootWidget(Widget):
     captured_widget = None
 
     def capture_mouse(self, widget):
-        #put the mouse in "virtual mode" and pass mouse moved events to the
-        #specified widget
+        # put the mouse in "virtual mode" and pass mouse moved events to the
+        # specified widget
         if widget:
             pygame.mouse.set_visible(False)
             pygame.event.set_grab(True)
@@ -236,13 +236,13 @@ class RootWidget(Widget):
                             self.draw_all(self.surface)
                         pygame.display.flip()
                         self.frames += 1
-                    #events = [pygame.event.wait()]
+                    # events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
 
                     for event in events:
-                        #if event.type:
-                        #log.debug("%s", event)
+                        # if event.type:
+                        # log.debug("%s", event)
                         type = event.type
                         if type == QUIT:
                             self.quit()
@@ -263,7 +263,7 @@ class RootWidget(Widget):
 
                             if not mouse_widget.is_inside(modal_widget):
                                 mouse_widget = modal_widget
-                            #if event.button == 1:
+                            # if event.button == 1:
                             clicked_widget = mouse_widget
                             last_mouse_event_handler = mouse_widget
                             last_mouse_event = event
@@ -352,7 +352,7 @@ class RootWidget(Widget):
                                     add_modifiers(event)
                                     last_mouse_event_handler.setup_cursor(event)
                                 self.begin_frame()
-                        #'# Actual Windows working but Linux non working code.
+                        # '# Actual Windows working but Linux non working code.
 #                         elif type == VIDEORESIZE:
 #                             #pygame.display.set_mode(event.dict['size'], self.surface.get_flags())
 #                             pygame.display.flip()
@@ -367,13 +367,13 @@ class RootWidget(Widget):
 #                             #pygame.display.flip()
 #                             self.root._resized((old_w, old_h))
 #                             print "Resized via pygame"
-                        #'# Old code before the changes for window management (and working on Linux).
+                        # '# Old code before the changes for window management (and working on Linux).
                         elif type == VIDEORESIZE:
-                            #add_modifiers(event)
+                            # add_modifiers(event)
                             self.bonus_draw_time = False
                             self.size = (event.w, event.h)
-                            #self.dispatch_key('reshape', event)
-                        #'#
+                            # self.dispatch_key('reshape', event)
+                        # '#
                         elif type == VIDEOEXPOSE:
                             if self.mcedit.displayContext.win and self.mcedit.displayContext.win.get_state() == 1:
                                 x, y = config.settings.windowX.get(), config.settings.windowY.get()
@@ -388,7 +388,7 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
-                        #elif type == VIDEORESIZE:
+                        # elif type == VIDEORESIZE:
                         #    pygame.display.set_mode(event.dict['size'],self.surface.get_flags())
                         #    pygame.display.flip()
 
@@ -570,8 +570,8 @@ class RootWidget(Widget):
 
             self.currentTooltip = None
 
-        def TextTooltip(text):
-            tooltipBacking = Panel()
+        def TextTooltip(text, name):
+            tooltipBacking = Panel(name=name)
             tooltipBacking.bg_color = (0.0, 0.0, 0.0, 0.8)
             tooltipBacking.add(self.labelClass(text))
             tooltipBacking.shrink_wrap()
@@ -596,7 +596,7 @@ class RootWidget(Widget):
         else:
             ttext = widget.tooltipText
             if ttext is not None:
-                tip = TextTooltip(ttext)
+                tip = TextTooltip(ttext, 'Panel.%s' % (repr(widget)))
                 showTip(tip)
 
     def update_tooltip(self, pos=None):
@@ -648,7 +648,7 @@ class RootWidget(Widget):
 
         music.music_end()
 
-    #-# Used for debugging the resize stuff.
+    # -# Used for debugging the resize stuff.
 #    def resized(self, *args, **kwargs):
 #        Widget.resized(self, *args, **kwargs)
 #        print self.size

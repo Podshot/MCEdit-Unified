@@ -585,9 +585,36 @@ class CameraViewport(GLViewport):
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         if id != selectedMob():
-            tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
-            tileEntity["SpawnData"] = pymclevel.TAG_Compound()
-            tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
+            if "EntityId" in tileEntity:
+                tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            if "SpawnData" in tileEntity:
+                tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+                tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
+            if "SpawnPotentials" in tileEntity:
+                for potential in tileEntity["SpawnPotentials"]:
+                    if "Entity" in potential:
+                        # MC 1.9+
+                        if potential["Entity"]["id"].value == id or potential["Entity"]["EntityId"].value == id:
+                            potential["Entity"] = pymclevel.TAG_Compound()
+                            potential["Entity"]["id"] = pymclevel.TAG_String(selectedMob())
+                    elif "Properties" in potential:
+                        # MC before 1.9
+                        if "Type" in potential and potential["Type"].value == id:
+                            potential["Type"] = pymclevel.TAG_String(selectedMob())
+                        # We also can change some other values in the Properties tag, but it is useless in MC 1.8+.
+                        # The fact is this data will not be updated by the game after the mob type is changed, but the old mob will not spawn.
+#                         put_entityid = False
+#                         put_id = False
+#                         if "EntityId" in potential["Properties"] and potential["Properties"]["EntityId"].value == id:
+#                             put_entityid = True
+#                         if "id" in potential["Properties"] and potential["Properties"]["id"].value == id:
+#                             put_id = True
+#                         new_props = pymclevel.TAG_Compound()
+#                         if put_entityid:
+#                             new_props["EntityId"] = pymclevel.TAG_String(selectedMob())
+#                         if put_id:
+#                             new_props["id"] = pymclevel.TAG_String(selectedMob())
+#                         potential["Properties"] = new_props
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
@@ -816,6 +843,18 @@ class CameraViewport(GLViewport):
 
         linekeys = ["Text" + str(i) for i in range(1, 5)]
 
+        # From version 1.8, signs accept Json format.
+        # 1.9 does no more support the old raw string fomat.
+        splitVersion = self.editor.level.gameVersion.split('.')
+        newFmtVersion = ['1','9']
+        fmt = ""
+        json_fmt = False
+
+        f = lambda a,b: (a + (['0'] * max(len(b) - len(a), 0)), b + (['0'] * max(len(a) - len(b), 0)))
+        if False not in map(lambda x,y: (int(x) if x.isdigit() else x) >= (int(y) if y.isdigit() else y),*f(splitVersion, newFmtVersion))[:2]:
+            json_fmt = True
+            fmt = '{"text":""}'
+
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
             tileEntity["id"] = pymclevel.TAG_String("Sign")
@@ -823,7 +862,7 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             for l in linekeys:
-                tileEntity[l] = pymclevel.TAG_String("")
+                tileEntity[l] = pymclevel.TAG_String(fmt)
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -831,16 +870,13 @@ class CameraViewport(GLViewport):
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
 
-            #Fix for the '§ is Ä§' issue
-#             try:
-#                 f.value = tileEntity[l].value.decode("unicode-escape")
-#             except:
-#                 f.value = tileEntity[l].value
             f.value = tileEntity[l].value
 
-            # Double quotes handling
+            # Double quotes handling for olf sign text format.
             if f.value == 'null':
-                f.value = ''
+                f.value = fmt
+            elif json_fmt and f.value == '':
+                f.value = fmt
             else:
                 if f.value.startswith('"') and f.value.endswith('"'):
                     f.value = f.value[1:-1]
@@ -867,8 +903,6 @@ class CameraViewport(GLViewport):
         ]
 
         def menu_picked(index):
-            # Fix for the '§ is Ä§' issue
-#             c = u'\xa7' + hex(index)[-1]
             c = u"§%d"%index
             currentField = panel.focus_switch.focus_switch
             currentField.text += c  # xxx view hierarchy
@@ -876,12 +910,15 @@ class CameraViewport(GLViewport):
 
         def changeSign():
             unsavedChanges = False
+            fmt = '"{}"'
+            u_fmt = u'"%s"'
+            if json_fmt:
+                fmt = '{}'
+                u_fmt = u'%s'
             for l, f in zip(linekeys, lineFields):
-                oldText = '"{}"'.format(tileEntity[l])
-                # Double quotes handling
-#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255])
-                if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
+                oldText = fmt.format(tileEntity[l])
+                tileEntity[l] = pymclevel.TAG_String(u_fmt%f.value[:255])
+                if fmt.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
                 op = SignEditOperation(self.editor, self.editor.level, tileEntity, undoBackupEntityTag)

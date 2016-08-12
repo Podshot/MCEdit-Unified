@@ -144,6 +144,19 @@ class MCLevel(object):
 
     entityClass = Entity
 
+    # Game version check. Stores the info found in the 'Version::Name' tag
+
+    @property
+    def gameVersion(self):
+        """Return the content of the tag 'Name' in the tag 'Version', or 'Unknown'"""
+        if self.root_tag and not hasattr(self, '__game_Version'):
+            self.__gameVersion = 'Unknown'
+            if 'Data' in self.root_tag:
+                if 'Version' in self.root_tag['Data']:
+                    if 'Name' in self.root_tag['Data']['Version']:
+                        self.__gameVersion = self.root_tag['Data']['Version']['Name'].value
+            return self.__gameVersion
+
     @classmethod
     def isLevel(cls, filename):
         """Tries to find out whether the given filename can be loaded

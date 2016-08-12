@@ -22,7 +22,6 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
         ),
         "Sign": (
-            ("id", nbt.TAG_String),
             ("Text1", nbt.TAG_String),
             ("Text2", nbt.TAG_String),
             ("Text3", nbt.TAG_String),
@@ -243,7 +242,8 @@ class TileEntity(object):
                         mobs.extend(p["Entity"])
 
             for mob in mobs:
-                if "Pos" in mob:
+                # Why do we get a unicode object as tag 'mob'?
+                if "Pos" in mob and mob != "Pos":
                     if first:
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]
@@ -619,6 +619,9 @@ class Entity(object):
     def copyWithOffset(cls, entity, copyOffset, regenerateUUID=False):
         eTag = deepcopy(entity)
 
+        # Need to check the content of the copy to regenerate the possible sub entities UUIDs.
+        # A simple fix for the 1.9+ minecarts is proposed.
+
         positionTags = map(lambda p, co: nbt.TAG_Double(p.value + co), eTag["Pos"], copyOffset)
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
@@ -629,6 +632,14 @@ class Entity(object):
 
         if "Riding" in eTag:
             eTag["Riding"] = Entity.copyWithOffset(eTag["Riding"], copyOffset)
+
+        # # Fix for 1.9+ minecarts
+        if "Passengers" in eTag:
+            passengers = nbt.TAG_List()
+            for passenger in eTag["Passengers"]:
+                passengers.append(Entity.copyWithOffset(passenger, copyOffset, regenerateUUID))
+            eTag["Passengers"] = passengers
+        # #
 
         if regenerateUUID:
             # Courtesy of SethBling

@@ -54,6 +54,7 @@ inputs = [(("Trade", "title"),
            ("Give Experience per a Trade", True),
            ("Make Villager not Move", False),
            ("Make Villager Silent", False),
+           ("Enable Custom Name", True),
            ("Villager Name", ("string", "width=250")),),
 
           (("Rotation", "title"),
@@ -104,6 +105,7 @@ def perform(level, box, options):
     xp = options["Give Experience per a Trade"]
     nomove = options["Make Villager not Move"]
     silent = options["Make Villager Silent"]
+    nameVisible = options["Enable Custom Name"]
     name = options["Villager Name"]
     yaxis = options["Y-Axis"]
     xaxis = options["X-Axis"]
@@ -120,10 +122,10 @@ def perform(level, box, options):
             if (x, y, z) in box:
                 if e["id"].value == "Chest":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
-                               xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, legacy, CustomHeads[SkullType], PlayerName)
+                               xp, nomove, silent, nameVisible, name, yaxis, xaxis, IsCustomHead, legacy, CustomHeads[SkullType], PlayerName)
 
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, legacy, SkullType, PlayerName):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, nameVisible, name, yaxis, xaxis, IsCustomHead, legacy, SkullType, PlayerName):
     chest = level.tileEntityAt(x, y, z)
     if chest is None:
         return
@@ -156,8 +158,6 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
     villager["CareerLevel"] = TAG_Int(1000)
     villager["Riches"] = TAG_Int(200)
     villager["FallDistance"] = TAG_Float(0)
-    villager["CustomNameVisible"] = TAG_Byte(1)
-    villager["CustomName"] = TAG_String(name)
     villager["Invulnerable"] = TAG_Byte(invincible)
     villager["NoAI"] = TAG_Byte(nomove)
     villager["id"] = TAG_String("Villager")
@@ -173,6 +173,13 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
         villager["Silent"] = TAG_Byte(1)
     else:
         villager["Silent"] = TAG_Byte(0)
+        
+    if nameVisible:
+        villager["CustomName"] = TAG_String(name)
+        villager["CustomNameVisible"] = TAG_Byte(1)
+    else:
+        villager["CustomNameVisible"] = TAG_Byte(0)
+        
 
     for i in range(9):
         if (i in priceList or i in priceListB) and i in saleList:
