@@ -592,7 +592,7 @@ definitions = {
         ("useBulletText", "Use Bullet Text", False),
         ("useBulletImages", "Use Bullet Images", True),
         ("defaultBulletImages", "Default Bullet Images", True),
-        ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
+        ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.bmp')),
         ("showAllTags", "Show all the tags in the tree", False),
     ],
     ("Filter Keys", "Filter Keys"): [],

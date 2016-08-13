@@ -40,8 +40,8 @@ if DEBUG:
         print "*** MCEDIT DEBUG: directory:", os.path.dirname(__file__)
         print "*** MCEDIT DEBUG: current directory:", os.getcwd()
         try:
-            file_image = get_image('file.png', prefix='')
-            folder_image = get_image('folder.png', prefix='')
+            file_image = get_image('file.bmp', prefix='')
+            folder_image = get_image('folder.bmp', prefix='')
         except Exception, e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
@@ -67,8 +67,8 @@ else:
         print "*** MCEDIT DEBUG: directory:", os.path.dirname(__file__)
         print "*** MCEDIT DEBUG: current directory:", os.getcwd()
         try:
-            file_image = image.load('file.png')
-            folder_image = image.load('folder.png')
+            file_image = image.load('file.bmp')
+            folder_image = image.load('folder.bmp')
         except Exception, e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
@@ -85,8 +85,8 @@ else:
             draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
             draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
     else: # windows
-        file_image = image.load(os.path.join(getDataDir(), 'file.png'))
-        folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
+        file_image = image.load(os.path.join(getDataDir(), 'file.bmp'))
+        folder_image = image.load(os.path.join(getDataDir(), 'folder.bmp'))
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):

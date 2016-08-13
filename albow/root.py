@@ -140,7 +140,7 @@ class RootWidget(Widget):
             os.mkdir(os.path.join(directories.getCacheDir(), "screenshots"))
         except OSError:
             pass
-        screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)") + ".png")
+        screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)") + ".bmp")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
         lbl = Label(_("Screenshot taken and saved as '%s'") % screenshot_name, doNotTranslate=True)

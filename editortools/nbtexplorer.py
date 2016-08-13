@@ -82,7 +82,7 @@ import struct
 
 # -----------------------------------------------------------------------------
 bullet_image = None
-default_bullet_images = os.path.join(getDataDir(), "Nbtsheet.png")
+default_bullet_images = os.path.join(getDataDir(), "Nbtsheet.bmp")
 
 
 def get_bullet_image(index, w=16, h=16):

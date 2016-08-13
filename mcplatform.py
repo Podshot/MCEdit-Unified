@@ -77,8 +77,8 @@ schematicsDir = directories.schematicsDir
 
 # !# Disabling platform specific file chooser:
 # !# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
-# platChooser = sys.platform in ('linux2', 'darwin')
-platChooser = sys.platform == 'darwin'
+platChooser = sys.platform in ('linux2', 'darwin')
+# platChooser = sys.platform == 'darwin'
 
 def dynamic_arguments(func_to_replace, askFile_func):
     def wrapper(initialDir, displayName, fileFormat):

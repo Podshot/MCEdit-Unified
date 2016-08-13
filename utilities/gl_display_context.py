@@ -137,9 +137,9 @@ class GLDisplayContext(object):
                 print "* self.win.get_position()", self.win.get_position()
 
         try:
-            iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
+            iconpath = os.path.join(directories.getDataDir(), 'favicon.bmp')
             iconfile = file(iconpath, 'rb')
-            icon = pygame.image.load(iconfile, 'favicon.png')
+            icon = pygame.image.load(iconfile, 'favicon.bmp')
             display.set_icon(icon)
         except Exception, e:
             logging.warning('Unable to set icon: {0!r}'.format(e))

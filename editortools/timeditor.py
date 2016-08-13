@@ -93,7 +93,7 @@ class TimeEditor(Widget):
         __deg = self.ticksToDegrees(current_tick_time)
         
         self.rot_image = RotatableImage(
-                                        image=pygame.image.load(os.path.join("toolicons", "day_night_cycle.png")),
+                                        image=pygame.image.load(os.path.join("toolicons", "day_night_cycle.bmp")),
                                         min_angle=-self._maxRotation,
                                         max_angle=0,
                                         angle=__deg
