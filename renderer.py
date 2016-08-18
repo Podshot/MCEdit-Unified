@@ -1719,7 +1719,6 @@ class LeafBlockRenderer(BlockRenderer):
 
     makeVertices = makeLeafVertices
 
-
 class PlantBlockRenderer(BlockRenderer):
     @classmethod
     def getBlocktypes(cls, mats):

@@ -306,7 +306,7 @@ class MCMaterials(object):
         self.lightAbsorption[blockID] = kw.pop('opacity', self.defaultOpacity)
         self.aka[blockID][blockData] = kw.pop('aka', "")
         self.search[blockID][blockData] = kw.pop('search', "")
-        block_type = kw.pop('block_type', 'NORMAL')
+        block_type = kw.pop('type', 'NORMAL')
 
         color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
         self.flatColors[blockID, blockData] = (tuple(color) + (255,))[:4]
