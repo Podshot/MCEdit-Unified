@@ -156,8 +156,8 @@ class MCMaterials(object):
                 return self[_BlockstateAPI.blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)
         if isinstance(key, (tuple, list)):
-            id, blockData = key
-            return self.blockWithID(id, blockData)
+            block_id, blockData = key
+            return self.blockWithID(block_id, blockData)
         return self.blockWithID(key)
 
     def blocksMatching(self, name, names=None):
@@ -189,11 +189,11 @@ class MCMaterials(object):
                 toReturn.append(v)
         return toReturn
 
-    def blockWithID(self, id, data=0):
-        if (id, data) in self.blocksByID:
-            return self.blocksByID[id, data]
+    def blockWithID(self, block_id, data=0):
+        if (block_id, data) in self.blocksByID:
+            return self.blocksByID[block_id, data]
         else:
-            bl = Block(self, id, blockData=data)
+            bl = Block(self, block_id, blockData=data)
             return bl
 
     def addJSONBlocksFromFile(self, filename):
@@ -289,8 +289,8 @@ class MCMaterials(object):
                 rot = (5, 0, 2, 3, 4, 1)
                 texture[:] = [texture[r] for r in rot]
 
-            for data, dir in tex_direction_data.items():
-                for _i in range(texDirMap.get(dir, 0)):
+            for data, direction in tex_direction_data.items():
+                for _i in range(texDirMap.get(direction, 0)):
                     rot90cw()
                 self.blockTextures[blockID][int(data)] = texture
 
@@ -306,7 +306,7 @@ class MCMaterials(object):
         self.lightAbsorption[blockID] = kw.pop('opacity', self.defaultOpacity)
         self.aka[blockID][blockData] = kw.pop('aka', "")
         self.search[blockID][blockData] = kw.pop('search', "")
-        type = kw.pop('type', 'NORMAL')
+        block_type = kw.pop('type', 'NORMAL')
 
         color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
         self.flatColors[blockID, blockData] = (tuple(color) + (255,))[:4]
@@ -318,15 +318,15 @@ class MCMaterials(object):
 
         self.names[blockID][blockData] = name
         if blockData is 0:
-            self.type[blockID] = [type] * 16
+            self.type[blockID] = [block_type] * 16
         else:
-            self.type[blockID][blockData] = type
+            self.type[blockID][blockData] = block_type
 
         block = Block(self, blockID, blockData, stringName)
 
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
-        self.blocksByType[type].append(block)
+        self.blocksByType[block_type].append(block)
 
         self.blocksByID[blockID, blockData] = block
 
