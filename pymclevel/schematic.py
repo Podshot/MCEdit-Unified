@@ -703,13 +703,18 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     
 class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
+    __MAX_SIZE = (32, 32, 32)
     
     class StructureTooBigException(Exception):
         pass
     
+    @property
+    def MAX_SIZE(self):
+        return self.__MAX_SIZE
+    
     def _check_bounds(self, bounds):
-        for axis in bounds:
-            if axis > 32:
+        for axis in xrange(len(self.MAX_SIZE)):
+            if bounds[axis] > self.MAX_SIZE[axis]:
                 raise self.StructureTooBigException()
     
     def __init__(self, filename=None, root_tag=None, size=None):
