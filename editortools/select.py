@@ -325,7 +325,7 @@ class SelectionTool(EditorTool):
                 del t["Items"]
 
             text += str(t)
-
+            
         return text
 
     @property
