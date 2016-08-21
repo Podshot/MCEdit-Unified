@@ -1923,12 +1923,13 @@ class CameraViewport(GLViewport):
     
 class BlockInfoParser(object):
     last_level = None
+    nbt_ending = "\n\nPress ALT for NBT"
+    edit_ending = ", Double-Click to Edit"
     
     @classmethod
     def get_parsers(cls, editor):
         cls.last_level = editor.level
         parser_map = {}
-        print type(editor.level)
         for subcls in cls.__subclasses__():
             instance = subcls(editor.level)
             try:
@@ -1961,8 +1962,8 @@ class SpawnerInfoParser(BlockInfoParser):
         if tile_entity:
             spawn_data = tile_entity.get("SpawnData", {})
             if spawn_data:
-                return str(spawn_data['id'].value) + " Spawner"
-        return "[Empty]"
+                return str(spawn_data['id'].value) + " Spawner" + self.nbt_ending + self.edit_ending
+        return "[Empty]"  + self.nbt_ending + self.edit_ending
     
 class JukeboxInfoParser(BlockInfoParser):
     id_records = {
@@ -2007,12 +2008,12 @@ class JukeboxInfoParser(BlockInfoParser):
             if "Record" in tile_entity:
                 value = tile_entity["Record"].value
                 if value in self.id_records:
-                    return self.id_records[value] + " Record"
+                    return self.id_records[value] + " Record" + self.nbt_ending + self.edit_ending
             elif "RecordItem" in tile_entity:
                 value = tile_entity["RecordItem"]["id"].value
                 if value in self.name_records:
-                    return self.name_records[value] + " Record"
-        return "[No Record]"
+                    return self.name_records[value] + " Record" + self.nbt_ending + self.edit_ending
+        return "[No Record]"  + self.nbt_ending + self.edit_ending
     
 class CommandBlockInfoParser(BlockInfoParser):
     
@@ -2032,9 +2033,9 @@ class CommandBlockInfoParser(BlockInfoParser):
             value = tile_entity.get("Command", TAG_String("")).value
             if value:
                 if len(value) > 1500:
-                    return value[:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**"
-                return value
-        return "[Empty Command Block]"
+                    return value[:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**" + self.nbt_ending + self.edit_ending
+                return value + self.nbt_ending + self.edit_ending
+        return "[Empty Command Block]"  + self.nbt_ending + self.edit_ending
 
 def unproject(x, y, z):
     try:
