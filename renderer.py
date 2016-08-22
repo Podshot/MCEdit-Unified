@@ -802,8 +802,8 @@ class ChunkCalculator(object):
             alphaMaterials.JungleFenceGate,
             alphaMaterials.DarkOakFenceGate,
             alphaMaterials.AcaciaFenceGate,
-            alphaMaterials.Sign
-
+            alphaMaterials.Sign,
+            alphaMaterials.StructureVoid
         ]
         for b in transparentMaterials:
             mats[b.ID] = materialCount
@@ -1719,7 +1719,6 @@ class LeafBlockRenderer(BlockRenderer):
 
     makeVertices = makeLeafVertices
 
-
 class PlantBlockRenderer(BlockRenderer):
     @classmethod
     def getBlocktypes(cls, mats):
@@ -2368,7 +2367,7 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
 class EnchantingBlockRenderer(
     BlockRenderer):  #Note: Enderportal frame side sprite has been lowered 1 pixel to use this renderer, will need separate renderer for eye.
     blocktypes = [alphaMaterials["minecraft:enchanting_table"].ID,
-                  alphaMaterials["minecraft:end_portal"].ID]
+                  alphaMaterials["minecraft:end_portal_frame"].ID]
 
     def makeEnchantingVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)

@@ -13,6 +13,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import time
+import traceback
 t= time.time()
 import sys
 import os
@@ -135,10 +136,10 @@ def win32_appdata():
 
 def getMinecraftProfileJSON():
     """Returns a dictionary object with the minecraft profile information"""
-    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")):
+    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
         try:
-            with open(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")) as jsonString:
-                minecraftProfilesJSON = json.load(jsonString)
+            with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json"), 'rb') as jsonString:
+                minecraftProfilesJSON = json.loads(jsonString.read().decode(sys.getfilesystemencoding()))
             return minecraftProfilesJSON
         except:
             return None
@@ -147,8 +148,7 @@ def getMinecraftProfileJSON():
 def getMinecraftProfileDirectory(profileName):
     """Returns the path to the sent minecraft profile directory"""
     try:
-        profileDir = getMinecraftProfileJSON()['profiles'][profileName][
-            'gameDir']  # profileDir update to correct location.
+        profileDir = getMinecraftProfileJSON()['profiles'][profileName]['gameDir']  # profileDir update to correct location.
         return profileDir
     except:
         return os.path.join(getMinecraftLauncherDirectory())
@@ -209,7 +209,7 @@ _minecraftSaveFileDir = None
 def getMinecraftSaveFileDir():
     global _minecraftSaveFileDir
     if _minecraftSaveFileDir is None:
-        _minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
+        _minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")
     return _minecraftSaveFileDir
 
 minecraftSaveFileDir = getMinecraftSaveFileDir()

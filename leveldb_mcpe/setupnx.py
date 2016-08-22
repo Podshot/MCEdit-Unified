@@ -286,7 +286,10 @@ if extract:
     os.system('rm -R leveldb-mcpe')
     if not os.path.exists('leveldb-mcpe-master.zip'):
         # Retrieve Mojang resource linked in MCEdit sources. I know, freaking command line :p
-        os.system("""wget -O leveldb-mcpe-master.zip $(wget -S -O - https://github.com/Mojang/leveldb-mcpe/tree/$(wget -S -O - https://github.com/Khroki/MCEdit-Unified/tree/master/leveldb_mcpe | egrep -o '@ <a href="/Mojang/leveldb-mcpe/tree/([0-9A-Za-z]*)"' | egrep -o '/[0-9A-Za-z]*"' | egrep -o '[0-9A-Za-z]*') | egrep '\.zip' | sed 's/<a href="\/Mojang\/leveldb-mcpe\/archive/https:\/\/codeload.github.com\/Mojang\/leveldb-mcpe\/zip/' | sed 's/.zip"//'| sed 's/ //')""")
+        # os.system("""wget -O leveldb-mcpe-master.zip $(wget -S -O - https://github.com/Mojang/leveldb-mcpe/tree/$(wget -S -O - https://github.com/Khroki/MCEdit-Unified/tree/master/leveldb_mcpe | egrep -o '@ <a href="/Mojang/leveldb-mcpe/tree/([0-9A-Za-z]*)"' | egrep -o '/[0-9A-Za-z]*"' | egrep -o '[0-9A-Za-z]*') | egrep '\.zip' | sed 's/<a href="\/Mojang\/leveldb-mcpe\/archive/https:\/\/codeload.github.com\/Mojang\/leveldb-mcpe\/zip/' | sed 's/.zip"//'| sed 's/ //')""")
+        # Mojang's repo reference has been removed from MCEdit repo...
+        # Using hard coded reference now.
+        os.system("""wget -O leveldb-mcpe-master.zip https://codeload.github.com/Mojang/leveldb-mcpe/zip/a056ea7c18dfd7b806d6d693726ce79d75543904""")
     print "Extracting Mojang's leveldb-mcpe..."
     os.system('unzip -q leveldb-mcpe-master.zip')
     os.system("mv $(ls -d1 */ | egrep 'leveldb-mcpe-') leveldb-mcpe")

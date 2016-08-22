@@ -703,13 +703,18 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     
 class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
+    __MAX_SIZE = (32, 32, 32)
     
     class StructureTooBigException(Exception):
         pass
     
+    @property
+    def MAX_SIZE(self):
+        return self.__MAX_SIZE
+    
     def _check_bounds(self, bounds):
-        for axis in bounds:
-            if axis > 32:
+        for axis in xrange(len(self.MAX_SIZE)):
+            if bounds[axis] > self.MAX_SIZE[axis]:
                 raise self.StructureTooBigException()
     
     def __init__(self, filename=None, root_tag=None, size=None):
@@ -980,14 +985,6 @@ class StructureNBT(object):
     @property
     def Palette(self):
         return self._palette
-    
-    # Blocks = property(fget=get_Blocks, fset=set_Blocks)
-        
-struct = StructureNBT(filename="C:\\Users\\Ben\\Saved Games\\Minecraft\\1.10\\saves\\Development\\structures\\NBT Test 2.nbt")
-# struct.Blocks[1,1,1] = 2
-# print struct.Size
-# print struct.Blocks[1,1,1]
-
 
 def adjustExtractionParameters(self, box):
     x, y, z = box.origin

@@ -17,6 +17,7 @@ from pygame.locals import *
 from albow.widget import Widget
 from albow.dialogs import Dialog, ask, alert
 from albow.controls import Label, Button, Image
+from albow.extended_widgets import ChoiceButton
 from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView # @Unused
@@ -311,6 +312,7 @@ class FileDialog(Dialog):
         label = None
         d = self.margin
         self.suffixes = suffixes or ("",)
+        self.file_type = self.suffixes[0]
         up_button = Button(self.up_button_text, action=self.go_up)
         dir_box = DirPathView(self.box_width + 250, self)
         self.dir_box = dir_box
@@ -324,16 +326,34 @@ class FileDialog(Dialog):
         prompt = prompt or self.default_prompt
         if prompt:
             label = Label(prompt)
+        if suffixes:
+            filetype_label = Label("File type", width=250)
+
+            def set_file_type():
+                self.file_type = self.filetype_button.get_value()
+                self.list_box.update()
+
+            filetype_button = ChoiceButton(choices=self.suffixes, width=250, choose=set_file_type)
+            self.filetype_button = filetype_button
         if self.saving:
             filename_box = TextFieldWrapped(self.box_width)
             filename_box.change_action = self.update_filename
             filename_box._enter_action = filename_box.enter_action
             filename_box.enter_action = self.enter_action
             self.filename_box = filename_box
-            ctrls.append(Column([label, filename_box], align='l', spacing=0))
+            if suffixes:
+                ctrls.append(Row([Column([label, filename_box], align='l', spacing=0),
+                                  Column([filetype_label, filetype_button], align='l', spacing=0)
+                                  ],
+                                 )
+                             )
+            else:
+                ctrls.append(Column([label, filename_box], align='l', spacing=0))
         else:
             if label:
                 ctrls.insert(0, label)
+            if suffixes:
+                ctrls.append(Column([filetype_label, filetype_button], align='l', spacing=0))
         ok_button = Button(self.ok_label, action=self.ok, enable=self.ok_enable)
         self.ok_button = ok_button
         cancel_button = Button("Cancel", action=self.cancel)
@@ -371,13 +391,8 @@ class FileDialog(Dialog):
     directory = property(get_directory, set_directory)
 
     def filter(self, path):
-        suffixes = self.suffixes
-        if not suffixes or os.path.isdir(path):
-            #return os.path.isfile(path)
+        if os.path.isdir(path) or path.endswith(self.file_type.lower()) or self.file_type == '.*':
             return True
-        for suffix in suffixes:
-            if path.endswith(suffix.lower()):
-                return True
 
     def update(self):
         self.tree.set_directory(self.directory)
@@ -429,7 +444,7 @@ class FileSaveDialog(FileDialog):
         return self.filename_box.text
 
     def set_filename(self, x):
-        dsuf = self.suffixes[0]
+        dsuf = self.file_type
         if dsuf and x.endswith(dsuf):
             x = x[:-len(dsuf)]
         self.filename_box.text = x
@@ -438,9 +453,9 @@ class FileSaveDialog(FileDialog):
 
     def get_pathname(self):
         path = os.path.join(self.directory, self.filename_box.text)
-        suffixes = self.suffixes
-        if suffixes and not path.endswith(suffixes[0]):
-            path = path + suffixes[0]
+        suff = self.file_type
+        if suff and not path.endswith(suff):
+            path = path + suff
         return path
 
     pathname = property(get_pathname)

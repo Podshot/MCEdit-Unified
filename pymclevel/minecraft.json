@@ -2508,7 +2508,7 @@
 				"curve": [0,7]
 			},
 			"mapcolor": [150,134,102],
-			"type": "MINECART_TRACKS",
+			"type": "SIMPLE_RAIL",
 			"id": 66
 		},{
 			"name": "Cobblestone Stairs",
@@ -7393,6 +7393,7 @@
 			"opacity": 0,
 			"name": "Spruce Fence",
 			"idStr": "spruce_fence",
+			"type": "FENCE",
 			"tex": [6,12],
 			"mapcolor": [157,128,79],
 			"id": 188
@@ -7400,6 +7401,7 @@
 			"opacity": 0,
 			"name": "Birch Fence",
 			"idStr": "birch_fence",
+			"type": "FENCE",
 			"tex": [6,13],
 			"mapcolor": [157,128,79],
 			"id": 189
@@ -7407,6 +7409,7 @@
 			"opacity": 0,
 			"name": "Jungle Fence",
 			"idStr": "jungle_fence",
+			"type": "FENCE",
 			"tex": [7,12],
 			"mapcolor": [157,128,79],
 			"id": 190
@@ -7414,6 +7417,7 @@
 			"opacity": 0,
 			"name": "Dark Oak Fence",
 			"idStr": "dark_oak_fence",
+			"type": "FENCE",
 			"tex": [1,15],
 			"mapcolor": [157,128,79],
 			"id": 191
@@ -7421,6 +7425,7 @@
 			"opacity": 0,
 			"name": "Acacia Fence",
 			"idStr": "acacia_fence",
+			"type": "FENCE",
 			"tex": [0,15],
 			"mapcolor": [157,128,79],
 			"id": 192

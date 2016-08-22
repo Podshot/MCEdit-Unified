@@ -80,6 +80,25 @@ schematicsDir = directories.schematicsDir
 # platChooser = sys.platform in ('linux2', 'darwin')
 platChooser = sys.platform == 'darwin'
 
+def dynamic_arguments(func_to_replace, askFile_func):
+    def wrapper(initialDir, displayName, fileFormat):
+        if isinstance(fileFormat, tuple):
+            print "Using dict args"
+            return func_to_replace(initialDir, displayName, fileFormat)
+        else:
+            
+            def old_askSaveSchematic(initialDir, displayName, fileFormat):
+                dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
+                return askFile_func(initialDir,
+                                   title=_('Save this schematic...'),
+                                   defaultName=displayName + "_" + dt + "." + fileFormat,
+                                   filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
+                                   suffix=fileFormat,
+                                   )
+            print "Using str args"
+            return old_askSaveSchematic(initialDir, displayName, fileFormat)
+    return wrapper
+
 def getTexturePacks():
     try:
         return os.listdir(texturePacksDir)
@@ -239,6 +258,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             # BO support
             _suffixes.append("bo2")
             _suffixes.append("bo3")
+            _suffixes.sort()
 
         if sys.platform == "win32":  # !#
             if suffixesChanged:
@@ -319,17 +339,17 @@ def askOpenFileGtk(title, suffixes, initialDir):
         chooser.set_current_name("world")  # For some reason the Windows isn't closing if this line ins missing or the parameter is ""
 
         # Add custom Filter
-        filter = gtk.FileFilter()
-        filter.set_name("Levels and Schematics")
+        file_filter = gtk.FileFilter()
+        file_filter.set_name("Levels and Schematics")
         for suffix in suffixes:
-            filter.add_pattern("*." + suffix)
-        chooser.add_filter(filter)
+            file_filter.add_pattern("*." + suffix)
+        chooser.add_filter(file_filter)
 
         # Add "All files" Filter
-        filter = gtk.FileFilter()
-        filter.set_name("All files")
-        filter.add_pattern("*")
-        chooser.add_filter(filter)
+        file_filter = gtk.FileFilter()
+        file_filter.set_name("All files")
+        file_filter.add_pattern("*")
+        chooser.add_filter(file_filter)
 
         response = chooser.run()
         if response == gtk.RESPONSE_OK:
@@ -343,8 +363,6 @@ def askOpenFileGtk(title, suffixes, initialDir):
     gtk.main()
 
     return fls[0]
-        
-print buildFileTypes(({"Minecraft Schematics": ["schematic"]}, []))
 
 def askSaveSchematic(initialDir, displayName, fileFormats):
     fileFormat = buildFileTypes(fileFormats)
@@ -356,7 +374,6 @@ def askSaveSchematic(initialDir, displayName, fileFormats):
                        filetype=fileFormat,
                        suffix=fileFormat,
     )
-
 
 def askCreateWorld(initialDir):
     defaultName = name = _("Untitled World")
@@ -395,66 +412,109 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         except:
             pass
 
-    elif hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
+    else:
+        # Reformat the Windows stuff
+        if "\0" in suffix and suffix.count("*.") > 1:
+            _suffix = suffix.split("\0")[:-2]
+        else:
+            _suffix = suffix
+        if "\0" in filetype and filetype.count("*.") > 1:
+            _filetype = filetype.split("\0")[:-2]
+        else:
+            _filetype = filetype
 
-        fls = []
-        def run_dlg():
-            chooser = gtk.FileChooserDialog(title,
-                                            None, gtk.FILE_CHOOSER_ACTION_SAVE,
-                                            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                            gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-    
-            chooser.set_default_response(gtk.RESPONSE_OK)
-            chooser.set_current_folder(initialDir)
-            chooser.set_current_name(defaultName)
+        if hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
 
-            # Add custom Filter
-            filter = gtk.FileFilter()
-            filter.set_name(filetype[:filetype.index("\0")])
-            filter.add_pattern("*." + suffix)
-            chooser.add_filter(filter)
+            fls = []
+            def run_dlg():
+                chooser = gtk.FileChooserDialog(title,
+                                                None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                                gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
-            # Add "All files" Filter
-            filter = gtk.FileFilter()
-            filter.set_name("All files")
-            filter.add_pattern("*")
-            chooser.add_filter(filter)
+                chooser.set_default_response(gtk.RESPONSE_OK)
+                chooser.set_current_folder(initialDir)
+                chooser.set_current_name(defaultName)
 
-            response = chooser.run()
-            if response == gtk.RESPONSE_OK:
-                fls.append(chooser.get_filename())
+                # Add custom Filter
+                if type(_filetype) in (list, tuple):
+                    for i, filet in enumerate(_filetype):
+                        if i % 2 == 0:
+                            file_filter = gtk.FileFilter()
+                            file_filter.set_name(filet)
+                            if ";" in _suffix[i + 1]:
+                                for _suff in _suffix.split(";"):
+                                    if _suff:
+                                        file_filter.add_pattern(_suff)
+                            else:
+                                file_filter.add_pattern(_suffix[i + 1])
+                            chooser.add_filter(file_filter)
+                else:
+                    file_filter = gtk.FileFilter()
+                    file_filter.set_name(filetype[:filetype.index("\0")])
+                    if "\0" in suffix and suffix.count("*.") > 1:
+                        __suffix = suffix.split("\0")[:-2]
+                    else:
+                        __suffix = suffix
+                    if type(__suffix) in (list, tuple):
+                        for suff in __suffix:
+                            file_filter.add_pattern("*." + suff)
+                    else:
+                        file_filter.add_pattern("*." + __suffix)
+                    chooser.add_filter(file_filter)
+
+                # Add "All files" Filter
+                file_filter = gtk.FileFilter()
+                file_filter.set_name("All files")
+                file_filter.add_pattern("*")
+                chooser.add_filter(file_filter)
+
+                response = chooser.run()
+                if response == gtk.RESPONSE_OK:
+                    fls.append(chooser.get_filename())
+                else:
+                    fls.append(None)
+                chooser.destroy()
+                gtk.main_quit()
+
+            gtk.idle_add(run_dlg)
+            gtk.main()
+
+            filename = fls[0]
+
+        else:  # Fallback
+            log.debug("Calling internal file chooser.")
+            log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
+            log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
+            try:
+                iDir = initialDir.encode(enc)
+            except:
+                iDir = initialDir
+                log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
+                log.debug("Encode function returned: %s" % e)
+            try:
+                dName = defaultName.encode(enc)
+            except:
+                dName = defaultName
+                log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
+                log.debug("Encode function returned: %s" % e)
+            if type(_suffix) in (list, tuple):
+                sffxs = [a[1:] for a in _suffix[1::2]]
+                sffx = sffxs.pop(0)
+                sffxs.append('.*')
             else:
-                fls.append(None)
-            chooser.destroy()
-            gtk.main_quit()
+                sffx = _suffix
+                sffxs = []
 
-        gtk.idle_add(run_dlg)
-        gtk.main()
-
-        filename = fls[0]
-
-    else:  # Fallback
-        log.debug("Calling internal file chooser.")
-        log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
-        log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
-        try:
-            iDir = initialDir.encode(enc)
-        except:
-            iDir = initialDir
-            log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
-            log.debug("Encode function returned: %s" % e)
-        try:
-            dName = defaultName.encode(enc)
-        except:
-            dName = defaultName
-            log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
-            log.debug("Encode function returned: %s" % e)
-        filename = request_new_filename(prompt=title,
-                                    suffix=("." + suffix) if suffix else "",
-                                    directory=iDir,
-                                    filename=dName,
-                                    pathname=None)
+            filename = request_new_filename(prompt=title,
+                                        suffix=sffx,
+                                        extra_suffixes=sffxs,
+                                        directory=iDir,
+                                        filename=dName,
+                                        pathname=None)
     return filename
+
+askSaveSchematic = dynamic_arguments(askSaveSchematic, askSaveFile)
 
 # Start Open Folder Dialogs
 # TODO: Possibly get an OS X dialog

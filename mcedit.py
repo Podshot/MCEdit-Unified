@@ -67,7 +67,10 @@ ch.setFormatter(fmt)
 
 logger.addHandler(fh)
 logger.addHandler(ch)
-
+import release
+start_msg = 'Starting MCEdit-Unified v%s'%release.TAG
+logger.info(start_msg)
+print '[ ****** ] ~~~~~~~~~~ %s'%start_msg
 from version_utils import PlayerCache
 import directories
 import keys
@@ -153,7 +156,7 @@ import os.path
 import pygame
 from pygame import display, rect
 import pymclevel
-import release
+# import release
 import shutil
 import sys
 import traceback
