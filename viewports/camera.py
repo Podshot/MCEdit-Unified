@@ -2036,6 +2036,29 @@ class CommandBlockInfoParser(BlockInfoParser):
                     return value[:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**" + self.nbt_ending + self.edit_ending
                 return value + self.nbt_ending + self.edit_ending
         return "[Empty Command Block]"  + self.nbt_ending + self.edit_ending
+    
+class ContainerInfoParser(BlockInfoParser):
+    
+    def __init__(self, level):
+        self.level = level
+        
+    def getBlocks(self):
+        return [
+                self.level.materials["minecraft:dispenser"].ID,
+                self.level.materials["minecraft:chest"].ID,
+                self.level.materials["minecraft:furnace"].ID,
+                self.level.materials["minecraft:lit_furnace"].ID,
+                self.level.materials["minecraft:trapped_chest"].ID,
+                self.level.materials["minecraft:hopper"].ID,
+                self.level.materials["minecraft:dropper"].ID,
+                self.level.materials["minecraft:brewing_stand"].ID
+                ]
+        
+    def parse_info(self, pos):
+        tile_entity = self.level.tileEntityAt(*pos)
+        if tile_entity:
+            return "Contains {} Items".format(len(tile_entity.get("Items", []))) + self.nbt_ending + self.edit_ending
+        return "[Empty Container]" + self.nbt_ending + self.edit_ending
 
 def unproject(x, y, z):
     try:
