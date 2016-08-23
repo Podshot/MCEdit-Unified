@@ -452,7 +452,7 @@ class MCMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 alphaMaterials.addJSONBlocksFromFile("minecraft.json")
-alphaMaterials.setup_blockstates("pc_blockstate_definitions.json")
+alphaMaterials.setup_blockstates("blockstate_definitions.json")
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
