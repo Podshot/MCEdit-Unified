@@ -265,8 +265,8 @@ class MCMaterials(object):
                 if lowest_block:
                     return lowest_block
             else:
-                name, properties = self.blockstates.deStringifyBlockstate(key)
-                return self[self.blockstates.blockstateToID(name, properties)]
+                name, properties = self.blockstate_api.deStringifyBlockstate(key)
+                return self[self.blockstate_api.blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)
         if isinstance(key, (tuple, list)):
             block_id, blockData = key
@@ -310,7 +310,7 @@ class MCMaterials(object):
             return bl
         
     def setup_blockstates(self, blockstate_definition_file):
-        self.blockstates = BlockstateAPI(self, blockstate_definition_file)
+        self.blockstate_api = BlockstateAPI(self, blockstate_definition_file)
 
     def addJSONBlocksFromFile(self, filename):
         try:

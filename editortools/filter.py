@@ -302,6 +302,14 @@ class FilterModuleOptions(Widget):
 
                         row = Row((Label(oName, doNotTranslate=True), field))
                         rows.append(row)
+                    elif optionType[0] == "block":
+                        blockButton = BlockButton(tool.editor.level.materials)
+                        blockButton.blockInfo = tool.editor.level.materials[optionType[1]]
+                
+                        row = Column((Label(oName, doNotTranslate=True), blockButton))
+                        page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
+                
+                        rows.append(row)
                     else:
                         isChoiceButton = True
 
@@ -315,6 +323,7 @@ class FilterModuleOptions(Widget):
                         page.optionDict[optionName] = AttrRef(choiceButton, 'selectedChoice')
 
                         rows.append(Row((Label(oName, doNotTranslate=True), choiceButton)))
+                        
 
             elif isinstance(optionType, bool):
                 cbox = CheckBox(value=optionType)
@@ -327,8 +336,6 @@ class FilterModuleOptions(Widget):
                 rows.append(addNumField(self, optionName, oName, optionType))
                 
             elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
-                if isinstance(optionType, pymclevel.materials.Block):
-                    log.warning("[{}] Using pymclevel.materials.alphaMaterial.<block> static definitions are deprecated".format(os.path.basename(self.module.__file__)))
                 blockButton = BlockButton(tool.editor.level.materials)
                 if isinstance(optionType, pymclevel.materials.Block):
                     blockButton.blockInfo = optionType
@@ -337,17 +344,8 @@ class FilterModuleOptions(Widget):
                 page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
 
                 rows.append(row)
-            elif str(optionType).startswith("minecraft:"):
-                blockButton = BlockButton(tool.editor.level.materials)
-                blockButton.blockInfo = pymclevel.materials.alphaMaterials[optionType]
-                
-                row = Column((Label(oName, doNotTranslate=True), blockButton))
-                page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
-
-                rows.append(row)
             elif optionType == "label":
                 rows.append(wrapped_label(oName, 50, doNotTranslate=True))
-
             elif optionType == "string":
                 inp = None
                 # not sure how to pull values from filters,
@@ -360,7 +358,6 @@ class FilterModuleOptions(Widget):
                 row = TextInputRow(oName, ref=AttrRef(field, 'value'), width=size, doNotTranslate=True)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
-
             elif optionType == "title":
                 title = oName
 
