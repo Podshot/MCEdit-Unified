@@ -304,7 +304,10 @@ class FilterModuleOptions(Widget):
                         rows.append(row)
                     elif optionType[0] == "block":
                         blockButton = BlockButton(tool.editor.level.materials)
-                        blockButton.blockInfo = tool.editor.level.materials[optionType[1]]
+                        try:
+                            blockButton.blockInfo = tool.editor.level.materials[optionType[1]]
+                        except AttributeError:
+                            blockButton.blockInfo = tool.editor.level.materials[0]
                 
                         row = Column((Label(oName, doNotTranslate=True), blockButton))
                         page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
