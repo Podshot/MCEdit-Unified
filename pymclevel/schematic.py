@@ -18,8 +18,7 @@ from materials import alphaMaterials, MCMaterials, namedMaterials, blockstateToI
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
-from pymclevel.materials import idToBlockstate, stringifyBlockstate, \
-    deStringifyBlockstate
+from pymclevel.materials import BlockstateAPI
 from release import TAG as RELEASE_TAG
 
 log = getLogger(__name__)
@@ -703,16 +702,21 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     
 class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
+    __MAX_SIZE = (32, 32, 32)
     
     class StructureTooBigException(Exception):
         pass
     
+    @property
+    def MAX_SIZE(self):
+        return self.__MAX_SIZE
+    
     def _check_bounds(self, bounds):
-        for axis in bounds:
-            if axis > 32:
+        for axis in xrange(len(self.MAX_SIZE)):
+            if bounds[axis] > self.MAX_SIZE[axis]:
                 raise self.StructureTooBigException()
     
-    def __init__(self, filename=None, root_tag=None, size=None):
+    def __init__(self, filename=None, root_tag=None, size=None, mats=alphaMaterials):
         self._author = None
         self._blocks = None
         self._palette = None
@@ -720,6 +724,7 @@ class StructureNBT(object):
         self._tile_entities = None
         self._size = None
         self._version = None
+        self._mat = mats
         
         if filename:
             root_tag = nbt.load(filename)
@@ -765,7 +770,7 @@ class StructureNBT(object):
             self._tile_entities.fill({})
             
     def toSchematic(self):
-        schem = MCSchematic(shape=self.Size)
+        schem = MCSchematic(shape=self.Size, mats=self._mat)
         for (x, y, z), value in ndenumerate(self._blocks):
             b_id, b_data = value
             schem.Blocks[x, z, y] = b_id
@@ -789,7 +794,7 @@ class StructureNBT(object):
     
     @classmethod
     def fromSchematic(cls, schematic):
-        structure = cls(size=(schematic.Width, schematic.Height, schematic.Length))
+        structure = cls(size=(schematic.Width, schematic.Height, schematic.Length), mats=namedMaterials[schematic.Materials])
         
         for (x, z, y), b_id in ndenumerate(schematic.Blocks):
             data = schematic.Data[x, z, y]
@@ -896,13 +901,14 @@ class StructureNBT(object):
                                               ]
                                              )
         
+        blockstate_api = BlockstateAPI.material_map.get(self._mat, BlockstateAPI.material_map[alphaMaterials])
         for z in range(self._blocks.shape[2]):  # For some reason, ndenumerate() didn't work, but this does
             for x in range(self._blocks.shape[0]):
                 for y in range(self._blocks.shape[1]):
                     
                     value = self._blocks[x, y, z]
-                    name, properties = idToBlockstate(*value)
-                    blockstate = stringifyBlockstate(name, properties)
+                    name, properties = blockstate_api.idToBlockstate(*value)
+                    blockstate = blockstate_api.stringifyBlockstate(name, properties)
             
                     #if blockstate not in index_table:
                     #    index_table[blockstate] = len(index_table)
@@ -928,7 +934,7 @@ class StructureNBT(object):
         structure_tag["blocks"] = blocks_tag
         
         for blockstate in palette:
-            name, properties = deStringifyBlockstate(blockstate)
+            name, properties = blockstate_api.deStringifyBlockstate(blockstate)
             
             state = nbt.TAG_Compound()
             state["Name"] = nbt.TAG_String(name)

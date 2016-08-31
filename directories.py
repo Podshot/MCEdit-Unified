@@ -138,11 +138,10 @@ def getMinecraftProfileJSON():
     """Returns a dictionary object with the minecraft profile information"""
     if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
         try:
-            with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")) as jsonString:
-                minecraftProfilesJSON = json.loads(unicode(jsonString.read()))
+            with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json"), 'rb') as jsonString:
+                minecraftProfilesJSON = json.loads(jsonString.read().decode(sys.getfilesystemencoding()))
             return minecraftProfilesJSON
         except:
-            traceback.print_exc() # Remove before release
             return None
 
 
@@ -152,7 +151,6 @@ def getMinecraftProfileDirectory(profileName):
         profileDir = getMinecraftProfileJSON()['profiles'][profileName]['gameDir']  # profileDir update to correct location.
         return profileDir
     except:
-        traceback.print_exc() # Remove before release
         return os.path.join(getMinecraftLauncherDirectory())
 
 
@@ -204,7 +202,6 @@ def getSelectedProfile():
         selectedProfile = getMinecraftProfileJSON()['selectedProfile']
         return selectedProfile
     except:
-        traceback.print_exc() # Remove before release
         return None
 
 _minecraftSaveFileDir = None

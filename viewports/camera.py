@@ -120,6 +120,7 @@ class CameraViewport(GLViewport):
 
         self.root = self.get_root()
         self.hoveringCommandBlock = [False, ""]
+        self.block_info_parsers = None
         # self.add(DebugDisplay(self, "cameraPosition", "blockFaceUnderCursor", "mouseVector", "mouse3dPoint"))
 
     @property
@@ -1632,33 +1633,7 @@ class CameraViewport(GLViewport):
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
 
-        def showCommands():
-            try:
-                if point and self.editor.level:
-                    block = self.editor.level.blockAt(*point)
-                    if block == pymclevel.alphaMaterials.CommandBlock.ID or block == 210 or block == 211:
-                        self.hoveringCommandBlock[0] = True
-                        tileEntity = self.editor.level.tileEntityAt(*point)
-                        if tileEntity:
-                            self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
-                            if len(self.hoveringCommandBlock[1]) > 1500:
-                                self.hoveringCommandBlock[1] = self.hoveringCommandBlock[1][:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**"
-                        else:
-                            self.hoveringCommandBlock[0] = False
-                    else:
-                        self.hoveringCommandBlock[0] = False
-            except (EnvironmentError, pymclevel.ChunkNotPresent):
-                pass
-
-        self.showCommands = showCommands
-        if config.settings.showCommands.get():
-            point, face = self.blockFaceUnderCursor
-            if point is not None:
-                point = map(lambda x: int(numpy.floor(x)), point)
-                if self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0:
-                    showCommands()
-                else:
-                    self.hoveringCommandBlock[0] = False
+        #if config.settings.showCommands.get():
 
     def activeevent(self, evt):
         if evt.state & 0x2 and evt.gain != 0:
@@ -1666,8 +1641,17 @@ class CameraViewport(GLViewport):
 
     @property
     def tooltipText(self):
-        if self.hoveringCommandBlock[0] and (self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0):
-            return self.hoveringCommandBlock[1] or "[Empty]"
+        #if self.hoveringCommandBlock[0] and (self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0):
+        #    return self.hoveringCommandBlock[1] or "[Empty]"
+        if self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0 and config.settings.showQuickBlockInfo.get():
+            point, face = self.blockFaceUnderCursor
+            if point:
+                if not self.block_info_parsers or (BlockInfoParser.last_level != self.editor.level):
+                    self.block_info_parsers = BlockInfoParser.get_parsers(self.editor)
+                block = self.editor.level.blockAt(*point)
+                if block:
+                    if block in self.block_info_parsers:
+                        return self.block_info_parsers[block](point)
         return self.editor.currentTool.worldTooltipText
 
     floorQuad = numpy.array(((-4000.0, 0.0, -4000.0),
@@ -1936,7 +1920,145 @@ class CameraViewport(GLViewport):
             self._compass = None
 
     _compass = None
+    
+class BlockInfoParser(object):
+    last_level = None
+    nbt_ending = "\n\nPress ALT for NBT"
+    edit_ending = ", Double-Click to Edit"
+    
+    @classmethod
+    def get_parsers(cls, editor):
+        cls.last_level = editor.level
+        parser_map = {}
+        for subcls in cls.__subclasses__():
+            instance = subcls(editor.level)
+            try:
+                blocks = instance.getBlocks()
+            except KeyError:
+                continue
+            if isinstance(blocks, (str, int)):
+                parser_map[blocks] = instance.parse_info
+            elif isinstance(blocks, (list, tuple)):
+                for block in blocks:
+                    parser_map[block] = instance.parse_info
+        return parser_map
+    
+    def getBlocks(self):
+        raise NotImplementedError()
+    
+    def parse_info(self, pos):
+        raise NotImplementedError()
 
+class SpawnerInfoParser(BlockInfoParser):
+    
+    def __init__(self, level):
+        self.level = level
+        
+    def getBlocks(self):
+        return self.level.materials["minecraft:mob_spawner"].ID
+    
+    def parse_info(self, pos):
+        tile_entity = self.level.tileEntityAt(*pos)
+        if tile_entity:
+            spawn_data = tile_entity.get("SpawnData", {})
+            if spawn_data:
+                return str(spawn_data['id'].value) + " Spawner" + self.nbt_ending + self.edit_ending
+        return "[Empty]"  + self.nbt_ending + self.edit_ending
+    
+class JukeboxInfoParser(BlockInfoParser):
+    id_records = {
+               2256: "13",
+               2257: "Cat",
+               2258: "Blocks",
+               2259: "Chirp",
+               2260: "Far",
+               2261: "Mall",
+               2262: "Mellohi",
+               2263: "Stal",
+               2264: "Strad",
+               2265: "Ward",
+               2266: "11",
+               2267: "Wait"
+    }
+    
+    name_records = {
+                "minecraft:record_13": "13",
+                "minecraft:record_cat": "Cat",
+                "minecraft:record_blocks": "Blocks",
+                "minecraft:record_chirp": "Chirp",
+                "minecraft:record_far": "Far",
+                "minecraft:record_mall": "Mall",
+                "minecraft:record_mellohi": "Mellohi",
+                "minecraft:record_stal": "Stal",
+                "minecraft:record_strad": "Strad",
+                "minecraft:record_ward": "Ward",
+                "minecraft:record_11": "11",
+                "minecraft:record_wait": "Wait"
+    }
+    
+    def __init__(self, level):
+        self.level = level
+        
+    def getBlocks(self):
+        return self.level.materials["minecraft:jukebox"].ID
+    
+    def parse_info(self, pos):
+        tile_entity = self.level.tileEntityAt(*pos)
+        if tile_entity:
+            if "Record" in tile_entity:
+                value = tile_entity["Record"].value
+                if value in self.id_records:
+                    return self.id_records[value] + " Record" + self.nbt_ending + self.edit_ending
+            elif "RecordItem" in tile_entity:
+                value = tile_entity["RecordItem"]["id"].value
+                if value in self.name_records:
+                    return self.name_records[value] + " Record" + self.nbt_ending + self.edit_ending
+        return "[No Record]"  + self.nbt_ending + self.edit_ending
+    
+class CommandBlockInfoParser(BlockInfoParser):
+    
+    def __init__(self, level):
+        self.level = level
+        
+    def getBlocks(self):
+        return [
+                self.level.materials["minecraft:command_block"].ID,
+                self.level.materials["minecraft:repeating_command_block"].ID,
+                self.level.materials["minecraft:chain_command_block"].ID
+                ]
+    
+    def parse_info(self, pos):
+        tile_entity = self.level.tileEntityAt(*pos)
+        if tile_entity:
+            value = tile_entity.get("Command", TAG_String("")).value
+            if value:
+                if len(value) > 1500:
+                    return value[:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**" + self.nbt_ending + self.edit_ending
+                return value + self.nbt_ending + self.edit_ending
+        return "[Empty Command Block]"  + self.nbt_ending + self.edit_ending
+    
+class ContainerInfoParser(BlockInfoParser):
+    
+    def __init__(self, level):
+        self.level = level
+        
+    def getBlocks(self):
+        return [
+                self.level.materials["minecraft:dispenser"].ID,
+                self.level.materials["minecraft:chest"].ID,
+                self.level.materials["minecraft:furnace"].ID,
+                self.level.materials["minecraft:lit_furnace"].ID,
+                self.level.materials["minecraft:trapped_chest"].ID,
+                self.level.materials["minecraft:hopper"].ID,
+                self.level.materials["minecraft:dropper"].ID,
+                self.level.materials["minecraft:brewing_stand"].ID
+                ]
+        
+    def parse_info(self, pos):
+        tile_entity = self.level.tileEntityAt(*pos)
+        if tile_entity:
+            return "Contains {} Items".format(len(tile_entity.get("Items", []))) + self.nbt_ending + self.edit_ending
+        return "[Empty Container]" + self.nbt_ending + self.edit_ending
 
 def unproject(x, y, z):
     try:
