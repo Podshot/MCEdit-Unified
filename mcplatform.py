@@ -83,7 +83,6 @@ platChooser = sys.platform in ('linux2', 'darwin')
 def dynamic_arguments(func_to_replace, askFile_func):
     def wrapper(initialDir, displayName, fileFormat):
         if isinstance(fileFormat, tuple):
-            print "Using dict args"
             return func_to_replace(initialDir, displayName, fileFormat)
         else:
             
@@ -95,7 +94,6 @@ def dynamic_arguments(func_to_replace, askFile_func):
                                    filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
                                    suffix=fileFormat,
                                    )
-            print "Using str args"
             return old_askSaveSchematic(initialDir, displayName, fileFormat)
     return wrapper
 

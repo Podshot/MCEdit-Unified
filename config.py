@@ -522,7 +522,7 @@ definitions = {
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
-        ("showCommands", "Show Commands when hovering", True),
+        ("showQuickBlockInfo", "Show Block Info when hovering", True),
         ("savePositionOnClose", "Save camera position on close", False),
         ("showWindowSizeWarning", "Show window size warning", True)
     ],
