@@ -1193,7 +1193,11 @@ class LevelEditor(GLViewport):
 
         self.removeNetherPanel()
 
-        log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: level.gameVersion}[level.gameVersion == 'Unknown']))
+        gameVersion = level.gameVersion
+        if gameVersion in ('Schematic'):
+            log.info('Loading \'%s\' file.'%gameVersion)
+        else:
+            log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
 
         self.loadLevel(level)
 

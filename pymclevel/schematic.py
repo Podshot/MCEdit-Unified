@@ -25,6 +25,8 @@ log = getLogger(__name__)
 
 __all__ = ['MCSchematic', 'INVEditChest']
 
+DEBUG = True
+
 
 class MCSchematic(EntityLevel):
     materials = alphaMaterials
@@ -48,14 +50,18 @@ class MCSchematic(EntityLevel):
         I'm not sure what happens when I try to re-save a rotated schematic.
         """
 
+        if DEBUG: log.debug(u"Creating scematic.")
         if filename:
+            if DEBUG: log.debug(u"Using %s"%filename)
             self.filename = filename
             if None is root_tag and os.path.exists(filename):
                 root_tag = nbt.load(filename)
+                if DEBUG: log.debug(u"%s loaded."%filename)
         else:
             self.filename = None
 
         if mats in namedMaterials:
+            if DEBUG: log.debug(u"Using named materials.")
             self.materials = namedMaterials[mats]
         else:
             assert (isinstance(mats, MCMaterials))
@@ -63,18 +69,22 @@ class MCSchematic(EntityLevel):
 
         if root_tag:
             self.root_tag = root_tag
+            if DEBUG: log.debug(u"Processing materials.")
             if "Materials" in root_tag:
                 self.materials = namedMaterials[self.Materials]
             else:
                 root_tag["Materials"] = nbt.TAG_String(self.materials.name)
 
+            if DEBUG: log.debug(u"Processing size.")
             w = self.root_tag["Width"].value
             l = self.root_tag["Length"].value
             h = self.root_tag["Height"].value
 
+            if DEBUG: log.debug(u"Reshaping blocks.")
             self._Blocks = self.root_tag["Blocks"].value.astype('uint16').reshape(h, l, w)  # _Blocks is y, z, x
             del self.root_tag["Blocks"]
             if "AddBlocks" in self.root_tag:
+                if DEBUG: log.debug(u"Processing AddBlocks.")
                 # Use WorldEdit's "AddBlocks" array to load and store the 4 high bits of a block ID.
                 # Unlike Minecraft's NibbleArrays, this array stores the first block's bits in the
                 # 4 high bits of the first byte.
@@ -101,9 +111,11 @@ class MCSchematic(EntityLevel):
             self.root_tag["Data"].value = self.root_tag["Data"].value.reshape(h, l, w)
 
             if "Biomes" in self.root_tag:
+                if DEBUG: log.debug(u"Processing Biomes.")
                 self.root_tag["Biomes"].value.shape = (l, w)
 
         else:
+            if DEBUG: log.debug(u"No root tag found, creating a blank schematic.")
             assert shape is not None
             root_tag = nbt.TAG_Compound(name="Schematic")
             root_tag["Height"] = nbt.TAG_Short(shape[1])

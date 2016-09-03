@@ -285,7 +285,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
             return MCIndevLevel(root_tag, filename)
         if MCSchematic._isTagLevel(root_tag):
             log.info(u"Detected Schematic.")
-            return MCSchematic(root_tag=root_tag, filename=filename)
+            return MCSchematic(filename=filename)
 
         if INVEditChest._isTagLevel(root_tag):
             log.info(u"Detected INVEdit inventory file")
