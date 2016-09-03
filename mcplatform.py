@@ -232,6 +232,7 @@ def buildFileTypes(filetypes):
     return result + "\0"
 
 def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=None):
+    title = _(title)
     global lastSchematicsDir, lastSaveDir
 
     if not suffixes:
@@ -293,7 +294,7 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         # if schematics:
         if not suffixes:
-            f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' + 
+            f = (_('Levels and Schematics') + '\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' + 
              '*.*\0*.*\0\0')
         else:
             f = "All\0"
@@ -338,7 +339,7 @@ def askOpenFileGtk(title, suffixes, initialDir):
 
         # Add custom Filter
         file_filter = gtk.FileFilter()
-        file_filter.set_name("Levels and Schematics")
+        file_filter.set_name(_("Levels and Schematics"))
         for suffix in suffixes:
             file_filter.add_pattern("*." + suffix)
         chooser.add_filter(file_filter)
