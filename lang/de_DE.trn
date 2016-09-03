@@ -369,7 +369,7 @@ t172 Später
 o173 Loading 
 t173 Lädt 
 o174  - MCEdit 
-t174  – MCEdit
+t174  – MCEdit 
 o175 Overworld
 t175 Oberwelt
 o176 The End
@@ -806,11 +806,11 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Dieser Filter sucht nach NBT-Daten in Objekten oder TileEntities. 
-Es kann auch nach Blöcken gesucht werden. 
+t375 Dieser Filter sucht nach NBT-Daten in Objekten oder TileEntities.
+Es kann auch nach Blöcken gesucht werden.
 "Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Objekte und TileEntities werden relativ schnell gesucht, wohingegen die Geschwindig bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
 "Alle Objekte"-Suche ignoriert die Blöck-Einstellungen; TileEntity-Suche versucht die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; "Block-Suche" versucht mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
-Es ist schneller, TileEntity-Suchen mit einem Blocktyp abzugleichen, als umgekehrt. 
+Es ist schneller, TileEntity-Suchen mit einem Blocktyp abzugleichen, als umgekehrt.
 Blockabgleich kann auch optional Blockdaten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln, die in eine bestimmte Richtung zeigen.
 "Suchen" wird in der Auswahl neu suchen, wohingegen "Weitersuchen" die Suchresultate von der vorherige Suche durchgeht.
 o376 Documentation
@@ -1110,13 +1110,13 @@ t521 Welt simulieren
 o522 Use snapshot versions
 t522 Entwicklungsversionen benutzen
 o523 X: 
-t523 X:
+t523 X: 
 o524 Y: 
-t524 Y:
+t524 Y: 
 o525 Z: 
-t525 Z:
+t525 Z: 
 o526 f: 
-t526 f:
+t526 f: 
 o527 Seed: 
 t527 Startwert:
 o528 East-West Chunks: 
@@ -1690,17 +1690,17 @@ t779 Verwende {0} Pinsel...
 o780 Graphics Settings
 t780 Grafikeinstellungen
 o781 Run Macro
-t781 Makro ausführen 
+t781 Makro ausführen
 o782 Delete Macro
 t782 Makro löschen
 o783 Macro Name: 
-t783 Makroname:
+t783 Makroname: 
 o784 Enter a Player Name: 
-t784 Spielername:
+t784 Spielername: 
 o785 Click the mouse button again to place the other selection corner.
 t785 Drücke erneut die linke Maustaste, um die andere Ecke der Auswahl zu setzen.
 o786 Stop recording
-t786 Aufnehmen abbrechen 
+t786 Aufnehmen abbrechen
 o787 Currently recording a macro
 t787 Makro wird aufgenommen
 o788 Choose a custom head for the villagers you make
@@ -1894,7 +1894,7 @@ t877 Metadata
 o878 Current: 
 t878 Momentan: 
 o879 Change to: 
-t879 Ändern zu:
+t879 Ändern zu: 
 o880 F# (0.5)
 t880 Fis/Ges (0,5)
 o881 G (0.53)
@@ -2004,7 +2004,7 @@ t932 Lösche den Gegenstand {0} aus der gesamten Welt ({1} Chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 WARNUNG: Du bist dabei, die komplette Welt zu verändern. Dies kann nicht rückgängig gemacht werden. Möchtest du wirklich alle Vorkommnisse dieses Gegenstandes in allen Chunks, Truhen, Öfen, Werfern, sowie allen sontigen Behältern und Inventaren in dieser Welt entfernen?
 o934 Check to show/hide specific ores using the settings below.
-t934 Anwählen um spezifische Erze anzuzeigen/verstecken, mithilfe der folgenden Einstellungen 
+t934 Anwählen um spezifische Erze anzuzeigen/verstecken, mithilfe der folgenden Einstellungen.
 o935 NBTEdit
 t935 NBTEdit
 o936 Save camera position on close
@@ -2054,20 +2054,20 @@ t954 Kopfdaten ändern
 o955 Found a previous fixed installation
 t955 Eine vorherige Installation wurde gefunden
 o956 Left-Click and drag to the left or the right
-t956 
+t956 Linksklick und nach links oder nach rechts ziehen
 o957 Cancel Command Block Offset
-t957 
+t957 Befehlsblockversetzung abbrechen
 o958 Cancels the command blocks coords changed when copied.
-t958 
+t958 Bricht die Versetzung der Koordinaten in den Befehlsblöcken beim Kopieren ab.
 o959 Weird stuff happen!
-t959 
+t959 Komische Dinge passieren!
 o960 Enable Custom Name
-t960 
+t960 Aktiviere Name
 o961 Select a Minecraft level....
-t961 
+t961 Wähle eine Minecraft Welt....
 o962 Levels and Schematics
-t962 
+t962 Welten und Schematics
 o963 Show Block Info when hovering
-t963 
+t963 Zeige Block Informationen beim drüberfahren
 o964 Shows summarized info of some Blocks when hovering over it.
-t964 
+t964 Zeige zusammengefasste Informationen von bestimmten Blöcken beim drüberfahren.
