@@ -2647,7 +2647,7 @@ class LevelEditor(GLViewport):
     def askOpenFile(self):
         self.mouseLookOff()
         try:
-            filename = mcplatform.askOpenFile()
+            filename = mcplatform.askOpenFile(schematics=True)
             if filename:
                 self.parent.loadFile(filename)
         except Exception:
