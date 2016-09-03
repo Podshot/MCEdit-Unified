@@ -2054,20 +2054,20 @@ t954 Kopfdaten ändern
 o955 Found a previous fixed installation
 t955 Eine vorherige Installation wurde gefunden
 o956 Left-Click and drag to the left or the right
-t956 
+t956 Klicke mit der linken Maustaste und ziehe nach links oder rechts
 o957 Cancel Command Block Offset
-t957 
+t957 Befehlsblock-Koordinaten löschen
 o958 Cancels the command blocks coords changed when copied.
-t958 
+t958 Löscht die Koordinaten der Befehlsblöcke, wenn sie kopiert werden.
 o959 Weird stuff happen!
-t959 
+t959 Seltsame Dinge passieren!
 o960 Enable Custom Name
-t960 
+t960 Custom Name aktivieren
 o961 Select a Minecraft level....
-t961 
+t961 Wähle eine Minecraft-Welt....
 o962 Levels and Schematics
-t962 
+t962 Welten und Schematics
 o963 Show Block Info when hovering
-t963 
+t963 Block-Informationen anzeigen
 o964 Shows summarized info of some Blocks when hovering over it.
-t964 
+t964 Zeigt beim Bewegen mit der Maus über einen Block zusammengefasste Informationen über diesen an.
