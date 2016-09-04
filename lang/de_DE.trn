@@ -1840,13 +1840,13 @@ t850 Leerzeichen zwischen den Zeilen hinzufügen
 o851 File format
 t851 Dateiformat
 o852 Choose the file format for the files
-t852 Wählt das Format für die Dateien aus.
+t852 Wähle das Format für die Dateien aus
 o853 Del
 t853 Entf
 o854 Show Commands
 t854 Befehle anzeigen
 o855 Show the command in a Command Block when hovering over it.
-t855 Zeigt den Befehl in einem Befehlsblock an, indem man drüberhält.
+t855 Zeige den Befehl in einem Befehlsblock beim darüberfahren an.
 o856 [Empty]
 t856 [Leer]
 o857 Couldn't open the file
@@ -2060,7 +2060,7 @@ t957 Befehlsblockversetzung abbrechen
 o958 Cancels the command blocks coords changed when copied.
 t958 Bricht die Versetzung der Koordinaten in den Befehlsblöcken beim Kopieren ab.
 o959 Weird stuff happen!
-t959 Komische Dinge passieren!
+t959 Seltsame Dinge passieren!
 o960 Enable Custom Name
 t960 Aktiviere Name
 o961 Select a Minecraft level....
@@ -2068,6 +2068,6 @@ t961 Wähle eine Minecraft Welt....
 o962 Levels and Schematics
 t962 Welten und Schematics
 o963 Show Block Info when hovering
-t963 Zeige Block Informationen beim drüberfahren
+t963 Zeige Block-Informationen beim darüberfahren
 o964 Shows summarized info of some Blocks when hovering over it.
-t964 Zeige zusammengefasste Informationen von bestimmten Blöcken beim drüberfahren.
+t964 Zeige zusammengefasste Informationen von bestimmten Blöcken beim darüberfahren an.
