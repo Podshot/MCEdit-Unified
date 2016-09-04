@@ -763,7 +763,7 @@ t355 Nur erhöhen
 o356 Raise/Lower
 t356 erhöhen/senken
 o357 TileEntity
-t357 TileEntity
+t357 Blockobjekt
 o358 Entity
 t358 Objekt
 o359 Block
@@ -771,7 +771,7 @@ t359 Block
 o360 Match by:
 t360 Abgleichen von:
 o361 Match block type (for TileEntity searches):
-t361 Blocktyp abgleichen (für TileEntity-Suche):
+t361 Blocktyp abgleichen (für Blockobjekt-Suche):
 o362 Match block:
 t362 Block abgleichen:
 o363 Match block data:
@@ -806,11 +806,11 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Dieser Filter sucht nach NBT-Daten in Objekten oder TileEntities.
+t375 Dieser Filter sucht nach NBT-Daten in Objekten oder Blockobjekte.
 Es kann auch nach Blöcken gesucht werden.
-"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Objekte und TileEntities werden relativ schnell gesucht, wohingegen die Geschwindig bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
-"Alle Objekte"-Suche ignoriert die Blöck-Einstellungen; TileEntity-Suche versucht die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; "Block-Suche" versucht mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
-Es ist schneller, TileEntity-Suchen mit einem Blocktyp abzugleichen, als umgekehrt.
+"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Objekte und TileEntities werden relativ schnell gesucht, wohingegen die Geschwindig bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird).
+"Alle Objekte"-Suche ignoriert die Blöck-Einstellungen; Blockobjekt-Suche versucht die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; "Block-Suche" versucht mit den Tags von der Option "Abgleichen von Blockobjekt" übereinzustimmen.
+Es ist schneller, Blockobjekt-Suchen mit einem Blocktyp abzugleichen, als umgekehrt.
 Blockabgleich kann auch optional Blockdaten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln, die in eine bestimmte Richtung zeigen.
 "Suchen" wird in der Auswahl neu suchen, wohingegen "Weitersuchen" die Suchresultate von der vorherige Suche durchgeht.
 o376 Documentation
@@ -1846,7 +1846,7 @@ t853 Entf
 o854 Show Commands
 t854 Befehle anzeigen
 o855 Show the command in a Command Block when hovering over it.
-t855 Zeige den Befehl in einem Befehlsblock beim darüberfahren an.
+t855 Zeige den Befehl in einem Befehlsblock beim Darüberfahren an.
 o856 [Empty]
 t856 [Leer]
 o857 Couldn't open the file
@@ -2064,10 +2064,10 @@ t959 Seltsame Dinge passieren!
 o960 Enable Custom Name
 t960 Aktiviere Name
 o961 Select a Minecraft level....
-t961 Wähle eine Minecraft Welt....
+t961 Wähle eine Minecraft-Welt....
 o962 Levels and Schematics
 t962 Welten und Schematics
 o963 Show Block Info when hovering
-t963 Zeige Block-Informationen beim darüberfahren
+t963 Zeige Block-Informationen beim Darüberfahren
 o964 Shows summarized info of some Blocks when hovering over it.
-t964 Zeige zusammengefasste Informationen von bestimmten Blöcken beim darüberfahren an.
+t964 Zeige zusammengefasste Informationen von bestimmten Blöcken beim Darüberfahren an.
