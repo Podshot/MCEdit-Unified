@@ -44,6 +44,16 @@ from nbtexplorer import NBTExplorerToolPanel
 import logging
 log = logging.getLogger(__name__)
 
+class FilterUtils(object):
+    
+    def __init__(self, **kwargs):
+        self._given_data = []
+        for arg in kwargs:
+            self._given_data.append(arg)
+            self.__dict__[arg] = kwargs[arg]
+            
+    def Available_Attributes(self):
+        return self._given_data
 
 def alertFilterException(func):
     def _func(*args, **kw):
@@ -217,6 +227,7 @@ class FilterModuleOptions(Widget):
 
         for eachPage in pages.pages:
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
+            
 
     def rebuildTabPage(self, inputs, **kwargs):
         title, page, rect = self.makeTabPage(self.tool, inputs, self.trn, **kwargs)
@@ -483,6 +494,12 @@ class FilterToolPanel(Panel):
         self._save_macro = False
         self.tool = tool
         self.selectedName = self.filter_json.get("Last Filter Opened", "")
+        
+        
+        utils = FilterUtils(editor=tool.editor, materials=self.tool.editor.level.materials)
+        utils_module = imp.new_module("filter_utils")
+        utils_module = utils
+        sys.modules["filter_utils"] = utils_module
 
     @staticmethod
     def load_filter_json():
