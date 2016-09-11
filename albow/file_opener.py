@@ -141,7 +141,7 @@ class FileOpener(albow.Widget):
     def promptOpenAndLoad(self):
 #!# Bad! But used to test the file chooser.
 #        try:
-            filename = mcplatform.askOpenFile()
+            filename = mcplatform.askOpenFile(schematics=True)
             if filename:
                 self.mcedit.loadFile(filename)
 #        except Exception, e:
