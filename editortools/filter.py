@@ -496,7 +496,12 @@ class FilterToolPanel(Panel):
         self.selectedName = self.filter_json.get("Last Filter Opened", "")
         
         
-        utils = FilterUtils(editor=tool.editor, materials=self.tool.editor.level.materials)
+        utils = FilterUtils(
+                            editor=tool.editor, 
+                            materials=self.tool.editor.level.materials,
+                            custom_widget=tool.editor.addExternalWidget,
+                            resize_selection_box=tool.editor._resize_selection_box
+                            )
         utils_module = imp.new_module("filter_utils")
         utils_module = utils
         sys.modules["filter_utils"] = utils_module
