@@ -31,6 +31,7 @@ from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
 from albow.extended_widgets import BasicTextInputRow, CheckBoxLabel
 from albow.translate import _
+from albow.root import get_top_widget
 from pygame import mouse
 from depths import DepthOffset
 from editortools.operation import Operation
@@ -1505,7 +1506,8 @@ class CameraViewport(GLViewport):
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        if not self.should_lock and self.editor.level:
+        if (not self.should_lock and self.editor.level and
+                not get_top_widget().is_modal):
             self.toggleMouseLook()
         # if self.rightMouseDragStart is None:
         #     return
