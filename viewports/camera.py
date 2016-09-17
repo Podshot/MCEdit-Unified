@@ -1962,7 +1962,14 @@ class SpawnerInfoParser(BlockInfoParser):
         if tile_entity:
             spawn_data = tile_entity.get("SpawnData", {})
             if spawn_data:
-                return str(spawn_data['id'].value) + " Spawner" + self.nbt_ending + self.edit_ending
+                id = spawn_data.get('EntityId', None)
+                if not id:
+                    id = spawn_data.get('id', None)
+                if not id:
+                    value = repr(NameError("Malformed spawn data: could not find 'EntityId' or 'id' tag."))
+                else:
+                    value = id.value
+                return str(value) + " Spawner" + self.nbt_ending + self.edit_ending
         return "[Empty]"  + self.nbt_ending + self.edit_ending
     
 class JukeboxInfoParser(BlockInfoParser):
