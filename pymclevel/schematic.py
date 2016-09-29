@@ -20,6 +20,8 @@ import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
 from pymclevel.materials import BlockstateAPI
 from release import TAG as RELEASE_TAG
+import math
+import copy
 
 log = getLogger(__name__)
 
@@ -714,19 +716,6 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     
 class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
-    __MAX_SIZE = (32, 32, 32)
-    
-    class StructureTooBigException(Exception):
-        pass
-    
-    @property
-    def MAX_SIZE(self):
-        return self.__MAX_SIZE
-    
-    def _check_bounds(self, bounds):
-        for axis in xrange(len(self.MAX_SIZE)):
-            if bounds[axis] > self.MAX_SIZE[axis]:
-                raise self.StructureTooBigException()
     
     def __init__(self, filename=None, root_tag=None, size=None, mats=alphaMaterials):
         self._author = None
@@ -744,8 +733,6 @@ class StructureNBT(object):
         if root_tag:
             self._root_tag = root_tag
             self._size = (self._root_tag["size"][0].value, self._root_tag["size"][1].value, self._root_tag["size"][2].value)
-            
-            self._check_bounds(self._size)
                 
             self._author = self._root_tag.get("author", nbt.TAG_String()).value
             self._version = self._root_tag.get("version", nbt.TAG_Int()).value
@@ -807,6 +794,7 @@ class StructureNBT(object):
     @classmethod
     def fromSchematic(cls, schematic):
         structure = cls(size=(schematic.Width, schematic.Height, schematic.Length), mats=namedMaterials[schematic.Materials])
+        schematic = copy.deepcopy(schematic)
         
         for (x, z, y), b_id in ndenumerate(schematic.Blocks):
             data = schematic.Data[x, z, y]
@@ -967,7 +955,7 @@ class StructureNBT(object):
             entity["nbt"] = e
             blockPos = nbt.TAG_List()
             for coord in pos:
-                blockPos.append(nbt.TAG_Int(int(coord.value)))
+                blockPos.append(nbt.TAG_Int(math.floor(coord.value)))
             entity["blockPos"] = blockPos
             
             entities_tag.append(entity)

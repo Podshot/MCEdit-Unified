@@ -830,7 +830,7 @@ class LevelEditor(GLViewport):
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
-
+        
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
             directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
