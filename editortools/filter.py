@@ -18,6 +18,8 @@ import traceback
 import copy
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, \
     CheckBox, Column, Button, TextFieldWrapped, translate
+from editortools.tooloptions import ToolOptions
+from albow.extended_widgets import CheckBoxLabel
 _ = translate._
 import albow
 from config import config
@@ -44,6 +46,16 @@ from nbtexplorer import NBTExplorerToolPanel
 import logging
 log = logging.getLogger(__name__)
 
+class FilterUtils(object):
+    
+    def __init__(self, **kwargs):
+        self._given_data = []
+        for arg in kwargs:
+            self._given_data.append(arg)
+            self.__dict__[arg] = kwargs[arg]
+            
+    def Available_Attributes(self):
+        return self._given_data
 
 def alertFilterException(func):
     def _func(*args, **kw):
@@ -110,6 +122,58 @@ class JsonDictProperty(dict):
             return filter_json
         except (ValueError, IOError):
             return {"Macros": {}}
+        
+class SingleFileChooser(Widget):
+    OPEN_FILE = 0
+    SAVE_FILE = 1
+    
+    def _open_file(self):
+        file_types = []
+        for f_type in self.file_types:
+            file_types.append(f_type.replace("*.", ""))
+        file_path = mcplatform.askOpenFile(title='Select a file...', suffixes=file_types)
+        if file_path:
+            self._button.set_text("{filen}".format(filen=os.path.basename(file_path)), True)
+            self.file_path = file_path
+        else:
+            self._button.set_text("Choose a file")
+            self.file_path = None
+        self._button.shrink_wrap()
+        self.shrink_wrap()
+    
+    def _save_file(self):
+        file_types = 'Custom File\0{}\0'.format(';'.join(self.file_types))
+        if not self.file_types[0].startswith("*"):
+            name = self.file_types[0]
+        else:
+            name = self.file_types[0][1:]
+        file_path = mcplatform.askSaveFile(".", "Save as...", name, file_types, self.file_types[0][1:])
+        if file_path:
+            self._button.set_text(os.path.basename(file_path), True)
+            self.file_path = file_path
+        else:
+            self._button.set_text('Save a file')
+            self.file_path = None
+        self._button.shrink_wrap()
+        self.shrink_wrap()
+    
+    def __init__(self, file_types=None, operation=0, **kwds):
+        Widget.__init__(self, **kwds)
+        if file_types is None:
+            self.file_types = ["*.*",]
+        else:
+            self.file_types = file_types
+        self.file_path = None
+        self._button = None
+            
+        if operation == self.OPEN_FILE:
+            self._button = Button("Choose a file", action=self._open_file)
+        elif operation == self.SAVE_FILE:
+            self._button = Button("Save a file", action=self._save_file)
+            
+        self.add(self._button)
+        
+        self.shrink_wrap()
 
 
 class MacroModuleOptions(Widget):
@@ -217,6 +281,7 @@ class FilterModuleOptions(Widget):
 
         for eachPage in pages.pages:
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
+            
 
     def rebuildTabPage(self, inputs, **kwargs):
         title, page, rect = self.makeTabPage(self.tool, inputs, self.trn, **kwargs)
@@ -313,6 +378,26 @@ class FilterModuleOptions(Widget):
                         page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
                 
                         rows.append(row)
+                    elif optionType[0] == "file-save":
+                        if len(optionType) == 2:
+                            file_chooser = SingleFileChooser(file_types=optionType[1], operation=SingleFileChooser.SAVE_FILE)
+                        else:
+                            file_chooser = SingleFileChooser(operation=SingleFileChooser.SAVE_FILE)
+                        
+                        row = Row((Label(oName, doNotTranslate=True), file_chooser))
+                        page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
+                        
+                        rows.append(row)
+                    elif optionType[0] == "file-open":
+                        if len(optionType) == 2:
+                            file_chooser = SingleFileChooser(file_types=optionType[1], operation=SingleFileChooser.OPEN_FILE)
+                        else:
+                            file_chooser = SingleFileChooser(operation=SingleFileChooser.OPEN_FILE)
+                        
+                        row = Row((Label(oName, doNotTranslate=True), file_chooser))
+                        page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
+                        
+                        rows.append(row)
                     else:
                         isChoiceButton = True
 
@@ -363,7 +448,19 @@ class FilterModuleOptions(Widget):
                 rows.append(row)
             elif optionType == "title":
                 title = oName
-
+                
+            elif optionType == "file-save":
+                file_chooser = SingleFileChooser(operation=SingleFileChooser.SAVE_FILE)
+                row = Row((Label(oName, doNotTranslate=True), file_chooser))
+                page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
+                        
+                rows.append(row)
+            elif optionType == "file-open":
+                file_chooser = SingleFileChooser(operation=SingleFileChooser.OPEN_FILE)
+                row = Row((Label(oName, doNotTranslate=True), file_chooser))
+                page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
+                        
+                rows.append(row)
             elif type(optionType) == list and optionType[0].lower() == "nbttree":
                 kw = {'close_text': None, 'load_text': None}
                 if len(optionType) >= 3:
@@ -483,6 +580,17 @@ class FilterToolPanel(Panel):
         self._save_macro = False
         self.tool = tool
         self.selectedName = self.filter_json.get("Last Filter Opened", "")
+        
+        
+        utils = FilterUtils(
+                            editor=tool.editor, 
+                            materials=self.tool.editor.level.materials,
+                            custom_widget=tool.editor.addExternalWidget,
+                            resize_selection_box=tool.editor._resize_selection_box
+                            )
+        utils_module = imp.new_module("filter_utils")
+        utils_module = utils
+        sys.modules["filter_utils"] = utils_module
 
     @staticmethod
     def load_filter_json():
@@ -813,6 +921,23 @@ class MacroOperation(Operation):
     def dirtyBox(self):
         return self._box
 
+
+class FilterToolOptions(ToolOptions):
+    
+    def __init__(self, tool):
+        ToolOptions.__init__(self, name='Panel.FilterToolOptions')
+        self.tool = tool
+        
+        self.notifications_disabled = False
+        
+        disable_error_popup = CheckBoxLabel("Disable Error Notification",
+                                            ref=AttrRef(self, 'notifications_disabled'))
+        ok_button = Button("Ok", action=self.dismiss)
+        
+        col = Column((disable_error_popup, ok_button,), spacing=2)
+        self.add(col)
+        self.shrink_wrap()
+
 class FilterTool(EditorTool):
     tooltipText = "Filter"
     toolIconName = "filter"
@@ -829,6 +954,8 @@ class FilterTool(EditorTool):
         self.updatePanel.shrink_wrap()
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
+        
+        self.optionsPanel = FilterToolOptions(self)
 
     @property
     def statusText(self):
@@ -959,7 +1086,7 @@ class FilterTool(EditorTool):
         while shouldContinue:
             shouldContinue = False
             for f in filterFiles:
-                module = tryImport(f[0], f[1], org_lang, f[2], f[3], f[1] in unicode_module_names)
+                module = tryImport(f[0], f[1], org_lang, f[2], f[3], f[1] in unicode_module_names, notify=(not self.optionsPanel.notifications_disabled))
                 if module is None:
                     continue
                 filterModules.append(module)
@@ -996,7 +1123,7 @@ class FilterTool(EditorTool):
 
 new_method = True
 
-def tryImport_old(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False):
+def tryImport_old(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False, notify=True):
     with open(os.path.join(_root, name)) as module_file:
         module_name = name.split(os.path.sep)[-1].replace(".py", "")
         try:
@@ -1038,11 +1165,12 @@ def tryImport_old(_root, name, org_lang, stock=False, subFolderString="", unicod
 
         except Exception as e:
             traceback.print_exc()
-            alert(_(u"Exception while importing filter module {}. " +
-                    u"See console for details.\n\n{}").format(name, e))
+            if notify:
+                alert(_(u"Exception while importing filter module {}. " +
+                        u"See console for details.\n\n{}").format(name, e))
             return None
 
-def tryImport_new(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False):
+def tryImport_new(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False, notify=True):
     with open(os.path.join(_root, name)) as module_file:
         module_name = name.split(os.path.sep)[-1].replace(".py", "")
         try:
@@ -1073,8 +1201,9 @@ def tryImport_new(_root, name, org_lang, stock=False, subFolderString="", unicod
 
         except Exception as e:
             traceback.print_exc()
-            alert(_(u"Exception while importing filter module {}. " +
-                    u"See console for details.\n\n{}").format(name, e))
+            if notify:
+                alert(_(u"Exception while importing filter module {}. " +
+                        u"See console for details.\n\n{}").format(name, e))
             return None
 
 if new_method:
