@@ -735,7 +735,8 @@ class StructureNBT(object):
             self._size = (self._root_tag["size"][0].value, self._root_tag["size"][1].value, self._root_tag["size"][2].value)
                 
             self._author = self._root_tag.get("author", nbt.TAG_String()).value
-            self._version = self._root_tag.get("version", nbt.TAG_Int()).value
+            self._version = self._root_tag.get("version", nbt.TAG_Int(1)).value
+            self._version = self._root_tag.get("DateVersion", nbt.TAG_Int(1)).value
                 
             self._palette = self.__toPythonPrimitive(self._root_tag["palette"])
             
@@ -760,7 +761,6 @@ class StructureNBT(object):
         elif size:
             self._root_tag = nbt.TAG_Compound()
             self._size = size
-            self._check_bounds(self._size)
             
             self._blocks = zeros(self.Size, dtype=tuple)
             self._blocks.fill((0, 0))
@@ -793,7 +793,7 @@ class StructureNBT(object):
     
     @classmethod
     def fromSchematic(cls, schematic):
-        structure = cls(size=(schematic.Width, schematic.Height, schematic.Length), mats=namedMaterials[schematic.Materials])
+        structure = cls(size=(schematic.Width, schematic.Height, schematic.Length), mats=namedMaterials[getattr(schematic, "Materials", 'Alpha')])
         schematic = copy.deepcopy(schematic)
         
         for (x, z, y), b_id in ndenumerate(schematic.Blocks):
@@ -889,9 +889,9 @@ class StructureNBT(object):
         
         structure_tag["author"] = nbt.TAG_String(self._author)
         if self._version:
-            structure_tag["version"] = nbt.TAG_Int(self.Version)
+            structure_tag["DataVersion"] = nbt.TAG_Int(self.Version)
         else:
-            structure_tag["version"] = nbt.TAG_Int(self.SUPPORTED_VERSIONS[-1])
+            structure_tag["DataVersion"] = nbt.TAG_Int(self.SUPPORTED_VERSIONS[-1])
             
         structure_tag["size"] = nbt.TAG_List(
                                              [
