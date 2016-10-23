@@ -2056,9 +2056,9 @@ t955 Eine vorherige Installation wurde gefunden
 o956 Left-Click and drag to the left or the right
 t956 Linksklick und nach links oder nach rechts ziehen
 o957 Cancel Command Block Offset
-t957 Befehlsblockversetzung abbrechen
+t957 Befehlsblockkoordinaten nicht versetzen
 o958 Cancels the command blocks coords changed when copied.
-t958 Bricht die Versetzung der Koordinaten in den Befehlsblöcken beim Kopieren ab.
+t958 Nicht die Koordinaten in den Befehlsblöcken beim Kopieren versetzen.
 o959 Weird stuff happen!
 t959 Seltsame Dinge passieren!
 o960 Enable Custom Name
