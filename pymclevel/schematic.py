@@ -736,7 +736,7 @@ class StructureNBT(object):
                 
             self._author = self._root_tag.get("author", nbt.TAG_String()).value
             self._version = self._root_tag.get("version", nbt.TAG_Int(1)).value
-            self._version = self._root_tag.get("DateVersion", nbt.TAG_Int(1)).value
+            self._version = self._root_tag.get("DataVersion", nbt.TAG_Int(1)).value
                 
             self._palette = self.__toPythonPrimitive(self._root_tag["palette"])
             
