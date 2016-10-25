@@ -3885,3 +3885,12 @@ import cProfile
 
 if __name__ == "__main__":
     cProfile.run("rendermain()", "mcedit.profile")
+   
+log = logging.getLogger(__name__) 
+try:
+    # noinspection PyUnresolvedReferences
+    from _renderer import *
+except ImportError as err:
+    log.error("Failed to import Cythonized renderer file. Running on (very slow) pure-python nbt fallback.")
+    log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")
+    log.error("%s"%err)
