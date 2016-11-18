@@ -625,7 +625,10 @@ class Entity(object):
         positionTags = map(lambda p, co: nbt.TAG_Double(p.value + co), eTag["Pos"], copyOffset)
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
-        if eTag["id"].value in ("Painting", "ItemFrame"):
+        # Also match the 'minecraft:XXX' names
+        if eTag["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+            print "#" * 40
+            print eTag
             eTag["TileX"].value += copyOffset[0]
             eTag["TileY"].value += copyOffset[1]
             eTag["TileZ"].value += copyOffset[2]

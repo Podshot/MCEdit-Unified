@@ -1337,6 +1337,8 @@ class ItemRenderer(BaseEntityRenderer):
             "ItemFrame": (134, 96, 67, 0x5f),
             "ArmorStand": (0x22, 0xff, 0x22, 0x5f),
         }
+        colorMap[u'minecraft:painting'] = colorMap['Painting']
+        colorMap[u'minecraft:item_frame'] = colorMap['ItemFrame']
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
@@ -1344,7 +1346,7 @@ class ItemRenderer(BaseEntityRenderer):
             if color is None:
                 continue
             pos = pymclevel.Entity.pos(ent)
-            if ent["id"].value not in ("Painting", "ItemFrame"):
+            if ent["id"].value not in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
                 pos[1] += 0.5
             entityPositions.append(pos)
             entityColors.append(color)
