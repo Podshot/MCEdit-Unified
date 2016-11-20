@@ -228,6 +228,17 @@ import sys
 from config import config
 # import time
 
+def wrap_me(func):
+    def wrapper(*args, **kwargs):
+        for i in range(len(args)):
+            print "Given (args[{0}]): {1}".format(i, args[i])
+        for key in range(len(kwargs)):
+            print "Given (kwargs[{0}]): {1}".format(i, args[key])
+        var = func(*args, **kwargs)
+        print "Retuned: {}".format(var)
+        return var
+    return wrapper
+
 
 def chunkMarkers(chunkSet):
     """ Returns a mapping { size: [position, ...] } for different powers of 2

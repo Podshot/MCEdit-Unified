@@ -235,7 +235,7 @@ class FillTool(EditorTool):
 
     def cancel(self):
         self.hidePanel()
-
+        
     @alertException
     def confirm(self):
         box = self.selectionBox()

@@ -1065,7 +1065,7 @@ class FakeStdOutErr:
         self.fd.close()
 
 if __name__ == "__main__":
-    try:
+    try:        
         main(sys.argv)
     except (SystemExit, KeyboardInterrupt):
         # It happens that on Linux, Python tries to kill already dead processes and display errors in the console.

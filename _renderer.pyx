@@ -223,6 +223,8 @@ from glutils import gl, Texture
 from albow.resource import _2478aq_heot
 import logging
 import numpy
+cimport numpy
+cimport cython
 from OpenGL import GL
 import pymclevel
 from pymclevel.materials import alphaMaterials
@@ -230,6 +232,21 @@ import sys
 from config import config
 # import time
 
+def wrap_me(func):
+    def wrapper(template, x=0, y=0):
+        print "==========================="
+        print dir(template)
+        print "dtype: {}".format(template.dtype)
+        print "shape: {}".format(template.shape) 
+        print "size: {}".format(template.size)
+        print "Given (template):\n {}".format(template)
+        print "\nGiven (x): {}".format(x)
+        print "Given (y): {}".format(y)
+        var = func(template, x, y)
+        print "Retuned:\n {}".format(var)
+        print "==========================="
+        return var
+    return wrapper
 
 def chunkMarkers(chunkSet):
     """ Returns a mapping { size: [position, ...] } for different powers of 2
@@ -415,7 +432,7 @@ _RGB = numpy.s_[..., 20:23]
 _A = numpy.s_[..., 23]
 
 
-def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
+cpdef numpy.ndarray makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
     """
     This is similar to makeVertexTemplates but is a more convenient
     when reading off of the json model files.
@@ -471,9 +488,9 @@ def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
         ],
 
     ])
-
-
-def rotateTemplate(template, x=0, y=0):
+    
+#@wrap_me
+cpdef numpy.ndarray rotateTemplate(numpy.ndarray template, int x = 0, int y = 0):
     """
     Rotate template around x-axis and then around
     y-axis. Both angles must to multiples of 90.
@@ -530,6 +547,7 @@ def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
             print "Data: " + str(data)
             print "Block Mask: " + str(blockData[mask])
             print "Supplied Mask: " + str(dataMask)
+        cdef int i
         for i in range(elements):
             vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
             for indicies in range(3):
@@ -551,7 +569,7 @@ def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
     return makeVertices
 
 
-def makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
+cpdef numpy.ndarray makeVertexTemplates( double xmin=0, double ymin=0, double zmin=0, double xmax=1, double ymax=1, double zmax=1):
     return numpy.array([
 
         # FaceXIncreasing:
@@ -608,6 +626,7 @@ def createPrecomputedVertices():
     zArray = numpy.arange(16)[numpy.newaxis, :, numpy.newaxis, numpy.newaxis]
     yArray = numpy.arange(height)[numpy.newaxis, numpy.newaxis, :, numpy.newaxis]
 
+    cdef int dir
     for dir in range(len(faceVertexTemplates)):
         precomputedVertices[dir][_XYZ][..., 0] = xArray
         precomputedVertices[dir][_XYZ][..., 1] = yArray

@@ -144,7 +144,7 @@ class ChunkTool(EditorTool):
         color = self.editor.selectionTool.selectionColor + (0.3, )
         GL.glColor(*color)
         with gl.glEnable(GL.GL_BLEND):
-
+            
             import renderer
 
             sizedChunks = renderer.chunkMarkers(self._selectedChunks)
