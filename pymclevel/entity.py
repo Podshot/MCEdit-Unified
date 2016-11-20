@@ -8,6 +8,7 @@ from math import isnan
 import random
 import nbt
 from copy import deepcopy
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
@@ -146,7 +147,8 @@ class TileEntity(object):
     @classmethod
     def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
-        tileEntityTag["id"] = nbt.TAG_String(tileEntityID)
+        _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
+        tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
         if base:
             for (name, tag) in base:
@@ -227,7 +229,7 @@ class TileEntity(object):
                 z = coordZ(z, argument)
             return x, y, z
 
-        if eTag['id'].value == 'MobSpawner':
+        if eTag['id'].value == 'MobSpawner' or MCEDIT_IDS.get(eTag['id'].value) == 'DEF_BLOCKS_MOB_SPAWNER':
             mobs = []
             if 'SpawnData' in eTag:
                 mob = eTag['SpawnData']
@@ -267,7 +269,7 @@ class TileEntity(object):
                         pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
                         Entity.setpos(mob, pos)
 
-        if eTag['id'].value == "Control" and not cancelCommandBlockOffset:
+        if (eTag['id'].value == "Control" or MCEDIT_IDS.get(eTag['id'].value) == 'DEF_BLOCKS_COMMAND_BLOCK') and not cancelCommandBlockOffset:
             command = eTag['Command'].value
             oldCommand = command
 
@@ -626,9 +628,15 @@ class Entity(object):
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
         # Also match the 'minecraft:XXX' names
-        if eTag["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
-            print "#" * 40
-            print eTag
+#         if eTag["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+#             print "#" * 40
+#             print eTag
+#             eTag["TileX"].value += copyOffset[0]
+#             eTag["TileY"].value += copyOffset[1]
+#             eTag["TileZ"].value += copyOffset[2]
+
+        # Trying more agnostic way
+        if eTag.get('TileX') and eTag.get('TileY') and eTag.get('TileZ'):
             eTag["TileX"].value += copyOffset[0]
             eTag["TileY"].value += copyOffset[1]
             eTag["TileZ"].value += copyOffset[2]

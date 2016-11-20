@@ -1194,6 +1194,7 @@ class LevelEditor(GLViewport):
             return
 
         assert level
+        log.debug("Loaded world is %s"%repr(level))
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)

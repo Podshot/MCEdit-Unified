@@ -17,6 +17,7 @@ import glutils
 import mceutils
 import itertools
 import pymclevel
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 from math import isnan
 from datetime import datetime, timedelta
@@ -488,23 +489,35 @@ class CameraViewport(GLViewport):
         else:
             self.mouseLookOff()
 
+    # mobs is overrided in __init__
     mobs = pymclevel.Entity.monsters + ["[Custom]"]
 
     @mceutils.alertException
     def editMonsterSpawner(self, point):
         mobs = self.mobs
+        _mobs = {}
+        # Get the mobs from the versionned data
+        if MCEDIT_DEFS.get('spawner_monsters'):
+            mobs = []
+            print MCEDIT_IDS
+            for a in MCEDIT_DEFS['spawner_monsters']:
+                _id = MCEDIT_IDS[a]
+                name = _(MCEDIT_DEFS[_id]['name'])
+                _mobs[name] = a
+                _mobs[a] = name
+                mobs.append(name)
 
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
+            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("MobSpawner", "MobSpawner"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["Delay"] = pymclevel.TAG_Short(120)
-            tileEntity["EntityId"] = pymclevel.TAG_String(mobs[0])
+            tileEntity["EntityId"] = pymclevel.TAG_String(MCEDIT_DEFS.get(mobs[0], mobs[0]))
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -539,7 +552,8 @@ class CameraViewport(GLViewport):
         mobTable.selectedIndex = 0
 
         def selectedMob():
-            return mobs[mobTable.selectedIndex]
+            val = mobs[mobTable.selectedIndex]
+            return _mobs.get(val, val)
 
         def cancel():
             mobs[mobTable.selectedIndex] = id
@@ -551,11 +565,12 @@ class CameraViewport(GLViewport):
             id = tileEntity["SpawnData"]["id"].value
         else:
             id = "[Custom]"
+
         addMob(id)
 
         mobTable.selectedIndex = mobs.index(id)
 
-        oldChoiceCol = Column((Label(_("Current: ") + id, align='l', width=200), ))
+        oldChoiceCol = Column((Label(_("Current: ") + _mobs.get(id, id), align='l', width=200), ))
         newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: _("Change to: ") + selectedMob()), mobTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))

@@ -223,6 +223,7 @@ import logging
 import numpy
 from OpenGL import GL
 import pymclevel
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 from pymclevel.materials import alphaMaterials
 import sys
 from config import config
@@ -1289,11 +1290,12 @@ class MonsterRenderer(BaseEntityRenderer):
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []
+        notMonsters = MCEDIT_DEFS.get('notMonsters', self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
             id = ent["id"].value
-            if id in self.notMonsters:
+            if id in notMonsters:
                 continue
             pos = pymclevel.Entity.pos(ent)
             pos[1] += 0.5
@@ -1337,16 +1339,19 @@ class ItemRenderer(BaseEntityRenderer):
             "ItemFrame": (134, 96, 67, 0x5f),
             "ArmorStand": (0x22, 0xff, 0x22, 0x5f),
         }
-        colorMap[u'minecraft:painting'] = colorMap['Painting']
-        colorMap[u'minecraft:item_frame'] = colorMap['ItemFrame']
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
-            color = colorMap.get(ent["id"].value)
+            # Let get the color from the versionned data, and use the 'old' way as fallback
+            color = MCEDIT_DEFS.get(MCEDIT_IDS.get(ent["id"].value), {}).get("mapcolor")
+            if color is None:
+                color = colorMap.get(ent["id"].value)
+
             if color is None:
                 continue
             pos = pymclevel.Entity.pos(ent)
-            if ent["id"].value not in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+            noRenderDelta = MCEDIT_DEFS.get('noRenderDelta', ("Painting", "ItemFrame"))
+            if ent["id"].value not in noRenderDelta:
                 pos[1] += 0.5
             entityPositions.append(pos)
             entityColors.append(color)
