@@ -32,7 +32,7 @@ import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
-from pymclevel import BoundingBox
+from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
 import urllib2
 import urllib
 import json
@@ -892,6 +892,11 @@ class FilterOperation(Operation):
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
 
+        # Inject the defs for blocks/entities in the module
+        # Need to reimport the defs and ids to get the 'fresh' ones
+        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+        self.filter.MCEDIT_DEFS = MCEDIT_DEFS
+        self.filter.MCEDIT_IDS = MCEDIT_IDS
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
         self.canUndo = True

@@ -8,6 +8,7 @@ import os
 import json
 from logging import getLogger
 from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+import pymclevel
 
 log = getLogger(__name__)
 
@@ -54,4 +55,7 @@ def ids_loader(game_version, namespace=u"minecraft"):
                     log.info("Done")
     else:
         log.info("MC %s resources not found."%game_version)
+    # Override the module objects to expose them outside when (re)ipmorting.
+    pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
+    pymclevel.MCEDIT_IDS = MCEDIT_IDS
     return MCEDIT_DEFS, MCEDIT_IDS
