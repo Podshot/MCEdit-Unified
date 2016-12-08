@@ -223,6 +223,7 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
         Head = TAG_Compound()
         Head["id"] = TAG_String("minecraft:skull")
         Head["Damage"] = TAG_Short(SkullType)
+        Head["Count"] = TAG_Short(1)
         if SkullType == 3 and PlayerName:
             Head["tag"] = TAG_Compound()
             Head["tag"]["SkullOwner"] = TAG_String(PlayerName)
