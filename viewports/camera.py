@@ -364,7 +364,7 @@ class CameraViewport(GLViewport):
                     changed = False
                     te = self.editor.level.tileEntityAt(*focusPair[0])
                     backupTE = copy.deepcopy(te)
-                    if te["id"].value == "Sign":
+                    if te["id"].value == "Sign" or MCEDIT_IDS.GET(e["id"].value) in ("DEF_BLOCKS_STANDING_SIGN", "DEFS_BLOCKS_WALL_SIGN"):
                         if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
                             for i in xrange(1,5):
                                 if len(te["Text"+str(i)].value) > 32767:
@@ -778,7 +778,7 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
+            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("MobSpawner", "MobSpawner"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -874,6 +874,8 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
+             # Don't know how to handle the difference between wall and standing signs for now...
+             # Just let this like it is until we can find the way!
             tileEntity["id"] = pymclevel.TAG_String("Sign")
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
@@ -976,6 +978,8 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
+            # Don't know how to handle the difference between skulls in this context signs for now...
+            # Tests nedded!
             tileEntity["id"] = pymclevel.TAG_String("Skull")
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
@@ -1053,7 +1057,7 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("Control")
+            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("Control", "Control"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -1392,7 +1396,7 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("FlowerPot")
+            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("FlowerPot", "FlowerPot"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -1456,7 +1460,7 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("EnchantTable")
+            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("EnchantTable", "EnchantTable"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
