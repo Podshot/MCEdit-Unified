@@ -18,6 +18,7 @@ from materials import alphaMaterials, MCMaterials, namedMaterials, blockstateToI
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 from pymclevel.materials import BlockstateAPI
 from release import TAG as RELEASE_TAG
 import math
@@ -271,7 +272,7 @@ class MCSchematic(EntityLevel):
                 entity[p][0].value = newX
                 entity[p][2].value = newZ
             entity["Rotation"][0].value -= 90.0
-            if entity["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"]) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 x, z = entity["TileX"].value, entity["TileZ"].value
                 newx = z
                 newz = self.Length - x - 1
@@ -343,7 +344,7 @@ class MCSchematic(EntityLevel):
             entity["Rotation"][0].value = newX
             entity["Rotation"][1].value = newY
 
-            if entity["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"]) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 newX = self.Width - entity["TileY"].value - 1
                 newY = entity["TileX"].value
                 entity["TileX"].value = newX
@@ -377,7 +378,7 @@ class MCSchematic(EntityLevel):
             entity["Pos"][1].value = self.Height - entity["Pos"][1].value
             entity["Motion"][1].value = -entity["Motion"][1].value
             entity["Rotation"][1].value = -entity["Rotation"][1].value
-            if entity["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"]) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 entity["TileY"].value = self.Height - entity["TileY"].value - 1
         for tileEntity in self.TileEntities:
             tileEntity["y"].value = self.Height - tileEntity["y"].value - 1
@@ -447,7 +448,7 @@ class MCSchematic(EntityLevel):
             # Special logic for old width painting as TileX/TileZ favours -x/-z
 
             try:
-                if entity["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+                if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"]) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                     facing = entity.get("Facing", entity.get("Direction"))
                     if facing is None:
                         dirFacing = entity.get("Dir")
@@ -460,7 +461,7 @@ class MCSchematic(EntityLevel):
                         else:
                             raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
 
-                if entity["id"].value == ("Painting", u'minecraft:painting'):
+                if entity["id"].value == "Painting" or MCEDIT_IDS.get(entity["id"]) == 'DEFS_ENTITIES_PAINTING':
                     if facing.value == 2:
                         entity["TileX"].value = self.Width - entity["TileX"].value - self.paintingMap[entity["Motive"].value] % 2
                     elif facing.value == 0:
@@ -472,7 +473,7 @@ class MCSchematic(EntityLevel):
                     elif facing.value == 1:
                         entity["TileZ"].value = entity["TileZ"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
                     facing.value = northSouthPaintingMap[facing.value]
-                elif entity["id"].value in ("ItemFrame", u'minecraft:item_frame'):
+                elif entity["id"].value == "ItemFrame" or MCEDIT_IDS.get(entity["id"]) == 'DEFS_ENTITIES_ITEM_FRAME':
                     entity["TileX"].value = self.Width - entity["TileX"].value - 1
                     facing.value = northSouthPaintingMap[facing.value]
             except:
@@ -522,7 +523,7 @@ class MCSchematic(EntityLevel):
             # Special logic for old width painting as TileX/TileZ favours -x/-z
 
             try:
-                if entity["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+                if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"]) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                     facing = entity.get("Facing", entity.get("Direction"))
                     if facing is None:
                         dirFacing = entity.get("Dir")
@@ -535,7 +536,7 @@ class MCSchematic(EntityLevel):
                         else:
                             raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
 
-                if entity["id"].value == ("Painting", u'minecraft:painting'):
+                if entity["id"].value == "Painting" or MCEDIT_IDS.get(entity["id"]) == 'DEFS_ENTITIES_PAINTING':
                     if facing.value == 1:
                         entity["TileZ"].value = self.Length - entity["TileZ"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
                     elif facing.value == 3:
@@ -547,7 +548,7 @@ class MCSchematic(EntityLevel):
                     elif facing.value == 2:
                         entity["TileX"].value = entity["TileX"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
                     facing.value = eastWestPaintingMap[facing.value]
-                elif entity["id"].value in ("ItemFrame", u'minecraft:item_frame'):
+                elif entity["id"].value == "ItemFrame" or MCEDIT_IDS.get(entity["id"]) == 'DEFS_ENTITIES_ITEM_FRAME':
                     entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
                     facing.value = eastWestPaintingMap[facing.value]
             except:
@@ -642,7 +643,11 @@ class INVEditChest(MCSchematic):
     @property
     def TileEntities(self):
         chestTag = nbt.TAG_Compound()
-        chestTag["id"] = nbt.TAG_String("Chest")
+        chest_id = "Chest"
+        split_ver = self.gameVersion.split('.')
+        if int(split_ver[0]) >= 1 and int(split[1]) >= 11:
+            chest_id = "minecraft:chest"
+        chestTag["id"] = nbt.TAG_String(chest_id)
         chestTag["Items"] = nbt.TAG_List(self.root_tag["Inventory"])
         chestTag["x"] = nbt.TAG_Int(0)
         chestTag["y"] = nbt.TAG_Int(0)
