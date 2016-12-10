@@ -30,6 +30,7 @@ class TileEntity(object):
         ),
         "MobSpawner": (
             ("EntityId", nbt.TAG_String),
+            ("SpawnData", nbt.TAG_Compound),
         ),
         "Chest": (
             ("Items", nbt.TAG_List),
@@ -147,6 +148,8 @@ class TileEntity(object):
     @classmethod
     def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
+        # Refresh the MCEDIT_DEFS and MCEDIT_IDS objects
+        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
         _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
         tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
@@ -159,8 +162,17 @@ class TileEntity(object):
                     elif name == "SuccessCount":
                         tileEntityTag[name] = nbt.TAG_Int(0)
                 elif tileEntityID == "MobSpawner":
+                    entity = kw.get("entity")
                     if name == "EntityId":
-                        tileEntityTag[name] = nbt.TAG_String("Pig")
+                        tileEntityTag[name] = nbt.TAG_String(MCEDIT_DEFS.get("Pig", "Pig"))
+                    if name == "SpawnData":
+                        spawn_id = nbt.TAG_String(MCEDIT_DEFS.get("Pig", "Pig"), "id")
+                        tileEntityTag["SpawnData"] = tag()
+                        if entity:
+                            for k, v in entity.iteritems():
+                                tileEntityTag["SpawnData"][k] = deepcopy(v)
+                        else:
+                            tileEntityTag["SpawnData"].add(spawn_id)
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag

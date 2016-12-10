@@ -508,8 +508,7 @@
         "minecraft:item", "minecraft:xp_orb", "minecraft:armor_stand", "minecraft:item_frame", "minecraft:painting"],
     "noRenderDelta": ["item_frame", "painting", "minecraft:item_frame", "minecraft:painting"],
 
-    "spawner_monsters":
-        {
+    "spawner_monsters_mapping_begin": "The next entries are used to remap correctly the MCEdit internal names to MC ones when creating/editing mob spawners.",
             "Creeper": "minecraft:creeper",
             "Skeleton": "minecraft:skeleton",
             "Spider": "minecraft:spider",
@@ -540,8 +539,9 @@
             "SnowMan": "minecraft:snowman",
             "Ozelot": "minecraft:ocelot",
             "VillagerGolem": "minecraft:villager_golem",
-            "EntityHorse": "minecraft:horse"
-        },
+            "EntityHorse": "minecraft:horse",
+    "spawner_monsters_mapping_end": "",
+
     "spawner_monsters":
         [
             "minecraft:creeper",

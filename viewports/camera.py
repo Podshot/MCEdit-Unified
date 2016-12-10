@@ -497,9 +497,9 @@ class CameraViewport(GLViewport):
         mobs = self.mobs
         _mobs = {}
         # Get the mobs from the versionned data
+        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
         if MCEDIT_DEFS.get('spawner_monsters'):
             mobs = []
-            print MCEDIT_IDS
             for a in MCEDIT_DEFS['spawner_monsters']:
                 _id = MCEDIT_IDS[a]
                 name = _(MCEDIT_DEFS[_id]['name'])
@@ -560,16 +560,18 @@ class CameraViewport(GLViewport):
             panel.dismiss()
 
         if "EntityId" in tileEntity:
-            id = tileEntity["EntityId"].value
+            _id = tileEntity["EntityId"].value
+#             id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get("name", _id)
         elif "SpawnData" in tileEntity:
-            id = tileEntity["SpawnData"]["id"].value
+            _id = tileEntity["SpawnData"]["id"].value
         else:
-            id = "[Custom]"
+            _id = "[Custom]"
+
+        id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get("name", _id)
 
         addMob(id)
 
         mobTable.selectedIndex = mobs.index(id)
-
         oldChoiceCol = Column((Label(_("Current: ") + _mobs.get(id, id), align='l', width=200), ))
         newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: _("Change to: ") + selectedMob()), mobTable))
 
@@ -605,13 +607,19 @@ class CameraViewport(GLViewport):
             if "EntityId" in tileEntity:
                 tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
             if "SpawnData" in tileEntity:
-                tileEntity["SpawnData"] = pymclevel.TAG_Compound()
-                tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
+                # Try to not clear the spawn data, but only update the mob id
+#                 tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+                tag_id = pymclevel.TAG_String(selectedMob())
+                if "id" in tileEntity["SpawnData"]:
+                    tag_id.name = "id"
+                    tileEntity["SpawnData"]["id"] = tag_id
+                if "EntityId" in tileEntity["SpawnData"]:
+                    tileEntity["SpawnData"]["EntityId"] = tag_id
             if "SpawnPotentials" in tileEntity:
                 for potential in tileEntity["SpawnPotentials"]:
                     if "Entity" in potential:
                         # MC 1.9+
-                        if potential["Entity"]["id"].value == id or potential["Entity"]["EntityId"].value == id:
+                        if potential["Entity"]["id"].value == id or ("EntityId" in potential["Entity"] and potential["Entity"]["EntityId"].value == id):
                             potential["Entity"] = pymclevel.TAG_Compound()
                             potential["Entity"]["id"] = pymclevel.TAG_String(selectedMob())
                     elif "Properties" in potential:
