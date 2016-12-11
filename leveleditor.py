@@ -878,7 +878,7 @@ class LevelEditor(GLViewport):
         filename = os.path.basename(stack[1][1])
         old_box = self.selectionTool.selectionBox()
         msg = """
-        Filter \"{0}\" wants to resize the selection box
+        Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?""".format(

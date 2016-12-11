@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particular fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -104,693 +104,672 @@ o42 Show...
 t42 Visa...
 o43 Camera View
 t43 Kamera Visning
-o44 Record Undo
-t44 
-o45 View Distance:
-t45 Visnings Område
-o46 [UNDEFINED]
-t46 [ODEFINIERAT]
-o47 White
-t47 Vit
-o48 Blue
-t48 Blå
-o49 Green
-t49 Grön
-o50 Red
-t50 Röd
-o51 Teal
-t51 Turkos
-o52 Pink
-t52 Rosa
-o53 Yellow
-t53 Gul
-o54 Grey
-t54 Grå
-o55 Black
-t55 Svart
-o56 Color: 
-t56 Färg: 
-o57 Show Previous Selection
-t57 Visa Förra Markeringen
-o58 R:
-t58 R:
-o59 G:
-t59 G:
-o60 B:
-t60 B:
-o61 Selection Options
-t61 Markerings Inställningar
-o62 Place Immediately
-t62 Sätt ut Direkt
-o63 Clone Options
-t63 Kopierings Inställningar
-o64 Alpha: 
-t64 Alpha:
-o65 Choose Block Immediately
-t65 Välj Block Direkt
-o66 Reset Distance When Brush Size Changes
-t66 Återställ Avstånd När Pensel Storleken Ändras
-o67 Brush Options
-t67 Pensel Inställningar
-o68 Fill and Replace Options
-t68 Fyll och Byt ut Inställningar
-o69 Spawn Position Safety
-t69 Spawn Position Säkerhet
-o70 Spawn Point Options
-t70 Spawn Point Inställningar
-o71 Create New World
-t71 Skapa Ny Värld
-o72 Quick Load
-t72 Snabb Laddning
-o73 Open...
-t73 Öppna...
-o74 Save
-t74 Spara
-o75 Reload
-t75 Ladda om
-o76 Close
-t76 Stäng
-o77 World Info
-t77 Värld Info
-o78 Undo
-t78 Ångra
-o79 Redo
-t79 Gör om
-o80 Select All
-t80 Markera Allt
-o81 Deselect
-t81 Avmarkera
-o82 Quit
-t82 Avsluta
-o83 Controls
-t83 Kontroller
-o84 Graphics
-t84 Grafik
-o85 Homepage
-t85 Hemsida
-o86 About MCEdit
-t86 Om MCEdit
-o87 Recent Changes
-t87 Nya Ändringar
-o88 License
-t88 Licens
-o89 Config Files
-t89 Konfigurera Filer
-o90 {0}/{1}/{2}/{3}/{4}/{5} to move
-t90 {0}/{1}/{2}/{3}/{4}/{5} för att röra sig
-o91 {0} to slow down
-t91 {0} för att sakta ner
-o92 Right-click to toggle camera control
-t92 Höger-klicka för att ställa in kamera kontroll
-o93 Mousewheel to control tool distance
-t93 Mushjul för att kontrollera verktygs avstånd
-o94 Hold {0} for details
-t94 Håll inne {0} för detaljer
-o95 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
+o44 View Distance:
+t44 Visnings Område
+o45 [UNDEFINED]
+t45 [ODEFINIERAT]
+o46 White
+t46 Vit
+o47 Blue
+t47 Blå
+o48 Green
+t48 Grön
+o49 Red
+t49 Röd
+o50 Teal
+t50 Turkos
+o51 Pink
+t51 Rosa
+o52 Yellow
+t52 Gul
+o53 Grey
+t53 Grå
+o54 Black
+t54 Svart
+o55 Color: 
+t55 Färg: 
+o56 Show Previous Selection
+t56 Visa Förra Markeringen
+o57 R:
+t57 R:
+o58 G:
+t58 G:
+o59 B:
+t59 B:
+o60 Selection Options
+t60 Markerings Inställningar
+o61 Place Immediately
+t61 Sätt ut Direkt
+o62 Clone Options
+t62 Kopierings Inställningar
+o63 Alpha: 
+t63 Alpha:
+o64 Choose Block Immediately
+t64 Välj Block Direkt
+o65 Reset Distance When Brush Size Changes
+t65 Återställ Avstånd När Pensel Storleken Ändras
+o66 Brush Options
+t66 Pensel Inställningar
+o67 Fill and Replace Options
+t67 Fyll och Byt ut Inställningar
+o68 Spawn Position Safety
+t68 Spawn Position Säkerhet
+o69 Spawn Point Options
+t69 Spawn Point Inställningar
+o70 Create New World
+t70 Skapa Ny Värld
+o71 Quick Load
+t71 Snabb Laddning
+o72 Open...
+t72 Öppna...
+o73 Save
+t73 Spara
+o74 Reload
+t74 Ladda om
+o75 Close
+t75 Stäng
+o76 World Info
+t76 Värld Info
+o77 Undo
+t77 Ångra
+o78 Redo
+t78 Gör om
+o79 Select All
+t79 Markera Allt
+o80 Deselect
+t80 Avmarkera
+o81 Quit
+t81 Avsluta
+o82 Controls
+t82 Kontroller
+o83 Graphics
+t83 Grafik
+o84 Homepage
+t84 Hemsida
+o85 About MCEdit
+t85 Om MCEdit
+o86 License
+t86 Licens
+o87 Config Files
+t87 Konfigurera Filer
+o88 {0}/{1}/{2}/{3}/{4}/{5} to move
+t88 {0}/{1}/{2}/{3}/{4}/{5} för att röra sig
+o89 {0} to slow down
+t89 {0} för att sakta ner
+o90 Right-click to toggle camera control
+t90 Höger-klicka för att ställa in kamera kontroll
+o91 Mousewheel to control tool distance
+t91 Mushjul för att kontrollera verktygs avstånd
+o92 Hold {0} for details
+t92 Håll inne {0} för detaljer
+o93 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t95 Varning: Öppna bara en värld i ett program i taget. Om du öppnar en värld samtidigt i både MCEdit och Minecraft, så förlorar du ditt arbete och kanske så skadar du också spar filen.
+t93 Varning: Öppna bara en värld i ett program i taget. Om du öppnar en värld samtidigt i både MCEdit och Minecraft, så förlorar du ditt arbete och kanske så skadar du också spar filen.
 
  Om du använder Minecraft 1.3 eller en tidigare version, behöver du stänga ner Minecraft helt innan du använder MCEdit.
-o96 Don't remind me again.
-t96 Påminn mig inte igen.
-o97 <Movement>
-t97 <Rörelse>
-o98 Forward
-t98 Framåt
-o99 Back
-t99 Bakåt
-o100 Left
-t100 Vänster
-o101 Right
-t101 Höger
-o102 Up
-t102 Upp
-o103 Down
-t103 Ner
-o104 Brake
-t104 Bromsa
-o105 <Camera>
-t105 <Kamera>
-o106 Pan Up
+o94 Don't remind me again.
+t94 Påminn mig inte igen.
+o95 <Movement>
+t95 <Rörelse>
+o96 Forward
+t96 Framåt
+o97 Back
+t97 Bakåt
+o98 Left
+t98 Vänster
+o99 Right
+t99 Höger
+o100 Up
+t100 Upp
+o101 Down
+t101 Ner
+o102 Brake
+t102 Bromsa
+o103 <Camera>
+t103 <Kamera>
+o104 Pan Up
+t104 
+o105 Pan Down
+t105 
+o106 Pan Left
 t106 
-o107 Pan Down
+o107 Pan Right
 t107 
-o108 Pan Left
-t108 
-o109 Pan Right
-t109 
-o110 Toggle View
-t110 Ställ in Visning
-o111 Goto Position
-t111 Gå till Position
-o112 View Distance
-t112 Visnings Avstånd
-o113 Toggle Renderer
-t113 Ställ in Renderare
-o114 <Blocks>
-t114 <Block>
-o115 Swap
-t115 Byt
-o116 Delete Blocks
-t116 Radera Block
-o117 Increase Reach
-t117 Öka Räckvidd
-o118 Decrease Reach
-t118 Minska Räckvidd
-o119 Reset Reach
-t119 Återställ Räckvidd
-o120 Export Selection
-t120 Exportera Markering
-o121 Line Tool (Hold)
-t121 Linje Verktyg (Håll inne)
-o122 <Clone Tool>
-t122 <Kopierings Verktyg>
-o123 Rotate (Clone)
-t123 Rotera (Kopiera)
-o124 Roll (Clone)
-t124 Rulla (Kopiera)
-o125 Flip
-t125 Vänd
-o126 Mirror
-t126 Spegla
-o127 <Brush Tool>
-t127 <Pensel Verktyg>
-o128 Rotate (Brush)
-t128 Rotera (Pensel)
-o129 Roll (Brush)
-t129 Rulla (Pensel)
-o130 Increase Size
-t130 Öka Storlek
-o131 Decrease Size
-t131 Minska Storlek
-o132 <Fill and Replace Tool>
-t132 <Fyll och Byt ut Verktyg>
-o133 Replace Shortcut
-t133 Byt ut Genväg
-o134 <Function>
-t134 <Funktion>
-o135 Cut
-t135 Klipp
-o136 Copy
-t136 Kopiera
-o137 Paste
-t137 Klistra in
-o138 None
-t138 Inget
-o139 <Menu>
-t139 <Meny>
-o140 New World
-t140 Ny Värld
-o141 Open
-t141 Öppna
-o142 Reload World
-t142 Ladda om Värld
-o143 Close World
-t143 Stäng ner Värld
-o144 Debug Overlay
-t144 
-o145 Show Block Info (Hold)
-t145 Visa Block Info (Håll inne)
-o146 Pick Block (Hold + Click)
-t146 Välj Block (Håll inne + Klicka)
-o147 Select Chunks (Hold)
-t147 Markera Chunks (Håll inne)
-o148 Deselect Chunks (Hold)
-t148 Avmarkera Chunks (Håll inne)
-o149 Snap Clone to Axis (Hold)
-t149 
-o150 Blocks-Only Modifier (Hold)
-t150 Bara-Block Ändrare (Håll inne)
-o151 Fast Increment Modifier (Hold)
-t151 
-o152 Leaves are solid, like Minecraft's 'Fast' graphics
-t152 Löv är fasta, some i Minecraft's 'Snabb' grafik
-o153 All blocks are drawn the same way (overrides 'Fast Leaves')
-t153 Alla block ritas på samma sätt (överskriver 'Snabba Löv')
-o154 Enable choppy mouse movement for faster loading.
-t154 Tillåt musen att röra sig hackit så att det laddar fortare.
-o155 Point here and use mousewheel to adjust
-t155 Peka här och använd mushjulet för att justera
-o156 Portable
-t156 Portabel
-o157 Fixed
-t157 Fixad
-o158 Change the direction of the Forward and Backward keys when looking down
-t158 Ändra riktningen av Framåt och Bakåt tangenterna när du tittar ner
-o159 When you are this far above the top of the world, move fast and use low-detail mode.
-t159 När du är så här högt ovanför världen, rör dig snabbt och använda låg-detalj läge.
-o160 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
-t160 Andel av minne some används för temporär lagring. När mer än detta behövs, används disken istället.
-o161 Change the position of the mobs in spawners while nudging.
-t161 Ändra positionen av mobs i spawners medans du knuffar.
-o162 Change static coordinates in command blocks while nudging.
-t162 Ändra statiska koordinater i kommando block medans du knuffar.
-o163 Always target the farthest block under the cursor, even in mouselook mode.
-t163 Målsätt alltid det block som är längst bort från musen, även i mus-hitta läge.
-o164 Moving forward and Backward will not change your altitude in Fly Mode.
-t164 Din altitud i Flyg Läge ändras inte genom att gå framåt och bakåt.
-o165 Apply brake when not pressing movement keys
-t165 Bromsa när du inte trycker på rörelse tangenterna
-o166 Reverse the up and down motion of the mouse.
-t166 Omvänd upp och ned motionen av musen.
-o167 When rotating your brush, also rotate the orientation of the block your brushing with
-t167 När du roterar penseln, rotera också orientationen av det block du målar med
-o168 Choose your language.
-t168 Välj ditt språk.
-o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 
-o170 You must restart MCEdit to see language changes
-t170 Du måste starta om MCEdit för att se språk förändringar
-o171 Restart
-t171 Starta om
-o172 Later
-t172 Senare
-o173 Loading 
-t173 Laddar
-o174  - MCEdit 
-t174  - MCEdit
-o175 Overworld
-t175 Övervärld
-o176 The End
-t176 Slutet
-o177 Nether
-t177 Nether
-o178 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
-t178 Klicka eller dra för att markera. Dra markeringsväggarna för att ändra storlek. Klicka nära kanten för att dra den motsatta väggen.
-o179 Chunk View
-t179 Chunk Visning
-o180 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
-t180 Släpp mus knappen här för att placera det {0} markerings hörnet. Tryck på {1} för att byta hörn.
-o181 Release the mouse button to finish the selection
-t181 Släpp mus knappen för att slutföra markeringen.
-o182 Nudge
-t182 Knuffa
-o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
+o108 Toggle View
+t108 Ställ in Visning
+o109 Goto Position
+t109 Gå till Position
+o110 View Distance
+t110 Visnings Avstånd
+o111 Toggle Renderer
+t111 Ställ in Renderare
+o112 Swap
+t112 Byt
+o113 Delete Blocks
+t113 Radera Block
+o114 Increase Reach
+t114 Öka Räckvidd
+o115 Decrease Reach
+t115 Minska Räckvidd
+o116 Reset Reach
+t116 Återställ Räckvidd
+o117 Export Selection
+t117 Exportera Markering
+o118 Line Tool (Hold)
+t118 Linje Verktyg (Håll inne)
+o119 <Clone Tool>
+t119 <Kopierings Verktyg>
+o120 Rotate (Clone)
+t120 Rotera (Kopiera)
+o121 Roll (Clone)
+t121 Rulla (Kopiera)
+o122 Flip
+t122 Vänd
+o123 Mirror
+t123 Spegla
+o124 <Brush Tool>
+t124 <Pensel Verktyg>
+o125 Rotate (Brush)
+t125 Rotera (Pensel)
+o126 Roll (Brush)
+t126 Rulla (Pensel)
+o127 Increase Size
+t127 Öka Storlek
+o128 Decrease Size
+t128 Minska Storlek
+o129 <Fill and Replace Tool>
+t129 <Fyll och Byt ut Verktyg>
+o130 Replace Shortcut
+t130 Byt ut Genväg
+o131 <Function>
+t131 <Funktion>
+o132 Cut
+t132 Klipp
+o133 Copy
+t133 Kopiera
+o134 Paste
+t134 Klistra in
+o135 None
+t135 Inget
+o136 <Menu>
+t136 <Meny>
+o137 New World
+t137 Ny Värld
+o138 Open
+t138 Öppna
+o139 Reload World
+t139 Ladda om Värld
+o140 Close World
+t140 Stäng ner Värld
+o141 Debug Overlay
+t141 
+o142 Show Block Info (Hold)
+t142 Visa Block Info (Håll inne)
+o143 Pick Block (Hold + Click)
+t143 Välj Block (Håll inne + Klicka)
+o144 Select Chunks (Hold)
+t144 Markera Chunks (Håll inne)
+o145 Deselect Chunks (Hold)
+t145 Avmarkera Chunks (Håll inne)
+o146 Snap Clone to Axis (Hold)
+t146 
+o147 Blocks-Only Modifier (Hold)
+t147 Bara-Block Ändrare (Håll inne)
+o148 Fast Increment Modifier (Hold)
+t148 
+o149 Leaves are solid, like Minecraft's 'Fast' graphics
+t149 Löv är fasta, some i Minecraft's 'Snabb' grafik
+o150 All blocks are drawn the same way (overrides 'Fast Leaves')
+t150 Alla block ritas på samma sätt (överskriver 'Snabba Löv')
+o151 Enable choppy mouse movement for faster loading.
+t151 Tillåt musen att röra sig hackit så att det laddar fortare.
+o152 Point here and use mousewheel to adjust
+t152 Peka här och använd mushjulet för att justera
+o153 Portable
+t153 Portabel
+o154 Fixed
+t154 Fixad
+o155 Change the direction of the Forward and Backward keys when looking down
+t155 Ändra riktningen av Framåt och Bakåt tangenterna när du tittar ner
+o156 When you are this far above the top of the world, move fast and use low-detail mode.
+t156 När du är så här högt ovanför världen, rör dig snabbt och använda låg-detalj läge.
+o157 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
+t157 Andel av minne some används för temporär lagring. När mer än detta behövs, används disken istället.
+o158 Change the position of the mobs in spawners while nudging.
+t158 Ändra positionen av mobs i spawners medans du knuffar.
+o159 Change static coordinates in command blocks while nudging.
+t159 Ändra statiska koordinater i kommando block medans du knuffar.
+o160 Always target the farthest block under the cursor, even in mouselook mode.
+t160 Målsätt alltid det block som är längst bort från musen, även i mus-hitta läge.
+o161 Moving forward and Backward will not change your altitude in Fly Mode.
+t161 Din altitud i Flyg Läge ändras inte genom att gå framåt och bakåt.
+o162 Apply brake when not pressing movement keys
+t162 Bromsa när du inte trycker på rörelse tangenterna
+o163 Reverse the up and down motion of the mouse.
+t163 Omvänd upp och ned motionen av musen.
+o164 When rotating your brush, also rotate the orientation of the block your brushing with
+t164 När du roterar penseln, rotera också orientationen av det block du målar med
+o165 Choose your language.
+t165 Välj ditt språk.
+o166 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
+t166 
+o167 Restart
+t167 Starta om
+o168 Loading 
+t168 Laddar
+o169  - MCEdit 
+t169  - MCEdit
+o170 Overworld
+t170 Övervärld
+o171 The End
+t171 Slutet
+o172 Nether
+t172 Nether
+o173 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
+t173 Klicka eller dra för att markera. Dra markeringsväggarna för att ändra storlek. Klicka nära kanten för att dra den motsatta väggen.
+o174 Chunk View
+t174 Chunk Visning
+o175 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
+t175 Släpp mus knappen här för att placera det {0} markerings hörnet. Tryck på {1} för att byta hörn.
+o176 Release the mouse button to finish the selection
+t176 Släpp mus knappen för att slutföra markeringen.
+o177 Nudge
+t177 Knuffa
+o178 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
-t183 Klicka och håll inne. Medans du håller inne, använd rörelse knapparna ({0}/{1}/{2}/{3}/{4}/{5}) för att knuffa. Vänsterklicka för att knuffa ett block.
-o184 {0:n} blocks
-t184 {0:n} block
-o185 Delete Entities
-t185 Radera Enheter
-o186 Remove all entities within the selection
-t186 Ta bort alla enheter inom markeringen.
-o187 Delete Tile Ticks
-t187 Radera Rut Ticks
-o188 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t188 Raderar alla rut ticks inom selektionen. Rut ticks är schemalagda block uppdateringar
-o189 Analyze
-t189 Analysera
-o190 Count the different blocks and entities in the selection and display the totals.
-t190 Räkna de olika blocken och enheterna inom markeringen och visa hur många det är totalt.
-o191 Export
-t191 Exportera
-o192 Expand the selection to the edges of the chunks within
-t192 Expandera markeringen till kanterna av chunksen inuti
-o193 Selected Chunks:
-t193 Markerade Chunks:
-o194 Extract
-t194 Extrahera
-o195 Create
-t195 Skapa
-o196 Prune
-t196 
-o197 Relight
-t197 
-o198 Repop
-t198 
-o199 Don't Repop
-t199 
-o200 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
-t200 Klicka och dra för att markera chunks. Håll inne {0} för att avmarkera chunks. Håll inne {1} för att markera chunks.
-o201 {0} chunks
-t201 {0} chunks
-o202 Create new chunks within the selection.
-t202 Skapa nya chunks inom markeringen.
-o203 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
-t203 Radera de markerade chunksen från disken. Minecraft kommer att återskapa dem nästa gång du är i närheten.
-o204 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
-t204 Ta bort hela världen förutom de markerade chunksen. Alla chunks utanför markeringen blir borttagna, och tomma region filer blir raderade från disken
-o205 Recalculate light values across the selected chunks
-t205 
-o206 Extract these chunks to individual chunk files
-t206 Extrahera de här chunksen till egna chunk filer
-o207 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
-t207 
-o208 Unmark the selected chunks. They will not repopulate the next time you play the game.
-t208 
-o209 ...
-t209 ...
-o210 Select
+t178 Klicka och håll inne. Medans du håller inne, använd rörelse knapparna ({0}/{1}/{2}/{3}/{4}/{5}) för att knuffa. Vänsterklicka för att knuffa ett block.
+o179 {0:n} blocks
+t179 {0:n} block
+o180 Delete Entities
+t180 Radera Enheter
+o181 Remove all entities within the selection
+t181 Ta bort alla enheter inom markeringen.
+o182 Delete Tile Ticks
+t182 Radera Rut Ticks
+o183 Removes all tile ticks within selection. Tile ticks are scheduled block updates
+t183 Raderar alla rut ticks inom selektionen. Rut ticks är schemalagda block uppdateringar
+o184 Analyze
+t184 Analysera
+o185 Count the different blocks and entities in the selection and display the totals.
+t185 Räkna de olika blocken och enheterna inom markeringen och visa hur många det är totalt.
+o186 Export
+t186 Exportera
+o187 Expand the selection to the edges of the chunks within
+t187 Expandera markeringen till kanterna av chunksen inuti
+o188 Selected Chunks:
+t188 Markerade Chunks:
+o189 Extract
+t189 Extrahera
+o190 Create
+t190 Skapa
+o191 Prune
+t191 
+o192 Relight
+t192 
+o193 Repop
+t193 
+o194 Don't Repop
+t194 
+o195 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
+t195 Klicka och dra för att markera chunks. Håll inne {0} för att avmarkera chunks. Håll inne {1} för att markera chunks.
+o196 {0} chunks
+t196 {0} chunks
+o197 Create new chunks within the selection.
+t197 Skapa nya chunks inom markeringen.
+o198 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
+t198 Radera de markerade chunksen från disken. Minecraft kommer att återskapa dem nästa gång du är i närheten.
+o199 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
+t199 Ta bort hela världen förutom de markerade chunksen. Alla chunks utanför markeringen blir borttagna, och tomma region filer blir raderade från disken
+o200 Recalculate light values across the selected chunks
+t200 
+o201 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
+t201 
+o202 Unmark the selected chunks. They will not repopulate the next time you play the game.
+t202 
+o203 ...
+t203 ...
+o204 Select
 Right-click for options
-t210 Markera
+t204 Markera
 Höger-klicka för inställningar
-o211 Remove the selection. Shortcut: {0}
-t211 Radera markeringen. Genväg: {0}
-o212 Fill the selection with Air. Shortcut: {0}
-t212 Fyll markeringen med Luft. Genväg: {0}
-o213 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t213 Kopiera alla block och enheter inom markeringen, och radera sen allt inom markeringen. Genväg: {0}
-o214 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t214 Kopiera alla block och enheter inom markeringen. Genväg: {0}
-o215 Import the last item taken by Cut or Copy. Shortcut: {0}
-t215 Importera den senaste saken tagen av Klipp eller Kopiera. Genväg: {0}
-o216 Export the selection to a .schematic file. Shortcut: {0}
-t216 Exportera markeringen till en .schematic fil. Genväg: {0}
-o217 Clone
+o205 Remove the selection. Shortcut: {0}
+t205 Radera markeringen. Genväg: {0}
+o206 Fill the selection with Air. Shortcut: {0}
+t206 Fyll markeringen med Luft. Genväg: {0}
+o207 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
+t207 Kopiera alla block och enheter inom markeringen, och radera sen allt inom markeringen. Genväg: {0}
+o208 Take a copy of all blocks and entities within the selection. Shortcut: {0}
+t208 Kopiera alla block och enheter inom markeringen. Genväg: {0}
+o209 Import the last item taken by Cut or Copy. Shortcut: {0}
+t209 Importera den senaste saken tagen av Klipp eller Kopiera. Genväg: {0}
+o210 Export the selection to a .schematic file. Shortcut: {0}
+t210 Exportera markeringen till en .schematic fil. Genväg: {0}
+o211 Clone
 Right-click for options
-t217 Kopiera
+t211 Kopiera
 Höger-klicka för inställningar
-o218 Brush
+o212 Brush
 Right-click for options
-t218 Pensel
+t212 Pensel
 Höger-klicka för inställningar
-o219 Fill
-t219 Fyll
-o220 Varied Fill
-t220 Varierad Fyllning
-o221 Flood Fill
-t221 Översvämnings Fyllning
-o222 Replace
-t222 Byt ut
-o223 Varied Replace
-t223 Varierad bytning
-o224 Erode
-t224 
-o225 Topsoil
-t225 
-o226 Mode:
-t226 Läge:
-o227 Brush:
-t227 Pensel:
-o228 Hollow
-t228 Urholka
-o229 Fill Air
-t229 Fyll Luft
-o230 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t230 Klicka och dra för att sätta ut block. Välj block: {P}-Click. Öka: {R}. Minska: {F}. Rotera: {E}. Rulla: {G}. Använd mushjulet för att ändra avståndet.
-o231 Whenever the brush size changes, reset the distance to the brush blocks.
-t231 När penselns storlek ändras, återställ avståndet till de penslade blocken.
-o232 Shortcut: Alt-1
-t232 Genväg: Alt-1
-o233 ---
-t233 ---
-o234 Weight 1
-t234 Vikt 1
-o235 Weight 2
-t235 Vikt 2
-o236 Weight 3
-t236 Vikt 3
-o237 Weight 4
-t237 Vikt 4
-o238 Shortcut: Alt-3
-t238 Genväg: Alt-3
-o239 Indiscriminate
-t239 
-o240 Noise
-t240 Oljud
-o241 Depth: 
-t241 Djup:
-o242 Only Change Natural Earth
-t242 Ändra Bara Naturlig Jord
-o243 Import
+o213 Fill
+t213 Fyll
+o214 Varied Fill
+t214 Varierad Fyllning
+o215 Flood Fill
+t215 Översvämnings Fyllning
+o216 Replace
+t216 Byt ut
+o217 Varied Replace
+t217 Varierad bytning
+o218 Erode
+t218 
+o219 Topsoil
+t219 
+o220 Mode:
+t220 Läge:
+o221 Brush:
+t221 Pensel:
+o222 Hollow
+t222 Urholka
+o223 Fill Air
+t223 Fyll Luft
+o224 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
+t224 Klicka och dra för att sätta ut block. Välj block: {P}-Click. Öka: {R}. Minska: {F}. Rotera: {E}. Rulla: {G}. Använd mushjulet för att ändra avståndet.
+o225 Whenever the brush size changes, reset the distance to the brush blocks.
+t225 När penselns storlek ändras, återställ avståndet till de penslade blocken.
+o226 Shortcut: Alt-1
+t226 Genväg: Alt-1
+o227 ---
+t227 ---
+o228 Weight 1
+t228 Vikt 1
+o229 Weight 2
+t229 Vikt 2
+o230 Weight 3
+t230 Vikt 3
+o231 Weight 4
+t231 Vikt 4
+o232 Shortcut: Alt-3
+t232 Genväg: Alt-3
+o233 Indiscriminate
+t233 
+o234 Noise
+t234 Oljud
+o235 Depth: 
+t235 Djup:
+o236 Only Change Natural Earth
+t236 Ändra Bara Naturlig Jord
+o237 Import
 Right-click for options
-t243 Importera
+t237 Importera
 Höger-klicka för inställningar
-o244 x
-t244 x
-o245 y
-t245 y
-o246 z
-t246 z
-o247 COPYING - 
-t247 KOPIERAR - 
-o248 Rotate
-t248 Rotera
-o249 Roll
-t249 Rulla
-o250 Chunk Align
-t250 Anpassa Chunks
-o251 Repeat
-t251 Repetera
-o252 Scale Factor
-t252 Storleks Faktor
-o253 Copy Air
-t253 Kopiera Luft
-o254 Copy Water
-t254 Kopiera Vatten
-o255 Copy Biome(s)
-t255 Kopiera Biome(r)
-o256 Update Command Block Coords
-t256 Uppdatera Commando Block Koordinater
-o257 Update Spawner Coords
-t257 Uppdatera Spawner Koordinater
-o258 Clone
-t258 Kopiera
-o259 When the clone tool is chosen, place the clone at the selection right away.
-t259 När kopierings verktyget är valt, placera det kopierade på markeringen direkt.
-o260 Shortcut: Alt-2
-t260 Genväg: Alt-2
-o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
+o238 x
+t238 x
+o239 y
+t239 y
+o240 z
+t240 z
+o241 COPYING - 
+t241 KOPIERAR - 
+o242 Rotate
+t242 Rotera
+o243 Roll
+t243 Rulla
+o244 Chunk Align
+t244 Anpassa Chunks
+o245 Repeat
+t245 Repetera
+o246 Scale Factor
+t246 Storleks Faktor
+o247 Copy Air
+t247 Kopiera Luft
+o248 Copy Water
+t248 Kopiera Vatten
+o249 Copy Biome(s)
+t249 Kopiera Biome(r)
+o250 Update Command Block Coords
+t250 Uppdatera Commando Block Koordinater
+o251 Update Spawner Coords
+t251 Uppdatera Spawner Koordinater
+o252 Clone
+t252 Kopiera
+o253 When the clone tool is chosen, place the clone at the selection right away.
+t253 När kopierings verktyget är valt, placera det kopierade på markeringen direkt.
+o254 Shortcut: Alt-2
+t254 Genväg: Alt-2
+o255 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 När ett kommando block flyttas, och det innehåller ett kommando, uppdatera automatiskt statiska koordinater (x y z) inuti det kommandot.
-o262 When a spawner is moved, automatically update its spawning coordinates.
+t255 När ett kommando block flyttas, och det innehåller ett kommando, uppdatera automatiskt statiska koordinater (x y z) inuti det kommandot.
+o256 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
-t262 När en spawner flyttas, uppdatera automatiskt dens spawning koordinater.
+t256 När en spawner flyttas, uppdatera automatiskt dens spawning koordinater.
 Genväg: Alt-5
-o263 Shortcut: Enter
-t263 Genväg: Enter
-o264 Fill and Replace
+o257 Shortcut: Enter
+t257 Genväg: Enter
+o258 Fill and Replace
 Right-click for options
-t264 Fyll och Byt ut
+t258 Fyll och Byt ut
 Höger-klicka för inställningar
-o265 Fill with:
-t265 Fyll med:
-o266 Search
-t266 Sök
-o267 Name
-t267 Namn
-o268 ID
-t268 ID
-o269 Any Subtype
-t269 Vilken som helst Subtyp
-o270 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t270 Tryck på {hotkey} för att välja ett block. Tryck på {R} för att aktivera byt ut läge. Klicka på Fyll eller tryck på Enter för att acceptera.
-o271 Find:
-t271 Hitta:
-o272 Replace with:
-t272 Byt ut mot:
-o273 When the fill tool is chosen, prompt for a block type.
-t273 När fyll verktyget är valt, fråga efter en block typ.
-o274 Filter
-t274 Filtrera
-o275 Strength
-t275 Styrka
-o276 Nausea (no mob effect)
-t276 Illamåenda (ingen mob effekt)
-o277 Weakness
-t277 Svaghet
-o278 Water Breathing
-t278 Undervattens Andning
-o279 Regeneration
-t279 Återhämtning
-o280 Poison
-t280 Gift
-o281 Resistance
-t281 Motstånd
-o282 Hunger (no mob effect)
-t282 Hunger (ingen mob effekt)
-o283 Haste (no mob effect)
-t283 Brådska (ingen mob effekt)
-o284 Fire Resistance
-t284 Eld Motstånd
-o285 Blindness (no mob effect)
-t285 Blindhet (ingen mob effekt)
-o286 Jump Boost
-t286 Hopp Förstärkning
-o287 Effect
-t287 Effekt
-o288 Level
-t288 Level
-o289 Duration (Seconds)
-t289 Varaktighet (Sekunder)
-o290 Add Potion Effect to Mobs
-t290 Lägg till Dryck Effekt till Mobs
-o291 BanSlimes
-t291 BannaSlimes
-o292 Change Mob Properties
-t292 Ändra Mob Egenskaper
-o293 Chunk Surface Repair
-t293 
-o294 Classic Water Flood
-t294 Klassisk Vatten Översvämning
-o295 Colorwires
-t295 Färgkablar
-o296 Create Busses
-t296 Skapa Bussar
-o297 Create Shops
-t297 Skapa Affärer
-o298 Create Spawners
-t298 Skapa Spawners
-o299 Decliff
-t299 
-o300 Find
-t300 Hitta
-o301 Forester
-t301 Skog-Skapare
-o302 Make Mobs Invincible
-t302 Gör Mobs Odödliga
-o303 Setbiome
-t303 Bestäm biome
-o304 Smooth - 2D
-t304 Slät - 2D
-o305 Filter:
-t305 Filter:
-o306 Update Filters
-t306 Uppdatera Filter
-o307 Max Seed
-t307 Max Seed
-o308 Health
-t308 Liv
-o309 VelocityX
-t309 
-o310 VelocityY
-t310 
-o311 VelocityZ
-t311 
-o312 Fire
-t312 Eld
-o313 FallDistance
-t313 FallDistans
-o314 AttackTime
-t314 AttackTid
-o315 HurtTime
-t315 SkadeTid
-o316 Lightning
-t316 Blixt
-o317 No Lightning
-t317 Ingen Blixt
-o318 Lightning Creeper
-t318 Blixt Creeper
-o319 Enderman Block Id
-t319 Enderman Block ID
-o320 Enderman Block Data
-t320 Enderman Block Data
-o321 Villager (green)
-t321 Bybo (grön)
-o322 Farmer (brown)
-t322 Bonde (brun)
-o323 Butcher (white apron)
-t323 
-o324 Librarian (white)
-t324 Bibliotikarie (vit)
-o325 Blacksmith (black apron)
-t325 Smed (svart förkläde)
-o326 Priest (purple)
-t326 Präst (lila)
-o327 Villager Profession
-t327 Bybo Yrke
-o328 Slime Size
-t328 Slime Storlek
-o329 Breeding Mode Ticks
+o259 Fill with:
+t259 Fyll med:
+o260 Search
+t260 Sök
+o261 Name
+t261 Namn
+o262 ID
+t262 ID
+o263 Any Subtype
+t263 Vilken som helst Subtyp
+o264 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
+t264 Tryck på {hotkey} för att välja ett block. Tryck på {R} för att aktivera byt ut läge. Klicka på Fyll eller tryck på Enter för att acceptera.
+o265 Find:
+t265 Hitta:
+o266 Replace with:
+t266 Byt ut mot:
+o267 When the fill tool is chosen, prompt for a block type.
+t267 När fyll verktyget är valt, fråga efter en block typ.
+o268 Filter
+t268 Filtrera
+o269 Strength
+t269 Styrka
+o270 Nausea (no mob effect)
+t270 Illamåenda (ingen mob effekt)
+o271 Weakness
+t271 Svaghet
+o272 Water Breathing
+t272 Undervattens Andning
+o273 Regeneration
+t273 Återhämtning
+o274 Poison
+t274 Gift
+o275 Resistance
+t275 Motstånd
+o276 Hunger (no mob effect)
+t276 Hunger (ingen mob effekt)
+o277 Haste (no mob effect)
+t277 Brådska (ingen mob effekt)
+o278 Fire Resistance
+t278 Eld Motstånd
+o279 Blindness (no mob effect)
+t279 Blindhet (ingen mob effekt)
+o280 Jump Boost
+t280 Hopp Förstärkning
+o281 Effect
+t281 Effekt
+o282 Level
+t282 Level
+o283 Duration (Seconds)
+t283 Varaktighet (Sekunder)
+o284 Add Potion Effect to Mobs
+t284 Lägg till Dryck Effekt till Mobs
+o285 Change Mob Properties
+t285 Ändra Mob Egenskaper
+o286 Chunk Surface Repair
+t286 
+o287 Classic Water Flood
+t287 Klassisk Vatten Översvämning
+o288 Colorwires
+t288 Färgkablar
+o289 Create Busses
+t289 Skapa Bussar
+o290 Create Shops
+t290 Skapa Affärer
+o291 Create Spawners
+t291 Skapa Spawners
+o292 Decliff
+t292 
+o293 Find
+t293 Hitta
+o294 Forester
+t294 Skog-Skapare
+o295 Make Mobs Invincible
+t295 Gör Mobs Odödliga
+o296 Setbiome
+t296 Bestäm biome
+o297 Smooth - 2D
+t297 Slät - 2D
+o298 Filter:
+t298 Filter:
+o299 Update Filters
+t299 Uppdatera Filter
+o300 Max Seed
+t300 Max Seed
+o301 Health
+t301 Liv
+o302 VelocityX
+t302 
+o303 VelocityY
+t303 
+o304 VelocityZ
+t304 
+o305 Fire
+t305 Eld
+o306 FallDistance
+t306 FallDistans
+o307 AttackTime
+t307 AttackTid
+o308 HurtTime
+t308 SkadeTid
+o309 Lightning
+t309 Blixt
+o310 No Lightning
+t310 Ingen Blixt
+o311 Lightning Creeper
+t311 Blixt Creeper
+o312 Enderman Block Id
+t312 Enderman Block ID
+o313 Enderman Block Data
+t313 Enderman Block Data
+o314 Villager (green)
+t314 Bybo (grön)
+o315 Farmer (brown)
+t315 Bonde (brun)
+o316 Butcher (white apron)
+t316 
+o317 Librarian (white)
+t317 Bibliotikarie (vit)
+o318 Blacksmith (black apron)
+t318 Smed (svart förkläde)
+o319 Priest (purple)
+t319 Präst (lila)
+o320 Villager Profession
+t320 Bybo Yrke
+o321 Slime Size
+t321 Slime Storlek
+o322 Breeding Mode Ticks
+t322 
+o323 Child/Adult Age
+t323 Barn/Vuxen Ålder
+o324 Repairs the backwards surfaces made by old versions of Minecraft.
+t324 
+o325 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+t325 
+o326 Flood Water
+t326 
+o327 Flood Lava
+t327 
+o328 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+t328 
+o329 Profession
 t329 
-o330 Child/Adult Age
-t330 Barn/Vuxen Ålder
-o331 Repairs the backwards surfaces made by old versions of Minecraft.
-t331 
-o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 
-o333 Flood Water
-t333 
-o334 Flood Lava
-t334 
-o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t335 
-o336 Profession
-t336 
-o337 Add Stopping Trade
-t337 
-o338 Invulnerable Villager
-t338 Odödlig Bybo
-o339 Make Unlimited Trades
-t339 Skapa Oändliga Byten
-o340 Give Experience per a Trade
-t340 Ge XP per byte
-o341 Make Villager not Move
-t341 Gör så att Bybon inte rör sig
-o342 Villager Name
-t342 Bybo Namn
-o343 Trade
-t343 Byta
-o344       Rotate the Position of your Trader
+o330 Add Stopping Trade
+t330 
+o331 Invulnerable Villager
+t331 Odödlig Bybo
+o332 Make Unlimited Trades
+t332 Skapa Oändliga Byten
+o333 Give Experience per a Trade
+t333 Ge XP per byte
+o334 Make Villager not Move
+t334 Gör så att Bybon inte rör sig
+o335 Villager Name
+t335 Bybo Namn
+o336 Trade
+t336 Byta
+o337       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 
-o345 Y-Axis
-t345 
-o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t346 
-o347 X-Axis
-t347 
-o348 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t348 
-o349 Rotation
-t349 
-o350 To create a shop first put your buy in the top slot(s) of the chest.
-Second put a second buy in the middle slot(optional).
-Third put a sell in the bottom slot.
-Click the chest you want and choose what you want and click hit enter
-*All items must be in the same row*
-
-t350 
-o351 Notes
-t351 Anteckningar
-o352 Include position data
-t352 Inkludera positions data
-o353 Both
-t353 Båda
-o354 Lower Only
-t354 Sänk Bara
-o355 Raise Only
-t355 Höj bara
-o356 Raise/Lower
-t356 Höj/Sänk
-o357 TileEntity
-t357 RutEntity
-o358 Entity
-t358 Entity
-o359 Block
-t359 Block
-o360 Match by:
-t360 Matcha med:
-o361 Match block type (for TileEntity searches):
-t361 Matcha block typ (för RutEntity sökningar):
-o362 Match block:
-t362 Matcha block:
-o363 Match block data:
-t363 Matcha block data:
-o364 Match tile entities (for Block searches):
-t364 Matcha rut entitier (för Block sökningar):
-o365 "None" for Name or Value will match any tag's Name or Value respectively.
-t365 "Inget" för Namn eller Värde kommer att matcha vilket taggs Namn eller Värde som helst.
-o366 Match Tag Name:
-t366 Matcha Tagg Namn:
-o367 Match Tag Value:
-t367 Matcha Tagg Värde:
-o368 Case insensitive:
-t368 Inte Skriftslägessensitiv:
-o369 Any
-t369 Vilket/Vilken som helst:
-o370 Match Tag Type:
-t370 Matcha Tagg Typ:
-o371 Start New Search
-t371 Påbörja Ny Sökning:
-o372 Find Next
-t372 Hitta Nästa
-o373 Dump Found Coordinates
-t373 Släng Hittade Koordinater
-o374 Operation:
-t374 Operation:
-o375 This filter is designed to search for NBT in either Entities or TileEntities.
+t337 
+o338 Y-Axis
+t338 
+o339 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
+t339 
+o340 X-Axis
+t340 
+o341 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
+t341 
+o342 Rotation
+t342 
+o343 Notes
+t343 Anteckningar
+o344 Include position data
+t344 Inkludera positions data
+o345 Both
+t345 Båda
+o346 Lower Only
+t346 Sänk Bara
+o347 Raise Only
+t347 Höj bara
+o348 Raise/Lower
+t348 Höj/Sänk
+o349 TileEntity
+t349 RutEntity
+o350 Entity
+t350 Entity
+o351 Block
+t351 Block
+o352 Match by:
+t352 Matcha med:
+o353 Match block type (for TileEntity searches):
+t353 Matcha block typ (för RutEntity sökningar):
+o354 Match block:
+t354 Matcha block:
+o355 Match block data:
+t355 Matcha block data:
+o356 Match tile entities (for Block searches):
+t356 Matcha rut entitier (för Block sökningar):
+o357 "None" for Name or Value will match any tag's Name or Value respectively.
+t357 "Inget" för Namn eller Värde kommer att matcha vilket taggs Namn eller Värde som helst.
+o358 Match Tag Name:
+t358 Matcha Tagg Namn:
+o359 Match Tag Value:
+t359 Matcha Tagg Värde:
+o360 Case insensitive:
+t360 Inte Skriftslägessensitiv:
+o361 Any
+t361 Vilket/Vilken som helst:
+o362 Match Tag Type:
+t362 Matcha Tagg Typ:
+o363 Start New Search
+t363 Påbörja Ny Sökning:
+o364 Find Next
+t364 Hitta Nästa
+o365 Dump Found Coordinates
+t365 Släng Hittade Koordinater
+o366 Operation:
+t366 Operation:
+o367 This filter is designed to search for NBT in either Entities or TileEntities.
 It can also be used to search for blocks.
 "Match by" determines which type of object is prioritized during the search.
 Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
@@ -798,1226 +777,1220 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 
-o376 Documentation
-t376 Dokumentation
-o377 Forester script by dudecon
-t377 
-o378 Procedural
-t378 Procedur
-o379 Normal
-t379 Normal
-o380 Bamboo
-t380 Bambu
-o381 Palm
-t381 Palm
-o382 Stickly
-t382 
-o383 Round
-t383 Rund
-o384 Cone
-t384 Kon
-o385 Rainforest
-t385 Regnskog
-o386 Mangrove
-t386 Mangrove Skog
-o387 Shape
-t387 Form
-o388 Tree Count
-t388 Träd Antal
-o389 Tree Height
-t389 Träd Höjd
-o390 Height Variation
-t390 Höjd Variation
-o391 Branch Density
-t391 Gren Densitet
-o392 Trunk Thickness
-t392 Stam Tjocklek
-o393 Broken Trunk
-t393 Förstörd Stam
-o394 Hollow Trunk
-t394 Ihålig Stam
-o395 Wood
-t395 Trä
-o396 Foliage
-t396 Lövverk
-o397 Foliage Density
-t397 Lövverksdensitet
-o398 Yes
-t398 Ja
-o399 To Stone
-t399 Till Sten
-o400 Hanging
-t400 Hängande
-o401 No
-t401 Nej
-o402 Roots
-t402 Rötter
-o403 Root Buttresses
-t403 
-o404 Wood Material
-t404 Trä Material
-o405 Leaf Material
-t405 Löv Material
-o406 Plant On
-t406 Plantera På
-o407 Ocean
-t407 Hav
-o408 Plains
-t408 Slätt
-o409 Desert
-t409 Öken
-o410 Extreme Hills
-t410 Extrema Kullar
-o411 Forest
-t411 Skog
-o412 Taiga
-t412 Taiga
-o413 Swamppland
-t413 Träsk
-o414 River
-t414 Flod
-o415 Hell (Nether)
-t415 Helvete (Nether)
-o416 Sky (End)
-t416 Himmel (Slut)
-o417 Frozen Ocean
-t417 Fruset Hav
-o418 Frozen River
-t418 Frusen Flod
-o419 Ice Plains
-t419 Isslätter
-o420 Ice Mountains
-t420 Isberg
-o421 Mushroom Island
-t421 Svamp Ö
-o422 Mushroom Island Shore
-t422 Svamp Ö Kust
-o423 Beach
-t423 Strand
-o424 Desert Hills
-t424 Öken Kullar
-o425 Forest Hills
-t425 Skogskullar
-o426 Taiga Hills
-t426 Taiga Kullar
-o427 Extreme Hills Edge
-t427 Extrema Kullars Kant
-o428 Jungle
-t428 Djungel
-o429 Jungle Hills
-t429 Djungel Kullar
-o430 Jungle Edge
-t430 Djungel Kant
-o431 Deep Ocean
-t431 Djupt Hav
-o432 Stone Beach
-t432 Sten Strand
-o433 Cold Beach
-t433 Kall Strand
-o434 Birch Forest
-t434 Björk Skog
-o435 Birch Forest Hills
-t435 Björk Skogskullar
-o436 Roofed Forest
-t436 Takförsedd Skog
-o437 Cold Taiga
-t437 Kall Taiga
-o438 Cold Taiga Hills
-t438 Kalla Taiga Kullar
-o439 Mega Taiga
-t439 Mega Taiga
-o440 Mega Taiga Hills
-t440 Mega Taiga Kullar
-o441 Extreme Hills+
-t441 Extrema Kullar+
-o442 Savanna
-t442 Savann
-o443 Savanna Plateau
-t443 Savann Platå
-o444 Mesa
-t444 Mesa
-o445 Mesa Plateau F
-t445 Mesa Platå F
-o446 Mesa Plateau
-t446 Mesa Platå
-o447 Sunflower Plains
-t447 Solros Slätter
-o448 Desert M
-t448 Öken M
-o449 Extreme Hills M
-t449 Extrema Kullar M
-o450 Flower Forest
-t450 Blomskog
-o451 Taiga M
-t451 Taiga M
-o452 Swampland M
-t452 Träsk M
-o453 Ice Plains Spikes
-t453 Isslätter med Spetsar
-o454 Ice Mountains Spikes
-t454 Isberg med Spetsar
-o455 Jungle M
-t455 Djungel M
-o456 JungleEdge M
-t456 DjungelKant M
-o457 Birch Forest M
-t457 Björk Skog M
-o458 Birch Forest Hills M
-t458 Björkskogskullar M
-o459 Roofed Forest M
-t459 Takförsedd Skog M
-o460 Cold Taiga M
-t460 Kall Taiga M
-o461 Mega Spruce Taiga
-t461 Mega Gran Taiga
-o462 Mega Spruce Taiga Hills
-t462 Mega Gran Taiga Kullar
-o463 Extreme Hills+ M
-t463 Extrema Kullar+ M
-o464 Savanna M
-t464 Savann M
-o465 Savanna Plateau M
-t465 Savann Platå M
-o466 Mesa (Bryce)
-t466 Mesa (Bryce)
-o467 Mesa Plateau F M
-t467 Mesa Platå F M
-o468 Mesa Plateau M
-t468 Mesa Platå M
-o469 (Uncalculated)
-t469 (Outräknad)
-o470 Biome
-t470 Biom
-o471 Repeat count
+t367 
+o368 Documentation
+t368 Dokumentation
+o369 Forester script by dudecon
+t369 
+o370 Procedural
+t370 Procedur
+o371 Normal
+t371 Normal
+o372 Bamboo
+t372 Bambu
+o373 Palm
+t373 Palm
+o374 Stickly
+t374 
+o375 Round
+t375 Rund
+o376 Cone
+t376 Kon
+o377 Rainforest
+t377 Regnskog
+o378 Mangrove
+t378 Mangrove Skog
+o379 Shape
+t379 Form
+o380 Tree Count
+t380 Träd Antal
+o381 Tree Height
+t381 Träd Höjd
+o382 Height Variation
+t382 Höjd Variation
+o383 Branch Density
+t383 Gren Densitet
+o384 Trunk Thickness
+t384 Stam Tjocklek
+o385 Broken Trunk
+t385 Förstörd Stam
+o386 Hollow Trunk
+t386 Ihålig Stam
+o387 Wood
+t387 Trä
+o388 Foliage
+t388 Lövverk
+o389 Foliage Density
+t389 Lövverksdensitet
+o390 Yes
+t390 Ja
+o391 To Stone
+t391 Till Sten
+o392 Hanging
+t392 Hängande
+o393 No
+t393 Nej
+o394 Roots
+t394 Rötter
+o395 Root Buttresses
+t395 
+o396 Wood Material
+t396 Trä Material
+o397 Leaf Material
+t397 Löv Material
+o398 Plant On
+t398 Plantera På
+o399 Ocean
+t399 Hav
+o400 Plains
+t400 Slätt
+o401 Desert
+t401 Öken
+o402 Extreme Hills
+t402 Extrema Kullar
+o403 Forest
+t403 Skog
+o404 Taiga
+t404 Taiga
+o405 Swamppland
+t405 Träsk
+o406 River
+t406 Flod
+o407 Hell (Nether)
+t407 Helvete (Nether)
+o408 Sky (End)
+t408 Himmel (Slut)
+o409 Frozen Ocean
+t409 Fruset Hav
+o410 Frozen River
+t410 Frusen Flod
+o411 Ice Plains
+t411 Isslätter
+o412 Ice Mountains
+t412 Isberg
+o413 Mushroom Island
+t413 Svamp Ö
+o414 Mushroom Island Shore
+t414 Svamp Ö Kust
+o415 Beach
+t415 Strand
+o416 Desert Hills
+t416 Öken Kullar
+o417 Forest Hills
+t417 Skogskullar
+o418 Taiga Hills
+t418 Taiga Kullar
+o419 Extreme Hills Edge
+t419 Extrema Kullars Kant
+o420 Jungle
+t420 Djungel
+o421 Jungle Hills
+t421 Djungel Kullar
+o422 Jungle Edge
+t422 Djungel Kant
+o423 Deep Ocean
+t423 Djupt Hav
+o424 Stone Beach
+t424 Sten Strand
+o425 Cold Beach
+t425 Kall Strand
+o426 Birch Forest
+t426 Björk Skog
+o427 Birch Forest Hills
+t427 Björk Skogskullar
+o428 Roofed Forest
+t428 Takförsedd Skog
+o429 Cold Taiga
+t429 Kall Taiga
+o430 Cold Taiga Hills
+t430 Kalla Taiga Kullar
+o431 Mega Taiga
+t431 Mega Taiga
+o432 Mega Taiga Hills
+t432 Mega Taiga Kullar
+o433 Extreme Hills+
+t433 Extrema Kullar+
+o434 Savanna
+t434 Savann
+o435 Savanna Plateau
+t435 Savann Platå
+o436 Mesa
+t436 Mesa
+o437 Mesa Plateau F
+t437 Mesa Platå F
+o438 Mesa Plateau
+t438 Mesa Platå
+o439 Sunflower Plains
+t439 Solros Slätter
+o440 Desert M
+t440 Öken M
+o441 Extreme Hills M
+t441 Extrema Kullar M
+o442 Flower Forest
+t442 Blomskog
+o443 Taiga M
+t443 Taiga M
+o444 Swampland M
+t444 Träsk M
+o445 Ice Plains Spikes
+t445 Isslätter med Spetsar
+o446 Ice Mountains Spikes
+t446 Isberg med Spetsar
+o447 Jungle M
+t447 Djungel M
+o448 JungleEdge M
+t448 DjungelKant M
+o449 Birch Forest M
+t449 Björk Skog M
+o450 Birch Forest Hills M
+t450 Björkskogskullar M
+o451 Roofed Forest M
+t451 Takförsedd Skog M
+o452 Cold Taiga M
+t452 Kall Taiga M
+o453 Mega Spruce Taiga
+t453 Mega Gran Taiga
+o454 Mega Spruce Taiga Hills
+t454 Mega Gran Taiga Kullar
+o455 Extreme Hills+ M
+t455 Extrema Kullar+ M
+o456 Savanna M
+t456 Savann M
+o457 Savanna Plateau M
+t457 Savann Platå M
+o458 Mesa (Bryce)
+t458 Mesa (Bryce)
+o459 Mesa Plateau F M
+t459 Mesa Platå F M
+o460 Mesa Plateau M
+t460 Mesa Platå M
+o461 (Uncalculated)
+t461 (Outräknad)
+o462 Biome
+t462 Biom
+o463 Repeat count
+t463 
+o464 Depth
+t464 Djup
+o465 Pick a block:
+t465 Välj ett block:
+o466 Players
+t466 Spelare
+o467 Player Name
+t467 Spelarnamn
+o468 Goto
+t468 Gå till
+o469 Goto View
+t469 Gå till visning
+o470 Move
+t470 Flytta
+o471 Align to Camera
 t471 
-o472 Depth
-t472 Djup
-o473 Pick a block:
-t473 Välj ett block:
-o474 Players
-t474 Spelare
-o475 Player Name
-t475 Spelarnamn
-o476 Player: 
-t476 Spelare: 
-o477 Goto
-t477 Gå till
-o478 Goto View
-t478 Gå till visning
-o479 Move
-t479 Flytta
-o480 Align to Camera
-t480 
-o481 Player (Single Player)
-t481 Spelare (Single Player)
-o482 Chunk Control
-t482 Chunk Kontrol
-o483 Move Spawn Point
+o472 Player (Single Player)
+t472 Spelare (Single Player)
+o473 Chunk Control
+t473 Chunk Kontrol
+o474 Move Spawn Point
 Right-click for options
-t483 Flytta Spawn Point
+t474 Flytta Spawn Point
 Höger-klicka för inställningar
-o484 Goto Spawn
-t484 Gå till Spawn
-o485 Take a Screenshot
-t485 Ta ett kort
-o486 Load Preset
-t486 
-o487 Remove Presets
-t487 
-o488 Save as Preset
-t488 
-o489 Preset Name:
-t489 
-o490 That preset name is reserved. Try pick another preset name.
-t490 
-o491 Invalid character in file name
-t491 
-o492 No presets saved
-t492 
-o493 Select preset to delete
-t493 
-o494 Version {} is available
-t494 Version {} är tillgänglig
-o495 Download
-t495 Ladda ner
-o496 View
-t496 Visa
-o497 Ignore
-t497 Ignorera
-o498 Space
-t498 Mellanslag
-o499 Tab
-t499 Tab
-o500 Delete
-t500 Radera
-o501 Scroll Up
-t501 Scrolla Upp
-o502 Scroll Down
-t502 Scrolla Ner
-o503 Button 3
-t503 Knapp 3
-o504 Alt
-t504 Alt
-o505 Ctrl
-t505 Ctrl
-o506 Creating a new world.
-t506 Skapar en ny värld.
-o507 Minecraft Server
-t507 Minecraft Server
-o508 Flatland
-t508 Flatland
-o509 Generator:
-t509 Generator:
-o510 Will automatically download and use the latest version
-t510 Kommer automatiskt ladda ner och använda den senaste versionen
-o511 Height: 
-t511 Höjd: 
-o512 Grass
-t512 Gräs
-o513 Server version:
-t513 Server version:
-o514 or
-t514 eller
-o515 Check for Updates
-t515 Leta efter Uppdateringar
-o516 Advanced
-t516 Avancerat
-o517 Open Server Storage
-t517 Öppna Server Storage
-o518 Reveal World Cache
-t518 
-o519 Delete World Cache
-t519 Radera Värld Cache
-o520 Advanced...
-t520 Avancerat...
-o521 Simulate world
-t521 Simulera värld
-o522 Use snapshot versions
-t522 Använd snapshot versioner
-o523 X: 
-t523 X:
-o524 Y: 
-t524 Y:
-o525 Z: 
-t525 Z:
-o526 f: 
-t526 f:
-o527 Seed: 
-t527 Seed:
-o528 East-West Chunks: 
-t528 Öst-Västra Chunks: 
-o529 North-South Chunks: 
-t529 Nord-södra Chunks: 
-o530 Survival
-t530 Överlevnad
-o531 Cancel
-t531 Avbryt
-o532 Creative
-t532 Kreativt
-o533 Style:
-t533 Stil:
-o534 H
-t534 H
-o535 L
-t535 L
-o536 W
-t536 W
-o537 Minimum Spacing
-t537 
-o538 Regenerate Entity UUID
-t538 Regenerera Entity UUID
-o539 Replace blocks with any data value. Only useful for Replace operations.
-t539 Byt ut block med vilket som helst data värde. Bara användbar för "Byt ut" operationer.
-o540 Entities
-t540 
-o541 Items
-t541 
-o542 TileEntities
-t542 
-o543 TileTicks
-t543 
-o544 Unpopulated Chunks
-t544 
-o545 Sky
-t545 Himmel
-o546 Fog
-t546 Dimma
-o547 Ceiling
-t547 Tak
-o548 Chunk Redraw
-t548 
-o549 Hidden Ores
-t549 Gömd Malm
-o550 Bedrock
-t550 Berggrund
-o551 Coal
-t551 Kol
-o552 Iron
-t552 Järn
-o553 Lapis Lazuli
-t553 Lapis Lazuli
-o554 Redstone
-t554 Rödsten
-o555 Gold
-t555 Guld
-o556 Diamond
-t556 Diamant
-o557 Nether Quartz
-t557 Nether Kvarts
-o558 Shortcut: {0}
+o475 Goto Spawn
+t475 Gå till Spawn
+o476 Take a Screenshot
+t476 Ta ett kort
+o477 Load Preset
+t477 
+o478 Remove Presets
+t478 
+o479 Save as Preset
+t479 
+o480 Preset Name:
+t480 
+o481 That preset name is reserved. Try pick another preset name.
+t481 
+o482 Invalid character in file name
+t482 
+o483 No presets saved
+t483 
+o484 Select preset to delete
+t484 
+o485 Version {} is available
+t485 Version {} är tillgänglig
+o486 Download
+t486 Ladda ner
+o487 View
+t487 Visa
+o488 Ignore
+t488 Ignorera
+o489 Space
+t489 Mellanslag
+o490 Tab
+t490 Tab
+o491 Delete
+t491 Radera
+o492 Scroll Up
+t492 Scrolla Upp
+o493 Scroll Down
+t493 Scrolla Ner
+o494 Button 3
+t494 Knapp 3
+o495 Alt
+t495 Alt
+o496 Ctrl
+t496 Ctrl
+o497 Creating a new world.
+t497 Skapar en ny värld.
+o498 Minecraft Server
+t498 Minecraft Server
+o499 Flatland
+t499 Flatland
+o500 Generator:
+t500 Generator:
+o501 Will automatically download and use the latest version
+t501 Kommer automatiskt ladda ner och använda den senaste versionen
+o502 Height: 
+t502 Höjd: 
+o503 Grass
+t503 Gräs
+o504 Server version:
+t504 Server version:
+o505 or
+t505 eller
+o506 Check for Updates
+t506 Leta efter Uppdateringar
+o507 Advanced
+t507 Avancerat
+o508 Open Server Storage
+t508 Öppna Server Storage
+o509 Reveal World Cache
+t509 
+o510 Delete World Cache
+t510 Radera Värld Cache
+o511 Advanced...
+t511 Avancerat...
+o512 Simulate world
+t512 Simulera värld
+o513 Use snapshot versions
+t513 Använd snapshot versioner
+o514 X: 
+t514 X:
+o515 Y: 
+t515 Y:
+o516 Z: 
+t516 Z:
+o517 f: 
+t517 f:
+o518 Seed: 
+t518 Seed:
+o519 East-West Chunks: 
+t519 Öst-Västra Chunks: 
+o520 North-South Chunks: 
+t520 Nord-södra Chunks: 
+o521 Survival
+t521 Överlevnad
+o522 Cancel
+t522 Avbryt
+o523 Creative
+t523 Kreativt
+o524 Style:
+t524 Stil:
+o525 H
+t525 H
+o526 L
+t526 L
+o527 W
+t527 W
+o528 Minimum Spacing
+t528 
+o529 Regenerate Entity UUID
+t529 Regenerera Entity UUID
+o530 Replace blocks with any data value. Only useful for Replace operations.
+t530 Byt ut block med vilket som helst data värde. Bara användbar för "Byt ut" operationer.
+o531 Entities
+t531 
+o532 Items
+t532 
+o533 TileEntities
+t533 
+o534 TileTicks
+t534 
+o535 Unpopulated Chunks
+t535 
+o536 Sky
+t536 Himmel
+o537 Fog
+t537 Dimma
+o538 Ceiling
+t538 Tak
+o539 Chunk Redraw
+t539 
+o540 Hidden Ores
+t540 Gömd Malm
+o541 Bedrock
+t541 Berggrund
+o542 Coal
+t542 Kol
+o543 Iron
+t543 Järn
+o544 Lapis Lazuli
+t544 Lapis Lazuli
+o545 Redstone
+t545 Rödsten
+o546 Gold
+t546 Guld
+o547 Diamond
+t547 Diamant
+o548 Nether Quartz
+t548 Nether Kvarts
+o549 Shortcut: {0}
+t549 
+o550 View Distance ({0})
+t550 
+o551 Copy Stack Size: 
+t551 
+o552 Remove
+t552 Ta bort
+o553 Reload Skins
+t553 Ladda om Skins
+o554 Previous Page
+t554 Förra sidan
+o555 Next Page
+t555 Nästa sida
+o556 Super Secret Settings
+t556 Super Hemliga Inställningar
+o557 Default Resource Pack
+t557 
+o558 Square
 t558 
-o559 View Distance ({0})
+o559 Record Macro
 t559 
-o560 Copy Stack Size: 
+o560 Health Boost
 t560 
-o561 Remove
-t561 Ta bort
-o562 Reload Skins
-t562 Ladda om Skins
-o563 Previous Page
-t563 Förra sidan
-o564 Next Page
-t564 Nästa sida
-o565 Super Secret Settings
-t565 Super Hemliga Inställningar
-o566 Default Resource Pack
+o561 Saturation (no mob effect)
+t561 
+o562 Wither
+t562 
+o563 Invisibility
+t563 Osynlighet
+o564 Slowness
+t564 
+o565 Absorption
+t565 
+o566 Night Vision (no mob effect)
 t566 
-o567 Square
-t567 
-o568 Record Macro
+o567 Speed
+t567 Hastighet
+o568 Mining Fatigue (no mob effect)
 t568 
-o569 Health Boost
-t569 
-o570 Saturation (no mob effect)
+o569 Player Name(s):
+t569 Spelarnamn:
+o570 Chunks Borders
 t570 
-o571 Wither
+o571 Fast Nudge
 t571 
-o572 Invisibility
-t572 Osynlighet
-o573 Slowness
+o572 Clone Fast Nudge Settings
+t572 
+o573 Move by the width of selection 
 t573 
-o574 Absorption
+o574 Moves clone by his width
 t574 
-o575 Night Vision (no mob effect)
+o575 Width of clone movement: 
 t575 
-o576 Speed
-t576 Hastighet
-o577 Mining Fatigue (no mob effect)
+o576 Import Fast Nudge Settings:
+t576 
+o577 Move by the width of schematic 
 t577 
-o578 Player Name(s):
-t578 Spelarnamn:
-o579 Chunks Borders
+o578 Moves selection by his width
+t578 
+o579 Width of import movement: 
 t579 
-o580 Fast Nudge
-t580 
-o581 Clone Fast Nudge Settings
+o580 Import Options
+t580 Importera Inställningar
+o581 Blocks Fast Nudge Settings:
 t581 
-o582 Move by the width of selection 
+o582 Selection Fast Nudge Settings:
 t582 
-o583 Moves clone by his width
+o583 Points Fast Nudge Settings:
 t583 
-o584 Width of clone movement: 
+o584 Moves points by the selection's width
 t584 
-o585 Import Fast Nudge Settings:
+o585 Width of points movement: 
 t585 
-o586 Move by the width of schematic 
-t586 
-o587 Moves selection by his width
-t587 
-o588 Width of import movement: 
-t588 
-o589 Import Options
-t589 Importera Inställningar
-o590 Blocks Fast Nudge Settings:
-t590 
-o591 Selection Fast Nudge Settings:
-t591 
-o592 Points Fast Nudge Settings:
-t592 
-o593 Moves points by the selection's width
-t593 
-o594 Width of points movement: 
-t594 
-o595 Do you want to save your changes?
-t595 Vill du spara dina ändringar?
-o596 Don't Save
-t596 Spara Inte
-o597 Press a key to assign to the action "{0}"
+o586 Do you want to save your changes?
+t586 Vill du spara dina ändringar?
+o587 Don't Save
+t587 Spara Inte
+o588 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
-t597 
-o598 Press a key to assign to the action "{0}"
+t588 
+o589 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
+t589 
+o590 {0} is not a modifier. Press a new key.
+
+Press ESC to cancel.
+t590 
+o591 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+
+Press ESC to cancel.
+t591 
+o592 You can't use the key {0}. Press a new key.
+
+Press ESC to cancel.
+t592 
+o593 Reset to default
+t593 
+o594 Do you want to keep your changes?
+t594 Vill du spara dina ändringar?
+o595 Screenshots
+t595 Bilder
+o596 Uses the Latest Snapshot Terrain Generation
+t596 
+o597 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t597 
+o598 Last Played
 t598 
-o599 {0} is not a modifier. Press a new key.
-
-Press ESC to cancel.
+o599 Level Name (filename)
 t599 
-o600 Movement keys can't use Ctrl or be with modifiers. Press a new key.
-
-Press ESC to cancel.
-t600 
-o601 You can't use the key {0}. Press a new key.
-
-Press ESC to cancel.
+o600 Load
+t600 Ladda
+o601 Maximum number of copied objects.
 t601 
-o602 Reset to default
+o602 Try to save and restore the window position.
 t602 
-o603 Do you want to keep your changes?
-t603 Vill du spara dina ändringar?
-o604 Screenshots
-t604 Bilder
-o605 Uses the Latest Snapshot Terrain Generation
+o603 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t603 
+o604 MCEditData
+t604 MCEditData
+o605 This will move your settings and schematics to your Documents folder. Continue?
 t605 
-o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+o606 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t606 
-o607 Last Played
-t607 
-o608 Level Name (filename)
-t608 
-o609 Load
-t609 Ladda
-o610 Maximum number of copied objects.
-t610 
-o611 Try to save and restore the window position.
+o607 Goto Position:
+t607 Gå till position:
+o608 (click anywhere to teleport)
+t608 (klicka var som helst för att teleportera)
+o609 Format:
+t609 Format:
+o610 Name:
+t610 Namn:
+o611 Minecraft Infinite World (Anvil Format)
 t611 
-o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t612 
-o613 MCEditData
-t613 MCEditData
-o614 This will move your settings and schematics to your Documents folder. Continue?
+o612 Day: 
+t612 Dag: 
+o613 Time of day:
+t613 Tid på dagen:
+o614 RandomSeed:
 t614 
-o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t615 
-o616 Goto Position:
-t616 Gå till position:
-o617 (click anywhere to teleport)
-t617 (klicka var som helst för att teleportera)
-o618 Format:
-t618 Format:
-o619 Name:
-t619 Namn:
-o620 Minecraft Infinite World (Anvil Format)
+o615 Game Type:
+t615 Spel Typ:
+o616 Number of chunks: {0}
+t616 
+o617 Number of regions: {0}
+t617 
+o618 Repair regions
+t618 
+o619 Open Folder
+t619 Öppna Mapp
+o620 Inventory Slot #%s
 t620 
-o621 Day: 
-t621 Dag: 
-o622 Time of day:
-t622 Tid på dagen:
-o623 RandomSeed:
+o621 id
+t621 
+o622 Count
+t622 
+o623 Damage
 t623 
-o624 Game Type:
-t624 Spel Typ:
-o625 Number of chunks: {0}
+o624 NBT Explorer
+t624 
+o625 Reset
 t625 
-o626 Number of regions: {0}
+o626 Reset ALL your changes in the NBT data.
 t626 
-o627 Repair regions
-t627 
-o628 Open Folder
-t628 Öppna Mapp
-o629 Inventory Slot #%s
-t629 
-o630 id
-t630 
-o631 Count
-t631 
-o632 Damage
-t632 
-o633 NBT Explorer
-t633 
-o634 Reset
-t634 
-o635 Reset ALL your changes in the NBT data.
-t635 
-o636 Data Type:
-t636 Data Typ:
-o637 -> Name
-t637 -> Namn
-o638 Double-click to edit
-t638 Dubbel-klicka för att ändra
-o639 NBT Explorer
+o627 Data Type:
+t627 Data Typ:
+o628 -> Name
+t628 -> Namn
+o629 Double-click to edit
+t629 Dubbel-klicka för att ändra
+o630 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
+t630 
+o631 Save your change in the NBT data.
+t631 
+o632 Save unsaved edits before loading?
+t632 
+o633 {0} unsaved edits.  {1} to save.  {2}
+t633 {0} osparade ändringar.  {1} för att spara.  {2}
+o634 (UNDO DISABLED)
+t634 
+o635 Save unsaved edits before closing?
+t635 
+o636 NBT Tree Settings
+t636 
+o637 Use Bullet Styles
+t637 
+o638 Use Bullet Text
+t638 
+o639 Use Bullet Images
 t639 
-o640 Save your change in the NBT data.
+o640 Bullet Images File
 t640 
-o641 Save unsaved edits before loading?
-t641 
-o642 {0} unsaved edits.  {1} to save.  {2}
-t642 {0} osparade ändringar.  {1} för att spara.  {2}
-o643 (UNDO DISABLED)
-t643 
-o644 Save unsaved edits before closing?
-t644 
-o645 Load NBT file...
-t645 Ladda NBT fil...
-o646 NBT Tree Settings
-t646 
-o647 Use Bullet Styles
-t647 
-o648 Use Bullet Text
-t648 
-o649 Use Bullet Images
-t649 
-o650 Bullet Images File
-t650 
-o651 Choose an image file...
-t651 Välj en bild fil...
-o652 Select a NBT (.dat) file...
-t652 Välj en NBT (.dat) fil...
-o653 File already exists.
+o641 Choose an image file...
+t641 Välj en bild fil...
+o642 Select a NBT (.dat) file...
+t642 Välj en NBT (.dat) fil...
+o643 File already exists.
 Click 'OK' to choose one.
-t653 Fil existerar redan.
+t643 Fil existerar redan.
 Klicka på 'OK' för att välja en.
-o654 Choose a NBT file...
-t654 Välj en NBT fil...
-o655 The selected object is not a file.
+o644 Choose a NBT file...
+t644 Välj en NBT fil...
+o645 The selected object is not a file.
 Can't load it.
-t655 
-o656 The selected object is not a file.
+t645 
+o646 The selected object is not a file.
 Can't save it.
+t646 
+o647 Show all the tags in the tree
+t647 
+o648 Compound
+t648 
+o649 Integer
+t649 
+o650 Floating point
+t650 
+o651 Text
+t651 Text
+o652 Boolean
+t652 
+o653 Choose default data
+t653 
+o654 Item Type: %s
+t654 
+o655 Value
+t655 Värde
+o656 This item type is a container. Add chlidren later.
 t656 
-o657 Show all the tags in the tree
+o657 Choose item type
 t657 
-o658 Compound
-t658 
-o659 Integer
+o658 Choose a name
+t658 Välj ett namn
+o659 Byte
 t659 
-o660 Floating point
+o660 Long
 t660 
-o661 Text
-t661 Text
-o662 Boolean
+o661 Short
+t661 
+o662 String
 t662 
-o663 Choose default data
+o663 List
 t663 
-o664 Item Type: %s
+o664 Byte Array
 t664 
-o665 Value
-t665 Värde
-o666 This item type is a container. Add chlidren later.
+o665 Int Array
+t665 
+o666 Short Array
 t666 
-o667 Choose item type
+o667 Click to bind this filter to a hotkey
 t667 
-o668 Choose a name
-t668 Välj ett namn
-o669 Byte
-t669 
-o670 Long
-t670 
-o671 Short
-t671 
-o672 String
-t672 
-o673 List
-t673 
-o674 Byte Array
-t674 
-o675 Int Array
-t675 
-o676 Short Array
-t676 
-o677 Click to bind this filter to a hotkey
-t677 
-o678 Press a key to assign to the filter "{0}"
+o668 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t678 
-o679 Can't bind. {0} is already used by {1}.
+t668 
+o669 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
-t679 
-o680 [No players]
-t680 [Inga spelare]
-o681 Press to unbind
+t669 
+o670 [No players]
+t670 [Inga spelare]
+o671 Press to unbind
+t671 
+o672 Are you sure you want to delete the default player?
+t672 
+o673 Double-click or use the button below to edit the NBT Data.
+t673 
+o674 Go Back
+t674 Gå Tillbaks
+o675 Upload to FTP Server
+t675 Ladda upp till FTP Server
+o676 There are {0} unsaved changes.
+t676 
+o677 Save and Quit
+t677 Spara och Avsluta
+o678 Refresh Player Names
+t678 
+o679 Results
+t679 Resultat
+o680 Smooth - 3D
+t680 
+o681 Smoothing
 t681 
-o682 Are you sure you want to delete the default player?
-t682 
-o683 Double-click or use the button below to edit the NBT Data.
-t683 
-o684 Go Back
-t684 Gå Tillbaks
-o685 Upload to FTP Server
-t685 Ladda upp till FTP Server
-o686 There are {0} unsaved changes.
-t686 
-o687 Save and Quit
-t687 Spara och Avsluta
-o688 Refresh Player Names
-t688 
-o689 Results
-t689 Resultat
-o690 Smooth - 3D
-t690 
-o691 Smoothing
-t691 
-o692 Made by Sethbling
-t692 Gjord av Sethbling
-o693 NBT Data
-t693 NBT Data
-o694 Edit NBT
-t694 Ändra NBT
-o695 Open the NBT Explorer to edit player's attributes and inventory
-t695 
-o696 Not yet implemented.
+o682 Made by Sethbling
+t682 Gjord av Sethbling
+o683 NBT Data
+t683 NBT Data
+o684 Edit NBT
+t684 Ändra NBT
+o685 Open the NBT Explorer to edit player's attributes and inventory
+t685 
+o686 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t696 
-o697 Error while getting player file.
-%s not found.
-t697 
-o698 Spawn point fixed. Changes: 
+t686 
+o687 Spawn point fixed. Changes: 
 
 
-t698 
-o699 <Selection>
-t699 
-o700 <Miscellaneous>
-t700 
-o701 Take Screenshot
-t701 Ta Bild
-o702 Double-click to go to this item.
-t702 
-o703 Save and Restart
-t703 Spara och starta om
-o704 From FTP Server
-t704 Från FTP Server
-o705 <Chunk Control Tool>
-t705 
-o706 Select Chunks
-t706 
-o707 
+t687 
+o688 <Selection>
+t688 
+o689 <Miscellaneous>
+t689 
+o690 Take Screenshot
+t690 Ta Bild
+o691 Double-click to go to this item.
+t691 
+o692 From FTP Server
+t692 Från FTP Server
+o693 <Chunk Control Tool>
+t693 
+o694 Select Chunks
+t694 
+o695 
 No matching blocks/tile entities found
-t707 
-o708 Choose a filter, then click Filter or press Enter to apply it.
-t708 
-o709 Click to set this item down.
-t709 
-o710 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
-t710 
-o711 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t711 
-o712 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t712 
-o713 Copying to clone buffer...
-t713 
-o714 Import a schematic or level...
-t714 
-o715 Could not find the Minecraft saves directory!
+t695 
+o696 Choose a filter, then click Filter or press Enter to apply it.
+t696 
+o697 Click to set this item down.
+t697 
+o698 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+t698 
+o699 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+t699 
+o700 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+t700 
+o701 Copying to clone buffer...
+t701 
+o702 Import a schematic or level...
+t702 
+o703 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t715 
-o716 I don't know how to open {0}:
+t703 
+o704 I don't know how to open {0}:
 
 {1!r}
+t704 
+o705 Checking for server updates...
+t705 Letar efter server uppdateringar...
+o706 Time left: {0}
+t706 Tid kvar: {0}
+o707 Untitled World
+t707 
+o708 Name this new world.
+t708 Namnge den här världen.
+o709 Minecraft World *.*  
+t709 Minecraft Värld *.*
+o710 Generating chunks...
+t710 Genererar chunks...
+o711 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t711 
+o712 Analyzing {0} blocks...
+t712 Analyserar {0} block...
+o713 Save to file...
+t713 Spara till fil...
+o714 Fill with Air
+t714 Fyll med Luft
+o715 Delete Chunks
+t715 Radera Chunks
+o716 Recording undo...
 t716 
-o717 Checking for server updates...
-t717 Letar efter server uppdateringar...
-o718 Time left: {0}
-t718 Tid kvar: {0}
-o719 Untitled World
-t719 
-o720 Name this new world.
-t720 Namnge den här världen.
-o721 Minecraft World *.*  
-t721 Minecraft Värld *.*
-o722 Generating chunks...
-t722 Genererar chunks...
-o723 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t723 
-o724 Analyzing {0} blocks...
-t724 Analyserar {0} block...
-o725 Save to file...
-t725 Spara till fil...
-o726 Fill with Air
-t726 Fyll med Luft
-o727 Delete Chunks
-t727 Radera Chunks
-o728 Recording undo...
+o717 Replacing blocks...
+t717 Ersätter block...
+o718 REPLACING - 
+t718 ERSÄTTER - 
+o719 Copying chunk %s...
+t719 Kopierar chunk %s...
+o720 Continue with undo disabled?
+t720 
+o721 Continue
+t721 Fortsätt
+o722 Canceled
+t722 
+o723 DELETING - 
+t723 RADERAR - 
+o724 Deleting {0} blocks
+t724 Raderar {0} block
+o725 WORKING - 
+t725 ARBETAR - 
+o726 Removing Tile Ticks...
+t726 
+o727 Removing entities...
+t727 
+o728 Copying {0:n} blocks...
 t728 
-o729 Replacing blocks...
-t729 Ersätter block...
-o730 REPLACING - 
-t730 ERSÄTTER - 
-o731 Copying chunk %s...
-t731 Kopierar chunk %s...
-o732 Continue with undo disabled?
+o729 Undoing...
+t729 
+o730 UNDOING - 
+t730 
+o731 Really delete these chunks? This cannot be undone.
+t731 
+o732 Save these chunks and remove the rest? This cannot be undone.
 t732 
-o733 Continue
-t733 Fortsätt
-o734 Canceled
+o733 Lighting {0} chunks...
+t733 
+o734 Create chunks using the settings above? This cannot be undone.
 t734 
-o735 DELETING - 
-t735 RADERAR - 
-o736 Deleting {0} blocks
-t736 Raderar {0} block
-o737 WORKING - 
-t737 ARBETAR - 
-o738 Removing Tile Ticks...
+o735 Add
+t735 Lägg till
+o736 New child
+t736 
+o737 Rename
+t737 Byt namn
+o738 Paste as child
 t738 
-o739 Removing entities...
+o739 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t739 
-o740 Copying {0:n} blocks...
+o740 Screenshot taken and saved as '%s'
 t740 
-o741 Undoing...
+o741 Fonts Proportion (%): 
 t741 
-o742 UNDOING - 
-t742 
-o743 Really delete these chunks? This cannot be undone.
-t743 
-o744 Save these chunks and remove the rest? This cannot be undone.
-t744 
-o745 Lighting {0} chunks...
-t745 
-o746 Create chunks using the settings above? This cannot be undone.
-t746 
-o747 Add
-t747 Lägg till
-o748 New child
-t748 
-o749 Rename
-t749 Byt namn
-o750 Paste as child
-t750 
-o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t751 
-o752 Screenshot taken and saved as '%s'
-t752 
-o753 Fonts Proportion (%): 
-t753 
-o754 Fonts sizing proportion. The number is a percentage.
+o742 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t754 
-o755 Save As
-t755 Spara Som
-o756 Name the new copy:
+t742 
+o743 Save As
+t743 Spara Som
+o744 Copying %0.1f million blocks
+t744 
+o745 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t745 
+o746 Keep Data Intact
+t746 
+o747 This pulls skins from the online server, so this may take a while
+t747 
+o748 Session:
+t748 
+o749 Session Lock is being used by Minecraft
+t749 
+o750 Session Lock is being used by MCEdit
+t750 
+o751 Show Player Skins
+t751 Visa Spelarnas Skins
+o752 Show player skins while editing the world
+t752 Visa spelarnas skins när du ändrar på världen
+o753 Compass Size (%): 
+t753 Kompass Storlek (%): 
+o754 Fog Intensity (%): 
+t754 Intensitet av dimma (%): 
+o755 Toggle compass
+t755 
+o756 Width of blocks movement: 
 t756 
-o757 Copying %0.1f million blocks
+o757 Width of selection movement: 
 t757 
-o758 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t758 
-o759 Keep Data Intact
+o758 Import
+t758 Importera
+o759 Old (Messy)
 t759 
-o760 This pulls skins from the online server, so this may take a while
+o760 Click to open filters folder
 t760 
-o761 Session:
-t761 
-o762 Session Lock is being used by Minecraft
-t762 
-o763 Session Lock is being used by MCEdit
-t763 
-o764 Show Player Skins
-t764 Visa Spelarnas Skins
-o765 Show player skins while editing the world
-t765 Visa spelarnas skins när du ändrar på världen
-o766 Compass Size (%): 
-t766 Kompass Storlek (%): 
-o767 Fog Intensity (%): 
-t767 Intensitet av dimma (%): 
-o768 Toggle compass
-t768 
-o769 Width of blocks movement: 
-t769 
-o770 Width of selection movement: 
-t770 
-o771 Import
-t771 Importera
-o772 Old (Messy)
-t772 
-o773 Click to open filters folder
-t773 
-o774 Head
-t774 Huvud
-o775 Exception during filter operation. See console for details.
+o761 Head
+t761 Huvud
+o762 Exception during filter operation. See console for details.
 
 {0}
+t762 
+o763 Shift
+t763 
+o764 Option
+t764 
+o765 Meta
+t765 
+o766 Applying {0} brush...
+t766 
+o767 Graphics Settings
+t767 
+o768 Run Macro
+t768 
+o769 Delete Macro
+t769 
+o770 Macro Name: 
+t770 
+o771 Enter a Player Name: 
+t771 
+o772 Click the mouse button again to place the other selection corner.
+t772 
+o773 Stop recording
+t773 
+o774 Currently recording a macro
+t774 
+o775 Choose a custom head for the villagers you make
 t775 
-o776 Shift
+o776 Custom Head
 t776 
-o777 Option
+o777 Skull Type
 t777 
-o778 Meta
+o778 Skeleton Skull
 t778 
-o779 Applying {0} brush...
+o779 Wither Skeleton Skull
 t779 
-o780 Graphics Settings
+o780 Zombie Skull
 t780 
-o781 Run Macro
-t781 
-o782 Delete Macro
+o781 Player Skull
+t781 Spelarhuvud
+o782 Creeper Skull
 t782 
-o783 Macro Name: 
+o783 If Player Skull
 t783 
-o784 Enter a Player Name: 
-t784 
-o785 Click the mouse button again to place the other selection corner.
-t785 
-o786 Stop recording
-t786 
-o787 Currently recording a macro
-t787 
-o788 Choose a custom head for the villagers you make
-t788 
-o789 Custom Head
-t789 
-o790 Skull Type
-t790 
-o791 Skeleton Skull
-t791 
-o792 Wither Skeleton Skull
-t792 
-o793 Zombie Skull
-t793 
-o794 Player Skull
-t794 Spelarhuvud
-o795 Creeper Skull
-t795 
-o796 If Player Skull
-t796 
-o797 Player's Name
-t797 Spelares Namn
-o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o784 Player's Name
+t784 Spelares Namn
+o785 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798 
-o799 When the brush tool is chosen, prompt for a block type.
-t799 
-o800 Max View Distance
-t800 
-o801 It looks like this level is completely empty!
+t785 
+o786 When the brush tool is chosen, prompt for a block type.
+t786 
+o787 Max View Distance
+t787 
+o788 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
+t788 
+o789 Create Chunks
+t789 Skapa Chunks
+o790 Replace Only:
+t790 Ersätt Bara:
+o791 Make Villager Silent
+t791 Gör Bybo Tyst
+o792 Install Mode
+t792 Installeringsläge
+o793 SAVING - 
+t793 SPARAR - 
+o794 World Type:
+t794 Världstyp:
+o795 Amplified
+t795 
+o796 Large Biomes
+t796 Stora Biomer
+o797 Superflat
+t797 Superflat
+o798 Copying chunks
+t798 Kopierar chunks
+o799 Lighting chunks
+t799 
+o800 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t800 
+o801 Window size increased. You may have problems using the cursor until MCEdit is restarted.
 t801 
-o802 Create Chunks
-t802 Skapa Chunks
-o803 Replace Only:
-t803 Ersätt Bara:
-o804 Make Villager Silent
-t804 Gör Bybo Tyst
-o805 Install Mode
-t805 Installeringsläge
-o806 SAVING - 
-t806 SPARAR - 
-o807 World Type:
-t807 Världstyp:
-o808 Amplified
+o802 FTP Server IP:
+t802 FTP Server IP:
+o803 FTP Username:
+t803 FTP Användarnamn:
+o804 FTP Password:
+t804 FTP Lösernord:
+o805 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t805 
+o806 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t806 
+o807 Connect
+t807 
+o808 Target: 
 t808 
-o809 Large Biomes
-t809 Stora Biomer
-o810 Superflat
-t810 Superflat
-o811 Copying chunks
-t811 Kopierar chunks
-o812 Lighting chunks
+o809 Error: {0}
+t809 Error: {0}
+o810 Incorrect username or password
+t810 Fel användarnamn eller lösenord
+o811 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t811 
+o812 Could not find the world folder from the server.properties file
 t812 
-o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+o813 Choose Block Immediately for Replace
 t813 
-o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+o814 Open Block Picker for Fill
 t814 
-o815 FTP Server IP:
-t815 FTP Server IP:
-o816 FTP Username:
-t816 FTP Användarnamn:
-o817 FTP Password:
-t817 FTP Lösernord:
-o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+o815 Open Block Picker for Replace
+t815 
+o816 When the replace tool is chosen, prompt for a block type.
+t816 
+o817 Matching Coordinates
+t817 
+o818 Session Lock Options
 t818 
-o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t819 
-o820 Connect
+o819 Override Minecraft Changes (Not Recommended)
+t819 Skriv över Minecraft ändringar (Inte rekommenderat)
+o820 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
 t820 
-o821 Root: 
-t821 
-o822 Directory: 
+o821 Player Heads
+t821 Spelarhuvud
+o822 Sprint
 t822 
-o823 Files: 
-t823 Filer: 
-o824 Host: 
-t824 
-o825 Client: 
-t825 
-o826 Target: 
+o823 Select
+t823 
+o824 Brush
+t824 Pensel
+o825 Fill and Replace
+t825 Fyll och Ersätt
+o826 World Spawnpoint
 t826 
-o827 Error: {0}
-t827 Error: {0}
-o828 Incorrect username or password
-t828 Fel användarnamn eller lösenord
-o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t829 
-o830 Could not find the world folder from the server.properties file
-t830 
-o831 Choose Block Immediately for Replace
-t831 
-o832 Open Block Picker for Fill
-t832 
-o833 Open Block Picker for Replace
-t833 
-o834 When the replace tool is chosen, prompt for a block type.
-t834 
-o835 Matching Coordinates
-t835 
-o836 Session Lock Options
-t836 
-o837 Override Minecraft Changes (Not Recommended)
-t837 Skriv över Minecraft ändringar (Inte rekommenderat)
-o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t838 
-o839 Player Heads
-t839 Spelarhuvud
-o840 Sprint
-t840 
-o841 Select
-t841 
-o842 Brush
-t842 Pensel
-o843 Fill and Replace
-t843 Fyll och Ersätt
-o844 World Spawnpoint
-t844 
-o845 CB Commands
-t845 
-o846 Open a text file with all command block commands in the currently selected area.
+o827 CB Commands
+t827 
+o828 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
+t828 
+o829 Command Blocks Commands Options
+t829 
+o830 Sort Order
+t830 
+o831 Space between lines
+t831 
+o832 Make space between the lines
+t832 
+o833 File format
+t833 Filformat
+o834 Choose the file format for the files
+t834 Välj filformatet för filerna
+o835 Del
+t835 
+o836 [Empty]
+t836 [Tom]
+o837 Couldn't open the file
+t837 Kunde inte öppna filen
+o838 Edit Command Block
+t838 Ändra Kommandoblock
+o839 Command:
+t839 Kommando:
+o840 Custom Name:
+t840 
+o841 Track Output
+t841 
+o842 Slot
+t842 
+o843 ID / ID Name
+t843 
+o844 DMG
+t844 
+o845 Slot: 
+t845 
+o846 ID / ID Name: 
 t846 
-o847 Command Blocks Commands Options
+o847 DMG: 
 t847 
-o848 Sort Order
+o848 Count: 
 t848 
-o849 Space between lines
+o849 New Item (1.7+)
 t849 
-o850 Make space between the lines
+o850 Delete This Item
 t850 
-o851 File format
-t851 Filformat
-o852 Choose the file format for the files
-t852 Välj filformatet för filerna
-o853 Del
+o851 Delete All Instances Of This Item From World
+t851 
+o852 Unknown Item
+t852 
+o853 Edit Enchantment Table
 t853 
-o854 Show Commands
-t854 Visa Kommandon
-o855 Show the command in a Command Block when hovering over it.
-t855 Visa kommandot i ett Kommandoblock när man håller musen över det.
-o856 [Empty]
-t856 [Tom]
-o857 Couldn't open the file
-t857 Kunde inte öppna filen
-o858 Edit Command Block
-t858 Ändra Kommandoblock
-o859 Command:
-t859 Kommando:
-o860 Custom Name:
+o854 Custom Name
+t854 
+o855 Edit Flower Pot
+t855 
+o856 Item
+t856 
+o857 Data
+t857 Data
+o858 Current: 
+t858 
+o859 Change to: 
+t859 
+o860 F# (0.5)
 t860 
-o861 Track Output
+o861 G (0.53)
 t861 
-o862 Slot
+o862 G# (0.56)
 t862 
-o863 ID / ID Name
+o863 A (0.6)
 t863 
-o864 DMG
+o864 A# (0.63)
 t864 
-o865 Slot: 
+o865 B (0.67)
 t865 
-o866 ID / ID Name: 
+o866 C (0.7)
 t866 
-o867 DMG: 
+o867 C# (0.75)
 t867 
-o868 Count: 
+o868 D (0.8)
 t868 
-o869 New Item (1.7+)
+o869 D# (0.85)
 t869 
-o870 Delete This Item
+o870 E (0.9)
 t870 
-o871 Delete All Instances Of This Item From World
+o871 F (0.95)
 t871 
-o872 Unknown Item
+o872 F# (1.0)
 t872 
-o873 Edit Enchantment Table
+o873 G (1.05)
 t873 
-o874 Custom Name
+o874 G# (1.1)
 t874 
-o875 Edit Flower Pot
+o875 A (1.2)
 t875 
-o876 Item
+o876 A# (1.25)
 t876 
-o877 Data
-t877 Data
-o878 Current: 
+o877 B (1.32)
+t877 
+o878 C (1.4)
 t878 
-o879 Change to: 
+o879 C# (1.5)
 t879 
-o880 F# (0.5)
+o880 D (1.6)
 t880 
-o881 G (0.53)
+o881 D# (1.7)
 t881 
-o882 G# (0.56)
+o882 E (1.8)
 t882 
-o883 A (0.6)
+o883 F (1.9)
 t883 
-o884 A# (0.63)
+o884 F# (2.0)
 t884 
-o885 B (0.67)
+o885 Only delete items with the same damage value
 t885 
-o886 C (0.7)
-t886 
-o887 C# (0.75)
-t887 
-o888 D (0.8)
-t888 
-o889 D# (0.85)
-t889 
-o890 E (0.9)
+o886 Also delete blocks placed in the world
+t886 Radera också block placerade i världen
+o887 No command blocks found
+t887 Hittade inga kommandoblock.
+o888 Analysis
+t888 Analys
+o889 Click to set the spawn position.
+t889 Klicka för att sätta spawn positionen.
+o890 <Toolbar>
 t890 
-o891 F (0.95)
-t891 
-o892 F# (1.0)
-t892 
-o893 G (1.05)
-t893 
-o894 G# (1.1)
-t894 
-o895 A (1.2)
-t895 
-o896 A# (1.25)
+o891 Edit Sign
+t891 Ändra Skylt
+o892 Add Color Code...
+t892 Lägg till Färgkod...
+o893 §0  Black
+t893 §0  Svart
+o894 §1  Dark Blue
+t894 §1  Mörk Blå
+o895 §2  Dark Green
+t895 §2  Mörk Grön
+o896 §3  Dark Aqua
 t896 
-o897 B (1.32)
-t897 
-o898 C (1.4)
-t898 
-o899 C# (1.5)
-t899 
-o900 D (1.6)
-t900 
-o901 D# (1.7)
-t901 
-o902 E (1.8)
-t902 
-o903 F (1.9)
-t903 
-o904 F# (2.0)
+o897 §4  Dark Red
+t897 §4  Mörk Röd
+o898 §5  Dark Purple
+t898 §5  Mörk Lila
+o899 §6  Gold
+t899 §6  Guld
+o900 §7  Gray
+t900 §7  Grå
+o901 §8  Dark Gray
+t901 §8  Mörk Grå
+o902 §9  Blue
+t902 §9  Blå
+o903 §a  Green
+t903 §a  Grön
+o904 §b  Aqua
 t904 
-o905 Only delete items with the same damage value
-t905 
-o906 Also delete blocks placed in the world
-t906 Radera också block placerade i världen
-o907 No command blocks found
-t907 Hittade inga kommandoblock.
-o908 Analysis
-t908 Analys
-o909 Click to set the spawn position.
-t909 Klicka för att sätta spawn positionen.
-o910 <Toolbar>
+o905 §c  Red
+t905 §c  Röd
+o906 §d  Light Purple
+t906 §d  Ljus Lila
+o907 §e  Yellow
+t907 §e  Gul
+o908 §f  White
+t908 §f  Vit
+o909 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t909 
+o910 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t910 
-o911 Edit Sign
-t911 Ändra Skylt
-o912 Add Color Code...
-t912 Lägg till Färgkod...
-o913 §0  Black
-t913 §0  Svart
-o914 §1  Dark Blue
-t914 §1  Mörk Blå
-o915 §2  Dark Green
-t915 §2  Mörk Grön
-o916 §3  Dark Aqua
+o911 Right mouse
+t911 Höger mus
+o912 Deleting the item {0} from the entire world ({1} chunks)
+t912 
+o913 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t913 
+o914 Check to show/hide specific ores using the settings below.
+t914 
+o915 NBTEdit
+t915 NBTEdit
+o916 Save camera position on close
 t916 
-o917 §4  Dark Red
-t917 §4  Mörk Röd
-o918 §5  Dark Purple
-t918 §5  Mörk Lila
-o919 §6  Gold
-t919 §6  Guld
-o920 §7  Gray
-t920 §7  Grå
-o921 §8  Dark Gray
-t921 §8  Mörk Grå
-o922 §9  Blue
-t922 §9  Blå
-o923 §a  Green
-t923 §a  Grön
-o924 §b  Aqua
+o917 Waypoints
+t917 
+o918 Empty
+t918 Tom
+o919 Create Waypoint
+t919 
+o920 Goto Waypoint
+t920 
+o921 Delete Waypoint
+t921 
+o922 Save Camera position on world close
+t922 Spara Kamera position när världen stängs
+o923 Save Rotation
+t923 Spara Rotation
+o924 Waypoint Name:
 t924 
-o925 §c  Red
-t925 §c  Röd
-o926 §d  Light Purple
-t926 §d  Ljus Lila
-o927 §e  Yellow
-t927 §e  Gul
-o928 §f  White
-t928 §f  Vit
-o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t929 
-o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 
-o931 Right mouse
-t931 Höger mus
-o932 Deleting the item {0} from the entire world ({1} chunks)
-t932 
-o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t933 
-o934 Check to show/hide specific ores using the settings below.
-t934 
-o935 NBTEdit
-t935 NBTEdit
-o936 Save camera position on close
-t936 
-o937 Waypoints
-t937 
-o938 Empty
-t938 Tom
-o939 Create Waypoint
-t939 
-o940 Goto Waypoint
-t940 
-o941 Delete Waypoint
-t941 
-o942 Save Camera position on world close
-t942 Spara Kamera position när världen stängs
-o943 Save Rotation
-t943 Spara Rotation
-o944 Waypoint Name:
-t944 
-o945 Session lock lost. This world is being accessed from another location.
-t945 
-o946 
+o925 Session lock lost. This world is being accessed from another location.
+t925 
+o926 
 
 Your changes cannot be saved.
-t946 
-o947 Click to import this item.
-t947 
-o948 Menu
-t948 Meny
-o949 for
-t949 för
-o950 MCEdit does not support window resolutions below 1000x700.
+t926 
+o927 Click to import this item.
+t927 
+o928 Menu
+t928 Meny
+o929 for
+t929 för
+o930 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t950 MCEdit stöder inte skärmupplösningar under 1000x700.
+t930 MCEdit stöder inte skärmupplösningar under 1000x700.
 Du kommer kanske inte att kunna använda alla funktioner med den här upplösningen.
-o951 Found a previous portable installation
-t951 Hittade en föregående portabel installation
-o952 Use
-t952 Använd
-o953 Overwrite
-t953 Skriv över
-o954 Edit Skull Data
-t954 
-o955 Found a previous fixed installation
-t955 
-o956 Left-Click and drag to the left or the right
-t956 
-o957 Cancel Command Block Offset
-t957 
-o958 Cancels the command blocks coords changed when copied.
-t958 
-o959 Weird stuff happen!
-t959 
-o960 Enable Custom Name
-t960 
+o931 Use
+t931 Använd
+o932 Overwrite
+t932 Skriv över
+o933 Edit Skull Data
+t933 
+o934 Left-Click and drag to the left or the right
+t934 
+o935 Cancel Command Block Offset
+t935 
+o936 Cancels the command blocks coords changed when copied.
+t936 
+o937 Weird stuff happen!
+t937 
+o938 Enable Custom Name
+t938 
 
-o961 Select a Minecraft level....
-t961 
-o962 Levels and Schematics
-t962 
-o963 Show Block Info when hovering
-t963 
-o964 Shows summarized info of some Blocks when hovering over it.
-t964 
+o939 Select a Minecraft level....
+t939 
+o940 Levels and Schematics
+t940 
+o941 Show Block Info when hovering
+t941 
+o942 Shows summarized info of some Blocks when hovering over it.
+t942 
+o943 Select a file...
+t943 
+o944 Choose a file
+t944 
+o945 Custom File\0{}\0
+t945 
+o946 Save as...
+t946 
+o947 Save a file
+t947 
+o948 Disable Error Notification
+t948 
+o949 Exception while importing filter module {}. See console for details.\n\n{}
+t949 
+o950         Filter "{0}" wants to resize the selection box
+        Origin: {1} -> {2}
+        Size: {3} -> {4}
+        Do you want to resize the Selection Box?
+t950 
+o951 Choose a schematic or level...
+t951 
+o952 Failed to load file %s
+t952 
