@@ -1417,8 +1417,8 @@ o665 Int Array
 t665 
 o666 Short Array
 t666 
-o667 Click to bind this filter to a hotkey
-t667 单击给滤镜绑定一个按键
+o667 Click to bind this filter to a save askey
+t667 
 o668 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
@@ -1599,443 +1599,445 @@ t742 字体大小比例. 这个数字是百分比.
 需要重启！
 o743 Save As
 t743 另存为
-o744 Copying %0.1f million blocks
-t744 正在复制 %0.1f 百万个方块
-o745 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t745 当你尝试出生在一个 Y=63 和 Y=64 处没有方块的地方时, Minecraft 会随机地移动你的出生点. 只有当 Minecraft 变更后才取消勾选此项.
-o746 Keep Data Intact
-t746 （替换时）不改变数据值
-o747 This pulls skins from the online server, so this may take a while
-t747 这将从服务器上载入皮肤, 所以可能耗时较长.
-o748 Session:
-t748 会话：
-o749 Session Lock is being used by Minecraft
-t749 会话被 Minecraft 占用
-o750 Session Lock is being used by MCEdit
-t750 会话被 MCEdit 占用
-o751 Show Player Skins
-t751 显示玩家皮肤
-o752 Show player skins while editing the world
-t752 编辑世界时显示玩家皮肤
-o753 Compass Size (%): 
-t753 指南针大小（%）：
-o754 Fog Intensity (%): 
-t754 雾的密度（%）：
-o755 Toggle compass
-t755 指南针开关
-o756 Width of blocks movement: 
-t756 方块轻移宽度：
-o757 Width of selection movement: 
-t757 选区轻移宽度：
-o758 Import
-t758 导入
-o759 Old (Messy)
-t759 老旧残损的样式
-o760 Click to open filters folder
-t760 点击打开滤镜文件夹
-o761 Head
-t761 头颅
-o762 Exception during filter operation. See console for details.
+o744 Name the new copy.
+t744 给这个副本命名.
+o745 Copying %0.1f million blocks
+t745 正在复制 %0.1f 百万个方块
+o746 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t746 当你尝试出生在一个 Y=63 和 Y=64 处没有方块的地方时, Minecraft 会随机地移动你的出生点. 只有当 Minecraft 变更后才取消勾选此项.
+o747 Keep Data Intact
+t747 （替换时）不改变数据值
+o748 This pulls skins from the online server, so this may take a while
+t748 这将从服务器上载入皮肤, 所以可能耗时较长.
+o749 Session:
+t749 会话：
+o750 Session Lock is being used by Minecraft
+t750 会话被 Minecraft 占用
+o751 Session Lock is being used by MCEdit
+t751 会话被 MCEdit 占用
+o752 Show Player Skins
+t752 显示玩家皮肤
+o753 Show player skins while editing the world
+t753 编辑世界时显示玩家皮肤
+o754 Compass Size (%): 
+t754 指南针大小（%）：
+o755 Fog Intensity (%): 
+t755 雾的密度（%）：
+o756 Toggle compass
+t756 指南针开关
+o757 Width of blocks movement: 
+t757 方块轻移宽度：
+o758 Width of selection movement: 
+t758 选区轻移宽度：
+o759 Import
+t759 导入
+o760 Old (Messy)
+t760 老旧残损的样式
+o761 Click to open filters folder
+t761 点击打开滤镜文件夹
+o762 Head
+t762 头颅
+o763 Exception during filter operation. See console for details.
 
 {0}
-t762 过滤操作时出现异常. 详细信息见控制台.
+t763 过滤操作时出现异常. 详细信息见控制台.
 
 {0}
-o763 Shift
-t763 
-o764 Option
-t764 选项
-o765 Meta
-t765 
-o766 Applying {0} brush...
-t766 正在应用 {0} 个笔刷……
-o767 Graphics Settings
-t767 图像设置
-o768 Run Macro
-t768 运行宏
-o769 Delete Macro
-t769 删除宏
-o770 Macro Name: 
-t770 宏名字：
-o771 Enter a Player Name: 
-t771 输入一个玩家名：
-o772 Click the mouse button again to place the other selection corner.
-t772 再次点击鼠标来确定选区的另一个角.
-o773 Stop recording
-t773 停止记录
-o774 Currently recording a macro
-t774 正在录制宏
-o775 Choose a custom head for the villagers you make
-t775 为你创造的村民选一个自定义头颅
-o776 Custom Head
-t776 自定义头颅
-o777 Skull Type
-t777 头颅类型
-o778 Skeleton Skull
-t778 骷髅头颅
-o779 Wither Skeleton Skull
-t779 凋零骷髅头颅
-o780 Zombie Skull
-t780 僵尸头颅
-o781 Player Skull
-t781 玩家头颅
-o782 Creeper Skull
-t782 爬行者头颅
-o783 If Player Skull
-t783 如果是玩家头颅
-o784 Player's Name
-t784 玩家名
-o785 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o764 Shift
+t764 
+o765 Option
+t765 选项
+o766 Meta
+t766 
+o767 Applying {0} brush...
+t767 正在应用 {0} 个笔刷……
+o768 Graphics Settings
+t768 图像设置
+o769 Run Macro
+t769 运行宏
+o770 Delete Macro
+t770 删除宏
+o771 Macro Name: 
+t771 宏名字：
+o772 Enter a Player Name: 
+t772 输入一个玩家名：
+o773 Click the mouse button again to place the other selection corner.
+t773 再次点击鼠标来确定选区的另一个角.
+o774 Stop recording
+t774 停止记录
+o775 Currently recording a macro
+t775 正在录制宏
+o776 Choose a custom head for the villagers you make
+t776 为你创造的村民选一个自定义头颅
+o777 Custom Head
+t777 自定义头颅
+o778 Skull Type
+t778 头颅类型
+o779 Skeleton Skull
+t779 骷髅头颅
+o780 Wither Skeleton Skull
+t780 凋零骷髅头颅
+o781 Zombie Skull
+t781 僵尸头颅
+o782 Player Skull
+t782 玩家头颅
+o783 Creeper Skull
+t783 爬行者头颅
+o784 If Player Skull
+t784 如果是玩家头颅
+o785 Player's Name
+t785 玩家名
+o786 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t785 自动为每个被复制的实体重新生成 UUID. （推荐）
+t786 自动为每个被复制的实体重新生成 UUID. （推荐）
 快捷键：Alt-6
-o786 When the brush tool is chosen, prompt for a block type.
-t786 当笔刷工具被选中时, 自动打开方块选择器来选择方块.
-o787 Max View Distance
-t787 最大视野
-o788 It looks like this level is completely empty!
+o787 When the brush tool is chosen, prompt for a block type.
+t787 当笔刷工具被选中时, 自动打开方块选择器来选择方块.
+o788 Max View Distance
+t788 最大视野
+o789 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t788 看起来这个世界是完全空白的！
+t789 看起来这个世界是完全空白的！
 你需要新建一些区块才能开始.
-o789 Create Chunks
-t789 新建区块
-o790 Replace Only:
-t790 仅替换：
-o791 Make Villager Silent
-t791 禁止村民发声
-o792 Install Mode
-t792 安装模式
-o793 SAVING - 
-t793 保存中- 
-o794 World Type:
-t794 世界类型：
-o795 Amplified
-t795 放大化
-o796 Large Biomes
-t796 巨型生物群系
-o797 Superflat
-t797 超平坦
-o798 Copying chunks
-t798 正在复制区块
-o799 Lighting chunks
-t799 正在重置区块光线
-o800 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t800 这个世界不是从 FTP 服务器下载的. 目前不能上传一个不是从 FTP 下载的世界.
-o801 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t801 窗口大小增加了. 在重启 MCEdit 之前光标可能会出现问题.
-o802 FTP Server IP:
-t802 FTP 服务器 IP ：
-o803 FTP Username:
-t803 FTP 用户名：
-o804 FTP Password:
-t804 FTP 密码：
-o805 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t805 说明：除了登陆服务器之外, MCEdit-Unified 不会查看任何 FTP 服务器中的信息.
-o806 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t806 MCEdit-Unified 正在下载世界, 请稍等. 一旦下载完成, 它会被自动打开.
-o807 Connect
-t807 连接
-o808 Target: 
-t808 目标：
-o809 Error: {0}
-t809 错误：{0}
-o810 Incorrect username or password
-t810 用户名或密码错误
-o811 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t811 无法找到 server.properties 文件！FTP 客户端无法下载世界, 除非 server.properties 文件在 FTP 的默认路径
-o812 Could not find the world folder from the server.properties file
-t812 无法从 server.properties 文件中找到 Minecraft 世界文件夹.
-o813 Choose Block Immediately for Replace
-t813 替换工具自动打开方块选择器
-o814 Open Block Picker for Fill
-t814 填充工具自动打开方块选择器
-o815 Open Block Picker for Replace
-t815 替换工具自动打开方块选择器
-o816 When the replace tool is chosen, prompt for a block type.
-t816 当替换工具被选中时, 自动打开方块选择器来选择方块.
-o817 Matching Coordinates
-t817 查找到的坐标
-o818 Session Lock Options
-t818 会话锁设置
-o819 Override Minecraft Changes (Not Recommended)
-t819 覆盖 Minecraft 的更改（不推荐）
-o820 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t820 只要地图被 MCEdit 打开, 总是覆盖在 Minecraft 中的更改. （不推荐）
-o821 Player Heads
-t821 玩家头颅
-o822 Sprint
-t822 冲刺
-o823 Select
-t823 选择
-o824 Brush
-t824 笔刷
-o825 Fill and Replace
-t825 填充和替换
-o826 World Spawnpoint
-t826 世界出生点
-o827 CB Commands
-t827 命令方块命令
-o828 Open a text file with all command block commands in the currently selected area.
+o790 Create Chunks
+t790 新建区块
+o791 Replace Only:
+t791 仅替换：
+o792 Make Villager Silent
+t792 禁止村民发声
+o793 Install Mode
+t793 安装模式
+o794 SAVING - 
+t794 保存中- 
+o795 World Type:
+t795 世界类型：
+o796 Amplified
+t796 放大化
+o797 Large Biomes
+t797 巨型生物群系
+o798 Superflat
+t798 超平坦
+o799 Copying chunks
+t799 正在复制区块
+o800 Lighting chunks
+t800 正在重置区块光线
+o801 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t801 这个世界不是从 FTP 服务器下载的. 目前不能上传一个不是从 FTP 下载的世界.
+o802 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t802 窗口大小增加了. 在重启 MCEdit 之前光标可能会出现问题.
+o803 FTP Server IP:
+t803 FTP 服务器 IP ：
+o804 FTP Username:
+t804 FTP 用户名：
+o805 FTP Password:
+t805 FTP 密码：
+o806 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t806 说明：除了登陆服务器之外, MCEdit-Unified 不会查看任何 FTP 服务器中的信息.
+o807 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t807 MCEdit-Unified 正在下载世界, 请稍等. 一旦下载完成, 它会被自动打开.
+o808 Connect
+t808 连接
+o809 Target: 
+t809 目标：
+o810 Error: {0}
+t810 错误：{0}
+o811 Incorrect username or password
+t811 用户名或密码错误
+o812 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t812 无法找到 server.properties 文件！FTP 客户端无法下载世界, 除非 server.properties 文件在 FTP 的默认路径
+o813 Could not find the world folder from the server.properties file
+t813 无法从 server.properties 文件中找到 Minecraft 世界文件夹.
+o814 Choose Block Immediately for Replace
+t814 替换工具自动打开方块选择器
+o815 Open Block Picker for Fill
+t815 填充工具自动打开方块选择器
+o816 Open Block Picker for Replace
+t816 替换工具自动打开方块选择器
+o817 When the replace tool is chosen, prompt for a block type.
+t817 当替换工具被选中时, 自动打开方块选择器来选择方块.
+o818 Matching Coordinates
+t818 查找到的坐标
+o819 Session Lock Options
+t819 会话锁设置
+o820 Override Minecraft Changes (Not Recommended)
+t820 覆盖 Minecraft 的更改（不推荐）
+o821 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t821 只要地图被 MCEdit 打开, 总是覆盖在 Minecraft 中的更改. （不推荐）
+o822 Player Heads
+t822 玩家头颅
+o823 Sprint
+t823 冲刺
+o824 Select
+t824 选择
+o825 Brush
+t825 笔刷
+o826 Fill and Replace
+t826 填充和替换
+o827 World Spawnpoint
+t827 世界出生点
+o828 CB Commands
+t828 命令方块命令
+o829 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t828 在一个文本文件中打开选区内所有命令方块的命令.
+t829 在一个文本文件中打开选区内所有命令方块的命令.
 保存文件来更新命令方块.
 右键显示选项
-o829 Command Blocks Commands Options
-t829 命令方块命令工具设置
-o830 Sort Order
-t830 排序依据
-o831 Space between lines
-t831 添加空行
-o832 Make space between the lines
-t832 在每行命令之间添加空行
-o833 File format
-t833 文件格式
-o834 Choose the file format for the files
-t834 为这个文件选择文件格式
-o835 Del
-t835 
-o836 [Empty]
-t836 [空]
-o837 Couldn't open the file
-t837 无法打开文件
-o838 Edit Command Block
-t838 编辑命令方块
-o839 Command:
-t839 命令：
-o840 Custom Name:
-t840 自定义名称：
-o841 Track Output
-t841 跟踪输出
-o842 Slot
-t842 槽位
-o843 ID / ID Name
-t843 ID / ID 名称
-o844 DMG
-t844 伤害值
-o845 Slot: 
-t845 槽位：
-o846 ID / ID Name: 
-t846 ID / ID 名称：
-o847 DMG: 
-t847 伤害值：
-o848 Count: 
-t848 数量：
-o849 New Item (1.7+)
-t849 新建物品（1.7+）
-o850 Delete This Item
-t850 删除这个物品
-o851 Delete All Instances Of This Item From World
-t851 删除世界里的所有这种物品
-o852 Unknown Item
-t852 未知物品
-o853 Edit Enchantment Table
-t853 编辑附魔台
-o854 Custom Name
-t854 自定义名称
-o855 Edit Flower Pot
-t855 编辑花盆
-o856 Item
-t856 物品
-o857 Data
-t857 数据值
-o858 Current: 
-t858 目前：
-o859 Change to: 
-t859 更改为：
-o860 F# (0.5)
-t860 
-o861 G (0.53)
+o830 Command Blocks Commands Options
+t830 命令方块命令工具设置
+o831 Sort Order
+t831 排序依据
+o832 Space between lines
+t832 添加空行
+o833 Make space between the lines
+t833 在每行命令之间添加空行
+o834 File format
+t834 文件格式
+o835 Choose the file format for the files
+t835 为这个文件选择文件格式
+o836 Del
+t836 
+o837 [Empty]
+t837 [空]
+o838 Couldn't open the file
+t838 无法打开文件
+o839 Edit Command Block
+t839 编辑命令方块
+o840 Command:
+t840 命令：
+o841 Custom Name:
+t841 自定义名称：
+o842 Track Output
+t842 跟踪输出
+o843 Slot
+t843 槽位
+o844 ID / ID Name
+t844 ID / ID 名称
+o845 DMG
+t845 伤害值
+o846 Slot: 
+t846 槽位：
+o847 ID / ID Name: 
+t847 ID / ID 名称：
+o848 DMG: 
+t848 伤害值：
+o849 Count: 
+t849 数量：
+o850 New Item (1.7+)
+t850 新建物品（1.7+）
+o851 Delete This Item
+t851 删除这个物品
+o852 Delete All Instances Of This Item From World
+t852 删除世界里的所有这种物品
+o853 Unknown Item
+t853 未知物品
+o854 Edit Enchantment Table
+t854 编辑附魔台
+o855 Custom Name
+t855 自定义名称
+o856 Edit Flower Pot
+t856 编辑花盆
+o857 Item
+t857 物品
+o858 Data
+t858 数据值
+o859 Current: 
+t859 目前：
+o860 Change to: 
+t860 更改为：
+o861 F# (0.5)
 t861 
-o862 G# (0.56)
+o862 G (0.53)
 t862 
-o863 A (0.6)
+o863 G# (0.56)
 t863 
-o864 A# (0.63)
+o864 A (0.6)
 t864 
-o865 B (0.67)
+o865 A# (0.63)
 t865 
-o866 C (0.7)
+o866 B (0.67)
 t866 
-o867 C# (0.75)
+o867 C (0.7)
 t867 
-o868 D (0.8)
+o868 C# (0.75)
 t868 
-o869 D# (0.85)
+o869 D (0.8)
 t869 
-o870 E (0.9)
+o870 D# (0.85)
 t870 
-o871 F (0.95)
+o871 E (0.9)
 t871 
-o872 F# (1.0)
+o872 F (0.95)
 t872 
-o873 G (1.05)
+o873 F# (1.0)
 t873 
-o874 G# (1.1)
+o874 G (1.05)
 t874 
-o875 A (1.2)
+o875 G# (1.1)
 t875 
-o876 A# (1.25)
+o876 A (1.2)
 t876 
-o877 B (1.32)
+o877 A# (1.25)
 t877 
-o878 C (1.4)
+o878 B (1.32)
 t878 
-o879 C# (1.5)
+o879 C (1.4)
 t879 
-o880 D (1.6)
+o880 C# (1.5)
 t880 
-o881 D# (1.7)
+o881 D (1.6)
 t881 
-o882 E (1.8)
+o882 D# (1.7)
 t882 
-o883 F (1.9)
+o883 E (1.8)
 t883 
-o884 F# (2.0)
+o884 F (1.9)
 t884 
-o885 Only delete items with the same damage value
-t885 仅删除具有相同伤害值的物品
-o886 Also delete blocks placed in the world
-t886 同时删除放置在世界中的方块
-o887 No command blocks found
-t887 没有找到命令方块
-o888 Analysis
-t888 统计结果
-o889 Click to set the spawn position.
-t889 点击来设置出生点.
-o890 <Toolbar>
-t890 <工具栏>
-o891 Edit Sign
-t891 编辑告示牌
-o892 Add Color Code...
-t892 添加颜色代码……
-o893 §0  Black
-t893 §0  黑色
-o894 §1  Dark Blue
-t894 §1  深蓝色
-o895 §2  Dark Green
-t895 §2  深绿色
-o896 §3  Dark Aqua
-t896 §3  深青色
-o897 §4  Dark Red
-t897 §4  深红色
-o898 §5  Dark Purple
-t898 §5  深紫色
-o899 §6  Gold
-t899 §6  金色
-o900 §7  Gray
-t900 §7  灰色
-o901 §8  Dark Gray
-t901 §8  深灰色
-o902 §9  Blue
-t902 §9  蓝色
-o903 §a  Green
-t903 §a  绿色
-o904 §b  Aqua
-t904 §b  青色
-o905 §c  Red
-t905 §c  红色
-o906 §d  Light Purple
-t906 §d  淡紫色
-o907 §e  Yellow
-t907 §e  黄色
-o908 §f  White
-t908 §f  白色
-o909 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t909 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
-o910 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t910 为这个刷怪箱输入一个实体 ID. 无效的 ID 可能使 Minecraft 崩溃. 按 ESC 取消.
-o911 Right mouse
-t911 鼠标右键
-o912 Deleting the item {0} from the entire world ({1} chunks)
-t912 正在从整个世界中删除物品 {0}（{1} 个区块）
-o913 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t913 警告：你正在试图修改整个世界. 这个操作不能被撤销. 你真的要从所有的陆地、箱子、熔炉、发射器、掉落物、含有相关信息的方块和玩家物品栏中删除这项物品吗？
-o914 Check to show/hide specific ores using the settings below.
-t914 使用下方的选项来指定要显示或隐藏的矿石
-o915 NBTEdit
-t915 NBT 编辑器
-o916 Save camera position on close
-t916 在关闭世界时保存镜头所在位置
-o917 Waypoints
-t917 路径点
-o918 Empty
-t918 空
-o919 Create Waypoint
-t919 新建路径点
-o920 Goto Waypoint
-t920 转到路径点
-o921 Delete Waypoint
-t921 删除路径点
-o922 Save Camera position on world close
-t922 在关闭世界时保存镜头所在位置
-o923 Save Rotation
-t923 保存镜头朝向
-o924 Waypoint Name:
-t924 路径点名字：
-o925 Session lock lost. This world is being accessed from another location.
-t925 会话锁丢失。这个世界正在被另一个软件读写.
-o926 
+o885 F# (2.0)
+t885 
+o886 Only delete items with the same damage value
+t886 仅删除具有相同伤害值的物品
+o887 Also delete blocks placed in the world
+t887 同时删除放置在世界中的方块
+o888 No command blocks found
+t888 没有找到命令方块
+o889 Analysis
+t889 统计结果
+o890 Click to set the spawn position.
+t890 点击来设置出生点.
+o891 <Toolbar>
+t891 <工具栏>
+o892 Edit Sign
+t892 编辑告示牌
+o893 Add Color Code...
+t893 添加颜色代码……
+o894 §0  Black
+t894 §0  黑色
+o895 §1  Dark Blue
+t895 §1  深蓝色
+o896 §2  Dark Green
+t896 §2  深绿色
+o897 §3  Dark Aqua
+t897 §3  深青色
+o898 §4  Dark Red
+t898 §4  深红色
+o899 §5  Dark Purple
+t899 §5  深紫色
+o900 §6  Gold
+t900 §6  金色
+o901 §7  Gray
+t901 §7  灰色
+o902 §8  Dark Gray
+t902 §8  深灰色
+o903 §9  Blue
+t903 §9  蓝色
+o904 §a  Green
+t904 §a  绿色
+o905 §b  Aqua
+t905 §b  青色
+o906 §c  Red
+t906 §c  红色
+o907 §d  Light Purple
+t907 §d  淡紫色
+o908 §e  Yellow
+t908 §e  黄色
+o909 §f  White
+t909 §f  白色
+o910 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t910 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
+o911 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t911 为这个刷怪箱输入一个实体 ID. 无效的 ID 可能使 Minecraft 崩溃. 按 ESC 取消.
+o912 Right mouse
+t912 鼠标右键
+o913 Deleting the item {0} from the entire world ({1} chunks)
+t913 正在从整个世界中删除物品 {0}（{1} 个区块）
+o914 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t914 警告：你正在试图修改整个世界. 这个操作不能被撤销. 你真的要从所有的陆地、箱子、熔炉、发射器、掉落物、含有相关信息的方块和玩家物品栏中删除这项物品吗？
+o915 Check to show/hide specific ores using the settings below.
+t915 使用下方的选项来指定要显示或隐藏的矿石
+o916 NBTEdit
+t916 NBT 编辑器
+o917 Save camera position on close
+t917 在关闭世界时保存镜头所在位置
+o918 Waypoints
+t918 路径点
+o919 Empty
+t919 空
+o920 Create Waypoint
+t920 新建路径点
+o921 Goto Waypoint
+t921 转到路径点
+o922 Delete Waypoint
+t922 删除路径点
+o923 Save Camera position on world close
+t923 在关闭世界时保存镜头所在位置
+o924 Save Rotation
+t924 保存镜头朝向
+o925 Waypoint Name:
+t925 路径点名字：
+o926 Session lock lost. This world is being accessed from another location.
+t926 会话锁丢失。这个世界正在被另一个软件读写.
+o927 
 
 Your changes cannot be saved.
-t926 
+t927 
 
 你的更改不会被保存.
-o927 Click to import this item.
-t927 点击来导入这个物品.
-o928 Menu
-t928 菜单
-o929 for
-t929 适用于
-o930 MCEdit does not support window resolutions below 1000x700.
+o928 Click to import this item.
+t928 点击来导入这个物品.
+o929 Menu
+t929 菜单
+o930 for
+t930 适用于
+o931 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t930 MCEdit不支持1000x700以下的分辨率窗口.
+t931 MCEdit不支持1000x700以下的分辨率窗口.
 在此分辨率下你可能无法使用全部功能.
-o931 Use
-t931 使用
-o932 Overwrite
-t932 覆盖
-o933 Edit Skull Data
-t933 编辑头颅数据
-o934 Left-Click and drag to the left or the right
-t934 鼠标左键朝左右拖动来调整
-o935 Cancel Command Block Offset
-t935 关闭命令方块坐标偏移
-o936 Cancels the command blocks coords changed when copied.
-t936 禁止命令方块被复制时其命令里的坐标被自动偏移.
-o937 Weird stuff happen!
-t937 奇怪的事情会发生！
-o938 Enable Custom Name
-t938 使用自定义名称
-o939 Select a Minecraft level....
-t939 选择一个 Minecraft 世界……
-o940 Levels and Schematics
-t940 世界和 Schematics 文件
-o941 Show Block Info when hovering
-t941 鼠标悬浮时显示方块信息
-o942 Shows summarized info of some Blocks when hovering over it.
-t942 当鼠标悬浮在某些方块上时，显示信息摘要.
+o932 Use
+t932 使用
+o933 Overwrite
+t933 覆盖
+o934 Edit Skull Data
+t934 编辑头颅数据
+o935 Left-Click and drag to the left or the right
+t935 鼠标左键朝左右拖动来调整
+o936 Cancel Command Block Offset
+t936 关闭命令方块坐标偏移
+o937 Cancels the command blocks coords changed when copied.
+t937 禁止命令方块被复制时其命令里的坐标被自动偏移.
+o938 Weird stuff happen!
+t938 奇怪的事情会发生！
+o939 Enable Custom Name
+t939 使用自定义名称
+o940 Select a Minecraft level....
+t940 选择一个 Minecraft 世界……
+o941 Levels and Schematics
+t941 世界和 Schematics 文件
+o942 Show Block Info when hovering
+t942 鼠标悬浮时显示方块信息
+o943 Shows summarized info of some Blocks when hovering over it.
+t943 当鼠标悬浮在某些方块上时，显示信息摘要.
 
-o943 Select a file...
-t943 
-o944 Choose a file
+o944 Select a file...
 t944 
-o945 Custom File\0{}\0
+o945 Choose a file
 t945 
-o946 Save as...
+o946 Custom File\0{}\0
 t946 
-o947 Save a file
+o947 Save as...
 t947 
-o948 Disable Error Notification
+o948 Save a file
 t948 
-o949 Exception while importing filter module {}. See console for details.\n\n{}
+o949 Disable Error Notification
 t949 
-o950         Filter "{0}" wants to resize the selection box
+o950 Exception while importing filter module {}. See console for details.\n\n{}
+t950 
+o951         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t950 
-o951 Choose a schematic or level...
 t951 
-o952 Failed to load file %s
+o952 Choose a schematic or level...
 t952 
+o953 Failed to load file %s
+t953 

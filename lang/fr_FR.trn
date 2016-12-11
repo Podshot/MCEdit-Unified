@@ -1418,8 +1418,8 @@ o665 Int Array
 t665 
 o666 Short Array
 t666 
-o667 Click to bind this filter to a hotkey
-t667 Cliquer pour lier ce filtre à un touche
+o667 Click to bind this filter to a save askey
+t667 
 o668 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
@@ -1600,445 +1600,447 @@ t742 Proportion des tailles de polices. En pour-cents.
 Redémarrage nécessaire !
 o743 Save As
 t743 Sauver sous
-o744 Copying %0.1f million blocks
-t744 Copie de %0.1f millions de blocs
-o745 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t745 Minecraft déplace votre point de spawn s'il est dans une colonne où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
-o746 Keep Data Intact
-t746 Conserver les données
-o747 This pulls skins from the online server, so this may take a while
-t747 Télécharge les données du serveur. Cela peut prendre du temps
-o748 Session:
-t748 Session :
-o749 Session Lock is being used by Minecraft
-t749 La session est verrouillée par Minecraft
-o750 Session Lock is being used by MCEdit
-t750 La session est verrouillée par MCEdit
-o751 Show Player Skins
-t751 Voir skins joueurs
-o752 Show player skins while editing the world
-t752 Voir les skins joueur pendant l'édition du monde
-o753 Compass Size (%): 
-t753 Taille boussole (%) : 
-o754 Fog Intensity (%): 
-t754 Densité de la brume (%) : 
-o755 Toggle compass
-t755 Activer boussole
-o756 Width of blocks movement: 
-t756 Taille des dépl. des blocs : 
-o757 Width of selection movement: 
-t757 Taille des dépl. de la sélection : 
-o758 Import
-t758 Importer
-o759 Old (Messy)
-t759 Ancien comportement
-o760 Click to open filters folder
-t760 Cliquer pour ouvrir le dossier des filtre
-o761 Head
-t761 Tête
-o762 Exception during filter operation. See console for details.
+o744 Name the new copy.
+t744 Nom de la copie.
+o745 Copying %0.1f million blocks
+t745 Copie de %0.1f millions de blocs
+o746 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t746 Minecraft déplace votre point de spawn s'il est dans une colonne où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
+o747 Keep Data Intact
+t747 Conserver les données
+o748 This pulls skins from the online server, so this may take a while
+t748 Télécharge les données du serveur. Cela peut prendre du temps
+o749 Session:
+t749 Session :
+o750 Session Lock is being used by Minecraft
+t750 La session est verrouillée par Minecraft
+o751 Session Lock is being used by MCEdit
+t751 La session est verrouillée par MCEdit
+o752 Show Player Skins
+t752 Voir skins joueurs
+o753 Show player skins while editing the world
+t753 Voir les skins joueur pendant l'édition du monde
+o754 Compass Size (%): 
+t754 Taille boussole (%) : 
+o755 Fog Intensity (%): 
+t755 Densité de la brume (%) : 
+o756 Toggle compass
+t756 Activer boussole
+o757 Width of blocks movement: 
+t757 Taille des dépl. des blocs : 
+o758 Width of selection movement: 
+t758 Taille des dépl. de la sélection : 
+o759 Import
+t759 Importer
+o760 Old (Messy)
+t760 Ancien comportement
+o761 Click to open filters folder
+t761 Cliquer pour ouvrir le dossier des filtre
+o762 Head
+t762 Tête
+o763 Exception during filter operation. See console for details.
 
 {0}
-t762 Erreur lors de l'exécution du filtre. Détails dans la console.
+t763 Erreur lors de l'exécution du filtre. Détails dans la console.
 
 {0}
-o763 Shift
-t763 
-o764 Option
+o764 Shift
 t764 
-o765 Meta
+o765 Option
 t765 
-o766 Applying {0} brush...
-t766 Application de la brosse {0}...
-o767 Graphics Settings
-t767 Options graphiques
-o768 Run Macro
-t768 Exéc. macro
-o769 Delete Macro
-t769 Suppr. macro
-o770 Macro Name: 
-t770 Nom de la macro : 
-o771 Enter a Player Name: 
-t771 Entrer un nom de joueur
-o772 Click the mouse button again to place the other selection corner.
-t772 Cliquez encore pour placer l'autre coin de la sélection.
-o773 Stop recording
-t773 Arrêter enregistrement
-o774 Currently recording a macro
-t774 En cours d'enregistrement de macro
-o775 Choose a custom head for the villagers you make
-t775 Choisissez une tête pour les villageois que vous créez
-o776 Custom Head
-t776 Tête personnalisée
-o777 Skull Type
-t777 Type de crâne
-o778 Skeleton Skull
-t778 Crâne squelette
-o779 Wither Skeleton Skull
-t779 Crâne squelette Wither
-o780 Zombie Skull
-t780 Crâne zombie
-o781 Player Skull
-t781 Crâne joueur
-o782 Creeper Skull
-t782 Crâne creeper
-o783 If Player Skull
-t783 Si crâne joueur
-o784 Player's Name
-t784 Nom du joueur
-o785 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o766 Meta
+t766 
+o767 Applying {0} brush...
+t767 Application de la brosse {0}...
+o768 Graphics Settings
+t768 Options graphiques
+o769 Run Macro
+t769 Exéc. macro
+o770 Delete Macro
+t770 Suppr. macro
+o771 Macro Name: 
+t771 Nom de la macro : 
+o772 Enter a Player Name: 
+t772 Entrer un nom de joueur
+o773 Click the mouse button again to place the other selection corner.
+t773 Cliquez encore pour placer l'autre coin de la sélection.
+o774 Stop recording
+t774 Arrêter enregistrement
+o775 Currently recording a macro
+t775 En cours d'enregistrement de macro
+o776 Choose a custom head for the villagers you make
+t776 Choisissez une tête pour les villageois que vous créez
+o777 Custom Head
+t777 Tête personnalisée
+o778 Skull Type
+t778 Type de crâne
+o779 Skeleton Skull
+t779 Crâne squelette
+o780 Wither Skeleton Skull
+t780 Crâne squelette Wither
+o781 Zombie Skull
+t781 Crâne zombie
+o782 Player Skull
+t782 Crâne joueur
+o783 Creeper Skull
+t783 Crâne creeper
+o784 If Player Skull
+t784 Si crâne joueur
+o785 Player's Name
+t785 Nom du joueur
+o786 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t785 Génère automatiquement de nouvelles UUID pour toutes les entités copiées. [RECOMMANDÉ]
+t786 Génère automatiquement de nouvelles UUID pour toutes les entités copiées. [RECOMMANDÉ]
 Raccourci : Alt-6
-o786 When the brush tool is chosen, prompt for a block type.
-t786 Demander un type de bloc quand l'outil Brosse est choisi.
-o787 Max View Distance
-t787 Dist. vue maximum
-o788 It looks like this level is completely empty!
+o787 When the brush tool is chosen, prompt for a block type.
+t787 Demander un type de bloc quand l'outil Brosse est choisi.
+o788 Max View Distance
+t788 Dist. vue maximum
+o789 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t788 Ce niveau semble être complètement vide !
+t789 Ce niveau semble être complètement vide !
 Vous devez créer des chunks avant de faire quoi que ce soit.
-o789 Create Chunks
-t789 Créer le chunks
-o790 Replace Only:
-t790 Remplacer seulement
-o791 Make Villager Silent
-t791 Villageois silencieux
-o792 Install Mode
-t792 Installation
-o793 SAVING - 
-t793 SAUVEGARDE - 
-o794 World Type:
-t794 Type de monde :
-o795 Amplified
-t795 Amplifié
-o796 Large Biomes
-t796 Grands biomes
-o797 Superflat
-t797 Superplat
-o798 Copying chunks
-t798 Copie des chunks
-o799 Lighting chunks
-t799 Éclairage des chunks
-o800 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t800 Ce monde n'a pas été téléchargé depuis un serveur FTP. Il n'est pas encore possible d'envoyer des mondes vers un serveur FTP s'ils n'en viennent pas
-o801 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t801 La fenêtre a été agrandie. Vous pouvez avoir du mal à utiliser la souris tant que MCEdit n'est pas redémarré.
-o802 FTP Server IP:
-t802 IP du serveur FTP :
-o803 FTP Username:
-t803 Nom utilisateur FTP :
-o804 FTP Password:
-t804 Mot de passe FTP :
-o805 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t805 NOTE : MCEdit n'utilisera pas d'autres informations que celles nécessaires pour la connexion au serveur FTP
-o806 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t806 Veuillez patienter pendant que MCEdit télécharge le monde. Il sera ouvert quand ce sera fini
-o807 Connect
-t807 Connecter
-o808 Target: 
-t808 Cible : 
-o809 Error: {0}
-t809 Erreur : {0}
-o810 Incorrect username or password
-t810 Utilisateur ou mot de passe incorrect
-o811 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t811 Impossible de trouver le fichier server.properties ! Le client FTP ne pourra télécharger le monde tant que ce fichier n'est pas dans le répertoire FTP par défaut
-o812 Could not find the world folder from the server.properties file
-t812 Impossible de trouver le dossier du monde dans le fichier server.properties
-o813 Choose Block Immediately for Replace
-t813 Choisir immédiatement un bloc pour le remplacement
-o814 Open Block Picker for Fill
-t814 Ouvrir le sélecteur de bloc pour le remplissage
-o815 Open Block Picker for Replace
-t815 Ouvrir le sélecteur de bloc pour le remplacement
-o816 When the replace tool is chosen, prompt for a block type.
-t816 Demande un type de bloc quand l'outil de remplissage est choisi.
-o817 Matching Coordinates
-t817 Coordonnées correspondantes
-o818 Session Lock Options
-t818 Options Verrou de Session
-o819 Override Minecraft Changes (Not Recommended)
-t819 Outrepasser Minecraft (Non recommandé)
-o820 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t820 Toujours écraser les changements faits dans Minecraft quand le monde est ouvert dans MCEdit. (Non recommandé)
-o821 Player Heads
-t821 Têtes des joueurs
-o822 Sprint
-t822 Accélérer
-o823 Select
-t823 Sélection
-o824 Brush
-t824 Brosse
-o825 Fill and Replace
-t825 Remplir et remplacer
-o826 World Spawnpoint
-t826 Point de spawn du monde
-o827 CB Commands
-t827 Commandes BC
-o828 Open a text file with all command block commands in the currently selected area.
+o790 Create Chunks
+t790 Créer le chunks
+o791 Replace Only:
+t791 Remplacer seulement
+o792 Make Villager Silent
+t792 Villageois silencieux
+o793 Install Mode
+t793 Installation
+o794 SAVING - 
+t794 SAUVEGARDE - 
+o795 World Type:
+t795 Type de monde :
+o796 Amplified
+t796 Amplifié
+o797 Large Biomes
+t797 Grands biomes
+o798 Superflat
+t798 Superplat
+o799 Copying chunks
+t799 Copie des chunks
+o800 Lighting chunks
+t800 Éclairage des chunks
+o801 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t801 Ce monde n'a pas été téléchargé depuis un serveur FTP. Il n'est pas encore possible d'envoyer des mondes vers un serveur FTP s'ils n'en viennent pas
+o802 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t802 La fenêtre a été agrandie. Vous pouvez avoir du mal à utiliser la souris tant que MCEdit n'est pas redémarré.
+o803 FTP Server IP:
+t803 IP du serveur FTP :
+o804 FTP Username:
+t804 Nom utilisateur FTP :
+o805 FTP Password:
+t805 Mot de passe FTP :
+o806 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t806 NOTE : MCEdit n'utilisera pas d'autres informations que celles nécessaires pour la connexion au serveur FTP
+o807 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t807 Veuillez patienter pendant que MCEdit télécharge le monde. Il sera ouvert quand ce sera fini
+o808 Connect
+t808 Connecter
+o809 Target: 
+t809 Cible : 
+o810 Error: {0}
+t810 Erreur : {0}
+o811 Incorrect username or password
+t811 Utilisateur ou mot de passe incorrect
+o812 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t812 Impossible de trouver le fichier server.properties ! Le client FTP ne pourra télécharger le monde tant que ce fichier n'est pas dans le répertoire FTP par défaut
+o813 Could not find the world folder from the server.properties file
+t813 Impossible de trouver le dossier du monde dans le fichier server.properties
+o814 Choose Block Immediately for Replace
+t814 Choisir immédiatement un bloc pour le remplacement
+o815 Open Block Picker for Fill
+t815 Ouvrir le sélecteur de bloc pour le remplissage
+o816 Open Block Picker for Replace
+t816 Ouvrir le sélecteur de bloc pour le remplacement
+o817 When the replace tool is chosen, prompt for a block type.
+t817 Demande un type de bloc quand l'outil de remplissage est choisi.
+o818 Matching Coordinates
+t818 Coordonnées correspondantes
+o819 Session Lock Options
+t819 Options Verrou de Session
+o820 Override Minecraft Changes (Not Recommended)
+t820 Outrepasser Minecraft (Non recommandé)
+o821 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t821 Toujours écraser les changements faits dans Minecraft quand le monde est ouvert dans MCEdit. (Non recommandé)
+o822 Player Heads
+t822 Têtes des joueurs
+o823 Sprint
+t823 Accélérer
+o824 Select
+t824 Sélection
+o825 Brush
+t825 Brosse
+o826 Fill and Replace
+t826 Remplir et remplacer
+o827 World Spawnpoint
+t827 Point de spawn du monde
+o828 CB Commands
+t828 Commandes BC
+o829 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t828 Ouvre un fichier texte contenant toutes les commandes des blocs de commandes de la zone sélectionnée.
+t829 Ouvre un fichier texte contenant toutes les commandes des blocs de commandes de la zone sélectionnée.
 Sauvegarder le fichier mets à jours les blocs.
 Clic-droit pour les options
-o829 Command Blocks Commands Options
-t829 Options des commandes des blocs de commandes
-o830 Sort Order
-t830 Ordre de tri
-o831 Space between lines
-t831 Interligne
-o832 Make space between the lines
-t832 Ajouter un espace entre les linges
-o833 File format
-t833 Format de fichier
-o834 Choose the file format for the files
-t834 Choisissez le format pour les fichiers
-o835 Del
-t835 Suppr
-o836 [Empty]
-t836 [Vide]
-o837 Couldn't open the file
-t837 Impossible d'ouvrir le fichier.
-o838 Edit Command Block
-t838 Éditer bloc de commande
-o839 Command:
-t839 Commande :
-o840 Custom Name:
-t840 Nom personn. :
-o841 Track Output
-t841 Suivre la sortie
-o842 Slot
-t842 
-o843 ID / ID Name
-t843 ID / ID nominatif
-o844 DMG
-t844 DOM
-o845 Slot: 
-t845 
-o846 ID / ID Name: 
-t846 ID / ID nominatif :
-o847 DMG: 
-t847 DOM
-o848 Count: 
-t848 Nmbr :
-o849 New Item (1.7+)
-t849 Nouvel objet (1.7+)
-o850 Delete This Item
-t850 Suppr. objet
-o851 Delete All Instances Of This Item From World
-t851 Suppr. toutes les instance de l'objet dans le monde
-o852 Unknown Item
-t852 Objet inconnu
-o853 Edit Enchantment Table
-t853 Éditer table d'enchantement
-o854 Custom Name
-t854 Nom personn.
-o855 Edit Flower Pot
-t855 Éditer pot de fleur
-o856 Item
-t856 Objet
-o857 Data
-t857 Données
-o858 Current: 
-t858 Actuel :
-o859 Change to: 
-t859 Changer en :
-o860 F# (0.5)
-t860 Fa# (0,5)
-o861 G (0.53)
-t861 Sol (0,53)
-o862 G# (0.56)
-t862 Sol# (0,56)
-o863 A (0.6)
-t863 La (0,6)
-o864 A# (0.63)
-t864 La# (0,63)
-o865 B (0.67)
-t865 Si (0,67)
-o866 C (0.7)
-t866 Do (0,7)
-o867 C# (0.75)
-t867 Do# (0,75)
-o868 D (0.8)
-t868 Ré (0,8)
-o869 D# (0.85)
-t869 Ré# (0,85)
-o870 E (0.9)
-t870 Mi (0,9)
-o871 F (0.95)
-t871 Fa (0,95)
-o872 F# (1.0)
-t872 Fa# (1,0)
-o873 G (1.05)
-t873 Sol (1,05)
-o874 G# (1.1)
-t874 Sol# (1,1)
-o875 A (1.2)
-t875 La (1,2)
-o876 A# (1.25)
-t876 La# (1,25)
-o877 B (1.32)
-t877 Si (1,32)
-o878 C (1.4)
-t878 Do (1,4)
-o879 C# (1.5)
-t879 Do# (1,5)
-o880 D (1.6)
-t880 Ré (1,6)
-o881 D# (1.7)
-t881 Ré# (1,7)
-o882 E (1.8)
-t882 Mi (1,8)
-o883 F (1.9)
-t883 Fa (1,9)
-o884 F# (2.0)
-t884 Fa# (2,0)
-o885 Only delete items with the same damage value
-t885 Supprimer seulement les objets avec la même valeur de dommages
-o886 Also delete blocks placed in the world
-t886 Supprimer aussi les blocs placés dans le monde
-o887 No command blocks found
-t887 Aucun bloc de commandes trouvé
-o888 Analysis
-t888 Analyse
-o889 Click to set the spawn position.
-t889 Cliquer pour définir le point de spawn.
-o890 <Toolbar>
-t890 <Barre d'outils>
-o891 Edit Sign
-t891 Éditer panneau
-o892 Add Color Code...
-t892 Ajouter code de couleur
-o893 §0  Black
-t893 §0  Noir
-o894 §1  Dark Blue
-t894 §1  Bleu foncé
-o895 §2  Dark Green
-t895 §2  Vert foncé
-o896 §3  Dark Aqua
-t896 §3  Bleu eau foncé
-o897 §4  Dark Red
-t897 §4  Rouge foncé
-o898 §5  Dark Purple
-t898 §5  Violet foncé
-o899 §6  Gold
-t899 §6  Or
-o900 §7  Gray
-t900 §7  Gris
-o901 §8  Dark Gray
-t901 §8  Gris foncé
-o902 §9  Blue
-t902 §9  Bleu
-o903 §a  Green
-t903 §a  Vert
-o904 §b  Aqua
-t904 §b  Bleu eau
-o905 §c  Red
-t905 §c  Rouge
-o906 §d  Light Purple
-t906 §d  Violet clair
-o907 §e  Yellow
-t907 §e  Jaune
-o908 §f  White
-t908 §f  Blanc
-o909 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t909 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Importer ou appuyez sur Entrée pour confirmer.
-o910 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t910 Entrez un ID d'entité pour ce spawner. Les IDs invalides peuvent crasher Minecraft.
-o911 Right mouse
-t911 Bouton droit
-o912 Deleting the item {0} from the entire world ({1} chunks)
-t912 Suppression de l'objet {0} du monde ({1} chunks)
-o913 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t913 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible d'annuler. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ainsi que les objets au sol ?
-o914 Check to show/hide specific ores using the settings below.
-t914 Cochez cette case pour afficher les minerais cachés.
-o915 NBTEdit
-t915 
-o916 Save camera position on close
-t916 Sauver la position de la caméra en quittant
-o917 Waypoints
-t917 Pts. de passage
-o918 Empty
-t918 Vide
-o919 Create Waypoint
-t919 Créer point
-o920 Goto Waypoint
-t920 Aller au point
-o921 Delete Waypoint
-t921 Suppr. point
-o922 Save Camera position on world close
-t922 Sauver la position de la caméra en quittant
-o923 Save Rotation
-t923 Sauvegarder rotation
-o924 Waypoint Name:
-t924 Nom du point :
-o925 Session lock lost. This world is being accessed from another location.
-t925 La session est verrouillée par une autre application.
-o926 
+o830 Command Blocks Commands Options
+t830 Options des commandes des blocs de commandes
+o831 Sort Order
+t831 Ordre de tri
+o832 Space between lines
+t832 Interligne
+o833 Make space between the lines
+t833 Ajouter un espace entre les linges
+o834 File format
+t834 Format de fichier
+o835 Choose the file format for the files
+t835 Choisissez le format pour les fichiers
+o836 Del
+t836 Suppr
+o837 [Empty]
+t837 [Vide]
+o838 Couldn't open the file
+t838 Impossible d'ouvrir le fichier.
+o839 Edit Command Block
+t839 Éditer bloc de commande
+o840 Command:
+t840 Commande :
+o841 Custom Name:
+t841 Nom personn. :
+o842 Track Output
+t842 Suivre la sortie
+o843 Slot
+t843 
+o844 ID / ID Name
+t844 ID / ID nominatif
+o845 DMG
+t845 DOM
+o846 Slot: 
+t846 
+o847 ID / ID Name: 
+t847 ID / ID nominatif :
+o848 DMG: 
+t848 DOM
+o849 Count: 
+t849 Nmbr :
+o850 New Item (1.7+)
+t850 Nouvel objet (1.7+)
+o851 Delete This Item
+t851 Suppr. objet
+o852 Delete All Instances Of This Item From World
+t852 Suppr. toutes les instance de l'objet dans le monde
+o853 Unknown Item
+t853 Objet inconnu
+o854 Edit Enchantment Table
+t854 Éditer table d'enchantement
+o855 Custom Name
+t855 Nom personn.
+o856 Edit Flower Pot
+t856 Éditer pot de fleur
+o857 Item
+t857 Objet
+o858 Data
+t858 Données
+o859 Current: 
+t859 Actuel :
+o860 Change to: 
+t860 Changer en :
+o861 F# (0.5)
+t861 Fa# (0,5)
+o862 G (0.53)
+t862 Sol (0,53)
+o863 G# (0.56)
+t863 Sol# (0,56)
+o864 A (0.6)
+t864 La (0,6)
+o865 A# (0.63)
+t865 La# (0,63)
+o866 B (0.67)
+t866 Si (0,67)
+o867 C (0.7)
+t867 Do (0,7)
+o868 C# (0.75)
+t868 Do# (0,75)
+o869 D (0.8)
+t869 Ré (0,8)
+o870 D# (0.85)
+t870 Ré# (0,85)
+o871 E (0.9)
+t871 Mi (0,9)
+o872 F (0.95)
+t872 Fa (0,95)
+o873 F# (1.0)
+t873 Fa# (1,0)
+o874 G (1.05)
+t874 Sol (1,05)
+o875 G# (1.1)
+t875 Sol# (1,1)
+o876 A (1.2)
+t876 La (1,2)
+o877 A# (1.25)
+t877 La# (1,25)
+o878 B (1.32)
+t878 Si (1,32)
+o879 C (1.4)
+t879 Do (1,4)
+o880 C# (1.5)
+t880 Do# (1,5)
+o881 D (1.6)
+t881 Ré (1,6)
+o882 D# (1.7)
+t882 Ré# (1,7)
+o883 E (1.8)
+t883 Mi (1,8)
+o884 F (1.9)
+t884 Fa (1,9)
+o885 F# (2.0)
+t885 Fa# (2,0)
+o886 Only delete items with the same damage value
+t886 Supprimer seulement les objets avec la même valeur de dommages
+o887 Also delete blocks placed in the world
+t887 Supprimer aussi les blocs placés dans le monde
+o888 No command blocks found
+t888 Aucun bloc de commandes trouvé
+o889 Analysis
+t889 Analyse
+o890 Click to set the spawn position.
+t890 Cliquer pour définir le point de spawn.
+o891 <Toolbar>
+t891 <Barre d'outils>
+o892 Edit Sign
+t892 Éditer panneau
+o893 Add Color Code...
+t893 Ajouter code de couleur
+o894 §0  Black
+t894 §0  Noir
+o895 §1  Dark Blue
+t895 §1  Bleu foncé
+o896 §2  Dark Green
+t896 §2  Vert foncé
+o897 §3  Dark Aqua
+t897 §3  Bleu eau foncé
+o898 §4  Dark Red
+t898 §4  Rouge foncé
+o899 §5  Dark Purple
+t899 §5  Violet foncé
+o900 §6  Gold
+t900 §6  Or
+o901 §7  Gray
+t901 §7  Gris
+o902 §8  Dark Gray
+t902 §8  Gris foncé
+o903 §9  Blue
+t903 §9  Bleu
+o904 §a  Green
+t904 §a  Vert
+o905 §b  Aqua
+t905 §b  Bleu eau
+o906 §c  Red
+t906 §c  Rouge
+o907 §d  Light Purple
+t907 §d  Violet clair
+o908 §e  Yellow
+t908 §e  Jaune
+o909 §f  White
+t909 §f  Blanc
+o910 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t910 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Importer ou appuyez sur Entrée pour confirmer.
+o911 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t911 Entrez un ID d'entité pour ce spawner. Les IDs invalides peuvent crasher Minecraft.
+o912 Right mouse
+t912 Bouton droit
+o913 Deleting the item {0} from the entire world ({1} chunks)
+t913 Suppression de l'objet {0} du monde ({1} chunks)
+o914 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t914 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible d'annuler. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ainsi que les objets au sol ?
+o915 Check to show/hide specific ores using the settings below.
+t915 Cochez cette case pour afficher les minerais cachés.
+o916 NBTEdit
+t916 
+o917 Save camera position on close
+t917 Sauver la position de la caméra en quittant
+o918 Waypoints
+t918 Pts. de passage
+o919 Empty
+t919 Vide
+o920 Create Waypoint
+t920 Créer point
+o921 Goto Waypoint
+t921 Aller au point
+o922 Delete Waypoint
+t922 Suppr. point
+o923 Save Camera position on world close
+t923 Sauver la position de la caméra en quittant
+o924 Save Rotation
+t924 Sauvegarder rotation
+o925 Waypoint Name:
+t925 Nom du point :
+o926 Session lock lost. This world is being accessed from another location.
+t926 La session est verrouillée par une autre application.
+o927 
 
 Your changes cannot be saved.
-t926 
+t927 
 
 Vos changements ne peuvent être sauvegardés.
-o927 Click to import this item.
-t927 Cliquer pour importer cet objet.
-o928 Menu
-t928 
-o929 for
-t929 pour
-o930 MCEdit does not support window resolutions below 1000x700.
+o928 Click to import this item.
+t928 Cliquer pour importer cet objet.
+o929 Menu
+t929 
+o930 for
+t930 pour
+o931 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t930 La taille minimum de la fenêtre pour MCEDit est de 1000x700.
+t931 La taille minimum de la fenêtre pour MCEDit est de 1000x700.
 Il est possible que certaines fonctionnalités soient inaccessibles.
-o931 Use
-t931 Utiliser
-o932 Overwrite
-t932 Écraser
-o933 Edit Skull Data
-t933 Éditer crâne
-o934 Left-Click and drag to the left or the right
-t934 Maintenir le bouton gauche enfoncé, puis aller à gauche ou à droite.
-o935 Cancel Command Block Offset
-t935 Annuler offset blocs de commandes
-o936 Cancels the command blocks coords changed when copied.
-t936 Annule le changement des coordonnées des blocs de commandes quand ils sont copiés.
-o937 Weird stuff happen!
-t937 Il se passe de drôles de choses...
-o938 Enable Custom Name
-t938 Activer nom personnalisé
-o939 Select a Minecraft level....
-t939 Choix du fichier Minecraft...
-o940 Levels and Schematics
-t940 Niveaux et schematics
-o941 Show Block Info when hovering
-t941 Infos du block pendant survol
-o942 Shows summarized info of some Blocks when hovering over it.
-t942 Montrer des informations lorsque la souris survole les blocks.
-o943 Select a file...
-t943 Selection du fichier...
-o944 Choose a file
-t944 Choisir fichier
-o945 Custom File\0{}\0
-t945 Fichier personnalié
-o946 Save as...
-t946 Sauver sous...
-o947 Save a file
-t947 Sauver fichier
-o948 Disable Error Notification
-t948 Désactiver les notification d'erreur
-o949 Exception while importing filter module {}. See console for details.\n\n{}
-t949 Erreur lors de l'import du module {} dan le filtre. Détails dans la console.
-o950         Filter "{0}" wants to resize the selection box
+o932 Use
+t932 Utiliser
+o933 Overwrite
+t933 Écraser
+o934 Edit Skull Data
+t934 Éditer crâne
+o935 Left-Click and drag to the left or the right
+t935 Maintenir le bouton gauche enfoncé, puis aller à gauche ou à droite.
+o936 Cancel Command Block Offset
+t936 Annuler offset blocs de commandes
+o937 Cancels the command blocks coords changed when copied.
+t937 Annule le changement des coordonnées des blocs de commandes quand ils sont copiés.
+o938 Weird stuff happen!
+t938 Il se passe de drôles de choses...
+o939 Enable Custom Name
+t939 Activer nom personnalisé
+o940 Select a Minecraft level....
+t940 Choix du fichier Minecraft...
+o941 Levels and Schematics
+t941 Niveaux et schematics
+o942 Show Block Info when hovering
+t942 Infos du block pendant survol
+o943 Shows summarized info of some Blocks when hovering over it.
+t943 Montrer des informations lorsque la souris survole les blocks.
+o944 Select a file...
+t944 Selection du fichier...
+o945 Choose a file
+t945 Choisir fichier
+o946 Custom File\0{}\0
+t946 Fichier personnalié
+o947 Save as...
+t947 Sauver sous...
+o948 Save a file
+t948 Sauver fichier
+o949 Disable Error Notification
+t949 Désactiver les notification d'erreur
+o950 Exception while importing filter module {}. See console for details.\n\n{}
+t950 Erreur lors de l'import du module {} dan le filtre. Détails dans la console.
+o951         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t950          Le filtre "{0}" veut changer la taille de la sélection.
+t951          Le filtre "{0}" veut changer la taille de la sélection.
         Origine: {1} -> {2}
         Taille: {3} -> {4}
         Voulez-vous changer la taille de la sélection ?
-o951 Choose a schematic or level...
-t951 Choisissez un schematic ou un fichier 'level'
-o952 Failed to load file %s
-t952 Échec du cargement du fichier %s
+o952 Choose a schematic or level...
+t952 Choisissez un schematic ou un fichier 'level'
+o953 Failed to load file %s
+t953 Échec du cargement du fichier %s

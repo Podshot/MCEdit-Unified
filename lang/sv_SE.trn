@@ -1394,7 +1394,7 @@ o665 Int Array
 t665 
 o666 Short Array
 t666 
-o667 Click to bind this filter to a hotkey
+o667 Click to bind this filter to a save askey
 t667 
 o668 Press a key to assign to the filter "{0}"
 
@@ -1562,435 +1562,437 @@ Restart needed!
 t742 
 o743 Save As
 t743 Spara Som
-o744 Copying %0.1f million blocks
+o744 Name the new copy.
 t744 
-o745 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+o745 Copying %0.1f million blocks
 t745 
-o746 Keep Data Intact
+o746 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
 t746 
-o747 This pulls skins from the online server, so this may take a while
+o747 Keep Data Intact
 t747 
-o748 Session:
+o748 This pulls skins from the online server, so this may take a while
 t748 
-o749 Session Lock is being used by Minecraft
+o749 Session:
 t749 
-o750 Session Lock is being used by MCEdit
+o750 Session Lock is being used by Minecraft
 t750 
-o751 Show Player Skins
-t751 Visa Spelarnas Skins
-o752 Show player skins while editing the world
-t752 Visa spelarnas skins när du ändrar på världen
-o753 Compass Size (%): 
-t753 Kompass Storlek (%): 
-o754 Fog Intensity (%): 
-t754 Intensitet av dimma (%): 
-o755 Toggle compass
-t755 
-o756 Width of blocks movement: 
+o751 Session Lock is being used by MCEdit
+t751 
+o752 Show Player Skins
+t752 Visa Spelarnas Skins
+o753 Show player skins while editing the world
+t753 Visa spelarnas skins när du ändrar på världen
+o754 Compass Size (%): 
+t754 Kompass Storlek (%): 
+o755 Fog Intensity (%): 
+t755 Intensitet av dimma (%): 
+o756 Toggle compass
 t756 
-o757 Width of selection movement: 
+o757 Width of blocks movement: 
 t757 
-o758 Import
-t758 Importera
-o759 Old (Messy)
-t759 
-o760 Click to open filters folder
+o758 Width of selection movement: 
+t758 
+o759 Import
+t759 Importera
+o760 Old (Messy)
 t760 
-o761 Head
-t761 Huvud
-o762 Exception during filter operation. See console for details.
+o761 Click to open filters folder
+t761 
+o762 Head
+t762 Huvud
+o763 Exception during filter operation. See console for details.
 
 {0}
-t762 
-o763 Shift
 t763 
-o764 Option
+o764 Shift
 t764 
-o765 Meta
+o765 Option
 t765 
-o766 Applying {0} brush...
+o766 Meta
 t766 
-o767 Graphics Settings
+o767 Applying {0} brush...
 t767 
-o768 Run Macro
+o768 Graphics Settings
 t768 
-o769 Delete Macro
+o769 Run Macro
 t769 
-o770 Macro Name: 
+o770 Delete Macro
 t770 
-o771 Enter a Player Name: 
+o771 Macro Name: 
 t771 
-o772 Click the mouse button again to place the other selection corner.
+o772 Enter a Player Name: 
 t772 
-o773 Stop recording
+o773 Click the mouse button again to place the other selection corner.
 t773 
-o774 Currently recording a macro
+o774 Stop recording
 t774 
-o775 Choose a custom head for the villagers you make
+o775 Currently recording a macro
 t775 
-o776 Custom Head
+o776 Choose a custom head for the villagers you make
 t776 
-o777 Skull Type
+o777 Custom Head
 t777 
-o778 Skeleton Skull
+o778 Skull Type
 t778 
-o779 Wither Skeleton Skull
+o779 Skeleton Skull
 t779 
-o780 Zombie Skull
+o780 Wither Skeleton Skull
 t780 
-o781 Player Skull
-t781 Spelarhuvud
-o782 Creeper Skull
-t782 
-o783 If Player Skull
+o781 Zombie Skull
+t781 
+o782 Player Skull
+t782 Spelarhuvud
+o783 Creeper Skull
 t783 
-o784 Player's Name
-t784 Spelares Namn
-o785 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o784 If Player Skull
+t784 
+o785 Player's Name
+t785 Spelares Namn
+o786 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t785 
-o786 When the brush tool is chosen, prompt for a block type.
 t786 
-o787 Max View Distance
+o787 When the brush tool is chosen, prompt for a block type.
 t787 
-o788 It looks like this level is completely empty!
-You'll have to create some chunks before you can get started.
+o788 Max View Distance
 t788 
-o789 Create Chunks
-t789 Skapa Chunks
-o790 Replace Only:
-t790 Ersätt Bara:
-o791 Make Villager Silent
-t791 Gör Bybo Tyst
-o792 Install Mode
-t792 Installeringsläge
-o793 SAVING - 
-t793 SPARAR - 
-o794 World Type:
-t794 Världstyp:
-o795 Amplified
-t795 
-o796 Large Biomes
-t796 Stora Biomer
-o797 Superflat
-t797 Superflat
-o798 Copying chunks
-t798 Kopierar chunks
-o799 Lighting chunks
-t799 
-o800 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+o789 It looks like this level is completely empty!
+You'll have to create some chunks before you can get started.
+t789 
+o790 Create Chunks
+t790 Skapa Chunks
+o791 Replace Only:
+t791 Ersätt Bara:
+o792 Make Villager Silent
+t792 Gör Bybo Tyst
+o793 Install Mode
+t793 Installeringsläge
+o794 SAVING - 
+t794 SPARAR - 
+o795 World Type:
+t795 Världstyp:
+o796 Amplified
+t796 
+o797 Large Biomes
+t797 Stora Biomer
+o798 Superflat
+t798 Superflat
+o799 Copying chunks
+t799 Kopierar chunks
+o800 Lighting chunks
 t800 
-o801 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+o801 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
 t801 
-o802 FTP Server IP:
-t802 FTP Server IP:
-o803 FTP Username:
-t803 FTP Användarnamn:
-o804 FTP Password:
-t804 FTP Lösernord:
-o805 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t805 
-o806 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+o802 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t802 
+o803 FTP Server IP:
+t803 FTP Server IP:
+o804 FTP Username:
+t804 FTP Användarnamn:
+o805 FTP Password:
+t805 FTP Lösernord:
+o806 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
 t806 
-o807 Connect
+o807 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
 t807 
-o808 Target: 
+o808 Connect
 t808 
-o809 Error: {0}
-t809 Error: {0}
-o810 Incorrect username or password
-t810 Fel användarnamn eller lösenord
-o811 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t811 
-o812 Could not find the world folder from the server.properties file
+o809 Target: 
+t809 
+o810 Error: {0}
+t810 Error: {0}
+o811 Incorrect username or password
+t811 Fel användarnamn eller lösenord
+o812 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
 t812 
-o813 Choose Block Immediately for Replace
+o813 Could not find the world folder from the server.properties file
 t813 
-o814 Open Block Picker for Fill
+o814 Choose Block Immediately for Replace
 t814 
-o815 Open Block Picker for Replace
+o815 Open Block Picker for Fill
 t815 
-o816 When the replace tool is chosen, prompt for a block type.
+o816 Open Block Picker for Replace
 t816 
-o817 Matching Coordinates
+o817 When the replace tool is chosen, prompt for a block type.
 t817 
-o818 Session Lock Options
+o818 Matching Coordinates
 t818 
-o819 Override Minecraft Changes (Not Recommended)
-t819 Skriv över Minecraft ändringar (Inte rekommenderat)
-o820 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t820 
-o821 Player Heads
-t821 Spelarhuvud
-o822 Sprint
-t822 
-o823 Select
+o819 Session Lock Options
+t819 
+o820 Override Minecraft Changes (Not Recommended)
+t820 Skriv över Minecraft ändringar (Inte rekommenderat)
+o821 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t821 
+o822 Player Heads
+t822 Spelarhuvud
+o823 Sprint
 t823 
-o824 Brush
-t824 Pensel
-o825 Fill and Replace
-t825 Fyll och Ersätt
-o826 World Spawnpoint
-t826 
-o827 CB Commands
+o824 Select
+t824 
+o825 Brush
+t825 Pensel
+o826 Fill and Replace
+t826 Fyll och Ersätt
+o827 World Spawnpoint
 t827 
-o828 Open a text file with all command block commands in the currently selected area.
+o828 CB Commands
+t828 
+o829 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t828 
-o829 Command Blocks Commands Options
 t829 
-o830 Sort Order
+o830 Command Blocks Commands Options
 t830 
-o831 Space between lines
+o831 Sort Order
 t831 
-o832 Make space between the lines
+o832 Space between lines
 t832 
-o833 File format
-t833 Filformat
-o834 Choose the file format for the files
-t834 Välj filformatet för filerna
-o835 Del
-t835 
-o836 [Empty]
-t836 [Tom]
-o837 Couldn't open the file
-t837 Kunde inte öppna filen
-o838 Edit Command Block
-t838 Ändra Kommandoblock
-o839 Command:
-t839 Kommando:
-o840 Custom Name:
-t840 
-o841 Track Output
+o833 Make space between the lines
+t833 
+o834 File format
+t834 Filformat
+o835 Choose the file format for the files
+t835 Välj filformatet för filerna
+o836 Del
+t836 
+o837 [Empty]
+t837 [Tom]
+o838 Couldn't open the file
+t838 Kunde inte öppna filen
+o839 Edit Command Block
+t839 Ändra Kommandoblock
+o840 Command:
+t840 Kommando:
+o841 Custom Name:
 t841 
-o842 Slot
+o842 Track Output
 t842 
-o843 ID / ID Name
+o843 Slot
 t843 
-o844 DMG
+o844 ID / ID Name
 t844 
-o845 Slot: 
+o845 DMG
 t845 
-o846 ID / ID Name: 
+o846 Slot: 
 t846 
-o847 DMG: 
+o847 ID / ID Name: 
 t847 
-o848 Count: 
+o848 DMG: 
 t848 
-o849 New Item (1.7+)
+o849 Count: 
 t849 
-o850 Delete This Item
+o850 New Item (1.7+)
 t850 
-o851 Delete All Instances Of This Item From World
+o851 Delete This Item
 t851 
-o852 Unknown Item
+o852 Delete All Instances Of This Item From World
 t852 
-o853 Edit Enchantment Table
+o853 Unknown Item
 t853 
-o854 Custom Name
+o854 Edit Enchantment Table
 t854 
-o855 Edit Flower Pot
+o855 Custom Name
 t855 
-o856 Item
+o856 Edit Flower Pot
 t856 
-o857 Data
-t857 Data
-o858 Current: 
-t858 
-o859 Change to: 
+o857 Item
+t857 
+o858 Data
+t858 Data
+o859 Current: 
 t859 
-o860 F# (0.5)
+o860 Change to: 
 t860 
-o861 G (0.53)
+o861 F# (0.5)
 t861 
-o862 G# (0.56)
+o862 G (0.53)
 t862 
-o863 A (0.6)
+o863 G# (0.56)
 t863 
-o864 A# (0.63)
+o864 A (0.6)
 t864 
-o865 B (0.67)
+o865 A# (0.63)
 t865 
-o866 C (0.7)
+o866 B (0.67)
 t866 
-o867 C# (0.75)
+o867 C (0.7)
 t867 
-o868 D (0.8)
+o868 C# (0.75)
 t868 
-o869 D# (0.85)
+o869 D (0.8)
 t869 
-o870 E (0.9)
+o870 D# (0.85)
 t870 
-o871 F (0.95)
+o871 E (0.9)
 t871 
-o872 F# (1.0)
+o872 F (0.95)
 t872 
-o873 G (1.05)
+o873 F# (1.0)
 t873 
-o874 G# (1.1)
+o874 G (1.05)
 t874 
-o875 A (1.2)
+o875 G# (1.1)
 t875 
-o876 A# (1.25)
+o876 A (1.2)
 t876 
-o877 B (1.32)
+o877 A# (1.25)
 t877 
-o878 C (1.4)
+o878 B (1.32)
 t878 
-o879 C# (1.5)
+o879 C (1.4)
 t879 
-o880 D (1.6)
+o880 C# (1.5)
 t880 
-o881 D# (1.7)
+o881 D (1.6)
 t881 
-o882 E (1.8)
+o882 D# (1.7)
 t882 
-o883 F (1.9)
+o883 E (1.8)
 t883 
-o884 F# (2.0)
+o884 F (1.9)
 t884 
-o885 Only delete items with the same damage value
+o885 F# (2.0)
 t885 
-o886 Also delete blocks placed in the world
-t886 Radera också block placerade i världen
-o887 No command blocks found
-t887 Hittade inga kommandoblock.
-o888 Analysis
-t888 Analys
-o889 Click to set the spawn position.
-t889 Klicka för att sätta spawn positionen.
-o890 <Toolbar>
-t890 
-o891 Edit Sign
-t891 Ändra Skylt
-o892 Add Color Code...
-t892 Lägg till Färgkod...
-o893 §0  Black
-t893 §0  Svart
-o894 §1  Dark Blue
-t894 §1  Mörk Blå
-o895 §2  Dark Green
-t895 §2  Mörk Grön
-o896 §3  Dark Aqua
-t896 
-o897 §4  Dark Red
-t897 §4  Mörk Röd
-o898 §5  Dark Purple
-t898 §5  Mörk Lila
-o899 §6  Gold
-t899 §6  Guld
-o900 §7  Gray
-t900 §7  Grå
-o901 §8  Dark Gray
-t901 §8  Mörk Grå
-o902 §9  Blue
-t902 §9  Blå
-o903 §a  Green
-t903 §a  Grön
-o904 §b  Aqua
-t904 
-o905 §c  Red
-t905 §c  Röd
-o906 §d  Light Purple
-t906 §d  Ljus Lila
-o907 §e  Yellow
-t907 §e  Gul
-o908 §f  White
-t908 §f  Vit
-o909 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t909 
-o910 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+o886 Only delete items with the same damage value
+t886 
+o887 Also delete blocks placed in the world
+t887 Radera också block placerade i världen
+o888 No command blocks found
+t888 Hittade inga kommandoblock.
+o889 Analysis
+t889 Analys
+o890 Click to set the spawn position.
+t890 Klicka för att sätta spawn positionen.
+o891 <Toolbar>
+t891 
+o892 Edit Sign
+t892 Ändra Skylt
+o893 Add Color Code...
+t893 Lägg till Färgkod...
+o894 §0  Black
+t894 §0  Svart
+o895 §1  Dark Blue
+t895 §1  Mörk Blå
+o896 §2  Dark Green
+t896 §2  Mörk Grön
+o897 §3  Dark Aqua
+t897 
+o898 §4  Dark Red
+t898 §4  Mörk Röd
+o899 §5  Dark Purple
+t899 §5  Mörk Lila
+o900 §6  Gold
+t900 §6  Guld
+o901 §7  Gray
+t901 §7  Grå
+o902 §8  Dark Gray
+t902 §8  Mörk Grå
+o903 §9  Blue
+t903 §9  Blå
+o904 §a  Green
+t904 §a  Grön
+o905 §b  Aqua
+t905 
+o906 §c  Red
+t906 §c  Röd
+o907 §d  Light Purple
+t907 §d  Ljus Lila
+o908 §e  Yellow
+t908 §e  Gul
+o909 §f  White
+t909 §f  Vit
+o910 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t910 
-o911 Right mouse
-t911 Höger mus
-o912 Deleting the item {0} from the entire world ({1} chunks)
-t912 
-o913 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+o911 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t911 
+o912 Right mouse
+t912 Höger mus
+o913 Deleting the item {0} from the entire world ({1} chunks)
 t913 
-o914 Check to show/hide specific ores using the settings below.
+o914 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t914 
-o915 NBTEdit
-t915 NBTEdit
-o916 Save camera position on close
-t916 
-o917 Waypoints
+o915 Check to show/hide specific ores using the settings below.
+t915 
+o916 NBTEdit
+t916 NBTEdit
+o917 Save camera position on close
 t917 
-o918 Empty
-t918 Tom
-o919 Create Waypoint
-t919 
-o920 Goto Waypoint
+o918 Waypoints
+t918 
+o919 Empty
+t919 Tom
+o920 Create Waypoint
 t920 
-o921 Delete Waypoint
+o921 Goto Waypoint
 t921 
-o922 Save Camera position on world close
-t922 Spara Kamera position när världen stängs
-o923 Save Rotation
-t923 Spara Rotation
-o924 Waypoint Name:
-t924 
-o925 Session lock lost. This world is being accessed from another location.
+o922 Delete Waypoint
+t922 
+o923 Save Camera position on world close
+t923 Spara Kamera position när världen stängs
+o924 Save Rotation
+t924 Spara Rotation
+o925 Waypoint Name:
 t925 
-o926 
+o926 Session lock lost. This world is being accessed from another location.
+t926 
+o927 
 
 Your changes cannot be saved.
-t926 
-o927 Click to import this item.
 t927 
-o928 Menu
-t928 Meny
-o929 for
-t929 för
-o930 MCEdit does not support window resolutions below 1000x700.
+o928 Click to import this item.
+t928 
+o929 Menu
+t929 Meny
+o930 for
+t930 för
+o931 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t930 MCEdit stöder inte skärmupplösningar under 1000x700.
+t931 MCEdit stöder inte skärmupplösningar under 1000x700.
 Du kommer kanske inte att kunna använda alla funktioner med den här upplösningen.
-o931 Use
-t931 Använd
-o932 Overwrite
-t932 Skriv över
-o933 Edit Skull Data
-t933 
-o934 Left-Click and drag to the left or the right
+o932 Use
+t932 Använd
+o933 Overwrite
+t933 Skriv över
+o934 Edit Skull Data
 t934 
-o935 Cancel Command Block Offset
+o935 Left-Click and drag to the left or the right
 t935 
-o936 Cancels the command blocks coords changed when copied.
+o936 Cancel Command Block Offset
 t936 
-o937 Weird stuff happen!
+o937 Cancels the command blocks coords changed when copied.
 t937 
-o938 Enable Custom Name
+o938 Weird stuff happen!
 t938 
-
-o939 Select a Minecraft level....
+o939 Enable Custom Name
 t939 
-o940 Levels and Schematics
+
+o940 Select a Minecraft level....
 t940 
-o941 Show Block Info when hovering
+o941 Levels and Schematics
 t941 
-o942 Shows summarized info of some Blocks when hovering over it.
+o942 Show Block Info when hovering
 t942 
-o943 Select a file...
+o943 Shows summarized info of some Blocks when hovering over it.
 t943 
-o944 Choose a file
+o944 Select a file...
 t944 
-o945 Custom File\0{}\0
+o945 Choose a file
 t945 
-o946 Save as...
+o946 Custom File\0{}\0
 t946 
-o947 Save a file
+o947 Save as...
 t947 
-o948 Disable Error Notification
+o948 Save a file
 t948 
-o949 Exception while importing filter module {}. See console for details.\n\n{}
+o949 Disable Error Notification
 t949 
-o950         Filter "{0}" wants to resize the selection box
+o950 Exception while importing filter module {}. See console for details.\n\n{}
+t950 
+o951         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t950 
-o951 Choose a schematic or level...
 t951 
-o952 Failed to load file %s
+o952 Choose a schematic or level...
 t952 
+o953 Failed to load file %s
+t953 
