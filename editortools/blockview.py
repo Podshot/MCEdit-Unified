@@ -78,13 +78,15 @@ class BlockButton(ButtonBase, Panel):
 
     def __init__(self, materials, blockInfo=None, ref=None, recentBlocks=None, *a, **kw):
         self.allowWildcards = False
+        if 'name' not in kw.keys():
+            kw['name'] = 'Panel.BlockButton'
         Panel.__init__(self, *a, **kw)
 
         self.bg_color = (1, 1, 1, 0.25)
         self._ref = ref
         if blockInfo is None and ref is not None:
             blockInfo = ref.get()
-        blockInfo = blockInfo or materials.Air
+        blockInfo = blockInfo or materials["Air"]
 
         if recentBlocks is not None:
             self.recentBlocks = recentBlocks

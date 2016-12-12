@@ -62,7 +62,7 @@ class SelectionToolOptions(ToolOptions):
         self.colorPopupButton.choiceIndex = names.index(color.lower())
 
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.SelectionToolOptions')
         self.tool = tool
 
         self.colorPopupButton = ChoiceButton([], choose=self.colorChanged)
@@ -146,7 +146,7 @@ class SelectionToolOptions(ToolOptions):
 
 class SelectionToolPanel(Panel):
     def __init__(self, tool, editor):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.SelectionToolPanel')
         self.tool = tool
         self.editor = editor
 
@@ -325,7 +325,7 @@ class SelectionTool(EditorTool):
                 del t["Items"]
 
             text += str(t)
-
+            
         return text
 
     @property
@@ -369,40 +369,40 @@ class SelectionTool(EditorTool):
     # --- Nudge functions ---
 
     @alertException
-    def nudgeBlocks(self, dir):
+    def nudgeBlocks(self, direction):
         if self.editor.rightClickNudge:
             if config.fastNudgeSettings.blocksWidth.get():
-                dir = map(int.__mul__, dir, self.selectionBox().size)
+                direction = map(int.__mul__, direction, self.selectionBox().size)
             else:
                 nudgeWidth = config.fastNudgeSettings.blocksWidthNumber.get()
-                dir = map(lambda x: x * nudgeWidth, dir)
+                direction = map(lambda x: x * nudgeWidth, direction)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
 
-        if not all((p + dir) in bounds for p in points):
+        if not all((p + direction) in bounds for p in points):
             return
 
-        op = NudgeBlocksOperation(self.editor, self.editor.level, self.selectionBox(), dir)
+        op = NudgeBlocksOperation(self.editor, self.editor.level, self.selectionBox(), direction)
         self.editor.addOperation(op)
         if op.canUndo:
             self.editor.addUnsavedEdit()
 
-    def nudgeSelection(self, dir):
+    def nudgeSelection(self, direction):
         if self.editor.rightClickNudge == 1:
             if config.fastNudgeSettings.selectionWidth.get():
-                dir = map(int.__mul__, dir, self.selectionBox().size)
+                direction = map(int.__mul__, direction, self.selectionBox().size)
             else:
                 nudgeWidth = config.fastNudgeSettings.selectionWidthNumber.get()
-                dir = map(lambda x: x * nudgeWidth, dir)
+                direction = map(lambda x: x * nudgeWidth, direction)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
 
-        if not all((p + dir) in bounds for p in points):
+        if not all((p + direction) in bounds for p in points):
             return
 
-        op = NudgeSelectionOperation(self, dir)
+        op = NudgeSelectionOperation(self, direction)
         self.editor.addOperation(op)
 
     def nudgePoint(self, p, n):
@@ -435,7 +435,7 @@ class SelectionTool(EditorTool):
             return
 
         if self.nudgePanel is None:
-            self.nudgePanel = Panel()
+            self.nudgePanel = Panel(name='Panel.SelectionTool.nudgePanel')
 
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
@@ -1221,14 +1221,19 @@ class SelectionTool(EditorTool):
     @alertException
     def exportSelection(self):
         schematic = self._copySelection()
+        
         if schematic:
+            # result = ask("Select a format:", ["schematic", "structure", "Cancel"])
+            # if result == "schematic":
             self.editor.exportSchematic(schematic)
+            # elif result == "structure":
+            #    print "Author: {}".format(author)
 
     @alertException
     def openCommands(self):
         name = "CommandsFile" + str(self.editor.level.editFileNumber) + "." + config.commands.fileFormat.get()
         filename = os.path.join(self.editor.level.fileEditsFolder.filename, name)
-        file = open(filename, 'w')
+        fp = open(filename, 'w')
         first = True
         space = config.commands.space.get()
         sorting = config.commands.sorting.get()
@@ -1242,20 +1247,20 @@ class SelectionTool(EditorTool):
             chainStored = []
             for coords in GetSort(self.editor.selectionBox(), sorting):
                 (x, y, z) = coords
-                if (x,y,z) in skip:
-                    skip.remove((x,y,z))
+                if (x, y, z) in skip:
+                    skip.remove((x, y, z))
                     continue
                 blockID = self.editor.level.blockAt(x, y, z)
                 if blockID == 211:
                     chainStored.append((x, y, z))
                     continue
                 if blockID == 137 or blockID == 210:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                    edit.writeCommandInFile(first, space, (x, y, z), fp, skip, True, done, order)
                     first = False
             for (x, y, z) in chainStored:
                 if (x, y, z) in done:
                     continue
-                edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                edit.writeCommandInFile(first, space, (x, y, z), fp, skip, True, done, order)
 
         else:
             for coords in GetSort(self.editor.selectionBox(), sorting):
@@ -1265,9 +1270,9 @@ class SelectionTool(EditorTool):
                     (z, y, x) = coords
                 blockID = self.editor.level.blockAt(x, y, z)
                 if blockID == 137 or blockID == 210 or blockID == 211:
-                    edit.writeCommandInFile(first, space, (x,y,z), file, None, False, None, order)
+                    edit.writeCommandInFile(first, space, (x, y, z), fp, None, False, None, order)
                     first = False
-        file.close()
+        fp.close()
         if first:
             os.remove(filename)
             alert("No command blocks found")
@@ -1289,7 +1294,7 @@ class SelectionTool(EditorTool):
 
 class CBCommandsOptionsPanel(ToolOptions):
     def __init__(self):
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.CBCommandsOptionsPanel')
 
         empty = Label("")
 

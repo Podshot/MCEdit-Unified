@@ -135,7 +135,7 @@ class Label(Widget):
     #-#
 
     def __repr__(self):
-        return "Label {0}, child of {1}".format(self.text, self.parent)
+        return "Label {0}, child of {1}".format(self.text.encode('ascii', errors='backslashreplace'), self.parent)
 
     def get_text(self):
         return self._text

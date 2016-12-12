@@ -120,7 +120,7 @@ def perform(level, box, options):
             z = e["z"].value
 
             if (x, y, z) in box:
-                if e["id"].value == "Chest":
+                if e["id"].value == "Chest" or MCEDIT_IDS[e["id"].value] == "DEF_BLOCKS_CHEST":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
                                xp, nomove, silent, nameVisible, name, yaxis, xaxis, IsCustomHead, legacy, CustomHeads[SkullType], PlayerName)
 
@@ -223,6 +223,7 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
         Head = TAG_Compound()
         Head["id"] = TAG_String("minecraft:skull")
         Head["Damage"] = TAG_Short(SkullType)
+        Head["Count"] = TAG_Short(1)
         if SkullType == 3 and PlayerName:
             Head["tag"] = TAG_Compound()
             Head["tag"]["SkullOwner"] = TAG_String(PlayerName)

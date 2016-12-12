@@ -91,6 +91,9 @@ class Widget(object):
     tooltipText = None
     doNotTranslate = False
 
+    # 'name' is used to track widgets without parent
+    name = 'Widget'
+
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")

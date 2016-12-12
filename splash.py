@@ -16,6 +16,7 @@ pygame.font.init()
 no_splash = False
 cur_dir = directories.getDataDir()
 splash_name = os.path.join(cur_dir, 'splash')
+splash = None
 
 try:
     found = False
@@ -28,17 +29,21 @@ try:
         splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
     screen = pygame.display.set_mode(splash.get_size(), pygame.NOFRAME)
     screen.blit(splash, (0, 0))
-except IOError:
+except Exception, e:
+    print e
     try:
-        font = pygame.font.Font(open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb'), 48)
+        f = open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb')
+        font = pygame.font.Font(f, 48)
         buf = font.render("MCEDit is loading...", True, (128, 128, 128))
         screen = pygame.display.set_mode((buf.get_width() + 20, buf.get_height() + 20), pygame.NOFRAME)
         screen.blit(buf, (10, 10))
         splash = pygame.display.get_surface()
-    except:
+    except Exception, _e:
+        print _e
         splash = pygame.display.set_mode((1, 1))
     no_splash = True
-pygame.display.update()
+if splash:
+    pygame.display.update()
 #os.environ['SDL_VIDEO_CENTERED'] = '0' # Done later, when initializing MCEdit 'real' display.
 
 # Random splash
@@ -50,7 +55,10 @@ pygame.display.update()
 #
 
 if not os.path.exists(splash_name):
-    open(splash_name, 'w').write('scrap')
+    try:
+        open(splash_name, 'w').write('scrap')
+    except:
+        pass
 
 if len(open(splash_name).read()) > 0:
     from random import choice
@@ -60,4 +68,7 @@ if len(open(splash_name).read()) > 0:
     if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
         if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
-            open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+            try:
+                open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+            except:
+                pass

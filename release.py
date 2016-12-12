@@ -19,7 +19,7 @@ def build_version_tag_dev():
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return (current["name"].replace("{tag_name}",current["tag_name"]).replace("{mc_versions}", current["mc_versions"]).replace("{pe_versions}", current["pe_versions"]),
+            return (current["name"].replace("{tag_name}", current["tag_name"]).replace("{mc_versions}", current["mc_versions"]).replace("{pe_versions}", current["pe_versions"]),
                     current["tag_name"],
                     current["development"])
     except:
@@ -63,7 +63,7 @@ def check_for_new_version(release_api_response):
             # release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
             version = release_api_response[0]
             if version["tag_name"] > get_release_tag():
-                is_64bit = sys.maxsize > 2**32
+                is_64bit = sys.maxsize > 2 ** 32
                 assets = version["assets"]
                 for asset in assets:
                     if _platform == "win32":

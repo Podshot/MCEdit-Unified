@@ -2,6 +2,7 @@ from pymclevel import nbt
 import os
 import logging
 import inspect
+import shutil
 
 log = logging.getLogger(__name__)
 DEBUG = False
@@ -44,8 +45,13 @@ class WaypointManager:
         if not os.path.exists(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat")):
             self.build()
         else:
-            self.nbt_waypoints = nbt.load(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
-            self.build()
+            try:
+                self.nbt_waypoints = nbt.load(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
+            except nbt.NBTFormatError:
+                shutil.move(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"), os.path.join(self.worldDirectory, u"mcedit_waypoints_backup.dat"))
+                log.warning("Waypoint data file corrupted, ignoring...")
+            finally:
+                self.build()
         if not (len(self.waypoints) > 0):
             self.waypoints["Empty"] = [0,0,0,0,0,0]
 

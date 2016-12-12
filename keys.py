@@ -759,8 +759,8 @@ class KeyConfigPanel(Dialog):
             self.enter = 0
             return
 
-        panel = Panel()
-        panel.bg_color = (0.5, 0.5, 0.6, 1.0)
+        panel = Panel(name='Panel.KeyConfigPanel')
+        panel.bg_color = (0.3, 0.3, 0.3, 1.0)
 
         if labelString is None and configKey != "Fast Nudge":
             labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))

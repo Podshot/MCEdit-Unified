@@ -456,7 +456,7 @@ class Tree(Column):
         else:
             self.deployed.append(id)
         self.build_layout()
-        l = (self.selected_item[3], self.selected_item[4])
+        l = (self.clicked_item[3], self.clicked_item[4])
         if type(self.cached_selected_item_index) != bool:
             if self.cached_selected_item_index and self.cached_selected_item_index < self.num_rows():
                 r = self.rows[self.cached_selected_item_index]

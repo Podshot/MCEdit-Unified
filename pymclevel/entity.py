@@ -8,6 +8,7 @@ from math import isnan
 import random
 import nbt
 from copy import deepcopy
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
@@ -22,7 +23,6 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
         ),
         "Sign": (
-            ("id", nbt.TAG_String),
             ("Text1", nbt.TAG_String),
             ("Text2", nbt.TAG_String),
             ("Text3", nbt.TAG_String),
@@ -30,6 +30,7 @@ class TileEntity(object):
         ),
         "MobSpawner": (
             ("EntityId", nbt.TAG_String),
+            ("SpawnData", nbt.TAG_Compound),
         ),
         "Chest": (
             ("Items", nbt.TAG_List),
@@ -147,7 +148,10 @@ class TileEntity(object):
     @classmethod
     def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
-        tileEntityTag["id"] = nbt.TAG_String(tileEntityID)
+        # Refresh the MCEDIT_DEFS and MCEDIT_IDS objects
+        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+        _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
+        tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
         if base:
             for (name, tag) in base:
@@ -158,8 +162,17 @@ class TileEntity(object):
                     elif name == "SuccessCount":
                         tileEntityTag[name] = nbt.TAG_Int(0)
                 elif tileEntityID == "MobSpawner":
+                    entity = kw.get("entity")
                     if name == "EntityId":
-                        tileEntityTag[name] = nbt.TAG_String("Pig")
+                        tileEntityTag[name] = nbt.TAG_String(MCEDIT_DEFS.get("Pig", "Pig"))
+                    if name == "SpawnData":
+                        spawn_id = nbt.TAG_String(MCEDIT_DEFS.get("Pig", "Pig"), "id")
+                        tileEntityTag["SpawnData"] = tag()
+                        if entity:
+                            for k, v in entity.iteritems():
+                                tileEntityTag["SpawnData"][k] = deepcopy(v)
+                        else:
+                            tileEntityTag["SpawnData"].add(spawn_id)
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
@@ -228,7 +241,7 @@ class TileEntity(object):
                 z = coordZ(z, argument)
             return x, y, z
 
-        if eTag['id'].value == 'MobSpawner':
+        if eTag['id'].value == 'MobSpawner' or MCEDIT_IDS.get(eTag['id'].value) == 'DEF_BLOCKS_MOB_SPAWNER':
             mobs = []
             if 'SpawnData' in eTag:
                 mob = eTag['SpawnData']
@@ -243,7 +256,8 @@ class TileEntity(object):
                         mobs.extend(p["Entity"])
 
             for mob in mobs:
-                if "Pos" in mob:
+                # Why do we get a unicode object as tag 'mob'?
+                if "Pos" in mob and mob != "Pos":
                     if first:
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]
@@ -267,7 +281,7 @@ class TileEntity(object):
                         pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
                         Entity.setpos(mob, pos)
 
-        if eTag['id'].value == "Control" and not cancelCommandBlockOffset:
+        if (eTag['id'].value == "Control" or MCEDIT_IDS.get(eTag['id'].value) == 'DEF_BLOCKS_COMMAND_BLOCK') and not cancelCommandBlockOffset:
             command = eTag['Command'].value
             oldCommand = command
 
@@ -619,16 +633,36 @@ class Entity(object):
     def copyWithOffset(cls, entity, copyOffset, regenerateUUID=False):
         eTag = deepcopy(entity)
 
+        # Need to check the content of the copy to regenerate the possible sub entities UUIDs.
+        # A simple fix for the 1.9+ minecarts is proposed.
+
         positionTags = map(lambda p, co: nbt.TAG_Double(p.value + co), eTag["Pos"], copyOffset)
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
-        if eTag["id"].value in ("Painting", "ItemFrame"):
+        # Also match the 'minecraft:XXX' names
+#         if eTag["id"].value in ("Painting", "ItemFrame", u'minecraft:painting', u'minecraft:item_frame'):
+#             print "#" * 40
+#             print eTag
+#             eTag["TileX"].value += copyOffset[0]
+#             eTag["TileY"].value += copyOffset[1]
+#             eTag["TileZ"].value += copyOffset[2]
+
+        # Trying more agnostic way
+        if eTag.get('TileX') and eTag.get('TileY') and eTag.get('TileZ'):
             eTag["TileX"].value += copyOffset[0]
             eTag["TileY"].value += copyOffset[1]
             eTag["TileZ"].value += copyOffset[2]
 
         if "Riding" in eTag:
             eTag["Riding"] = Entity.copyWithOffset(eTag["Riding"], copyOffset)
+
+        # # Fix for 1.9+ minecarts
+        if "Passengers" in eTag:
+            passengers = nbt.TAG_List()
+            for passenger in eTag["Passengers"]:
+                passengers.append(Entity.copyWithOffset(passenger, copyOffset, regenerateUUID))
+            eTag["Passengers"] = passengers
+        # #
 
         if regenerateUUID:
             # Courtesy of SethBling

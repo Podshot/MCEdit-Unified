@@ -22,7 +22,9 @@ from albow.translate import _, getLang
 from glbackground import Panel
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
     TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
-    TAG_Short_Array, littleEndianNBT, NBTFormatError
+    TAG_Short_Array, littleEndianNBT, NBTFormatError, TAG_BYTE, TAG_SHORT, TAG_INT, \
+    TAG_LONG, TAG_FLOAT, TAG_DOUBLE, TAG_STRING, TAG_BYTE_ARRAY, TAG_LIST, TAG_COMPOUND, \
+    TAG_INT_ARRAY, TAG_SHORT_ARRAY
 from numpy import array
 from albow.theme import root
 
@@ -204,6 +206,7 @@ item_types_map = {TAG_Byte: ("Byte", IntField, 0),
 map_types_item = setup_map_types_item(item_types_map)
 
 TAG_List_Type.choices = map_types_item.keys()
+    
 
 # -----------------------------------------------------------------------------
 def create_base_item(self, i_type, i_name, i_value):
@@ -379,7 +382,7 @@ class NBTTree(Tree):
 # -----------------------------------------------------------------------------
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
-        ToolOptions.__init__(self)
+        ToolOptions.__init__(self, name='Panel.NBTExplorerOptions')
         self.tool = tool
         useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
@@ -688,7 +691,7 @@ class NBTExplorerToolPanel(Panel):
     def __init__(self, editor, nbtObject=None, fileName=None, savePolicy=0, dataKeyName='Data', close_text="Close",
                  load_text="Open", **kwargs):
         """..."""
-        Panel.__init__(self)
+        Panel.__init__(self, name='Panel.NBTExplorerToolPanel')
         self.editor = editor
         self.nbtObject = nbtObject
         self.fileName = fileName

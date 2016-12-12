@@ -13,6 +13,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 # Moving this here to get log entries ASAP -- D.C.-G.
 import logging
+from pymclevel.schematic import StructureNBT
 log = logging.getLogger(__name__)
 
 #-# Modified by D.C.-G. for translation purpose
@@ -74,7 +75,8 @@ from collections import defaultdict, deque
 from OpenGL import GL
 
 from albow import alert, ask, AttrRef, Button, Column, input_text, IntField, Row, \
-    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
+    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox, \
+    unparented
 import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
@@ -165,6 +167,10 @@ class LevelEditor(GLViewport):
         self.nbtCopyBuffer = mcedit.nbtCopyBuffer
 
         self.level = None
+
+        # Tracking the dimension changes.
+        self.prev_dimension = None
+        self.new_dimension = None
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
@@ -331,6 +337,8 @@ class LevelEditor(GLViewport):
             self.statusLabel.width = self.width
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
+            # Update the unparented widgets.
+            [a.set_update_ui(v) for a in unparented.values()]
     #-#
 
     def __del__(self):
@@ -427,8 +435,8 @@ class LevelEditor(GLViewport):
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
-            def __init__(self):
-                Panel.__init__(self)
+            def __init__(self, parent):
+                Panel.__init__(self, parent)
                 self.autoChooseCheckBox = CheckBoxLabel("Override Minecraft Changes (Not Recommended)",
                                                         ref=config.session.override,
                                                         tooltipText="Always override Minecraft changes when map is open in MCEdit. (Not recommended)")
@@ -439,7 +447,7 @@ class LevelEditor(GLViewport):
                 self.shrink_wrap()
 
         if evt.button == 3:
-            sessionLockPanel = SessionLockOptions()
+            sessionLockPanel = SessionLockOptions(self)
             sessionLockPanel.present()
 
     _viewMode = None
@@ -822,13 +830,16 @@ class LevelEditor(GLViewport):
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
-
+        
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
-            directories.schematicsDir, self.level.displayName, "schematic")
+            directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
 
         if filename:
-            schematic.saveToFile(filename)
+            if filename.endswith(".schematic"):
+                schematic.saveToFile(filename)
+            elif filename.endswith(".nbt"):
+                StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
         if len(self.copyStack) == 0:
@@ -860,8 +871,45 @@ class LevelEditor(GLViewport):
     def no(self):
         self.yon.dismiss()
         self.user_yon_response = False
+        
+    def _resize_selection_box(self, new_box):
+        import inspect # Let's get our hands dirty
+        stack = inspect.stack()
+        filename = os.path.basename(stack[1][1])
+        old_box = self.selectionTool.selectionBox()
+        msg = """
+        Filter "{0}" wants to resize the selection box
+        Origin: {1} -> {2}
+        Size: {3} -> {4}
+        Do you want to resize the Selection Box?""".format(
+                   filename, 
+                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]), 
+                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]), 
+                   (old_box.size[0], old_box.size[1], old_box.size[2]), 
+                   (new_box.size[0], new_box.size[1], new_box.size[2])
+                   )
+        result = ask(msg, ["Yes", "No"])
+        if result == "Yes":
+            self.selectionTool.setSelection(new_box)
+            return new_box
+        else:
+            return False
+    
+    def addExternalWidget(self, obj):
+        if isinstance(obj, Widget):
+            return self.addExternalWidget_Widget(obj)
+        elif isinstance(obj, dict):
+            return self.addExternalWidget_Dict(obj)
+        
+    def addExternalWidget_Widget(self, obj):
+        obj.shrink_wrap()
+        result = Dialog(obj, ["Ok", "Cancel"]).present()
+        if result == "Ok":
+            print obj
+        else:
+            return 'user canceled'
 
-    def addExternalWidget(self, provided_fields):
+    def addExternalWidget_Dict(self, provided_fields):
 
         def addNumField(wid, name, val, minimum=None, maximum=None, increment=0.1):
             if isinstance(val, float):
@@ -1146,6 +1194,7 @@ class LevelEditor(GLViewport):
             return
 
         assert level
+        log.debug("Loaded world is %s"%repr(level))
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
@@ -1181,6 +1230,12 @@ class LevelEditor(GLViewport):
                 self.mainViewport.pitch = 0.0
 
         self.removeNetherPanel()
+
+        gameVersion = level.gameVersion
+        if gameVersion in ('Schematic'):
+            log.info('Loading \'%s\' file.'%gameVersion)
+        else:
+            log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
 
         self.loadLevel(level)
 
@@ -1262,9 +1317,13 @@ class LevelEditor(GLViewport):
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
-            #!# Adding waypoints handling for all world types
-        self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-        self.waypointManager.load()
+        #!# Adding waypoints handling for all world types
+        # Need to take care of the dimension.
+        # If the camera last position was saved, changing dimension is broken; the view is sticked to the overworld.
+        #!#
+        if self.prev_dimension == self.new_dimension:
+            self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+            self.waypointManager.load()
 
 
         if len(list(self.level.allChunks)) == 0:
@@ -1303,7 +1362,10 @@ class LevelEditor(GLViewport):
     def gotoDimension(self, dimNo):
         if dimNo == self.level.dimNo:
             return
-        elif dimNo == -1 and self.level.dimNo == 0:
+        else:
+            # Record the new dimension
+            self.new_dimension = dimNo
+        if dimNo == -1 and self.level.dimNo == 0:
             self.gotoNether()
         elif dimNo == 0 and self.level.dimNo == -1:
             self.gotoEarth()
@@ -1402,7 +1464,8 @@ class LevelEditor(GLViewport):
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
-                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+                                        shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+#                                           shortName + " - Copy", "", "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
@@ -2622,7 +2685,7 @@ class LevelEditor(GLViewport):
     def askOpenFile(self):
         self.mouseLookOff()
         try:
-            filename = mcplatform.askOpenFile()
+            filename = mcplatform.askOpenFile(schematics=True)
             if filename:
                 self.parent.loadFile(filename)
         except Exception:
@@ -2965,7 +3028,7 @@ class LevelEditor(GLViewport):
                 col = Column((label, progress), align="l", width=200)
                 infos.append(col)
 
-        panel = Panel()
+        panel = Panel(parent=self)
         if len(infos):
             panel.add(Column(infos))
             panel.shrink_wrap()
