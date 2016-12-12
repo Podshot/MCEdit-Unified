@@ -639,11 +639,11 @@ t300 Max Seed
 o301 Health
 t301 Liv
 o302 VelocityX
-t302 
+t302 HastighetX
 o303 VelocityY
-t303 
+t303 HastighetY
 o304 VelocityZ
-t304 
+t304 HastighetZ
 o305 Fire
 t305 Eld
 o306 FallDistance
@@ -667,7 +667,7 @@ t314 Bybo (grön)
 o315 Farmer (brown)
 t315 Bonde (brun)
 o316 Butcher (white apron)
-t316 
+t316 Slaktare (vitt förkläde)
 o317 Librarian (white)
 t317 Bibliotikarie (vit)
 o318 Blacksmith (black apron)
@@ -687,13 +687,13 @@ t324
 o325 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
 t325 
 o326 Flood Water
-t326 
+t326 Svämma över med vatten
 o327 Flood Lava
-t327 
+t327 Svämma över med lava
 o328 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t328 
+t328 Det här är en modifierad version av SethBlings Create Shops filter på DragonQuizs begäran
 o329 Profession
-t329 
+t329 Yrke
 o330 Add Stopping Trade
 t330 
 o331 Invulnerable Villager
@@ -712,15 +712,15 @@ o337       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
 t337 
 o338 Y-Axis
-t338 
+t338 Y-Axel
 o339 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
 t339 
 o340 X-Axis
-t340 
+t340 X-Axel
 o341 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
 t341 
 o342 Rotation
-t342 
+t342 Rotation
 o343 Notes
 t343 Anteckningar
 o344 Include position data
@@ -1009,7 +1009,7 @@ t480
 o481 That preset name is reserved. Try pick another preset name.
 t481 
 o482 Invalid character in file name
-t482 
+t482 Ogiltig bokstav i filnamn
 o483 No presets saved
 t483 
 o484 Select preset to delete
@@ -1161,7 +1161,7 @@ t556 Super Hemliga Inställningar
 o557 Default Resource Pack
 t557 
 o558 Square
-t558 
+t558 Fyrkant
 o559 Record Macro
 t559 
 o560 Health Boost
@@ -1173,11 +1173,11 @@ t562
 o563 Invisibility
 t563 Osynlighet
 o564 Slowness
-t564 
+t564 Långsamhet
 o565 Absorption
-t565 
+t565 Absorption
 o566 Night Vision (no mob effect)
-t566 
+t566 Mörkerseende
 o567 Speed
 t567 Hastighet
 o568 Mining Fatigue (no mob effect)
@@ -1297,17 +1297,17 @@ t619 Öppna Mapp
 o620 Inventory Slot #%s
 t620 
 o621 id
-t621 
+t621 id
 o622 Count
 t622 
 o623 Damage
-t623 
+t623 Skada
 o624 NBT Explorer
-t624 
+t624 NBT Utforskaren
 o625 Reset
-t625 
+t625 Återställ
 o626 Reset ALL your changes in the NBT data.
-t626 
+t626 Återställ ALLA dina ändringar i NBT datan.
 o627 Data Type:
 t627 Data Typ:
 o628 -> Name
@@ -1319,7 +1319,7 @@ Dive into level NBT structure.
 Right-click for options
 t630 
 o631 Save your change in the NBT data.
-t631 
+t631 Spara din ändring i NBT datan.
 o632 Save unsaved edits before loading?
 t632 
 o633 {0} unsaved edits.  {1} to save.  {2}
@@ -1327,7 +1327,7 @@ t633 {0} osparade ändringar.  {1} för att spara.  {2}
 o634 (UNDO DISABLED)
 t634 
 o635 Save unsaved edits before closing?
-t635 
+t635 Spara osparade ändringar innan stängning?
 o636 NBT Tree Settings
 t636 
 o637 Use Bullet Styles
@@ -1478,11 +1478,15 @@ t702
 o703 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t703 
+t703 Kunde inte hitta mappen för sparade Minecraft världar!
+
+({0} hittades inte eller är inte en mapp)
 o704 I don't know how to open {0}:
 
 {1!r}
-t704 
+t704 Jag vet inte hur man öppnar {0}:
+
+{1!r}
 o705 Checking for server updates...
 t705 Letar efter server uppdateringar...
 o706 Time left: {0}
