@@ -353,7 +353,7 @@ t164 När du roterar penseln, rotera också orientationen av det block du målar
 o165 Choose your language.
 t165 Välj ditt språk.
 o166 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t166 
+t166 Klicka för att göra din MCEdit installation fristående genom att flytta inställningar och schematics till program mappen
 o167 Restart
 t167 Starta om
 o168 Loading 
@@ -464,7 +464,7 @@ t216 Byt ut
 o217 Varied Replace
 t217 Varierad bytning
 o218 Erode
-t218 
+t218 Erodera
 o219 Topsoil
 t219 
 o220 Mode:
@@ -685,7 +685,7 @@ t323 Barn/Vuxen Ålder
 o324 Repairs the backwards surfaces made by old versions of Minecraft.
 t324 
 o325 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t325 
+t325 Gör så att vatten i regionen flöder utåt och neråt, vilket gör att de blir hela block. Det här liknar Minecraft Classics vatten.
 o326 Flood Water
 t326 Svämma över med vatten
 o327 Flood Lava
@@ -969,7 +969,7 @@ t461 (Outräknad)
 o462 Biome
 t462 Biom
 o463 Repeat count
-t463 
+t463 Repeteringsantal
 o464 Depth
 t464 Djup
 o465 Pick a block:
@@ -999,21 +999,21 @@ t475 Gå till Spawn
 o476 Take a Screenshot
 t476 Ta ett kort
 o477 Load Preset
-t477 
+t477 Ladda Förinställning
 o478 Remove Presets
-t478 
+t478 Ta bort Förinställningar
 o479 Save as Preset
-t479 
+t479 Spara som Förinställning
 o480 Preset Name:
-t480 
+t480 Förinställningsnamn:
 o481 That preset name is reserved. Try pick another preset name.
-t481 
+t481 Det där förinställningsnamnet används redan. Försök med ett annat namn.
 o482 Invalid character in file name
 t482 Ogiltig bokstav i filnamn
 o483 No presets saved
-t483 
+t483 Inga förinställningar sparade
 o484 Select preset to delete
-t484 
+t484 Välj förinställning som ska raderas
 o485 Version {} is available
 t485 Version {} är tillgänglig
 o486 Download
@@ -1159,7 +1159,7 @@ t555 Nästa sida
 o556 Super Secret Settings
 t556 Super Hemliga Inställningar
 o557 Default Resource Pack
-t557 
+t557 Standard Resurspaket
 o558 Square
 t558 Fyrkant
 o559 Record Macro
@@ -1239,33 +1239,33 @@ t591
 o592 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t592 
+t592 Du kan inte använda tangenten {0}. Tryck på en ny tangent.
 o593 Reset to default
-t593 
+t593 Återställ till standard
 o594 Do you want to keep your changes?
 t594 Vill du spara dina ändringar?
 o595 Screenshots
 t595 Bilder
 o596 Uses the Latest Snapshot Terrain Generation
-t596 
+t596 Använder den Senaste Snapshotens Terräng Generator
 o597 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
 t597 
 o598 Last Played
 t598 
 o599 Level Name (filename)
-t599 
+t599 Level Namn (filnamn)
 o600 Load
 t600 Ladda
 o601 Maximum number of copied objects.
-t601 
+t601 Maximalt antal kopierade object.
 o602 Try to save and restore the window position.
-t602 
+t602 Försök att spara och återställa fönstrets position.
 o603 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t603 
+t603 Det här kommer att göra MCEdit "portabel" genom att flytta dina inställningar och schematics till samma mapp som {0}. Fortsätt?
 o604 MCEditData
 t604 MCEditData
 o605 This will move your settings and schematics to your Documents folder. Continue?
-t605 
+t605 Det här kommer att flytta dina inställningar och schematics till din Dokument mapp. Fortsätt?
 o606 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t606 
 o607 Goto Position:
@@ -1277,7 +1277,7 @@ t609 Format:
 o610 Name:
 t610 Namn:
 o611 Minecraft Infinite World (Anvil Format)
-t611 
+t611 Minecraft Oändlig Värld (Anvil Format)
 o612 Day: 
 t612 Dag: 
 o613 Time of day:
@@ -1289,9 +1289,9 @@ t615 Spel Typ:
 o616 Number of chunks: {0}
 t616 
 o617 Number of regions: {0}
-t617 
+t617 Antal regioner: {0}
 o618 Repair regions
-t618 
+t618 Reparera regioner
 o619 Open Folder
 t619 Öppna Mapp
 o620 Inventory Slot #%s
@@ -1299,7 +1299,7 @@ t620
 o621 id
 t621 id
 o622 Count
-t622 
+t622 Antal
 o623 Damage
 t623 Skada
 o624 NBT Explorer
@@ -1317,7 +1317,9 @@ t629 Dubbel-klicka för att ändra
 o630 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t630 
+t630 NBT Utforskaren
+Dyk in i levelns NBT struktur.
+Höger-klicka för alternativ
 o631 Save your change in the NBT data.
 t631 Spara din ändring i NBT datan.
 o632 Save unsaved edits before loading?
@@ -1367,7 +1369,7 @@ t651 Text
 o652 Boolean
 t652 
 o653 Choose default data
-t653 
+t653 Välj standard data
 o654 Item Type: %s
 t654 
 o655 Value
@@ -1379,21 +1381,21 @@ t657
 o658 Choose a name
 t658 Välj ett namn
 o659 Byte
-t659 
+t659 Byte
 o660 Long
-t660 
+t660 Long
 o661 Short
-t661 
+t661 Short
 o662 String
-t662 
+t662 String
 o663 List
-t663 
+t663 Lista
 o664 Byte Array
-t664 
+t664 Byte Array
 o665 Int Array
-t665 
+t665 Int Array
 o666 Short Array
-t666 
+t666 Short Array
 o667 Click to bind this filter to a save askey
 t667 
 o668 Press a key to assign to the filter "{0}"
@@ -1412,17 +1414,17 @@ t671
 o672 Are you sure you want to delete the default player?
 t672 
 o673 Double-click or use the button below to edit the NBT Data.
-t673 
+t673 Dubbelklicka eller använd knappen nedan för att ändra NBT datan.
 o674 Go Back
 t674 Gå Tillbaks
 o675 Upload to FTP Server
 t675 Ladda upp till FTP Server
 o676 There are {0} unsaved changes.
-t676 
+t676 Det finns {0} sparade ändringar.
 o677 Save and Quit
 t677 Spara och Avsluta
 o678 Refresh Player Names
-t678 
+t678 Uppdatera Spelarnamn
 o679 Results
 t679 Resultat
 o680 Smooth - 3D
@@ -1439,7 +1441,8 @@ o685 Open the NBT Explorer to edit player's attributes and inventory
 t685 
 o686 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t686 
+t686 Ännu inte tillagt.
+Använd NBT Utforskaren för att ändra den här spelaren.
 o687 Spawn point fixed. Changes: 
 
 
@@ -1447,7 +1450,7 @@ t687
 o688 <Selection>
 t688 
 o689 <Miscellaneous>
-t689 
+t689 <Diverse>
 o690 Take Screenshot
 t690 Ta Bild
 o691 Double-click to go to this item.
