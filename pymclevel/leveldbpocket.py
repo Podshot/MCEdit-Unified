@@ -15,6 +15,7 @@ from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData
 from level import LightedChunk
 from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
+import id_definitions
 
 logger = logging.getLogger(__name__)
 
@@ -441,6 +442,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.load(buf=root_tag_buf)
 
+        self.__gameVersion = 'PE'
+        id_definitions.ids_loader('PE')
         if create:
             self._createLevelDat(random_seed, last_played)
             return
