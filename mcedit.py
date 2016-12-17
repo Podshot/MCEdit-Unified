@@ -853,7 +853,7 @@ class MCEdit(GLViewport):
                 exc_txt = traceback.format_exc()
                 if mcedit.editor.level:
                     if config.settings.savePositionOnClose.get():
-                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.getPlayerDimension())
+                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.dimNo)
                     mcedit.editor.waypointManager.save()
                 # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
                 if not USE_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():

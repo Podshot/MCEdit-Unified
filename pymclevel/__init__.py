@@ -1,3 +1,8 @@
+# Versioned data relative objects
+MCEDIT_DEFS = {}
+MCEDIT_IDS = {} # Maps the numeric and name ids to entries in MCEDIT_DEFS
+
+
 from box import BoundingBox, FloatBox
 from entity import Entity, TileEntity
 from faces import faceDirections, FaceXDecreasing, FaceXIncreasing, FaceYDecreasing, FaceYIncreasing, FaceZDecreasing, \

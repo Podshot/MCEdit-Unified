@@ -830,7 +830,7 @@ class LevelEditor(GLViewport):
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
-
+        
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
             directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
@@ -871,8 +871,45 @@ class LevelEditor(GLViewport):
     def no(self):
         self.yon.dismiss()
         self.user_yon_response = False
+        
+    def _resize_selection_box(self, new_box):
+        import inspect # Let's get our hands dirty
+        stack = inspect.stack()
+        filename = os.path.basename(stack[1][1])
+        old_box = self.selectionTool.selectionBox()
+        msg = """
+        Filter "{0}" wants to resize the selection box
+        Origin: {1} -> {2}
+        Size: {3} -> {4}
+        Do you want to resize the Selection Box?""".format(
+                   filename, 
+                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]), 
+                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]), 
+                   (old_box.size[0], old_box.size[1], old_box.size[2]), 
+                   (new_box.size[0], new_box.size[1], new_box.size[2])
+                   )
+        result = ask(msg, ["Yes", "No"])
+        if result == "Yes":
+            self.selectionTool.setSelection(new_box)
+            return new_box
+        else:
+            return False
+    
+    def addExternalWidget(self, obj):
+        if isinstance(obj, Widget):
+            return self.addExternalWidget_Widget(obj)
+        elif isinstance(obj, dict):
+            return self.addExternalWidget_Dict(obj)
+        
+    def addExternalWidget_Widget(self, obj):
+        obj.shrink_wrap()
+        result = Dialog(obj, ["Ok", "Cancel"]).present()
+        if result == "Ok":
+            print obj
+        else:
+            return 'user canceled'
 
-    def addExternalWidget(self, provided_fields):
+    def addExternalWidget_Dict(self, provided_fields):
 
         def addNumField(wid, name, val, minimum=None, maximum=None, increment=0.1):
             if isinstance(val, float):
@@ -1157,6 +1194,7 @@ class LevelEditor(GLViewport):
             return
 
         assert level
+        log.debug("Loaded world is %s"%repr(level))
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
