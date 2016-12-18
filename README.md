@@ -134,3 +134,20 @@ Navigate to the leveldb_mcpe folder
 `> python test.py`
 <br>
 And you should be good to go.
+
+
+##New features test mode
+Some unfinished features and fixes may be included in future MCEdit-Unified releases, this inactive code can be activated using the process below. Use at your own risk.
+
+To use:
+
+* Open your operating system's command console.
+* Go to the directory where MCEdit is installed (Mac users need to open their .app file).
+* Create a text file named `new_features.def`
+* In this file, add a feature per line. (Unfinished features/fixes are available on request from the developers))
+* Run MCEdit-Unified with the command line option `--new-features`
+
+These 'new features' will change during the program development. Features may be added or removed at will and may not work at all, most will eventually end up in a release as a normal feature. No documentation is provided for them, except in the code source itself.
+
+We recommend you to use this only if you have at least some familiarity with programming and source code, or if requested by a developer.
+We highly recommend backing up your worlds (and even the whole game) before using this function, even if requested by the devs.
