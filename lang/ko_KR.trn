@@ -724,55 +724,67 @@ o341 Changes the head rotation Horizontal is 0. Positive values look downward. M
 t341 머리의 방향을 변경합니다. 앞을 볼 때가 0이고 양수가 아래쪽을 봅니다. -90에서 90 사이여야 합니다.
 o342 Rotation
 t342 회전
-o343 Notes
-t343 Notes
-o344 Include position data
-t344 Include position data
-o345 Both
-t345 Both
-o346 Lower Only
-t346 Lower Only
-o347 Raise Only
-t347 Raise Only
-o348 Raise/Lower
-t348 Raise/Lower
-o349 TileEntity
-t349 TileEntity
-o350 Entity
-t350 Entity
-o351 Block
-t351 Block
-o352 Match by:
-t352 Match by:
-o353 Match block type (for TileEntity searches):
-t353 Match block type (for TileEntity searches):
-o354 Match block:
-t354 Match block:
-o355 Match block data:
-t355 Match block data:
-o356 Match tile entities (for Block searches):
-t356 Match tile entities (for Block searches):
-o357 "None" for Name or Value will match any tag's Name or Value respectively.
-t357 "None" for Name or Value will match any tag's Name or Value respectively.
-o358 Match Tag Name:
-t358 Match Tag Name:
-o359 Match Tag Value:
-t359 Match Tag Value:
-o360 Case insensitive:
-t360 Case insensitive:
-o361 Any
-t361 Any
-o362 Match Tag Type:
-t362 Match Tag Type:
-o363 Start New Search
-t363 Start New Search
-o364 Find Next
-t364 Find Next
-o365 Dump Found Coordinates
-t365 Dump Found Coordinates
-o366 Operation:
-t366 Operation:
-o367 This filter is designed to search for NBT in either Entities or TileEntities.
+o343 To create a shop first put your buy in the top slot(s) of the chest.
+Second put a second buy in the middle slot(optional).
+Third put a sell in the bottom slot.
+Click the chest you want and choose what you want and click hit enter
+*All items must be in the same row*
+
+t343 상점을 만드려면 먼저 살 물건을 상자의 위쪽에 넣습니다.
+그 다음 두번째 살 물건을 가운데에 넣습니다.(옵션)
+마지막으로 팔 물건을 아래쪽에 넣습니다.
+원하는 상자와 물건을 클릭하고 엔터를 누릅니다.
+*모든 아이템은 같은 열에 있어야 합니다*
+
+o344 Notes
+t344 Notes
+o345 Include position data
+t345 Include position data
+o346 Both
+t346 Both
+o347 Lower Only
+t347 Lower Only
+o348 Raise Only
+t348 Raise Only
+o349 Raise/Lower
+t349 Raise/Lower
+o350 TileEntity
+t350 TileEntity
+o351 Entity
+t351 Entity
+o352 Block
+t352 Block
+o353 Match by:
+t353 Match by:
+o354 Match block type (for TileEntity searches):
+t354 Match block type (for TileEntity searches):
+o355 Match block:
+t355 Match block:
+o356 Match block data:
+t356 Match block data:
+o357 Match tile entities (for Block searches):
+t357 Match tile entities (for Block searches):
+o358 "None" for Name or Value will match any tag's Name or Value respectively.
+t358 "None" for Name or Value will match any tag's Name or Value respectively.
+o359 Match Tag Name:
+t359 Match Tag Name:
+o360 Match Tag Value:
+t360 Match Tag Value:
+o361 Case insensitive:
+t361 Case insensitive:
+o362 Any
+t362 Any
+o363 Match Tag Type:
+t363 Match Tag Type:
+o364 Start New Search
+t364 Start New Search
+o365 Find Next
+t365 Find Next
+o366 Dump Found Coordinates
+t366 Dump Found Coordinates
+o367 Operation:
+t367 Operation:
+o368 This filter is designed to search for NBT in either Entities or TileEntities.
 It can also be used to search for blocks.
 "Match by" determines which type of object is prioritized during the search.
 Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
@@ -780,1247 +792,1247 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t367 
-o368 Documentation
-t368 문서
-o369 Forester script by dudecon
-t369 Forester script by dudecon
-o370 Procedural
-t370 절차
-o371 Normal
-t371 보통
-o372 Bamboo
-t372 대나무
-o373 Palm
-t373 야자나무
-o374 Stickly
-t374 Stickly
-o375 Round
-t375 원형
-o376 Cone
-t376 원뿔
-o377 Rainforest
-t377 우림
-o378 Mangrove
-t378 맹그로브
-o379 Shape
-t379 모양
-o380 Tree Count
-t380 나무 개수
-o381 Tree Height
-t381 나무 높이
-o382 Height Variation
-t382 높이 변화
-o383 Branch Density
-t383 나뭇가지 밀도
-o384 Trunk Thickness
-t384 나무의 몸통 두께
-o385 Broken Trunk
-t385 부서진 몸통
-o386 Hollow Trunk
-t386 빈 몸통
-o387 Wood
-t387 나무
-o388 Foliage
-t388 나뭇잎
-o389 Foliage Density
-t389 나뭇잎 밀도
-o390 Yes
-t390 예
-o391 To Stone
-t391 돌에
-o392 Hanging
-t392 매달림
-o393 No
-t393 아니오
-o394 Roots
-t394 뿌리
-o395 Root Buttresses
-t395 뿌리 지지대
-o396 Wood Material
-t396 나무 재질
-o397 Leaf Material
-t397 나뭇잎 재질
-o398 Plant On
-t398 식물
-o399 Ocean
-t399 바다
-o400 Plains
-t400 초원
-o401 Desert
-t401 사막
-o402 Extreme Hills
-t402 익스트림 힐
-o403 Forest
-t403 숲
-o404 Taiga
-t404 침엽수 산림
-o405 Swamppland
-t405 늪지대
-o406 River
-t406 강
-o407 Hell (Nether)
-t407 지옥 (네더)
-o408 Sky (End)
-t408 하늘 (끝)
-o409 Frozen Ocean
-t409 얼어붙은 바다
-o410 Frozen River
-t410 얼어붙은 강
-o411 Ice Plains
-t411 얼어 붙은 평야
-o412 Ice Mountains
-t412 설산
-o413 Mushroom Island
-t413 버섯섬
-o414 Mushroom Island Shore
-t414 버섯섬 해안가
-o415 Beach
-t415 해안가
-o416 Desert Hills
-t416 모래 둔덕
-o417 Forest Hills
-t417 숲 언덕
-o418 Taiga Hills
-t418 침엽수 산림 언덕
-o419 Extreme Hills Edge
-t419 협곡의 끝자락
-o420 Jungle
-t420 정글
-o421 Jungle Hills
-t421 정글 언덕
-o422 Jungle Edge
-t422 정글의 끝
-o423 Deep Ocean
-t423 심해
-o424 Stone Beach
-t424 자갈 해안
-o425 Cold Beach
-t425 차가운 해안
-o426 Birch Forest
-t426 자작 나무 숲
-o427 Birch Forest Hills
-t427 자작 나무 숲 언덕
-o428 Roofed Forest
-t428 뒤덥힌 숲속
-o429 Cold Taiga
-t429 추운 침엽수림
-o430 Cold Taiga Hills
-t430 추운 침엽수림 언덕
-o431 Mega Taiga
-t431 메가 침엽수림
-o432 Mega Taiga Hills
-t432 메가 침엽수림 언덕
-o433 Extreme Hills+
-t433 협곡들+
-o434 Savanna
-t434 사바나
-o435 Savanna Plateau
-t435 사바나 고원
-o436 Mesa
-t436 퇴적층
-o437 Mesa Plateau F
-t437 퇴적층 고원 F
-o438 Mesa Plateau
-t438 퇴적층 고원
-o439 Sunflower Plains
-t439 해바라기 꽃밭
-o440 Desert M
-t440 사막 M
-o441 Extreme Hills M
-t441 협곡  M
-o442 Flower Forest
-t442 꽃 숲
-o443 Taiga M
-t443 침엽수림 M
-o444 Swampland M
-t444 늪지대 M
-o445 Ice Plains Spikes
-t445 설원 스파이크
-o446 Ice Mountains Spikes
-t446 설산 스파이크
-o447 Jungle M
-t447 정글 M
-o448 JungleEdge M
-t448 정글의 끝자락 M
-o449 Birch Forest M
-t449 자작 나무 숲 M
-o450 Birch Forest Hills M
-t450 자작 나무 숲 언덕 M
-o451 Roofed Forest M
-t451 우거진 숲 M
-o452 Cold Taiga M
-t452 추운 침엽수림 M
-o453 Mega Spruce Taiga
-t453 Mega 가문비 나무 침엽수림
-o454 Mega Spruce Taiga Hills
-t454 Mega 가문비 나무 침엽수림 언덕
-o455 Extreme Hills+ M
-t455 협곡들+ M
-o456 Savanna M
-t456 사바나 M
-o457 Savanna Plateau M
-t457 사바나 고원 M
-o458 Mesa (Bryce)
-t458 Mesa (Bryce)
-o459 Mesa Plateau F M
-t459 퇴적층 고원 F M
-o460 Mesa Plateau M
-t460 퇴적층 고원 M
-o461 (Uncalculated)
-t461 (Uncalculated)
-o462 Biome
-t462 바이옴
-o463 Repeat count
-t463 반복 횟수
-o464 Depth
-t464 깊이
-o465 Pick a block:
-t465 블럭 선택:
-o466 Players
-t466 플레이어
-o467 Player Name
-t467 플레이어 이름
-o468 Goto
-t468 Goto
-o469 Goto View
-t469 Goto View
-o470 Move
-t470 Move
-o471 Align to Camera
-t471 카메라와 나란히
-o472 Player (Single Player)
-t472 플레이어
-o473 Chunk Control
-t473 청크 컨트롤
-o474 Move Spawn Point
+t368 
+o369 Documentation
+t369 문서
+o370 Forester script by dudecon
+t370 Forester script by dudecon
+o371 Procedural
+t371 절차
+o372 Normal
+t372 보통
+o373 Bamboo
+t373 대나무
+o374 Palm
+t374 야자나무
+o375 Stickly
+t375 Stickly
+o376 Round
+t376 원형
+o377 Cone
+t377 원뿔
+o378 Rainforest
+t378 우림
+o379 Mangrove
+t379 맹그로브
+o380 Shape
+t380 모양
+o381 Tree Count
+t381 나무 개수
+o382 Tree Height
+t382 나무 높이
+o383 Height Variation
+t383 높이 변화
+o384 Branch Density
+t384 나뭇가지 밀도
+o385 Trunk Thickness
+t385 나무의 몸통 두께
+o386 Broken Trunk
+t386 부서진 몸통
+o387 Hollow Trunk
+t387 빈 몸통
+o388 Wood
+t388 나무
+o389 Foliage
+t389 나뭇잎
+o390 Foliage Density
+t390 나뭇잎 밀도
+o391 Yes
+t391 예
+o392 To Stone
+t392 돌에
+o393 Hanging
+t393 매달림
+o394 No
+t394 아니오
+o395 Roots
+t395 뿌리
+o396 Root Buttresses
+t396 뿌리 지지대
+o397 Wood Material
+t397 나무 재질
+o398 Leaf Material
+t398 나뭇잎 재질
+o399 Plant On
+t399 식물
+o400 Ocean
+t400 바다
+o401 Plains
+t401 초원
+o402 Desert
+t402 사막
+o403 Extreme Hills
+t403 익스트림 힐
+o404 Forest
+t404 숲
+o405 Taiga
+t405 침엽수 산림
+o406 Swamppland
+t406 늪지대
+o407 River
+t407 강
+o408 Hell (Nether)
+t408 지옥 (네더)
+o409 Sky (End)
+t409 하늘 (끝)
+o410 Frozen Ocean
+t410 얼어붙은 바다
+o411 Frozen River
+t411 얼어붙은 강
+o412 Ice Plains
+t412 얼어 붙은 평야
+o413 Ice Mountains
+t413 설산
+o414 Mushroom Island
+t414 버섯섬
+o415 Mushroom Island Shore
+t415 버섯섬 해안가
+o416 Beach
+t416 해안가
+o417 Desert Hills
+t417 모래 둔덕
+o418 Forest Hills
+t418 숲 언덕
+o419 Taiga Hills
+t419 침엽수 산림 언덕
+o420 Extreme Hills Edge
+t420 협곡의 끝자락
+o421 Jungle
+t421 정글
+o422 Jungle Hills
+t422 정글 언덕
+o423 Jungle Edge
+t423 정글의 끝
+o424 Deep Ocean
+t424 심해
+o425 Stone Beach
+t425 자갈 해안
+o426 Cold Beach
+t426 차가운 해안
+o427 Birch Forest
+t427 자작 나무 숲
+o428 Birch Forest Hills
+t428 자작 나무 숲 언덕
+o429 Roofed Forest
+t429 뒤덥힌 숲속
+o430 Cold Taiga
+t430 추운 침엽수림
+o431 Cold Taiga Hills
+t431 추운 침엽수림 언덕
+o432 Mega Taiga
+t432 메가 침엽수림
+o433 Mega Taiga Hills
+t433 메가 침엽수림 언덕
+o434 Extreme Hills+
+t434 협곡들+
+o435 Savanna
+t435 사바나
+o436 Savanna Plateau
+t436 사바나 고원
+o437 Mesa
+t437 퇴적층
+o438 Mesa Plateau F
+t438 퇴적층 고원 F
+o439 Mesa Plateau
+t439 퇴적층 고원
+o440 Sunflower Plains
+t440 해바라기 꽃밭
+o441 Desert M
+t441 사막 M
+o442 Extreme Hills M
+t442 협곡  M
+o443 Flower Forest
+t443 꽃 숲
+o444 Taiga M
+t444 침엽수림 M
+o445 Swampland M
+t445 늪지대 M
+o446 Ice Plains Spikes
+t446 설원 스파이크
+o447 Ice Mountains Spikes
+t447 설산 스파이크
+o448 Jungle M
+t448 정글 M
+o449 JungleEdge M
+t449 정글의 끝자락 M
+o450 Birch Forest M
+t450 자작 나무 숲 M
+o451 Birch Forest Hills M
+t451 자작 나무 숲 언덕 M
+o452 Roofed Forest M
+t452 우거진 숲 M
+o453 Cold Taiga M
+t453 추운 침엽수림 M
+o454 Mega Spruce Taiga
+t454 Mega 가문비 나무 침엽수림
+o455 Mega Spruce Taiga Hills
+t455 Mega 가문비 나무 침엽수림 언덕
+o456 Extreme Hills+ M
+t456 협곡들+ M
+o457 Savanna M
+t457 사바나 M
+o458 Savanna Plateau M
+t458 사바나 고원 M
+o459 Mesa (Bryce)
+t459 Mesa (Bryce)
+o460 Mesa Plateau F M
+t460 퇴적층 고원 F M
+o461 Mesa Plateau M
+t461 퇴적층 고원 M
+o462 (Uncalculated)
+t462 (Uncalculated)
+o463 Biome
+t463 바이옴
+o464 Repeat count
+t464 반복 횟수
+o465 Depth
+t465 깊이
+o466 Pick a block:
+t466 블럭 선택:
+o467 Players
+t467 플레이어
+o468 Player Name
+t468 플레이어 이름
+o469 Goto
+t469 Goto
+o470 Goto View
+t470 Goto View
+o471 Move
+t471 Move
+o472 Align to Camera
+t472 카메라와 나란히
+o473 Player (Single Player)
+t473 플레이어
+o474 Chunk Control
+t474 청크 컨트롤
+o475 Move Spawn Point
 Right-click for options
-t474 스폰 지점 이동
+t475 스폰 지점 이동
 우클릭으로 설정
-o475 Goto Spawn
-t475 스폰으로 이동
-o476 Take a Screenshot
-t476 스크린샷 찍기
-o477 Load Preset
-t477 설정 불러오기
-o478 Remove Presets
-t478 설정 삭제
-o479 Save as Preset
-t479 설정 저장
-o480 Preset Name:
-t480 설정 이름:
-o481 That preset name is reserved. Try pick another preset name.
-t481 이미 사용된 이름입니다. 다른 이름을 사용하세요.
-o482 Invalid character in file name
-t482 이름에 잘못된 문자가 있습니다.
-o483 No presets saved
-t483 저장된 설정이 없습니다.
-o484 Select preset to delete
-t484 삭제할 설정을 선택하세요.
-o485 Version {} is available
-t485 버전 {}이 사용 가능합니다.
-o486 Download
-t486 다운로드
-o487 View
-t487 보기
-o488 Ignore
-t488 무시
-o489 Space
-t489 Space
-o490 Tab
-t490 Tab
-o491 Delete
-t491 Delete
-o492 Scroll Up
-t492 Scroll Up
-o493 Scroll Down
-t493 Scroll Down
-o494 Button 3
-t494 Button 3
-o495 Alt
-t495 Alt
-o496 Ctrl
-t496 Ctrl
-o497 Creating a new world.
-t497 새로운 월드를 생성 중.
-o498 Minecraft Server
-t498 마인크래프트 서버
-o499 Flatland
-t499 평지
-o500 Generator:
-t500 생성기:
-o501 Will automatically download and use the latest version
-t501 자동으로 최신 버전을 다운로드하고 사용합니다.
-o502 Height: 
-t502 높이: 
-o503 Grass
-t503 잔디
-o504 Server version:
-t504 서버 버전:
-o505 or
-t505 또는
-o506 Check for Updates
-t506 업데이트 확인
-o507 Advanced
-t507 고급
-o508 Open Server Storage
-t508 서버 저장소 열기
-o509 Reveal World Cache
-t509 월드 캐시 Reveal
-o510 Delete World Cache
-t510 월드 캐시 삭제
-o511 Advanced...
-t511 고급...
-o512 Simulate world
-t512 월드 시뮬레이션
-o513 Use snapshot versions
-t513 스냅샷 버전 사용
-o514 X: 
-t514 
-o515 Y: 
+o476 Goto Spawn
+t476 스폰으로 이동
+o477 Take a Screenshot
+t477 스크린샷 찍기
+o478 Load Preset
+t478 설정 불러오기
+o479 Remove Presets
+t479 설정 삭제
+o480 Save as Preset
+t480 설정 저장
+o481 Preset Name:
+t481 설정 이름:
+o482 That preset name is reserved. Try pick another preset name.
+t482 이미 사용된 이름입니다. 다른 이름을 사용하세요.
+o483 Invalid character in file name
+t483 이름에 잘못된 문자가 있습니다.
+o484 No presets saved
+t484 저장된 설정이 없습니다.
+o485 Select preset to delete
+t485 삭제할 설정을 선택하세요.
+o486 Version {} is available
+t486 버전 {}이 사용 가능합니다.
+o487 Download
+t487 다운로드
+o488 View
+t488 보기
+o489 Ignore
+t489 무시
+o490 Space
+t490 Space
+o491 Tab
+t491 Tab
+o492 Delete
+t492 Delete
+o493 Scroll Up
+t493 Scroll Up
+o494 Scroll Down
+t494 Scroll Down
+o495 Button 3
+t495 Button 3
+o496 Alt
+t496 Alt
+o497 Ctrl
+t497 Ctrl
+o498 Creating a new world.
+t498 새로운 월드를 생성 중.
+o499 Minecraft Server
+t499 마인크래프트 서버
+o500 Flatland
+t500 평지
+o501 Generator:
+t501 생성기:
+o502 Will automatically download and use the latest version
+t502 자동으로 최신 버전을 다운로드하고 사용합니다.
+o503 Height: 
+t503 높이: 
+o504 Grass
+t504 잔디
+o505 Server version:
+t505 서버 버전:
+o506 or
+t506 또는
+o507 Check for Updates
+t507 업데이트 확인
+o508 Advanced
+t508 고급
+o509 Open Server Storage
+t509 서버 저장소 열기
+o510 Reveal World Cache
+t510 월드 캐시 Reveal
+o511 Delete World Cache
+t511 월드 캐시 삭제
+o512 Advanced...
+t512 고급...
+o513 Simulate world
+t513 월드 시뮬레이션
+o514 Use snapshot versions
+t514 스냅샷 버전 사용
+o515 X: 
 t515 
-o516 Z: 
+o516 Y: 
 t516 
-o517 f: 
+o517 Z: 
 t517 
-o518 Seed: 
-t518 시드: 
-o519 East-West Chunks: 
-t519 동-서 청크: 
-o520 North-South Chunks: 
-t520 남-북 청크: 
-o521 Survival
-t521 서바이벌
-o522 Cancel
-t522 취소
-o523 Creative
-t523 크리에이티브
-o524 Style:
-t524 스타일:
-o525 H
-t525 H
-o526 L
-t526 L
-o527 W
-t527 W
-o528 Minimum Spacing
-t528 최소 간격
-o529 Regenerate Entity UUID
-t529 UUID 재생성
-o530 Replace blocks with any data value. Only useful for Replace operations.
-t530 데이터 값을 무시하고 블럭을 바꿉니다. '바꾸기' 작업에만 유용합니다.
-o531 Entities
-t531 엔티티
-o532 Items
-t532 아이템
-o533 TileEntities
-t533 타일 엔티티
-o534 TileTicks
-t534 타일 틱
-o535 Unpopulated Chunks
-t535 무인 청크
-o536 Sky
-t536 하늘
-o537 Fog
-t537 안개
-o538 Ceiling
-t538 천장
-o539 Chunk Redraw
-t539 Chunk 변경
-o540 Hidden Ores
-t540 숨겨진 광물
-o541 Bedrock
-t541 배드락
-o542 Coal
-t542 석탄
-o543 Iron
-t543 철
-o544 Lapis Lazuli
-t544 청금석
-o545 Redstone
-t545 레드스톤
-o546 Gold
-t546 금
-o547 Diamond
-t547 다이아몬드
-o548 Nether Quartz
-t548 석영
-o549 Shortcut: {0}
-t549 단축키: {0}
-o550 View Distance ({0})
-t550 시야 ({0})
-o551 Copy Stack Size: 
-t551 Copy Stack Size:
-o552 Remove
-t552 Remove
-o553 Reload Skins
-t553 스킨 다시 로딩
-o554 Previous Page
-t554 이전 페이지
-o555 Next Page
-t555 다음 페이지
-o556 Super Secret Settings
-t556 슈퍼 비밀 설정!
-o557 Default Resource Pack
-t557 기본 리소스팩
-o558 Square
-t558 사각형
-o559 Record Macro
-t559 매크로 녹화
-o560 Health Boost
-t560 체력 신장
-o561 Saturation (no mob effect)
-t561 포만감 (몹 효과 없음)
-o562 Wither
-t562 나약함
-o563 Invisibility
-t563 투명화
-o564 Slowness
-t564 구속
-o565 Absorption
-t565 흡수
-o566 Night Vision (no mob effect)
-t566 야간 투시
-o567 Speed
-t567 신속
-o568 Mining Fatigue (no mob effect)
-t568 피로(몹 효과 없음)
-o569 Player Name(s):
-t569 플레이어 이름:
-o570 Chunks Borders
-t570 Chunks 경계
-o571 Fast Nudge
-t571 빠른 이동
-o572 Clone Fast Nudge Settings
-t572 복제의 빠른 이동 설정
-o573 Move by the width of selection 
-t573 선택 영역의 길이만큼 이동 
-o574 Moves clone by his width
-t574 복제할 범위의 길이만큼 이동합니다
-o575 Width of clone movement: 
-t575 복제의 빠른 이동 거리: 
-o576 Import Fast Nudge Settings:
-t576 불러오기의 빠른 이동 설정:
-o577 Move by the width of schematic 
-t577 도식의 범위만큼 움직입니다
-o578 Moves selection by his width
-t578 선택한 범위의 길이만큼 이동합니다
-o579 Width of import movement: 
-t579 불러오기의 이동 거리: 
-o580 Import Options
-t580 불러오기의 설정
-o581 Blocks Fast Nudge Settings:
-t581 블럭의 빠른 이동 설정:
-o582 Selection Fast Nudge Settings:
-t582 선택 영역의 빠른 이동 설정:
-o583 Points Fast Nudge Settings:
-t583 포인트의 빠른 이동 설정:
-o584 Moves points by the selection's width
-t584 포인트의 길이만큼 이동합니다
-o585 Width of points movement: 
-t585 포인트의 이동 거리: 
-o586 Do you want to save your changes?
-t586 저장하시겠습니까?
-o587 Don't Save
-t587 저장 안함
-o588 Press a key to assign to the action "{0}"
-
-Press ESC to cancel.
-t588 "{0}" 작업을 지정할 키를 누르십시오
-취소하려면 ESC를 누르십시오.
+o518 f: 
+t518 
+o519 Seed: 
+t519 시드: 
+o520 East-West Chunks: 
+t520 동-서 청크: 
+o521 North-South Chunks: 
+t521 남-북 청크: 
+o522 Survival
+t522 서바이벌
+o523 Cancel
+t523 취소
+o524 Creative
+t524 크리에이티브
+o525 Style:
+t525 스타일:
+o526 H
+t526 H
+o527 L
+t527 L
+o528 W
+t528 W
+o529 Minimum Spacing
+t529 최소 간격
+o530 Regenerate Entity UUID
+t530 UUID 재생성
+o531 Replace blocks with any data value. Only useful for Replace operations.
+t531 데이터 값을 무시하고 블럭을 바꿉니다. '바꾸기' 작업에만 유용합니다.
+o532 Entities
+t532 엔티티
+o533 Items
+t533 아이템
+o534 TileEntities
+t534 타일 엔티티
+o535 TileTicks
+t535 타일 틱
+o536 Unpopulated Chunks
+t536 무인 청크
+o537 Sky
+t537 하늘
+o538 Fog
+t538 안개
+o539 Ceiling
+t539 천장
+o540 Chunk Redraw
+t540 Chunk 변경
+o541 Hidden Ores
+t541 숨겨진 광물
+o542 Bedrock
+t542 배드락
+o543 Coal
+t543 석탄
+o544 Iron
+t544 철
+o545 Lapis Lazuli
+t545 청금석
+o546 Redstone
+t546 레드스톤
+o547 Gold
+t547 금
+o548 Diamond
+t548 다이아몬드
+o549 Nether Quartz
+t549 석영
+o550 Shortcut: {0}
+t550 단축키: {0}
+o551 View Distance ({0})
+t551 시야 ({0})
+o552 Copy Stack Size: 
+t552 Copy Stack Size:
+o553 Remove
+t553 Remove
+o554 Reload Skins
+t554 스킨 다시 로딩
+o555 Previous Page
+t555 이전 페이지
+o556 Next Page
+t556 다음 페이지
+o557 Super Secret Settings
+t557 슈퍼 비밀 설정!
+o558 Default Resource Pack
+t558 기본 리소스팩
+o559 Square
+t559 사각형
+o560 Record Macro
+t560 매크로 녹화
+o561 Health Boost
+t561 체력 신장
+o562 Saturation (no mob effect)
+t562 포만감 (몹 효과 없음)
+o563 Wither
+t563 나약함
+o564 Invisibility
+t564 투명화
+o565 Slowness
+t565 구속
+o566 Absorption
+t566 흡수
+o567 Night Vision (no mob effect)
+t567 야간 투시
+o568 Speed
+t568 신속
+o569 Mining Fatigue (no mob effect)
+t569 피로(몹 효과 없음)
+o570 Player Name(s):
+t570 플레이어 이름:
+o571 Chunks Borders
+t571 Chunks 경계
+o572 Fast Nudge
+t572 빠른 이동
+o573 Clone Fast Nudge Settings
+t573 복제의 빠른 이동 설정
+o574 Move by the width of selection 
+t574 선택 영역의 길이만큼 이동 
+o575 Moves clone by his width
+t575 복제할 범위의 길이만큼 이동합니다
+o576 Width of clone movement: 
+t576 복제의 빠른 이동 거리: 
+o577 Import Fast Nudge Settings:
+t577 불러오기의 빠른 이동 설정:
+o578 Move by the width of schematic 
+t578 도식의 범위만큼 움직입니다
+o579 Moves selection by his width
+t579 선택한 범위의 길이만큼 이동합니다
+o580 Width of import movement: 
+t580 불러오기의 이동 거리: 
+o581 Import Options
+t581 불러오기의 설정
+o582 Blocks Fast Nudge Settings:
+t582 블럭의 빠른 이동 설정:
+o583 Selection Fast Nudge Settings:
+t583 선택 영역의 빠른 이동 설정:
+o584 Points Fast Nudge Settings:
+t584 포인트의 빠른 이동 설정:
+o585 Moves points by the selection's width
+t585 포인트의 길이만큼 이동합니다
+o586 Width of points movement: 
+t586 포인트의 이동 거리: 
+o587 Do you want to save your changes?
+t587 저장하시겠습니까?
+o588 Don't Save
+t588 저장 안함
 o589 Press a key to assign to the action "{0}"
-No key means right click to fast nudge.
+
 Press ESC to cancel.
 t589 "{0}" 작업을 지정할 키를 누르십시오
+취소하려면 ESC를 누르십시오.
+o590 Press a key to assign to the action "{0}"
+No key means right click to fast nudge.
+Press ESC to cancel.
+t590 "{0}" 작업을 지정할 키를 누르십시오
 키가 없다면 우클릭으로 빠른 이동을 합니다.
 취소하려면 ESC를 누르십시오.
-o590 {0} is not a modifier. Press a new key.
+o591 {0} is not a modifier. Press a new key.
 
 Press ESC to cancel.
-t590 
-o591 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+t591 
+o592 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t591 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
+t592 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
 취소하려면 ESC를 누르십시오.
-o592 You can't use the key {0}. Press a new key.
+o593 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t592 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
+t593 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
 취소하려면 ESC를 누르십시오.
-o593 Reset to default
-t593 기본 설정으로 되돌리기
-o594 Do you want to keep your changes?
-t594 변경 내용을 저장하시겠습니까?
-o595 Screenshots
-t595 스크린샷
-o596 Uses the Latest Snapshot Terrain Generation
-t596 최신 스냅샷의 지형 생성 사용
-o597 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t597 월드를 생성하고 몇 초동안 시뮬레이션을 합니다. 타일 틱을 모두 처리해 세이브파일의 용량을 줄여줍니다.
-o598 Last Played
-t598 최근 플레이
-o599 Level Name (filename)
-t599 레벨명 (파일명)
-o600 Load
-t600 불러오기
-o601 Maximum number of copied objects.
-t601 복사 개수 제한
-o602 Try to save and restore the window position.
-t602 윈도우 위치를 저장합니다.
-o603 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t603 MCEdit의 설정과 스키메틱을 {0}과 같은 폴더에 집어넣어 이동시킬 수 있게 합니다. 계속하시겠습니까?
-o604 MCEditData
-t604 MCEditData
-o605 This will move your settings and schematics to your Documents folder. Continue?
-t605 MCEdit의 설정과 스키메틱을 내 문서에 넣습니다. 계속하시겠습니까?
-o606 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t606 MCEdit의 설정과 스키메틱을 내 문서에 넣으려면 클릭하세요.
-o607 Goto Position:
-t607 위치로 가기
-o608 (click anywhere to teleport)
-t608 (아무 곳이나 클릭해서 텔레포트)
-o609 Format:
-t609 형식:
-o610 Name:
-t610 이름:
-o611 Minecraft Infinite World (Anvil Format)
-t611 마인크래프트 무한맵 (Anvil Format)
-o612 Day: 
-t612 날짜
-o613 Time of day:
-t613 시간
-o614 RandomSeed:
-t614 랜덤 시드
-o615 Game Type:
-t615 게임모드
-o616 Number of chunks: {0}
-t616 청크 수: {0}
-o617 Number of regions: {0}
-t617 지역(region) 수: {0}
-o618 Repair regions
-t618 지역(region) 수정
-o619 Open Folder
-t619 폴더 열기
-o620 Inventory Slot #%s
-t620 인벤토르 슬롯 #%s
-o621 id
-t621 아이디
-o622 Count
-t622 수
-o623 Damage
-t623 데미지
-o624 NBT Explorer
-t624 NBT 탐색기
-o625 Reset
-t625 초기화
-o626 Reset ALL your changes in the NBT data.
-t626 모든 변경사항을 취소합니다.
-o627 Data Type:
-t627 데이터 종류
-o628 -> Name
-t628 -> 이름
-o629 Double-click to edit
-t629 더블클릭하여 수정하십시오.
-o630 NBT Explorer
+o594 Reset to default
+t594 기본 설정으로 되돌리기
+o595 Do you want to keep your changes?
+t595 변경 내용을 저장하시겠습니까?
+o596 Screenshots
+t596 스크린샷
+o597 Uses the Latest Snapshot Terrain Generation
+t597 최신 스냅샷의 지형 생성 사용
+o598 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t598 월드를 생성하고 몇 초동안 시뮬레이션을 합니다. 타일 틱을 모두 처리해 세이브파일의 용량을 줄여줍니다.
+o599 Last Played
+t599 최근 플레이
+o600 Level Name (filename)
+t600 레벨명 (파일명)
+o601 Load
+t601 불러오기
+o602 Maximum number of copied objects.
+t602 복사 개수 제한
+o603 Try to save and restore the window position.
+t603 윈도우 위치를 저장합니다.
+o604 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t604 MCEdit의 설정과 스키메틱을 {0}과 같은 폴더에 집어넣어 이동시킬 수 있게 합니다. 계속하시겠습니까?
+o605 MCEditData
+t605 MCEditData
+o606 This will move your settings and schematics to your Documents folder. Continue?
+t606 MCEdit의 설정과 스키메틱을 내 문서에 넣습니다. 계속하시겠습니까?
+o607 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t607 MCEdit의 설정과 스키메틱을 내 문서에 넣으려면 클릭하세요.
+o608 Goto Position:
+t608 위치로 가기
+o609 (click anywhere to teleport)
+t609 (아무 곳이나 클릭해서 텔레포트)
+o610 Format:
+t610 형식:
+o611 Name:
+t611 이름:
+o612 Minecraft Infinite World (Anvil Format)
+t612 마인크래프트 무한맵 (Anvil Format)
+o613 Day: 
+t613 날짜
+o614 Time of day:
+t614 시간
+o615 RandomSeed:
+t615 랜덤 시드
+o616 Game Type:
+t616 게임모드
+o617 Number of chunks: {0}
+t617 청크 수: {0}
+o618 Number of regions: {0}
+t618 지역(region) 수: {0}
+o619 Repair regions
+t619 지역(region) 수정
+o620 Open Folder
+t620 폴더 열기
+o621 Inventory Slot #%s
+t621 인벤토르 슬롯 #%s
+o622 id
+t622 아이디
+o623 Count
+t623 수
+o624 Damage
+t624 데미지
+o625 NBT Explorer
+t625 NBT 탐색기
+o626 Reset
+t626 초기화
+o627 Reset ALL your changes in the NBT data.
+t627 모든 변경사항을 취소합니다.
+o628 Data Type:
+t628 데이터 종류
+o629 -> Name
+t629 -> 이름
+o630 Double-click to edit
+t630 더블클릭하여 수정하십시오.
+o631 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t630 NBT 탐색기
+t631 NBT 탐색기
 NBT를 수정하세요
 우클릭으로 설정.
-o631 Save your change in the NBT data.
-t631 NBT 데이터 저장
-o632 Save unsaved edits before loading?
-t632 불러오기 전에 변경사항을 저장할까요?
-o633 {0} unsaved edits.  {1} to save.  {2}
-t633 {0} 저장되지 않은 에딧. 저장할  {1}.  {2}
-o634 (UNDO DISABLED)
-t634 (뒤로가기 미사용 중)
-o635 Save unsaved edits before closing?
-t635 닫기 전에 변경사항을 저장할까요?
-o636 NBT Tree Settings
-t636 NBT Tree 설정
-o637 Use Bullet Styles
-t637 Bullet 스타일 사용
-o638 Use Bullet Text
-t638 Bullet 텍스트 사용
-o639 Use Bullet Images
-t639 Bullet 이미지 사용
-o640 Bullet Images File
-t640 Bullet 이미지 파일
-o641 Choose an image file...
-t641 이미지 선택...
-o642 Select a NBT (.dat) file...
-t642 NBT (.dat) 파일 선택...
-o643 File already exists.
+o632 Save your change in the NBT data.
+t632 NBT 데이터 저장
+o633 Save unsaved edits before loading?
+t633 불러오기 전에 변경사항을 저장할까요?
+o634 {0} unsaved edits.  {1} to save.  {2}
+t634 {0} 저장되지 않은 에딧. 저장할  {1}.  {2}
+o635 (UNDO DISABLED)
+t635 (뒤로가기 미사용 중)
+o636 Save unsaved edits before closing?
+t636 닫기 전에 변경사항을 저장할까요?
+o637 NBT Tree Settings
+t637 NBT Tree 설정
+o638 Use Bullet Styles
+t638 Bullet 스타일 사용
+o639 Use Bullet Text
+t639 Bullet 텍스트 사용
+o640 Use Bullet Images
+t640 Bullet 이미지 사용
+o641 Bullet Images File
+t641 Bullet 이미지 파일
+o642 Choose an image file...
+t642 이미지 선택...
+o643 Select a NBT (.dat) file...
+t643 NBT (.dat) 파일 선택...
+o644 File already exists.
 Click 'OK' to choose one.
-t643 파일이 이미 존재합니다
+t644 파일이 이미 존재합니다
 하나를 선택하시려면 'OK'를 눌러주세요.
-o644 Choose a NBT file...
-t644 NBT 파일 선택...
-o645 The selected object is not a file.
-Can't load it.
-t645 파일이 아닙니다. 불러올 수 없습니다.
+o645 Choose a NBT file...
+t645 NBT 파일 선택...
 o646 The selected object is not a file.
+Can't load it.
+t646 파일이 아닙니다. 불러올 수 없습니다.
+o647 The selected object is not a file.
 Can't save it.
-t646 파일이 아닙니다. 저장할 수 없습니다.
-o647 Show all the tags in the tree
-t647 모든 태그를 보여줍니다.
-o648 Compound
-t648 복합
-o649 Integer
-t649 정수
-o650 Floating point
-t650 부동 소수점
-o651 Text
-t651 텍스트
-o652 Boolean
-t652 불린
-o653 Choose default data
-t653 기본 데이터 선택
-o654 Item Type: %s
-t654 아이템 종류: %s
-o655 Value
-t655 값
-o656 This item type is a container. Add chlidren later.
-t656 이 아이템 종류는 컨테이너입니다. 나중에 하위 항목을 추가하십시오.
-o657 Choose item type
-t657 아이템 종류 선택
-o658 Choose a name
-t658 이름 선택
-o659 Byte
-t659 바이트
-o660 Long
-t660 큰 정수
-o661 Short
-t661 작은 정수
-o662 String
-t662 문자열
-o663 List
-t663 목록
-o664 Byte Array
-t664 바이트 배열
-o665 Int Array
-t665 정수 배열
-o666 Short Array
-t666 작은 정수 배열
-o667 Click to bind this filter to a save askey
-t667 
-o668 Press a key to assign to the filter "{0}"
+t647 파일이 아닙니다. 저장할 수 없습니다.
+o648 Show all the tags in the tree
+t648 모든 태그를 보여줍니다.
+o649 Compound
+t649 복합
+o650 Integer
+t650 정수
+o651 Floating point
+t651 부동 소수점
+o652 Text
+t652 텍스트
+o653 Boolean
+t653 불린
+o654 Choose default data
+t654 기본 데이터 선택
+o655 Item Type: %s
+t655 아이템 종류: %s
+o656 Value
+t656 값
+o657 This item type is a container. Add chlidren later.
+t657 이 아이템 종류는 컨테이너입니다. 나중에 하위 항목을 추가하십시오.
+o658 Choose item type
+t658 아이템 종류 선택
+o659 Choose a name
+t659 이름 선택
+o660 Byte
+t660 바이트
+o661 Long
+t661 큰 정수
+o662 Short
+t662 작은 정수
+o663 String
+t663 문자열
+o664 List
+t664 목록
+o665 Byte Array
+t665 바이트 배열
+o666 Int Array
+t666 정수 배열
+o667 Short Array
+t667 작은 정수 배열
+o668 Click to bind this filter to a save askey
+t668 
+o669 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t668 "{0}" 필터에 연결할 키를 누르세요.
+t669 "{0}" 필터에 연결할 키를 누르세요.
 ESC로 취소하세요.
-o669 Can't bind. {0} is already used by {1}.
+o670 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
-t669 {0}은 이미 {1}에 의해 사용되고 있습니다.
+t670 {0}은 이미 {1}에 의해 사용되고 있습니다.
 "{2}" 필터에 연결할 키를 누르세요.
 
 ESC로 취소하세요.
-o670 [No players]
-t670 [플레이어 없음]
-o671 Press to unbind
-t671 연결을 취소하려면 누르세요
-o672 Are you sure you want to delete the default player?
-t672 정말 기본 플레이어를 삭제하시겠습니까?
-o673 Double-click or use the button below to edit the NBT Data.
-t673 더블클릭이나 아래의 버튼으로 NBT 데이터를 수정하세요.
-o674 Go Back
-t674 뒤로가기
-o675 Upload to FTP Server
-t675 FTP 서버에 올리기
-o676 There are {0} unsaved changes.
-t676 {0}개의 저장되지 않은 변경 내용이 있습니다.
-o677 Save and Quit
-t677 저장하고 나가기
-o678 Refresh Player Names
-t678 플레이어 이름 새로고침
-o679 Results
-t679 결과
-o680 Smooth - 3D
-t680 부드럽게 - 3D
-o681 Smoothing
-t681 부드럽게 하기
-o682 Made by Sethbling
-t682 제작자: Sethbling
-o683 NBT Data
-t683 NBT 값
-o684 Edit NBT
-t684 NBT 수정
-o685 Open the NBT Explorer to edit player's attributes and inventory
-t685 NBT 탐색기를 실행하여 플레이어를 수정하세요
-o686 Not yet implemented.
+o671 [No players]
+t671 [플레이어 없음]
+o672 Press to unbind
+t672 연결을 취소하려면 누르세요
+o673 Are you sure you want to delete the default player?
+t673 정말 기본 플레이어를 삭제하시겠습니까?
+o674 Double-click or use the button below to edit the NBT Data.
+t674 더블클릭이나 아래의 버튼으로 NBT 데이터를 수정하세요.
+o675 Go Back
+t675 뒤로가기
+o676 Upload to FTP Server
+t676 FTP 서버에 올리기
+o677 There are {0} unsaved changes.
+t677 {0}개의 저장되지 않은 변경 내용이 있습니다.
+o678 Save and Quit
+t678 저장하고 나가기
+o679 Refresh Player Names
+t679 플레이어 이름 새로고침
+o680 Results
+t680 결과
+o681 Smooth - 3D
+t681 부드럽게 - 3D
+o682 Smoothing
+t682 부드럽게 하기
+o683 Made by Sethbling
+t683 제작자: Sethbling
+o684 NBT Data
+t684 NBT 값
+o685 Edit NBT
+t685 NBT 수정
+o686 Open the NBT Explorer to edit player's attributes and inventory
+t686 NBT 탐색기를 실행하여 플레이어를 수정하세요
+o687 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t686 아직 지원하지 않습니다.
+t687 아직 지원하지 않습니다.
 NBT 탐색기로 플레이어를 수정하세요.
-o687 Spawn point fixed. Changes: 
+o688 Spawn point fixed. Changes: 
 
 
-t687 스폰 지점 고정. 변경 내용:
+t688 스폰 지점 고정. 변경 내용:
 
 
-o688 <Selection>
-t688 <선택 영역>
-o689 <Miscellaneous>
-t689 <기타>
-o690 Take Screenshot
-t690 스크린샷 찍기
-o691 Double-click to go to this item.
-t691 이 아이템으로 가려면 더블클릭하세요.
-o692 From FTP Server
-t692 FTP 서버에서
-o693 <Chunk Control Tool>
-t693 <Chunk 조절 도구>
-o694 Select Chunks
-t694 Chunks 선택
-o695 
+o689 <Selection>
+t689 <선택 영역>
+o690 <Miscellaneous>
+t690 <기타>
+o691 Take Screenshot
+t691 스크린샷 찍기
+o692 Double-click to go to this item.
+t692 이 아이템으로 가려면 더블클릭하세요.
+o693 From FTP Server
+t693 FTP 서버에서
+o694 <Chunk Control Tool>
+t694 <Chunk 조절 도구>
+o695 Select Chunks
+t695 Chunks 선택
+o696 
 No matching blocks/tile entities found
-t695 
+t696 
 맞는 블럭/타일 엔티티가 없습니다.
-o696 Choose a filter, then click Filter or press Enter to apply it.
-t696 필터를 선택하고 필터를 클릭하거나 엔터를 눌러서 적용하세요.
-o697 Click to set this item down.
-t697 이 아이템을 아래로 두려면 클릭하세요.
-o698 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
-t698 마우스 휠로 3번째 좌표축을 따라 이동하세요. {0}을 꾹 눌러서 한 쪽 좌표축만 따라 이동하세요.
-o699 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t699 클릭 드래그해서 아이템을 다시 놓으세요. 잡으려면 더블클릭하세요. 복제나 엔터를 눌러서 확인하세요.
-o700 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t700 선택 영역이 {0:n} 블럭만큼 넘습니다. 블럭 버퍼를 늘리고 다시 시도하세요.
-o701 Copying to clone buffer...
-t701 복제 버퍼에 복사중...
-o702 Import a schematic or level...
-t702 스키메틱이나 레벨을 불러옵니다...
-o703 Could not find the Minecraft saves directory!
+o697 Choose a filter, then click Filter or press Enter to apply it.
+t697 필터를 선택하고 필터를 클릭하거나 엔터를 눌러서 적용하세요.
+o698 Click to set this item down.
+t698 이 아이템을 아래로 두려면 클릭하세요.
+o699 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+t699 마우스 휠로 3번째 좌표축을 따라 이동하세요. {0}을 꾹 눌러서 한 쪽 좌표축만 따라 이동하세요.
+o700 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+t700 클릭 드래그해서 아이템을 다시 놓으세요. 잡으려면 더블클릭하세요. 복제나 엔터를 눌러서 확인하세요.
+o701 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+t701 선택 영역이 {0:n} 블럭만큼 넘습니다. 블럭 버퍼를 늘리고 다시 시도하세요.
+o702 Copying to clone buffer...
+t702 복제 버퍼에 복사중...
+o703 Import a schematic or level...
+t703 스키메틱이나 레벨을 불러옵니다...
+o704 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t703 마인크래프트 세이브 파일 경로를 찾을 수 없습니다!
+t704 마인크래프트 세이브 파일 경로를 찾을 수 없습니다!
 
 ({0}을 찾을 수 없거나 올바른 경로가 아닙니다)
-o704 I don't know how to open {0}:
+o705 I don't know how to open {0}:
 
 {1!r}
-t704 
-o705 Checking for server updates...
-t705 서버 업데이트 확인중...
-o706 Time left: {0}
-t706 남은 시간: {0}
-o707 Untitled World
-t707 제목 없음
-o708 Name this new world.
-t708 이 월드에 이름을 지어주세요.
-o709 Minecraft World *.*  
-t709 마인크래프트 월드 *.*
-o710 Generating chunks...
-t710 청크 생성중...
-o711 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t711 월드가 생성되었습니다. 이 맵을 늘리려면 마인크래프트에서 돌아다니거나 청크 컨트롤로 추가, 삭제를 하세요.
-o712 Analyzing {0} blocks...
-t712 {0}개의 블럭을 분석중...
-o713 Save to file...
-t713 파일로 저장...
-o714 Fill with Air
-t714 공기로 채우기
-o715 Delete Chunks
-t715 청크 삭제
-o716 Recording undo...
-t716 작업 내역 녹화중...
-o717 Replacing blocks...
-t717 블럭 바꾸는 중...
-o718 REPLACING - 
-t718 바꾸는중 - 
-o719 Copying chunk %s...
-t719 청크 복사중 %s...
-o720 Continue with undo disabled?
-t720 실행 취소 없이 계속하시겠습니까?
-o721 Continue
-t721 계속하기
-o722 Canceled
-t722 취소
-o723 DELETING - 
-t723 삭제중 - 
-o724 Deleting {0} blocks
-t724 {0}개의 블럭 삭제중
-o725 WORKING - 
-t725 작업중 - 
-o726 Removing Tile Ticks...
-t726 타일 틱 제거중...
-o727 Removing entities...
-t727 엔티티 제거중...
-o728 Copying {0:n} blocks...
-t728 {0:n}개의 블럭 복사중
-o729 Undoing...
-t729 실행 취소...
-o730 UNDOING - 
-t730 실행 취소 - 
-o731 Really delete these chunks? This cannot be undone.
-t731 청크를 정말로 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
-o732 Save these chunks and remove the rest? This cannot be undone.
-t732 이 청크만 저장하고 나머지를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
-o733 Lighting {0} chunks...
-t733 {0}개의 청크 조명 작업중...
-o734 Create chunks using the settings above? This cannot be undone.
-t734 위의 설정으로 청크를 생성하시겠습니까? 이 작업은 취소할 수 없습니다.
-o735 Add
-t735 추가
-o736 New child
-t736 새로운 하위 목록
-o737 Rename
-t737 이름 바꾸기
-o738 Paste as child
-t738 하위 목록으로 붙여넣기
-o739 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t739 청크 모양의 선택 영역을 삭제하고 있습니다. 공기로 채우거나, 혹은 청크 자체를 삭제하시겠습니까?
-o740 Screenshot taken and saved as '%s'
-t740 
-o741 Fonts Proportion (%): 
-t741 글자 크기 (%):
-o742 Fonts sizing proportion. The number is a percentage.
+t705 
+o706 Checking for server updates...
+t706 서버 업데이트 확인중...
+o707 Time left: {0}
+t707 남은 시간: {0}
+o708 Untitled World
+t708 제목 없음
+o709 Name this new world.
+t709 이 월드에 이름을 지어주세요.
+o710 Minecraft World *.*  
+t710 마인크래프트 월드 *.*
+o711 Generating chunks...
+t711 청크 생성중...
+o712 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t712 월드가 생성되었습니다. 이 맵을 늘리려면 마인크래프트에서 돌아다니거나 청크 컨트롤로 추가, 삭제를 하세요.
+o713 Analyzing {0} blocks...
+t713 {0}개의 블럭을 분석중...
+o714 Save to file...
+t714 파일로 저장...
+o715 Fill with Air
+t715 공기로 채우기
+o716 Delete Chunks
+t716 청크 삭제
+o717 Recording undo...
+t717 작업 내역 녹화중...
+o718 Replacing blocks...
+t718 블럭 바꾸는 중...
+o719 REPLACING - 
+t719 바꾸는중 - 
+o720 Copying chunk %s...
+t720 청크 복사중 %s...
+o721 Continue with undo disabled?
+t721 실행 취소 없이 계속하시겠습니까?
+o722 Continue
+t722 계속하기
+o723 Canceled
+t723 취소
+o724 DELETING - 
+t724 삭제중 - 
+o725 Deleting {0} blocks
+t725 {0}개의 블럭 삭제중
+o726 WORKING - 
+t726 작업중 - 
+o727 Removing Tile Ticks...
+t727 타일 틱 제거중...
+o728 Removing entities...
+t728 엔티티 제거중...
+o729 Copying {0:n} blocks...
+t729 {0:n}개의 블럭 복사중
+o730 Undoing...
+t730 실행 취소...
+o731 UNDOING - 
+t731 실행 취소 - 
+o732 Really delete these chunks? This cannot be undone.
+t732 청크를 정말로 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
+o733 Save these chunks and remove the rest? This cannot be undone.
+t733 이 청크만 저장하고 나머지를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
+o734 Lighting {0} chunks...
+t734 {0}개의 청크 조명 작업중...
+o735 Create chunks using the settings above? This cannot be undone.
+t735 위의 설정으로 청크를 생성하시겠습니까? 이 작업은 취소할 수 없습니다.
+o736 Add
+t736 추가
+o737 New child
+t737 새로운 하위 목록
+o738 Rename
+t738 이름 바꾸기
+o739 Paste as child
+t739 하위 목록으로 붙여넣기
+o740 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t740 청크 모양의 선택 영역을 삭제하고 있습니다. 공기로 채우거나, 혹은 청크 자체를 삭제하시겠습니까?
+o741 Screenshot taken and saved as '%s'
+t741 
+o742 Fonts Proportion (%): 
+t742 글자 크기 (%):
+o743 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t742 글자 크기 조절입니다. 숫자가 퍼센트입니다.
+t743 글자 크기 조절입니다. 숫자가 퍼센트입니다.
 재시작 필요!
-o743 Save As
-t743 다른 이름으로 저장
-o744 Name the new copy.
-t744 새로운 이름.
-o745 Copying %0.1f million blocks
-t745 %0.1f
-o746 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t746 Y=63과 Y=64에 블럭이 없으면 마인크래프트는 스폰 지점을 랜덤하게 이동할 것입니다. 마인크래프트가 변경되었을 경우에만 체크를 해제하세요.
-o747 Keep Data Intact
-t747 자료 온전히 보관
-o748 This pulls skins from the online server, so this may take a while
-t748 스킨을 서버에서 불러오므로 오래 걸릴 수 있습니다.
-o749 Session:
-t749 세션:
-o750 Session Lock is being used by Minecraft
-t750 마인크래프트가 세션 락을 사용하고 있습니다.
-o751 Session Lock is being used by MCEdit
-t751 MCEdit이 세션 락을 사용하고 있습니다.
-o752 Show Player Skins
-t752 플레이어 스킨 보이기
-o753 Show player skins while editing the world
-t753 월드 수정중에 플레이어 스킨 보이기
-o754 Compass Size (%): 
-t754 컴퍼스 크기 (%):
-o755 Fog Intensity (%): 
-t755 안개 강도 (%):
-o756 Toggle compass
-t756 컴퍼스 표시
-o757 Width of blocks movement: 
-t757 블럭 이동 거리:
-o758 Width of selection movement: 
-t758 선택 영역 이동 거리:
-o759 Import
-t759 불러오기
-o760 Old (Messy)
-t760 낡은 (지저분함)
-o761 Click to open filters folder
-t761 필터 폴더를 열려면 클릭하세요
-o762 Head
-t762 머리
-o763 Exception during filter operation. See console for details.
+o744 Save As
+t744 다른 이름으로 저장
+o745 Name the new copy.
+t745 새로운 이름.
+o746 Copying %0.1f million blocks
+t746 %0.1f
+o747 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t747 Y=63과 Y=64에 블럭이 없으면 마인크래프트는 스폰 지점을 랜덤하게 이동할 것입니다. 마인크래프트가 변경되었을 경우에만 체크를 해제하세요.
+o748 Keep Data Intact
+t748 자료 온전히 보관
+o749 This pulls skins from the online server, so this may take a while
+t749 스킨을 서버에서 불러오므로 오래 걸릴 수 있습니다.
+o750 Session:
+t750 세션:
+o751 Session Lock is being used by Minecraft
+t751 마인크래프트가 세션 락을 사용하고 있습니다.
+o752 Session Lock is being used by MCEdit
+t752 MCEdit이 세션 락을 사용하고 있습니다.
+o753 Show Player Skins
+t753 플레이어 스킨 보이기
+o754 Show player skins while editing the world
+t754 월드 수정중에 플레이어 스킨 보이기
+o755 Compass Size (%): 
+t755 컴퍼스 크기 (%):
+o756 Fog Intensity (%): 
+t756 안개 강도 (%):
+o757 Toggle compass
+t757 컴퍼스 표시
+o758 Width of blocks movement: 
+t758 블럭 이동 거리:
+o759 Width of selection movement: 
+t759 선택 영역 이동 거리:
+o760 Import
+t760 불러오기
+o761 Old (Messy)
+t761 낡은 (지저분함)
+o762 Click to open filters folder
+t762 필터 폴더를 열려면 클릭하세요
+o763 Head
+t763 머리
+o764 Exception during filter operation. See console for details.
 
 {0}
-t763 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
+t764 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
 
 {0}
-o764 Shift
-t764 쉬프트(Shift)
-o765 Option
-t765 옵션
-o766 Meta
-t766 메타
-o767 Applying {0} brush...
-t767 {0} 브러쉬 적용중
-o768 Graphics Settings
-t768 그래픽 설정
-o769 Run Macro
-t769 매크로 실행
-o770 Delete Macro
-t770 매크로 삭제
-o771 Macro Name: 
-t771 매크로 이름: 
-o772 Enter a Player Name: 
-t772 플레이어 이름 입력: 
-o773 Click the mouse button again to place the other selection corner.
-t773 선택 영역의 반대쪽 코너를 설정하려면 마우스를 다시 클릭하세요.
-o774 Stop recording
-t774 녹화 중지
-o775 Currently recording a macro
-t775 현재 매크로 녹화 중
-o776 Choose a custom head for the villagers you make
-t776 주민의 커스텀 머리 선택
-o777 Custom Head
-t777 커스텀 머리
-o778 Skull Type
-t778 머리 종류
-o779 Skeleton Skull
-t779 스켈레톤 머리
-o780 Wither Skeleton Skull
-t780 위더 스켈레톤 머리
-o781 Zombie Skull
-t781 좀비 머리
-o782 Player Skull
-t782 플레이어 머리
-o783 Creeper Skull
-t783 크리퍼 머리
-o784 If Player Skull
-t784 만약 플레이어 머리
-o785 Player's Name
-t785 플레이어 이름
-o786 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o765 Shift
+t765 쉬프트(Shift)
+o766 Option
+t766 옵션
+o767 Meta
+t767 메타
+o768 Applying {0} brush...
+t768 {0} 브러쉬 적용중
+o769 Graphics Settings
+t769 그래픽 설정
+o770 Run Macro
+t770 매크로 실행
+o771 Delete Macro
+t771 매크로 삭제
+o772 Macro Name: 
+t772 매크로 이름: 
+o773 Enter a Player Name: 
+t773 플레이어 이름 입력: 
+o774 Click the mouse button again to place the other selection corner.
+t774 선택 영역의 반대쪽 코너를 설정하려면 마우스를 다시 클릭하세요.
+o775 Stop recording
+t775 녹화 중지
+o776 Currently recording a macro
+t776 현재 매크로 녹화 중
+o777 Choose a custom head for the villagers you make
+t777 주민의 커스텀 머리 선택
+o778 Custom Head
+t778 커스텀 머리
+o779 Skull Type
+t779 머리 종류
+o780 Skeleton Skull
+t780 스켈레톤 머리
+o781 Wither Skeleton Skull
+t781 위더 스켈레톤 머리
+o782 Zombie Skull
+t782 좀비 머리
+o783 Player Skull
+t783 플레이어 머리
+o784 Creeper Skull
+t784 크리퍼 머리
+o785 If Player Skull
+t785 만약 플레이어 머리
+o786 Player's Name
+t786 플레이어 이름
+o787 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t786 복사된 모든 엔티티의 UUID를 재생성합니다. [권장]
+t787 복사된 모든 엔티티의 UUID를 재생성합니다. [권장]
 단축키: Alt-6
-o787 When the brush tool is chosen, prompt for a block type.
-t787 브러쉬 도구가 선택되면 블럭 종류를 고르도록 합니다.
-o788 Max View Distance
-t788 최대 시야
-o789 It looks like this level is completely empty!
+o788 When the brush tool is chosen, prompt for a block type.
+t788 브러쉬 도구가 선택되면 블럭 종류를 고르도록 합니다.
+o789 Max View Distance
+t789 최대 시야
+o790 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t789 맵이 텅 비었습니다!
+t790 맵이 텅 비었습니다!
 시작하기 전에 청크를 만들어야 합니다.
-o790 Create Chunks
-t790 청크 생성
-o791 Replace Only:
-t791 다음만 바꾸기: 
-o792 Make Villager Silent
-t792 주민 음소거시키기
-o793 Install Mode
-t793 설치 모드
-o794 SAVING - 
-t794 저장 중 - 
-o795 World Type:
-t795 월드 종류: 
-o796 Amplified
-t796 증폭(Amplified)
-o797 Large Biomes
-t797 넓은 바이옴(Large Biomes)
-o798 Superflat
-t798 평지(Superflat)
-o799 Copying chunks
-t799 청크 복사 중
-o800 Lighting chunks
-t800 청크 조명 중
-o801 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t801 FTP 서버에서 다운로드한 맵이 아닙니다. 현재 이러한 맵을 업로드하는 것은 지원하지 않습니다. 
-o802 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t802 윈도우 크기가 조절되었습니다. MCEdit을 재시작하기 전까지 커서 사용에 문제가 있을 수 있습니다.
-o803 FTP Server IP:
-t803 FTP 서버 아이피: 
-o804 FTP Username:
-t804 FTP 아이디: 
-o805 FTP Password:
-t805 FTP 비밀번호: 
-o806 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t806 참고: MCEdit은 FTP 서버 정보를 로그인하는 곳 이외에 절대 사용하지 않습니다.
-o807 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t807 MCEdit이 맵을 다운로드하고 있습니다. 완료되면 맵이 열립니다.
-o808 Connect
-t808 연결
-o809 Target: 
-t809 목표: 
-o810 Error: {0}
-t810 에러: {0}
-o811 Incorrect username or password
-t811 아이디나 비밀번호가 일치하지 않습니다.
-o812 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t812 server.properties 파일을 찾을 수 없습니다. FTP 클라이언트는 server.properties 파일이 기본 FTP 경로에 없으면 맵을 다운로드할 수 없습니다. 
-o813 Could not find the world folder from the server.properties file
-t813 server.properties 파일에서 월드 폴더를 찾을 수 없습니다.
-o814 Choose Block Immediately for Replace
-t814 바꾸기에 사용될 블럭 즉시 선택
-o815 Open Block Picker for Fill
-t815 채우기 블럭 선택기 열기
-o816 Open Block Picker for Replace
-t816 바꾸기 블럭 선택기 열기
-o817 When the replace tool is chosen, prompt for a block type.
-t817 바꾸기 도구가 선택되면 블럭 종류를 고르도록 합니다.
-o818 Matching Coordinates
-t818 대응되는 좌표
-o819 Session Lock Options
-t819 세션 락 옵션
-o820 Override Minecraft Changes (Not Recommended)
-t820 마인크래프트 변경 내용 덮어쓰기 (권장하지 않음)
-o821 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t821 MCEdit이 맵을 열고 있으면 항상 마인크래프트 변경 내용 덮어쓰기. (권장하지 않음)
-o822 Player Heads
-t822 플레이어 머리
-o823 Sprint
-t823 달리기
-o824 Select
-t824 선택
-o825 Brush
-t825 브러쉬
-o826 Fill and Replace
-t826 찾기/바꾸기
-o827 World Spawnpoint
-t827 월드 스폰 지점
-o828 CB Commands
-t828 CB Commands
-o829 Open a text file with all command block commands in the currently selected area.
+o791 Create Chunks
+t791 청크 생성
+o792 Replace Only:
+t792 다음만 바꾸기: 
+o793 Make Villager Silent
+t793 주민 음소거시키기
+o794 Install Mode
+t794 설치 모드
+o795 SAVING - 
+t795 저장 중 - 
+o796 World Type:
+t796 월드 종류: 
+o797 Amplified
+t797 증폭(Amplified)
+o798 Large Biomes
+t798 넓은 바이옴(Large Biomes)
+o799 Superflat
+t799 평지(Superflat)
+o800 Copying chunks
+t800 청크 복사 중
+o801 Lighting chunks
+t801 청크 조명 중
+o802 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t802 FTP 서버에서 다운로드한 맵이 아닙니다. 현재 이러한 맵을 업로드하는 것은 지원하지 않습니다. 
+o803 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t803 윈도우 크기가 조절되었습니다. MCEdit을 재시작하기 전까지 커서 사용에 문제가 있을 수 있습니다.
+o804 FTP Server IP:
+t804 FTP 서버 아이피: 
+o805 FTP Username:
+t805 FTP 아이디: 
+o806 FTP Password:
+t806 FTP 비밀번호: 
+o807 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t807 참고: MCEdit은 FTP 서버 정보를 로그인하는 곳 이외에 절대 사용하지 않습니다.
+o808 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t808 MCEdit이 맵을 다운로드하고 있습니다. 완료되면 맵이 열립니다.
+o809 Connect
+t809 연결
+o810 Target: 
+t810 목표: 
+o811 Error: {0}
+t811 에러: {0}
+o812 Incorrect username or password
+t812 아이디나 비밀번호가 일치하지 않습니다.
+o813 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t813 server.properties 파일을 찾을 수 없습니다. FTP 클라이언트는 server.properties 파일이 기본 FTP 경로에 없으면 맵을 다운로드할 수 없습니다. 
+o814 Could not find the world folder from the server.properties file
+t814 server.properties 파일에서 월드 폴더를 찾을 수 없습니다.
+o815 Choose Block Immediately for Replace
+t815 바꾸기에 사용될 블럭 즉시 선택
+o816 Open Block Picker for Fill
+t816 채우기 블럭 선택기 열기
+o817 Open Block Picker for Replace
+t817 바꾸기 블럭 선택기 열기
+o818 When the replace tool is chosen, prompt for a block type.
+t818 바꾸기 도구가 선택되면 블럭 종류를 고르도록 합니다.
+o819 Matching Coordinates
+t819 대응되는 좌표
+o820 Session Lock Options
+t820 세션 락 옵션
+o821 Override Minecraft Changes (Not Recommended)
+t821 마인크래프트 변경 내용 덮어쓰기 (권장하지 않음)
+o822 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t822 MCEdit이 맵을 열고 있으면 항상 마인크래프트 변경 내용 덮어쓰기. (권장하지 않음)
+o823 Player Heads
+t823 플레이어 머리
+o824 Sprint
+t824 달리기
+o825 Select
+t825 선택
+o826 Brush
+t826 브러쉬
+o827 Fill and Replace
+t827 찾기/바꾸기
+o828 World Spawnpoint
+t828 월드 스폰 지점
+o829 CB Commands
+t829 CB Commands
+o830 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t829 현재 선택된 영역 내의 모든 커맨드 블럭 명령어가 담긴 텍스트 파일을 엽니다.
-o830 Command Blocks Commands Options
-t830 커맨드 블럭 명령어 옵션
-o831 Sort Order
-t831 정렬
-o832 Space between lines
-t832 줄 사이 간격
-o833 Make space between the lines
-t833 줄 사이의 간격을 만들기
-o834 File format
-t834 파일 형식
-o835 Choose the file format for the files
-t835 파일 형식을 선택하세요
-o836 Del
-t836 딜리트
-o837 [Empty]
-t837 [빔]
-o838 Couldn't open the file
-t838 파일을 열 수 없습니다
-o839 Edit Command Block
-t839 커맨드 블럭 수정
-o840 Command:
-t840 커맨드: 
-o841 Custom Name:
-t841 커스텀 이름:
-o842 Track Output
-t842 트랙 출력
-o843 Slot
-t843 슬롯
-o844 ID / ID Name
-t844 ID / ID 이름
-o845 DMG
-t845 데미지
-o846 Slot: 
-t846 슬롯: 
-o847 ID / ID Name: 
-t847 ID / ID 이름: 
-o848 DMG: 
-t848 데미지: 
-o849 Count: 
-t849 수: 
-o850 New Item (1.7+)
-t850 새로운 아이템 (1.7+)
-o851 Delete This Item
-t851 이 아이템 삭제
-o852 Delete All Instances Of This Item From World
-t852 월드에서 이 아이템을 모두 삭제
-o853 Unknown Item
-t853 알려지지 않은 아이템
-o854 Edit Enchantment Table
-t854 마법부여대(인첸트테이블) 수정
-o855 Custom Name
-t855 커스텀 이름
-o856 Edit Flower Pot
-t856 화분 수정
-o857 Item
-t857 아이템
-o858 Data
-t858 데이터
-o859 Current: 
-t859 현재: 
-o860 Change to: 
-t860 이것으로 바꾸기:
-o861 F# (0.5)
-t861 
-o862 G (0.53)
+t830 현재 선택된 영역 내의 모든 커맨드 블럭 명령어가 담긴 텍스트 파일을 엽니다.
+o831 Command Blocks Commands Options
+t831 커맨드 블럭 명령어 옵션
+o832 Sort Order
+t832 정렬
+o833 Space between lines
+t833 줄 사이 간격
+o834 Make space between the lines
+t834 줄 사이의 간격을 만들기
+o835 File format
+t835 파일 형식
+o836 Choose the file format for the files
+t836 파일 형식을 선택하세요
+o837 Del
+t837 딜리트
+o838 [Empty]
+t838 [빔]
+o839 Couldn't open the file
+t839 파일을 열 수 없습니다
+o840 Edit Command Block
+t840 커맨드 블럭 수정
+o841 Command:
+t841 커맨드: 
+o842 Custom Name:
+t842 커스텀 이름:
+o843 Track Output
+t843 트랙 출력
+o844 Slot
+t844 슬롯
+o845 ID / ID Name
+t845 ID / ID 이름
+o846 DMG
+t846 데미지
+o847 Slot: 
+t847 슬롯: 
+o848 ID / ID Name: 
+t848 ID / ID 이름: 
+o849 DMG: 
+t849 데미지: 
+o850 Count: 
+t850 수: 
+o851 New Item (1.7+)
+t851 새로운 아이템 (1.7+)
+o852 Delete This Item
+t852 이 아이템 삭제
+o853 Delete All Instances Of This Item From World
+t853 월드에서 이 아이템을 모두 삭제
+o854 Unknown Item
+t854 알려지지 않은 아이템
+o855 Edit Enchantment Table
+t855 마법부여대(인첸트테이블) 수정
+o856 Custom Name
+t856 커스텀 이름
+o857 Edit Flower Pot
+t857 화분 수정
+o858 Item
+t858 아이템
+o859 Data
+t859 데이터
+o860 Current: 
+t860 현재: 
+o861 Change to: 
+t861 이것으로 바꾸기:
+o862 F# (0.5)
 t862 
-o863 G# (0.56)
+o863 G (0.53)
 t863 
-o864 A (0.6)
+o864 G# (0.56)
 t864 
-o865 A# (0.63)
+o865 A (0.6)
 t865 
-o866 B (0.67)
+o866 A# (0.63)
 t866 
-o867 C (0.7)
+o867 B (0.67)
 t867 
-o868 C# (0.75)
+o868 C (0.7)
 t868 
-o869 D (0.8)
+o869 C# (0.75)
 t869 
-o870 D# (0.85)
+o870 D (0.8)
 t870 
-o871 E (0.9)
+o871 D# (0.85)
 t871 
-o872 F (0.95)
+o872 E (0.9)
 t872 
-o873 F# (1.0)
+o873 F (0.95)
 t873 
-o874 G (1.05)
+o874 F# (1.0)
 t874 
-o875 G# (1.1)
+o875 G (1.05)
 t875 
-o876 A (1.2)
+o876 G# (1.1)
 t876 
-o877 A# (1.25)
+o877 A (1.2)
 t877 
-o878 B (1.32)
+o878 A# (1.25)
 t878 
-o879 C (1.4)
+o879 B (1.32)
 t879 
-o880 C# (1.5)
+o880 C (1.4)
 t880 
-o881 D (1.6)
+o881 C# (1.5)
 t881 
-o882 D# (1.7)
+o882 D (1.6)
 t882 
-o883 E (1.8)
+o883 D# (1.7)
 t883 
-o884 F (1.9)
+o884 E (1.8)
 t884 
-o885 F# (2.0)
+o885 F (1.9)
 t885 
-o886 Only delete items with the same damage value
-t886 같은 데미지 값을 가진 아이템만 삭제
-o887 Also delete blocks placed in the world
-t887 월드에 놓인 블럭도 삭제
-o888 No command blocks found
-t888 커맨드 블럭 없음
-o889 Analysis
-t889 분석
-o890 Click to set the spawn position.
-t890 스폰 지점을 설정하려면 클릭하세요.
-o891 <Toolbar>
-t891 <툴바>
-o892 Edit Sign
-t892 표지판 수정
-o893 Add Color Code...
-t893 색상 코드 추가
-o894 §0  Black
-t894 §0  검은색
-o895 §1  Dark Blue
-t895 §1  어두운 파란색
-o896 §2  Dark Green
-t896 §2  어두운 초록색
-o897 §3  Dark Aqua
-t897 §3  어두운 청록색
-o898 §4  Dark Red
-t898 §4  어두운 빨간색
-o899 §5  Dark Purple
-t899 §5  어두운 보라색
-o900 §6  Gold
-t900 §6  금색
-o901 §7  Gray
-t901 §7  회색
-o902 §8  Dark Gray
-t902 §8  짙은 회색
-o903 §9  Blue
-t903 §9  파란색
-o904 §a  Green
-t904 §a  초록색
-o905 §b  Aqua
-t905 §b  청록색
-o906 §c  Red
-t906 §c  빨간색
-o907 §d  Light Purple
-t907 §d  밝은 보라색
-o908 §e  Yellow
-t908 §e  노란색
-o909 §f  White
-t909 §f  흰색
-o910 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t910 아이템의 위치를 옮기려면 드래그하세요. 더블클릭으로 들어올리세요. Import(불러오기) 또는 Enter를 눌러 완료하세요.
-o911 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t911 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.
-o912 Right mouse
-t912 오른쪽 마우스
-o913 Deleting the item {0} from the entire world ({1} chunks)
-t913 월드 전체에서 아이템 {0}을 삭제합니다. ({1} 청크)
-o914 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t914 경고: 월드 전체를 수정하려 합니다. 이것은 되돌릴 수 없습니다. 이 아이템을 월드의 모든 땅, 상자, 화로, 발사기, 떨어진 아이템, 아이템을 포함하는 개체, 플레이어 인벤토리에서 제거하시겠습니까?
-o915 Check to show/hide specific ores using the settings below.
-t915 체크하여 아래의 설정으로 원석을 보이거나 숨깁니다.
-o916 NBTEdit
-t916 NBTEdit
-o917 Save camera position on close
-t917 종료시 카메라 위치를 저장
-o918 Waypoints
-t918 웨이포인트
-o919 Empty
-t919 비어있음
-o920 Create Waypoint
-t920 웨이포인트 생성
-o921 Goto Waypoint
-t921 웨이포인트로 이동
-o922 Delete Waypoint
-t922 웨이포인트 삭제
-o923 Save Camera position on world close
-t923 맵 종료시 카메라 위치를 저장
-o924 Save Rotation
-t924 회전 저장
-o925 Waypoint Name:
-t925 웨이포인트 이름:
-o926 Session lock lost. This world is being accessed from another location.
-t926 세션 락을 잃었습니다. 다른 프로그램에서 이 월드를 열었습니다.
-o927 
+o886 F# (2.0)
+t886 
+o887 Only delete items with the same damage value
+t887 같은 데미지 값을 가진 아이템만 삭제
+o888 Also delete blocks placed in the world
+t888 월드에 놓인 블럭도 삭제
+o889 No command blocks found
+t889 커맨드 블럭 없음
+o890 Analysis
+t890 분석
+o891 Click to set the spawn position.
+t891 스폰 지점을 설정하려면 클릭하세요.
+o892 <Toolbar>
+t892 <툴바>
+o893 Edit Sign
+t893 표지판 수정
+o894 Add Color Code...
+t894 색상 코드 추가
+o895 §0  Black
+t895 §0  검은색
+o896 §1  Dark Blue
+t896 §1  어두운 파란색
+o897 §2  Dark Green
+t897 §2  어두운 초록색
+o898 §3  Dark Aqua
+t898 §3  어두운 청록색
+o899 §4  Dark Red
+t899 §4  어두운 빨간색
+o900 §5  Dark Purple
+t900 §5  어두운 보라색
+o901 §6  Gold
+t901 §6  금색
+o902 §7  Gray
+t902 §7  회색
+o903 §8  Dark Gray
+t903 §8  짙은 회색
+o904 §9  Blue
+t904 §9  파란색
+o905 §a  Green
+t905 §a  초록색
+o906 §b  Aqua
+t906 §b  청록색
+o907 §c  Red
+t907 §c  빨간색
+o908 §d  Light Purple
+t908 §d  밝은 보라색
+o909 §e  Yellow
+t909 §e  노란색
+o910 §f  White
+t910 §f  흰색
+o911 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t911 아이템의 위치를 옮기려면 드래그하세요. 더블클릭으로 들어올리세요. Import(불러오기) 또는 Enter를 눌러 완료하세요.
+o912 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t912 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.
+o913 Right mouse
+t913 오른쪽 마우스
+o914 Deleting the item {0} from the entire world ({1} chunks)
+t914 월드 전체에서 아이템 {0}을 삭제합니다. ({1} 청크)
+o915 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t915 경고: 월드 전체를 수정하려 합니다. 이것은 되돌릴 수 없습니다. 이 아이템을 월드의 모든 땅, 상자, 화로, 발사기, 떨어진 아이템, 아이템을 포함하는 개체, 플레이어 인벤토리에서 제거하시겠습니까?
+o916 Check to show/hide specific ores using the settings below.
+t916 체크하여 아래의 설정으로 원석을 보이거나 숨깁니다.
+o917 NBTEdit
+t917 NBTEdit
+o918 Save camera position on close
+t918 종료시 카메라 위치를 저장
+o919 Waypoints
+t919 웨이포인트
+o920 Empty
+t920 비어있음
+o921 Create Waypoint
+t921 웨이포인트 생성
+o922 Goto Waypoint
+t922 웨이포인트로 이동
+o923 Delete Waypoint
+t923 웨이포인트 삭제
+o924 Save Camera position on world close
+t924 맵 종료시 카메라 위치를 저장
+o925 Save Rotation
+t925 회전 저장
+o926 Waypoint Name:
+t926 웨이포인트 이름:
+o927 Session lock lost. This world is being accessed from another location.
+t927 세션 락을 잃었습니다. 다른 프로그램에서 이 월드를 열었습니다.
+o928 
 
 Your changes cannot be saved.
-t927 
+t928 
 
 변경사항을 저장할 수 없습니다.
-o928 Click to import this item.
-t928 이 아이템을 불러오려면 클릭하십시오.
-o929 Menu
-t929 메뉴
-o930 for
-t930 위해
-o931 MCEdit does not support window resolutions below 1000x700.
+o929 Click to import this item.
+t929 이 아이템을 불러오려면 클릭하십시오.
+o930 Menu
+t930 메뉴
+o931 for
+t931 위해
+o932 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t931 MCEdit은 1000×700보다 작은 창 크기를 지원하지 않습니다.
+t932 MCEdit은 1000×700보다 작은 창 크기를 지원하지 않습니다.
 이 해상도에서는 모든 기능에 접근하지 못할 수도 있습니다.
-o932 Use
-t932 사용
-o933 Overwrite
-t933 덮어쓰기
-o934 Edit Skull Data
-t934 해골 정보 수정
-o935 Left-Click and drag to the left or the right
-t935 클릭하고 좌우로 드래그하세요.
-o936 Cancel Command Block Offset
-t936 커맨드 블록 오프셋 취소
-o937 Cancels the command blocks coords changed when copied.
-t937 복사할 때 커맨드 블록 좌표가 변하는 것을 취소합니다.
-o938 Weird stuff happen!
-t938 이상한 일이 일어나요!
-o939 Enable Custom Name
-t939 커스텀 이름 활성화
+o933 Use
+t933 사용
+o934 Overwrite
+t934 덮어쓰기
+o935 Edit Skull Data
+t935 해골 정보 수정
+o936 Left-Click and drag to the left or the right
+t936 클릭하고 좌우로 드래그하세요.
+o937 Cancel Command Block Offset
+t937 커맨드 블록 오프셋 취소
+o938 Cancels the command blocks coords changed when copied.
+t938 복사할 때 커맨드 블록 좌표가 변하는 것을 취소합니다.
+o939 Weird stuff happen!
+t939 이상한 일이 일어나요!
+o940 Enable Custom Name
+t940 커스텀 이름 활성화
 
-o940 Select a Minecraft level....
-t940 마인크래프트 레벨을 선택하세요...
-o941 Levels and Schematics
-t941 레벨과 스키메틱
-o942 Show Block Info when hovering
-t942 마우스 올리면 블럭 정보 표시
-o943 Shows summarized info of some Blocks when hovering over it.
-t943 몇몇 블럭 위에 마우스를 올리면 요약된 정보를 보여줍니다.
+o941 Select a Minecraft level....
+t941 마인크래프트 레벨을 선택하세요...
+o942 Levels and Schematics
+t942 레벨과 스키메틱
+o943 Show Block Info when hovering
+t943 마우스 올리면 블럭 정보 표시
+o944 Shows summarized info of some Blocks when hovering over it.
+t944 몇몇 블럭 위에 마우스를 올리면 요약된 정보를 보여줍니다.
 
-o944 Select a file...
-t944 
-o945 Choose a file
+o945 Select a file...
 t945 
-o946 Custom File\0{}\0
+o946 Choose a file
 t946 
-o947 Save as...
+o947 Custom File\0{}\0
 t947 
-o948 Save a file
+o948 Save as...
 t948 
-o949 Disable Error Notification
+o949 Save a file
 t949 
-o950 Exception while importing filter module {}. See console for details.\n\n{}
+o950 Disable Error Notification
 t950 
-o951         Filter "{0}" wants to resize the selection box
+o951 Exception while importing filter module {}. See console for details.\n\n{}
+t951 
+o952         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t951 
-o952 Choose a schematic or level...
 t952 
-o953 Failed to load file %s
+o953 Choose a schematic or level...
 t953 
+o954 Failed to load file %s
+t954 
