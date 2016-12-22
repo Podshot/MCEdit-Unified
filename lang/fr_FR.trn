@@ -2056,3 +2056,7 @@ o953 Choose a schematic or level...
 t953 Choisissez un schematic ou un fichier 'level'
 o954 Failed to load file %s
 t954 Échec du cargement du fichier %s
+o955 Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk
+t955 Définit la distance de vue maximum pour le rendu. Les valeurs supérieures à 32 peuvent causer des instabilités. À utiliser à vos risques et périls !
+o956 Updated %s filter(s) out of %s
+t956 %s filtre(s) sur %s mis à jour

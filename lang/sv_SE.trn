@@ -2010,3 +2010,7 @@ o953 Choose a schematic or level...
 t953 
 o954 Failed to load file %s
 t954 
+o955 Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk
+t955 
+o956 Updated %s filter(s) out of %s
+t956 
