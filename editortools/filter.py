@@ -1025,7 +1025,7 @@ class FilterTool(EditorTool):
         shutil.rmtree(os.path.join(filtersDir, "updates"))
         finishedUpdatingWidget = Widget()
         lbl = Label("Updated %s filter(s) out of %s" % (updatedFilters, totalFilters))
-        closeBTN = Button("Close this message", action=finishedUpdatingWidget.dismiss)
+        closeBTN = Button("Close", action=finishedUpdatingWidget.dismiss)
         col = Column((lbl, closeBTN))
         finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
         finishedUpdatingWidget.add(col)
