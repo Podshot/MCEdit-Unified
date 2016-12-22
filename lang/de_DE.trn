@@ -1418,7 +1418,7 @@ t665 Int Array
 o666 Short Array
 t666 Short Array
 o667 Click to bind this filter to a save askey
-t667 
+t667 Klicke, um den Filter einer Taste zuzuweisen
 o668 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
@@ -2004,39 +2004,42 @@ t935 Linksklick und nach links oder nach rechts ziehen
 o936 Cancel Command Block Offset
 t936 Befehlsblockkoordinaten nicht versetzen
 o937 Cancels the command blocks coords changed when copied.
-t937 Nicht die Koordinaten in den Befehlsblöcken beim Kopieren versetzen.
+t937 Die Koordinaten in den Befehlsblöcken beim Kopieren nicht versetzen.
 o938 Weird stuff happen!
 t938 Seltsame Dinge passieren!
 o939 Enable Custom Name
 t939 Aktiviere Name
 o940 Select a Minecraft level....
-t940 Wähle eine Minecraft-Welt....
+t940 Wähle ein Minecraft-Level....
 o941 Levels and Schematics
-t941 Welten und Schematics
+t941 Levels und Schematics
 o942 Show Block Info when hovering
 t942 Zeige Block-Informationen beim Darüberfahren
 o943 Shows summarized info of some Blocks when hovering over it.
 t943 Zeige zusammengefasste Informationen von bestimmten Blöcken beim Darüberfahren an.
 o944 Select a file...
-t944 
+t944 Wähle eine Datei...
 o945 Choose a file
-t945 
+t945 Wähle eine Datei
 o946 Custom File\0{}\0
-t946 
+t946 Benutzerdefinierte Datei\0{}\0
 o947 Save as...
-t947 
+t947 Speichern unter...
 o948 Save a file
-t948 
+t948 Speichere eine Datei
 o949 Disable Error Notification
-t949 
+t949 Fehlermeldungen deaktivieren
 o950 Exception while importing filter module {}. See console for details.\n\n{}
-t950 
+t950 Ein Fehler ist beim Importieren des Filter-Moduls {} aufgetreten. Siehe die Konsole für Details.\n\n{}
 o951         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t951 
+t951         Der Filter "{0}" möchte die Größe der Auswahl verändern.
+        Ursprung: {1} -> {2}
+        Größe: {3} -> {4}
+        Möchtest du die Größe der Auswahl ändern?
 o952 Choose a schematic or level...
-t952 
+t952 Wähle eine Schematics oder ein Level...
 o953 Failed to load file %s
-t953 
+t953 Ein Fehler ist beim Laden der Datei %s aufgetreten
