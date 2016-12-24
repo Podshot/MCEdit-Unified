@@ -6383,6 +6383,7 @@
 			"idStr": "leaves2",
 			"tex": [5,3],
 			"mapcolor": [60,192,41],
+			"type": "LEAVES",
 			"data": {
 				"13": {
 					"tex": [5,8],
