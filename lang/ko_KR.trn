@@ -2012,31 +2012,33 @@ o943 Show Block Info when hovering
 t943 마우스 올리면 블럭 정보 표시
 o944 Shows summarized info of some Blocks when hovering over it.
 t944 몇몇 블럭 위에 마우스를 올리면 요약된 정보를 보여줍니다.
-
 o945 Select a file...
-t945 
+t945 파일 선택
 o946 Choose a file
-t946 
+t946 파일을 선택하십시오
 o947 Custom File\0{}\0
-t947 
+t947 커스텀 파일\0{}\0
 o948 Save as...
-t948 
+t948 다른 이름으로 저장
 o949 Save a file
-t949 
+t949 파일 저장
 o950 Disable Error Notification
-t950 
+t950 오류 알림 비활성화
 o951 Exception while importing filter module {}. See console for details.\n\n{}
-t951 
+t951 필터 모듈을 가져오는 중 예외 발생 {}. 자세한 내용은 콘솔을 참조하십시오.\n\n{}
 o952         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t952 
+t952         필터 "{0}"이(가) 선택 영역의 크기를 변경하려고 합니다
+        Origin: {1} -> {2}
+        Size: {3} -> {4}
+        선택 영역의 크기를 변경할까요?
 o953 Choose a schematic or level...
-t953 
+t953 스키메틱이나 맵을 선택하세요...
 o954 Failed to load file %s
-t954 
+t954 %s 로드 실패
 o955 Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk
-t955 
+t955 렌더러의 최대 시야를 설정합니다. 32를 넘으면 불안정할 수 있으니 주의하십시오.
 o956 Updated %s filter(s) out of %s
-t956 
+t956 %s 필터 업데이트 (%s 중)
