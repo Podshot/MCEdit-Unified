@@ -552,7 +552,7 @@ class MCServerChunkGenerator(object):
             yield startLength - len(chunks), startLength
 
             for p in self.generateAtPositionIter(tempWorld, tempDir, centercx, centercz, simulate):
-                print p
+                # print p
                 yield startLength - len(chunks), startLength, p
 
             i = 0
