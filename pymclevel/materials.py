@@ -265,8 +265,8 @@ class MCMaterials(object):
                 if lowest_block:
                     return lowest_block
             else:
-                name, properties = self.blockstate_api.deStringifyBlockstate(key)
-                return self[self.blockstate_api.blockstateToID(name, properties)]
+                name, properties = BlockstateAPI.material_map[self].deStringifyBlockstate(key)
+                return self[BlockstateAPI.material_map[self].blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)
         if isinstance(key, (tuple, list)):
             block_id, blockData = key
