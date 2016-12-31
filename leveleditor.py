@@ -2942,7 +2942,6 @@ class LevelEditor(GLViewport):
     averageFPS = 0.0
     averageCPS = 0.0
     shouldLoadAndRender = True
-    showWorkInfo = False
 
 
     def gl_draw(self):
@@ -2967,8 +2966,6 @@ class LevelEditor(GLViewport):
         while frameDuration > (
                     datetime.now() - self.frameStartTime):  # if it's less than 0ms until the next frame, go draw.  otherwise, go work.
             self.doWorkUnit()
-        if self.showWorkInfo:
-            self.updateWorkInfoPanel()
 
         frameStartTime = datetime.now()
         timeDelta = frameStartTime - self.frameStartTime
@@ -3011,38 +3008,6 @@ class LevelEditor(GLViewport):
 
             if self.renderer:
                 self.renderer.addDebugInfo(self.addDebugString)
-
-    def createWorkInfoPanel(self):
-        infos = []
-        for w in sorted(self.workers):
-            if isinstance(w, MCRenderer):
-                label = Label(_("Rendering chunks") + ((datetime.now().second / 3) % 3) * ".")
-                progress = Label(
-                    _("{0} chunks ({1} pending updates)").format(len(w.chunkRenderers), len(w.invalidChunkQueue)))
-                col = Column((label, progress), align="l", width=200)
-                infos.append(col)
-            elif isinstance(w,
-                            RunningOperation):  # **FIXME** Where is RunningOperation supposed to come from?  -David Sowder 20120311
-                label = Label(w.description)
-                progress = Label(w.progress)
-                col = Column((label, progress), align="l", width=200)
-                infos.append(col)
-
-        panel = Panel(parent=self)
-        if len(infos):
-            panel.add(Column(infos))
-            panel.shrink_wrap()
-            return panel
-
-    workInfoPanel = None
-
-    def updateWorkInfoPanel(self):
-        if self.workInfoPanel:
-            self.workInfoPanel.set_parent(None)
-        self.workInfoPanel = self.createWorkInfoPanel()
-        if self.workInfoPanel:
-            self.workInfoPanel.topright = self.topright
-            self.add(self.workInfoPanel)
 
     def doWorkUnit(self, onMenu=False):
         if len(self.workers):
