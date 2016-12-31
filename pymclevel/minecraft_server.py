@@ -485,7 +485,7 @@ class MCServerChunkGenerator(object):
     def generateChunksInLevel(self, level, chunks):
         return exhaust(self.generateChunksInLevelIter(level, chunks))
 
-    def generateChunksInLevelIter(self, level, chunks, simulate=False):
+    def generateChunksInLevelIter_old(self, level, chunks, simulate=False):
         tempWorld, tempDir = self.tempWorldForLevel(level)
 
         startLength = len(chunks)
@@ -531,6 +531,56 @@ class MCServerChunkGenerator(object):
                 break
 
         level.saveInPlace()
+
+    def generateChunksInLevelIter_new(self, level, chunks, simulate=False):
+        # This chunk generator version can create an arbitrary amount of chunks.
+        # It has been remarked that 'holes' appear in large zones (saw 'holes' when generated 250 and 350 chunks).
+        # This version may also be faster than the 'old' one.
+        tempWorld, tempDir = self.tempWorldForLevel(level)
+
+        startLength = len(chunks)
+        minRadius = self.minRadius
+        maxRadius = self.maxRadius
+        chunks = set(chunks)
+
+        while len(chunks):
+            length = len(chunks)
+            centercx, centercz = chunks.pop()
+            chunks.add((centercx, centercz))
+
+            print "Generating {0} chunks out of {1} starting from {2}".format(len(chunks), startLength, (centercx, centercz))
+            yield startLength - len(chunks), startLength
+
+            for p in self.generateAtPositionIter(tempWorld, tempDir, centercx, centercz, simulate):
+                # print p
+                yield startLength - len(chunks), startLength, p
+
+            i = 0
+            for cx, cz in itertools.product(
+                    xrange(centercx - maxRadius, centercx + maxRadius),
+                    xrange(centercz - maxRadius, centercz + maxRadius)):
+                if ((cx, cz) in chunks
+                      and all(tempWorld.containsChunk(ncx, ncz) for ncx, ncz in
+                              itertools.product(xrange(cx - 1, cx + 2), xrange(cz - 1, cz + 2)))
+                ):
+                    self.copyChunkAtPosition(tempWorld, level, cx, cz)
+                    i += 1
+                yield startLength - len(chunks), startLength
+                chunks.discard((cx, cz))
+
+
+            if length == len(chunks):
+                # This block is never used?
+                print "No chunks were generated. Aborting."
+                break
+
+        level.saveInPlace()
+
+    if __builtins__.get('mcenf_generateChunksInLevelIter', False):
+        log.info("Using new MCServerChunkGenerator.generateChunksInLevelIter")
+        generateChunksInLevelIter = generateChunksInLevelIter_new
+    else:
+        generateChunksInLevelIter = generateChunksInLevelIter_old
 
     def runServer(self, startingDir):
         if isinstance(startingDir, unicode):

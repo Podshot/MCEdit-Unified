@@ -6425,6 +6425,7 @@
 					"name": "Acacia Leaves (Decaying)"
 				}
 			},
+            "type": "LEAVES",
 			"id": 161
 		},{
 			"search": "log",

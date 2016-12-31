@@ -724,55 +724,66 @@ o341 Changes the head rotation Horizontal is 0. Positive values look downward. M
 t341 旋转他的头. 水平为 0, 正值朝下看. 数值只能在 -90 度到 90 度范围内.
 o342 Rotation
 t342 旋转
-o343 Notes
-t343 说明
-o344 Include position data
-t344 包含位置信息
-o345 Both
-t345 兼有
-o346 Lower Only
-t346 仅降低
-o347 Raise Only
-t347 仅抬升
-o348 Raise/Lower
-t348 抬升或降低
-o349 TileEntity
-t349 方块实体
-o350 Entity
-t350 实体
-o351 Block
-t351 方块
-o352 Match by:
-t352 搜索依据：
-o353 Match block type (for TileEntity searches):
-t353 仅搜索指定的方块类型（搜索方块实体时有效）：
-o354 Match block:
-t354 指定方块类型：
-o355 Match block data:
-t355 仅搜索相同的方块数据值：
-o356 Match tile entities (for Block searches):
-t356 仅搜索指定的方块实体（搜索方块时有效）：
-o357 "None" for Name or Value will match any tag's Name or Value respectively.
-t357 在名字或值中输入“None”则会搜索所有的标签名字或值.
-o358 Match Tag Name:
-t358 指定标签名字：
-o359 Match Tag Value:
-t359 指定标签的值：
-o360 Case insensitive:
-t360 忽视大小写：
-o361 Any
-t361 任何
-o362 Match Tag Type:
-t362 指定标签类型：
-o363 Start New Search
-t363 开始新查找
-o364 Find Next
-t364 查找下一个
-o365 Dump Found Coordinates
-t365 弹出查找到的坐标
-o366 Operation:
-t366 操作：
-o367 This filter is designed to search for NBT in either Entities or TileEntities.
+o343 To create a shop first put your buy in the top slot(s) of the chest.
+Second put a second buy in the middle slot(optional).
+Third put a sell in the bottom slot.
+Click the chest you want and choose what you want and click hit enter
+*All items must be in the same row*
+
+t343 要新建一个商店, 你必须把出售品放在一个箱子的第一行.
+第二个出售品放在同列的第二行（可选）.
+把买入品放在同列的第三行.
+在 MCEdit 中选中上述箱子打开此滤镜, 调整设置后点击“过滤”或按回车.
+*对应的物品必须放在同一列, 放置多列物品可以设置多种交易.*
+o344 Notes
+t344 说明
+o345 Include position data
+t345 包含位置信息
+o346 Both
+t346 兼有
+o347 Lower Only
+t347 仅降低
+o348 Raise Only
+t348 仅抬升
+o349 Raise/Lower
+t349 抬升或降低
+o350 TileEntity
+t350 方块实体
+o351 Entity
+t351 实体
+o352 Block
+t352 方块
+o353 Match by:
+t353 搜索依据：
+o354 Match block type (for TileEntity searches):
+t354 仅搜索指定的方块类型（搜索方块实体时有效）：
+o355 Match block:
+t355 指定方块类型：
+o356 Match block data:
+t356 仅搜索相同的方块数据值：
+o357 Match tile entities (for Block searches):
+t357 仅搜索指定的方块实体（搜索方块时有效）：
+o358 "None" for Name or Value will match any tag's Name or Value respectively.
+t358 在名字或值中输入“None”则会搜索所有的标签名字或值.
+o359 Match Tag Name:
+t359 指定标签名字：
+o360 Match Tag Value:
+t360 指定标签的值：
+o361 Case insensitive:
+t361 忽视大小写：
+o362 Any
+t362 任何
+o363 Match Tag Type:
+t363 指定标签类型：
+o364 Start New Search
+t364 开始新查找
+o365 Find Next
+t365 查找下一个
+o366 Dump Found Coordinates
+t366 弹出查找到的坐标
+o367 Operation:
+t367 操作：
+o368 This filter is designed to search for NBT in either Entities or TileEntities.
 It can also be used to search for blocks.
 "Match by" determines which type of object is prioritized during the search.
 Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
@@ -780,1264 +791,1268 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t367 这个滤镜可以用于搜索实体或者方块实体的NBT标签.
+t368 这个滤镜可以用于搜索实体或者方块实体的NBT标签.
 它也可以用于搜索方块.
 “搜索依据”决定上述哪种元素被作为搜索的优先依据.
 相较而言，实体和方块实体会搜索得较快，方块的搜索速度很大程度上取决于选区的大小（因为区块内每一个方块都会被检查一遍）.
 实体的搜索会忽略方块的信息. 搜索方块实体时，若勾选了“仅搜索指定的方块类型”，则会只搜索指定方块的方块实体. 搜索方块时，若勾选了“仅搜索指定的方块实体”，则会只搜索含指定方块实体的方块.
 依据方块实体搜索，并指定方块类型，要比反之更快.
 方块的搜索还可以选择性地指定方块数据值，例如搜索所有的火把，或搜索指定朝向的火把.
-o368 Documentation
-t368 参考
-o369 Forester script by dudecon
-t369 植树工具由dudecon编写
-o370 Procedural
-t370 圆形树或松树
-o371 Normal
-t371 普通
-o372 Bamboo
-t372 竹子
-o373 Palm
-t373 棕榈树
-o374 Stickly
-t374 普通、竹子或棕榈树
-o375 Round
-t375 圆
-o376 Cone
-t376 松树
-o377 Rainforest
-t377 雨林
-o378 Mangrove
-t378 红树林
-o379 Shape
-t379 形状
-o380 Tree Count
-t380 数量
-o381 Tree Height
-t381 树的高度
-o382 Height Variation
-t382 高度变化范围
-o383 Branch Density
-t383 树杈密度
-o384 Trunk Thickness
-t384 树干厚度
-o385 Broken Trunk
-t385 破损树干
-o386 Hollow Trunk
-t386 空心树干
-o387 Wood
-t387 树干
-o388 Foliage
-t388 树叶
-o389 Foliage Density
-t389 树叶密度
-o390 Yes
-t390 是
-o391 To Stone
-t391 深入至石头
-o392 Hanging
-t392 悬空
-o393 No
-t393 否
-o394 Roots
-t394 根
-o395 Root Buttresses
-t395 板状根
-o396 Wood Material
-t396 树干方块
-o397 Leaf Material
-t397 树叶方块
-o398 Plant On
-t398 种植在……上
-o399 Ocean
-t399 海洋
-o400 Plains
-t400 草原
-o401 Desert
-t401 沙漠
-o402 Extreme Hills
-t402 峭壁
-o403 Forest
-t403 森林
-o404 Taiga
-t404 针叶林
-o405 Swamppland
-t405 沼泽
-o406 River
-t406 河流
-o407 Hell (Nether)
-t407 下界
-o408 Sky (End)
-t408 末地
-o409 Frozen Ocean
-t409 冻洋
-o410 Frozen River
-t410 冻河
-o411 Ice Plains
-t411 冰原
-o412 Ice Mountains
-t412 雪山
-o413 Mushroom Island
-t413 蘑菇岛
-o414 Mushroom Island Shore
-t414 蘑菇岛岸
-o415 Beach
-t415 沙滩
-o416 Desert Hills
-t416 沙漠山丘
-o417 Forest Hills
-t417 森林山丘
-o418 Taiga Hills
-t418 深夜林山丘
-o419 Extreme Hills Edge
-t419 悬崖
-o420 Jungle
-t420 丛林
-o421 Jungle Hills
-t421 丛林山丘
-o422 Jungle Edge
-t422 丛林边缘
-o423 Deep Ocean
-t423 深海
-o424 Stone Beach
-t424 石滩
-o425 Cold Beach
-t425 寒冷沙滩
-o426 Birch Forest
-t426 桦树森林
-o427 Birch Forest Hills
-t427 桦树森林山丘
-o428 Roofed Forest
-t428 黑森林
-o429 Cold Taiga
-t429 冷针叶林
-o430 Cold Taiga Hills
-t430 冷针叶林山丘
-o431 Mega Taiga
-t431 大型针叶林
-o432 Mega Taiga Hills
-t432 大型针叶林山丘
-o433 Extreme Hills+
-t433 峭壁+
-o434 Savanna
-t434 热带草原
-o435 Savanna Plateau
-t435 热带高原
-o436 Mesa
-t436 平顶山
-o437 Mesa Plateau F
-t437 平顶山高原F
-o438 Mesa Plateau
-t438 平顶山高原
-o439 Sunflower Plains
-t439 向日葵草原
-o440 Desert M
-t440 沙漠M
-o441 Extreme Hills M
-t441 峭壁M
-o442 Flower Forest
-t442 繁花森林
-o443 Taiga M
-t443 针叶林M
-o444 Swampland M
-t444 沼泽M
-o445 Ice Plains Spikes
-t445 冰刺平原
-o446 Ice Mountains Spikes
-t446 冰刺山
-o447 Jungle M
-t447 丛林M
-o448 JungleEdge M
-t448 丛林边缘M
-o449 Birch Forest M
-t449 桦树森林M
-o450 Birch Forest Hills M
-t450 桦树森林山丘M
-o451 Roofed Forest M
-t451 黑森林M
-o452 Cold Taiga M
-t452 冷针叶林M
-o453 Mega Spruce Taiga
-t453 红木森林
-o454 Mega Spruce Taiga Hills
-t454 红木山丘
-o455 Extreme Hills+ M
-t455 峭壁+M
-o456 Savanna M
-t456 热带草原M
-o457 Savanna Plateau M
-t457 热带高原M
-o458 Mesa (Bryce)
-t458 平顶山（岩柱）
-o459 Mesa Plateau F M
-t459 平顶山高原F M
-o460 Mesa Plateau M
-t460 平顶山高原M
-o461 (Uncalculated)
-t461 （未计算）
-o462 Biome
-t462 生物群系
-o463 Repeat count
-t463 重复次数
-o464 Depth
-t464 深度
-o465 Pick a block:
-t465 选择方块：
-o466 Players
-t466 玩家
-o467 Player Name
-t467 玩家名
-o468 Goto
-t468 转到
-o469 Goto View
-t469 转到视角
-o470 Move
-t470 移动
-o471 Align to Camera
-t471 移动到镜头处
-o472 Player (Single Player)
-t472 玩家（单人玩家）
-o473 Chunk Control
-t473 区块控制
-o474 Move Spawn Point
+o369 Documentation
+t369 参考
+o370 Forester script by dudecon
+t370 植树工具由dudecon编写
+o371 Procedural
+t371 圆形树或松树
+o372 Normal
+t372 普通
+o373 Bamboo
+t373 竹子
+o374 Palm
+t374 棕榈树
+o375 Stickly
+t375 普通、竹子或棕榈树
+o376 Round
+t376 圆
+o377 Cone
+t377 松树
+o378 Rainforest
+t378 雨林
+o379 Mangrove
+t379 红树林
+o380 Shape
+t380 形状
+o381 Tree Count
+t381 数量
+o382 Tree Height
+t382 树的高度
+o383 Height Variation
+t383 高度变化范围
+o384 Branch Density
+t384 树杈密度
+o385 Trunk Thickness
+t385 树干厚度
+o386 Broken Trunk
+t386 破损树干
+o387 Hollow Trunk
+t387 空心树干
+o388 Wood
+t388 树干
+o389 Foliage
+t389 树叶
+o390 Foliage Density
+t390 树叶密度
+o391 Yes
+t391 是
+o392 To Stone
+t392 深入至石头
+o393 Hanging
+t393 悬空
+o394 No
+t394 否
+o395 Roots
+t395 根
+o396 Root Buttresses
+t396 板状根
+o397 Wood Material
+t397 树干方块
+o398 Leaf Material
+t398 树叶方块
+o399 Plant On
+t399 种植在……上
+o400 Ocean
+t400 海洋
+o401 Plains
+t401 草原
+o402 Desert
+t402 沙漠
+o403 Extreme Hills
+t403 峭壁
+o404 Forest
+t404 森林
+o405 Taiga
+t405 针叶林
+o406 Swamppland
+t406 沼泽
+o407 River
+t407 河流
+o408 Hell (Nether)
+t408 下界
+o409 Sky (End)
+t409 末地
+o410 Frozen Ocean
+t410 冻洋
+o411 Frozen River
+t411 冻河
+o412 Ice Plains
+t412 冰原
+o413 Ice Mountains
+t413 雪山
+o414 Mushroom Island
+t414 蘑菇岛
+o415 Mushroom Island Shore
+t415 蘑菇岛岸
+o416 Beach
+t416 沙滩
+o417 Desert Hills
+t417 沙漠山丘
+o418 Forest Hills
+t418 森林山丘
+o419 Taiga Hills
+t419 深夜林山丘
+o420 Extreme Hills Edge
+t420 悬崖
+o421 Jungle
+t421 丛林
+o422 Jungle Hills
+t422 丛林山丘
+o423 Jungle Edge
+t423 丛林边缘
+o424 Deep Ocean
+t424 深海
+o425 Stone Beach
+t425 石滩
+o426 Cold Beach
+t426 寒冷沙滩
+o427 Birch Forest
+t427 桦树森林
+o428 Birch Forest Hills
+t428 桦树森林山丘
+o429 Roofed Forest
+t429 黑森林
+o430 Cold Taiga
+t430 冷针叶林
+o431 Cold Taiga Hills
+t431 冷针叶林山丘
+o432 Mega Taiga
+t432 大型针叶林
+o433 Mega Taiga Hills
+t433 大型针叶林山丘
+o434 Extreme Hills+
+t434 峭壁+
+o435 Savanna
+t435 热带草原
+o436 Savanna Plateau
+t436 热带高原
+o437 Mesa
+t437 平顶山
+o438 Mesa Plateau F
+t438 平顶山高原F
+o439 Mesa Plateau
+t439 平顶山高原
+o440 Sunflower Plains
+t440 向日葵草原
+o441 Desert M
+t441 沙漠M
+o442 Extreme Hills M
+t442 峭壁M
+o443 Flower Forest
+t443 繁花森林
+o444 Taiga M
+t444 针叶林M
+o445 Swampland M
+t445 沼泽M
+o446 Ice Plains Spikes
+t446 冰刺平原
+o447 Ice Mountains Spikes
+t447 冰刺山
+o448 Jungle M
+t448 丛林M
+o449 JungleEdge M
+t449 丛林边缘M
+o450 Birch Forest M
+t450 桦树森林M
+o451 Birch Forest Hills M
+t451 桦树森林山丘M
+o452 Roofed Forest M
+t452 黑森林M
+o453 Cold Taiga M
+t453 冷针叶林M
+o454 Mega Spruce Taiga
+t454 红木森林
+o455 Mega Spruce Taiga Hills
+t455 红木山丘
+o456 Extreme Hills+ M
+t456 峭壁+M
+o457 Savanna M
+t457 热带草原M
+o458 Savanna Plateau M
+t458 热带高原M
+o459 Mesa (Bryce)
+t459 平顶山（岩柱）
+o460 Mesa Plateau F M
+t460 平顶山高原F M
+o461 Mesa Plateau M
+t461 平顶山高原M
+o462 (Uncalculated)
+t462 （未计算）
+o463 Biome
+t463 生物群系
+o464 Repeat count
+t464 重复次数
+o465 Depth
+t465 深度
+o466 Pick a block:
+t466 选择方块：
+o467 Players
+t467 玩家
+o468 Player Name
+t468 玩家名
+o469 Goto
+t469 转到
+o470 Goto View
+t470 转到视角
+o471 Move
+t471 移动
+o472 Align to Camera
+t472 移动到镜头处
+o473 Player (Single Player)
+t473 玩家（单人玩家）
+o474 Chunk Control
+t474 区块控制
+o475 Move Spawn Point
 Right-click for options
-t474 移动出生点
+t475 移动出生点
 右键显示选项
-o475 Goto Spawn
-t475 转到出生点
-o476 Take a Screenshot
-t476 截屏
-o477 Load Preset
-t477 载入预设
-o478 Remove Presets
-t478 删除预设
-o479 Save as Preset
-t479 保存为预设
-o480 Preset Name:
-t480 预设名：
-o481 That preset name is reserved. Try pick another preset name.
-t481 这个预设名不可用, 请尝试其他名字.
-o482 Invalid character in file name
-t482 文件名中含非法字符
-o483 No presets saved
-t483 没有保存的预设
-o484 Select preset to delete
-t484 选取一个预设来删除
-o485 Version {} is available
-t485 新版本 {} 可用
-o486 Download
-t486 下载
-o487 View
-t487 查看
-o488 Ignore
-t488 忽略
-o489 Space
-t489 
-o490 Tab
+o476 Goto Spawn
+t476 转到出生点
+o477 Take a Screenshot
+t477 截屏
+o478 Load Preset
+t478 载入预设
+o479 Remove Presets
+t479 删除预设
+o480 Save as Preset
+t480 保存为预设
+o481 Preset Name:
+t481 预设名：
+o482 That preset name is reserved. Try pick another preset name.
+t482 这个预设名不可用, 请尝试其他名字.
+o483 Invalid character in file name
+t483 文件名中含非法字符
+o484 No presets saved
+t484 没有保存的预设
+o485 Select preset to delete
+t485 选取一个预设来删除
+o486 Version {} is available
+t486 新版本 {} 可用
+o487 Download
+t487 下载
+o488 View
+t488 查看
+o489 Ignore
+t489 忽略
+o490 Space
 t490 
-o491 Delete
-t491 删除
-o492 Scroll Up
-t492 滚轮上滚
-o493 Scroll Down
-t493 滚轮下滚
-o494 Button 3
-t494 鼠标中键
-o495 Alt
-t495 
-o496 Ctrl
+o491 Tab
+t491 
+o492 Delete
+t492 删除
+o493 Scroll Up
+t493 滚轮上滚
+o494 Scroll Down
+t494 滚轮下滚
+o495 Button 3
+t495 鼠标中键
+o496 Alt
 t496 
-o497 Creating a new world.
-t497 新建一个世界.
-o498 Minecraft Server
-t498 Minecraft 服务器
-o499 Flatland
-t499 超平坦
-o500 Generator:
-t500 生成方式：
-o501 Will automatically download and use the latest version
-t501 将会自动下载和使用最新版
-o502 Height: 
-t502 高度：
-o503 Grass
-t503 草地
-o504 Server version:
-t504 服务器版本：
-o505 or
-t505 或
-o506 Check for Updates
-t506 检查更新
-o507 Advanced
-t507 高级
-o508 Open Server Storage
-t508 打开服务器存储目录
-o509 Reveal World Cache
-t509 显示世界缓存
-o510 Delete World Cache
-t510 删除世界缓存
-o511 Advanced...
-t511 高级……
-o512 Simulate world
-t512 模拟世界
-o513 Use snapshot versions
-t513 使用快照版本
-o514 X: 
-t514 
-o515 Y: 
+o497 Ctrl
+t497 
+o498 Creating a new world.
+t498 新建一个世界.
+o499 Minecraft Server
+t499 Minecraft 服务器
+o500 Flatland
+t500 超平坦
+o501 Generator:
+t501 生成方式：
+o502 Will automatically download and use the latest version
+t502 将会自动下载和使用最新版
+o503 Height: 
+t503 高度：
+o504 Grass
+t504 草地
+o505 Server version:
+t505 服务器版本：
+o506 or
+t506 或
+o507 Check for Updates
+t507 检查更新
+o508 Advanced
+t508 高级
+o509 Open Server Storage
+t509 打开服务器存储目录
+o510 Reveal World Cache
+t510 显示世界缓存
+o511 Delete World Cache
+t511 删除世界缓存
+o512 Advanced...
+t512 高级……
+o513 Simulate world
+t513 模拟世界
+o514 Use snapshot versions
+t514 使用快照版本
+o515 X: 
 t515 
-o516 Z: 
+o516 Y: 
 t516 
-o517 f: 
+o517 Z: 
 t517 
-o518 Seed: 
-t518 种子：
-o519 East-West Chunks: 
-t519 东-西 区块数：
-o520 North-South Chunks: 
-t520 南-北 区块数：
-o521 Survival
-t521 生存
-o522 Cancel
-t522 取消
-o523 Creative
-t523 创造
-o524 Style:
-t524 形状：
-o525 H
-t525 高
-o526 L
-t526 长
-o527 W
-t527 宽
-o528 Minimum Spacing
-t528 笔刷最小间隔
-o529 Regenerate Entity UUID
-t529 重新生成实体 UUID
-o530 Replace blocks with any data value. Only useful for Replace operations.
-t530 替换此 ID 下所有数据值的方块. 只在替换功能中可用.
-o531 Entities
-t531 实体
-o532 Items
-t532 掉落物
-o533 TileEntities
-t533 方块实体
-o534 TileTicks
-t534 方块刻
-o535 Unpopulated Chunks
-t535 未重置的区块
-o536 Sky
-t536 天空
-o537 Fog
-t537 雾
-o538 Ceiling
-t538 最高限度
-o539 Chunk Redraw
-t539 区块刷新
-o540 Hidden Ores
-t540 隐藏矿石
-o541 Bedrock
-t541 基岩
-o542 Coal
-t542 煤
-o543 Iron
-t543 铁
-o544 Lapis Lazuli
-t544 青金石
-o545 Redstone
-t545 红石
-o546 Gold
-t546 金
-o547 Diamond
-t547 钻石
-o548 Nether Quartz
-t548 下界石英
-o549 Shortcut: {0}
-t549 快捷键：{0}
-o550 View Distance ({0})
-t550 视野（{0}）
-o551 Copy Stack Size: 
-t551 剪贴板堆栈：
-o552 Remove
-t552 删除
-o553 Reload Skins
-t553 重载皮肤
-o554 Previous Page
-t554 上一页
-o555 Next Page
-t555 下一页
-o556 Super Secret Settings
-t556 
-o557 Default Resource Pack
-t557 默认资源包
-o558 Square
-t558 方形
-o559 Record Macro
-t559 录制宏
-o560 Health Boost
-t560 生命提升
-o561 Saturation (no mob effect)
-t561 饱和（生物无效）
-o562 Wither
-t562 凋零
-o563 Invisibility
-t563 隐身
-o564 Slowness
-t564 缓慢
-o565 Absorption
-t565 伤害吸收
-o566 Night Vision (no mob effect)
-t566 夜视（生物无效）
-o567 Speed
-t567 速度
-o568 Mining Fatigue (no mob effect)
-t568 挖掘疲劳（生物无效）
-o569 Player Name(s):
-t569 玩家名：
-o570 Chunks Borders
-t570 区块边缘
-o571 Fast Nudge
-t571 快速轻移
-o572 Clone Fast Nudge Settings
-t572 克隆工具快速轻移设置：
-o573 Move by the width of selection 
-t573 以选区的宽度为单位轻移
-o574 Moves clone by his width
-t574 以克隆的宽度为单位
-o575 Width of clone movement: 
-t575 克隆工具轻移宽度：
-o576 Import Fast Nudge Settings:
-t576 导入工具快速轻移设置：
-o577 Move by the width of schematic 
-t577 以导入文件的宽度为单位轻移
-o578 Moves selection by his width
-t578 以选区的宽度为单位
-o579 Width of import movement: 
-t579 导入工具轻移宽度：
-o580 Import Options
-t580 导入工具选项
-o581 Blocks Fast Nudge Settings:
-t581 方块快速轻移设置：
-o582 Selection Fast Nudge Settings:
-t582 选区快速轻移设置：
-o583 Points Fast Nudge Settings:
-t583 选区角快速轻移设置：
-o584 Moves points by the selection's width
-t584 以选区宽度为单位轻移选区角
-o585 Width of points movement: 
-t585 选区角轻移宽度：
-o586 Do you want to save your changes?
-t586 保存更改？
-o587 Don't Save
-t587 不要保存
-o588 Press a key to assign to the action "{0}"
-
-Press ESC to cancel.
-t588 按一个键来绑定动作“{0}”
-
-按 ESC 取消.
+o518 f: 
+t518 
+o519 Seed: 
+t519 种子：
+o520 East-West Chunks: 
+t520 东-西 区块数：
+o521 North-South Chunks: 
+t521 南-北 区块数：
+o522 Survival
+t522 生存
+o523 Cancel
+t523 取消
+o524 Creative
+t524 创造
+o525 Style:
+t525 形状：
+o526 H
+t526 高
+o527 L
+t527 长
+o528 W
+t528 宽
+o529 Minimum Spacing
+t529 笔刷最小间隔
+o530 Regenerate Entity UUID
+t530 重新生成实体 UUID
+o531 Replace blocks with any data value. Only useful for Replace operations.
+t531 替换此 ID 下所有数据值的方块. 只在替换功能中可用.
+o532 Entities
+t532 实体
+o533 Items
+t533 掉落物
+o534 TileEntities
+t534 方块实体
+o535 TileTicks
+t535 方块刻
+o536 Unpopulated Chunks
+t536 未重置的区块
+o537 Sky
+t537 天空
+o538 Fog
+t538 雾
+o539 Ceiling
+t539 最高限度
+o540 Chunk Redraw
+t540 区块刷新
+o541 Hidden Ores
+t541 隐藏矿石
+o542 Bedrock
+t542 基岩
+o543 Coal
+t543 煤
+o544 Iron
+t544 铁
+o545 Lapis Lazuli
+t545 青金石
+o546 Redstone
+t546 红石
+o547 Gold
+t547 金
+o548 Diamond
+t548 钻石
+o549 Nether Quartz
+t549 下界石英
+o550 Shortcut: {0}
+t550 快捷键：{0}
+o551 View Distance ({0})
+t551 视野（{0}）
+o552 Copy Stack Size: 
+t552 剪贴板堆栈：
+o553 Remove
+t553 删除
+o554 Reload Skins
+t554 重载皮肤
+o555 Previous Page
+t555 上一页
+o556 Next Page
+t556 下一页
+o557 Super Secret Settings
+t557 
+o558 Default Resource Pack
+t558 默认资源包
+o559 Square
+t559 方形
+o560 Record Macro
+t560 录制宏
+o561 Health Boost
+t561 生命提升
+o562 Saturation (no mob effect)
+t562 饱和（生物无效）
+o563 Wither
+t563 凋零
+o564 Invisibility
+t564 隐身
+o565 Slowness
+t565 缓慢
+o566 Absorption
+t566 伤害吸收
+o567 Night Vision (no mob effect)
+t567 夜视（生物无效）
+o568 Speed
+t568 速度
+o569 Mining Fatigue (no mob effect)
+t569 挖掘疲劳（生物无效）
+o570 Player Name(s):
+t570 玩家名：
+o571 Chunks Borders
+t571 区块边缘
+o572 Fast Nudge
+t572 快速轻移
+o573 Clone Fast Nudge Settings
+t573 克隆工具快速轻移设置：
+o574 Move by the width of selection 
+t574 以选区的宽度为单位轻移
+o575 Moves clone by his width
+t575 以克隆的宽度为单位
+o576 Width of clone movement: 
+t576 克隆工具轻移宽度：
+o577 Import Fast Nudge Settings:
+t577 导入工具快速轻移设置：
+o578 Move by the width of schematic 
+t578 以导入文件的宽度为单位轻移
+o579 Moves selection by his width
+t579 以选区的宽度为单位
+o580 Width of import movement: 
+t580 导入工具轻移宽度：
+o581 Import Options
+t581 导入工具选项
+o582 Blocks Fast Nudge Settings:
+t582 方块快速轻移设置：
+o583 Selection Fast Nudge Settings:
+t583 选区快速轻移设置：
+o584 Points Fast Nudge Settings:
+t584 选区角快速轻移设置：
+o585 Moves points by the selection's width
+t585 以选区宽度为单位轻移选区角
+o586 Width of points movement: 
+t586 选区角轻移宽度：
+o587 Do you want to save your changes?
+t587 保存更改？
+o588 Don't Save
+t588 不要保存
 o589 Press a key to assign to the action "{0}"
-No key means right click to fast nudge.
+
 Press ESC to cancel.
 t589 按一个键来绑定动作“{0}”
+
+按 ESC 取消.
+o590 Press a key to assign to the action "{0}"
+No key means right click to fast nudge.
+Press ESC to cancel.
+t590 按一个键来绑定动作“{0}”
 若未设定, 默认鼠标右键为快速轻移按键.
 按 ESC 取消.
-o590 {0} is not a modifier. Press a new key.
+o591 {0} is not a modifier. Press a new key.
 
 Press ESC to cancel.
-t590 {0}不是一个修饰键. 请按一个新的键.
+t591 {0}不是一个修饰键. 请按一个新的键.
 
 按 ESC 取消.
-o591 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+o592 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t591 移动键不能使用 Ctrl 或与修饰键连用. 请按一个新的键.
+t592 移动键不能使用 Ctrl 或与修饰键连用. 请按一个新的键.
 
 按 ESC 取消.
-o592 You can't use the key {0}. Press a new key.
+o593 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t592 无法使用 {0}. 请按一个新的键.
+t593 无法使用 {0}. 请按一个新的键.
 
 按 ESC 取消.
-o593 Reset to default
-t593 重置为默认值
-o594 Do you want to keep your changes?
-t594 保存更改？
-o595 Screenshots
-t595 截屏文件目录
-o596 Uses the Latest Snapshot Terrain Generation
-t596 使用最新的快照版地形生成器
-o597 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t597 生成世界后模拟数秒钟. 处理所有的方块刻来减小文件体积.
-o598 Last Played
-t598 最后游玩
-o599 Level Name (filename)
-t599 Level名（文件名）
-o600 Load
-t600 读取
-o601 Maximum number of copied objects.
-t601 复制项目的最大数量.
-o602 Try to save and restore the window position.
-t602 尝试记住窗口位置.
-o603 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t603 这会将配置文件和模型文件保存在和 {0} 相同的路径, 使 MCEdit 便携. 继续？
-o604 MCEditData
-t604 
-o605 This will move your settings and schematics to your Documents folder. Continue?
-t605 这会将配置文件和模型文件保存在文档（我的文档）. 继续？
-o606 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t606 点击将配置文件和模型文件保存在文档（我的文档）目录
-o607 Goto Position:
-t607 前往的位置：
-o608 (click anywhere to teleport)
-t608 （点击任意地点来传送）
-o609 Format:
-t609 格式：
-o610 Name:
-t610 名字：
-o611 Minecraft Infinite World (Anvil Format)
-t611 Minecraft无限世界（Anvil格式）
-o612 Day: 
-t612 天数：
-o613 Time of day:
-t613 当天时间：
-o614 RandomSeed:
-t614 随机种子：
-o615 Game Type:
-t615 游戏模式：
-o616 Number of chunks: {0}
-t616 区块数量：{0}
-o617 Number of regions: {0}
-t617 区域数量：{0}
-o618 Repair regions
-t618 修复区域
-o619 Open Folder
-t619 打开目录
-o620 Inventory Slot #%s
-t620 物品栏 #%s
-o621 id
-t621 ID
-o622 Count
-t622 数量
-o623 Damage
-t623 伤害值
-o624 NBT Explorer
-t624 NBT 浏览器
-o625 Reset
-t625 重置
-o626 Reset ALL your changes in the NBT data.
-t626 重置你对 NBT 数据的更改.
-o627 Data Type:
-t627 数据类型：
-o628 -> Name
-t628 -> 名字
-o629 Double-click to edit
-t629 双击来编辑
-o630 NBT Explorer
+o594 Reset to default
+t594 重置为默认值
+o595 Do you want to keep your changes?
+t595 保存更改？
+o596 Screenshots
+t596 截屏文件目录
+o597 Uses the Latest Snapshot Terrain Generation
+t597 使用最新的快照版地形生成器
+o598 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t598 生成世界后模拟数秒钟. 处理所有的方块刻来减小文件体积.
+o599 Last Played
+t599 最后游玩
+o600 Level Name (filename)
+t600 Level名（文件名）
+o601 Load
+t601 读取
+o602 Maximum number of copied objects.
+t602 复制项目的最大数量.
+o603 Try to save and restore the window position.
+t603 尝试记住窗口位置.
+o604 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t604 这会将配置文件和模型文件保存在和 {0} 相同的路径, 使 MCEdit 便携. 继续？
+o605 MCEditData
+t605 
+o606 This will move your settings and schematics to your Documents folder. Continue?
+t606 这会将配置文件和模型文件保存在文档（我的文档）. 继续？
+o607 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t607 点击将配置文件和模型文件保存在文档（我的文档）目录
+o608 Goto Position:
+t608 前往的位置：
+o609 (click anywhere to teleport)
+t609 （点击任意地点来传送）
+o610 Format:
+t610 格式：
+o611 Name:
+t611 名字：
+o612 Minecraft Infinite World (Anvil Format)
+t612 Minecraft无限世界（Anvil格式）
+o613 Day: 
+t613 天数：
+o614 Time of day:
+t614 当天时间：
+o615 RandomSeed:
+t615 随机种子：
+o616 Game Type:
+t616 游戏模式：
+o617 Number of chunks: {0}
+t617 区块数量：{0}
+o618 Number of regions: {0}
+t618 区域数量：{0}
+o619 Repair regions
+t619 修复区域
+o620 Open Folder
+t620 打开目录
+o621 Inventory Slot #%s
+t621 物品栏 #%s
+o622 id
+t622 ID
+o623 Count
+t623 数量
+o624 Damage
+t624 伤害值
+o625 NBT Explorer
+t625 NBT 浏览器
+o626 Reset
+t626 重置
+o627 Reset ALL your changes in the NBT data.
+t627 重置你对 NBT 数据的更改.
+o628 Data Type:
+t628 数据类型：
+o629 -> Name
+t629 -> 名字
+o630 Double-click to edit
+t630 双击来编辑
+o631 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t630 NBT浏览器
+t631 NBT浏览器
 查看NBT结构列表
 右键显示选项
-o631 Save your change in the NBT data.
-t631 保存你对 NBT 数据的更改.
-o632 Save unsaved edits before loading?
-t632 在加载前保存尚未保存的更改吗？
-o633 {0} unsaved edits.  {1} to save.  {2}
-t633 {0} 个未保存的编辑. {1} 来保存. {2}
-o634 (UNDO DISABLED)
-t634 （撤销已禁用）
-o635 Save unsaved edits before closing?
-t635 在关闭前保存尚未保存的更改吗？
-o636 NBT Tree Settings
-t636 NBT 结构图设置
-o637 Use Bullet Styles
-t637 使用项目符号样式
-o638 Use Bullet Text
-t638 使用项目标注
-o639 Use Bullet Images
-t639 使用项目图标
-o640 Bullet Images File
-t640 项目图标文件
-o641 Choose an image file...
-t641 选择一个图片文件……
-o642 Select a NBT (.dat) file...
-t642 选择一个 NBT （.dat）文件……
-o643 File already exists.
+o632 Save your change in the NBT data.
+t632 保存你对 NBT 数据的更改.
+o633 Save unsaved edits before loading?
+t633 在加载前保存尚未保存的更改吗？
+o634 {0} unsaved edits.  {1} to save.  {2}
+t634 {0} 个未保存的编辑. {1} 来保存. {2}
+o635 (UNDO DISABLED)
+t635 （撤销已禁用）
+o636 Save unsaved edits before closing?
+t636 在关闭前保存尚未保存的更改吗？
+o637 NBT Tree Settings
+t637 NBT 结构图设置
+o638 Use Bullet Styles
+t638 使用项目符号样式
+o639 Use Bullet Text
+t639 使用项目标注
+o640 Use Bullet Images
+t640 使用项目图标
+o641 Bullet Images File
+t641 项目图标文件
+o642 Choose an image file...
+t642 选择一个图片文件……
+o643 Select a NBT (.dat) file...
+t643 选择一个 NBT （.dat）文件……
+o644 File already exists.
 Click 'OK' to choose one.
-t643 文件已经存在.
+t644 文件已经存在.
 点“确定”来选择一个.
-o644 Choose a NBT file...
-t644 选择一个 NBT 文件……
-o645 The selected object is not a file.
-Can't load it.
-t645 选择的对象不是一个文件.
-无法读取.
+o645 Choose a NBT file...
+t645 选择一个 NBT 文件……
 o646 The selected object is not a file.
-Can't save it.
+Can't load it.
 t646 选择的对象不是一个文件.
+无法读取.
+o647 The selected object is not a file.
+Can't save it.
+t647 选择的对象不是一个文件.
 无法保存.
-o647 Show all the tags in the tree
-t647 允许显示多层级的子标签
-o648 Compound
-t648 
-o649 Integer
+o648 Show all the tags in the tree
+t648 允许显示多层级的子标签
+o649 Compound
 t649 
-o650 Floating point
+o650 Integer
 t650 
-o651 Text
+o651 Floating point
 t651 
-o652 Boolean
+o652 Text
 t652 
-o653 Choose default data
-t653 选择默认值
-o654 Item Type: %s
-t654 标签类型：%s
-o655 Value
-t655 值
-o656 This item type is a container. Add chlidren later.
-t656 这个标签是一个容器. 请稍后增加子标签.
-o657 Choose item type
-t657 选择标签类型
-o658 Choose a name
-t658 选择名字
-o659 Byte
-t659 
-o660 Long
+o653 Boolean
+t653 
+o654 Choose default data
+t654 选择默认值
+o655 Item Type: %s
+t655 标签类型：%s
+o656 Value
+t656 值
+o657 This item type is a container. Add chlidren later.
+t657 这个标签是一个容器. 请稍后增加子标签.
+o658 Choose item type
+t658 选择标签类型
+o659 Choose a name
+t659 选择名字
+o660 Byte
 t660 
-o661 Short
+o661 Long
 t661 
-o662 String
+o662 Short
 t662 
-o663 List
+o663 String
 t663 
-o664 Byte Array
+o664 List
 t664 
-o665 Int Array
+o665 Byte Array
 t665 
-o666 Short Array
+o666 Int Array
 t666 
-o667 Click to bind this filter to a save askey
+o667 Short Array
 t667 
-o668 Press a key to assign to the filter "{0}"
+o668 Click to bind this filter to a save askey
+t668 
+o669 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t668 按一个键来绑定滤镜“{0}”
+t669 按一个键来绑定滤镜“{0}”
 
 按 ESC 取消.
-o669 Can't bind. {0} is already used by {1}.
+o670 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
-t669 无法绑定. {0} 已经被 {1} 使用.
+t670 无法绑定. {0} 已经被 {1} 使用.
 按一个键来绑定“{2}”
 
 按 ESC 取消.
-o670 [No players]
-t670 [无玩家]
-o671 Press to unbind
-t671 单击解除绑定
-o672 Are you sure you want to delete the default player?
-t672 你确定要删除默认玩家吗？
-o673 Double-click or use the button below to edit the NBT Data.
-t673 双击或使用下面的按钮来编辑 NBT 数据.
-o674 Go Back
-t674 返回
-o675 Upload to FTP Server
-t675 上传到 FTP 服务器
-o676 There are {0} unsaved changes.
-t676 {0} 条未保存的更改.
-o677 Save and Quit
-t677 保存并退出
-o678 Refresh Player Names
-t678 刷新玩家名
-o679 Results
-t679 结果
-o680 Smooth - 3D
-t680 平滑 - 3D
-o681 Smoothing
-t681 平滑等级
-o682 Made by Sethbling
-t682 由 Sethbling 制作
-o683 NBT Data
-t683 NBT 数据
-o684 Edit NBT
-t684 编辑 NBT 数据
-o685 Open the NBT Explorer to edit player's attributes and inventory
-t685 打开 NBT 浏览器来编辑玩家的属性和物品
-o686 Not yet implemented.
+o671 [No players]
+t671 [无玩家]
+o672 Press to unbind
+t672 单击解除绑定
+o673 Are you sure you want to delete the default player?
+t673 你确定要删除默认玩家吗？
+o674 Double-click or use the button below to edit the NBT Data.
+t674 双击或使用下面的按钮来编辑 NBT 数据.
+o675 Go Back
+t675 返回
+o676 Upload to FTP Server
+t676 上传到 FTP 服务器
+o677 There are {0} unsaved changes.
+t677 {0} 条未保存的更改.
+o678 Save and Quit
+t678 保存并退出
+o679 Refresh Player Names
+t679 刷新玩家名
+o680 Results
+t680 结果
+o681 Smooth - 3D
+t681 平滑 - 3D
+o682 Smoothing
+t682 平滑等级
+o683 Made by Sethbling
+t683 由 Sethbling 制作
+o684 NBT Data
+t684 NBT 数据
+o685 Edit NBT
+t685 编辑 NBT 数据
+o686 Open the NBT Explorer to edit player's attributes and inventory
+t686 打开 NBT 浏览器来编辑玩家的属性和物品
+o687 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t686 功能尚未实现.
+t687 功能尚未实现.
 请使用 NBT 浏览器来编辑这个玩家.
-o687 Spawn point fixed. Changes: 
+o688 Spawn point fixed. Changes: 
 
 
-t687 出生点已修复. 改变： 
+t688 出生点已修复. 改变： 
 
 
-o688 <Selection>
-t688 <选区>
-o689 <Miscellaneous>
-t689 <杂项>
-o690 Take Screenshot
-t690 截屏
-o691 Double-click to go to this item.
-t691 双击前往这个项目.
-o692 From FTP Server
-t692 从 FTP 服务器
-o693 <Chunk Control Tool>
-t693 <区块控制工具>
-o694 Select Chunks
-t694 选择区块
-o695 
+o689 <Selection>
+t689 <选区>
+o690 <Miscellaneous>
+t690 <杂项>
+o691 Take Screenshot
+t691 截屏
+o692 Double-click to go to this item.
+t692 双击前往这个项目.
+o693 From FTP Server
+t693 从 FTP 服务器
+o694 <Chunk Control Tool>
+t694 <区块控制工具>
+o695 Select Chunks
+t695 选择区块
+o696 
 No matching blocks/tile entities found
-t695 
+t696 
 没有找到匹配的方块/方块实体值
-o696 Choose a filter, then click Filter or press Enter to apply it.
-t696 选择一个滤镜, 点击“过滤”或按回车来确定.
-o697 Click to set this item down.
-t697 点击来放置物体.
-o698 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
-t698 用滚轮向前后方的坐标轴移动. 按住 {0} 只沿一个坐标轴移动.
-o699 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t699 点击和拖动来重新放置物体. 双击将它拾起. 点击“克隆”或按回车来确定.
-o700 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t700 选区超过 {0:n} 方块. 请增加方块缓冲并重试.
-o701 Copying to clone buffer...
-t701 正在复制到克隆缓冲……
-o702 Import a schematic or level...
-t702 导入 schematic 文件或 level 文件……
-o703 Could not find the Minecraft saves directory!
+o697 Choose a filter, then click Filter or press Enter to apply it.
+t697 选择一个滤镜, 点击“过滤”或按回车来确定.
+o698 Click to set this item down.
+t698 点击来放置物体.
+o699 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+t699 用滚轮向前后方的坐标轴移动. 按住 {0} 只沿一个坐标轴移动.
+o700 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+t700 点击和拖动来重新放置物体. 双击将它拾起. 点击“克隆”或按回车来确定.
+o701 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+t701 选区超过 {0:n} 方块. 请增加方块缓冲并重试.
+o702 Copying to clone buffer...
+t702 正在复制到克隆缓冲……
+o703 Import a schematic or level...
+t703 导入 schematic 文件或 level 文件……
+o704 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t703 无法找到Minecraft存档目录！
+t704 无法找到Minecraft存档目录！
 
 （{0} 没有找到或者不是一个目录）
-o704 I don't know how to open {0}:
+o705 I don't know how to open {0}:
 
 {1!r}
-t704 无法打开 {0} :
+t705 无法打开 {0} :
 
 {1!r}
-o705 Checking for server updates...
-t705 正在检查服务器更新……
-o706 Time left: {0}
-t706 剩余时间：{0}
-o707 Untitled World
-t707 未命名世界
-o708 Name this new world.
-t708 命名这个新世界
-o709 Minecraft World *.*  
-t709 Minecraft世界 *.*  
-o710 Generating chunks...
-t710 正在生成区块……
-o711 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t711 世界已生成. 用区块控制工具或者在 Minecraft 中探索世界来增删区块.
-o712 Analyzing {0} blocks...
-t712 正在统计 {0} 个方块……
-o713 Save to file...
-t713 保存到文件……
-o714 Fill with Air
-t714 用空气填充
-o715 Delete Chunks
-t715 删除区块
-o716 Recording undo...
-t716 正在记录撤销……
-o717 Replacing blocks...
-t717 正在替换方块……
-o718 REPLACING - 
-t718 替换中 - 
-o719 Copying chunk %s...
-t719 正在复制区块 %s……
-o720 Continue with undo disabled?
-t720 撤销功能将关闭, 继续？
-o721 Continue
-t721 继续
-o722 Canceled
-t722 已取消
-o723 DELETING - 
-t723 删除中 - 
-o724 Deleting {0} blocks
-t724 正在删除 {0} 个方块……
-o725 WORKING - 
-t725 工作中 - 
-o726 Removing Tile Ticks...
-t726 正在移除方块刻……
-o727 Removing entities...
-t727 正在移除实体……
-o728 Copying {0:n} blocks...
-t728 正在复制 {0:n} 个方块……
-o729 Undoing...
-t729 正在撤销……
-o730 UNDOING - 
-t730 撤销中 - 
-o731 Really delete these chunks? This cannot be undone.
-t731 确定要删除这些区块？此操作无法撤销.
-o732 Save these chunks and remove the rest? This cannot be undone.
-t732 保存这些区块并移除其他的区块？此操作无法撤销.
-o733 Lighting {0} chunks...
-t733 正在重置 {0} 个区块的光线……
-o734 Create chunks using the settings above? This cannot be undone.
-t734 用以上设定新建区块？此操作无法撤销.
-o735 Add
-t735 添加
-o736 New child
-t736 新建子标签
-o737 Rename
-t737 重命名
-o738 Paste as child
-t738 粘贴为子标签
-o739 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t739 你正在删除一个包含整个区块的选区. 用空气填充选区还是删除区块本身？
-o740 Screenshot taken and saved as '%s'
-t740 截图已保存, 路径为 '%s'
-o741 Fonts Proportion (%): 
-t741 字体大小（%）：
-o742 Fonts sizing proportion. The number is a percentage.
+o706 Checking for server updates...
+t706 正在检查服务器更新……
+o707 Time left: {0}
+t707 剩余时间：{0}
+o708 Untitled World
+t708 未命名世界
+o709 Name this new world.
+t709 命名这个新世界
+o710 Minecraft World *.*  
+t710 Minecraft世界 *.*  
+o711 Generating chunks...
+t711 正在生成区块……
+o712 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t712 世界已生成. 用区块控制工具或者在 Minecraft 中探索世界来增删区块.
+o713 Analyzing {0} blocks...
+t713 正在统计 {0} 个方块……
+o714 Save to file...
+t714 保存到文件……
+o715 Fill with Air
+t715 用空气填充
+o716 Delete Chunks
+t716 删除区块
+o717 Recording undo...
+t717 正在记录撤销……
+o718 Replacing blocks...
+t718 正在替换方块……
+o719 REPLACING - 
+t719 替换中 - 
+o720 Copying chunk %s...
+t720 正在复制区块 %s……
+o721 Continue with undo disabled?
+t721 撤销功能将关闭, 继续？
+o722 Continue
+t722 继续
+o723 Canceled
+t723 已取消
+o724 DELETING - 
+t724 删除中 - 
+o725 Deleting {0} blocks
+t725 正在删除 {0} 个方块……
+o726 WORKING - 
+t726 工作中 - 
+o727 Removing Tile Ticks...
+t727 正在移除方块刻……
+o728 Removing entities...
+t728 正在移除实体……
+o729 Copying {0:n} blocks...
+t729 正在复制 {0:n} 个方块……
+o730 Undoing...
+t730 正在撤销……
+o731 UNDOING - 
+t731 撤销中 - 
+o732 Really delete these chunks? This cannot be undone.
+t732 确定要删除这些区块？此操作无法撤销.
+o733 Save these chunks and remove the rest? This cannot be undone.
+t733 保存这些区块并移除其他的区块？此操作无法撤销.
+o734 Lighting {0} chunks...
+t734 正在重置 {0} 个区块的光线……
+o735 Create chunks using the settings above? This cannot be undone.
+t735 用以上设定新建区块？此操作无法撤销.
+o736 Add
+t736 添加
+o737 New child
+t737 新建子标签
+o738 Rename
+t738 重命名
+o739 Paste as child
+t739 粘贴为子标签
+o740 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t740 你正在删除一个包含整个区块的选区. 用空气填充选区还是删除区块本身？
+o741 Screenshot taken and saved as '%s'
+t741 截图已保存, 路径为 '%s'
+o742 Fonts Proportion (%): 
+t742 字体大小（%）：
+o743 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t742 字体大小比例. 这个数字是百分比.
+t743 字体大小比例. 这个数字是百分比.
 需要重启！
-o743 Save As
-t743 另存为
-o744 Name the new copy.
-t744 给这个副本命名.
-o745 Copying %0.1f million blocks
-t745 正在复制 %0.1f 百万个方块
-o746 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t746 当你尝试出生在一个 Y=63 和 Y=64 处没有方块的地方时, Minecraft 会随机地移动你的出生点. 只有当 Minecraft 变更后才取消勾选此项.
-o747 Keep Data Intact
-t747 （替换时）不改变数据值
-o748 This pulls skins from the online server, so this may take a while
-t748 这将从服务器上载入皮肤, 所以可能耗时较长.
-o749 Session:
-t749 会话：
-o750 Session Lock is being used by Minecraft
-t750 会话被 Minecraft 占用
-o751 Session Lock is being used by MCEdit
-t751 会话被 MCEdit 占用
-o752 Show Player Skins
-t752 显示玩家皮肤
-o753 Show player skins while editing the world
-t753 编辑世界时显示玩家皮肤
-o754 Compass Size (%): 
-t754 指南针大小（%）：
-o755 Fog Intensity (%): 
-t755 雾的密度（%）：
-o756 Toggle compass
-t756 指南针开关
-o757 Width of blocks movement: 
-t757 方块轻移宽度：
-o758 Width of selection movement: 
-t758 选区轻移宽度：
-o759 Import
-t759 导入
-o760 Old (Messy)
-t760 老旧残损的样式
-o761 Click to open filters folder
-t761 点击打开滤镜文件夹
-o762 Head
-t762 头颅
-o763 Exception during filter operation. See console for details.
+o744 Save As
+t744 另存为
+o745 Name the new copy.
+t745 给这个副本命名.
+o746 Copying %0.1f million blocks
+t746 正在复制 %0.1f 百万个方块
+o747 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t747 当你尝试出生在一个 Y=63 和 Y=64 处没有方块的地方时, Minecraft 会随机地移动你的出生点. 只有当 Minecraft 变更后才取消勾选此项.
+o748 Keep Data Intact
+t748 （替换时）不改变数据值
+o749 This pulls skins from the online server, so this may take a while
+t749 这将从服务器上载入皮肤, 所以可能耗时较长.
+o750 Session:
+t750 会话：
+o751 Session Lock is being used by Minecraft
+t751 会话被 Minecraft 占用
+o752 Session Lock is being used by MCEdit
+t752 会话被 MCEdit 占用
+o753 Show Player Skins
+t753 显示玩家皮肤
+o754 Show player skins while editing the world
+t754 编辑世界时显示玩家皮肤
+o755 Compass Size (%): 
+t755 指南针大小（%）：
+o756 Fog Intensity (%): 
+t756 雾的密度（%）：
+o757 Toggle compass
+t757 指南针开关
+o758 Width of blocks movement: 
+t758 方块轻移宽度：
+o759 Width of selection movement: 
+t759 选区轻移宽度：
+o760 Import
+t760 导入
+o761 Old (Messy)
+t761 老旧残损的样式
+o762 Click to open filters folder
+t762 点击打开滤镜文件夹
+o763 Head
+t763 头颅
+o764 Exception during filter operation. See console for details.
 
 {0}
-t763 过滤操作时出现异常. 详细信息见控制台.
+t764 过滤操作时出现异常. 详细信息见控制台.
 
 {0}
-o764 Shift
-t764 
-o765 Option
-t765 选项
-o766 Meta
-t766 
-o767 Applying {0} brush...
-t767 正在应用 {0} 个笔刷……
-o768 Graphics Settings
-t768 图像设置
-o769 Run Macro
-t769 运行宏
-o770 Delete Macro
-t770 删除宏
-o771 Macro Name: 
-t771 宏名字：
-o772 Enter a Player Name: 
-t772 输入一个玩家名：
-o773 Click the mouse button again to place the other selection corner.
-t773 再次点击鼠标来确定选区的另一个角.
-o774 Stop recording
-t774 停止记录
-o775 Currently recording a macro
-t775 正在录制宏
-o776 Choose a custom head for the villagers you make
-t776 为你创造的村民选一个自定义头颅
-o777 Custom Head
-t777 自定义头颅
-o778 Skull Type
-t778 头颅类型
-o779 Skeleton Skull
-t779 骷髅头颅
-o780 Wither Skeleton Skull
-t780 凋零骷髅头颅
-o781 Zombie Skull
-t781 僵尸头颅
-o782 Player Skull
-t782 玩家头颅
-o783 Creeper Skull
-t783 爬行者头颅
-o784 If Player Skull
-t784 如果是玩家头颅
-o785 Player's Name
-t785 玩家名
-o786 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+o765 Shift
+t765 
+o766 Option
+t766 选项
+o767 Meta
+t767 
+o768 Applying {0} brush...
+t768 正在应用 {0} 个笔刷……
+o769 Graphics Settings
+t769 图像设置
+o770 Run Macro
+t770 运行宏
+o771 Delete Macro
+t771 删除宏
+o772 Macro Name: 
+t772 宏名字：
+o773 Enter a Player Name: 
+t773 输入一个玩家名：
+o774 Click the mouse button again to place the other selection corner.
+t774 再次点击鼠标来确定选区的另一个角.
+o775 Stop recording
+t775 停止记录
+o776 Currently recording a macro
+t776 正在录制宏
+o777 Choose a custom head for the villagers you make
+t777 为你创造的村民选一个自定义头颅
+o778 Custom Head
+t778 自定义头颅
+o779 Skull Type
+t779 头颅类型
+o780 Skeleton Skull
+t780 骷髅头颅
+o781 Wither Skeleton Skull
+t781 凋零骷髅头颅
+o782 Zombie Skull
+t782 僵尸头颅
+o783 Player Skull
+t783 玩家头颅
+o784 Creeper Skull
+t784 爬行者头颅
+o785 If Player Skull
+t785 如果是玩家头颅
+o786 Player's Name
+t786 玩家名
+o787 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t786 自动为每个被复制的实体重新生成 UUID. （推荐）
+t787 自动为每个被复制的实体重新生成 UUID. （推荐）
 快捷键：Alt-6
-o787 When the brush tool is chosen, prompt for a block type.
-t787 当笔刷工具被选中时, 自动打开方块选择器来选择方块.
-o788 Max View Distance
-t788 最大视野
-o789 It looks like this level is completely empty!
+o788 When the brush tool is chosen, prompt for a block type.
+t788 当笔刷工具被选中时, 自动打开方块选择器来选择方块.
+o789 Max View Distance
+t789 最大视野
+o790 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t789 看起来这个世界是完全空白的！
+t790 看起来这个世界是完全空白的！
 你需要新建一些区块才能开始.
-o790 Create Chunks
-t790 新建区块
-o791 Replace Only:
-t791 仅替换：
-o792 Make Villager Silent
-t792 禁止村民发声
-o793 Install Mode
-t793 安装模式
-o794 SAVING - 
-t794 保存中- 
-o795 World Type:
-t795 世界类型：
-o796 Amplified
-t796 放大化
-o797 Large Biomes
-t797 巨型生物群系
-o798 Superflat
-t798 超平坦
-o799 Copying chunks
-t799 正在复制区块
-o800 Lighting chunks
-t800 正在重置区块光线
-o801 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t801 这个世界不是从 FTP 服务器下载的. 目前不能上传一个不是从 FTP 下载的世界.
-o802 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t802 窗口大小增加了. 在重启 MCEdit 之前光标可能会出现问题.
-o803 FTP Server IP:
-t803 FTP 服务器 IP ：
-o804 FTP Username:
-t804 FTP 用户名：
-o805 FTP Password:
-t805 FTP 密码：
-o806 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t806 说明：除了登陆服务器之外, MCEdit-Unified 不会查看任何 FTP 服务器中的信息.
-o807 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t807 MCEdit-Unified 正在下载世界, 请稍等. 一旦下载完成, 它会被自动打开.
-o808 Connect
-t808 连接
-o809 Target: 
-t809 目标：
-o810 Error: {0}
-t810 错误：{0}
-o811 Incorrect username or password
-t811 用户名或密码错误
-o812 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t812 无法找到 server.properties 文件！FTP 客户端无法下载世界, 除非 server.properties 文件在 FTP 的默认路径
-o813 Could not find the world folder from the server.properties file
-t813 无法从 server.properties 文件中找到 Minecraft 世界文件夹.
-o814 Choose Block Immediately for Replace
-t814 替换工具自动打开方块选择器
-o815 Open Block Picker for Fill
-t815 填充工具自动打开方块选择器
-o816 Open Block Picker for Replace
-t816 替换工具自动打开方块选择器
-o817 When the replace tool is chosen, prompt for a block type.
-t817 当替换工具被选中时, 自动打开方块选择器来选择方块.
-o818 Matching Coordinates
-t818 查找到的坐标
-o819 Session Lock Options
-t819 会话锁设置
-o820 Override Minecraft Changes (Not Recommended)
-t820 覆盖 Minecraft 的更改（不推荐）
-o821 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t821 只要地图被 MCEdit 打开, 总是覆盖在 Minecraft 中的更改. （不推荐）
-o822 Player Heads
-t822 玩家头颅
-o823 Sprint
-t823 冲刺
-o824 Select
-t824 选择
-o825 Brush
-t825 笔刷
-o826 Fill and Replace
-t826 填充和替换
-o827 World Spawnpoint
-t827 世界出生点
-o828 CB Commands
-t828 命令方块命令
-o829 Open a text file with all command block commands in the currently selected area.
+o791 Create Chunks
+t791 新建区块
+o792 Replace Only:
+t792 仅替换：
+o793 Make Villager Silent
+t793 禁止村民发声
+o794 Install Mode
+t794 安装模式
+o795 SAVING - 
+t795 保存中- 
+o796 World Type:
+t796 世界类型：
+o797 Amplified
+t797 放大化
+o798 Large Biomes
+t798 巨型生物群系
+o799 Superflat
+t799 超平坦
+o800 Copying chunks
+t800 正在复制区块
+o801 Lighting chunks
+t801 正在重置区块光线
+o802 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t802 这个世界不是从 FTP 服务器下载的. 目前不能上传一个不是从 FTP 下载的世界.
+o803 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t803 窗口大小增加了. 在重启 MCEdit 之前光标可能会出现问题.
+o804 FTP Server IP:
+t804 FTP 服务器 IP ：
+o805 FTP Username:
+t805 FTP 用户名：
+o806 FTP Password:
+t806 FTP 密码：
+o807 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t807 说明：除了登陆服务器之外, MCEdit-Unified 不会查看任何 FTP 服务器中的信息.
+o808 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t808 MCEdit-Unified 正在下载世界, 请稍等. 一旦下载完成, 它会被自动打开.
+o809 Connect
+t809 连接
+o810 Target: 
+t810 目标：
+o811 Error: {0}
+t811 错误：{0}
+o812 Incorrect username or password
+t812 用户名或密码错误
+o813 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t813 无法找到 server.properties 文件！FTP 客户端无法下载世界, 除非 server.properties 文件在 FTP 的默认路径
+o814 Could not find the world folder from the server.properties file
+t814 无法从 server.properties 文件中找到 Minecraft 世界文件夹.
+o815 Choose Block Immediately for Replace
+t815 替换工具自动打开方块选择器
+o816 Open Block Picker for Fill
+t816 填充工具自动打开方块选择器
+o817 Open Block Picker for Replace
+t817 替换工具自动打开方块选择器
+o818 When the replace tool is chosen, prompt for a block type.
+t818 当替换工具被选中时, 自动打开方块选择器来选择方块.
+o819 Matching Coordinates
+t819 查找到的坐标
+o820 Session Lock Options
+t820 会话锁设置
+o821 Override Minecraft Changes (Not Recommended)
+t821 覆盖 Minecraft 的更改（不推荐）
+o822 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t822 只要地图被 MCEdit 打开, 总是覆盖在 Minecraft 中的更改. （不推荐）
+o823 Player Heads
+t823 玩家头颅
+o824 Sprint
+t824 冲刺
+o825 Select
+t825 选择
+o826 Brush
+t826 笔刷
+o827 Fill and Replace
+t827 填充和替换
+o828 World Spawnpoint
+t828 世界出生点
+o829 CB Commands
+t829 命令方块命令
+o830 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t829 在一个文本文件中打开选区内所有命令方块的命令.
+t830 在一个文本文件中打开选区内所有命令方块的命令.
 保存文件来更新命令方块.
 右键显示选项
-o830 Command Blocks Commands Options
-t830 命令方块命令工具设置
-o831 Sort Order
-t831 排序依据
-o832 Space between lines
-t832 添加空行
-o833 Make space between the lines
-t833 在每行命令之间添加空行
-o834 File format
-t834 文件格式
-o835 Choose the file format for the files
-t835 为这个文件选择文件格式
-o836 Del
-t836 
-o837 [Empty]
-t837 [空]
-o838 Couldn't open the file
-t838 无法打开文件
-o839 Edit Command Block
-t839 编辑命令方块
-o840 Command:
-t840 命令：
-o841 Custom Name:
-t841 自定义名称：
-o842 Track Output
-t842 跟踪输出
-o843 Slot
-t843 槽位
-o844 ID / ID Name
-t844 ID / ID 名称
-o845 DMG
-t845 伤害值
-o846 Slot: 
-t846 槽位：
-o847 ID / ID Name: 
-t847 ID / ID 名称：
-o848 DMG: 
-t848 伤害值：
-o849 Count: 
-t849 数量：
-o850 New Item (1.7+)
-t850 新建物品（1.7+）
-o851 Delete This Item
-t851 删除这个物品
-o852 Delete All Instances Of This Item From World
-t852 删除世界里的所有这种物品
-o853 Unknown Item
-t853 未知物品
-o854 Edit Enchantment Table
-t854 编辑附魔台
-o855 Custom Name
-t855 自定义名称
-o856 Edit Flower Pot
-t856 编辑花盆
-o857 Item
-t857 物品
-o858 Data
-t858 数据值
-o859 Current: 
-t859 目前：
-o860 Change to: 
-t860 更改为：
-o861 F# (0.5)
-t861 
-o862 G (0.53)
+o831 Command Blocks Commands Options
+t831 命令方块命令工具设置
+o832 Sort Order
+t832 排序依据
+o833 Space between lines
+t833 添加空行
+o834 Make space between the lines
+t834 在每行命令之间添加空行
+o835 File format
+t835 文件格式
+o836 Choose the file format for the files
+t836 为这个文件选择文件格式
+o837 Del
+t837 
+o838 [Empty]
+t838 [空]
+o839 Couldn't open the file
+t839 无法打开文件
+o840 Edit Command Block
+t840 编辑命令方块
+o841 Command:
+t841 命令：
+o842 Custom Name:
+t842 自定义名称：
+o843 Track Output
+t843 跟踪输出
+o844 Slot
+t844 槽位
+o845 ID / ID Name
+t845 ID / ID 名称
+o846 DMG
+t846 伤害值
+o847 Slot: 
+t847 槽位：
+o848 ID / ID Name: 
+t848 ID / ID 名称：
+o849 DMG: 
+t849 伤害值：
+o850 Count: 
+t850 数量：
+o851 New Item (1.7+)
+t851 新建物品（1.7+）
+o852 Delete This Item
+t852 删除这个物品
+o853 Delete All Instances Of This Item From World
+t853 删除世界里的所有这种物品
+o854 Unknown Item
+t854 未知物品
+o855 Edit Enchantment Table
+t855 编辑附魔台
+o856 Custom Name
+t856 自定义名称
+o857 Edit Flower Pot
+t857 编辑花盆
+o858 Item
+t858 物品
+o859 Data
+t859 数据值
+o860 Current: 
+t860 目前：
+o861 Change to: 
+t861 更改为：
+o862 F# (0.5)
 t862 
-o863 G# (0.56)
+o863 G (0.53)
 t863 
-o864 A (0.6)
+o864 G# (0.56)
 t864 
-o865 A# (0.63)
+o865 A (0.6)
 t865 
-o866 B (0.67)
+o866 A# (0.63)
 t866 
-o867 C (0.7)
+o867 B (0.67)
 t867 
-o868 C# (0.75)
+o868 C (0.7)
 t868 
-o869 D (0.8)
+o869 C# (0.75)
 t869 
-o870 D# (0.85)
+o870 D (0.8)
 t870 
-o871 E (0.9)
+o871 D# (0.85)
 t871 
-o872 F (0.95)
+o872 E (0.9)
 t872 
-o873 F# (1.0)
+o873 F (0.95)
 t873 
-o874 G (1.05)
+o874 F# (1.0)
 t874 
-o875 G# (1.1)
+o875 G (1.05)
 t875 
-o876 A (1.2)
+o876 G# (1.1)
 t876 
-o877 A# (1.25)
+o877 A (1.2)
 t877 
-o878 B (1.32)
+o878 A# (1.25)
 t878 
-o879 C (1.4)
+o879 B (1.32)
 t879 
-o880 C# (1.5)
+o880 C (1.4)
 t880 
-o881 D (1.6)
+o881 C# (1.5)
 t881 
-o882 D# (1.7)
+o882 D (1.6)
 t882 
-o883 E (1.8)
+o883 D# (1.7)
 t883 
-o884 F (1.9)
+o884 E (1.8)
 t884 
-o885 F# (2.0)
+o885 F (1.9)
 t885 
-o886 Only delete items with the same damage value
-t886 仅删除具有相同伤害值的物品
-o887 Also delete blocks placed in the world
-t887 同时删除放置在世界中的方块
-o888 No command blocks found
-t888 没有找到命令方块
-o889 Analysis
-t889 统计结果
-o890 Click to set the spawn position.
-t890 点击来设置出生点.
-o891 <Toolbar>
-t891 <工具栏>
-o892 Edit Sign
-t892 编辑告示牌
-o893 Add Color Code...
-t893 添加颜色代码……
-o894 §0  Black
-t894 §0  黑色
-o895 §1  Dark Blue
-t895 §1  深蓝色
-o896 §2  Dark Green
-t896 §2  深绿色
-o897 §3  Dark Aqua
-t897 §3  深青色
-o898 §4  Dark Red
-t898 §4  深红色
-o899 §5  Dark Purple
-t899 §5  深紫色
-o900 §6  Gold
-t900 §6  金色
-o901 §7  Gray
-t901 §7  灰色
-o902 §8  Dark Gray
-t902 §8  深灰色
-o903 §9  Blue
-t903 §9  蓝色
-o904 §a  Green
-t904 §a  绿色
-o905 §b  Aqua
-t905 §b  青色
-o906 §c  Red
-t906 §c  红色
-o907 §d  Light Purple
-t907 §d  淡紫色
-o908 §e  Yellow
-t908 §e  黄色
-o909 §f  White
-t909 §f  白色
-o910 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t910 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
-o911 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t911 为这个刷怪箱输入一个实体 ID. 无效的 ID 可能使 Minecraft 崩溃. 按 ESC 取消.
-o912 Right mouse
-t912 鼠标右键
-o913 Deleting the item {0} from the entire world ({1} chunks)
-t913 正在从整个世界中删除物品 {0}（{1} 个区块）
-o914 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t914 警告：你正在试图修改整个世界. 这个操作不能被撤销. 你真的要从所有的陆地、箱子、熔炉、发射器、掉落物、含有相关信息的方块和玩家物品栏中删除这项物品吗？
-o915 Check to show/hide specific ores using the settings below.
-t915 使用下方的选项来指定要显示或隐藏的矿石
-o916 NBTEdit
-t916 NBT 编辑器
-o917 Save camera position on close
-t917 在关闭世界时保存镜头所在位置
-o918 Waypoints
-t918 路径点
-o919 Empty
-t919 空
-o920 Create Waypoint
-t920 新建路径点
-o921 Goto Waypoint
-t921 转到路径点
-o922 Delete Waypoint
-t922 删除路径点
-o923 Save Camera position on world close
-t923 在关闭世界时保存镜头所在位置
-o924 Save Rotation
-t924 保存镜头朝向
-o925 Waypoint Name:
-t925 路径点名字：
-o926 Session lock lost. This world is being accessed from another location.
-t926 会话锁丢失。这个世界正在被另一个软件读写.
-o927 
+o886 F# (2.0)
+t886 
+o887 Only delete items with the same damage value
+t887 仅删除具有相同伤害值的物品
+o888 Also delete blocks placed in the world
+t888 同时删除放置在世界中的方块
+o889 No command blocks found
+t889 没有找到命令方块
+o890 Analysis
+t890 统计结果
+o891 Click to set the spawn position.
+t891 点击来设置出生点.
+o892 <Toolbar>
+t892 <工具栏>
+o893 Edit Sign
+t893 编辑告示牌
+o894 Add Color Code...
+t894 添加颜色代码……
+o895 §0  Black
+t895 §0  黑色
+o896 §1  Dark Blue
+t896 §1  深蓝色
+o897 §2  Dark Green
+t897 §2  深绿色
+o898 §3  Dark Aqua
+t898 §3  深青色
+o899 §4  Dark Red
+t899 §4  深红色
+o900 §5  Dark Purple
+t900 §5  深紫色
+o901 §6  Gold
+t901 §6  金色
+o902 §7  Gray
+t902 §7  灰色
+o903 §8  Dark Gray
+t903 §8  深灰色
+o904 §9  Blue
+t904 §9  蓝色
+o905 §a  Green
+t905 §a  绿色
+o906 §b  Aqua
+t906 §b  青色
+o907 §c  Red
+t907 §c  红色
+o908 §d  Light Purple
+t908 §d  淡紫色
+o909 §e  Yellow
+t909 §e  黄色
+o910 §f  White
+t910 §f  白色
+o911 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t911 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
+o912 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t912 为这个刷怪箱输入一个实体 ID. 无效的 ID 可能使 Minecraft 崩溃. 按 ESC 取消.
+o913 Right mouse
+t913 鼠标右键
+o914 Deleting the item {0} from the entire world ({1} chunks)
+t914 正在从整个世界中删除物品 {0}（{1} 个区块）
+o915 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t915 警告：你正在试图修改整个世界. 这个操作不能被撤销. 你真的要从所有的陆地、箱子、熔炉、发射器、掉落物、含有相关信息的方块和玩家物品栏中删除这项物品吗？
+o916 Check to show/hide specific ores using the settings below.
+t916 使用下方的选项来指定要显示或隐藏的矿石
+o917 NBTEdit
+t917 NBT 编辑器
+o918 Save camera position on close
+t918 在关闭世界时保存镜头所在位置
+o919 Waypoints
+t919 路径点
+o920 Empty
+t920 空
+o921 Create Waypoint
+t921 新建路径点
+o922 Goto Waypoint
+t922 转到路径点
+o923 Delete Waypoint
+t923 删除路径点
+o924 Save Camera position on world close
+t924 在关闭世界时保存镜头所在位置
+o925 Save Rotation
+t925 保存镜头朝向
+o926 Waypoint Name:
+t926 路径点名字：
+o927 Session lock lost. This world is being accessed from another location.
+t927 会话锁丢失。这个世界正在被另一个软件读写.
+o928 
 
 Your changes cannot be saved.
-t927 
+t928 
 
 你的更改不会被保存.
-o928 Click to import this item.
-t928 点击来导入这个物品.
-o929 Menu
-t929 菜单
-o930 for
-t930 适用于
-o931 MCEdit does not support window resolutions below 1000x700.
+o929 Click to import this item.
+t929 点击来导入这个物品.
+o930 Menu
+t930 菜单
+o931 for
+t931 适用于
+o932 MCEdit does not support window resolutions below 1000x700.
 You may not be able to access all functions at this resolution.
-t931 MCEdit不支持1000x700以下的分辨率窗口.
+t932 MCEdit不支持1000x700以下的分辨率窗口.
 在此分辨率下你可能无法使用全部功能.
-o932 Use
-t932 使用
-o933 Overwrite
-t933 覆盖
-o934 Edit Skull Data
-t934 编辑头颅数据
-o935 Left-Click and drag to the left or the right
-t935 鼠标左键朝左右拖动来调整
-o936 Cancel Command Block Offset
-t936 关闭命令方块坐标偏移
-o937 Cancels the command blocks coords changed when copied.
-t937 禁止命令方块被复制时其命令里的坐标被自动偏移.
-o938 Weird stuff happen!
-t938 奇怪的事情会发生！
-o939 Enable Custom Name
-t939 使用自定义名称
-o940 Select a Minecraft level....
-t940 选择一个 Minecraft 世界……
-o941 Levels and Schematics
-t941 世界和 Schematics 文件
-o942 Show Block Info when hovering
-t942 鼠标悬浮时显示方块信息
-o943 Shows summarized info of some Blocks when hovering over it.
-t943 当鼠标悬浮在某些方块上时，显示信息摘要.
+o933 Use
+t933 使用
+o934 Overwrite
+t934 覆盖
+o935 Edit Skull Data
+t935 编辑头颅数据
+o936 Left-Click and drag to the left or the right
+t936 鼠标左键朝左右拖动来调整
+o937 Cancel Command Block Offset
+t937 关闭命令方块坐标偏移
+o938 Cancels the command blocks coords changed when copied.
+t938 禁止命令方块被复制时其命令里的坐标被自动偏移.
+o939 Weird stuff happen!
+t939 奇怪的事情会发生！
+o940 Enable Custom Name
+t940 使用自定义名称
+o941 Select a Minecraft level....
+t941 选择一个 Minecraft 世界……
+o942 Levels and Schematics
+t942 世界和 Schematics 文件
+o943 Show Block Info when hovering
+t943 鼠标悬浮时显示方块信息
+o944 Shows summarized info of some Blocks when hovering over it.
+t944 当鼠标悬浮在某些方块上时，显示信息摘要.
 
-o944 Select a file...
-t944 
-o945 Choose a file
+o945 Select a file...
 t945 
-o946 Custom File\0{}\0
+o946 Choose a file
 t946 
-o947 Save as...
+o947 Custom File\0{}\0
 t947 
-o948 Save a file
+o948 Save as...
 t948 
-o949 Disable Error Notification
+o949 Save a file
 t949 
-o950 Exception while importing filter module {}. See console for details.\n\n{}
+o950 Disable Error Notification
 t950 
-o951         Filter "{0}" wants to resize the selection box
+o951 Exception while importing filter module {}. See console for details.\n\n{}
+t951 
+o952         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t951 
-o952 Choose a schematic or level...
 t952 
-o953 Failed to load file %s
+o953 Choose a schematic or level...
 t953 
+o954 Failed to load file %s
+t954 
+o955 Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk
+t955 
+o956 Updated %s filter(s) out of %s
+t956 

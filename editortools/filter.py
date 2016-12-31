@@ -952,13 +952,8 @@ class FilterTool(EditorTool):
 
         self.filterModules = {}
         self.savedOptions = {}
-
-        self.updatePanel = Panel(name='Panel.FilterTool.updatePanel')
-        updateButton = Button("Update Filters", action=self.updateFilters)
-        self.updatePanel.add(updateButton)
-        self.updatePanel.shrink_wrap()
-
-        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
+        
+        self.filters_not_imported = []
         
         self.optionsPanel = FilterToolOptions(self)
 
@@ -975,9 +970,8 @@ class FilterTool(EditorTool):
     @alertException
     def showPanel(self):
         self.panel = FilterToolPanel(self)
-
-        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
-        self.editor.add(self.updatePanel)
+        
+        self.not_imported_filters = []
         self.reloadFilters()
 
         self.panel.reload()
@@ -993,44 +987,7 @@ class FilterTool(EditorTool):
         self.panel.close()
         if self.panel.parent:
             self.panel.parent.remove(self.panel)
-            self.updatePanel.parent.remove(self.updatePanel)
         self.panel = None
-
-    def updateFilters(self):
-        totalFilters = 0
-        updatedFilters = 0
-        filtersDir = directories.getFiltersDir()
-        try:
-            os.mkdir(os.path.join(filtersDir, "updates"))
-        except OSError:
-            pass
-        for module in self.filterModules.values():
-            totalFilters += 1
-            if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
-                if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
-                    # Pass on URL or network errors.
-                    # This is a basic error hadling, need more refinement to sort errors...
-                    update = True
-                    try:
-                        versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
-                    except Exception, e:
-                        update = False
-                        log.warn(" Could not fetch source for %s. System said: %s"%(module.displayName, e))
-                    if update and module.VERSION != versionJSON["Version"]:
-                        urllib.urlretrieve(versionJSON["Download-URL"],
-                                           os.path.join(filtersDir, "updates", versionJSON["Name"]))
-                        updatedFilters += 1
-        for f in os.listdir(os.path.join(filtersDir, "updates")):
-            shutil.copy(os.path.join(filtersDir, "updates", f), filtersDir)
-        shutil.rmtree(os.path.join(filtersDir, "updates"))
-        finishedUpdatingWidget = Widget()
-        lbl = Label("Updated %s filter(s) out of %s" % (updatedFilters, totalFilters))
-        closeBTN = Button("Close this message", action=finishedUpdatingWidget.dismiss)
-        col = Column((lbl, closeBTN))
-        finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
-        finishedUpdatingWidget.add(col)
-        finishedUpdatingWidget.shrink_wrap()
-        finishedUpdatingWidget.present()
 
     def reloadFilters(self):
         filterFiles = []
@@ -1091,8 +1048,11 @@ class FilterTool(EditorTool):
         while shouldContinue:
             shouldContinue = False
             for f in filterFiles:
+                if f[1] in self.not_imported_filters:
+                    continue
                 module = tryImport(f[0], f[1], org_lang, f[2], f[3], f[1] in unicode_module_names, notify=(not self.optionsPanel.notifications_disabled))
                 if module is None:
+                    self.not_imported_filters.append(f[1])
                     continue
                 filterModules.append(module)
                 filterFiles.remove(f)

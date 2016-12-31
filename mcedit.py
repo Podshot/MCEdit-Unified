@@ -15,7 +15,7 @@ import OpenGL
 import sys
 import os
 
-if "-debug" not in sys.argv:
+if "--debug-ogl" not in sys.argv:
     OpenGL.ERROR_CHECKING = False
 
 import logging
@@ -71,6 +71,44 @@ import release
 start_msg = 'Starting MCEdit-Unified v%s'%release.TAG
 logger.info(start_msg)
 print '[ ****** ] ~~~~~~~~~~ %s'%start_msg
+
+#---------------------------------------------------------------------
+# NEW FEATURES HANDLING
+#
+# The idea is to be able to implement and test/use new code without stripping off the current one.
+# These features/new code will be in the released stuff, but unavailable until explicitly requested.
+#
+# The new features which are under development can be enabled using the 'new_features.def' file.
+# This file is a plain text file with one feature to enable a line.
+# The file is parsed and each feature is added to the builtins using the pattern 'mcenf_<feature>'.
+# The value for these builtins is 'True'.
+# Then, in the code, just check if the builtins has the key 'mcenf_<feature>' to use the new version of the code: 
+#
+# ```
+# def foo_old():
+#     # Was 'foo', code here is the one used unless the new version is wanted.
+#     [...]
+#
+# def foo_new():
+#     # This is the new version of the former 'foo' (current 'foo_old').
+#     [...]
+#
+# if __builtins__.get('mcenf_foo', False):
+#     foo = foo_new
+# else:
+#     foo = foo_old
+#
+# ```
+#
+if '--new-features' in sys.argv:
+    if not os.path.exists('new_features.def'):
+        logger.warn("New features requested, but file 'new_features.def' not found!")
+    else:
+        lines = [a.strip() for a in open('new_features.def', 'r').readlines()]
+        for line in lines:
+            setattr(__builtins__, 'mcenf_%s'%line, True)
+
+
 from version_utils import PlayerCache
 import directories
 import keys
