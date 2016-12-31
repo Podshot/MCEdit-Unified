@@ -1533,8 +1533,10 @@ class CameraViewport(GLViewport):
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        if (not self.should_lock and self.editor.level and
-                not get_top_widget().is_modal):
+        if not get_top_widget().is_modal:
+            return
+        if not self.should_lock and self.editor.level:
+            self.should_lock = False
             self.toggleMouseLook()
         # if self.rightMouseDragStart is None:
         #     return
