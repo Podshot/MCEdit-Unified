@@ -2030,29 +2030,32 @@ o944 Shows summarized info of some Blocks when hovering over it.
 t944 当鼠标悬浮在某些方块上时，显示信息摘要.
 
 o945 Select a file...
-t945 
+t945 选择一个文件……
 o946 Choose a file
-t946 
+t946 选择一个文件
 o947 Custom File\0{}\0
-t947 
+t947 自定义文件\0{}\0
 o948 Save as...
-t948 
+t948 另存为……
 o949 Save a file
-t949 
+t949 保存一个文件
 o950 Disable Error Notification
-t950 
+t950 禁用错误信息提醒
 o951 Exception while importing filter module {}. See console for details.\n\n{}
-t951 
+t951 导入滤镜模块时出现异常 {}. 详细信息见控制台. \n\n{}
 o952         Filter "{0}" wants to resize the selection box
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?
-t952 
+t952         滤镜“{0}”想要调整选区大小
+        原始：{1} -> {2}
+        尺寸：{3} -> {4}
+        你想要调整选区大小吗？
 o953 Choose a schematic or level...
-t953 
+t953 选择一个schematic文件或者一个世界……
 o954 Failed to load file %s
-t954 
+t954 无法载入文件 %s
 o955 Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk
-t955 
+t955 设置渲染的最大距离. 数值大于32可能导致软件不稳定，设置前请了解操作风险
 o956 Updated %s filter(s) out of %s
-t956 
+t956 已更新 %s 个滤镜，共 %s 个待更新滤镜
