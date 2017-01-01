@@ -1,0 +1,124 @@
+{
+	"tileentities": [
+	    {
+			"name": "Banner",
+			"idStr": "banner",
+			"id": "banner"
+		},
+		{
+			"name": "Beacon",
+			"idStr": "beacon",
+			"id": "beacon"
+		},
+		{
+		    "name": "Cauldron",
+		    "idStr": "cauldron",
+		    "id": "cauldron"
+		},
+		{
+		    "name": "Brewing Stand",
+		    "idStr": "brewing_stand",
+		    "id": "brewing_stand"
+		},
+		{
+		    "name": "Chest",
+		    "idStr": "chest",
+		    "id": "chest"
+		},
+		{
+		    "name": "Comparator",
+		    "idStr": "comparator",
+		    "id": "comparator"
+		},
+    	{
+			"name": "Command Block",
+			"idStr": "command_block",
+			"id": "command_block"
+		},
+		{
+		    "name": "Daylight Sensor",
+		    "idStr": "daylight_detector",
+		    "id": "daylight_detector"
+		},
+		{
+		    "name": "Dispenser",
+		    "idStr": "dispenser",
+		    "id": "dispenser"
+		},
+		{
+		    "name": "Dropper",
+		    "idStr": "dropper",
+		    "id": "dropper"
+		},
+		{
+		    "name": "Enchantment Table",
+		    "idStr": "enchanting_table",
+		    "id": "enchanting_table"
+		},
+		{
+		    "name": "Ender Chest",
+		    "idStr": "ender_chest",
+		    "id": "ender_chest"
+		},
+		{
+		    "name": "End Gateway",
+		    "idStr": "end_gateway",
+		    "id": "end_gateway"
+		},
+		{
+		    "name": "End Portal",
+		    "idStr": "end_portal",
+		    "id": "end_portal"
+		},
+		{
+		    "name": "Flower Pot",
+		    "idStr": "flower_pot",
+		    "id": "flower_pot"
+		},
+		{
+		    "name": "Frunace",
+		    "idStr": "furnace",
+		    "id": "furnace"
+		},
+		{
+		    "name": "Hopper",
+		    "idStr": "hopper",
+		    "id": "hopper"
+		},
+		{
+		    "name": "Jukebox",
+		    "idStr": "jukebox",
+		    "id": "jukebox"
+		},
+		{
+		    "name": "Monster Spawner",
+		    "idStr": "mob_spawner",
+		    "id": "mob_spawner"
+		},
+		{
+		    "name": "Note Block",
+		    "idStr": "noteblock",
+		    "id": "noteblock"
+		},
+		{
+		    "name": "Piston Moving",
+		    "idStr": "piston",
+		    "id": "piston"
+		},
+		{
+			"name": "Sign",
+			"idStr": "sign",
+			"id": "sign"
+		},
+		{
+		    "name": "Mob Head",
+		    "idStr": "skull",
+		    "id": "skull"
+		},
+		{
+		    "name": "Structure Block",
+		    "idStr": "structure_block",
+		    "id": "structure_block"
+		}
+	]
+}
