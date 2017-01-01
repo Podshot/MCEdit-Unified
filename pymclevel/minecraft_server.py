@@ -386,7 +386,6 @@ class MCServerChunkGenerator(object):
         proc = self.runServer(tempDir)
         while proc.poll() is None:
             line = proc.stdout.readline().strip()
-            log.info(line)
             yield line
 
             # Forge and FML change stderr output, causing MCServerChunkGenerator to wait endlessly.
@@ -543,36 +542,56 @@ class MCServerChunkGenerator(object):
         maxRadius = self.maxRadius
         chunks = set(chunks)
 
+        uncreated_chunks = []
+
+        i = 0
+
+        boxedChunks = [cPos for cPos in chunks if chunks]
+
         while len(chunks):
             length = len(chunks)
             centercx, centercz = chunks.pop()
             chunks.add((centercx, centercz))
 
-            print "Generating {0} chunks out of {1} starting from {2}".format(len(chunks), startLength, (centercx, centercz))
-            yield startLength - len(chunks), startLength
+            print "Generated {0} chunks out of {1} starting from {2}".format(startLength - len(chunks), startLength, (centercx, centercz))
+            yield startLength - len(chunks), startLength, "Generating..."
 
             for p in self.generateAtPositionIter(tempWorld, tempDir, centercx, centercz, simulate):
-                # print p
                 yield startLength - len(chunks), startLength, p
 
-            i = 0
+            yield i, startLength, "Adding chunks to world..."
             for cx, cz in itertools.product(
                     xrange(centercx - maxRadius, centercx + maxRadius),
                     xrange(centercz - maxRadius, centercz + maxRadius)):
-                if ((cx, cz) in chunks
-                      and all(tempWorld.containsChunk(ncx, ncz) for ncx, ncz in
-                              itertools.product(xrange(cx - 1, cx + 2), xrange(cz - 1, cz + 2)))
-                ):
-                    self.copyChunkAtPosition(tempWorld, level, cx, cz)
-                    i += 1
-                yield startLength - len(chunks), startLength
-                chunks.discard((cx, cz))
+                if level.containsChunk(cx, cz):
+                    chunks.discard((cx, cz))
+                    if (cx, cz) in uncreated_chunks:
+                        uncreated_chunks.remove((cx, cz))
+                elif ((cx, cz) in chunks
+                      and tempWorld.containsChunk(cx, cz)):
+                    try:
+                        self.copyChunkAtPosition(tempWorld, level, cx, cz)
+                        i += 1
+                        chunks.discard((cx, cz))
+                        if (cx, cz) in uncreated_chunks:
+                            uncreated_chunks.remove((cx, cz))
+                    except:
+                        uncreated_chunks.append((cx, cz))
+                else:
+                    if (cx, cz) in boxedChunks and (cx, cz) not in uncreated_chunks:
+                        print "adding (%s, %s) to uncreated_chunks"%(cx, cz)
+                        uncreated_chunks.append((cx, cz))
+            yield i, startLength, "Generating..."
 
+        msg = ""
+        if len(chunks) == startLength:
+            msg = "No chunks were generated. Aborting."
+        elif uncreated_chunks:
+            msg = "Some chunks were not generated. Reselect them and retry."
+        if msg:
+            print msg
 
-            if length == len(chunks):
-                # This block is never used?
-                print "No chunks were generated. Aborting."
-                break
+        print "len(uncreated_chunks)", len(uncreated_chunks)
 
         level.saveInPlace()
 
