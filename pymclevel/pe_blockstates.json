@@ -1,0 +1,4291 @@
+{
+    "minecraft": {
+		"air": {
+			"id": 0,
+			"properties": []
+		},
+        "stone": {
+            "id": 1,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "stone"
+                },{
+                    "<data>": 1,
+                    "variant": "granite"
+                },{
+                    "<data>": 2,
+                    "variant": "smooth_granite"
+                },{
+                    "<data>": 3,
+                    "variant": "diorite"
+                },{
+                    "<data>": 4,
+                    "variant": "smooth_diorite"
+                },{
+                    "<data>": 5,
+                    "variant": "andesite"
+                },{
+                    "<data>": 6,
+                    "variant": "smooth_andesite"
+                }]
+        },
+        "grass": {
+            "id": 2,
+            "properties": [{
+                    "<data>": 0,
+                    "snowy": "false"
+                }]
+        },
+        "dirt": {
+            "id": 3,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "dirt",
+                    "snowy": "false"
+                }]
+        },
+        "cobblestone": {
+            "id": 4,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "planks": {
+            "id": 5,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "oak"
+                },{
+                    "<data>": 1,
+                    "variant": "spruce"
+                },{
+                    "<data>": 2,
+                    "variant": "birch"
+                },{
+                    "<data>": 3,
+                    "variant": "jungle"
+                },{
+                    "<data>": 4,
+                    "variant": "acacia"
+                },{
+                    "<data>": 5,
+                    "variant": "dark_oak"
+                }]
+        },
+        "sapling": {
+            "id": 6,
+            "properties": [{
+                    "<data>": 0,
+                    "type": "oak",
+                    "stage": "0"
+                },{
+                    "<data>": 1,
+                    "type": "spruce",
+                    "stage": "0"
+                },{
+                    "<data>": 2,
+                    "type": "birch",
+                    "stage": "0"
+                },{
+                    "<data>": 3,
+                    "type": "jungle",
+                    "stage": "0"
+                },{
+                    "<data>": 4,
+                    "type": "acacia",
+                    "stage": "0"
+                },{
+                    "<data>": 5,
+                    "type": "dark_oak",
+                    "stage": "0"
+                },{
+                    "<data>": 8,
+                    "type": "oak",
+                    "stage": "1"
+                },{
+                    "<data>": 9,
+                    "type": "spruce",
+                    "stage": "1"
+                },{
+                    "<data>": 10,
+                    "type": "birch",
+                    "stage": "1"
+                },{
+                    "<data>": 11,
+                    "type": "jungle",
+                    "stage": "1"
+                },{
+                    "<data>": 12,
+                    "type": "acacia",
+                    "stage": "1"
+                },{
+                    "<data>": 13,
+                    "type": "dark_oak",
+                    "stage": "1"
+                }]
+        },
+        "bedrock": {
+            "id": 7,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "flowing_water": {
+            "id": 8,
+            "properties": [{
+                    "<data>": 0,
+                    "level": "0"
+                },{
+                    "<data>": 1,
+                    "level": "1"
+                },{
+                    "<data>": 2,
+                    "level": "2"
+                },{
+                    "<data>": 3,
+                    "level": "3"
+                },{
+                    "<data>": 4,
+                    "level": "4"
+                },{
+                    "<data>": 5,
+                    "level": "5"
+                },{
+                    "<data>": 6,
+                    "level": "6"
+                },{
+                    "<data>": 7,
+                    "level": "7"
+                },{
+                    "<data>": 8,
+                    "level": "8"
+                },{
+                    "<data>": 9,
+                    "level": "9"
+                },{
+                    "<data>": 10,
+                    "level": "10"
+                },{
+                    "<data>": 11,
+                    "level": "11"
+                },{
+                    "<data>": 12,
+                    "level": "12"
+                },{
+                    "<data>": 13,
+                    "level": "13"
+                },{
+                    "<data>": 14,
+                    "level": "14"
+                },{
+                    "<data>": 15,
+                    "level": "15"
+                }]
+        },
+        "water": {
+            "id": 9,
+            "properties": [{
+                    "<data>": 0,
+                    "level": "0"
+                },{
+                    "<data>": 1,
+                    "level": "1"
+                },{
+                    "<data>": 2,
+                    "level": "2"
+                },{
+                    "<data>": 3,
+                    "level": "3"
+                },{
+                    "<data>": 4,
+                    "level": "4"
+                },{
+                    "<data>": 5,
+                    "level": "5"
+                },{
+                    "<data>": 6,
+                    "level": "6"
+                },{
+                    "<data>": 7,
+                    "level": "7"
+                },{
+                    "<data>": 8,
+                    "level": "8"
+                },{
+                    "<data>": 9,
+                    "level": "9"
+                },{
+                    "<data>": 10,
+                    "level": "10"
+                },{
+                    "<data>": 11,
+                    "level": "11"
+                },{
+                    "<data>": 12,
+                    "level": "12"
+                },{
+                    "<data>": 13,
+                    "level": "13"
+                },{
+                    "<data>": 14,
+                    "level": "14"
+                },{
+                    "<data>": 15,
+                    "level": "15"
+                }]
+        },
+        "flowing_lava": {
+            "id": 10,
+            "properties": [{
+                    "<data>": 0,
+                    "level": "0"
+                },{
+                    "<data>": 1,
+                    "level": "1"
+                },{
+                    "<data>": 2,
+                    "level": "2"
+                },{
+                    "<data>": 3,
+                    "level": "3"
+                },{
+                    "<data>": 4,
+                    "level": "4"
+                },{
+                    "<data>": 5,
+                    "level": "5"
+                },{
+                    "<data>": 6,
+                    "level": "6"
+                },{
+                    "<data>": 7,
+                    "level": "7"
+                },{
+                    "<data>": 8,
+                    "level": "8"
+                },{
+                    "<data>": 9,
+                    "level": "9"
+                },{
+                    "<data>": 10,
+                    "level": "10"
+                },{
+                    "<data>": 11,
+                    "level": "11"
+                },{
+                    "<data>": 12,
+                    "level": "12"
+                },{
+                    "<data>": 13,
+                    "level": "13"
+                },{
+                    "<data>": 14,
+                    "level": "14"
+                },{
+                    "<data>": 15,
+                    "level": "15"
+                }]
+        },
+        "lava": {
+            "id": 11,
+            "properties": [{
+                    "<data>": 0,
+                    "level": "0"
+                },{
+                    "<data>": 1,
+                    "level": "1"
+                },{
+                    "<data>": 2,
+                    "level": "2"
+                },{
+                    "<data>": 3,
+                    "level": "3"
+                },{
+                    "<data>": 4,
+                    "level": "4"
+                },{
+                    "<data>": 5,
+                    "level": "5"
+                },{
+                    "<data>": 6,
+                    "level": "6"
+                },{
+                    "<data>": 7,
+                    "level": "7"
+                },{
+                    "<data>": 8,
+                    "level": "8"
+                },{
+                    "<data>": 9,
+                    "level": "9"
+                },{
+                    "<data>": 10,
+                    "level": "10"
+                },{
+                    "<data>": 11,
+                    "level": "11"
+                },{
+                    "<data>": 12,
+                    "level": "12"
+                },{
+                    "<data>": 13,
+                    "level": "13"
+                },{
+                    "<data>": 14,
+                    "level": "14"
+                },{
+                    "<data>": 15,
+                    "level": "15"
+                }]
+        },
+        "sand": {
+            "id": 12,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "sand"
+                },{
+                    "<data>": 1,
+                    "variant": "red_sand"
+                }]
+        },
+        "gravel": {
+            "id": 13,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "gold_ore": {
+            "id": 14,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "iron_ore": {
+            "id": 15,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "coal_ore": {
+            "id": 16,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "log": {
+            "id": 17,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "oak",
+                    "axis": "y"
+                },{
+                    "<data>": 1,
+                    "variant": "spruce",
+                    "axis": "y"
+                },{
+                    "<data>": 2,
+                    "variant": "birch",
+                    "axis": "y"
+                },{
+                    "<data>": 3,
+                    "variant": "jungle",
+                    "axis": "y"
+                },{
+                    "<data>": 4,
+                    "variant": "oak",
+                    "axis": "x"
+                },{
+                    "<data>": 5,
+                    "variant": "spruce",
+                    "axis": "x"
+                },{
+                    "<data>": 6,
+                    "variant": "birch",
+                    "axis": "x"
+                },{
+                    "<data>": 7,
+                    "variant": "jungle",
+                    "axis": "x"
+                },{
+                    "<data>": 8,
+                    "variant": "oak",
+                    "axis": "z"
+                },{
+                    "<data>": 9,
+                    "variant": "spruce",
+                    "axis": "z"
+                },{
+                    "<data>": 10,
+                    "variant": "birch",
+                    "axis": "z"
+                },{
+                    "<data>": 11,
+                    "variant": "jungle",
+                    "axis": "z"
+                },{
+                    "<data>": 12,
+                    "variant": "oak",
+                    "axis": "none"
+                },{
+                    "<data>": 13,
+                    "variant": "spruce",
+                    "axis": "none"
+                },{
+                    "<data>": 14,
+                    "variant": "birch",
+                    "axis": "none"
+                },{
+                    "<data>": 15,
+                    "variant": "jungle",
+                    "axis": "none"
+                }]
+        },
+        "leaves": {
+            "id": 18,
+            "properties": [{
+                    "<data>": 0,
+                    "check_decay": "false",
+                    "variant": "oak",
+                    "decayable": "true"
+                },{
+                    "<data>": 1,
+                    "check_decay": "false",
+                    "variant": "spruce",
+                    "decayable": "true"
+                },{
+                    "<data>": 2,
+                    "check_decay": "false",
+                    "variant": "birch",
+                    "decayable": "true"
+                },{
+                    "<data>": 3,
+                    "check_decay": "false",
+                    "variant": "jungle",
+                    "decayable": "true"
+                },{
+                    "<data>": 4,
+                    "check_decay": "false",
+                    "variant": "oak",
+                    "decayable": "false"
+                },{
+                    "<data>": 5,
+                    "check_decay": "false",
+                    "variant": "spruce",
+                    "decayable": "false"
+                },{
+                    "<data>": 6,
+                    "check_decay": "false",
+                    "variant": "birch",
+                    "decayable": "false"
+                },{
+                    "<data>": 7,
+                    "check_decay": "false",
+                    "variant": "jungle",
+                    "decayable": "false"
+                },{
+                    "<data>": 8,
+                    "check_decay": "true",
+                    "variant": "oak",
+                    "decayable": "true"
+                },{
+                    "<data>": 9,
+                    "check_decay": "true",
+                    "variant": "spruce",
+                    "decayable": "true"
+                },{
+                    "<data>": 10,
+                    "check_decay": "true",
+                    "variant": "birch",
+                    "decayable": "true"
+                },{
+                    "<data>": 11,
+                    "check_decay": "true",
+                    "variant": "jungle",
+                    "decayable": "true"
+                },{
+                    "<data>": 12,
+                    "check_decay": "true",
+                    "variant": "oak",
+                    "decayable": "false"
+                },{
+                    "<data>": 13,
+                    "check_decay": "true",
+                    "variant": "spruce",
+                    "decayable": "false"
+                },{
+                    "<data>": 14,
+                    "check_decay": "true",
+                    "variant": "birch",
+                    "decayable": "false"
+                },{
+                    "<data>": 15,
+                    "check_decay": "true",
+                    "variant": "jungle",
+                    "decayable": "false"
+                }]
+        },
+        "sponge": {
+            "id": 19,
+            "properties": [{
+                    "<data>": 0,
+                    "wet": "false"
+                }]
+        },
+        "glass": {
+            "id": 20,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "lapis_ore": {
+            "id": 21,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "lapis_block": {
+            "id": 22,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "sandstone": {
+            "id": 24,
+            "properties": [{
+                    "<data>": 0,
+                    "type": "sandstone"
+                },{
+                    "<data>": 1,
+                    "type": "chiseled_sandstone"
+                },{
+                    "<data>": 2,
+                    "type": "smooth_sandstone"
+                }]
+        },
+        "bed": {
+            "id": 26,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "part": "foot",
+                    "occupied": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "part": "foot",
+                    "occupied": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "part": "foot",
+                    "occupied": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "part": "foot",
+                    "occupied": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "part": "head",
+                    "occupied": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "part": "head",
+                    "occupied": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "part": "head",
+                    "occupied": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "part": "head",
+                    "occupied": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "part": "head",
+                    "occupied": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "part": "head",
+                    "occupied": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "part": "head",
+                    "occupied": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "part": "head",
+                    "occupied": "true"
+                }]
+        },
+        "golden_rail": {
+            "id": 27,
+            "properties": [{
+                    "shape": "north_south",
+                    "<data>": 0,
+                    "powered": "false"
+                },{
+                    "shape": "east_west",
+                    "<data>": 1,
+                    "powered": "false"
+                },{
+                    "shape": "ascending_east",
+                    "<data>": 2,
+                    "powered": "false"
+                },{
+                    "shape": "ascending_west",
+                    "<data>": 3,
+                    "powered": "false"
+                },{
+                    "shape": "ascending_north",
+                    "<data>": 4,
+                    "powered": "false"
+                },{
+                    "shape": "ascending_south",
+                    "<data>": 5,
+                    "powered": "false"
+                },{
+                    "shape": "north_south",
+                    "<data>": 8,
+                    "powered": "true"
+                },{
+                    "shape": "east_west",
+                    "<data>": 9,
+                    "powered": "true"
+                },{
+                    "shape": "ascending_east",
+                    "<data>": 10,
+                    "powered": "true"
+                },{
+                    "shape": "ascending_west",
+                    "<data>": 11,
+                    "powered": "true"
+                },{
+                    "shape": "ascending_north",
+                    "<data>": 12,
+                    "powered": "true"
+                },{
+                    "shape": "ascending_south",
+                    "<data>": 13,
+                    "powered": "true"
+                }]
+        },
+        "web": {
+            "id": 30,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "tallgrass": {
+            "id": 31,
+            "properties": [{
+                    "<data>": 0,
+                    "type": "dead_bush"
+                },{
+                    "<data>": 1,
+                    "type": "tall_grass"
+                },{
+                    "<data>": 2,
+                    "type": "fern"
+                }]
+        },
+        "deadbush": {
+            "id": 32,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "wool": {
+            "id": 35,
+            "properties": [{
+                    "color": "white",
+                    "<data>": 0
+                },{
+                    "color": "orange",
+                    "<data>": 1
+                },{
+                    "color": "magenta",
+                    "<data>": 2
+                },{
+                    "color": "light_blue",
+                    "<data>": 3
+                },{
+                    "color": "yellow",
+                    "<data>": 4
+                },{
+                    "color": "lime",
+                    "<data>": 5
+                },{
+                    "color": "pink",
+                    "<data>": 6
+                },{
+                    "color": "gray",
+                    "<data>": 7
+                },{
+                    "color": "silver",
+                    "<data>": 8
+                },{
+                    "color": "cyan",
+                    "<data>": 9
+                },{
+                    "color": "purple",
+                    "<data>": 10
+                },{
+                    "color": "blue",
+                    "<data>": 11
+                },{
+                    "color": "brown",
+                    "<data>": 12
+                },{
+                    "color": "green",
+                    "<data>": 13
+                },{
+                    "color": "red",
+                    "<data>": 14
+                },{
+                    "color": "black",
+                    "<data>": 15
+                }]
+        },
+        "yellow_flower": {
+            "id": 37,
+            "properties": [{
+                    "<data>": 0,
+                    "type": "dandelion"
+                }]
+        },
+        "red_flower": {
+            "id": 38,
+            "properties": [{
+                    "<data>": 0,
+                    "type": "poppy"
+                },{
+                    "<data>": 1,
+                    "type": "blue_orchid"
+                },{
+                    "<data>": 2,
+                    "type": "allium"
+                },{
+                    "<data>": 3,
+                    "type": "houstonia"
+                },{
+                    "<data>": 4,
+                    "type": "red_tulip"
+                },{
+                    "<data>": 5,
+                    "type": "orange_tulip"
+                },{
+                    "<data>": 6,
+                    "type": "white_tulip"
+                },{
+                    "<data>": 7,
+                    "type": "pink_tulip"
+                },{
+                    "<data>": 8,
+                    "type": "oxeye_daisy"
+                }]
+        },
+        "brown_mushroom": {
+            "id": 39,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "red_mushroom": {
+            "id": 40,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "gold_block": {
+            "id": 41,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "iron_block": {
+            "id": 42,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "double_stone_slab": {
+            "id": 43,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "stone",
+                    "seamless": "false"
+                },{
+                    "<data>": 1,
+                    "variant": "sandstone",
+                    "seamless": "false"
+                },{
+                    "<data>": 2,
+                    "variant": "wood_old",
+                    "seamless": "false"
+                },{
+                    "<data>": 3,
+                    "variant": "cobblestone",
+                    "seamless": "false"
+                },{
+                    "<data>": 4,
+                    "variant": "brick",
+                    "seamless": "false"
+                },{
+                    "<data>": 5,
+                    "variant": "stone_brick",
+                    "seamless": "false"
+                },{
+                    "<data>": 6,
+                    "variant": "nether_brick",
+                    "seamless": "false"
+                },{
+                    "<data>": 7,
+                    "variant": "quartz",
+                    "seamless": "false"
+                },{
+                    "<data>": 8,
+                    "variant": "stone",
+                    "seamless": "true"
+                },{
+                    "<data>": 9,
+                    "variant": "sandstone",
+                    "seamless": "true"
+                },{
+                    "<data>": 10,
+                    "variant": "wood_old",
+                    "seamless": "true"
+                },{
+                    "<data>": 11,
+                    "variant": "cobblestone",
+                    "seamless": "true"
+                },{
+                    "<data>": 12,
+                    "variant": "brick",
+                    "seamless": "true"
+                },{
+                    "<data>": 13,
+                    "variant": "stone_brick",
+                    "seamless": "true"
+                },{
+                    "<data>": 14,
+                    "variant": "nether_brick",
+                    "seamless": "true"
+                },{
+                    "<data>": 15,
+                    "variant": "quartz",
+                    "seamless": "true"
+                }]
+        },
+        "stone_slab": {
+            "id": 44,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "stone",
+                    "half": "bottom"
+                },{
+                    "<data>": 1,
+                    "variant": "sandstone",
+                    "half": "bottom"
+                },{
+                    "<data>": 2,
+                    "variant": "wood_old",
+                    "half": "bottom"
+                },{
+                    "<data>": 3,
+                    "variant": "cobblestone",
+                    "half": "bottom"
+                },{
+                    "<data>": 4,
+                    "variant": "brick",
+                    "half": "bottom"
+                },{
+                    "<data>": 5,
+                    "variant": "stone_brick",
+                    "half": "bottom"
+                },{
+                    "<data>": 6,
+                    "variant": "nether_brick",
+                    "half": "bottom"
+                },{
+                    "<data>": 7,
+                    "variant": "quartz",
+                    "half": "bottom"
+                },{
+                    "<data>": 8,
+                    "variant": "stone",
+                    "half": "top"
+                },{
+                    "<data>": 9,
+                    "variant": "sandstone",
+                    "half": "top"
+                },{
+                    "<data>": 10,
+                    "variant": "wood_old",
+                    "half": "top"
+                },{
+                    "<data>": 11,
+                    "variant": "cobblestone",
+                    "half": "top"
+                },{
+                    "<data>": 12,
+                    "variant": "brick",
+                    "half": "top"
+                },{
+                    "<data>": 13,
+                    "variant": "stone_brick",
+                    "half": "top"
+                },{
+                    "<data>": 14,
+                    "variant": "nether_brick",
+                    "half": "top"
+                },{
+                    "<data>": 15,
+                    "variant": "quartz",
+                    "half": "top"
+                }]
+        },
+        "brick_block": {
+            "id": 45,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "tnt": {
+            "id": 46,
+            "properties": [{
+                    "explode": "false",
+                    "<data>": 0
+                },{
+                    "explode": "true",
+                    "<data>": 1
+                }]
+        },
+        "bookshelf": {
+            "id": 47,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "mossy_cobblestone": {
+            "id": 48,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "obsidian": {
+            "id": 49,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "torch": {
+            "id": 50,
+            "properties": [{
+                    "facing": "east",
+                    "<data>": 1
+                },{
+                    "facing": "west",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "north",
+                    "<data>": 4
+                },{
+                    "facing": "up",
+                    "<data>": 5
+                }]
+        },
+        "fire": {
+            "id": 51,
+            "properties": [{
+                    "north": "false",
+                    "west": "false",
+                    "age": "0",
+                    "up": "false",
+                    "<data>": 0,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "1",
+                    "up": "false",
+                    "<data>": 1,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "2",
+                    "up": "false",
+                    "<data>": 2,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "3",
+                    "up": "false",
+                    "<data>": 3,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "4",
+                    "up": "false",
+                    "<data>": 4,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "5",
+                    "up": "false",
+                    "<data>": 5,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "6",
+                    "up": "false",
+                    "<data>": 6,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "7",
+                    "up": "false",
+                    "<data>": 7,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "8",
+                    "up": "false",
+                    "<data>": 8,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "9",
+                    "up": "false",
+                    "<data>": 9,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "10",
+                    "up": "false",
+                    "<data>": 10,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "11",
+                    "up": "false",
+                    "<data>": 11,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "12",
+                    "up": "false",
+                    "<data>": 12,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "13",
+                    "up": "false",
+                    "<data>": 13,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "14",
+                    "up": "false",
+                    "<data>": 14,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "age": "15",
+                    "up": "false",
+                    "<data>": 15,
+                    "east": "false",
+                    "south": "false"
+                }]
+        },
+        "mob_spawner": {
+            "id": 52,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "oak_stairs": {
+            "id": 53,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "chest": {
+            "id": 54,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "<data>": 5
+                }]
+        },
+        "diamond_ore": {
+            "id": 56,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "diamond_block": {
+            "id": 57,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "crafting_table": {
+            "id": 58,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "wheat": {
+            "id": 59,
+            "properties": [{
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "age": "7",
+                    "<data>": 7
+                }]
+        },
+        "farmland": {
+            "id": 60,
+            "properties": [{
+                    "<data>": 0,
+                    "moisture": "0"
+                },{
+                    "<data>": 1,
+                    "moisture": "1"
+                },{
+                    "<data>": 2,
+                    "moisture": "2"
+                },{
+                    "<data>": 3,
+                    "moisture": "3"
+                },{
+                    "<data>": 4,
+                    "moisture": "4"
+                },{
+                    "<data>": 5,
+                    "moisture": "5"
+                },{
+                    "<data>": 6,
+                    "moisture": "6"
+                },{
+                    "<data>": 7,
+                    "moisture": "7"
+                }]
+        },
+        "furnace": {
+            "id": 61,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "<data>": 5
+                }]
+        },
+        "lit_furnace": {
+            "id": 62,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "<data>": 5
+                }]
+        },
+        "standing_sign": {
+            "id": 63,
+            "properties": [{
+                    "rotation": "0",
+                    "<data>": 0
+                },{
+                    "rotation": "1",
+                    "<data>": 1
+                },{
+                    "rotation": "2",
+                    "<data>": 2
+                },{
+                    "rotation": "3",
+                    "<data>": 3
+                },{
+                    "rotation": "4",
+                    "<data>": 4
+                },{
+                    "rotation": "5",
+                    "<data>": 5
+                },{
+                    "rotation": "6",
+                    "<data>": 6
+                },{
+                    "rotation": "7",
+                    "<data>": 7
+                },{
+                    "rotation": "8",
+                    "<data>": 8
+                },{
+                    "rotation": "9",
+                    "<data>": 9
+                },{
+                    "rotation": "10",
+                    "<data>": 10
+                },{
+                    "rotation": "11",
+                    "<data>": 11
+                },{
+                    "rotation": "12",
+                    "<data>": 12
+                },{
+                    "rotation": "13",
+                    "<data>": 13
+                },{
+                    "rotation": "14",
+                    "<data>": 14
+                },{
+                    "rotation": "15",
+                    "<data>": 15
+                }]
+        },
+        "wooden_door": {
+            "id": 64,
+            "properties": [{
+                    "hinge": "right",
+                    "<data>": 0,
+                    "powered": "false",
+                    "facing": "east",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 1,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 2,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 3,
+                    "powered": "false",
+                    "facing": "north",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 4,
+                    "powered": "false",
+                    "facing": "east",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 5,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 6,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "hinge": "right",
+                    "<data>": 7,
+                    "powered": "false",
+                    "facing": "north",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 8,
+                    "powered": "false",
+                    "hinge": "left",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 9,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 10,
+                    "powered": "true",
+                    "hinge": "left",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "powered": "true",
+                    "hinge": "right",
+                    "half": "upper",
+                    "open": "false"
+                }]
+        },
+        "ladder": {
+            "id": 65,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "<data>": 5
+                }]
+        },
+        "rail": {
+            "id": 66,
+            "properties": [{
+                    "shape": "north_south",
+                    "<data>": 0
+                },{
+                    "shape": "east_west",
+                    "<data>": 1
+                },{
+                    "shape": "ascending_east",
+                    "<data>": 2
+                },{
+                    "shape": "ascending_west",
+                    "<data>": 3
+                },{
+                    "shape": "ascending_north",
+                    "<data>": 4
+                },{
+                    "shape": "ascending_south",
+                    "<data>": 5
+                },{
+                    "shape": "south_east",
+                    "<data>": 6
+                },{
+                    "shape": "south_west",
+                    "<data>": 7
+                },{
+                    "shape": "north_west",
+                    "<data>": 8
+                },{
+                    "shape": "north_east",
+                    "<data>": 9
+                }]
+        },
+        "stone_stairs": {
+            "id": 67,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "wall_sign": {
+            "id": 68,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "<data>": 5
+                }]
+        },
+        "iron_door": {
+            "id": 71,
+            "properties": [{
+                    "facing": "east",
+                    "<data>": 0,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 1,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 2,
+                    "powered": "false",
+                    "facing": "west",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 3,
+                    "powered": "false",
+                    "facing": "north",
+                    "half": "lower",
+                    "open": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 4,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 5,
+                    "powered": "false",
+                    "hinge": "right",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "hinge": "right",
+                    "<data>": 6,
+                    "powered": "false",
+                    "facing": "west",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "hinge": "right",
+                    "<data>": 7,
+                    "powered": "false",
+                    "facing": "north",
+                    "half": "lower",
+                    "open": "true"
+                },{
+                    "hinge": "left",
+                    "<data>": 8,
+                    "powered": "false",
+                    "facing": "east",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 9,
+                    "powered": "false",
+                    "facing": "east",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "hinge": "left",
+                    "<data>": 10,
+                    "powered": "true",
+                    "facing": "east",
+                    "half": "upper",
+                    "open": "false"
+                },{
+                    "hinge": "right",
+                    "<data>": 11,
+                    "powered": "true",
+                    "facing": "east",
+                    "half": "upper",
+                    "open": "false"
+                }]
+        },
+        "redstone_ore": {
+            "id": 73,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "lit_redstone_ore": {
+            "id": 74,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "snow_layer": {
+            "id": 78,
+            "properties": [{
+                    "layers": "1",
+                    "<data>": 0
+                },{
+                    "layers": "2",
+                    "<data>": 1
+                },{
+                    "layers": "3",
+                    "<data>": 2
+                },{
+                    "layers": "4",
+                    "<data>": 3
+                },{
+                    "layers": "5",
+                    "<data>": 4
+                },{
+                    "layers": "6",
+                    "<data>": 5
+                },{
+                    "layers": "7",
+                    "<data>": 6
+                },{
+                    "layers": "8",
+                    "<data>": 7
+                }]
+        },
+        "ice": {
+            "id": 79,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "snow": {
+            "id": 80,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "cactus": {
+            "id": 81,
+            "properties": [{
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "age": "7",
+                    "<data>": 7
+                },{
+                    "age": "8",
+                    "<data>": 8
+                },{
+                    "age": "9",
+                    "<data>": 9
+                },{
+                    "age": "10",
+                    "<data>": 10
+                },{
+                    "age": "11",
+                    "<data>": 11
+                },{
+                    "age": "12",
+                    "<data>": 12
+                },{
+                    "age": "13",
+                    "<data>": 13
+                },{
+                    "age": "14",
+                    "<data>": 14
+                },{
+                    "age": "15",
+                    "<data>": 15
+                }]
+        },
+        "clay": {
+            "id": 82,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "reeds": {
+            "id": 83,
+            "properties": [{
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "age": "7",
+                    "<data>": 7
+                },{
+                    "age": "8",
+                    "<data>": 8
+                },{
+                    "age": "9",
+                    "<data>": 9
+                },{
+                    "age": "10",
+                    "<data>": 10
+                },{
+                    "age": "11",
+                    "<data>": 11
+                },{
+                    "age": "12",
+                    "<data>": 12
+                },{
+                    "age": "13",
+                    "<data>": 13
+                },{
+                    "age": "14",
+                    "<data>": 14
+                },{
+                    "age": "15",
+                    "<data>": 15
+                }]
+        },
+        "fence": {
+            "id": 85,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+		"spruce_fence": {
+			"id": 85,
+			"properties": [
+				{
+					"<data>": 1
+				}
+			]
+		},
+		"birch_fence": {
+			"id": 85,
+			"properties": [
+				{
+					"<data>": 2
+				}
+			]
+		},
+		"jungle_fence": {
+			"id": 85,
+			"properties": [
+				{
+					"<data>": 3
+				}
+			]
+		},
+		"acacia_fence": {
+			"id": 85,
+			"properties": [
+				{
+					"<data>": 4
+				}
+			]
+		},
+		"dark_oak_fence": {
+			"id": 85,
+			"properties": [
+				{
+					"<data>": 5
+				}
+			]
+		},
+        "pumpkin": {
+            "id": 86,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0
+                },{
+                    "facing": "west",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "east",
+                    "<data>": 3
+                }]
+        },
+        "netherrack": {
+            "id": 87,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "soul_sand": {
+            "id": 88,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "glowstone": {
+            "id": 89,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "portal": {
+            "id": 90,
+            "properties": [{
+                    "<data>": 1,
+                    "axis": "x"
+                },{
+                    "<data>": 2,
+                    "axis": "z"
+                }]
+        },
+        "lit_pumpkin": {
+            "id": 91,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0
+                },{
+                    "facing": "west",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "<data>": 2
+                },{
+                    "facing": "east",
+                    "<data>": 3
+                }]
+        },
+        "cake": {
+            "id": 92,
+            "properties": [{
+                    "<data>": 0,
+                    "bites": "0"
+                },{
+                    "<data>": 1,
+                    "bites": "1"
+                },{
+                    "<data>": 2,
+                    "bites": "2"
+                },{
+                    "<data>": 3,
+                    "bites": "3"
+                },{
+                    "<data>": 4,
+                    "bites": "4"
+                },{
+                    "<data>": 5,
+                    "bites": "5"
+                },{
+                    "<data>": 6,
+                    "bites": "6"
+                }]
+        },
+        "unpowered_repeater": {
+            "id": 93,
+            "properties": [{
+                    "delay": "1",
+                    "facing": "south",
+                    "<data>": 0,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "west",
+                    "<data>": 1,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "north",
+                    "<data>": 2,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "east",
+                    "<data>": 3,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "south",
+                    "<data>": 4,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "west",
+                    "<data>": 5,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "north",
+                    "<data>": 6,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "east",
+                    "<data>": 7,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "south",
+                    "<data>": 8,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "west",
+                    "<data>": 9,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "north",
+                    "<data>": 10,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "east",
+                    "<data>": 11,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "south",
+                    "<data>": 12,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "west",
+                    "<data>": 13,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "north",
+                    "<data>": 14,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "east",
+                    "<data>": 15,
+                    "locked": "false"
+                }]
+        },
+        "powered_repeater": {
+            "id": 94,
+            "properties": [{
+                    "delay": "1",
+                    "facing": "south",
+                    "<data>": 0,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "west",
+                    "<data>": 1,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "north",
+                    "<data>": 2,
+                    "locked": "false"
+                },{
+                    "delay": "1",
+                    "facing": "east",
+                    "<data>": 3,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "south",
+                    "<data>": 4,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "west",
+                    "<data>": 5,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "north",
+                    "<data>": 6,
+                    "locked": "false"
+                },{
+                    "delay": "2",
+                    "facing": "east",
+                    "<data>": 7,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "south",
+                    "<data>": 8,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "west",
+                    "<data>": 9,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "north",
+                    "<data>": 10,
+                    "locked": "false"
+                },{
+                    "delay": "3",
+                    "facing": "east",
+                    "<data>": 11,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "south",
+                    "<data>": 12,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "west",
+                    "<data>": 13,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "north",
+                    "<data>": 14,
+                    "locked": "false"
+                },{
+                    "delay": "4",
+                    "facing": "east",
+                    "<data>": 15,
+                    "locked": "false"
+                }]
+        },
+		"invisible_bedrock": {
+			"id": 95,
+			"properties": []
+		},
+        "trapdoor": {
+            "id": 96,
+            "properties": [{
+                    "facing": "north",
+                    "<data>": 0,
+                    "open": "false",
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "<data>": 1,
+                    "open": "false",
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "<data>": 2,
+                    "open": "false",
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "open": "false",
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "<data>": 4,
+                    "open": "true",
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "<data>": 5,
+                    "open": "true",
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "<data>": 6,
+                    "open": "true",
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "open": "true",
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "<data>": 8,
+                    "open": "false",
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "<data>": 9,
+                    "open": "false",
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "<data>": 10,
+                    "open": "false",
+                    "half": "top"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "open": "false",
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "<data>": 12,
+                    "open": "true",
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "<data>": 13,
+                    "open": "true",
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "<data>": 14,
+                    "open": "true",
+                    "half": "top"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "open": "true",
+                    "half": "top"
+                }]
+        },
+        "monster_egg": {
+            "id": 97,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "stone"
+                },{
+                    "<data>": 1,
+                    "variant": "cobblestone"
+                },{
+                    "<data>": 2,
+                    "variant": "stone_brick"
+                },{
+                    "<data>": 3,
+                    "variant": "mossy_brick"
+                },{
+                    "<data>": 4,
+                    "variant": "cracked_brick"
+                },{
+                    "<data>": 5,
+                    "variant": "chiseled_brick"
+                }]
+        },
+        "stonebrick": {
+            "id": 98,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "stonebrick"
+                },{
+                    "<data>": 1,
+                    "variant": "mossy_stonebrick"
+                },{
+                    "<data>": 2,
+                    "variant": "cracked_stonebrick"
+                },{
+                    "<data>": 3,
+                    "variant": "chiseled_stonebrick"
+                }]
+        },
+        "brown_mushroom_block": {
+            "id": 99,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "all_inside"
+                },{
+                    "<data>": 1,
+                    "variant": "north_west"
+                },{
+                    "<data>": 2,
+                    "variant": "north"
+                },{
+                    "<data>": 3,
+                    "variant": "north_east"
+                },{
+                    "<data>": 4,
+                    "variant": "west"
+                },{
+                    "<data>": 5,
+                    "variant": "center"
+                },{
+                    "<data>": 6,
+                    "variant": "east"
+                },{
+                    "<data>": 7,
+                    "variant": "south_west"
+                },{
+                    "<data>": 8,
+                    "variant": "south"
+                },{
+                    "<data>": 9,
+                    "variant": "south_east"
+                },{
+                    "<data>": 10,
+                    "variant": "stem"
+                },{
+                    "<data>": 14,
+                    "variant": "all_outside"
+                },{
+                    "<data>": 15,
+                    "variant": "all_stem"
+                }]
+        },
+        "red_mushroom_block": {
+            "id": 100,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "all_inside"
+                },{
+                    "<data>": 1,
+                    "variant": "north_west"
+                },{
+                    "<data>": 2,
+                    "variant": "north"
+                },{
+                    "<data>": 3,
+                    "variant": "north_east"
+                },{
+                    "<data>": 4,
+                    "variant": "west"
+                },{
+                    "<data>": 5,
+                    "variant": "center"
+                },{
+                    "<data>": 6,
+                    "variant": "east"
+                },{
+                    "<data>": 7,
+                    "variant": "south_west"
+                },{
+                    "<data>": 8,
+                    "variant": "south"
+                },{
+                    "<data>": 9,
+                    "variant": "south_east"
+                },{
+                    "<data>": 10,
+                    "variant": "stem"
+                },{
+                    "<data>": 14,
+                    "variant": "all_outside"
+                },{
+                    "<data>": 15,
+                    "variant": "all_stem"
+                }]
+        },
+        "iron_bars": {
+            "id": 101,
+            "properties": [{
+                    "west": "false",
+                    "east": "false",
+                    "north": "false",
+                    "south": "false",
+                    "<data>": 0
+                }]
+        },
+        "glass_pane": {
+            "id": 102,
+            "properties": [{
+                    "west": "false",
+                    "east": "false",
+                    "north": "false",
+                    "south": "false",
+                    "<data>": 0
+                }]
+        },
+        "melon_block": {
+            "id": 103,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "pumpkin_stem": {
+            "id": 104,
+            "properties": [{
+                    "facing": "east",
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "facing": "east",
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "facing": "east",
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "facing": "east",
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "facing": "east",
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "facing": "east",
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "facing": "east",
+                    "age": "7",
+                    "<data>": 7
+                }]
+        },
+        "melon_stem": {
+            "id": 105,
+            "properties": [{
+                    "facing": "east",
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "facing": "east",
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "facing": "east",
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "facing": "east",
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "facing": "east",
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "facing": "east",
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "facing": "east",
+                    "age": "7",
+                    "<data>": 7
+                }]
+        },
+        "vine": {
+            "id": 106,
+            "properties": [{
+                    "north": "false",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 0,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 1,
+                    "east": "false",
+                    "south": "true"
+                },{
+                    "north": "false",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 2,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 3,
+                    "east": "false",
+                    "south": "true"
+                },{
+                    "north": "true",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 4,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "true",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 5,
+                    "east": "false",
+                    "south": "true"
+                },{
+                    "north": "true",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 6,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "true",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 7,
+                    "east": "false",
+                    "south": "true"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 8,
+                    "east": "true",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 9,
+                    "east": "true",
+                    "south": "true"
+                },{
+                    "north": "false",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 10,
+                    "east": "true",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 11,
+                    "east": "true",
+                    "south": "true"
+                },{
+                    "north": "true",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 12,
+                    "east": "true",
+                    "south": "false"
+                },{
+                    "north": "true",
+                    "west": "false",
+                    "up": "false",
+                    "<data>": 13,
+                    "east": "true",
+                    "south": "true"
+                },{
+                    "north": "true",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 14,
+                    "east": "true",
+                    "south": "false"
+                },{
+                    "north": "true",
+                    "west": "true",
+                    "up": "false",
+                    "<data>": 15,
+                    "east": "true",
+                    "south": "true"
+                }]
+        },
+        "fence_gate": {
+            "id": 107,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        },
+        "brick_stairs": {
+            "id": 108,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "stone_brick_stairs": {
+            "id": 109,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "mycelium": {
+            "id": 110,
+            "properties": [{
+                    "<data>": 0,
+                    "snowy": "false"
+                }]
+        },
+        "waterlily": {
+            "id": 111,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "nether_brick": {
+            "id": 112,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "nether_brick_fence": {
+            "id": 113,
+            "properties": [{
+                    "west": "false",
+                    "east": "false",
+                    "north": "false",
+                    "south": "false",
+                    "<data>": 0
+                }]
+        },
+        "nether_brick_stairs": {
+            "id": 114,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "enchanting_table": {
+            "id": 116,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "brewing_stand": {
+            "id": 117,
+            "properties": [{
+                    "<data>": 0,
+                    "has_bottle_2": "true",
+                    "has_bottle_0": "true",
+                    "has_bottle_1": "true"
+                },{
+                    "<data>": 1
+                },{
+                    "<data>": 2
+                },{
+                    "<data>": 3
+                },{
+                    "<data>": 4
+                },{
+                    "<data>": 5
+                },{
+                    "<data>": 6
+                },{
+                    "<data>": 7
+                }]
+        },
+        "end_portal_frame": {
+            "id": 120,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "eye": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "eye": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "eye": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "eye": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "eye": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "eye": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "eye": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "eye": "true"
+                }]
+        },
+        "end_stone": {
+            "id": 121,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "cocoa": {
+            "id": 127,
+            "properties": [{
+                    "facing": "south",
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "facing": "west",
+                    "age": "0",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "age": "0",
+                    "<data>": 2
+                },{
+                    "facing": "east",
+                    "age": "0",
+                    "<data>": 3
+                },{
+                    "facing": "south",
+                    "age": "1",
+                    "<data>": 4
+                },{
+                    "facing": "west",
+                    "age": "1",
+                    "<data>": 5
+                },{
+                    "facing": "north",
+                    "age": "1",
+                    "<data>": 6
+                },{
+                    "facing": "east",
+                    "age": "1",
+                    "<data>": 7
+                },{
+                    "facing": "south",
+                    "age": "2",
+                    "<data>": 8
+                },{
+                    "facing": "west",
+                    "age": "2",
+                    "<data>": 9
+                },{
+                    "facing": "north",
+                    "age": "2",
+                    "<data>": 10
+                },{
+                    "facing": "east",
+                    "age": "2",
+                    "<data>": 11
+                }]
+        },
+        "sandstone_stairs": {
+            "id": 128,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "emerald_ore": {
+            "id": 129,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "emerald_block": {
+            "id": 133,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "spruce_stairs": {
+            "id": 134,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "birch_stairs": {
+            "id": 135,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "jungle_stairs": {
+            "id": 136,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "cobblestone_wall": {
+            "id": 139,
+            "properties": [{
+                    "north": "false",
+                    "west": "false",
+                    "variant": "cobblestone",
+                    "up": "false",
+                    "<data>": 0,
+                    "east": "false",
+                    "south": "false"
+                },{
+                    "north": "false",
+                    "west": "false",
+                    "variant": "mossy_cobblestone",
+                    "up": "false",
+                    "<data>": 1,
+                    "east": "false",
+                    "south": "false"
+                }]
+        },
+        "flower_pot": {
+            "id": 140,
+            "properties": [{
+                    "legacy_data": "0",
+                    "<data>": 0,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "1",
+                    "<data>": 1,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "2",
+                    "<data>": 2,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "3",
+                    "<data>": 3,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "4",
+                    "<data>": 4,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "5",
+                    "<data>": 5,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "6",
+                    "<data>": 6,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "7",
+                    "<data>": 7,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "8",
+                    "<data>": 8,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "9",
+                    "<data>": 9,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "10",
+                    "<data>": 10,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "11",
+                    "<data>": 11,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "12",
+                    "<data>": 12,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "13",
+                    "<data>": 13,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "14",
+                    "<data>": 14,
+                    "contents": "cactus"
+                },{
+                    "legacy_data": "15",
+                    "<data>": 15,
+                    "contents": "cactus"
+                }]
+        },
+        "carrots": {
+            "id": 141,
+            "properties": [{
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "age": "7",
+                    "<data>": 7
+                }]
+        },
+        "potatoes": {
+            "id": 142,
+            "properties": [{
+                    "age": "0",
+                    "<data>": 0
+                },{
+                    "age": "1",
+                    "<data>": 1
+                },{
+                    "age": "2",
+                    "<data>": 2
+                },{
+                    "age": "3",
+                    "<data>": 3
+                },{
+                    "age": "4",
+                    "<data>": 4
+                },{
+                    "age": "5",
+                    "<data>": 5
+                },{
+                    "age": "6",
+                    "<data>": 6
+                },{
+                    "age": "7",
+                    "<data>": 7
+                }]
+        },
+        "skull": {
+            "id": 144,
+            "properties": [{
+                    "facing": "down",
+                    "<data>": 0,
+                    "nodrop": "false"
+                },{
+                    "facing": "up",
+                    "<data>": 1,
+                    "nodrop": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "nodrop": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 3,
+                    "nodrop": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 4,
+                    "nodrop": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 5,
+                    "nodrop": "false"
+                },{
+                    "facing": "down",
+                    "<data>": 8,
+                    "nodrop": "true"
+                },{
+                    "facing": "up",
+                    "<data>": 9,
+                    "nodrop": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "nodrop": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 11,
+                    "nodrop": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 12,
+                    "nodrop": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 13,
+                    "nodrop": "true"
+                }]
+        },
+        "anvil": {
+            "id": 145,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "damage": "0"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "damage": "0"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "damage": "0"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "damage": "0"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "damage": "1"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "damage": "1"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "damage": "1"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "damage": "1"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "damage": "2"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "damage": "2"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "damage": "2"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "damage": "2"
+                }]
+        },
+        "redstone_block": {
+            "id": 152,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "quartz_ore": {
+            "id": 153,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "quartz_block": {
+            "id": 155,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "default"
+                },{
+                    "<data>": 1,
+                    "variant": "chiseled"
+                },{
+                    "<data>": 2,
+                    "variant": "lines_y"
+                },{
+                    "<data>": 3,
+                    "variant": "lines_x"
+                },{
+                    "<data>": 4,
+                    "variant": "lines_z"
+                }]
+        },
+        "quartz_stairs": {
+            "id": 156,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "stained_hardened_clay": {
+            "id": 159,
+            "properties": [{
+                    "color": "white",
+                    "<data>": 0
+                },{
+                    "color": "orange",
+                    "<data>": 1
+                },{
+                    "color": "magenta",
+                    "<data>": 2
+                },{
+                    "color": "light_blue",
+                    "<data>": 3
+                },{
+                    "color": "yellow",
+                    "<data>": 4
+                },{
+                    "color": "lime",
+                    "<data>": 5
+                },{
+                    "color": "pink",
+                    "<data>": 6
+                },{
+                    "color": "gray",
+                    "<data>": 7
+                },{
+                    "color": "silver",
+                    "<data>": 8
+                },{
+                    "color": "cyan",
+                    "<data>": 9
+                },{
+                    "color": "purple",
+                    "<data>": 10
+                },{
+                    "color": "blue",
+                    "<data>": 11
+                },{
+                    "color": "brown",
+                    "<data>": 12
+                },{
+                    "color": "green",
+                    "<data>": 13
+                },{
+                    "color": "red",
+                    "<data>": 14
+                },{
+                    "color": "black",
+                    "<data>": 15
+                }]
+        },
+        "leaves2": {
+            "id": 161,
+            "properties": [{
+                    "<data>": 0,
+                    "check_decay": "false",
+                    "variant": "acacia",
+                    "decayable": "true"
+                },{
+                    "<data>": 1,
+                    "check_decay": "false",
+                    "variant": "dark_oak",
+                    "decayable": "true"
+                },{
+                    "<data>": 4,
+                    "check_decay": "false",
+                    "variant": "acacia",
+                    "decayable": "false"
+                },{
+                    "<data>": 5,
+                    "check_decay": "false",
+                    "variant": "dark_oak",
+                    "decayable": "false"
+                },{
+                    "<data>": 8,
+                    "check_decay": "true",
+                    "variant": "acacia",
+                    "decayable": "true"
+                },{
+                    "<data>": 9,
+                    "check_decay": "true",
+                    "variant": "dark_oak",
+                    "decayable": "true"
+                },{
+                    "<data>": 12,
+                    "check_decay": "true",
+                    "variant": "acacia",
+                    "decayable": "false"
+                },{
+                    "<data>": 13,
+                    "check_decay": "true",
+                    "variant": "dark_oak",
+                    "decayable": "false"
+                }]
+        },
+        "log2": {
+            "id": 162,
+            "properties": [{
+                    "<data>": 0,
+                    "variant": "acacia",
+                    "axis": "y"
+                },{
+                    "<data>": 1,
+                    "variant": "dark_oak",
+                    "axis": "y"
+                },{
+                    "<data>": 4,
+                    "variant": "acacia",
+                    "axis": "x"
+                },{
+                    "<data>": 5,
+                    "variant": "dark_oak",
+                    "axis": "x"
+                },{
+                    "<data>": 8,
+                    "variant": "acacia",
+                    "axis": "z"
+                },{
+                    "<data>": 9,
+                    "variant": "dark_oak",
+                    "axis": "z"
+                },{
+                    "<data>": 12,
+                    "variant": "acacia",
+                    "axis": "none"
+                },{
+                    "<data>": 13,
+                    "variant": "dark_oak",
+                    "axis": "none"
+                }]
+        },
+        "acacia_stairs": {
+            "id": 163,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "dark_oak_stairs": {
+            "id": 164,
+            "properties": [{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 0,
+                    "half": "bottom"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 1,
+                    "half": "bottom"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 2,
+                    "half": "bottom"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 3,
+                    "half": "bottom"
+                },{
+                    "facing": "east",
+                    "shape": "outer_right",
+                    "<data>": 4,
+                    "half": "top"
+                },{
+                    "facing": "west",
+                    "shape": "outer_right",
+                    "<data>": 5,
+                    "half": "top"
+                },{
+                    "facing": "south",
+                    "shape": "outer_right",
+                    "<data>": 6,
+                    "half": "top"
+                },{
+                    "facing": "north",
+                    "shape": "outer_right",
+                    "<data>": 7,
+                    "half": "top"
+                }]
+        },
+        "hay_block": {
+            "id": 170,
+            "properties": [{
+                    "<data>": 0,
+                    "axis": "y"
+                },{
+                    "<data>": 4,
+                    "axis": "x"
+                },{
+                    "<data>": 8,
+                    "axis": "z"
+                }]
+        },
+        "carpet": {
+            "id": 171,
+            "properties": [{
+                    "color": "white",
+                    "<data>": 0
+                },{
+                    "color": "orange",
+                    "<data>": 1
+                },{
+                    "color": "magenta",
+                    "<data>": 2
+                },{
+                    "color": "light_blue",
+                    "<data>": 3
+                },{
+                    "color": "yellow",
+                    "<data>": 4
+                },{
+                    "color": "lime",
+                    "<data>": 5
+                },{
+                    "color": "pink",
+                    "<data>": 6
+                },{
+                    "color": "gray",
+                    "<data>": 7
+                },{
+                    "color": "silver",
+                    "<data>": 8
+                },{
+                    "color": "cyan",
+                    "<data>": 9
+                },{
+                    "color": "purple",
+                    "<data>": 10
+                },{
+                    "color": "blue",
+                    "<data>": 11
+                },{
+                    "color": "brown",
+                    "<data>": 12
+                },{
+                    "color": "green",
+                    "<data>": 13
+                },{
+                    "color": "red",
+                    "<data>": 14
+                },{
+                    "color": "black",
+                    "<data>": 15
+                }]
+        },
+        "hardened_clay": {
+            "id": 172,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "coal_block": {
+            "id": 173,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "packed_ice": {
+            "id": 174,
+            "properties": [{
+                    "<data>": 0
+                }]
+        },
+        "double_plant": {
+            "id": 175,
+            "properties": [{
+                    "facing": "east",
+                    "<data>": 0,
+                    "variant": "sunflower",
+                    "half": "lower"
+                },{
+                    "facing": "east",
+                    "<data>": 1,
+                    "variant": "syringa",
+                    "half": "lower"
+                },{
+                    "facing": "east",
+                    "<data>": 2,
+                    "variant": "double_grass",
+                    "half": "lower"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "variant": "double_fern",
+                    "half": "lower"
+                },{
+                    "facing": "east",
+                    "<data>": 4,
+                    "variant": "double_rose",
+                    "half": "lower"
+                },{
+                    "facing": "east",
+                    "<data>": 5,
+                    "variant": "paeonia",
+                    "half": "lower"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "variant": "paeonia",
+                    "half": "upper"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "variant": "paeonia",
+                    "half": "upper"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "variant": "paeonia",
+                    "half": "upper"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "variant": "paeonia",
+                    "half": "upper"
+                }]
+        },
+        "spruce_fence_gate": {
+            "id": 183,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        },
+        "birch_fence_gate": {
+            "id": 184,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        },
+        "jungle_fence_gate": {
+            "id": 185,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        },
+        "dark_oak_fence_gate": {
+            "id": 186,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        },
+        "acacia_fence_gate": {
+            "id": 187,
+            "properties": [{
+                    "facing": "south",
+                    "<data>": 0,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 1,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 2,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 3,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 4,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 5,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 6,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 7,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 8,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 9,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 10,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 11,
+                    "in_wall": "false",
+                    "open": "false",
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 12,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 13,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 14,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 15,
+                    "in_wall": "false",
+                    "open": "true",
+                    "powered": "true"
+                }]
+        }
+    }
+}

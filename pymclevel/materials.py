@@ -264,9 +264,9 @@ class MCMaterials(object):
                             lowest_block = b
                 if lowest_block:
                     return lowest_block
-            else:
-                name, properties = BlockstateAPI.material_map[self].deStringifyBlockstate(key)
-                return self[BlockstateAPI.material_map[self].blockstateToID(name, properties)]
+            elif self.blockstate_api:
+                name, properties = self.blockstate_api.deStringifyBlockstate(key)
+                return self[self.blockstate_api.blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)
         if isinstance(key, (tuple, list)):
             block_id, blockData = key
@@ -452,7 +452,7 @@ class MCMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 alphaMaterials.addJSONBlocksFromFile("minecraft.json")
-alphaMaterials.setup_blockstates("blockstate_definitions.json")
+alphaMaterials.setup_blockstates("pc_blockstates.json")
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
@@ -465,6 +465,7 @@ indevMaterials.addJSONBlocksFromFile("indev.json")
 pocketMaterials = MCMaterials()
 pocketMaterials.name = "Pocket"
 pocketMaterials.addJSONBlocksFromFile("pocket.json")
+pocketMaterials.setup_blockstates("pe_blockstates.json")
 
 # --- Static block defs ---
 
@@ -1253,3 +1254,32 @@ if '--dump-mats' in os.sys.argv:
     os.sys.argv.remove('--dump-mats')
     for n in ("indevMaterials", "pocketMaterials", "alphaMaterials", "classicMaterials"):
         printStaticDefs(n, "%s.mats"%n.split('M')[0])
+        
+if '--find-blockstates' in os.sys.argv:
+    pe_blockstates = {'minecraft': {}}
+    passed = []
+    failed = []
+    for block in pocketMaterials:
+        ID = block.ID
+        DATA = block.blockData
+        pc_block = alphaMaterials.get((ID, DATA))
+        if pc_block and pc_block.stringID == block.stringID:
+            #print block
+            passed.append(block)
+        else:
+            failed.append(block)
+    print '{} failed block check'.format(len(failed))
+    for block in failed:
+        print '!{}!'.format(block)
+    for block in passed:
+        if block.stringID not in pe_blockstates["minecraft"]:
+            pe_blockstates["minecraft"][block.stringID] = {}
+            pe_blockstates["minecraft"][block.stringID]["id"] = block.ID
+            pe_blockstates["minecraft"][block.stringID]["properties"] = []
+        blockstate = idToBlockstate(block.ID, block.blockData)
+        state = {"<data>": block.blockData}
+        for (key, value) in blockstate[1].iteritems():
+            state[key] = value
+        pe_blockstates["minecraft"][block.stringID]['properties'].append(state)
+    #with open('pe_blockstates_test.json', 'wb') as out:
+    #    json.dump(pe_blockstates, out, indent=4, separators=(',', ': '))
