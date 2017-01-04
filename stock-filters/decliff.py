@@ -234,7 +234,7 @@ def perform(level, box, options):
         # Detect Water on top
         if column[oh + 1:oh + 2] == am.Water.ID or \
                         column[oh + 1:oh + 2] == am.Ice.ID:
-            for cur_pos in range(oh + 1, schema.Height):
+            for cur_pos in range(int(oh) + 1, schema.Height):
                 if column[cur_pos:cur_pos + 1] != am.Water.ID and \
                                 column[cur_pos:cur_pos + 1] != am.Ice.ID:
                     break
