@@ -27,6 +27,8 @@ class PlayerCache:
     
     def __init__(self):
         self.__dict__ = self.__shared_state
+        self.last_error = None
+        self.error_count = 0
     
     # --- Utility Functions ---
     @staticmethod
@@ -102,6 +104,10 @@ class PlayerCache:
                 
             to_refresh = to_refresh_successful + to_refresh_failed
             for uuid in to_refresh:
+                if self.last_error and self.error_count >= 4:
+                    break
+                elif self.last_error:
+                    self.error_count += 1
                 self._getPlayerInfoUUID(uuid)
         self.save()
         
@@ -361,13 +367,16 @@ class PlayerCache:
         import traceback
         try:
             response = urllib2.urlopen(url, timeout=self.TIMEOUT).read()
+            self.last_error = False
             return response
         except urllib2.HTTPError, e:
             log.warn("Encountered a HTTPError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.code))
+            self.last_error = (e.code == 429)
         except urllib2.URLError, e:
             log.warn("Encountered an URLError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.reason))
+            self.last_error = (str(e.reason) == '_ssl.c:489: The handshake operation timed out')
         except httplib.HTTPException:
             log.warn("Encountered a HTTPException while trying to access \"" + url + "\"")
         except Exception:
