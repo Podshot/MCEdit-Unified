@@ -813,10 +813,13 @@ class ChunkCalculator(object):
 
     def addTransparentMaterials_new(self, mats, materialCount):
         transparentMaterials = []
+        logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
         for b in self.level.materials:
             if hasattr(b, 'yaml'):
                 if b.yaml.get('opacity', 1) < 1:
+                    logging.debug("Adding '%s'"%b)
                     transparentMaterials.append(b)
+        logging.debug("renderer::ChunkCalculator: Transparent materials added: %s"%len(transparentMaterials))
         for b in transparentMaterials:
             mats[b.ID] = materialCount
             materialCount += 1

@@ -104,9 +104,11 @@ if '--new-features' in sys.argv:
     if not os.path.exists('new_features.def'):
         logger.warn("New features requested, but file 'new_features.def' not found!")
     else:
+        logger.warn("New features mode requested.")
         lines = [a.strip() for a in open('new_features.def', 'r').readlines()]
         for line in lines:
             setattr(__builtins__, 'mcenf_%s'%line, True)
+        logger.warn("New features list loaded.")
 
 
 from version_utils import PlayerCache
