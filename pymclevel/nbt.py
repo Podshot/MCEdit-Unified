@@ -29,6 +29,13 @@ from cStringIO import StringIO
 import numpy
 from numpy import array, zeros, fromstring
 
+#-----------------------------------------------------------------------------
+# TRACKING PE ERRORS
+#
+# DEBUG_PE and dump_fName are overridden by leveldbpocket module
+import sys
+DEBUG_PE = False
+dump_fName = 'dump_pe.txt'
 
 log = logging.getLogger(__name__)
 
@@ -91,8 +98,32 @@ class TAG_Value(object):
     @classmethod
     def load_from(cls, ctx):
         data = ctx.data[ctx.offset:]
-        (value,) = cls.fmt.unpack_from(data)
-        self = cls(value=value)
+        # 'data' may be empty or not have the required length. Shall we bypass?
+        value = None
+        try:
+            (value,) = cls.fmt.unpack_from(data)
+        except Exception, e:
+            if DEBUG_PE:
+                n_lines = len(open(dump_fName).readlines()) + 1
+                msg = ("*** NBT support could not load data\n"
+                    "{e}\n"
+                    "----------\nctx.data (length: {lcd}):\n{cd}\n"
+                    "..........\ndata (length: {lrd}):\n{rd}\n"
+                    "''''''''''\nctx.offset:\n{co}\n"
+                    "^^^^^^^^^^\ncls.fmt.format: {cf}\n***\n".format(e=e, cd=repr(ctx.data), rd=repr(data), co=ctx.offset, cf=cls.fmt.format,
+                                                               lcd=len(ctx.data), lrd=len(data)
+                                                              )
+                )
+                open(dump_fName, 'a').write(msg)
+                added_n_lines = len(msg.splitlines())
+                log.warning("Could not unpack NBT data: information written in {fn}, from line {b} to line {e}".format(fn=dump_fName, b=n_lines, e=(n_lines + added_n_lines - 1)))
+            else:
+                raise e
+        if value == None:
+            self = cls()
+            self.name = 'Unknown'
+        else:
+            self = cls(value=value)
         ctx.offset += self.fmt.size
         return self
 
@@ -545,7 +576,11 @@ def _load_buffer(buf):
 
     tag_name = load_string(ctx)
     tag = TAG_Compound.load_from(ctx)
-    tag.name = tag_name
+    # For PE debug
+    try:
+        tag.name = tag_name
+    except:
+        pass
 
     return tag
 
@@ -632,9 +667,13 @@ def nested_string(tag, indent_string="  ", indent=0):
 
 try:
     # noinspection PyUnresolvedReferences
-    from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
-                      TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
-                      littleEndianNBT, nested_string, gunzip)
+    # Inhibit the _nbt import if we're debugging the PE support errors, because we need to get information concerning NBT malformed data...
+    if DEBUG_PE or '--debug-pe' in sys.argv:
+        log.warning("PE support debug mode is activated. Using full Python NBT support!")
+    else:
+        from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
+                          TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
+                          littleEndianNBT, nested_string, gunzip)
 except ImportError as err:
     log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")
     log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")

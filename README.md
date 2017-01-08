@@ -129,11 +129,15 @@ If no errors occured, move the .pyx to ../pymclevel, and you should be good to g
 For linux users:
 Navigate to the leveldb_mcpe folder
 <br>
-`> python setup.py build`
+`> python setupnx.py build`
 <br>
 `> python test.py`
 <br>
 And you should be good to go.
+
+It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
+Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
+The PE debug mode implies to run the Python NBT support, so you may expereince speed issues.
 
 
 ##New features test mode

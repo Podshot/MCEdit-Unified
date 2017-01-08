@@ -29,6 +29,28 @@ except Exception as e:
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
     leveldb_mcpe = None
 
+#---------------------------------------------------------------------
+# TRACKING ERRORS
+#
+# Some debug messages will be displayed in the console, and a file will be used to put more information.
+import sys
+DEBUG_PE = False
+dump_fName = 'dump_pe.txt'
+longest_complist_len = 0
+longest_complist = ''
+shortest_complist_len = sys.maxint
+shortest_complist = ''
+
+if '--debug-pe' in sys.argv:
+    sys.argv.remove('--debug-pe')
+    DEBUG_PE = True
+    # Override nbt module DEBUG_PE and dump_fName
+    nbt.DEBUG_PE = DEBUG_PE
+    nbt.dump_fName = dump_fName
+
+if DEBUG_PE:
+    open(dump_fName, 'w').close()
+
 
 def loadNBTCompoundList(data, littleEndian=True):
     """
@@ -38,10 +60,24 @@ def loadNBTCompoundList(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
-    if type(data) is unicode:
-        data = str(data)
+#     if type(data) is unicode:
+#         data = str(data)
+
+    if DEBUG_PE:
+        global longest_complist_len
+        global longest_complist
+        global shortest_complist_len
+        global shortest_complist
+    
+        open(dump_fName, 'a').write(("=" * 80) + "\n")
 
     def load(_data):
+        if DEBUG_PE:
+            global longest_complist_len
+            global longest_complist
+            global shortest_complist_len
+            global shortest_complist
+
         sep = "\x00\x00\x00\x00\n"
         sep_data = _data.split(sep)
         compounds = []
@@ -49,8 +85,23 @@ def loadNBTCompoundList(data, littleEndian=True):
             if len(d) != 0:
                 if not d.startswith("\n"):
                     d = "\n" + d
+                if DEBUG_PE:
+                    if len(d) > longest_complist_len:
+                        longest_complist = repr(d)
+                        longest_complist_len = len(d)
+                    if len(d) < shortest_complist_len:
+                        shortest_complist = repr(d)
+                        shortest_complist_len = len(d)
                 tag = (nbt.load(buf=(d + '\x00\x00\x00\x00')))
                 compounds.append(tag)
+
+        if DEBUG_PE:
+            try:
+                open(dump_fName, 'a').write("**********\nLongest data length: %s\nData:\n%s\n"%(longest_complist_len, longest_complist))
+                open(dump_fName, 'a').write("**********\nShortest data length: %s\nData:\n%s\n"%(shortest_complist_len, shortest_complist))
+            except Exception, e:
+                print "Could not write debug info:", e
+
         return compounds
 
     if littleEndian:
@@ -490,8 +541,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param cx, cz: cx, cz coordinates of the chunk
         :return: PocketLeveldbChunk
         """
+        if DEBUG_PE:
+            open(dump_fName, 'a').write("*** Getting chunk %s,%s\n"%(cx, cz))
         c = self._loadedChunks.get((cx, cz))
         if c is None:
+            if DEBUG_PE:
+                open(dump_fName, 'a').write("    Not loaded, loading\n")
             c = self.worldFile.loadChunk(cx, cz, self)
             self._loadedChunks[(cx, cz)] = c
         return c
@@ -603,6 +658,9 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         """
         Save all chunks to the database, and write the root_tag back to level.dat.
         """
+        if DEBUG_PE:
+            print "*** saveInPlaceGen"
+            open(dump_fName ,'a').write("*** saveInPlaceGen\n")
         self.saving = True
         batch = leveldb_mcpe.WriteBatch()
         dirtyChunkCount = 0
@@ -1002,17 +1060,29 @@ class PocketLeveldbChunk(LightedChunk):
         else:
             terrain = numpy.fromstring(data[0], dtype='uint8')
             if data[1] is not None:
+                if DEBUG_PE:
+                    open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
                 TileEntities = loadNBTCompoundList(data[1])
                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 
             if data[2] is not None:
+                if DEBUG_PE:
+                    open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
                 for ent in Entities:
                     # Get the string id, or a build one
-                    v = ent["id"].value
+                    # ! For PE debugging
+                    try:
+                        v = ent["id"].value
+                    except Exception, e:
+                        logger.warning("An error occured while getting entity ID:")
+                        logger.warning(e)
+                        logger.warning("Default 'Unknown' ID is used...")
+                        v = 'Unknown'
+                    # !
                     id = invertEntities.get(v, "Entity %s"%v)
                     # Add the built one to the entities
                     if id not in entity.PocketEntity.entityList.keys():
