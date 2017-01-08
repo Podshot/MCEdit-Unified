@@ -1204,7 +1204,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
     def saveInPlaceGen(self):
         if self.readonly:
-            raise IOError("World is opened read only.")
+            raise IOError("World is opened read only. (%s)"%self.filename)
         self.saving = True
         self.checkSessionLock()
 
