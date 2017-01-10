@@ -62,7 +62,6 @@ import editortools
 import itertools
 import mcplatform
 import pymclevel
-import renderer
 import directories
 import panels
 import viewports
@@ -94,7 +93,12 @@ from glbackground import GLBackground, Panel
 from glutils import Texture
 from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
-from renderer import MCRenderer
+if '--renderer' not in sys.argv:
+    import renderer
+    from renderer import MCRenderer
+else:
+    import new_renderer as renderer
+    from new_renderer import MCRenderer 
 from pymclevel.entity import Entity
 from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
     MCInfdevOldLevel

@@ -31,6 +31,7 @@ from pymclevel.minecraft_server import MCServerChunkGenerator
 from config import config
 
 from albow.dialogs import Dialog
+import sys
 
 
 class ChunkToolPanel(Panel):
@@ -144,8 +145,11 @@ class ChunkTool(EditorTool):
         color = self.editor.selectionTool.selectionColor + (0.3, )
         GL.glColor(*color)
         with gl.glEnable(GL.GL_BLEND):
-
-            import renderer
+            
+            if '--renderer' not in sys.argv:
+                import renderer
+            else:
+                import new_renderer as renderer
 
             sizedChunks = renderer.chunkMarkers(self._selectedChunks)
             for size, chunks in sizedChunks.iteritems():
