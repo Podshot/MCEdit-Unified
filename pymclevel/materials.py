@@ -264,7 +264,7 @@ class MCMaterials(object):
                             lowest_block = b
                 if lowest_block:
                     return lowest_block
-            else:
+            elif self.blockstate_api:
                 name, properties = self.blockstate_api.deStringifyBlockstate(key)
                 return self[self.blockstate_api.blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)
@@ -452,7 +452,7 @@ class MCMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 alphaMaterials.addJSONBlocksFromFile("minecraft.json")
-alphaMaterials.setup_blockstates("blockstate_definitions.json")
+alphaMaterials.setup_blockstates("pc_blockstates.json")
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
@@ -465,6 +465,7 @@ indevMaterials.addJSONBlocksFromFile("indev.json")
 pocketMaterials = MCMaterials()
 pocketMaterials.name = "Pocket"
 pocketMaterials.addJSONBlocksFromFile("pocket.json")
+pocketMaterials.setup_blockstates("pe_blockstates.json")
 
 # --- Static block defs ---
 
@@ -1083,16 +1084,37 @@ pocketMaterials.UpdateGameBlock1 = pocketMaterials[248, 0]
 pocketMaterials.UpdateGameBlock2 = pocketMaterials[249, 0]
 pocketMaterials.info_reserved6 = pocketMaterials[255, 0]
 
+# pocketMaterials.RedstoneRepeaterOff = alphaMaterials[93, 0] 
+# pocketMaterials.RedstoneRepeaterOn = alphaMaterials[94, 0]
 
-def printStaticDefs(name):
+def printStaticDefs(name, file_name=None):
     # printStaticDefs('alphaMaterials')
+    # file_name: file to write the output to
     mats = eval(name)
+    msg = "MCEdit static definitions for '%s'\n\n"%name
+    mats_ids = []
     for b in sorted(mats.allBlocks):
-        print "{name}.{0} = {name}[{1},{2}]".format(
+        msg += "{name}.{0} = {name}[{1},{2}]\n".format(
             b.name.replace(" ", "").replace("(", "").replace(")", ""),
             b.ID, b.blockData,
             name=name,
         )
+        if b.ID not in mats_ids:
+            mats_ids.append(b.ID)
+    print msg
+    if file_name:
+        msg += "\nNumber of materials: %s\n%s"%(len(mats_ids), mats_ids)
+        id_min = min(mats_ids)
+        id_max = max(mats_ids)
+        msg += "\n\nLowest ID: %s\nHighest ID: %s\n"%(id_min, id_max)
+        missing_ids = []
+        for i in range(id_min, id_max + 1):
+            if i not in mats_ids:
+                missing_ids.append(i)
+        if missing_ids:
+                msg += "\nIDs not in the list:\n%s\n(%s IDs)\n"%(missing_ids, len(missing_ids))
+        open(file_name, 'w').write(msg)
+        print "Written to '%s'"%file_name
 
 
 _indices = rollaxis(indices((id_limit, 16)), 0, 3)
@@ -1226,3 +1248,38 @@ for mat in allMaterials:
         setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")
+
+
+if '--dump-mats' in os.sys.argv:
+    os.sys.argv.remove('--dump-mats')
+    for n in ("indevMaterials", "pocketMaterials", "alphaMaterials", "classicMaterials"):
+        printStaticDefs(n, "%s.mats"%n.split('M')[0])
+        
+if '--find-blockstates' in os.sys.argv:
+    pe_blockstates = {'minecraft': {}}
+    passed = []
+    failed = []
+    for block in pocketMaterials:
+        ID = block.ID
+        DATA = block.blockData
+        pc_block = alphaMaterials.get((ID, DATA))
+        if pc_block and pc_block.stringID == block.stringID:
+            #print block
+            passed.append(block)
+        else:
+            failed.append(block)
+    print '{} failed block check'.format(len(failed))
+    for block in failed:
+        print '!{}!'.format(block)
+    for block in passed:
+        if block.stringID not in pe_blockstates["minecraft"]:
+            pe_blockstates["minecraft"][block.stringID] = {}
+            pe_blockstates["minecraft"][block.stringID]["id"] = block.ID
+            pe_blockstates["minecraft"][block.stringID]["properties"] = []
+        blockstate = idToBlockstate(block.ID, block.blockData)
+        state = {"<data>": block.blockData}
+        for (key, value) in blockstate[1].iteritems():
+            state[key] = value
+        pe_blockstates["minecraft"][block.stringID]['properties'].append(state)
+    #with open('pe_blockstates_test.json', 'wb') as out:
+    #    json.dump(pe_blockstates, out, indent=4, separators=(',', ': '))

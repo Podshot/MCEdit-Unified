@@ -30,6 +30,7 @@ from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
 import logging
 from uuid import UUID
+import id_definitions
 
 log = getLogger(__name__)
 
@@ -1184,6 +1185,10 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         else:
             try:
                 self.root_tag = nbt.load(self.filename)
+                # Load the resource for the game version
+                if self.gameVersion != 'Unknown':
+                    id_definitions.ids_loader(self.gameVersion)
+                #
             except Exception, e:
                 filename_old = self.worldFolder.getFilePath("level.dat_old")
                 log.info("Error loading level.dat, trying level.dat_old ({0})".format(e))
@@ -1199,7 +1204,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
     def saveInPlaceGen(self):
         if self.readonly:
-            raise IOError("World is opened read only.")
+            raise IOError("World is opened read only. (%s)"%self.filename)
         self.saving = True
         self.checkSessionLock()
 

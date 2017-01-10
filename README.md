@@ -129,8 +129,29 @@ If no errors occured, move the .pyx to ../pymclevel, and you should be good to g
 For linux users:
 Navigate to the leveldb_mcpe folder
 <br>
-`> python setup.py build`
+`> python setupnx.py build`
 <br>
 `> python test.py`
 <br>
 And you should be good to go.
+
+It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
+Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
+The PE debug mode implies to run the Python NBT support, so you may expereince speed issues.
+
+
+##New features test mode
+Some unfinished features and fixes may be included in future MCEdit-Unified releases, this inactive code can be activated using the process below. Use at your own risk.
+
+To use:
+
+* Open your operating system's command console.
+* Go to the directory where MCEdit is installed (Mac users need to open their .app file).
+* Create a text file named `new_features.def`
+* In this file, add a feature per line. (Unfinished features/fixes are available on request from the developers))
+* Run MCEdit-Unified with the command line option `--new-features`
+
+These 'new features' will change during the program development. Features may be added or removed at will and may not work at all, most will eventually end up in a release as a normal feature. No documentation is provided for them, except in the code source itself.
+
+We recommend you to use this only if you have at least some familiarity with programming and source code, or if requested by a developer.
+We highly recommend backing up your worlds (and even the whole game) before using this function, even if requested by the devs.

@@ -55,7 +55,10 @@ if splash:
 #
 
 if not os.path.exists(splash_name):
-    open(splash_name, 'w').write('scrap')
+    try:
+        open(splash_name, 'w').write('scrap')
+    except:
+        pass
 
 if len(open(splash_name).read()) > 0:
     from random import choice
@@ -65,4 +68,7 @@ if len(open(splash_name).read()) > 0:
     if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
         if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
-            open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+            try:
+                open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+            except:
+                pass

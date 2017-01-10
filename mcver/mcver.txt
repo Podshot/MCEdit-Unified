@@ -1,0 +1,37 @@
+MCVER.TXT
+
+This folder contains MC specific data files according to the game version.
+
+Changes are happening in the game data, and we need to catch them outside the code itself.
+
+Ech subfolder is named according to a version, and contains JSon files:
+
+* blocks.json
+* entities.json
+* tileentities.json
+* items.json
+
+It is not necessary to have a folder for each version of the game. Only the ones which introduce changes has to be present.
+All the same for the files, if changes occur only in blocks, the other files are useless.
+
+Each entry is composed like this:
+
+```
+    {
+        "id": 1,
+        "idStr": "item",
+        "_name": "item",
+        "name": "Dropped item",
+        "type": "Drops",
+        "mapcolor": [34, 255, 34, 95]
+    },
+```
+
+Where "id" is a numeric ID, "idStr" is a named ID (typically the 'minecraft:XXX' part after the colon).
+Any MCEdit useful data can be added.
+The "_name" sub-entry must be used to define the name of the object used internaly by MCEdit.
+For recent game version this "_name" has the same value as "idStr", but for older systems, where these "idStr" aren't the same (or does not exists),
+this "_name" value will be used by MCEdit to render and act correctly the objects.
+
+Technically, MCEdit loads the files and search for the "_name". If not found, it will try to use the "idStr", and finally, fall back to the "id".
+

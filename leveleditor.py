@@ -830,7 +830,7 @@ class LevelEditor(GLViewport):
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
-
+        
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
             directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
@@ -871,8 +871,45 @@ class LevelEditor(GLViewport):
     def no(self):
         self.yon.dismiss()
         self.user_yon_response = False
+        
+    def _resize_selection_box(self, new_box):
+        import inspect # Let's get our hands dirty
+        stack = inspect.stack()
+        filename = os.path.basename(stack[1][1])
+        old_box = self.selectionTool.selectionBox()
+        msg = """
+        Filter "{0}" wants to resize the selection box
+        Origin: {1} -> {2}
+        Size: {3} -> {4}
+        Do you want to resize the Selection Box?""".format(
+                   filename, 
+                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]), 
+                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]), 
+                   (old_box.size[0], old_box.size[1], old_box.size[2]), 
+                   (new_box.size[0], new_box.size[1], new_box.size[2])
+                   )
+        result = ask(msg, ["Yes", "No"])
+        if result == "Yes":
+            self.selectionTool.setSelection(new_box)
+            return new_box
+        else:
+            return False
+    
+    def addExternalWidget(self, obj):
+        if isinstance(obj, Widget):
+            return self.addExternalWidget_Widget(obj)
+        elif isinstance(obj, dict):
+            return self.addExternalWidget_Dict(obj)
+        
+    def addExternalWidget_Widget(self, obj):
+        obj.shrink_wrap()
+        result = Dialog(obj, ["Ok", "Cancel"]).present()
+        if result == "Ok":
+            print obj
+        else:
+            return 'user canceled'
 
-    def addExternalWidget(self, provided_fields):
+    def addExternalWidget_Dict(self, provided_fields):
 
         def addNumField(wid, name, val, minimum=None, maximum=None, increment=0.1):
             if isinstance(val, float):
@@ -1157,6 +1194,7 @@ class LevelEditor(GLViewport):
             return
 
         assert level
+        log.debug("Loaded world is %s"%repr(level))
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
@@ -1193,7 +1231,11 @@ class LevelEditor(GLViewport):
 
         self.removeNetherPanel()
 
-        log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: level.gameVersion}[level.gameVersion == 'Unknown']))
+        gameVersion = level.gameVersion
+        if gameVersion in ('Schematic'):
+            log.info('Loading \'%s\' file.'%gameVersion)
+        else:
+            log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
 
         self.loadLevel(level)
 
@@ -2643,7 +2685,7 @@ class LevelEditor(GLViewport):
     def askOpenFile(self):
         self.mouseLookOff()
         try:
-            filename = mcplatform.askOpenFile()
+            filename = mcplatform.askOpenFile(schematics=True)
             if filename:
                 self.parent.loadFile(filename)
         except Exception:
@@ -2900,7 +2942,6 @@ class LevelEditor(GLViewport):
     averageFPS = 0.0
     averageCPS = 0.0
     shouldLoadAndRender = True
-    showWorkInfo = False
 
 
     def gl_draw(self):
@@ -2925,8 +2966,6 @@ class LevelEditor(GLViewport):
         while frameDuration > (
                     datetime.now() - self.frameStartTime):  # if it's less than 0ms until the next frame, go draw.  otherwise, go work.
             self.doWorkUnit()
-        if self.showWorkInfo:
-            self.updateWorkInfoPanel()
 
         frameStartTime = datetime.now()
         timeDelta = frameStartTime - self.frameStartTime
@@ -2969,38 +3008,6 @@ class LevelEditor(GLViewport):
 
             if self.renderer:
                 self.renderer.addDebugInfo(self.addDebugString)
-
-    def createWorkInfoPanel(self):
-        infos = []
-        for w in sorted(self.workers):
-            if isinstance(w, MCRenderer):
-                label = Label(_("Rendering chunks") + ((datetime.now().second / 3) % 3) * ".")
-                progress = Label(
-                    _("{0} chunks ({1} pending updates)").format(len(w.chunkRenderers), len(w.invalidChunkQueue)))
-                col = Column((label, progress), align="l", width=200)
-                infos.append(col)
-            elif isinstance(w,
-                            RunningOperation):  # **FIXME** Where is RunningOperation supposed to come from?  -David Sowder 20120311
-                label = Label(w.description)
-                progress = Label(w.progress)
-                col = Column((label, progress), align="l", width=200)
-                infos.append(col)
-
-        panel = Panel(parent=self)
-        if len(infos):
-            panel.add(Column(infos))
-            panel.shrink_wrap()
-            return panel
-
-    workInfoPanel = None
-
-    def updateWorkInfoPanel(self):
-        if self.workInfoPanel:
-            self.workInfoPanel.set_parent(None)
-        self.workInfoPanel = self.createWorkInfoPanel()
-        if self.workInfoPanel:
-            self.workInfoPanel.topright = self.topright
-            self.add(self.workInfoPanel)
 
     def doWorkUnit(self, onMenu=False):
         if len(self.workers):

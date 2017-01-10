@@ -6383,6 +6383,7 @@
 			"idStr": "leaves2",
 			"tex": [5,3],
 			"mapcolor": [60,192,41],
+			"type": "LEAVES",
 			"data": {
 				"13": {
 					"tex": [5,8],
@@ -6425,7 +6426,6 @@
 					"name": "Acacia Leaves (Decaying)"
 				}
 			},
-            "type": "LEAVES",
 			"id": 161
 		},{
 			"search": "log",
@@ -8320,5 +8320,11 @@
 			"name": "Structure Block",
 			"id": 255
 		}],
-	"name": "Vanilla Minecraft Block Types"
+	"name": "Vanilla Minecraft Block Types",
+
+	"MobSpawner": "minecraft:mob_spawner",
+	"Control": "minecraft:command_block",
+	"FlowerPot": "flower_pot",
+	"EnchantTable": "enchanting_table"
+
 }

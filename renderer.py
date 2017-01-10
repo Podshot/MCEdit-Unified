@@ -223,6 +223,7 @@ import logging
 import numpy
 from OpenGL import GL
 import pymclevel
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 from pymclevel.materials import alphaMaterials
 import sys
 from config import config
@@ -629,6 +630,7 @@ class ChunkCalculator(object):
     precomputedVertices = createPrecomputedVertices()
 
     def __init__(self, level):
+        self.level = level
         self.makeRenderstates(level.materials)
 
         # del xArray, zArray, yArray
@@ -772,7 +774,7 @@ class ChunkCalculator(object):
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
 
-    def addTransparentMaterials(self, mats, materialCount):
+    def addTransparentMaterials_old(self, mats, materialCount):
         transparentMaterials = [
             alphaMaterials.Glass,
             alphaMaterials.StructureVoid,
@@ -809,7 +811,27 @@ class ChunkCalculator(object):
             mats[b.ID] = materialCount
             materialCount += 1
 
+    def addTransparentMaterials_new(self, mats, materialCount):
+        transparentMaterials = []
+        logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
+        for b in self.level.materials:
+            if hasattr(b, 'yaml'):
+                if b.yaml.get('opacity', 1) < 1:
+                    logging.debug("Adding '%s'"%b)
+                    transparentMaterials.append(b)
+        logging.debug("renderer::ChunkCalculator: Transparent materials added: %s"%len(transparentMaterials))
+        for b in transparentMaterials:
+            mats[b.ID] = materialCount
+            materialCount += 1
+
+    if __builtins__.get('mcenf_addTransparentMaterials', False):
+        logging.info("Using new ChunkCalculator.addTransparentMaterials")
+        addTransparentMaterials = addTransparentMaterials_new
+    else:
+        addTransparentMaterials = addTransparentMaterials_old
+
     # don't show boundaries between dirt,grass,sand,gravel,or stone.
+    # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
     hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint16')
     stoneid = alphaMaterials.Stone.ID
     hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
@@ -820,7 +842,8 @@ class ChunkCalculator(object):
 
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype='uint8')
     roughMaterials[0] = 0
-    addTransparentMaterials(None, roughMaterials, 2)
+    # Do not pre-load transparent materials, since it is game version dependent.
+    # addTransparentMaterials(None, roughMaterials, 2)
 
     def calcFacesForChunkRenderer(self, cr):
         if 0 == len(cr.invalidLayers):
@@ -1289,11 +1312,12 @@ class MonsterRenderer(BaseEntityRenderer):
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []
+        notMonsters = MCEDIT_DEFS.get('notMonsters', self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
             id = ent["id"].value
-            if id in self.notMonsters:
+            if id in notMonsters:
                 continue
             pos = pymclevel.Entity.pos(ent)
             pos[1] += 0.5
@@ -1340,11 +1364,16 @@ class ItemRenderer(BaseEntityRenderer):
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
-            color = colorMap.get(ent["id"].value)
+            # Let get the color from the versionned data, and use the 'old' way as fallback
+            color = MCEDIT_DEFS.get(MCEDIT_IDS.get(ent["id"].value), {}).get("mapcolor")
+            if color is None:
+                color = colorMap.get(ent["id"].value)
+
             if color is None:
                 continue
             pos = pymclevel.Entity.pos(ent)
-            if ent["id"].value not in ("Painting", "ItemFrame"):
+            noRenderDelta = MCEDIT_DEFS.get('noRenderDelta', ("Painting", "ItemFrame"))
+            if ent["id"].value not in noRenderDelta:
                 pos[1] += 0.5
             entityPositions.append(pos)
             entityColors.append(color)

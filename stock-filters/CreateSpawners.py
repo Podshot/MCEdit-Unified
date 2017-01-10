@@ -11,6 +11,7 @@ from pymclevel import TAG_Float
 from pymclevel import TAG_Double
 from pymclevel import TAG_List
 from pymclevel import TileEntity
+from copy import deepcopy
 
 displayName = "Create Spawners"
 
@@ -25,21 +26,21 @@ def perform(level, box, options):
 
     for (chunk, slices, point) in level.getChunkSlices(box):
 
-        for entity in chunk.Entities:
+        for _entity in chunk.Entities:
+            entity = deepcopy(_entity)
             x = int(entity["Pos"][0].value)
             y = int(entity["Pos"][1].value)
             z = int(entity["Pos"][2].value)
 
             if box.minx <= x < box.maxx and box.miny <= y < box.maxy and box.minz <= z < box.maxz:
-                entitiesToRemove.append((chunk, entity))
+                entitiesToRemove.append((chunk, _entity))
 
                 level.setBlockAt(x, y, z, 52)
                 level.setBlockDataAt(x, y, z, 0)
 
-                spawner = TileEntity.Create("MobSpawner")
+                spawner = TileEntity.Create("MobSpawner", entity=entity)
                 TileEntity.setpos(spawner, (x, y, z))
                 spawner["Delay"] = TAG_Short(120)
-                spawner["SpawnData"] = entity
                 if not includePos:
                     del spawner["SpawnData"]["Pos"]
                 spawner["EntityId"] = entity["id"]
