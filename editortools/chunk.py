@@ -151,21 +151,21 @@ class ChunkTool(EditorTool):
             else:
                 import new_renderer as renderer
 
-            sizedChunks = renderer.chunkMarkers(self._selectedChunks)
-            for size, chunks in sizedChunks.iteritems():
-                if not len(chunks):
-                    continue
-                chunks = numpy.array(chunks, dtype='float32')
+            #sizedChunks = renderer.chunkMarkers(self._selectedChunks)
+            #for size, chunks in sizedChunks.iteritems():
+            #    if not len(chunks):
+            #        continue
+            #    chunks = numpy.array(chunks, dtype='float32')
 
-                chunkPosition = numpy.zeros(shape=(chunks.shape[0], 4, 3), dtype='float32')
-                chunkPosition[..., (0, 2)] = numpy.array(((0, 0), (0, 1), (1, 1), (1, 0)), dtype='float32')
-                chunkPosition[..., (0, 2)] *= size
-                chunkPosition[..., (0, 2)] += chunks[:, newaxis, :]
-                chunkPosition *= 16
-                chunkPosition[..., 1] = self.editor.level.Height
-                GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
+            #    chunkPosition = numpy.zeros(shape=(chunks.shape[0], 4, 3), dtype='float32')
+            #    chunkPosition[..., (0, 2)] = numpy.array(((0, 0), (0, 1), (1, 1), (1, 0)), dtype='float32')
+            #    chunkPosition[..., (0, 2)] *= size
+            #    chunkPosition[..., (0, 2)] += chunks[:, newaxis, :]
+            #    chunkPosition *= 16
+            #    chunkPosition[..., 1] = self.editor.level.Height
+            #    GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
                 # chunkPosition *= 8
-                GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
+            #    GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
 
         for d, points, positions in lines:
             if 0 == len(positions):
