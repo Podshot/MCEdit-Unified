@@ -120,7 +120,7 @@ def perform(level, box, options):
             z = e["z"].value
 
             if (x, y, z) in box:
-                if e["id"].value == "Chest" or MCEDIT_IDS[e["id"].value] == "DEF_BLOCKS_CHEST":
+                if e["id"].value == "Chest" or MCEDIT_IDS[e["id"].value] == "DEF_TILEENTITIES_CHEST":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
                                xp, nomove, silent, nameVisible, name, yaxis, xaxis, IsCustomHead, legacy, CustomHeads[SkullType], PlayerName)
 

@@ -136,12 +136,13 @@ def ids_loader(game_version, namespace=u"minecraft"):
                                 log.info("Could not find %s"%_file_name)
                         _data.update(data)
                         _defs, _ids = _parse_data(_data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS, ignore_load=True)
-                        MCEDIT_DEFS.update(defs)
-                        MCEDIT_IDS.update(ids)
+                        MCEDIT_DEFS.update(_defs)
+                        MCEDIT_IDS.update(_ids)
                     log.info("Done")
     else:
         log.info("MC %s resources not found."%game_version)
     # Override the module objects to expose them outside when (re)importing.
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
+    log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
     return MCEDIT_DEFS, MCEDIT_IDS
