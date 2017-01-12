@@ -2059,3 +2059,12 @@ o955 Sets the maximum view distance for the renderer. Values over 32 can possibl
 t955 设置渲染的最大距离. 数值大于32可能导致软件不稳定，设置前请了解操作风险
 o956 Updated %s filter(s) out of %s
 t956 已更新 %s 个滤镜，共 %s 个待更新滤镜
+# 299 ~ 300
+o957 BanSlimes
+t957 禁止史莱姆
+# 778 ~ 779
+o958 Legacy Mode (Pre 1.9)
+t958 旧版模式（1.9之前）
+# 306 ~ 307
+o959 Air
+t959 氧气值
