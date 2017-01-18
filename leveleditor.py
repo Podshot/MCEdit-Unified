@@ -2108,7 +2108,7 @@ class LevelEditor(GLViewport):
             if os.path.exists(p):
                 os.remove(p)
         if config.settings.savePositionOnClose.get():
-            self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
+            self.waypointManager.saveLastPosition(self.mainViewport, self.level.dimNo)
         self.waypointManager.save()
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
