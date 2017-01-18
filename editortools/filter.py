@@ -373,6 +373,11 @@ class FilterModuleOptions(Widget):
                             blockButton.blockInfo = tool.editor.level.materials[optionType[1]]
                         except AttributeError:
                             blockButton.blockInfo = tool.editor.level.materials[0]
+                        except KeyError:
+                            if tool.editor.level.materials == pymclevel.pocketMaterials:
+                                blockButton.blockInfo = pymclevel.alphaMaterials[optionType[1]]
+                            else:
+                                raise
                 
                         row = Column((Label(oName, doNotTranslate=True), blockButton))
                         page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
