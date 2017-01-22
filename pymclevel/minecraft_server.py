@@ -591,15 +591,16 @@ class MCServerChunkGenerator(object):
         if msg:
             print msg
 
-        print "len(uncreated_chunks)", len(uncreated_chunks)
+#         print "len(uncreated_chunks)", len(uncreated_chunks)
 
         level.saveInPlace()
 
-    if __builtins__.get('mcenf_generateChunksInLevelIter', False):
-        log.info("Using new MCServerChunkGenerator.generateChunksInLevelIter")
-        generateChunksInLevelIter = generateChunksInLevelIter_new
-    else:
-        generateChunksInLevelIter = generateChunksInLevelIter_old
+#     if __builtins__.get('mcenf_generateChunksInLevelIter', False):
+#         log.info("Using new MCServerChunkGenerator.generateChunksInLevelIter")
+#         generateChunksInLevelIter = generateChunksInLevelIter_new
+#     else:
+#         generateChunksInLevelIter = generateChunksInLevelIter_old
+    generateChunksInLevelIter = generateChunksInLevelIter_new
 
     def runServer(self, startingDir):
         if isinstance(startingDir, unicode):
