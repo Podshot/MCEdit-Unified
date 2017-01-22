@@ -26,7 +26,7 @@ import copy
 
 log = getLogger(__name__)
 
-__all__ = ['MCSchematic', 'INVEditChest']
+__all__ = ['MCSchematic', 'INVEditChest', 'StructureNBT']
 
 DEBUG = True
 

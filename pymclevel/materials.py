@@ -1247,7 +1247,7 @@ for mat in allMaterials:
             continue
         setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
 
-__all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")
+__all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockStateAPI".split(", ")
 
 
 if '--dump-mats' in os.sys.argv:
