@@ -824,11 +824,12 @@ class ChunkCalculator(object):
             mats[b.ID] = materialCount
             materialCount += 1
 
-    if __builtins__.get('mcenf_addTransparentMaterials', False):
-        logging.info("Using new ChunkCalculator.addTransparentMaterials")
-        addTransparentMaterials = addTransparentMaterials_new
-    else:
-        addTransparentMaterials = addTransparentMaterials_old
+#     if __builtins__.get('mcenf_addTransparentMaterials', False):
+#         logging.info("Using new ChunkCalculator.addTransparentMaterials")
+#         addTransparentMaterials = addTransparentMaterials_new
+#     else:
+#         addTransparentMaterials = addTransparentMaterials_old
+    addTransparentMaterials = addTransparentMaterials_new
 
     # don't show boundaries between dirt,grass,sand,gravel,or stone.
     # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
