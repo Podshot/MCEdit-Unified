@@ -54,21 +54,25 @@ if splash:
 # An empty file means the 'splash.png' file will always be used.
 #
 
+write_splash = True
+
 if not os.path.exists(splash_name):
     try:
         open(splash_name, 'w').write('scrap')
-    except:
-        pass
+    except Exception, e:
+        write_splash = False
+        print "Could not create 'splash' file:", e
 
-if len(open(splash_name).read()) > 0:
-    from random import choice
-    splashes_folder = os.path.join(cur_dir, 'splashes')
-    if not os.path.exists(splashes_folder):
-        splashes_folder = os.path.join(cur_dir, splashes_folder)
-    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
-        new_splash = choice(os.listdir(splashes_folder))
-        if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
-            try:
-                open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
-            except:
-                pass
+if write_splash:
+    if len(open(splash_name).read()) > 0:
+        from random import choice
+        splashes_folder = os.path.join(cur_dir, 'splashes')
+        if not os.path.exists(splashes_folder):
+            splashes_folder = os.path.join(cur_dir, splashes_folder)
+        if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
+            new_splash = choice(os.listdir(splashes_folder))
+            if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
+                try:
+                    open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+                except Exception, e:
+                    print "Could not write 'splash' file:", e
