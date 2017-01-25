@@ -149,7 +149,7 @@ if zlib == (None, None):
 else:
     if zlib[1] == False:
         print '*** WARNING: zlib has been found on your system, but not for the'
-        print '             current architecture (%s).'
+        print '             current architecture. You apparently run on a %s, and the found zlib is %s'%(ARCH, found[0])
         print '             Building the Pocket Edition support may fail. If not,'
         print '             the support may not work.'
         print '             You can continue, but it is recommended 1.2.8 for your'
@@ -294,9 +294,9 @@ if extract:
     os.system('unzip -q leveldb-mcpe-master.zip')
     os.system("mv $(ls -d1 */ | egrep 'leveldb-mcpe-') leveldb-mcpe")
     os.chdir('leveldb-mcpe')
-    if not os.path.exists('../zlib.zip'):
-        os.system('wget -O ../zlib.zip http://zlib.net/zlib128.zip')
-    os.system('unzip -q ../zlib.zip')
+    if not os.path.exists('../zlib.tar.gz'):
+        os.system('wget -O ../zlib.tar.gz http://zlib.net/fossils/zlib-1.2.8.tar.gz')
+    os.system('tar xvf ../zlib.tar.gz')
     os.system("mv $(ls -d1 */ | egrep 'zlib-') zlib")
     os.chdir('..')
 if build_leveldb:
