@@ -558,6 +558,12 @@ blocks:
         name: Smooth Sandstone
         mapcolor: [218, 210, 158]
         tex: [6, 14]
+        
+   - id: 25
+    idStr: note_block
+    name: Note Block
+    mapcolor: [0, 0, 0]
+    tex: [11, 4]
 
   - id: 26
     idStr: bed
@@ -1620,6 +1626,14 @@ blocks:
     mapcolor: [131, 107, 107]
     tex: [20, 4]
     brightness: 9
+    
+  - id: 77
+    idStr: button
+    name: Stone Button
+    opacity: 0
+    mapcolor: [0, 0, 0]
+    tex: [20, 8]
+    type: BUTTON
 
   - id: 78
     idStr: snow_layer
