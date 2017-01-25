@@ -3610,7 +3610,7 @@
                 0,
                 0
             ],
-	    "opacity" 0,
+	    "opacity": 0,
 	    "type": "BUTTON",
             "id": 77,
             "name": "Stone Button"
