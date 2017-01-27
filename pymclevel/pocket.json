@@ -1215,6 +1215,20 @@
             "id": 24
         },
         {
+            "tex": [
+                11,
+                4
+            ],
+            "idStr": "note_block",
+            "mapcolor": [
+                0,
+                0,
+                0
+            ],
+            "id": 25,
+            "name": "Note Block"
+        },
+        {
             "opacity": 0,
             "name": "Bed",
             "type": "BED",
@@ -2795,6 +2809,72 @@
             "id": 54
         },
         {
+            "opacity": 0,
+            "search": "wire",
+            "type": "FLOOR",
+            "idStr": "redstone_wire",
+            "tex": [
+                31,
+                31
+            ],
+            "mapcolor": [
+                245,
+                50,
+                50
+            ],
+            "data": {
+                "0": {
+                    "name": "Redstone Dust (Power 0)"
+                },
+                "1": {
+                    "name": "Redstone Dust (Power 1)"
+                },
+                "2": {
+                    "name": "Redstone Dust (Power 2)"
+                },
+                "3": {
+                    "name": "Redstone Dust (Power 3)"
+                },
+                "4": {
+                    "name": "Redstone Dust (Power 4)"
+                },
+                "5": {
+                    "name": "Redstone Dust (Power 5)"
+                },
+                "6": {
+                    "name": "Redstone Dust (Power 6)"
+                },
+                "7": {
+                    "name": "Redstone Dust (Power 7)"
+                },
+                "8": {
+                    "name": "Redstone Dust (Power 8)"
+                },
+                "9": {
+                    "name": "Redstone Dust (Power 9)"
+                },
+                "10": {
+                    "name": "Redstone Dust (Power 10)"
+                },
+                "11": {
+                    "name": "Redstone Dust (Power 11)"
+                },
+                "12": {
+                    "name": "Redstone Dust (Power 12)"
+                },
+                "13": {
+                    "name": "Redstone Dust (Power 13)"
+                },
+                "14": {
+                    "name": "Redstone Dust (Power 14)"
+                },
+                "15": {
+                    "name": "Redstone Dust (Power 15)"
+                }
+            },
+            "id": 55
+        },
+        {
             "tex": [
                 2,
                 3
@@ -3518,6 +3598,22 @@
             ],
             "idStr": "lit_redstone_ore",
             "id": 74
+        },
+        {
+            "tex": [
+                20,
+                8
+            ],
+            "idStr": "button",
+            "mapcolor": [
+                0,
+                0,
+                0
+            ],
+	    "opacity": 0,
+	    "type": "BUTTON",
+            "id": 77,
+            "name": "Stone Button"
         },
         {
             "opacity": 0,
