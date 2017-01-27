@@ -7,6 +7,7 @@ from pprint import pformat
 import mclangres
 import json
 import os
+import pkg_resources
 
 NOTEX = (496, 496)
 
@@ -54,6 +55,16 @@ class Block(object):
 id_limit = 4096
 
 class BlockstateAPI(object):
+    '''
+    An easy API to convert from numerical ID's to Blockstates and vice-versa. Each
+    material has its own instance of this class. You can access it in a variety of ways::
+    
+        from pymclevel.materials import BlockstateAPI, alphaMaterials, pocketMaterials
+    
+        api = BlockStateAPI.material_map[alphaMaterials]
+        
+        api = alphaMaterials.blockstate_api
+    '''
     material_map = {}
     
     def __init__(self, mats, definition_file):
@@ -66,7 +77,7 @@ class BlockstateAPI(object):
                 b.stringID = "air"
             self.block_map[b.ID] = "minecraft:" + b.stringID
         
-        with open(os.path.join("pymclevel", definition_file)) as def_file:
+        with pkg_resources.resource_stream(__name__, definition_file) as def_file:
             self.blockstates = json.load(def_file)
             
         self.material_map[self._mats] = self
@@ -134,6 +145,16 @@ class BlockstateAPI(object):
     
     @staticmethod
     def stringifyBlockstate(name, properties):
+        '''
+        Turns a Blockstate into a single string
+        
+        :param name: The Block's base name. IE: grass, command_block, etc.
+        :type name: str
+        :param properties: A list of Property/Value pairs in dict form
+        :type properties: list
+        :return: A complete Blockstate in string form
+        :rtype: str
+        '''
         if not name.startswith("minecraft:"):
             name = "minecraft:" + name # This should be changed as soon as possible
         result = name + "["
@@ -145,6 +166,14 @@ class BlockstateAPI(object):
     
     @staticmethod
     def deStringifyBlockstate(blockstate):
+        '''
+        Turns a single Blockstate string into a base name, properties tuple
+        
+        :param blockstate: The Blockstate string
+        :type blockstate: str
+        :return: A tuple containing the base name and the properties for the Blockstate
+        :rtype: tuple 
+        '''
         seperated = blockstate.split("[")
         
         if len(seperated) == 1:
@@ -314,8 +343,6 @@ class MCMaterials(object):
 
     def addJSONBlocksFromFile(self, filename):
         try:
-            import pkg_resources
-
             f = pkg_resources.resource_stream(__name__, filename)
         except (ImportError, IOError), e:
             log.debug("Cannot get resource_stream for %s %s"%(filename, e))
@@ -1247,7 +1274,7 @@ for mat in allMaterials:
             continue
         setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
 
-__all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockStateAPI".split(", ")
+__all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
 
 
 if '--dump-mats' in os.sys.argv:

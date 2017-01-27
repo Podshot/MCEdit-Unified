@@ -14,13 +14,27 @@ import datetime
 
 log = logging.getLogger(__name__)
 
+def threadable(func):
+    
+    def wrapper(*args, **kwargs):
+        instance = None
+        for arg in args:
+            if isinstance(arg, PlayerCache):
+                instance = arg
+                break
+        with instance.cache_lock:
+            return func(*args, **kwargs)
+        
+    return wrapper
+            
+
 #@Singleton
 class PlayerCache:
     '''
     Used to cache Player names and UUID's, provides an small API to interface with it
     '''
     
-    PATH = userCachePath
+    _PATH = userCachePath
     TIMEOUT = 2.5
     
     __shared_state = {}
@@ -53,7 +67,7 @@ class PlayerCache:
             
     def save(self):
         if hasattr(self, "_cache"):
-            fp = open(self.PATH, 'w')
+            fp = open(self._PATH, 'w')
             json.dump(self._cache, fp, indent=4, separators=(',', ':'))
             fp.close()
     
@@ -62,11 +76,11 @@ class PlayerCache:
         Loads from the usercache.json file if it exists, if not an empty one will be generated
         '''
         self._cache = {"Version": 2, "Connection Timeout": 2.5, "Cache": {}}
-        if not os.path.exists(self.PATH):
-            fp = open(self.PATH, 'w')
+        if not os.path.exists(self._PATH):
+            fp = open(self._PATH, 'w')
             json.dump(self._cache, fp)
             fp.close()
-        fp = open(self.PATH, 'r')
+        fp = open(self._PATH, 'r')
         try:
             json_in = json.load(fp)
             if "Version" not in json_in or json_in.get("Version", 0) != 2:
@@ -104,10 +118,8 @@ class PlayerCache:
                 
             to_refresh = to_refresh_successful + to_refresh_failed
             for uuid in to_refresh:
-                if self.last_error and self.error_count >= 4:
+                if self.error_count >= 4:
                     break
-                elif self.last_error:
-                    self.error_count += 1
                 self._getPlayerInfoUUID(uuid)
         self.save()
         
@@ -220,6 +232,7 @@ class PlayerCache:
                 return self._getPlayerInfoName(arg)
     
     # --- Player Data Getters ---
+    @threadable
     def _getPlayerInfoUUID(self, uuid, use_old_data=False):
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
@@ -249,7 +262,8 @@ class PlayerCache:
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
             else:
                 return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
-        
+    
+    @threadable
     def _getPlayerInfoName(self, name):
         response = self._getDataFromURL("https://api.mojang.com/users/profiles/minecraft/{}".format(name))
         if response:
@@ -283,6 +297,7 @@ class PlayerCache:
             print traceback.format_exc()
         return None
     
+    @threadable
     def getPlayerSkin(self, arg, force_download=True, instance=None):
         '''
         Gets the player's skin from Mojang's skin servers
@@ -372,16 +387,18 @@ class PlayerCache:
         except urllib2.HTTPError, e:
             log.warn("Encountered a HTTPError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.code))
-            self.last_error = (e.code == 429)
+            self.error_count += 1
         except urllib2.URLError, e:
             log.warn("Encountered an URLError while trying to access \"" + url + "\"")
             log.warn("Error: " + str(e.reason))
-            self.last_error = (str(e.reason) == '_ssl.c:489: The handshake operation timed out')
+            self.error_count += 1
         except httplib.HTTPException:
             log.warn("Encountered a HTTPException while trying to access \"" + url + "\"")
+            self.error_count += 1
         except Exception:
             log.warn("Unknown error occurred while trying to get data from URL: " + url)
             log.warn(traceback.format_exc())
+            self.error_count += 1
         return None
     
     def _postDataToURL(self, url, payload, headers):
