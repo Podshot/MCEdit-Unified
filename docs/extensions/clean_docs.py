@@ -15,3 +15,13 @@ def clean(app, exc):
         fp_2 = open(f, 'wb')
         fp_2.writelines(lines)
         fp_2.close()
+        
+    js_lines = []
+    fpr = open(os.path.join(app.builder.outdir, "static", "searchtools.js"), 'rb')
+    for line in fpr.readlines():
+        js_lines.append(line.replace("'_sources/'", "'sources/'"))
+    fpr.close()
+    
+    fpw = open(os.path.join(app.builder.outdir, "static", "searchtools.js"), 'wb')
+    fpw.writelines(js_lines)
+    fpw.close()
