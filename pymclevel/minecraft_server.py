@@ -76,12 +76,12 @@ def sort_nicely(l):
 
 
 class ServerJarStorage(object):
-    cacheDir = os.path.join(getCacheDir(), u"ServerJarStorage")
+    _cacheDir = os.path.join(getCacheDir(), u"ServerJarStorage")
 
     def __init__(self, cacheDir=None):
-        if not os.path.exists(self.cacheDir):
-            os.makedirs(self.cacheDir)
-        readme = os.path.join(self.cacheDir, "README.TXT")
+        if not os.path.exists(self._cacheDir):
+            os.makedirs(self._cacheDir)
+        readme = os.path.join(self._cacheDir, "README.TXT")
         if not os.path.exists(readme):
             with file(readme, "w") as f:
                 f.write("""
@@ -106,13 +106,13 @@ this way.
         self.reloadVersions()
 
     def reloadVersions(self):
-        cacheDirList = os.listdir(self.cacheDir)
+        cacheDirList = os.listdir(self._cacheDir)
         self.versions = list(
             reversed(sorted([v for v in cacheDirList if os.path.exists(self.jarfileForVersion(v))], key=alphanum_key)))
 
         if MCServerChunkGenerator.javaExe:
             for f in cacheDirList:
-                p = os.path.join(self.cacheDir, f)
+                p = os.path.join(self._cacheDir, f)
                 if f.startswith("minecraft_server") and f.endswith(".jar") and os.path.isfile(p):
                     print "Unclassified minecraft_server.jar found in cache dir. Discovering version number..."
                     self.cacheNewVersion(p)
@@ -120,7 +120,7 @@ this way.
 
         print "Minecraft_Server.jar storage initialized."
         print u"Each server is stored in a subdirectory of {0} named with the server's version number".format(
-            self.cacheDir)
+            self._cacheDir)
 
         print "Cached servers: ", self.versions
 
@@ -141,7 +141,7 @@ this way.
 
         version = MCServerChunkGenerator._serverVersionFromJarFile(filename)
         print "Found version ", version
-        versionDir = os.path.join(self.cacheDir, version)
+        versionDir = os.path.join(self._cacheDir, version)
 
         i = 1
         newVersionDir = versionDir
@@ -160,7 +160,7 @@ this way.
             self.versions.append(version)
 
     def jarfileForVersion(self, v):
-        return os.path.join(self.cacheDir, v, "minecraft_server.jar").encode(sys.getfilesystemencoding())
+        return os.path.join(self._cacheDir, v, "minecraft_server.jar").encode(sys.getfilesystemencoding())
 
     def checksumForVersion(self, v):
         jf = self.jarfileForVersion(v)
@@ -274,7 +274,7 @@ class MCServerChunkGenerator(object):
 
     javaExe = findJava()
     jarStorage = None
-    tempWorldCache = {}
+    _tempWorldCache = {}
     processes = []
 
     def __init__(self, version=None, jarfile=None, jarStorage=None):
@@ -289,7 +289,7 @@ class MCServerChunkGenerator(object):
         if jarfile is None:
             raise VersionNotFound(
                 "Could not find minecraft_server.jar for version {0}. Please make sure that a minecraft_server.jar is placed under {1} in a subfolder named after the server's version number.".format(
-                    version or "(latest)", self.jarStorage.cacheDir))
+                    version or "(latest)", self.jarStorage._cacheDir))
         self.serverJarFile = jarfile
         self.serverVersion = version or self._serverVersion()
         atexit.register(MCServerChunkGenerator.terminateProcesses)
@@ -302,7 +302,7 @@ class MCServerChunkGenerator(object):
 
     @classmethod
     def clearWorldCache(cls):
-        cls.tempWorldCache = {}
+        cls._tempWorldCache = {}
 
         for tempDir in os.listdir(cls.worldCacheDir):
             t = os.path.join(cls.worldCacheDir, tempDir)
@@ -331,7 +331,7 @@ class MCServerChunkGenerator(object):
         propsFile = os.path.join(tempDir, "server.properties")
         properties = readProperties(propsFile)
 
-        tempWorld = self.tempWorldCache.get((self.serverVersion, level.RandomSeed))
+        tempWorld = self._tempWorldCache.get((self.serverVersion, level.RandomSeed))
 
         if tempWorld is None:
             if not os.path.exists(tempDir):
@@ -347,7 +347,7 @@ class MCServerChunkGenerator(object):
 
             tempWorldRO = infiniteworld.MCInfdevOldLevel(tempWorldDir, readonly=True)
 
-            self.tempWorldCache[self.serverVersion, level.RandomSeed] = tempWorldRO
+            self._tempWorldCache[self.serverVersion, level.RandomSeed] = tempWorldRO
 
         if level.dimNo == 0:
             properties["allow-nether"] = "false"

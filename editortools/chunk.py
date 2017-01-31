@@ -415,7 +415,7 @@ def GeneratorPanel():
 
     @alertException
     def revealStorage():
-        mcplatform.platform_open(jarStorage.cacheDir)
+        mcplatform.platform_open(jarStorage._cacheDir)
 
     @alertException
     def revealCache():
