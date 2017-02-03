@@ -366,51 +366,57 @@ class PlayerCache:
         toReturn = 'char.png'
         
         raw_data = self.getPlayerInfo(arg)
-        uuid_sep, name, uuid = raw_data
-        if uuid == "<Unknown UUID>":
-            return toReturn
-        player = self._cache["Cache"][uuid]
-        skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
-        #temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
-        try:
-            if not force_download and os.path.exists(skin_path):
-                skin = Image.open(skin_path)
-                if skin.size == (64,64):
-                    skin = skin.crop((0,0,64,32))
-                    skin.save(skin_path)
-                toReturn = skin_path
-            elif force_download or not os.path.exists(skin_path):
-                if uuid in self.temp_skin_cache:
-                    parsed = self._parseSkinResponse(self.temp_skin_cache[uuid])
-                    if parsed is not None:
-                        self._saveSkin(uuid, parsed)
-                        toReturn = skin_path
-                        player["Skin"] = { "Timestamp": time.time() }
-                        self._cache["Cache"][uuid] = player
-                        del self.temp_skin_cache[uuid]
-                        self.save()
-                else:
-                    response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
-                    if response is not None:
-                        parsed = self._parseSkinResponse(response)
+#         print "raw_data.__class__", raw_data.__class__
+        if raw_data.__class__ != ThreadRS:
+#             print 'raw_data', raw_data
+            uuid_sep, name, uuid = raw_data
+            if uuid == "<Unknown UUID>" or "Server not ready" in raw_data:
+#                 print 'returning', toReturn
+                return toReturn
+            player = self._cache["Cache"][uuid]
+            skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
+            #temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
+            try:
+                if not force_download and os.path.exists(skin_path):
+                    skin = Image.open(skin_path)
+                    if skin.size == (64,64):
+                        skin = skin.crop((0,0,64,32))
+                        skin.save(skin_path)
+                    toReturn = skin_path
+                elif force_download or not os.path.exists(skin_path):
+                    if uuid in self.temp_skin_cache:
+                        parsed = self._parseSkinResponse(self.temp_skin_cache[uuid])
                         if parsed is not None:
                             self._saveSkin(uuid, parsed)
                             toReturn = skin_path
                             player["Skin"] = { "Timestamp": time.time() }
                             self._cache["Cache"][uuid] = player
+                            del self.temp_skin_cache[uuid]
                             self.save()
-               
-        except IOError:
-            print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
-            if instance is not None:
-                instance.delete_skin(uuid_sep.replace("-","_"))
-                os.remove(skin_path)
-                print "Something happened, retrying"
-                toReturn = self.getPlayerSkin(arg, True, instance)
-        except Exception:
-            import traceback
-            print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
-            print traceback.format_exc()
+                    else:
+                        response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
+                        if response is not None:
+                            parsed = self._parseSkinResponse(response)
+                            if parsed is not None:
+                                self._saveSkin(uuid, parsed)
+                                toReturn = skin_path
+                                player["Skin"] = { "Timestamp": time.time() }
+                                self._cache["Cache"][uuid] = player
+                                self.save()
+                   
+            except IOError:
+                print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
+                if instance is not None:
+                    instance.delete_skin(uuid_sep.replace("-","_"))
+                    os.remove(skin_path)
+                    print "Something happened, retrying"
+                    toReturn = self.getPlayerSkin(arg, True, instance)
+            except Exception:
+                import traceback
+                print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
+                print traceback.format_exc()
+        else:
+            toReturn = raw_data.join()
         return toReturn
     
     def _saveSkin(self, uuid, data):
