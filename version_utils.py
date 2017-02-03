@@ -14,8 +14,46 @@ import datetime
 
 log = logging.getLogger(__name__)
 
+
+class ThreadRS(threading.Thread):
+    # This class comes from: http://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread-in-python
+    # And may have been tweaked ;)
+    '''
+    This class uses a _return instance member to store the result of the underlying Thread object.
+    If 'callbacks' objects are send to the constructor, this '_result' object will be sent to all of them
+    at the end of the 'run' and 'join' method. The latest one also returns '_return' object.
+    '''
+    def __init__(self, group=None, target=None, name=None, callbacks=[],
+                 args=(), kwargs={}, Verbose=None):
+        '''
+        :callbacks: list: callable objects to send the thread result to.
+        For other arguments, see threading.Thread documentation.
+        '''
+        self.target = target
+        self.callbacks = callbacks
+        threading.Thread.__init__(self, group, target, name, args, kwargs, Verbose)
+        self._return = None
+
+    def run(self):
+        if self._Thread__target is not None:
+            self._return = self._Thread__target(*self._Thread__args,
+                                                **self._Thread__kwargs)
+            for callback in self.callbacks:
+                callback(self._return)
+
+    def join(self):
+        try:
+            threading.Thread.join(self)
+        except Exception, e:
+            print e
+        for callback in self.callbacks:
+            callback(self._return)
+        return self._return
+
+    def __repr__(self, *args, **kwargs):
+        return '%s::%s'%(ThreadRS, self.target)
+
 def threadable(func):
-    
     def wrapper(*args, **kwargs):
         instance = None
         for arg in args:
@@ -23,10 +61,11 @@ def threadable(func):
                 instance = arg
                 break
         with instance.cache_lock:
-            return func(*args, **kwargs)
-        
+            t = ThreadRS(target=func, args=args, kwargs=kwargs, callbacks=instance.targets)
+            t.start()
+            return t
     return wrapper
-            
+
 
 #@Singleton
 class PlayerCache:
@@ -36,6 +75,7 @@ class PlayerCache:
     
     _PATH = userCachePath
     TIMEOUT = 2.5
+    targets = [] # Used to send data update when subprocesses has finished.
     
     __shared_state = {}
     
@@ -45,6 +85,11 @@ class PlayerCache:
         self.error_count = 0
     
     # --- Utility Functions ---
+    def add_target(self, target):
+        global targets
+        if target not in self.targets:
+            self.targets.append(target)
+
     @staticmethod
     def insertSeperators(uuid):
         return uuid[:8] + "-" + uuid[8:12] + "-" + uuid[12:16] + "-" + uuid[16:20] + "-" + uuid[20:]
@@ -75,7 +120,7 @@ class PlayerCache:
         '''
         Loads from the usercache.json file if it exists, if not an empty one will be generated
         '''
-        self._cache = {"Version": 2, "Connection Timeout": 2.5, "Cache": {}}
+        self._cache = {"Version": 2, "Connection Timeout": 10, "Cache": {}}
         if not os.path.exists(self._PATH):
             fp = open(self._PATH, 'w')
             json.dump(self._cache, fp)
@@ -224,12 +269,19 @@ class PlayerCache:
             if self.UUIDInCache(arg) and self._wasSuccessfulUUID(arg) and not force:
                 return self._getDataFromCacheUUID(arg)
             else:
-                return self._getPlayerInfoUUID(arg, use_old_data)
+                r = self._getPlayerInfoUUID(arg, use_old_data)
+                if r.__class__ == ThreadRS:
+                    c = arg.replace('-', '')
+                    return self.insertSeperators(c), 'Server not ready', c
         except ValueError:
             if self.nameInCache(arg) and self._wasSuccessfulName(arg) and not force:
                 return self._getDataFromCacheName(arg)
             else:
-                return self._getPlayerInfoName(arg)
+                r = self._getPlayerInfoName(arg)
+                if r.__class__ == ThreadRS:
+                    return 'Server not ready', arg, 'Server not ready'
+                else:
+                    return r
     
     # --- Player Data Getters ---
     @threadable
@@ -313,7 +365,8 @@ class PlayerCache:
         '''
         toReturn = 'char.png'
         
-        uuid_sep, name, uuid = self.getPlayerInfo(arg)
+        raw_data = self.getPlayerInfo(arg)
+        uuid_sep, name, uuid = raw_data
         if uuid == "<Unknown UUID>":
             return toReturn
         player = self._cache["Cache"][uuid]

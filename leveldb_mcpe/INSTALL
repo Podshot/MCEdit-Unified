@@ -31,18 +31,19 @@ leveldb_mcpe:
 * unzip
 
 
-BOOST 1.55.0 STATIC BOOST_PYTHON
+BOOST 1.58.0 STATIC BOOST_PYTHON
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Boost 1.55.0 static boost_python is needed to compile leveldb_mcpe.
-This specific build will be installed automatically (if not found) for
-the user only. This mean that, if '~/.local/lib/boost_1_55_0_mcpe' is
-not found, Boost will be installed there.
+The static verion of 'boost_python' is required to compile  the MCEdit
+internal PE support (leveldb_mcpe).
+If it is not found on your system, Boost 1.58.0 will be installed for
+the current user only in '~/.local/lib/boost_1_58_0_mcpe'.
+This specific installation is will avoid corupting your system in case
+another Boost impletaion is installed.
 
-You have nothing to do.
-
-If you run again the setup.py script, and Boost is found, it won't be
-reinstalled.
+This specific Boost installation directory is not removed after the
+PE support compilation, so if you run again the setup.py script,
+and Boost is found, it won't be reinstalled.
 
 
 MOJANG'S LEVELDB-MCPE
@@ -66,5 +67,5 @@ You'll have to install them on you system with you package manager...
 INSTALLATION
 ~~~~~~~~~~~~
 
-Just run 'python setup.py build' et voilà!
+Just run 'python setupnx.py build' et voilà!
 
