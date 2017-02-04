@@ -52,7 +52,19 @@ if DEBUG_PE:
     open(dump_fName, 'w').close()
 
 
-def loadNBTCompoundList(data, littleEndian=True):
+# =====================================================================
+# loadNBTCompoundList
+#
+# In the old version, the raw data is split in several parts then sent
+# to the nNBT support for effective loading.
+# This is not realy safe, since the split is made on a string object.
+# It leads to malformed NBT data, and prevent some chunks to be loaded.
+#
+# The new method loads the raw data, and returns the NBT data
+# encapsulated in a Puthon List object if the NBT is a compound object,
+# or as is if it is a NBT list.
+# This second method suppresses some of the missing chunks bugs.
+def loadNBTCompoundList_old(data, littleEndian=True):
     """
     Loads a list of NBT Compound tags from a bunch of data.
     Uses sep to determine where the next Compound tag starts.
@@ -110,6 +122,59 @@ def loadNBTCompoundList(data, littleEndian=True):
     else:
         return load(data)
 
+def loadNBTCompoundList_new(data, littleEndian=True):
+    """
+    Loads a list of NBT Compound tags from a bunch of data.
+    Uses sep to determine where the next Compound tag starts.
+    :param data: str, the NBT to load from
+    :param littleEndian: bool. Determines endianness
+    :return: list of TAG_Compounds
+    """
+    def load(_data):
+        if len(_data):
+            try:
+                __data = nbt.load(buf=_data)
+            except Exception, e:
+                msg1 = "PE support could not read compound list data:"
+                msg2 = "Data dump:"
+                msg3 = "Data length: %s"
+                logger.error(msg1)
+                logger.error(e)
+                if len(_data) > 80:
+                    logger.error("Partial data dump:")
+                    logger.error("%s [...] %s", repr(_data[:40]), repr(_data[-40:]))
+                else:
+                    logger.error(msg2)
+                    logger.error(repr(_data))
+                logger.error(msg3, len(data))
+                if DEBUG_PE:
+                    try:
+                        dump_line = len(open(dump_fName).read().splitlines()) + 1
+                        dump_msg = "**********\n{m1}\n{e}\n{m2}\n{d}\n{m3} {l}".format(m1=msg1,
+                                   e=e, m2=msg2, d=repr(_data), m3=msg3, l=len(data))
+                        msg_len = len(dump_msg.splitlines())
+                        open(dump_fName, 'a').write(dump_msg)
+                        logger.warn("Error info and data dumped to %s at line %s (%s lines long)", dump_fName, dump_line, msg_len)
+                    except Exception, _e:
+                        logger.error("Could not dump PE debug info:")
+                        logger.error(_e)
+                raise e
+            if __data.isCompound():
+                return [__data]
+            return __data
+        else:
+            return []
+
+    if littleEndian:
+        with nbt.littleEndianNBT():
+            return load(data)
+    else:
+        return load(data)
+
+if __builtins__.get('mcenf_loadNBTCompoundList', False):
+    loadNBTCompoundList = loadNBTCompoundList_new
+else:
+    loadNBTCompoundList = loadNBTCompoundList_old
 
 def TagProperty(tagName, tagType, default_or_func=None):
     """
