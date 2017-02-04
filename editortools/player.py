@@ -266,7 +266,10 @@ class PlayerAddOperation(Operation):
                 self.tool.panel.player_UUID["UUID"].append(self.uuid)
                 self.tool.panel.player_UUID["Name"].append(self.player)
 #             print 4
-            self.tool.playerTexture[self.uuid] = loadPNGTexture(self.playercache.getPlayerSkin(self.uuid))
+            r = self.playercache.getPlayerSkin(self.uuid)
+            if type(r) not in (str, unicode):
+                r = r.join()
+            self.tool.playerTexture[self.uuid] = loadPNGTexture(r)
             self.tool.playerPos[(0,0,0)] = self.uuid
             self.tool.revPlayerPos[self.uuid] = (0,0,0)
             self.playerTag.save(self.level.getPlayerPath(self.uuid))
@@ -661,7 +664,10 @@ class PlayerPositionTool(EditorTool):
                 if player != "Player" and player in self.playerTexture.keys():
                     del self.playerTexture[player]
 #                     print 6
-                    self.playerTexture[player] = loadPNGTexture(self.playercache.getPlayerSkin(player, force_download=True, instance=self))
+                    r = self.playercache.getPlayerSkin(player, force_download=True, instance=self)
+                    if type(r) not in (str, unicode):
+                        r = r.join()
+                    self.playerTexture[player] = loadPNGTexture(r)
             #self.markerList.call(self._drawToolMarkers)
         except:
             raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
@@ -868,7 +874,10 @@ class PlayerPositionTool(EditorTool):
                 
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
 #                     print 7
-                    self.playerTexture[player] = loadPNGTexture(self.playercache.getPlayerSkin(player, force_download=False))
+                    r = self.playercache.getPlayerSkin(player, force_download=False)
+                    if type(r) not in (str, unicode):
+                        r = r.join()
+                    self.playerTexture[player] = loadPNGTexture(r)
                 else:
                     self.playerTexture[player] = self.charTex
                     
