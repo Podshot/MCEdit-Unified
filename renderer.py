@@ -934,20 +934,87 @@ class ChunkCalculator(object):
                     neighboringChunks[dir] = pymclevel.infiniteworld.ZeroChunk(level.Height)
         return neighboringChunks
 
-    @staticmethod
-    def getAreaBlocks(chunk, neighboringChunks):
+    #@staticmethod
+    def getAreaBlocks(self, chunk, neighboringChunks):
         chunkWidth, chunkLength, chunkHeight = chunk.Blocks.shape
 
-        areaBlocks = numpy.zeros((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint16)
-        areaBlocks[1:-1, 1:-1, 1:-1] = chunk.Blocks
-        areaBlocks[:1, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks[-1:, :chunkLength,
-                                     :chunkHeight]
-        areaBlocks[-1:, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks[:1, :chunkLength,
-                                      :chunkHeight]
-        areaBlocks[1:-1, :1, 1:-1] = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks[:chunkWidth, -1:,
-                                     :chunkHeight]
-        areaBlocks[1:-1, -1:, 1:-1] = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks[:chunkWidth, :1,
-                                      :chunkHeight]
+#         print "BBB self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus'", self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus', self.level.gameVersion, getattr(self.level, 'world_version', False)
+        if self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus':
+            # In PE 1+, we have to deal with subchunks...
+            chunkHeight = chunkHeight * 16
+            areaBlocks = numpy.zeros((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint16)
+            # For each subchunk, we have to add the corresponding binary_data
+            # If a subchunk does not exists, fill the corresponding area with zeros
+            # The full chunk is 16 subchunk high
+            _null_data = numpy.zeros(chunk.Blocks.shape, chunk.Blocks.bin_type)
+            # It may happen that neighbour chunks are alrady munpy.ndarray objects...
+            # Try to guess.
+            get_fxd = False
+            get_fxi = False
+            get_fzd = False
+            get_fzi = False
+            fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks
+            if type(fxd) == numpy.ndarray:
+                get_fxd = False
+                areaBlocks[:1, 1:-1, 1:-1] = fxd[-1:, :chunkLength,
+                                         :chunkHeight]
+            fxi = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks
+            if type(fxi) == numpy.ndarray:
+                get_fxi = False
+                areaBlocks[:1, 1:-1, 1:-1] = fxi[-1:, :chunkLength,
+                                         :chunkHeight]
+            fzd = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks
+            if type(fzd) == numpy.ndarray:
+                get_fzd = False
+                areaBlocks[:1, 1:-1, 1:-1] = fzd[-1:, :chunkLength,
+                                         :chunkHeight]
+            fzi = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks
+            if type(fzi) == numpy.ndarray:
+                get_fzi = False
+                areaBlocks[:1, 1:-1, 1:-1] = fzi[-1:, :chunkLength,
+                                         :chunkHeight]
+            for i in xrange(0, 256, 16):
+                y = i / 16
+                data = chunk.Blocks.binary_data[y]
+                if data is None:
+                    data = _null_data
+                areaBlocks[1:-1, 1:-1, 1 + i:17 + i] = data
+
+                if get_fxd:
+                    fxd_data = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks.binary_data[y]
+                    if fxd_data is None:
+                        fxd_data = _null_data
+                    areaBlocks[:1, 1:-1, 1 + i:17 + i] = fxd_data[-1:, :chunkLength,
+                                             :chunkHeight]
+                if get_fxi:
+                    fxi_data = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks.binary_data[y]
+                    if fxi_data is None:
+                        fxi_data = _null_data
+                    areaBlocks[-1:, 1:-1, 1 + i:17 + i] = fxi_data[:1, :chunkLength,
+                                              :chunkHeight]
+                if get_fzd:
+                    fzd_data = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks.binary_data[y]
+                    if fzd_data is None:
+                        fzd_data = _null_data
+                    areaBlocks[1:-1, :1, 1 + i:17 + i] = fzd_data[:chunkWidth, -1:,
+                                                 :chunkHeight]
+                if get_fzi:
+                    fzi_data = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks.binary_data[y]
+                    if fzi_data is None:
+                        fzi_data = _null_data
+                    areaBlocks[1:-1, -1:, 1 + i:17 + i] = fzi_data[:chunkWidth, :1,
+                                                  :chunkHeight]
+        else:
+            areaBlocks = numpy.zeros((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint16)
+            areaBlocks[1:-1, 1:-1, 1:-1] = chunk.Blocks
+            areaBlocks[:1, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks[-1:, :chunkLength,
+                                         :chunkHeight]
+            areaBlocks[-1:, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks[:1, :chunkLength,
+                                          :chunkHeight]
+            areaBlocks[1:-1, :1, 1:-1] = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks[:chunkWidth, -1:,
+                                         :chunkHeight]
+            areaBlocks[1:-1, -1:, 1:-1] = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks[:chunkWidth, :1,
+                                          :chunkHeight]
         return areaBlocks
 
     @staticmethod
@@ -972,10 +1039,34 @@ class ChunkCalculator(object):
 
     def getAreaBlockLights(self, chunk, neighboringChunks):
         chunkWidth, chunkLength, chunkHeight = chunk.Blocks.shape
-        lights = chunk.BlockLight
-        skyLight = chunk.SkyLight
-        finalLight = self.whiteLight
+#         print "DDD self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus'", self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus',self.level.gameVersion, getattr(self.level, 'world_version', False)
+        if self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus':
+            chunkHeight = chunkHeight * 16
+            _null_bl_data = numpy.zeros(chunk.BlockLight.shape, chunk.BlockLight.bin_type)
+            _null_sl_data = numpy.zeros(chunk.SkyLight.shape, chunk.SkyLight.bin_type)
+            lights = numpy.zeros((chunk.BlockLight.shape[0] + 2, chunk.BlockLight.shape[1] + 2, chunkHeight + 2), chunk.BlockLight.bin_type)
+            skyLight = numpy.zeros((chunk.SkyLight.shape[0] + 2, chunk.SkyLight.shape[1] + 2, chunkHeight + 2), chunk.SkyLight.bin_type)
+            finalLight = self.whiteLight
+            for i in xrange(0, 256, 16):
+                y = i / 16
+                bl = chunk.BlockLight.binary_data[y]
+#                 print bl
+                if bl is None:
+                    bl = _null_bl_data
+#                 print bl.shape
+                lights[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = bl
+                sl = chunk.SkyLight.binary_data[y]
+                if sl is None:
+                    sl = _null_sl_data
+                skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = sl
+            lights = lights[1:-1, 1:-1, 1:-1]
+            skyLight = skyLight[1:-1, 1:-1, 1:-1]
+        else:
+            lights = chunk.BlockLight
+            skyLight = chunk.SkyLight
+            finalLight = self.whiteLight
 
+#         print lights is None
         if lights is not None:
             finalLight = lights
         if skyLight is not None:
@@ -986,24 +1077,151 @@ class ChunkCalculator(object):
 
         areaBlockLights[1:-1, 1:-1, 1:-1] = finalLight
 
-        nc = neighboringChunks[pymclevel.faces.FaceXDecreasing]
-        numpy.maximum(nc.SkyLight[-1:, :chunkLength, :chunkHeight],
-                      nc.BlockLight[-1:, :chunkLength, :chunkHeight],
+#         nc = neighboringChunks[pymclevel.faces.FaceXDecreasing]
+#         numpy.maximum(nc.SkyLight[-1:, :chunkLength, :chunkHeight],
+#                       nc.BlockLight[-1:, :chunkLength, :chunkHeight],
+#                       areaBlockLights[0:1, 1:-1, 1:-1])
+# 
+#         nc = neighboringChunks[pymclevel.faces.FaceXIncreasing]
+#         numpy.maximum(nc.SkyLight[:1, :chunkLength, :chunkHeight],
+#                       nc.BlockLight[:1, :chunkLength, :chunkHeight],
+#                       areaBlockLights[-1:, 1:-1, 1:-1])
+# 
+#         nc = neighboringChunks[pymclevel.faces.FaceZDecreasing]
+#         numpy.maximum(nc.SkyLight[:chunkWidth, -1:, :chunkHeight],
+#                       nc.BlockLight[:chunkWidth, -1:, :chunkHeight],
+#                       areaBlockLights[1:-1, 0:1, 1:-1])
+# 
+#         nc = neighboringChunks[pymclevel.faces.FaceZIncreasing]
+#         numpy.maximum(nc.SkyLight[:chunkWidth, :1, :chunkHeight],
+#                       nc.BlockLight[:chunkWidth, :1, :chunkHeight],
+#                       areaBlockLights[1:-1, -1:, 1:-1])
+
+#         print "CCC self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus'", self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus', self.level.gameVersion, getattr(self.level, 'world_version', False)
+        if self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus':
+            _null_data = numpy.zeros(chunk.SkyLight.shape, chunk.SkyLight.bin_type)
+            fxd_skyLight = numpy.zeros((chunk.SkyLight.shape[0] + 2, chunk.SkyLight.shape[1] + 2, chunkHeight + 2), chunk.SkyLight.bin_type)
+            fxi_skyLight = numpy.zeros((chunk.SkyLight.shape[0] + 2, chunk.SkyLight.shape[1] + 2, chunkHeight + 2), chunk.SkyLight.bin_type)
+            fzd_skyLight = numpy.zeros((chunk.SkyLight.shape[0] + 2, chunk.SkyLight.shape[1] + 2, chunkHeight + 2), chunk.SkyLight.bin_type)
+            fzi_skyLight = numpy.zeros((chunk.SkyLight.shape[0] + 2, chunk.SkyLight.shape[1] + 2, chunkHeight + 2), chunk.SkyLight.bin_type)
+            fxd_blockLight = numpy.zeros((chunk.BlockLight.shape[0] + 2, chunk.BlockLight.shape[1] + 2, chunkHeight + 2), chunk.BlockLight.bin_type)
+            fxi_blockLight = numpy.zeros((chunk.BlockLight.shape[0] + 2, chunk.BlockLight.shape[1] + 2, chunkHeight + 2), chunk.BlockLight.bin_type)
+            fzd_blockLight = numpy.zeros((chunk.BlockLight.shape[0] + 2, chunk.BlockLight.shape[1] + 2, chunkHeight + 2), chunk.BlockLight.bin_type)
+            fzi_blockLight = numpy.zeros((chunk.BlockLight.shape[0] + 2, chunk.BlockLight.shape[1] + 2, chunkHeight + 2), chunk.BlockLight.bin_type)
+
+            # It may happen some neighbourgh chunks already are a numpy.ndarray...
+            # Let try to guess
+            get_fxd_skyLight = True
+            get_fxi_skyLight = True
+            get_fzd_skyLight = True
+            get_fzi_skyLight = True
+            xds = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight
+            if type(xds) == numpy.ndarray:
+                get_fxd_skyLight = False
+                fxd_skyLight[1:-1, 1:-1, 1:-1] = xds
+            xis = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight
+            if type(xis) == numpy.ndarray:
+                get_fxi_skyLight = False
+                fxi_skyLight[1:-1, 1:-1, 1:-1] = xis
+            zds = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight
+            if type(zds) == numpy.ndarray:
+                get_fzd_skyLight = False
+                fzd_skyLight[1:-1, 1:-1, 1:-1] = zds
+            zis = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight
+            if type(zis) == numpy.ndarray:
+                get_fzi_skyLight = False
+                fzi_skyLight[1:-1, 1:-1, 1:-1] = zis
+
+            get_fxd_blockLight = True
+            get_fxi_blockLight = True
+            get_fzd_blockLight = True
+            get_fzi_blockLight = True
+            xdb = neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight
+            if type(xdb) == numpy.ndarray:
+                get_fxd_blockLight = False
+                fxd_blockLight[1:-1, 1:-1, 1:-1] = xdb
+            xib = neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight
+            if type(xib) == numpy.ndarray:
+                get_fxi_blockLight = False
+                fxi_blockLight[1:-1, 1:-1, 1:-1] = xib
+            zdb = neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight
+            if type(zdb) == numpy.ndarray:
+                get_fzd_blockLight = False
+                fzd_blockLight[1:-1, 1:-1, 1:-1] = zdb
+            zib = neighboringChunks[pymclevel.faces.FaceZIncreasing].BlockLight
+            if type(zib) == numpy.ndarray:
+                get_fzi_blockLight = False
+                fzi_blockLight[1:-1, 1:-1, 1:-1] = zib
+
+            for i in xrange(0, 256, 16):
+                y = i / 16
+
+                if get_fxd_skyLight:
+                    _fxd_skyLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight.binary_data[y]
+                    if _fxd_skyLight is None:
+                        _fxd_skyLight = _null_data
+                    fxd_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxd_skyLight
+                if get_fxi_skyLight:
+                    _fxi_skyLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight.binary_data[y]
+                    if _fxi_skyLight is None:
+                        _fxi_skyLight = _null_data
+                    fxi_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxi_skyLight
+                if get_fzd_skyLight:
+                    _fzd_skyLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight.binary_data[y]
+                    if _fzd_skyLight is None:
+                        _fzd_skyLight = _null_data
+                    fzd_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzd_skyLight
+                if get_fzi_skyLight:
+                    _fzi_skyLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight.binary_data[y]
+                    if _fzi_skyLight is None:
+                        _fzi_skyLight = _null_data
+                    fzi_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzi_skyLight
+
+                if get_fxd_blockLight:
+                    _fxd_blockLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight.binary_data[y]
+                    if _fxd_blockLight is None:
+                        _fxd_blockLight = _null_data
+                    fxd_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxd_blockLight
+                if get_fxi_blockLight:
+                    _fxi_blockLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight.binary_data[y]
+                    if _fxi_blockLight is None:
+                        _fxi_blockLight = _null_data
+                    fxi_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxi_blockLight
+                if get_fzd_blockLight:
+                    _fzd_blockLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight.binary_data[y]
+                    if _fzd_blockLight is None:
+                        _fzd_blockLight = _null_data
+                    fzd_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzd_blockLight
+                if get_fzi_blockLight:
+                    _fzi_blockLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight.binary_data[y]
+                    if _fzi_blockLight is None:
+                        _fzi_blockLight = _null_data
+                    fzi_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzi_blockLight
+
+
+        else:
+            fxd_skyLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight
+            fxi_skyLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight
+            fzd_skyLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight
+            fzi_skyLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight
+            fxd_blockLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight
+            fxi_blockLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight
+            fzd_blockLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight
+            fzi_blockLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].BlockLight
+        numpy.maximum(fxd_skyLight[-1:, :chunkLength, :chunkHeight],
+                      fxd_blockLight[-1:, :chunkLength, :chunkHeight],
                       areaBlockLights[0:1, 1:-1, 1:-1])
 
-        nc = neighboringChunks[pymclevel.faces.FaceXIncreasing]
-        numpy.maximum(nc.SkyLight[:1, :chunkLength, :chunkHeight],
-                      nc.BlockLight[:1, :chunkLength, :chunkHeight],
+        numpy.maximum(fxi_skyLight[:1, :chunkLength, :chunkHeight],
+                      fxi_blockLight[:1, :chunkLength, :chunkHeight],
                       areaBlockLights[-1:, 1:-1, 1:-1])
 
-        nc = neighboringChunks[pymclevel.faces.FaceZDecreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, -1:, :chunkHeight],
-                      nc.BlockLight[:chunkWidth, -1:, :chunkHeight],
+        numpy.maximum(fzd_skyLight[:chunkWidth, -1:, :chunkHeight],
+                      fzd_blockLight[:chunkWidth, -1:, :chunkHeight],
                       areaBlockLights[1:-1, 0:1, 1:-1])
 
-        nc = neighboringChunks[pymclevel.faces.FaceZIncreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, :1, :chunkHeight],
-                      nc.BlockLight[:chunkWidth, :1, :chunkHeight],
+        numpy.maximum(fzi_skyLight[:chunkWidth, :1, :chunkHeight],
+                      fzi_blockLight[:chunkWidth, :1, :chunkHeight],
                       areaBlockLights[1:-1, -1:, 1:-1])
 
         minimumLight = 4
@@ -1066,7 +1284,43 @@ class ChunkCalculator(object):
             yield
 
     def computeGeometry(self, chunk, areaBlockMats, facingBlockIndices, areaBlockLights, chunkRenderer, blockRenderers):
-        blocks, blockData = chunk.Blocks, chunk.Data
+#         print "AAA self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus'", self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus', self.level.gameVersion, getattr(self.level, 'world_version', False)
+        if self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus':
+            bWidth, bLength, bHeight = chunk.Blocks.shape
+            bHeight = bHeight * 16
+            blocks = numpy.zeros((bWidth + 2, bLength + 2, bHeight + 2), numpy.uint16)
+            dWidth, dLength, dHeight = chunk.Data.shape
+#             print chunk.Data.shape
+            blockData = numpy.zeros((dWidth + 2, dLength + 2, dHeight + 2), numpy.uint8)
+#             print blockData.shape
+            # For each subchunk, we have to add the corresponding binary_data
+            # If a subchunk does not exists, fill the corresponding area with zeros
+            # The full chunk is 16 subchunk high
+            _null_b_data = numpy.zeros(chunk.Blocks.shape, chunk.Blocks.bin_type)
+            _null_d_data = numpy.zeros(chunk.Data.shape, chunk.Data.bin_type)
+            for i in xrange(0, 256, 16):
+                y = i / 16
+                _blocks = chunk.Blocks.binary_data[y]
+                if _blocks is None:
+                    _blocks = _null_b_data
+                blocks[1:-1, 1:-1, 1 + i:17 + i] = _blocks
+
+                _data = chunk.Data.binary_data[y]
+                if _data is None:
+                    _data = _null_d_data
+#                 print len(blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)]), len(_data), _data.shape
+                try:
+                    blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)] = _data
+                except:
+#                     print len(blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)]), len(_data), _data.shape
+                    pass
+#                     blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)] = _data
+
+            blocks = blocks[1:-1, 1:-1, 1:-1]
+            blockData = blockData[1:-1, 1:-1, 1:-1]
+
+        else:
+            blocks, blockData = chunk.Blocks, chunk.Data
         blockData &= 0xf
         blockMaterials = areaBlockMats[1:-1, 1:-1, 1:-1]
         if self.roughGraphics:
@@ -1645,7 +1899,14 @@ class GenericBlockRenderer(BlockRenderer):
             blockIndices = materialIndices & exposedFaceIndices
 
             theseBlocks = blocks[blockIndices]
-            bdata = blockData[blockIndices]
+#             print 'theseBlocks.shape', theseBlocks.shape
+#             print 'len(blockData)', len(blockData), 'shape', blockData.shape, 'len(blockIndices)', len(blockIndices), 'shape', blockIndices.shape
+            # Bad stuff to make PE 1.0 almost work
+            try:
+                bdata = blockData[blockIndices]
+            except:
+                bdata = numpy.zeros(blockIndices.shape, blockData.dtype)
+                bdata = bdata[blockIndices]
 
             vertexArray = self.makeTemplate(direction, blockIndices)
             if not len(vertexArray):
@@ -1687,7 +1948,12 @@ class LeafBlockRenderer(BlockRenderer):
         if self.materials.name in ("Alpha", "Pocket"):
             if not self.chunkCalculator.fastLeaves:
                 blockIndices = materialIndices
-                data = blockData[blockIndices]
+                # Bad stuff to make PE 1.0 almost work
+                try:
+                    data = blockData[blockIndices]
+                except:
+                    data = numpy.zeros(blockIndices.shape, blockData.dtype)
+                    data = data[blockIndices]
                 data &= 0x3  # ignore decay states
                 leaves = (data == alphaMaterials.Leaves.blockData)
                 pines = (data == alphaMaterials.PineLeaves.blockData)
@@ -1768,7 +2034,12 @@ class PlantBlockRenderer(BlockRenderer):
 
         theseBlocks = blocks[blockIndices]
 
-        bdata = blockData[blockIndices]
+        # Bad stuff to make PE 1.0 almost work
+        try:
+            bdata = blockData[blockIndices]
+        except:
+            bdata = numpy.zeros(blockIndices.shape, blockData.dtype)
+            bdata = bdata[blockIndices]
         texes = texMap(blocks[blockIndices], bdata, 0)
 
         blockLight = areaBlockLights[1:-1, 1:-1, 1:-1]

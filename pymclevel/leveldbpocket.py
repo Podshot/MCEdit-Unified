@@ -1416,6 +1416,7 @@ class PocketLeveldbDatabase_new(object):
         return terrain, tile_entities, entities
 
     def _readChunk_pre1_0(self, cx, cz, readOptions=None):
+        # Put that in the chunk classes
         """
         :param cx, cz: int Coordinates of the chunk
         :param readOptions: ReadOptions
@@ -1448,6 +1449,7 @@ class PocketLeveldbDatabase_new(object):
         return terrain, tile_entities, entities
 
     def _readChunk_1plus(self, cx, cz, y, readOptions=None):
+        # Put that in the chunk classes
         key = struct.pack('<i', cx) + struct.pack('<i', cz)
         with self.world_db() as db:
 #             print "--- Loading subchunk %s in chunk %s %s"%(y, cx, cz)
@@ -1472,32 +1474,33 @@ class PocketLeveldbDatabase_new(object):
 
         return terrain, tile_entities, entities
 
-    def _readChunk(self, cx, cz, readOptions=None):
+    def _readChunk(self, cx, cz, world, readOptions=None):
+        # Put this in the chunks classes
         """
         :param cx, cz: int Coordinates of the chunk
         :param readOptions: ReadOptions
         :return: chunk data in a tuple: (terrain, tile_entities, entities)
         """
         if self.world_version == 'pre1.0':
-            return self._readChunk_pre1_0(cx, cz, readOptions)
+            data = self._readChunk_pre1_0(cx, cz, readOptions)
+            if data is None:
+                raise ChunkNotPresent((cx, cz, self))
+            PocketLeveldbChunk
+            chunk = PocketLeveldbChunkPre1(cx, cz, world, data, world_version=self.world_version)
         else:
             # Iterate through the subchunks to rebuild the whole data
-            terrain = ''
-            tile_entities = ''
-            entities = ''
+            chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version, create=True)
             for i in range(16):
                 r = self._readChunk_1plus(cx, cz, i, readOptions)
                 if type(r) == tuple:
                     tr, te, en = r
 #                     print 'etetetetete'
-                    if tr is not None:
-                        terrain += tr
-                    if te is not None:
-                        tile_entities += te
-                    if en is not None:
-                        entities += en
+                    terrain = tr
+                    tile_entities = te
+                    entities  = en
+                    chunk.add_data(terrain=terrain, tile_entities=tile_entities, entities=entities, subchunk=i)
         logger.debug("CHUNK LOAD %s %s"%(cx, cz))
-        return terrain, tile_entities, entities
+        return chunk
 
     def saveChunk(self, chunk, batch=None, writeOptions=None):
         """
@@ -1532,11 +1535,13 @@ class PocketLeveldbDatabase_new(object):
         :return: PocketLeveldbChunk
         """
 #         print 'DB load chunk', cx, cz
-        data = self._readChunk(cx, cz)
-        if data is None:
-            raise ChunkNotPresent((cx, cz, self))
+#         data = self._readChunk(cx, cz)
+#         if data is None:
+#             raise ChunkNotPresent((cx, cz, self))
+# 
+#         chunk = PocketLeveldbChunk(cx, cz, world, data, world_version=self.world_version)
 
-        chunk = PocketLeveldbChunk(cx, cz, world, data, world_version=self.world_version)
+        chunk = self._readChunk(cx, cz, world)
         return chunk
 
     _allChunks = None
@@ -1650,6 +1655,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
     entityClass = entity.PocketEntity
 
     world_version = None # to be set to 'pre1.0' or '1.plus'
+    gameVersion = 'PE'
 
     @property
     def LevelName(self):
@@ -1989,7 +1995,11 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         if self.allChunks is not None:
             self.allChunks.append((cx, cz))
 
-        self._loadedChunks[(cx, cz)] = PocketLeveldbChunk(cx, cz, self, create=True, world_version=self.world_version)
+        if self.world_version == 'pre1.0':
+            self._loadedChunks[(cx, cz)] = PocketLeveldbChunkPre1(cx, cz, self, create=True, world_version=self.world_version)
+        else:
+            self._loadedChunks[(cx, cz)] = PocketLeveldbChunk1Plus(cx, cz, self, create=True, world_version=self.world_version)
+
         self._bounds = None
 
     def saveGeneratedChunk(self, cx, cz, tempChunkBytes):
@@ -2528,10 +2538,520 @@ class PocketLeveldbChunk_new(LightedChunk):
         """
         self._TileEntities = TileEntities
 
+class PocketLeveldbChunkPre1(LightedChunk):
+    HeightMap = FakeChunk.HeightMap
+
+    # _Entities = _TileEntities = nbt.TAG_List()
+    _Entities = nbt.TAG_List()
+    _TileEntities = nbt.TAG_List()
+    dirty = False
+
+    def __init__(self, cx, cz, world, data=None, create=False, world_version=None):
+        """
+        :param cx, cz int, int Coordinates of the chunk
+        :param data List of 3 strings. (83200 bytes of terrain data, tile-entity data, entity data)
+        :param world PocketLeveldbWorld, instance of the world the chunk belongs too
+        """
+        self.chunkPosition = (cx, cz)
+        self.world = world
+
+        if create:
+            self.Blocks = numpy.zeros(32768, 'uint16')
+            self.Data = numpy.zeros(16384, 'uint8')
+            self.SkyLight = numpy.zeros(16384, 'uint8')
+            self.BlockLight = numpy.zeros(16384, 'uint8')
+            self.DirtyColumns = numpy.zeros(256, 'uint8')
+            self.GrassColors = numpy.zeros(1024, 'uint8')
+
+            self.TileEntities = nbt.TAG_List()
+            self.Entities = nbt.TAG_List()
+
+        else:
+            terrain = numpy.fromstring(data[0], dtype='uint8')
+            if data[1] is not None:
+                if DEBUG_PE:
+                    open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+                TileEntities = loadNBTCompoundList(data[1])
+                self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
+
+            if data[2] is not None:
+                if DEBUG_PE:
+                    open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+                Entities = loadNBTCompoundList(data[2])
+                # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
+                # Whenever we save an entity, we need to make sure to swap back.
+                invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+                for ent in Entities:
+                    # Get the string id, or a build one
+                    # ! For PE debugging
+                    try:
+                        v = ent["id"].value
+                    except Exception, e:
+                        logger.warning("An error occured while getting entity ID:")
+                        logger.warning(e)
+                        logger.warning("Default 'Unknown' ID is used...")
+                        v = 'Unknown'
+                    # !
+                    id = invertEntities.get(v, "Entity %s"%v)
+                    # Add the built one to the entities
+                    if id not in entity.PocketEntity.entityList.keys():
+                        logger.warning("Found unknown entity '%s'"%v)
+                        entity.PocketEntity.entityList[id] = v
+                    ent["id"] = nbt.TAG_String(id)
+                self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
+
+            self.Blocks, terrain = terrain[:32768], terrain[32768:]
+            self.Data, terrain = terrain[:16384], terrain[16384:]
+            self.SkyLight, terrain = terrain[:16384], terrain[16384:]
+            self.BlockLight, terrain = terrain[:16384], terrain[16384:]
+            self.DirtyColumns, terrain = terrain[:256], terrain[256:]
+
+            # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
+            self.GrassColors = terrain[:1024]
+
+        self._unpackChunkData()
+        self.shapeChunkData()
+
+    def _unpackChunkData(self):
+        """
+        Unpacks the terrain data to match mcedit's formatting.
+        """
+        for key in ('SkyLight', 'BlockLight', 'Data'):
+            dataArray = getattr(self, key)
+            dataArray.shape = (16, 16, 64)
+            s = dataArray.shape
+
+            unpackedData = numpy.zeros((s[0], s[1], s[2] * 2), dtype='uint8')
+
+            unpackedData[:, :, ::2] = dataArray
+            unpackedData[:, :, ::2] &= 0xf
+            unpackedData[:, :, 1::2] = dataArray
+            unpackedData[:, :, 1::2] >>= 4
+            setattr(self, key, unpackedData)
+
+    def shapeChunkData(self):
+        """
+        Determines the shape of the terrain data.
+        :return:
+        """
+        chunkSize = 16
+        self.Blocks.shape = (chunkSize, chunkSize, self.world.Height)
+        self.SkyLight.shape = (chunkSize, chunkSize, self.world.Height)
+        self.BlockLight.shape = (chunkSize, chunkSize, self.world.Height)
+        self.Data.shape = (chunkSize, chunkSize, self.world.Height)
+        self.DirtyColumns.shape = chunkSize, chunkSize
+
+    def savedData(self):
+        """
+        Returns the data of the chunk to save to the database.
+        :return: str of 83200 bytes of chunk data.
+        """
+
+        def packData(dataArray):
+            """
+            Repacks the terrain data to Mojang's leveldb library's format.
+            """
+            assert dataArray.shape[2] == self.world.Height
+
+            data = numpy.array(dataArray).reshape(16, 16, self.world.Height / 2, 2)
+            data[..., 1] <<= 4
+            data[..., 1] |= data[..., 0]
+            return numpy.array(data[:, :, :, 1])
+
+        if self.dirty:
+            # elements of DirtyColumns are bitfields. Each bit corresponds to a
+            # 16-block segment of the column. We set all of the bits because
+            # we only track modifications at the chunk level.
+            self.DirtyColumns[:] = 255
+
+        with nbt.littleEndianNBT():
+            entityData = ""
+            tileEntityData = ""
+
+            for ent in self.TileEntities:
+                tileEntityData += ent.save(compressed=False)
+
+            for ent in self.Entities:
+                v = ent["id"].value
+#                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+                id = entity.PocketEntity.getNumId(v)
+#                 print id
+                if id >= 1000:
+                    print id
+                    print type(ent)
+                    print ent
+                ent['id'] = nbt.TAG_Int(id)
+                entityData += ent.save(compressed=False)
+                # We have to re-invert after saving otherwise the next save will fail.
+                ent["id"] = nbt.TAG_String(v)
+
+        terrain = ''.join([self.Blocks.tostring(),
+                           packData(self.Data).tostring(),
+                           packData(self.SkyLight).tostring(),
+                           packData(self.BlockLight).tostring(),
+                           self.DirtyColumns.tostring(),
+                           self.GrassColors.tostring(),
+                           ])
+
+        return terrain, tileEntityData, entityData
+
+    # -- Entities and TileEntities
+
+    @property
+    def Entities(self):
+        return self._Entities
+
+    @Entities.setter
+    def Entities(self, Entities):
+        """
+        :param Entities: list
+        :return:
+        """
+        self._Entities = Entities
+
+    @property
+    def TileEntities(self):
+        return self._TileEntities
+
+    @TileEntities.setter
+    def TileEntities(self, TileEntities):
+        """
+        :param TileEntities: list
+        :return:
+        """
+        self._TileEntities = TileEntities
+
+class PE1PlusDataContainer:
+    def __init__(self, subdata_length, bin_type, name='none'):
+        # subdata_length: int: the length for the underlying numpy objects
+        # bin_type: str: the binary data type, like uint8
+        self.name = name
+        self.subdata_length = subdata_length
+        self.bin_type = bin_type
+        # the first two argument for the shape always are 16
+        self.shape = (16, 16, subdata_length / (16 * 16))
+        self.subchunks = [] # Store here the valid subchunks as ints
+        self.binary_data = [None] * 16 # Has to be a numpy arrays. This list is indexed using the subchunks content.
+
+    def __repr__(self):
+        return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
+
+    def __getitem__(self, x, z, y):
+#         if y is None:
+#             data = ''
+#             for i in range(16):
+#                 if i in 
+#         else:
+            subchunk = y / 16
+            if subchunk in self.subchunks:
+                binary_data = self.binary_data[subchunk]
+                return binary_data[x, z, y - (subchunk * 16)]
+
+    def __setitem__(self, x, z, y, data):
+        subchunk = y / 16
+        if subchunk in self.subchunks:
+            binary_data = self.binary_data[subchunk]
+            binary_data[x, z, y - (subchunk * 16)] = data
+
+    def __len__(self):
+        return len(self.subchunks) * self.subdata_length
+
+    def add_data(self, y, data):
+        # y: int: the subchunk to add data to
+        # data: str: data to be added. Must be 4096 bytes long.
+        # Does not raise an error if the subchunk already has data.
+        # The old data is overriden.
+        if len(data) != self.subdata_length:
+            raise "Data does not match the required %s bytes length: %s bytes"%(self.subdata_length, len(data))
+        self.binary_data[y] = numpy.fromstring(data, self.bin_type)
+#         print self.name, self.shape, self.binary_data[y].shape, self.bin_type
+        self.binary_data[y].shape = self.shape
+
+class PocketLeveldbChunk1Plus(LightedChunk):
+    HeightMap = FakeChunk.HeightMap
+
+    # _Entities = _TileEntities = nbt.TAG_List()
+    _Entities = nbt.TAG_List()
+    _TileEntities = nbt.TAG_List()
+    dirty = False
+
+    def __init__(self, cx, cz, world, data=None, create=False, world_version=None):
+        """
+        :param cx, cz int, int Coordinates of the chunk
+        :param data List of 3 strings. (83200 bytes of terrain data, tile-entity data, entity data)
+        :param world PocketLeveldbWorld, instance of the world the chunk belongs too
+        """
+        if not world_version:
+            raise TypeError("Wrong world version sent: %s"%world_version)
+        self.world_version = world_version
+#         print 'chunk world version', self.world_version
+        self.chunkPosition = (cx, cz)
+        self.world = world
+
+        if create:
+            self.Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks')
+            self.Data = PE1PlusDataContainer(2048, 'uint8', name='Data')
+            self.SkyLight = PE1PlusDataContainer(2048, 'uint8', name='SkyLight')
+            self.BlockLight = PE1PlusDataContainer(2048, 'uint8', name='BlockLight')
+            self.DirtyColumns = PE1PlusDataContainer(2048, 'uint8', name='DirtyColumns')
+            # Is this one relevant?
+            self.GrassColors = PE1PlusDataContainer(1024, 'uint8', name='GrassColor')
+
+            self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
+            self.Entities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
+
+#         else:
+#             terrain = numpy.fromstring(data[0], dtype='uint8')
+#             if data[1] is not None:
+# #                 print 'loading tile entities in chunk', cx, cz
+#                 if DEBUG_PE:
+#                     open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+#                 TileEntities = loadNBTCompoundList(data[1])
+#                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
+# 
+#             if data[2] is not None:
+# #                 print 'loading entities in chunk', cx, cz
+#                 if DEBUG_PE:
+#                     open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+#                 Entities = loadNBTCompoundList(data[2])
+#                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
+#                 # Whenever we save an entity, we need to make sure to swap back.
+#                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+#                 for ent in Entities:
+#                     # Get the string id, or a build one
+#                     # ! For PE debugging
+#                     try:
+#                         v = ent["id"].value
+#                     except Exception, e:
+#                         logger.warning("An error occured while getting entity ID:")
+#                         logger.warning(e)
+#                         logger.warning("Default 'Unknown' ID is used...")
+#                         v = 'Unknown'
+#                     # !
+#                     id = invertEntities.get(v, "Entity %s"%v)
+#                     # Add the built one to the entities
+#                     if id not in entity.PocketEntity.entityList.keys():
+#                         logger.warning("Found unknown entity '%s'"%v)
+#                         entity.PocketEntity.entityList[id] = v
+#                     ent["id"] = nbt.TAG_String(id)
+#                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
+
+#             if self.world_version == 'pre1.0':
+#                 self.Blocks, terrain = terrain[:32768], terrain[32768:]
+#                 self.Data, terrain = terrain[:16384], terrain[16384:]
+#                 self.SkyLight, terrain = terrain[:16384], terrain[16384:]
+#                 self.BlockLight, terrain = terrain[:16384], terrain[16384:]
+#                 self.DirtyColumns, terrain = terrain[:256], terrain[256:]
+#     
+#                 # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
+#                 self.GrassColors = terrain[:1024]
+#             else:
+#                 self.version, terrain = terrain[:1], terrain[1:]
+#                 self.Blocks, terrain = terrain[:4096], terrain[4096:]
+#                 self.Data, terrain = terrain[:2048], terrain[2048:]
+#                 self.SkyLight, terrain = terrain[:2048], terrain[2048:]
+#                 self.BlockLight, terrain = terrain[:2048], terrain[2048:]
+
+#         self._unpackChunkData()
+#         self.shapeChunkData()
+
+    def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
+        if type(subchunk) != int:
+            raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
+        if terrain:
+            self.version, terrain = terrain[:1], terrain[1:]
+            blocks, terrain = terrain[:4096], terrain[4096:]
+            data, terrain = terrain[:2048], terrain[2048:]
+            skyLight, terrain = terrain[:2048], terrain[2048:]
+            blockLight, terrain = terrain[:2048], terrain[2048:]
+#             print "self.Blocks", self.Blocks
+#             print "self.Data", self.Data
+#             print "self.SkyLight", self.SkyLight
+#             print "self.BlockLight", self.BlockLight
+#             print len(blocks)
+            self.Blocks.add_data(subchunk, blocks)
+#             print 1
+            self.Data.add_data(subchunk, data)
+#             print 2
+            self.SkyLight.add_data(subchunk, skyLight)
+#             print 3
+            self.BlockLight.add_data(subchunk, blockLight)
+#             print 4
+        if tile_entities:
+            if DEBUG_PE:
+                open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+            for e in loadNBTCompoundList(tile_entities):
+                self.TileEntities.insert(-1, e)
+        if entities:
+#             print 'loading entities in chunk', cx, cz
+            if DEBUG_PE:
+                open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+            Entities = loadNBTCompoundList(entities)
+            # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
+            # Whenever we save an entity, we need to make sure to swap back.
+            invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+            for ent in Entities:
+                # Get the string id, or a build one
+                # ! For PE debugging
+                try:
+                    v = ent["id"].value
+                except Exception, e:
+                    logger.warning("An error occured while getting entity ID:")
+                    logger.warning(e)
+                    logger.warning("Default 'Unknown' ID is used...")
+                    v = 'Unknown'
+                # !
+                id = invertEntities.get(v, "Entity %s"%v)
+                # Add the built one to the entities
+                if id not in entity.PocketEntity.entityList.keys():
+                    logger.warning("Found unknown entity '%s'"%v)
+                    entity.PocketEntity.entityList[id] = v
+                ent["id"] = nbt.TAG_String(id)
+
+                self.Entities.insert(-1, ent)
+
+    def _unpackChunkData(self):
+        """
+        Unpacks the terrain data to match mcedit's formatting.
+        """
+        for key in ('SkyLight', 'BlockLight', 'Data'):
+#             print key
+            dataArray = getattr(self, key)
+#             print 'dataArray.shape', dataArray.shape
+            if self.world_version == 'pre1.0':
+                dataArray.shape = (16, 16, 64)
+            else:
+                if len(dataArray.data):
+                    dataArray.shape = (16, 16, 8)
+                else:
+                    dataArray.shape = (0, 0, 0)
+#             print 'dataArray.shape', dataArray.shape
+            s = dataArray.shape
+
+            unpackedData = numpy.zeros((s[0], s[1], s[2] * 2), dtype='uint8')
+
+            unpackedData[:, :, ::2] = dataArray
+            unpackedData[:, :, ::2] &= 0xf
+            unpackedData[:, :, 1::2] = dataArray
+            unpackedData[:, :, 1::2] >>= 4
+            setattr(self, key, unpackedData)
+
+    def shapeChunkData(self):
+        """
+        Determines the shape of the terrain data.
+        :return:
+        """
+        chunkSize = 16
+        if self.world_version == 'pre1.0':
+            blocksHeight = worldHeight = self.world.Height
+        else:
+            blocksHeight = 16
+            worldHeight = 16
+#         print 'self.Blocks.shape', self.Blocks.shape, len(self.Blocks.data)
+#         print 'self.SkyLight.shape', self.SkyLight.shape, len(self.SkyLight.data)
+#         print 'self.BlockLight.shape', self.BlockLight.shape, len(self.BlockLight.data)
+#         print 'self.Data.shape', self.Data.shape, len(self.Data.data)
+        if len(self.Blocks.data):
+            self.Blocks.shape = (chunkSize, chunkSize, blocksHeight)
+#         print 1
+        if len(self.SkyLight.data):
+            self.SkyLight.shape = (chunkSize, chunkSize, worldHeight)
+#         print 2
+        if len(self.BlockLight.data):
+            self.BlockLight.shape = (chunkSize, chunkSize, worldHeight)
+#         print 3
+        if len(self.Data.data):
+            self.Data.shape = (chunkSize, chunkSize, worldHeight)
+#         print 4
+        if self.world_version == 'pre1.0':
+            self.DirtyColumns.shape = chunkSize, chunkSize
+
+    def savedData(self):
+        """
+        Returns the data of the chunk to save to the database.
+        :return: str of 83200 bytes of chunk data.
+        """
+
+        def packData(dataArray):
+            """
+            Repacks the terrain data to Mojang's leveldb library's format.
+            """
+            assert dataArray.shape[2] == self.world.Height
+
+            data = numpy.array(dataArray).reshape(16, 16, self.world.Height / 2, 2)
+            data[..., 1] <<= 4
+            data[..., 1] |= data[..., 0]
+            return numpy.array(data[:, :, :, 1])
+
+        if self.dirty:
+            # elements of DirtyColumns are bitfields. Each bit corresponds to a
+            # 16-block segment of the column. We set all of the bits because
+            # we only track modifications at the chunk level.
+            self.DirtyColumns[:] = 255
+
+        with nbt.littleEndianNBT():
+            entityData = ""
+            tileEntityData = ""
+
+            for ent in self.TileEntities:
+                tileEntityData += ent.save(compressed=False)
+
+            for ent in self.Entities:
+                v = ent["id"].value
+#                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+                id = entity.PocketEntity.getNumId(v)
+#                 print id
+                if id >= 1000:
+                    print id
+                    print type(ent)
+                    print ent
+                ent['id'] = nbt.TAG_Int(id)
+                entityData += ent.save(compressed=False)
+                # We have to re-invert after saving otherwise the next save will fail.
+                ent["id"] = nbt.TAG_String(v)
+
+        terrain = ''.join([self.Blocks.tostring(),
+                           packData(self.Data).tostring(),
+                           packData(self.SkyLight).tostring(),
+                           packData(self.BlockLight).tostring(),
+                           self.DirtyColumns.tostring(),
+                           self.GrassColors.tostring(),
+                           ])
+
+        return terrain, tileEntityData, entityData
+
+    # -- Entities and TileEntities
+
+    @property
+    def Entities(self):
+        return self._Entities
+
+    @Entities.setter
+    def Entities(self, Entities):
+        """
+        :param Entities: list
+        :return:
+        """
+        self._Entities = Entities
+
+    @property
+    def TileEntities(self):
+        return self._TileEntities
+
+    @TileEntities.setter
+    def TileEntities(self, TileEntities):
+        """
+        :param TileEntities: list
+        :return:
+        """
+        self._TileEntities = TileEntities
+
+
+
 if __builtins__.get('mcenf_newPocketSupport', False):
     PocketLeveldbChunk = PocketLeveldbChunk_new
     PocketLeveldbDatabase = PocketLeveldbDatabase_new
-    PocketLeveldbWorld = PocketLeveldbWorld_new
+    PocketLeveldbWorld = PocketLeveldbWorld_new # Irrelevant...
 else:
     PocketLeveldbChunk = PocketLeveldbChunk_old
     PocketLeveldbDatabase = PocketLeveldbDatabase_old

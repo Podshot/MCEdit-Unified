@@ -480,7 +480,12 @@ class ChunkedLevelMixin(MCLevel):
         except ChunkNotPresent:
             return 0
 
-        return ch.Blocks[xInChunk, zInChunk, y]
+        try:
+            b = ch.Blocks[xInChunk, zInChunk, y]
+        except:
+            b = 0
+
+        return b
 
     def setBlockAt(self, x, y, z, blockID):
         """returns 0 for blocks outside the loadable chunks.  automatically loads chunks."""
