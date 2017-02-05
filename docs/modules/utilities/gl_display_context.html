@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>utilities.gl_display_context &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>utilities.gl_display_context &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -131,7 +131,7 @@
                 <div class="body">
                   
   <h1>Source code for utilities.gl_display_context</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
+<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span><span class="p">,</span> <span class="n">GLU</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">Surface</span>
@@ -143,15 +143,19 @@
 <span class="kn">import</span> <span class="nn">mcplatform</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
-<span class="kn">import</span> <span class="nn">resource_packs</span>
+<span class="kn">from</span> <span class="nn">resource_packs</span> <span class="kn">import</span> <span class="n">ResourcePackHandler</span>
 <span class="kn">import</span> <span class="nn">glutils</span>
 <span class="kn">import</span> <span class="nn">mceutils</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 
+<span class="n">DEBUG_WM</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">DEBUG_WM</span>
+<span class="n">USE_WM</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">USE_WM</span>
+
 
 <div class="viewcode-block" id="GLDisplayContext"><a class="viewcode-back" href="../../utilities.html#utilities.gl_display_context.GLDisplayContext">[docs]</a><span class="k">class</span> <span class="nc">GLDisplayContext</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">splash</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">splash</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">splash</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">splash</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="n">caption</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="GLDisplayContext.getWindowSize"><a class="viewcode-back" href="../../utilities.html#utilities.gl_display_context.GLDisplayContext.getWindowSize">[docs]</a>    <span class="k">def</span> <span class="nf">getWindowSize</span><span class="p">():</span>
@@ -162,7 +166,7 @@
 <div class="viewcode-block" id="GLDisplayContext.displayMode"><a class="viewcode-back" href="../../utilities.html#utilities.gl_display_context.GLDisplayContext.displayMode">[docs]</a>    <span class="k">def</span> <span class="nf">displayMode</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">pygame</span><span class="o">.</span><span class="n">OPENGL</span> <span class="o">|</span> <span class="n">pygame</span><span class="o">.</span><span class="n">RESIZABLE</span> <span class="o">|</span> <span class="n">pygame</span><span class="o">.</span><span class="n">DOUBLEBUF</span>
 </div>
-<div class="viewcode-block" id="GLDisplayContext.reset"><a class="viewcode-back" href="../../utilities.html#utilities.gl_display_context.GLDisplayContext.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">splash</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GLDisplayContext.reset"><a class="viewcode-back" href="../../utilities.html#utilities.gl_display_context.GLDisplayContext.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">splash</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)):</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">set_repeat</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -172,35 +176,29 @@
 
         <span class="n">display</span><span class="o">.</span><span class="n">gl_set_attribute</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">GL_ALPHA_SIZE</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;config.settings.windowMaximized.get()&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximized</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">wwh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getWindowSize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;wwh 1&quot;</span><span class="p">,</span> <span class="n">wwh</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">wwh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayMode</span><span class="p">())</span>
 
+        <span class="c"># Let initialize OpenGL stuff after the splash.</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glEnableClientState</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_VERTEX_ARRAY</span><span class="p">)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glAlphaFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_NOTEQUAL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_SRC_ALPHA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_ONE_MINUS_SRC_ALPHA</span><span class="p">)</span>
-
+ 
         <span class="c"># textures are 256x256, so with this we can specify pixel coordinates</span>
-        <span class="n">GL</span><span class="o">.</span><span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE</span><span class="p">)</span>
-        <span class="n">GL</span><span class="o">.</span><span class="n">glScale</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">)</span>
+<span class="c">#        GL.glMatrixMode(GL.GL_TEXTURE)</span>
+<span class="c">#        GL.glScale(1 / 256., 1 / 256., 1 / 256.)</span>
 
-        <span class="k">if</span> <span class="n">splash</span><span class="p">:</span>
-            <span class="n">GL</span><span class="o">.</span><span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_SRC_ALPHA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_ONE_MINUS_SRC_ALPHA</span><span class="p">)</span>
-            <span class="n">GL</span><span class="o">.</span><span class="n">glWindowPos2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">back</span> <span class="o">=</span> <span class="n">Surface</span><span class="p">(</span><span class="n">wwh</span><span class="p">)</span>
-            <span class="n">back</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">GL</span><span class="o">.</span><span class="n">glDrawPixels</span><span class="p">(</span><span class="n">wwh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wwh</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span>
-                            <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">back</span><span class="p">,</span> <span class="s">&#39;RGBA&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">))</span>
-            <span class="n">swh</span> <span class="o">=</span> <span class="n">splash</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">wwh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">swh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">wwh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">swh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">swh</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">splash</span><span class="p">,</span> <span class="s">&#39;RGBA&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">GL</span><span class="o">.</span><span class="n">glWindowPos2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-            <span class="n">GL</span><span class="o">.</span><span class="n">glDrawPixels</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span>
-                            <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">))</span>
-            <span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="o">*</span><span class="n">caption</span><span class="p">)</span>
 
-        <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&#39;MCEdit ~ &#39;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">(),</span> <span class="s">&#39;MCEdit&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">WindowHandler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">WindowHandler</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">displayMode</span><span class="p">())</span>
+
+        <span class="c"># The following Windows specific code won&#39;t be executed if we&#39;re using &#39;--debug-wm&#39; switch.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">USE_WM</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -219,25 +217,57 @@
 
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
-            <span class="n">win</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
-            <span class="n">root</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">screen</span><span class="p">()</span><span class="o">.</span><span class="n">root</span>
-            <span class="c"># ARCH Linux 3.19.3-3 seem unable to make a query on &#39;_NET_CLIENT_LIST&#39;.</span>
-            <span class="c"># So, restoring window position is disabled for now on distros which can&#39;t make this query.</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">:</span>
+            <span class="n">maximized</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximized</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;maximized&quot;</span><span class="p">,</span> <span class="n">maximized</span>
+            <span class="k">if</span> <span class="n">maximized</span><span class="p">:</span>
+                <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_root_rect</span><span class="p">()</span>
+                <span class="n">in_w</span><span class="p">,</span> <span class="n">in_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">geom</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">in_w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">geom</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">in_h</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDL_VIDEO_CENTERED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDL_VIDEO_CENTERED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">wwh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">y</span>
+                <span class="k">print</span> <span class="s">&quot;wwh 2&quot;</span><span class="p">,</span> <span class="n">wwh</span>
+
+        <span class="k">if</span> <span class="n">splash</span><span class="p">:</span>
+            <span class="c"># Setup the OGL display</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glLoadIdentity</span><span class="p">()</span>
+            <span class="n">GLU</span><span class="o">.</span><span class="n">gluOrtho2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wwh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wwh</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glClear</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_COLOR_BUFFER_BIT</span> <span class="o">|</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_BUFFER_BIT</span> <span class="o">|</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_ACCUM_BUFFER_BIT</span> <span class="o">|</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_STENCIL_BUFFER_BIT</span><span class="p">)</span>
+
+            <span class="n">swh</span> <span class="o">=</span> <span class="n">splash</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">wwh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">swh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">wwh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">swh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">swh</span>
+
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">windowIDs</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&#39;_NET_CLIENT_LIST&#39;</span><span class="p">),</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">AnyPropertyType</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-                <span class="k">for</span> <span class="n">windowID</span> <span class="ow">in</span> <span class="n">windowIDs</span><span class="p">:</span>
-                    <span class="n">window</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">windowID</span><span class="p">)</span>
-                    <span class="n">name</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_wm_name</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="s">&quot;MCEdit ~ Unified&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
-                        <span class="n">win</span> <span class="o">=</span> <span class="n">window</span>
-                <span class="n">win</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;ERROR: Xlib could not find the MCEdit wondow object:&#39;</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;       </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="n">win</span>
-            <span class="n">dis</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">splash</span><span class="p">,</span> <span class="s">&#39;RGBA_PREMULT&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">splash</span><span class="p">,</span> <span class="s">&#39;RGBA&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">splash</span><span class="p">,</span> <span class="s">&#39;RGB&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="c"># Set the raster position</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glRasterPos</span><span class="p">(</span><span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">)</span>
+
+            <span class="n">GL</span><span class="o">.</span><span class="n">glDrawPixels</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span>
+                            <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">splash</span><span class="p">:</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">maximized</span><span class="p">:</span>
+                <span class="n">wwh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getWindowSize</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;wwh 3&quot;</span><span class="p">,</span> <span class="n">wwh</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;* self.win.get_position()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">iconpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;favicon.png&#39;</span><span class="p">)</span>
@@ -246,6 +276,15 @@
             <span class="n">display</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Unable to set icon: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="c"># Let initialize OpenGL stuff after the splash.</span>
+<span class="c">#         GL.glEnableClientState(GL.GL_VERTEX_ARRAY)</span>
+<span class="c">#         GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)</span>
+<span class="c">#         GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)</span>
+ 
+        <span class="c"># textures are 256x256, so with this we can specify pixel coordinates</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glScale</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">256.</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">d</span>
 
@@ -277,7 +316,7 @@
         <span class="n">textures</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">classicMaterials</span><span class="p">,</span> <span class="s">&#39;terrain-classic.png&#39;</span><span class="p">),</span>
             <span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">indevMaterials</span><span class="p">,</span> <span class="s">&#39;terrain-classic.png&#39;</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="p">,</span> <span class="n">resource_packs</span><span class="o">.</span><span class="n">packs</span><span class="o">.</span><span class="n">get_selected_resource_pack</span><span class="p">()</span><span class="o">.</span><span class="n">terrain_path</span><span class="p">()),</span>
+            <span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="p">,</span> <span class="n">ResourcePackHandler</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span><span class="o">.</span><span class="n">get_selected_resource_pack</span><span class="p">()</span><span class="o">.</span><span class="n">terrain_path</span><span class="p">()),</span>
             <span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">pocketMaterials</span><span class="p">,</span> <span class="s">&#39;terrain-pocket.png&#39;</span><span class="p">)</span>
         <span class="p">)</span>
 
@@ -296,8 +335,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">terrainTextures</span><span class="p">[</span><span class="n">mats</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">glutils</span><span class="o">.</span><span class="n">Texture</span><span class="p">(</span>
                     <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">makeTerrainTexture</span><span class="p">,</span> <span class="n">mats</span><span class="p">)</span>
                 <span class="p">)</span>
-            <span class="n">mats</span><span class="o">.</span><span class="n">terrainTexture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terrainTextures</span><span class="p">[</span><span class="n">mats</span><span class="o">.</span><span class="n">name</span><span class="p">]</span></div></div>
-</pre></div>
+            <span class="n">mats</span><span class="o">.</span><span class="n">terrainTexture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terrainTextures</span><span class="p">[</span><span class="n">mats</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+</pre></div></div></div>
 
                 </div>
               </div>
@@ -313,7 +352,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

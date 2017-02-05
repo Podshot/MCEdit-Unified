@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>renderer &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>renderer &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -356,6 +356,8 @@ import logging
 import numpy
 from OpenGL import GL
 import pymclevel
+from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+from pymclevel.materials import alphaMaterials
 import sys
 from config import config
 # import time
@@ -761,6 +763,7 @@ faceVertexTemplates = makeVertexTemplates()
     precomputedVertices = createPrecomputedVertices()
 
     def __init__(self, level):
+        self.level = level
         self.makeRenderstates(level.materials)
 
         # del xArray, zArray, yArray
@@ -904,54 +907,77 @@ faceVertexTemplates = makeVertexTemplates()
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
 </div>
-<div class="viewcode-block" id="ChunkCalculator.addTransparentMaterials"><a class="viewcode-back" href="../renderer.html#renderer.ChunkCalculator.addTransparentMaterials">[docs]</a>    def addTransparentMaterials(self, mats, materialCount):
+<div class="viewcode-block" id="ChunkCalculator.addTransparentMaterials_old"><a class="viewcode-back" href="../renderer.html#renderer.ChunkCalculator.addTransparentMaterials_old">[docs]</a>    def addTransparentMaterials_old(self, mats, materialCount):
         transparentMaterials = [
-            pymclevel.materials.alphaMaterials.Glass,
-            pymclevel.materials.alphaMaterials.GlassPane,
-            pymclevel.materials.alphaMaterials.IronBars,
-            pymclevel.materials.alphaMaterials.MonsterSpawner,
-            pymclevel.materials.alphaMaterials.Vines,
-            pymclevel.materials.alphaMaterials.Fire,
-            pymclevel.materials.alphaMaterials.Trapdoor,
-            pymclevel.materials.alphaMaterials.Lever,
-            pymclevel.materials.alphaMaterials.BrewingStand,
-            pymclevel.materials.alphaMaterials.Anvil,
-            pymclevel.materials.alphaMaterials.Barrier,
-            pymclevel.materials.alphaMaterials.StainedGlass,
-            pymclevel.materials.alphaMaterials.Hopper,
-            pymclevel.materials.alphaMaterials.Cauldron,
-            pymclevel.materials.alphaMaterials.WoodenDoor,
-            pymclevel.materials.alphaMaterials.IronDoor,
-            pymclevel.materials.alphaMaterials.AcaciaDoor,
-            pymclevel.materials.alphaMaterials.JungleDoor,
-            pymclevel.materials.alphaMaterials.IronTrapdoor,
-            pymclevel.materials.alphaMaterials.Button,
-            pymclevel.materials.alphaMaterials.WoodenButton,
-            pymclevel.materials.alphaMaterials.FenceGate,
-            pymclevel.materials.alphaMaterials.SpruceFenceGate,
-            pymclevel.materials.alphaMaterials.BirchFenceGate,
-            pymclevel.materials.alphaMaterials.JungleFenceGate,
-            pymclevel.materials.alphaMaterials.DarkOakFenceGate,
-            pymclevel.materials.alphaMaterials.AcaciaFenceGate,
-            pymclevel.materials.alphaMaterials.Sign
-
+            alphaMaterials.Glass,
+            alphaMaterials.StructureVoid,
+            alphaMaterials.GlassPane,
+            alphaMaterials.IronBars,
+            alphaMaterials.MonsterSpawner,
+            alphaMaterials.Vines,
+            alphaMaterials.Fire,
+            alphaMaterials.Trapdoor,
+            alphaMaterials.Lever,
+            alphaMaterials.BrewingStand,
+            alphaMaterials.Anvil,
+            alphaMaterials.Barrier,
+            alphaMaterials.StainedGlass,
+            alphaMaterials.Hopper,
+            alphaMaterials.Cauldron,
+            alphaMaterials.WoodenDoor,
+            alphaMaterials.IronDoor,
+            alphaMaterials.AcaciaDoor,
+            alphaMaterials.JungleDoor,
+            alphaMaterials.IronTrapdoor,
+            alphaMaterials.Button,
+            alphaMaterials.WoodenButton,
+            alphaMaterials.FenceGate,
+            alphaMaterials.SpruceFenceGate,
+            alphaMaterials.BirchFenceGate,
+            alphaMaterials.JungleFenceGate,
+            alphaMaterials.DarkOakFenceGate,
+            alphaMaterials.AcaciaFenceGate,
+            alphaMaterials.Sign,
+            alphaMaterials.StructureVoid
         ]
         for b in transparentMaterials:
             mats[b.ID] = materialCount
             materialCount += 1
+</div>
+<div class="viewcode-block" id="ChunkCalculator.addTransparentMaterials_new"><a class="viewcode-back" href="../renderer.html#renderer.ChunkCalculator.addTransparentMaterials_new">[docs]</a>    def addTransparentMaterials_new(self, mats, materialCount):
+        transparentMaterials = []
+        logging.debug(&quot;renderer::ChunkCalculator: Dynamically adding transparent materials.&quot;)
+        for b in self.level.materials:
+            if hasattr(b, &#39;yaml&#39;):
+                if b.yaml.get(&#39;opacity&#39;, 1) &lt; 1:
+                    logging.debug(&quot;Adding &#39;%s&#39;&quot;%b)
+                    transparentMaterials.append(b)
+        logging.debug(&quot;renderer::ChunkCalculator: Transparent materials added: %s&quot;%len(transparentMaterials))
+        for b in transparentMaterials:
+            mats[b.ID] = materialCount
+            materialCount += 1
 
-    # don&#39;t show boundaries between dirt,grass,sand,gravel,or stone.</div>
+#     if __builtins__.get(&#39;mcenf_addTransparentMaterials&#39;, False):
+#         logging.info(&quot;Using new ChunkCalculator.addTransparentMaterials&quot;)
+#         addTransparentMaterials = addTransparentMaterials_new
+#     else:
+#         addTransparentMaterials = addTransparentMaterials_old</div>
+    addTransparentMaterials = addTransparentMaterials_new
+
+    # don&#39;t show boundaries between dirt,grass,sand,gravel,or stone.
+    # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
     hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype=&#39;uint16&#39;)
-    stoneid = pymclevel.materials.alphaMaterials.Stone.ID
-    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Dirt.ID] = stoneid
-    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Grass.ID] = stoneid
-    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Sand.ID] = stoneid
-    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Gravel.ID] = stoneid
-    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Netherrack.ID] = stoneid
+    stoneid = alphaMaterials.Stone.ID
+    hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
+    hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
+    hiddenOreMaterials[alphaMaterials.Sand.ID] = stoneid
+    hiddenOreMaterials[alphaMaterials.Gravel.ID] = stoneid
+    hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
 
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype=&#39;uint8&#39;)
     roughMaterials[0] = 0
-    addTransparentMaterials(None, roughMaterials, 2)
+    # Do not pre-load transparent materials, since it is game version dependent.
+    # addTransparentMaterials(None, roughMaterials, 2)
 
 <div class="viewcode-block" id="ChunkCalculator.calcFacesForChunkRenderer"><a class="viewcode-back" href="../renderer.html#renderer.ChunkCalculator.calcFacesForChunkRenderer">[docs]</a>    def calcFacesForChunkRenderer(self, cr):
         if 0 == len(cr.invalidLayers):
@@ -1138,17 +1164,17 @@ faceVertexTemplates = makeVertexTemplates()
         areaBlockLights = self.getAreaBlockLights(chunk, neighboringChunks)
         yield
 
-        slabs = areaBlocks == pymclevel.materials.alphaMaterials.StoneSlab.ID  #If someone could combine these, that would be great.
+        slabs = areaBlocks == alphaMaterials.StoneSlab.ID  #If someone could combine these, that would be great.
         if slabs.any():
             areaBlockLights[slabs] = areaBlockLights[:, :, 1:][slabs[:, :, :-1]]
         yield
 
-        woodSlabs = areaBlocks == pymclevel.materials.alphaMaterials.OakWoodSlab.ID
+        woodSlabs = areaBlocks == alphaMaterials.OakWoodSlab.ID
         if woodSlabs.any():
             areaBlockLights[woodSlabs] = areaBlockLights[:, :, 1:][woodSlabs[:, :, :-1]]
         yield
 
-        redSlabs = areaBlocks == pymclevel.materials.alphaMaterials.RedSandstoneSlab.ID
+        redSlabs = areaBlocks == alphaMaterials.RedSandstoneSlab.ID
         if redSlabs.any():
             areaBlockLights[redSlabs] = areaBlockLights[:, :, 1:][redSlabs[:, :, :-1]]
         yield
@@ -1271,12 +1297,12 @@ faceVertexTemplates = makeVertexTemplates()
         pymclevel.faces.FaceZIncreasing: numpy.s_[1:-1, 2:, 1:-1],
     }
     renderstate = ChunkCalculator.renderstateAlphaTest
+    used = False
 
     def __init__(self, cc):
         self.makeTemplate = cc.makeTemplate
         self.chunkCalculator = cc
         self.vertexArrays = []
-
         pass
 
     @classmethod
@@ -1339,7 +1365,7 @@ faceVertexTemplates = makeVertexTemplates()
         if 0 == len(buf):
             return
         stride = elementByteLength
-
+        
         GL.glVertexPointer(3, GL.GL_FLOAT, stride, (buf.ravel()))
         GL.glTexCoordPointer(2, GL.GL_FLOAT, stride, (buf.ravel()[3:]))
         GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, stride, (buf.view(dtype=numpy.uint8).ravel()[20:]))
@@ -1420,11 +1446,12 @@ faceVertexTemplates = makeVertexTemplates()
 
 <div class="viewcode-block" id="MonsterRenderer.makeChunkVertices"><a class="viewcode-back" href="../renderer.html#renderer.MonsterRenderer.makeChunkVertices">[docs]</a>    def makeChunkVertices(self, chunk):
         monsterPositions = []
+        notMonsters = MCEDIT_DEFS.get(&#39;notMonsters&#39;, self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
             id = ent[&quot;id&quot;].value
-            if id in self.notMonsters:
+            if id in notMonsters:
                 continue
             pos = pymclevel.Entity.pos(ent)
             pos[1] += 0.5
@@ -1471,11 +1498,16 @@ faceVertexTemplates = makeVertexTemplates()
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
-            color = colorMap.get(ent[&quot;id&quot;].value)
+            # Let get the color from the versionned data, and use the &#39;old&#39; way as fallback
+            color = MCEDIT_DEFS.get(MCEDIT_IDS.get(ent[&quot;id&quot;].value), {}).get(&quot;mapcolor&quot;)
+            if color is None:
+                color = colorMap.get(ent[&quot;id&quot;].value)
+
             if color is None:
                 continue
             pos = pymclevel.Entity.pos(ent)
-            if ent[&quot;id&quot;].value not in (&quot;Painting&quot;, &quot;ItemFrame&quot;):
+            noRenderDelta = MCEDIT_DEFS.get(&#39;noRenderDelta&#39;, (&quot;Painting&quot;, &quot;ItemFrame&quot;))
+            if ent[&quot;id&quot;].value not in noRenderDelta:
                 pos[1] += 0.5
             entityPositions.append(pos)
             entityColors.append(color)
@@ -1757,7 +1789,7 @@ faceVertexTemplates = makeVertexTemplates()
             vertexArray.view(&#39;uint8&#39;)[_RGB] *= facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
             if self.materials.name in (&quot;Alpha&quot;, &quot;Pocket&quot;):
                 if direction == pymclevel.faces.FaceYIncreasing:
-                    grass = theseBlocks == pymclevel.materials.alphaMaterials.Grass.ID
+                    grass = theseBlocks == alphaMaterials.Grass.ID
                     vertexArray.view(&#39;uint8&#39;)[_RGB][grass] = vertexArray.view(&#39;uint8&#39;)[_RGB][grass].astype(float) * self.grassColor
             yield
 
@@ -1771,7 +1803,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="LeafBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.LeafBlockRenderer">[docs]</a>class LeafBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Leaves.ID, pymclevel.materials.alphaMaterials.AcaciaLeaves.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;LEAVES&quot;]]
 
     @property
     def renderstate(self):
@@ -1790,12 +1822,12 @@ faceVertexTemplates = makeVertexTemplates()
                 blockIndices = materialIndices
                 data = blockData[blockIndices]
                 data &amp;= 0x3  # ignore decay states
-                leaves = (data == pymclevel.materials.alphaMaterials.Leaves.blockData)
-                pines = (data == pymclevel.materials.alphaMaterials.PineLeaves.blockData)
-                birches = (data == pymclevel.materials.alphaMaterials.BirchLeaves.blockData)
-                jungle = (data == pymclevel.materials.alphaMaterials.JungleLeaves.blockData)
-                acacia = (data == pymclevel.materials.alphaMaterials.AcaciaLeaves.blockData)
-                darkoak = (data == pymclevel.materials.alphaMaterials.DarkOakLeaves.blockData)
+                leaves = (data == alphaMaterials.Leaves.blockData)
+                pines = (data == alphaMaterials.PineLeaves.blockData)
+                birches = (data == alphaMaterials.BirchLeaves.blockData)
+                jungle = (data == alphaMaterials.JungleLeaves.blockData)
+                acacia = (data == alphaMaterials.AcaciaLeaves.blockData)
+                darkoak = (data == alphaMaterials.DarkOakLeaves.blockData)
                 texes = texMap(blocks[blockIndices], [0], 0)
         else:
             blockIndices = materialIndices
@@ -1807,12 +1839,12 @@ faceVertexTemplates = makeVertexTemplates()
                     blockIndices = materialIndices &amp; exposedFaceIndices
                     data = blockData[blockIndices]
                     data &amp;= 0x3  # ignore decay states
-                    leaves = (data == pymclevel.materials.alphaMaterials.Leaves.blockData)
-                    pines = (data == pymclevel.materials.alphaMaterials.PineLeaves.blockData)
-                    birches = (data == pymclevel.materials.alphaMaterials.BirchLeaves.blockData)
-                    jungle = (data == pymclevel.materials.alphaMaterials.JungleLeaves.blockData)
-                    acacia = (data == pymclevel.materials.alphaMaterials.AcaciaLeaves.blockData)
-                    darkoak = (data == pymclevel.materials.alphaMaterials.DarkOakLeaves.blockData)
+                    leaves = (data == alphaMaterials.Leaves.blockData)
+                    pines = (data == alphaMaterials.PineLeaves.blockData)
+                    birches = (data == alphaMaterials.BirchLeaves.blockData)
+                    jungle = (data == alphaMaterials.JungleLeaves.blockData)
+                    acacia = (data == alphaMaterials.AcaciaLeaves.blockData)
+                    darkoak = (data == alphaMaterials.DarkOakLeaves.blockData)
                     #leaves |= type3
 
                     texes = texMap(blocks[blockIndices], data, 0)
@@ -1849,7 +1881,6 @@ faceVertexTemplates = makeVertexTemplates()
     darkoakLeafColor = darkoakLeafColorDefault = [0x48 / 255., 0xb5 / 255., 0x18 / 255.]  # 48b518
 
     makeVertices = makeLeafVertices
-
 </div>
 <div class="viewcode-block" id="PlantBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.PlantBlockRenderer">[docs]</a>class PlantBlockRenderer(BlockRenderer):
     @classmethod
@@ -1878,8 +1909,8 @@ faceVertexTemplates = makeVertexTemplates()
 
         colorize = None
         if self.materials.name != &quot;Classic&quot;:  #so hacky, someone more competent fix this
-            colorize = (theseBlocks == pymclevel.materials.alphaMaterials.TallGrass.ID) &amp; (bdata != 0)
-            colorize2 = (theseBlocks == pymclevel.materials.alphaMaterials.TallFlowers.ID) &amp; (bdata != 0) &amp; (
+            colorize = (theseBlocks == alphaMaterials.TallGrass.ID) &amp; (bdata != 0)
+            colorize2 = (theseBlocks == alphaMaterials.TallFlowers.ID) &amp; (bdata != 0) &amp; (
             bdata != 1) &amp; (bdata != 4) &amp; (bdata != 5)
 
         for direction in (
@@ -1913,11 +1944,9 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makePlantVertices
 
 </div>
-<div class="viewcode-block" id="TorchBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.TorchBlockRenderer">[docs]</a>class TorchBlockRenderer(BlockRenderer):  #Levers here until someone makes a separate renderer for it.
-    blocktypes = [pymclevel.materials.alphaMaterials.Torch.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneTorchOff.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneTorchOn.ID
-                  ]
+<div class="viewcode-block" id="TorchBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.TorchBlockRenderer">[docs]</a>class TorchBlockRenderer(BlockRenderer):
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;TORCH&quot;]]
+    
     renderstate = ChunkCalculator.renderstateAlphaTest
     torchOffsetsStraight = [
         [  # FaceXIncreasing
@@ -2071,7 +2100,7 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makeTorchVertices
     </div>
 <div class="viewcode-block" id="LeverBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.LeverBlockRenderer">[docs]</a>class LeverBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Lever.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:lever&quot;].ID]
     
     leverBaseTemplate = makeVertexTemplatesFromJsonModel((5, 0, 4), (11, 3, 12), {
         &quot;down&quot;: (10, 0, 16, 8),
@@ -2133,11 +2162,7 @@ faceVertexTemplates = makeVertexTemplates()
     
 </div>
 <div class="viewcode-block" id="RailBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.RailBlockRenderer">[docs]</a>class RailBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID,
-                  pymclevel.materials.alphaMaterials.PoweredRail.ID,
-                  pymclevel.materials.alphaMaterials.DetectorRail.ID,
-                  pymclevel.materials.alphaMaterials.ActivatorRail.ID
-    ]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;SIMPLE_RAIL&quot;]]
     renderstate = ChunkCalculator.renderstateAlphaTest
 
     railTextures = numpy.array([
@@ -2161,7 +2186,7 @@ faceVertexTemplates = makeVertexTemplates()
                                    [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
 
                                ], dtype=&#39;float32&#39;)
-    railTextures -= pymclevel.materials.alphaMaterials.blockTextures[pymclevel.materials.alphaMaterials.Rail.ID, 0, 0]
+    railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
 
     railOffsets = numpy.array([
                                   [0, 0, 0, 0],
@@ -2196,7 +2221,7 @@ faceVertexTemplates = makeVertexTemplates()
         tex = texMap(railBlocks, bdata, pymclevel.faces.FaceYIncreasing)[:, numpy.newaxis, :]
 
         # disable &#39;powered&#39; or &#39;pressed&#39; bit for powered and detector rails
-        bdata[railBlocks != pymclevel.materials.alphaMaterials.Rail.ID] = bdata[railBlocks != pymclevel.materials.alphaMaterials.Rail.ID].astype(int) &amp; ~0x8
+        bdata[railBlocks != alphaMaterials.Rail.ID] = bdata[railBlocks != alphaMaterials.Rail.ID].astype(int) &amp; ~0x8
 
         vertexArray = self.makeTemplate(direction, blockIndices)
         if not len(vertexArray):
@@ -2218,7 +2243,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="LadderBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.LadderBlockRenderer">[docs]</a>class LadderBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Ladder.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:ladder&quot;].ID]
 
     ladderOffsets = numpy.array([
                                     [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
@@ -2263,7 +2288,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="WallSignBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.WallSignBlockRenderer">[docs]</a>class WallSignBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.WallSign.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:wall_sign&quot;].ID]
     
     wallSignTemplate = makeVertexTemplatesFromJsonModel((0, 4.5, 0), (16, 13.5, 2), {
         &quot;down&quot;: (0, 11, 18, 13),
@@ -2288,7 +2313,7 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makeVerticesFromModel(wallSignTemplates, 7)
     </div>
 <div class="viewcode-block" id="StandingSignRenderer"><a class="viewcode-back" href="../renderer.html#renderer.StandingSignRenderer">[docs]</a>class StandingSignRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Sign.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:standing_sign&quot;].ID]
     
     signTemplate = makeVertexTemplatesFromJsonModel((0, 7, 7), (16, 16, 9), {
         &quot;down&quot;: (0, 14, 16, 16),
@@ -2322,7 +2347,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="SnowBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.SnowBlockRenderer">[docs]</a>class SnowBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.SnowLayer.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:snow_layer&quot;].ID]
 
 <div class="viewcode-block" id="SnowBlockRenderer.makeSnowVertices"><a class="viewcode-back" href="../renderer.html#renderer.SnowBlockRenderer.makeSnowVertices">[docs]</a>    def makeSnowVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2361,8 +2386,8 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="CarpetBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.CarpetBlockRenderer">[docs]</a>class CarpetBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Carpet.ID,  #Separate before implementing layers
-                  pymclevel.materials.alphaMaterials.Lilypad.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:carpet&quot;].ID,  #Separate before implementing layers
+                  alphaMaterials[&quot;minecraft:waterlily&quot;].ID]
 
 <div class="viewcode-block" id="CarpetBlockRenderer.makeCarpetVertices"><a class="viewcode-back" href="../renderer.html#renderer.CarpetBlockRenderer.makeCarpetVertices">[docs]</a>    def makeCarpetVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2401,7 +2426,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="CactusBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.CactusBlockRenderer">[docs]</a>class CactusBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Cactus.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:cactus&quot;].ID]
 
 <div class="viewcode-block" id="CactusBlockRenderer.makeCactusVertices"><a class="viewcode-back" href="../renderer.html#renderer.CactusBlockRenderer.makeCactusVertices">[docs]</a>    def makeCactusVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2437,9 +2462,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="PaneBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.PaneBlockRenderer">[docs]</a>class PaneBlockRenderer(BlockRenderer):  #Basic no thickness panes, add more faces to widen.
-    blocktypes = [pymclevel.materials.alphaMaterials.GlassPane.ID,
-                  pymclevel.materials.alphaMaterials.StainedGlassPane.ID,
-                  pymclevel.materials.alphaMaterials.IronBars.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;SOLID_PANE&quot;]]
 
 <div class="viewcode-block" id="PaneBlockRenderer.makePaneVertices"><a class="viewcode-back" href="../renderer.html#renderer.PaneBlockRenderer.makePaneVertices">[docs]</a>    def makePaneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2474,10 +2497,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="PlateBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.PlateBlockRenderer">[docs]</a>class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper shape is appreciated.
-    blocktypes = [pymclevel.materials.alphaMaterials.StoneFloorPlate.ID,
-                  pymclevel.materials.alphaMaterials.WoodFloorPlate.ID,
-                  pymclevel.materials.alphaMaterials.WeightedPressurePlateLight.ID,
-                  pymclevel.materials.alphaMaterials.WeightedPressurePlateHeavy.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;PRESSURE_PLATE&quot;]]
 
 <div class="viewcode-block" id="PlateBlockRenderer.makePlateVertices"><a class="viewcode-back" href="../renderer.html#renderer.PlateBlockRenderer.makePlateVertices">[docs]</a>    def makePlateVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2509,8 +2529,8 @@ faceVertexTemplates = makeVertexTemplates()
 </div>
 <div class="viewcode-block" id="EnchantingBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.EnchantingBlockRenderer">[docs]</a>class EnchantingBlockRenderer(
     BlockRenderer):  #Note: Enderportal frame side sprite has been lowered 1 pixel to use this renderer, will need separate renderer for eye.
-    blocktypes = [pymclevel.materials.alphaMaterials.EnchantmentTable.ID,
-                  pymclevel.materials.alphaMaterials.PortalFrame.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:enchanting_table&quot;].ID,
+                  alphaMaterials[&quot;minecraft:end_portal_frame&quot;].ID]
 
 <div class="viewcode-block" id="EnchantingBlockRenderer.makeEnchantingVertices"><a class="viewcode-back" href="../renderer.html#renderer.EnchantingBlockRenderer.makeEnchantingVertices">[docs]</a>    def makeEnchantingVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2541,8 +2561,8 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="DaylightBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.DaylightBlockRenderer">[docs]</a>class DaylightBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.DaylightSensor.ID,
-                  pymclevel.materials.alphaMaterials.DaylightSensorOn.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:daylight_detector&quot;].ID,
+                  alphaMaterials.DaylightSensorOn.ID]
 
 <div class="viewcode-block" id="DaylightBlockRenderer.makeDaylightVertices"><a class="viewcode-back" href="../renderer.html#renderer.DaylightBlockRenderer.makeDaylightVertices">[docs]</a>    def makeDaylightVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2576,7 +2596,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="BedBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.BedBlockRenderer">[docs]</a>class BedBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Bed.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:bed&quot;].ID]
 
 <div class="viewcode-block" id="BedBlockRenderer.makeBedVertices"><a class="viewcode-back" href="../renderer.html#renderer.BedBlockRenderer.makeBedVertices">[docs]</a>    def makeBedVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2607,7 +2627,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="CakeBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.CakeBlockRenderer">[docs]</a>class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
-    blocktypes = [pymclevel.materials.alphaMaterials.Cake.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:cake&quot;].ID]
 
 <div class="viewcode-block" id="CakeBlockRenderer.makeCakeVertices"><a class="viewcode-back" href="../renderer.html#renderer.CakeBlockRenderer.makeCakeVertices">[docs]</a>    def makeCakeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2645,10 +2665,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="RepeaterBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.RepeaterBlockRenderer">[docs]</a>class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
-    blocktypes = [pymclevel.materials.alphaMaterials.RedstoneRepeaterOff.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneRepeaterOn.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneComparatorInactive.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneComparatorActive.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;THINSLICE&quot;]]
 
 <div class="viewcode-block" id="RepeaterBlockRenderer.makeRepeaterVertices"><a class="viewcode-back" href="../renderer.html#renderer.RepeaterBlockRenderer.makeRepeaterVertices">[docs]</a>    def makeRepeaterVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2680,7 +2697,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="RedstoneBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.RedstoneBlockRenderer">[docs]</a>class RedstoneBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.RedstoneWire.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:redstone_wire&quot;].ID]
 
 <div class="viewcode-block" id="RedstoneBlockRenderer.redstoneVertices"><a class="viewcode-back" href="../renderer.html#renderer.RedstoneBlockRenderer.redstoneVertices">[docs]</a>    def redstoneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         blockIndices = self.getMaterialIndices(blockMaterials)
@@ -2689,7 +2706,7 @@ faceVertexTemplates = makeVertexTemplates()
         if not len(vertexArray):
             return
 
-        vertexArray[_ST] += pymclevel.materials.alphaMaterials.blockTextures[55, 0, 0]
+        vertexArray[_ST] += alphaMaterials.blockTextures[55, 0, 0]
         vertexArray[_XYZ][..., 1] -= 0.9
 
         bdata = blockData[blockIndices]
@@ -2710,13 +2727,13 @@ faceVertexTemplates = makeVertexTemplates()
 # button, floor plate, door -&gt; 1-cube features
 </div>
 <div class="viewcode-block" id="DoorRenderer"><a class="viewcode-back" href="../renderer.html#renderer.DoorRenderer">[docs]</a>class DoorRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.WoodenDoor.ID,
-                  pymclevel.materials.alphaMaterials.IronDoor.ID,
-                  pymclevel.materials.alphaMaterials.SpruceDoor.ID,
-                  pymclevel.materials.alphaMaterials.BirchDoor.ID,
-                  pymclevel.materials.alphaMaterials.JungleDoor.ID,
-                  pymclevel.materials.alphaMaterials.AcaciaDoor.ID,
-                  pymclevel.materials.alphaMaterials.DarkOakDoor.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:wooden_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:iron_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:spruce_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:birch_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:jungle_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:acacia_door&quot;].ID,
+                  alphaMaterials[&quot;minecraft:dark_oak_door&quot;].ID]
 
     doorTemplate = makeVertexTemplatesFromJsonModel(
         (0, 0, 0), (3, 16, 16),
@@ -2786,8 +2803,7 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makeVerticesFromModel(doorTemplates, 31)
 </div>
 <div class="viewcode-block" id="ButtonRenderer"><a class="viewcode-back" href="../renderer.html#renderer.ButtonRenderer">[docs]</a>class ButtonRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Button.ID,
-                  pymclevel.materials.alphaMaterials.WoodenButton.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;BUTTON&quot;]]
 
     buttonTemplate = makeVertexTemplatesFromJsonModel((5, 0, 6), (11, 2, 10), {
         &quot;down&quot;: (5, 6, 11, 10),
@@ -2827,8 +2843,7 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makeVerticesFromModel(buttonTemplates, 15)
 </div>
 <div class="viewcode-block" id="TrapDoorRenderer"><a class="viewcode-back" href="../renderer.html#renderer.TrapDoorRenderer">[docs]</a>class TrapDoorRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.IronTrapdoor.ID,
-                  pymclevel.materials.alphaMaterials.Trapdoor.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;TRAPDOOR&quot;]]
 
     openTemplate = makeVertexTemplatesFromJsonModel((0, 0, 13), (16, 16, 16), {
         &quot;down&quot;: (0, 13, 16, 16),
@@ -2880,26 +2895,16 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="FenceBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.FenceBlockRenderer">[docs]</a>class FenceBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Fence.ID,
-                  pymclevel.materials.alphaMaterials.SpruceFence.ID,
-                  pymclevel.materials.alphaMaterials.BirchFence.ID,
-                  pymclevel.materials.alphaMaterials.JungleFence.ID,
-                  pymclevel.materials.alphaMaterials.DarkOakFence.ID,
-                  pymclevel.materials.alphaMaterials.AcaciaFence.ID,
-                  pymclevel.materials.alphaMaterials.NetherBrickFence.ID]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;FENCE&quot;]]
+    
     fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
 
     makeVertices = makeVerticesFromModel(fenceTemplates)
 
 </div>
 <div class="viewcode-block" id="FenceGateBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.FenceGateBlockRenderer">[docs]</a>class FenceGateBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.FenceGate.ID,
-                  pymclevel.materials.alphaMaterials.SpruceFenceGate.ID,
-                  pymclevel.materials.alphaMaterials.BirchFenceGate.ID,
-                  pymclevel.materials.alphaMaterials.JungleFenceGate.ID,
-                  pymclevel.materials.alphaMaterials.DarkOakFenceGate.ID,
-                  pymclevel.materials.alphaMaterials.AcaciaFenceGate.ID
-    ]
+    blocktypes = [block.ID for block in alphaMaterials.blocksByType[&quot;FENCE_GATE&quot;]]
+    
     closedFenceTemplates = numpy.array([
         makeVertexTemplates(0, 0, 3 / 8., 1, .8, 5 / 8.),
         makeVertexTemplates(3 / 8., 0, 0, 5 / 8., .8, 1)])
@@ -3036,7 +3041,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="VineBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.VineBlockRenderer">[docs]</a>class VineBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Vines.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:vine&quot;].ID]
 
     SouthBit = 1  #FaceZIncreasing
     WestBit = 2  #FaceXDecreasing
@@ -3086,10 +3091,10 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="SlabBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.SlabBlockRenderer">[docs]</a>class SlabBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.OakWoodSlab.ID,
-                  pymclevel.materials.alphaMaterials.StoneSlab.ID,
-                  pymclevel.materials.alphaMaterials.RedSandstoneSlab.ID,
-                  pymclevel.materials.alphaMaterials.PurpurSlab.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:wooden_slab&quot;].ID,
+                  alphaMaterials[&quot;minecraft:stone_slab&quot;].ID,
+                  alphaMaterials[&quot;minecraft:stone_slab2&quot;].ID,
+                  alphaMaterials[&quot;minecraft:purpur_slab&quot;].ID]
 
 <div class="viewcode-block" id="SlabBlockRenderer.slabFaceVertices"><a class="viewcode-back" href="../renderer.html#renderer.SlabBlockRenderer.slabFaceVertices">[docs]</a>    def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -3122,7 +3127,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 # 1.9 renderer&#39;s</div>
 <div class="viewcode-block" id="EndRodRenderer"><a class="viewcode-back" href="../renderer.html#renderer.EndRodRenderer">[docs]</a>class EndRodRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.EndRod.ID]
+    blocktypes = [alphaMaterials[&quot;minecraft:end_rod&quot;].ID]
 
     rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
         &quot;down&quot;: (4, 2, 2, 0),
@@ -3165,8 +3170,8 @@ faceVertexTemplates = makeVertexTemplates()
     makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
 </div>
 <div class="viewcode-block" id="WaterBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.WaterBlockRenderer">[docs]</a>class WaterBlockRenderer(BlockRenderer):
-    waterID = pymclevel.materials.alphaMaterials.Water.ID
-    blocktypes = [pymclevel.materials.alphaMaterials.WaterActive.ID, waterID]
+    waterID = alphaMaterials[&quot;minecraft:water&quot;].ID
+    blocktypes = [alphaMaterials[&quot;minecraft:flowing_water&quot;].ID, waterID]
     renderstate = ChunkCalculator.renderstateWater
 
 <div class="viewcode-block" id="WaterBlockRenderer.waterFaceVertices"><a class="viewcode-back" href="../renderer.html#renderer.WaterBlockRenderer.waterFaceVertices">[docs]</a>    def waterFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
@@ -3181,7 +3186,7 @@ faceVertexTemplates = makeVertexTemplates()
 
 </div>
 <div class="viewcode-block" id="IceBlockRenderer"><a class="viewcode-back" href="../renderer.html#renderer.IceBlockRenderer">[docs]</a>class IceBlockRenderer(BlockRenderer):
-    iceID = pymclevel.materials.alphaMaterials.Ice.ID
+    iceID = alphaMaterials[&quot;minecraft:ice&quot;].ID
     blocktypes = [iceID]
     renderstate = ChunkCalculator.renderstateIce
 
@@ -3194,7 +3199,6 @@ faceVertexTemplates = makeVertexTemplates()
         return vertexArray
 </div>
     makeFaceVertices = iceFaceVertices
-
 </div>
 from glutils import DisplayList
 
@@ -3813,7 +3817,7 @@ from glutils import DisplayList
                     print e
 
             GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
-
+                
             GL.glDisable(GL.GL_CULL_FACE)
             GL.glDisable(GL.GL_DEPTH_TEST)
 
@@ -4060,7 +4064,7 @@ if __name__ == &quot;__main__&quot;:
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

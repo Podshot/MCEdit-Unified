@@ -1,18 +1,18 @@
 pymclevel package
-=================
+======================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    pymclevel.test
+    pymclevel.leveldb_mcpe
 
 Submodules
 ----------
 
 pymclevel.BOParser module
--------------------------
+------------------------------
 
 .. automodule:: pymclevel.BOParser
     :members:
@@ -20,7 +20,7 @@ pymclevel.BOParser module
     :show-inheritance:
 
 pymclevel.biome_types module
-----------------------------
+---------------------------------
 
 .. automodule:: pymclevel.biome_types
     :members:
@@ -28,7 +28,7 @@ pymclevel.biome_types module
     :show-inheritance:
 
 pymclevel.block_copy module
----------------------------
+--------------------------------
 
 .. automodule:: pymclevel.block_copy
     :members:
@@ -36,7 +36,7 @@ pymclevel.block_copy module
     :show-inheritance:
 
 pymclevel.block_fill module
----------------------------
+--------------------------------
 
 .. automodule:: pymclevel.block_fill
     :members:
@@ -44,15 +44,15 @@ pymclevel.block_fill module
     :show-inheritance:
 
 pymclevel.blockrotation module
-------------------------------
+-----------------------------------
 
-.. automodule:: pymclevel.blockrotation
+.. automodule:: Mpymclevel.blockrotation
     :members:
     :undoc-members:
     :show-inheritance:
 
 pymclevel.box module
---------------------
+-------------------------
 
 .. automodule:: pymclevel.box
     :members:
@@ -60,7 +60,7 @@ pymclevel.box module
     :show-inheritance:
 
 pymclevel.cachefunc module
---------------------------
+-------------------------------
 
 .. automodule:: pymclevel.cachefunc
     :members:
@@ -68,7 +68,7 @@ pymclevel.cachefunc module
     :show-inheritance:
 
 pymclevel.entity module
------------------------
+----------------------------
 
 .. automodule:: pymclevel.entity
     :members:
@@ -76,7 +76,7 @@ pymclevel.entity module
     :show-inheritance:
 
 pymclevel.faces module
-----------------------
+---------------------------
 
 .. automodule:: pymclevel.faces
     :members:
@@ -84,7 +84,7 @@ pymclevel.faces module
     :show-inheritance:
 
 pymclevel.gprof2dot module
---------------------------
+-------------------------------
 
 .. automodule:: pymclevel.gprof2dot
     :members:
@@ -92,7 +92,7 @@ pymclevel.gprof2dot module
     :show-inheritance:
 
 pymclevel.indev module
-----------------------
+---------------------------
 
 .. automodule:: pymclevel.indev
     :members:
@@ -100,7 +100,7 @@ pymclevel.indev module
     :show-inheritance:
 
 pymclevel.infiniteworld module
-------------------------------
+-----------------------------------
 
 .. automodule:: pymclevel.infiniteworld
     :members:
@@ -108,7 +108,7 @@ pymclevel.infiniteworld module
     :show-inheritance:
 
 pymclevel.items module
-----------------------
+---------------------------
 
 .. automodule:: pymclevel.items
     :members:
@@ -116,7 +116,7 @@ pymclevel.items module
     :show-inheritance:
 
 pymclevel.javalevel module
---------------------------
+-------------------------------
 
 .. automodule:: pymclevel.javalevel
     :members:
@@ -124,7 +124,7 @@ pymclevel.javalevel module
     :show-inheritance:
 
 pymclevel.level module
-----------------------
+---------------------------
 
 .. automodule:: pymclevel.level
     :members:
@@ -132,7 +132,7 @@ pymclevel.level module
     :show-inheritance:
 
 pymclevel.leveldb module
-------------------------
+-----------------------------
 
 .. automodule:: pymclevel.leveldb
     :members:
@@ -140,7 +140,7 @@ pymclevel.leveldb module
     :show-inheritance:
 
 pymclevel.leveldbpocket module
-------------------------------
+-----------------------------------
 
 .. automodule:: pymclevel.leveldbpocket
     :members:
@@ -148,7 +148,7 @@ pymclevel.leveldbpocket module
     :show-inheritance:
 
 pymclevel.materials module
---------------------------
+-------------------------------
 
 .. automodule:: pymclevel.materials
     :members:
@@ -156,7 +156,7 @@ pymclevel.materials module
     :show-inheritance:
 
 pymclevel.mclevel module
-------------------------
+-----------------------------
 
 .. automodule:: pymclevel.mclevel
     :members:
@@ -164,7 +164,7 @@ pymclevel.mclevel module
     :show-inheritance:
 
 pymclevel.mclevelbase module
-----------------------------
+---------------------------------
 
 .. automodule:: pymclevel.mclevelbase
     :members:
@@ -172,7 +172,7 @@ pymclevel.mclevelbase module
     :show-inheritance:
 
 pymclevel.minecraft_server module
----------------------------------
+--------------------------------------
 
 .. automodule:: pymclevel.minecraft_server
     :members:
@@ -180,7 +180,7 @@ pymclevel.minecraft_server module
     :show-inheritance:
 
 pymclevel.nbt module
---------------------
+-------------------------
 
 .. automodule:: pymclevel.nbt
     :members:
@@ -188,7 +188,7 @@ pymclevel.nbt module
     :show-inheritance:
 
 pymclevel.player module
------------------------
+----------------------------
 
 .. automodule:: pymclevel.player
     :members:
@@ -196,7 +196,7 @@ pymclevel.player module
     :show-inheritance:
 
 pymclevel.pocket module
------------------------
+----------------------------
 
 .. automodule:: pymclevel.pocket
     :members:
@@ -204,7 +204,7 @@ pymclevel.pocket module
     :show-inheritance:
 
 pymclevel.regionfile module
----------------------------
+--------------------------------
 
 .. automodule:: pymclevel.regionfile
     :members:
@@ -212,7 +212,7 @@ pymclevel.regionfile module
     :show-inheritance:
 
 pymclevel.run_regression_test module
-------------------------------------
+-----------------------------------------
 
 .. automodule:: pymclevel.run_regression_test
     :members:
@@ -220,23 +220,15 @@ pymclevel.run_regression_test module
     :show-inheritance:
 
 pymclevel.schematic module
---------------------------
+-------------------------------
 
 .. automodule:: pymclevel.schematic
     :members:
     :undoc-members:
     :show-inheritance:
 
-pymclevel.setup module
-----------------------
-
-.. automodule:: pymclevel.setup
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 pymclevel.test_leveldb module
------------------------------
+----------------------------------
 
 .. automodule:: pymclevel.test_leveldb
     :members:

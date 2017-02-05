@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools.brush &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools.brush &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -251,7 +251,7 @@
 </div></div>
 <div class="viewcode-block" id="BrushPanel"><a class="viewcode-back" href="../../editortools.html#editortools.brush.BrushPanel">[docs]</a><span class="k">class</span> <span class="nc">BrushPanel</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.BrushPanel&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        presets, modeRow and styleRow are always created, no matter</span>
@@ -480,7 +480,7 @@
 </div></div>
 <div class="viewcode-block" id="BrushToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.brush.BrushToolOptions">[docs]</a><span class="k">class</span> <span class="nc">BrushToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.BrushToolOptions&#39;</span><span class="p">)</span>
         <span class="n">alphaField</span> <span class="o">=</span> <span class="n">FloatField</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">ItemRef</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;brushAlpha&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
         <span class="n">alphaField</span><span class="o">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="n">alphaRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Alpha: &quot;</span><span class="p">),</span> <span class="n">alphaField</span><span class="p">))</span>
@@ -1312,7 +1312,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

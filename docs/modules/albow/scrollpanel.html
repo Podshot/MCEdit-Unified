@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.scrollpanel &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.scrollpanel &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -175,6 +175,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;hscrolling&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">virtual_width</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dragging_hhover</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">PaletteView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_size</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scrolling</span><span class="o">=</span><span class="n">scrolling</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span>
@@ -262,6 +264,30 @@
         <span class="n">r</span><span class="o">.</span><span class="n">inflate_ip</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span>
 </div>
+<div class="viewcode-block" id="ScrollRow.hscrollbar_rect"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.hscrollbar_rect">[docs]</a>    <span class="k">def</span> <span class="nf">hscrollbar_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Get the distance between the scroll buttons (d)</span>
+        <span class="n">slr</span><span class="p">,</span> <span class="n">slt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left_rect</span><span class="p">()</span><span class="o">.</span><span class="n">topright</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_right_rect</span><span class="p">()</span><span class="o">.</span><span class="n">left</span> <span class="o">-</span> <span class="n">slr</span>
+        <span class="c"># The predefined step value</span>
+        <span class="n">_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c"># Get the total step number</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">virtual_width</span><span class="p">)</span> <span class="o">/</span> <span class="n">_s</span>
+        <span class="c"># Get the visible step number</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="n">_s</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">w</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">slr</span><span class="p">,</span> <span class="n">slr</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtual_width</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">slt</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="n">slr</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">inflate_ip</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
 <div class="viewcode-block" id="ScrollRow.can_scroll_left"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.can_scroll_left">[docs]</a>    <span class="k">def</span> <span class="nf">can_scroll_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </div>
@@ -278,34 +304,55 @@
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_color</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">topleft</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">midright</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">bottomleft</span><span class="p">])</span>
 </div>
+<div class="viewcode-block" id="ScrollRow.draw_hscrollbar"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.draw_hscrollbar">[docs]</a>    <span class="k">def</span> <span class="nf">draw_hscrollbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrollbar_rect</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_color</span><span class="p">)</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</div>
 <div class="viewcode-block" id="ScrollRow.draw"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()):</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cols</span><span class="p">()):</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_rect</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">draw_cell</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_up</span><span class="p">():</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_up_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_down</span><span class="p">():</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_down_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_left</span><span class="p">():</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_left_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_right</span><span class="p">():</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_right_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">or</span> <span class="n">d</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_scrollbar</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="ow">or</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_hscrollbar</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="ScrollRow.scroll_left"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.scroll_left">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScrollRow.scroll_left"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.scroll_left">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_left</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span>
 </div>
-<div class="viewcode-block" id="ScrollRow.scroll_right"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.scroll_right">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ScrollRow.scroll_right"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.scroll_right">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_right</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span>
 </div>
 <div class="viewcode-block" id="ScrollRow.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span><span class="p">:</span>
                 <span class="n">p</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">local</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrollbar_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dragging_hhover</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="k">return</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left</span><span class="p">()</span>
                     <span class="k">return</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_right_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
@@ -318,6 +365,28 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scroll_right</span><span class="p">()</span>
         <span class="n">PaletteView</span><span class="o">.</span><span class="n">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ScrollRow.mouse_drag"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.mouse_drag">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dragging_hhover</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span> <span class="o">+=</span> <span class="n">event</span><span class="o">.</span><span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">slr</span><span class="p">,</span> <span class="n">slt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left_rect</span><span class="p">()</span><span class="o">.</span><span class="n">topright</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_right_rect</span><span class="p">()</span><span class="o">.</span><span class="n">left</span> <span class="o">-</span> <span class="n">slr</span>
+            <span class="n">_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">virtual_width</span><span class="p">)</span> <span class="o">/</span> <span class="n">_s</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">s</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scroll_right</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scroll_left</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span><span class="p">)</span> <span class="o">/</span> <span class="n">s</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">PaletteView</span><span class="o">.</span><span class="n">mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ScrollRow.mouse_up"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.mouse_up">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dragging_hhover</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dragging_hhover</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hscroll_rel</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">PaletteView</span><span class="o">.</span><span class="n">mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ScrollRow.cell_rect"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow.cell_rect">[docs]</a>    <span class="k">def</span> <span class="nf">cell_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span>
@@ -421,7 +490,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

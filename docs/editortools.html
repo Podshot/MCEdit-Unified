@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools package &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools package &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="frustum module" href="frustum.html" />
     <link rel="prev" title="drawable module" href="drawable.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -2106,11 +2106,12 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <code class="descname">tooltipText</code><em class="property"> = 'Filter'</em><a class="headerlink" href="#editortools.filter.FilterTool.tooltipText" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="editortools.filter.FilterTool.updateFilters">
-<code class="descname">updateFilters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.updateFilters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.updateFilters" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
+<dl class="class">
+<dt id="editortools.filter.FilterToolOptions">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterToolOptions</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#editortools.tooloptions.ToolOptions" title="editortools.tooloptions.ToolOptions"><code class="xref py py-class docutils literal"><span class="pre">editortools.tooloptions.ToolOptions</span></code></a></p>
 </dd></dl>
 
 <dl class="class">
@@ -2189,6 +2190,17 @@ macros would not be saved.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="editortools.filter.FilterUtils">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterUtils</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="editortools.filter.FilterUtils.Available_Attributes">
+<code class="descname">Available_Attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterUtils.Available_Attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterUtils.Available_Attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="editortools.filter.JsonDictProperty">
 <em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">JsonDictProperty</code><span class="sig-paren">(</span><em>filename</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#JsonDictProperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.JsonDictProperty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
@@ -2236,6 +2248,22 @@ macros would not be saved.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="editortools.filter.SingleFileChooser">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">SingleFileChooser</code><span class="sig-paren">(</span><em>file_types=None</em>, <em>operation=0</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#SingleFileChooser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.SingleFileChooser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="attribute">
+<dt id="editortools.filter.SingleFileChooser.OPEN_FILE">
+<code class="descname">OPEN_FILE</code><em class="property"> = 0</em><a class="headerlink" href="#editortools.filter.SingleFileChooser.OPEN_FILE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="editortools.filter.SingleFileChooser.SAVE_FILE">
+<code class="descname">SAVE_FILE</code><em class="property"> = 1</em><a class="headerlink" href="#editortools.filter.SingleFileChooser.SAVE_FILE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="editortools.filter.addNumField">
 <code class="descclassname">editortools.filter.</code><code class="descname">addNumField</code><span class="sig-paren">(</span><em>page</em>, <em>optionName</em>, <em>oName</em>, <em>val</em>, <em>min_value=None</em>, <em>max_value=None</em>, <em>increment=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#addNumField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.addNumField" title="Permalink to this definition">¶</a></dt>
@@ -2248,17 +2276,17 @@ macros would not be saved.</p>
 
 <dl class="function">
 <dt id="editortools.filter.tryImport">
-<code class="descclassname">editortools.filter.</code><code class="descname">tryImport</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="headerlink" href="#editortools.filter.tryImport" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em>, <em>notify=True</em><span class="sig-paren">)</span><a class="headerlink" href="#editortools.filter.tryImport" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="editortools.filter.tryImport_new">
-<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_new</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_new" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_new</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em>, <em>notify=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_new" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="editortools.filter.tryImport_old">
-<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_old</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_old" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_old</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em>, <em>notify=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -2299,6 +2327,11 @@ macros would not be saved.</p>
 <dt id="editortools.nbtexplorer.NBTExplorerOptions">
 <em class="property">class </em><code class="descclassname">editortools.nbtexplorer.</code><code class="descname">NBTExplorerOptions</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerOptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#editortools.tooloptions.ToolOptions" title="editortools.tooloptions.ToolOptions"><code class="xref py py-class docutils literal"><span class="pre">editortools.tooloptions.ToolOptions</span></code></a></p>
+<dl class="method">
+<dt id="editortools.nbtexplorer.NBTExplorerOptions.defaultBulletImagesBox_click">
+<code class="descname">defaultBulletImagesBox_click</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerOptions.defaultBulletImagesBox_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerOptions.defaultBulletImagesBox_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerOptions.dismiss">
 <code class="descname">dismiss</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerOptions.dismiss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerOptions.dismiss" title="Permalink to this definition">¶</a></dt>
@@ -2559,7 +2592,7 @@ macros would not be saved.</p>
 <dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="attribute">
 <dt id="editortools.nbtexplorer.TAG_List_Type.choices">
-<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'List', u'Floating point (TAG_Float)', 'Byte Array', 'Integral', 'Long', 'Int Array', u'Floating point (TAG_Double)', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'Integral', u'Floating point (TAG_Float)', 'Byte Array', 'List', u'Floating point (TAG_Double)', 'Int Array', 'Long', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3494,7 +3527,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="method">
 <dt id="editortools.select.SelectionTool.nudgeSelection">
-<code class="descname">nudgeSelection</code><span class="sig-paren">(</span><em>dir</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#SelectionTool.nudgeSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.SelectionTool.nudgeSelection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">nudgeSelection</code><span class="sig-paren">(</span><em>direction</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#SelectionTool.nudgeSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.SelectionTool.nudgeSelection" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -3736,11 +3769,16 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <span id="editortools-tooloptions-module"></span><h2>editortools.tooloptions module<a class="headerlink" href="#module-editortools.tooloptions" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="editortools.tooloptions.ToolOptions">
-<em class="property">class </em><code class="descclassname">editortools.tooloptions.</code><code class="descname">ToolOptions</code><span class="sig-paren">(</span><em>rect=None</em>, <em>xmin=-1</em>, <em>xmax=1</em>, <em>ymin=-1</em>, <em>ymax=1</em>, <em>near=-1</em>, <em>far=1</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/tooloptions.html#ToolOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.tooloptions.ToolOptions" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">editortools.tooloptions.</code><code class="descname">ToolOptions</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/tooloptions.html#ToolOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.tooloptions.ToolOptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
-<dl class="attribute">
-<dt id="editortools.tooloptions.ToolOptions.editor">
-<code class="descname">editor</code><a class="headerlink" href="#editortools.tooloptions.ToolOptions.editor" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="editortools.tooloptions.ToolOptions.escape_action">
+<code class="descname">escape_action</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/tooloptions.html#ToolOptions.escape_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.tooloptions.ToolOptions.escape_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.tooloptions.ToolOptions.key_down">
+<code class="descname">key_down</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/tooloptions.html#ToolOptions.key_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.tooloptions.ToolOptions.key_down" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -3777,7 +3815,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

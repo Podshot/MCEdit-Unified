@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.dialogs &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.dialogs &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -236,14 +236,26 @@
 </div>
 <div class="viewcode-block" id="alert"><a class="viewcode-back" href="../../albow.html#albow.dialogs.alert">[docs]</a><span class="k">def</span> <span class="nf">alert</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
     <span class="n">ask</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;OK&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-
 </div>
+<span class="n">ask_tied_to</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="c"># ask_tied_to = []</span>
+<span class="n">ask_tied_tos</span> <span class="o">=</span> <span class="p">[]</span>
+
 <div class="viewcode-block" id="ask"><a class="viewcode-back" href="../../albow.html#albow.dialogs.ask">[docs]</a><span class="k">def</span> <span class="nf">ask</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">wrap_width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
     <span class="c"># If height is specified as a keyword, the Dialog object will have this haight, and the inner massage will</span>
     <span class="c"># be displayed in a scrolling widget</span>
-    <span class="n">colLbl</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;colLabel&#39;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="c"># If &#39;responses_tooltips&#39; it present in kwds, it must be dict with &#39;responses&#39; as keys and the tooltips as values.</span>
+    <span class="c"># If &#39;tie_widget_to&#39; is in kwds keys and the value is True, the global &#39;ask_tied_to&#39; will be set up to the &#39;box&#39;.</span>
+    <span class="c"># When called again with &#39;tie_widget_to&#39;, if &#39;ask_tied_to&#39; is not None, the function returns a dummy answer.</span>
+    <span class="k">global</span> <span class="n">ask_tied_to</span>
+    <span class="n">responses_tooltips</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;responses_tooltips&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">tie_widget_to</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;tie_widget_to&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="c"># Return a dummy answer if tie_windget_to is True and the global &#39;ask_tied_to&#39; is not None</span>
+    <span class="k">if</span> <span class="n">tie_widget_to</span> <span class="ow">and</span> <span class="n">ask_tied_to</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;_OK&quot;</span>
 
+    <span class="n">colLbl</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;colLabel&#39;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
     <span class="n">box</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">margin</span>
@@ -251,6 +263,8 @@
     <span class="n">buts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">caption</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
         <span class="n">but</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">caption</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="o">=</span><span class="n">caption</span><span class="p">:</span> <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">caption</span> <span class="ow">in</span> <span class="n">responses_tooltips</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">but</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">responses_tooltips</span><span class="p">[</span><span class="n">caption</span><span class="p">]</span>
         <span class="n">buts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">but</span><span class="p">)</span>
     <span class="n">brow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">buts</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
     <span class="n">lb</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">brow</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
@@ -291,6 +305,9 @@
                     <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">default</span><span class="p">])</span>
 
     <span class="n">box</span><span class="o">.</span><span class="n">dispatch_key</span> <span class="o">=</span> <span class="n">dispatchKeyForAsk</span>
+    <span class="k">if</span> <span class="n">tie_widget_to</span><span class="p">:</span>
+        <span class="n">ask_tied_to</span> <span class="o">=</span> <span class="n">box</span>
+        <span class="n">ask_tied_tos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">box</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
 
 </div>
@@ -376,7 +393,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

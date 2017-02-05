@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>viewports.camera &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>viewports.camera &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -150,6 +150,7 @@
 <span class="kn">import</span> <span class="nn">mceutils</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">MCEDIT_DEFS</span><span class="p">,</span> <span class="n">MCEDIT_IDS</span>
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isnan</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
@@ -164,6 +165,7 @@
 <span class="kn">from</span> <span class="nn">albow.openglwidgets</span> <span class="kn">import</span> <span class="n">GLViewport</span>
 <span class="kn">from</span> <span class="nn">albow.extended_widgets</span> <span class="kn">import</span> <span class="n">BasicTextInputRow</span><span class="p">,</span> <span class="n">CheckBoxLabel</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">get_top_widget</span>
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">mouse</span>
 <span class="kn">from</span> <span class="nn">depths</span> <span class="kn">import</span> <span class="n">DepthOffset</span>
 <span class="kn">from</span> <span class="nn">editortools.operation</span> <span class="kn">import</span> <span class="n">Operation</span>
@@ -253,6 +255,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_info_parsers</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="c"># self.add(DebugDisplay(self, &quot;cameraPosition&quot;, &quot;blockFaceUnderCursor&quot;, &quot;mouseVector&quot;, &quot;mouse3dPoint&quot;))</span>
 
     <span class="nd">@property</span>
@@ -494,7 +497,7 @@
                     <span class="n">changed</span> <span class="o">=</span> <span class="bp">False</span>
                     <span class="n">te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">focusPair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                     <span class="n">backupTE</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">te</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">te</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Sign&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">te</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Sign&quot;</span> <span class="ow">or</span> <span class="n">MCEDIT_IDS</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;DEF_BLOCKS_STANDING_SIGN&quot;</span><span class="p">,</span> <span class="s">&quot;DEFS_BLOCKS_WALL_SIGN&quot;</span><span class="p">):</span>
                         <span class="k">if</span> <span class="s">&quot;Text1&quot;</span> <span class="ow">in</span> <span class="n">te</span> <span class="ow">and</span> <span class="s">&quot;Text2&quot;</span> <span class="ow">in</span> <span class="n">te</span> <span class="ow">and</span> <span class="s">&quot;Text3&quot;</span> <span class="ow">in</span> <span class="n">te</span> <span class="ow">and</span> <span class="s">&quot;Text4&quot;</span> <span class="ow">in</span> <span class="n">te</span><span class="p">:</span>
                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
                                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">te</span><span class="p">[</span><span class="s">&quot;Text&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">32767</span><span class="p">:</span>
@@ -618,24 +621,36 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mouseLookOn</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mouseLookOff</span><span class="p">()</span>
-</div>
+
+    <span class="c"># mobs is overrided in __init__</span></div>
     <span class="n">mobs</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">Entity</span><span class="o">.</span><span class="n">monsters</span> <span class="o">+</span> <span class="p">[</span><span class="s">&quot;[Custom]&quot;</span><span class="p">]</span>
 
     <span class="nd">@mceutils.alertException</span>
     <span class="k">def</span> <span class="nf">editMonsterSpawner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="n">mobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobs</span>
+        <span class="n">_mobs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c"># Get the mobs from the versionned data</span>
+        <span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">MCEDIT_DEFS</span><span class="p">,</span> <span class="n">MCEDIT_IDS</span>
+        <span class="k">if</span> <span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;spawner_monsters&#39;</span><span class="p">):</span>
+            <span class="n">mobs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">MCEDIT_DEFS</span><span class="p">[</span><span class="s">&#39;spawner_monsters&#39;</span><span class="p">]:</span>
+                <span class="n">_id</span> <span class="o">=</span> <span class="n">MCEDIT_IDS</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="p">[</span><span class="n">_id</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+                <span class="n">_mobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+                <span class="n">_mobs</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">mobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">tileEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
         <span class="n">undoBackupEntityTag</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;MobSpawner&quot;</span><span class="p">)</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MobSpawner&quot;</span><span class="p">,</span> <span class="s">&quot;MobSpawner&quot;</span><span class="p">))</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;Delay&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Short</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">mobs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mobs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mobs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">addTileEntity</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">)</span>
 
         <span class="n">panel</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
@@ -670,23 +685,27 @@
         <span class="n">mobTable</span><span class="o">.</span><span class="n">selectedIndex</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">def</span> <span class="nf">selectedMob</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">mobs</span><span class="p">[</span><span class="n">mobTable</span><span class="o">.</span><span class="n">selectedIndex</span><span class="p">]</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">mobs</span><span class="p">[</span><span class="n">mobTable</span><span class="o">.</span><span class="n">selectedIndex</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">_mobs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">cancel</span><span class="p">():</span>
             <span class="n">mobs</span><span class="p">[</span><span class="n">mobTable</span><span class="o">.</span><span class="n">selectedIndex</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
             <span class="n">panel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="s">&quot;EntityId&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">:</span>
-            <span class="nb">id</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_id</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="c">#             id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get(&quot;name&quot;, _id)</span>
         <span class="k">elif</span> <span class="s">&quot;SpawnData&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">:</span>
-            <span class="nb">id</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_id</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">id</span> <span class="o">=</span> <span class="s">&quot;[Custom]&quot;</span>
+            <span class="n">_id</span> <span class="o">=</span> <span class="s">&quot;[Custom]&quot;</span>
+
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">MCEDIT_IDS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_id</span><span class="p">,</span> <span class="n">_id</span><span class="p">),</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">_id</span><span class="p">)</span>
+
         <span class="n">addMob</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
 
         <span class="n">mobTable</span><span class="o">.</span><span class="n">selectedIndex</span> <span class="o">=</span> <span class="n">mobs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
-
-        <span class="n">oldChoiceCol</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Current: &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">id</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span> <span class="p">))</span>
+        <span class="n">oldChoiceCol</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Current: &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">_mobs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">id</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span> <span class="p">))</span>
         <span class="n">newChoiceCol</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">ValueDisplay</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">get_value</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Change to: &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">selectedMob</span><span class="p">()),</span> <span class="n">mobTable</span><span class="p">))</span>
 
         <span class="n">lastRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">panel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">),</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">cancel</span><span class="p">)))</span>
@@ -718,9 +737,42 @@
                 <span class="k">return</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">BoundingBox</span><span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">TileEntity</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="nb">id</span> <span class="o">!=</span> <span class="n">selectedMob</span><span class="p">():</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
+            <span class="k">if</span> <span class="s">&quot;EntityId&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">:</span>
+                <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
+            <span class="k">if</span> <span class="s">&quot;SpawnData&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">:</span>
+                <span class="c"># Try to not clear the spawn data, but only update the mob id</span>
+<span class="c">#                 tileEntity[&quot;SpawnData&quot;] = pymclevel.TAG_Compound()</span>
+                <span class="n">tag_id</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
+                <span class="k">if</span> <span class="s">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">]:</span>
+                    <span class="n">tag_id</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;id&quot;</span>
+                    <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_id</span>
+                <span class="k">if</span> <span class="s">&quot;EntityId&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">]:</span>
+                    <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnData&quot;</span><span class="p">][</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_id</span>
+            <span class="k">if</span> <span class="s">&quot;SpawnPotentials&quot;</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">potential</span> <span class="ow">in</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SpawnPotentials&quot;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="s">&quot;Entity&quot;</span> <span class="ow">in</span> <span class="n">potential</span><span class="p">:</span>
+                        <span class="c"># MC 1.9+</span>
+                        <span class="k">if</span> <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Entity&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="nb">id</span> <span class="ow">or</span> <span class="p">(</span><span class="s">&quot;EntityId&quot;</span> <span class="ow">in</span> <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Entity&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Entity&quot;</span><span class="p">][</span><span class="s">&quot;EntityId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="nb">id</span><span class="p">):</span>
+                            <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Entity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
+                            <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Entity&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
+                    <span class="k">elif</span> <span class="s">&quot;Properties&quot;</span> <span class="ow">in</span> <span class="n">potential</span><span class="p">:</span>
+                        <span class="c"># MC before 1.9</span>
+                        <span class="k">if</span> <span class="s">&quot;Type&quot;</span> <span class="ow">in</span> <span class="n">potential</span> <span class="ow">and</span> <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                            <span class="n">potential</span><span class="p">[</span><span class="s">&quot;Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">selectedMob</span><span class="p">())</span>
+                        <span class="c"># We also can change some other values in the Properties tag, but it is useless in MC 1.8+.</span>
+                        <span class="c"># The fact is this data will not be updated by the game after the mob type is changed, but the old mob will not spawn.</span>
+<span class="c">#                         put_entityid = False</span>
+<span class="c">#                         put_id = False</span>
+<span class="c">#                         if &quot;EntityId&quot; in potential[&quot;Properties&quot;] and potential[&quot;Properties&quot;][&quot;EntityId&quot;].value == id:</span>
+<span class="c">#                             put_entityid = True</span>
+<span class="c">#                         if &quot;id&quot; in potential[&quot;Properties&quot;] and potential[&quot;Properties&quot;][&quot;id&quot;].value == id:</span>
+<span class="c">#                             put_id = True</span>
+<span class="c">#                         new_props = pymclevel.TAG_Compound()</span>
+<span class="c">#                         if put_entityid:</span>
+<span class="c">#                             new_props[&quot;EntityId&quot;] = pymclevel.TAG_String(selectedMob())</span>
+<span class="c">#                         if put_id:</span>
+<span class="c">#                             new_props[&quot;id&quot;] = pymclevel.TAG_String(selectedMob())</span>
+<span class="c">#                         potential[&quot;Properties&quot;] = new_props</span>
             <span class="n">op</span> <span class="o">=</span> <span class="n">MonsterSpawnerEditOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">canUndo</span><span class="p">:</span>
@@ -867,7 +919,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;MobSpawner&quot;</span><span class="p">)</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;MobSpawner&quot;</span><span class="p">,</span> <span class="s">&quot;MobSpawner&quot;</span><span class="p">))</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -949,14 +1001,28 @@
 
         <span class="n">linekeys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Text&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
 
+        <span class="c"># From version 1.8, signs accept Json format.</span>
+        <span class="c"># 1.9 does no more support the old raw string fomat.</span>
+        <span class="n">splitVersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">gameVersion</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">newFmtVersion</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;1&#39;</span><span class="p">,</span><span class="s">&#39;9&#39;</span><span class="p">]</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">json_fmt</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">:</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">([</span><span class="s">&#39;0&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="mi">0</span><span class="p">)),</span> <span class="n">b</span> <span class="o">+</span> <span class="p">([</span><span class="s">&#39;0&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="bp">False</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="n">y</span><span class="p">),</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">splitVersion</span><span class="p">,</span> <span class="n">newFmtVersion</span><span class="p">))[:</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">json_fmt</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;{&quot;text&quot;:&quot;&quot;}&#39;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
+             <span class="c"># Don&#39;t know how to handle the difference between wall and standing signs for now...</span>
+             <span class="c"># Just let this like it is until we can find the way!</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;Sign&quot;</span><span class="p">)</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">linekeys</span><span class="p">:</span>
-                <span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">addTileEntity</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">)</span>
 
         <span class="n">panel</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
@@ -964,16 +1030,13 @@
         <span class="n">lineFields</span> <span class="o">=</span> <span class="p">[</span><span class="n">TextFieldWrapped</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">linekeys</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">linekeys</span><span class="p">,</span> <span class="n">lineFields</span><span class="p">):</span>
 
-            <span class="c">#Fix for the &#39;§ is Ä§&#39; issue</span>
-<span class="c">#             try:</span>
-<span class="c">#                 f.value = tileEntity[l].value.decode(&quot;unicode-escape&quot;)</span>
-<span class="c">#             except:</span>
-<span class="c">#                 f.value = tileEntity[l].value</span>
             <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
 
-            <span class="c"># Double quotes handling</span>
+            <span class="c"># Double quotes handling for olf sign text format.</span>
             <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#39;null&#39;</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">fmt</span>
+            <span class="k">elif</span> <span class="n">json_fmt</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">fmt</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">):</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1000,8 +1063,6 @@
         <span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">menu_picked</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
-            <span class="c"># Fix for the &#39;§ is Ä§&#39; issue</span>
-<span class="c">#             c = u&#39;\xa7&#39; + hex(index)[-1]</span>
             <span class="n">c</span> <span class="o">=</span> <span class="s">u&quot;§</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="n">index</span>
             <span class="n">currentField</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">focus_switch</span><span class="o">.</span><span class="n">focus_switch</span>
             <span class="n">currentField</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="n">c</span>  <span class="c"># xxx view hierarchy</span>
@@ -1009,12 +1070,15 @@
 
         <span class="k">def</span> <span class="nf">changeSign</span><span class="p">():</span>
             <span class="n">unsavedChanges</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;&quot;{}&quot;&#39;</span>
+            <span class="n">u_fmt</span> <span class="o">=</span> <span class="s">u&#39;&quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span>
+            <span class="k">if</span> <span class="n">json_fmt</span><span class="p">:</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;{}&#39;</span>
+                <span class="n">u_fmt</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="si">%s</span><span class="s">&#39;</span>
             <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">linekeys</span><span class="p">,</span> <span class="n">lineFields</span><span class="p">):</span>
-                <span class="n">oldText</span> <span class="o">=</span> <span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
-                <span class="c"># Double quotes handling</span>
-<span class="c">#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])</span>
-                <span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">u&#39;&quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span><span class="o">%</span><span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">[:</span><span class="mi">255</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">&quot;&#39;</span><span class="p">))</span>
-                <span class="k">if</span> <span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">])</span> <span class="o">!=</span> <span class="n">oldText</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">unsavedChanges</span><span class="p">:</span>
+                <span class="n">oldText</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+                <span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">u_fmt</span><span class="o">%</span><span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">[:</span><span class="mi">255</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">[</span><span class="n">l</span><span class="p">])</span> <span class="o">!=</span> <span class="n">oldText</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">unsavedChanges</span><span class="p">:</span>
                     <span class="n">unsavedChanges</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="k">if</span> <span class="n">unsavedChanges</span><span class="p">:</span>
                 <span class="n">op</span> <span class="o">=</span> <span class="n">SignEditOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">tileEntity</span><span class="p">,</span> <span class="n">undoBackupEntityTag</span><span class="p">)</span>
@@ -1055,6 +1119,8 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
+            <span class="c"># Don&#39;t know how to handle the difference between skulls in this context signs for now...</span>
+            <span class="c"># Tests nedded!</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;Skull&quot;</span><span class="p">)</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1132,7 +1198,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;Control&quot;</span><span class="p">)</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Control&quot;</span><span class="p">,</span> <span class="s">&quot;Control&quot;</span><span class="p">))</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1145,7 +1211,7 @@
         <span class="n">titleLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Edit Command Block&quot;</span><span class="p">)</span>
         <span class="n">commandField</span> <span class="o">=</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">650</span><span class="p">)</span>
         <span class="n">nameField</span> <span class="o">=</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-        <span class="n">successField</span> <span class="o">=</span> <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">)</span>
+        <span class="n">successField</span> <span class="o">=</span> <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
         <span class="n">trackOutput</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">()</span>
 
         <span class="c"># Fix for the &#39;§ is Ä§&#39; issue</span>
@@ -1160,8 +1226,8 @@
         <span class="n">oldTrackOutput</span> <span class="o">=</span> <span class="n">trackOutput</span><span class="o">.</span><span class="n">value</span>
         <span class="n">nameField</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;CustomName&quot;</span><span class="p">,</span> <span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
         <span class="n">oldNameField</span> <span class="o">=</span> <span class="n">nameField</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">successField</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">oldSuccess</span> <span class="o">=</span> <span class="n">successField</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">successField</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">oldSuccess</span> <span class="o">=</span> <span class="n">successField</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
 
         <span class="k">class</span> <span class="nc">CommandBlockEditOperation</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
@@ -1187,11 +1253,11 @@
                 <span class="k">return</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">BoundingBox</span><span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">TileEntity</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="k">def</span> <span class="nf">updateCommandBlock</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">oldCommand</span> <span class="o">!=</span> <span class="n">commandField</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldTrackOutput</span> <span class="o">!=</span> <span class="n">trackOutput</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldNameField</span> <span class="o">!=</span> <span class="n">nameField</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldSuccess</span> <span class="o">!=</span> <span class="n">successField</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">oldCommand</span> <span class="o">!=</span> <span class="n">commandField</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldTrackOutput</span> <span class="o">!=</span> <span class="n">trackOutput</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldNameField</span> <span class="o">!=</span> <span class="n">nameField</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">oldSuccess</span> <span class="o">!=</span> <span class="n">successField</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                 <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;Command&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">commandField</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
                 <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;TrackOutput&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Byte</span><span class="p">(</span><span class="n">trackOutput</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
                 <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;CustomName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">nameField</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">successField</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;SuccessCount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">successField</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
                 <span class="n">op</span> <span class="o">=</span> <span class="n">CommandBlockEditOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
@@ -1309,9 +1375,9 @@
             <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Slot: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;Slot&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">maxSlot</span><span class="p">),</span>
             <span class="n">BasicTextInputRow</span><span class="p">(</span><span class="s">&quot;ID / ID Name: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
             <span class="c"># Text to allow the input of internal item names</span>
-            <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;DMG: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;Damage&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">32768</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">32767</span><span class="p">),</span>
-            <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Count: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;Count&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">64</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">64</span><span class="p">),</span>
-            <span class="c"># This button is unactivated for now, because we need to work with different IDs types:</span>
+            <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;DMG: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;Damage&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">32767</span><span class="p">),</span>
+            <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Count: &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">chestWidget</span><span class="p">,</span> <span class="s">&#39;Count&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">64</span><span class="p">),</span>
+            <span class="c"># This button is inactive for now, because we need to work with different IDs types:</span>
             <span class="c"># * The &#39;human&#39; IDs: Stone, Glass, Swords...</span>
             <span class="c"># * The MC ones: minecraft:stone, minecraft:air...</span>
             <span class="c"># * The PE ones: 0:0, 1:0...</span>
@@ -1471,7 +1537,7 @@
         <span class="n">undoBackupEntityTag</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;FlowerPot&quot;</span><span class="p">)</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;FlowerPot&quot;</span><span class="p">,</span> <span class="s">&quot;FlowerPot&quot;</span><span class="p">))</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1535,7 +1601,7 @@
         <span class="n">undoBackupEntityTag</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tileEntity</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tileEntity</span><span class="p">:</span>
             <span class="n">tileEntity</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
-            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;EnchantTable&quot;</span><span class="p">)</span>
+            <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_String</span><span class="p">(</span><span class="n">MCEDIT_DEFS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;EnchantTable&quot;</span><span class="p">,</span> <span class="s">&quot;EnchantTable&quot;</span><span class="p">))</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">tileEntity</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1600,7 +1666,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">toggleMouseLook</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="CameraViewport.rightClickUp"><a class="viewcode-back" href="../../viewports.html#viewports.camera.CameraViewport.rightClickUp">[docs]</a>    <span class="k">def</span> <span class="nf">rightClickUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_lock</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">get_top_widget</span><span class="p">()</span><span class="o">.</span><span class="n">is_modal</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_lock</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">should_lock</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">toggleMouseLook</span><span class="p">()</span>
         <span class="c"># if self.rightMouseDragStart is None:</span>
         <span class="c">#     return</span>
@@ -1728,33 +1797,7 @@
                 <span class="c">#    event.get(MOUSEMOTION)</span>
                 <span class="c">#    self.oldMousePosition = (self.startingMousePosition)</span>
 
-        <span class="k">def</span> <span class="nf">showCommands</span><span class="p">():</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">point</span><span class="p">:</span>
-                    <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">block</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="o">.</span><span class="n">CommandBlock</span><span class="o">.</span><span class="n">ID</span> <span class="ow">or</span> <span class="n">block</span> <span class="o">==</span> <span class="mi">210</span> <span class="ow">or</span> <span class="n">block</span> <span class="o">==</span> <span class="mi">211</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-                        <span class="n">tileEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">tileEntity</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tileEntity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Command&quot;</span><span class="p">,</span> <span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
-                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1500</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">1500</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">**COMMAND IS TOO LONG TO SHOW MORE**&quot;</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">EnvironmentError</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">ChunkNotPresent</span><span class="p">):</span>
-                <span class="k">pass</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">showCommands</span> <span class="o">=</span> <span class="n">showCommands</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showCommands</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="n">point</span><span class="p">,</span> <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span>
-            <span class="k">if</span> <span class="n">point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">point</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">point</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">showCommands</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="c">#if config.settings.showCommands.get():</span>
 </div>
 <div class="viewcode-block" id="CameraViewport.activeevent"><a class="viewcode-back" href="../../viewports.html#viewports.camera.CameraViewport.activeevent">[docs]</a>    <span class="k">def</span> <span class="nf">activeevent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">state</span> <span class="o">&amp;</span> <span class="mh">0x2</span> <span class="ow">and</span> <span class="n">evt</span><span class="o">.</span><span class="n">gain</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1762,8 +1805,17 @@
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tooltipText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hoveringCommandBlock</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s">&quot;[Empty]&quot;</span>
+        <span class="c">#if self.hoveringCommandBlock[0] and (self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0):</span>
+        <span class="c">#    return self.hoveringCommandBlock[1] or &quot;[Empty]&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showQuickBlockInfo</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span>
+            <span class="k">if</span> <span class="n">point</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_info_parsers</span> <span class="ow">or</span> <span class="p">(</span><span class="n">BlockInfoParser</span><span class="o">.</span><span class="n">last_level</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">block_info_parsers</span> <span class="o">=</span> <span class="n">BlockInfoParser</span><span class="o">.</span><span class="n">get_parsers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">block</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_info_parsers</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_info_parsers</span><span class="p">[</span><span class="n">block</span><span class="p">](</span><span class="n">point</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span><span class="o">.</span><span class="n">worldTooltipText</span>
 
     <span class="n">floorQuad</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(((</span><span class="o">-</span><span class="mf">4000.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4000.0</span><span class="p">),</span>
@@ -2032,8 +2084,153 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_compass</span> <span class="o">=</span> <span class="bp">None</span>
 </div>
     <span class="n">_compass</span> <span class="o">=</span> <span class="bp">None</span>
-
-</div>
+    </div>
+<div class="viewcode-block" id="BlockInfoParser"><a class="viewcode-back" href="../../viewports.html#viewports.camera.BlockInfoParser">[docs]</a><span class="k">class</span> <span class="nc">BlockInfoParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">last_level</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">nbt_ending</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">Press ALT for NBT&quot;</span>
+    <span class="n">edit_ending</span> <span class="o">=</span> <span class="s">&quot;, Double-Click to Edit&quot;</span>
+    
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BlockInfoParser.get_parsers"><a class="viewcode-back" href="../../viewports.html#viewports.camera.BlockInfoParser.get_parsers">[docs]</a>    <span class="k">def</span> <span class="nf">get_parsers</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">editor</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">last_level</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">level</span>
+        <span class="n">parser_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">subcls</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">subcls</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">blocks</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">getBlocks</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                <span class="n">parser_map</span><span class="p">[</span><span class="n">blocks</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">parse_info</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+                    <span class="n">parser_map</span><span class="p">[</span><span class="n">block</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">parse_info</span>
+        <span class="k">return</span> <span class="n">parser_map</span>
+    </div>
+<div class="viewcode-block" id="BlockInfoParser.getBlocks"><a class="viewcode-back" href="../../viewports.html#viewports.camera.BlockInfoParser.getBlocks">[docs]</a>    <span class="k">def</span> <span class="nf">getBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    </div>
+<div class="viewcode-block" id="BlockInfoParser.parse_info"><a class="viewcode-back" href="../../viewports.html#viewports.camera.BlockInfoParser.parse_info">[docs]</a>    <span class="k">def</span> <span class="nf">parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div></div>
+<div class="viewcode-block" id="SpawnerInfoParser"><a class="viewcode-back" href="../../viewports.html#viewports.camera.SpawnerInfoParser">[docs]</a><span class="k">class</span> <span class="nc">SpawnerInfoParser</span><span class="p">(</span><span class="n">BlockInfoParser</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        
+<div class="viewcode-block" id="SpawnerInfoParser.getBlocks"><a class="viewcode-back" href="../../viewports.html#viewports.camera.SpawnerInfoParser.getBlocks">[docs]</a>    <span class="k">def</span> <span class="nf">getBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:mob_spawner&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span>
+    </div>
+<div class="viewcode-block" id="SpawnerInfoParser.parse_info"><a class="viewcode-back" href="../../viewports.html#viewports.camera.SpawnerInfoParser.parse_info">[docs]</a>    <span class="k">def</span> <span class="nf">parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">tile_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tile_entity</span><span class="p">:</span>
+            <span class="n">spawn_data</span> <span class="o">=</span> <span class="n">tile_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;SpawnData&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">if</span> <span class="n">spawn_data</span><span class="p">:</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="n">spawn_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;EntityId&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="p">:</span>
+                    <span class="nb">id</span> <span class="o">=</span> <span class="n">spawn_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="ne">NameError</span><span class="p">(</span><span class="s">&quot;Malformed spawn data: could not find &#39;EntityId&#39; or &#39;id&#39; tag.&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">id</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; Spawner&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+        <span class="k">return</span> <span class="s">&quot;[Empty]&quot;</span>  <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+    </div></div>
+<div class="viewcode-block" id="JukeboxInfoParser"><a class="viewcode-back" href="../../viewports.html#viewports.camera.JukeboxInfoParser">[docs]</a><span class="k">class</span> <span class="nc">JukeboxInfoParser</span><span class="p">(</span><span class="n">BlockInfoParser</span><span class="p">):</span>
+    <span class="n">id_records</span> <span class="o">=</span> <span class="p">{</span>
+               <span class="mi">2256</span><span class="p">:</span> <span class="s">&quot;13&quot;</span><span class="p">,</span>
+               <span class="mi">2257</span><span class="p">:</span> <span class="s">&quot;Cat&quot;</span><span class="p">,</span>
+               <span class="mi">2258</span><span class="p">:</span> <span class="s">&quot;Blocks&quot;</span><span class="p">,</span>
+               <span class="mi">2259</span><span class="p">:</span> <span class="s">&quot;Chirp&quot;</span><span class="p">,</span>
+               <span class="mi">2260</span><span class="p">:</span> <span class="s">&quot;Far&quot;</span><span class="p">,</span>
+               <span class="mi">2261</span><span class="p">:</span> <span class="s">&quot;Mall&quot;</span><span class="p">,</span>
+               <span class="mi">2262</span><span class="p">:</span> <span class="s">&quot;Mellohi&quot;</span><span class="p">,</span>
+               <span class="mi">2263</span><span class="p">:</span> <span class="s">&quot;Stal&quot;</span><span class="p">,</span>
+               <span class="mi">2264</span><span class="p">:</span> <span class="s">&quot;Strad&quot;</span><span class="p">,</span>
+               <span class="mi">2265</span><span class="p">:</span> <span class="s">&quot;Ward&quot;</span><span class="p">,</span>
+               <span class="mi">2266</span><span class="p">:</span> <span class="s">&quot;11&quot;</span><span class="p">,</span>
+               <span class="mi">2267</span><span class="p">:</span> <span class="s">&quot;Wait&quot;</span>
+    <span class="p">}</span>
+    
+    <span class="n">name_records</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;minecraft:record_13&quot;</span><span class="p">:</span> <span class="s">&quot;13&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_cat&quot;</span><span class="p">:</span> <span class="s">&quot;Cat&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_blocks&quot;</span><span class="p">:</span> <span class="s">&quot;Blocks&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_chirp&quot;</span><span class="p">:</span> <span class="s">&quot;Chirp&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_far&quot;</span><span class="p">:</span> <span class="s">&quot;Far&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_mall&quot;</span><span class="p">:</span> <span class="s">&quot;Mall&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_mellohi&quot;</span><span class="p">:</span> <span class="s">&quot;Mellohi&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_stal&quot;</span><span class="p">:</span> <span class="s">&quot;Stal&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_strad&quot;</span><span class="p">:</span> <span class="s">&quot;Strad&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_ward&quot;</span><span class="p">:</span> <span class="s">&quot;Ward&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_11&quot;</span><span class="p">:</span> <span class="s">&quot;11&quot;</span><span class="p">,</span>
+                <span class="s">&quot;minecraft:record_wait&quot;</span><span class="p">:</span> <span class="s">&quot;Wait&quot;</span>
+    <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        
+<div class="viewcode-block" id="JukeboxInfoParser.getBlocks"><a class="viewcode-back" href="../../viewports.html#viewports.camera.JukeboxInfoParser.getBlocks">[docs]</a>    <span class="k">def</span> <span class="nf">getBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:jukebox&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span>
+    </div>
+<div class="viewcode-block" id="JukeboxInfoParser.parse_info"><a class="viewcode-back" href="../../viewports.html#viewports.camera.JukeboxInfoParser.parse_info">[docs]</a>    <span class="k">def</span> <span class="nf">parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">tile_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tile_entity</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&quot;Record&quot;</span> <span class="ow">in</span> <span class="n">tile_entity</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">tile_entity</span><span class="p">[</span><span class="s">&quot;Record&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_records</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_records</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot; Record&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+            <span class="k">elif</span> <span class="s">&quot;RecordItem&quot;</span> <span class="ow">in</span> <span class="n">tile_entity</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">tile_entity</span><span class="p">[</span><span class="s">&quot;RecordItem&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_records</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_records</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot; Record&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+        <span class="k">return</span> <span class="s">&quot;[No Record]&quot;</span>  <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+    </div></div>
+<div class="viewcode-block" id="CommandBlockInfoParser"><a class="viewcode-back" href="../../viewports.html#viewports.camera.CommandBlockInfoParser">[docs]</a><span class="k">class</span> <span class="nc">CommandBlockInfoParser</span><span class="p">(</span><span class="n">BlockInfoParser</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        
+<div class="viewcode-block" id="CommandBlockInfoParser.getBlocks"><a class="viewcode-back" href="../../viewports.html#viewports.camera.CommandBlockInfoParser.getBlocks">[docs]</a>    <span class="k">def</span> <span class="nf">getBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:command_block&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:repeating_command_block&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:chain_command_block&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span>
+                <span class="p">]</span>
+    </div>
+<div class="viewcode-block" id="CommandBlockInfoParser.parse_info"><a class="viewcode-back" href="../../viewports.html#viewports.camera.CommandBlockInfoParser.parse_info">[docs]</a>    <span class="k">def</span> <span class="nf">parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">tile_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tile_entity</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">tile_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Command&quot;</span><span class="p">,</span> <span class="n">TAG_String</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1500</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">value</span><span class="p">[:</span><span class="mi">1500</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">**COMMAND IS TOO LONG TO SHOW MORE**&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+                <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+        <span class="k">return</span> <span class="s">&quot;[Empty Command Block]&quot;</span>  <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+    </div></div>
+<div class="viewcode-block" id="ContainerInfoParser"><a class="viewcode-back" href="../../viewports.html#viewports.camera.ContainerInfoParser">[docs]</a><span class="k">class</span> <span class="nc">ContainerInfoParser</span><span class="p">(</span><span class="n">BlockInfoParser</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        
+<div class="viewcode-block" id="ContainerInfoParser.getBlocks"><a class="viewcode-back" href="../../viewports.html#viewports.camera.ContainerInfoParser.getBlocks">[docs]</a>    <span class="k">def</span> <span class="nf">getBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:dispenser&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:chest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:furnace&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:lit_furnace&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:trapped_chest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:hopper&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:dropper&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="s">&quot;minecraft:brewing_stand&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ID</span>
+                <span class="p">]</span>
+        </div>
+<div class="viewcode-block" id="ContainerInfoParser.parse_info"><a class="viewcode-back" href="../../viewports.html#viewports.camera.ContainerInfoParser.parse_info">[docs]</a>    <span class="k">def</span> <span class="nf">parse_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">tile_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">tileEntityAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tile_entity</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;Contains {} Items&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tile_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Items&quot;</span><span class="p">,</span> <span class="p">[])))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+        <span class="k">return</span> <span class="s">&quot;[Empty Container]&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbt_ending</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_ending</span>
+</div></div>
 <div class="viewcode-block" id="unproject"><a class="viewcode-back" href="../../viewports.html#viewports.camera.unproject">[docs]</a><span class="k">def</span> <span class="nf">unproject</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">GLU</span><span class="o">.</span><span class="n">gluUnProject</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
@@ -2055,7 +2252,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

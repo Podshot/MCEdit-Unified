@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>leveleditor &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>leveleditor &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -144,6 +144,11 @@
 <span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
 <span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
 <span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
+<span class="c"># Moving this here to get log entries ASAP -- D.C.-G.</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pymclevel.schematic</span> <span class="kn">import</span> <span class="n">StructureNBT</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
 <span class="c">#-# Modified by D.C.-G. for translation purpose</span>
 <span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
 <span class="kn">from</span> <span class="nn">editortools.thumbview</span> <span class="kn">import</span> <span class="n">ThumbView</span> 
@@ -158,6 +163,7 @@
 <span class="kn">from</span> <span class="nn">editortools.select</span> <span class="kn">import</span> <span class="n">SelectionTool</span>
 <span class="kn">from</span> <span class="nn">pymclevel.box</span> <span class="kn">import</span> <span class="n">BoundingBox</span>
 <span class="kn">from</span> <span class="nn">waypoints</span> <span class="kn">import</span> <span class="n">WaypointManager</span>
+<span class="kn">from</span> <span class="nn">editortools.timeditor</span> <span class="kn">import</span> <span class="n">TimeEditor</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">leveleditor.py</span>
@@ -180,7 +186,6 @@
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">DEF_ENC</span>
 <span class="kn">import</span> <span class="nn">frustum</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">glutils</span>
 <span class="kn">import</span> <span class="nn">release</span>
 <span class="kn">import</span> <span class="nn">mceutils</span>
@@ -203,12 +208,13 @@
 <span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
 
 <span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">alert</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">input_text</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">Row</span><span class="p">,</span> \
-    <span class="n">TableColumn</span><span class="p">,</span> <span class="n">TableView</span><span class="p">,</span> <span class="n">TextFieldWrapped</span><span class="p">,</span> <span class="n">TimeField</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">CheckBox</span>
+    <span class="n">TableColumn</span><span class="p">,</span> <span class="n">TableView</span><span class="p">,</span> <span class="n">TextFieldWrapped</span><span class="p">,</span> <span class="n">TimeField</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">CheckBox</span><span class="p">,</span> \
+    <span class="n">unparented</span>
 <span class="kn">import</span> <span class="nn">albow.resource</span>
 
 <span class="n">albow</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">font_proportion</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 <span class="n">get_font</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">get_font</span>
-<span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">ValueDisplay</span><span class="p">,</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">ValueDisplay</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">RotatableImage</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span><span class="p">,</span> <span class="n">QuickDialog</span><span class="p">,</span> <span class="n">wrapped_label</span>
 <span class="kn">from</span> <span class="nn">albow.openglwidgets</span> <span class="kn">import</span> <span class="n">GLOrtho</span><span class="p">,</span> <span class="n">GLViewport</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
@@ -225,6 +231,8 @@
 <span class="kn">from</span> <span class="nn">pymclevel.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">pymclevel.infiniteworld</span> <span class="kn">import</span> <span class="n">AnvilWorldFolder</span><span class="p">,</span> <span class="n">SessionLockLost</span><span class="p">,</span> <span class="n">MCAlphaDimension</span><span class="p">,</span>\
     <span class="n">MCInfdevOldLevel</span>
+<span class="c"># Block and item translation</span>
+<span class="kn">from</span> <span class="nn">mclangres</span> <span class="kn">import</span> <span class="n">translate</span> <span class="k">as</span> <span class="n">trn</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">resource</span>  <span class="c"># @UnresolvedImport</span>
@@ -293,6 +301,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">None</span>
 
+        <span class="c"># Tracking the dimension changes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_dimension</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_dimension</span> <span class="o">=</span> <span class="bp">None</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">cameraInputs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cameraPanKeys</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">movements</span> <span class="o">=</span> <span class="p">[</span>
@@ -348,45 +360,47 @@
 
         <span class="k">def</span> <span class="nf">chooseDistance</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">changeViewDistance</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewDistanceReadout</span><span class="o">.</span><span class="n">get_value</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">viewDistance</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">viewDistance</span> <span class="o">=</span> <span class="mi">8</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewDistanceReadout</span> <span class="o">=</span> <span class="n">ChoiceButton</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="p">,</span> <span class="s">&quot;viewDistance&quot;</span><span class="p">),</span> <span class="n">choose</span><span class="o">=</span><span class="n">chooseDistance</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewDistanceReadout</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">viewDistance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewDistanceReadout</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
 
-
         <span class="k">def</span> <span class="nf">showViewOptions</span><span class="p">():</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Entities&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Entities&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span>
                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawEntities</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Items&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0x22</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawItems</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;TileEntities&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Items&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0x22</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawItems</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;TileEntities&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">),</span>
                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawTileEntities</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;TileTicks&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawTileTicks</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Player Heads&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawPlayerHeads</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Unpopulated Chunks&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">renderer</span><span class="o">.</span><span class="n">TerrainPopulatedRenderer</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;TileTicks&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawTileTicks</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Player Heads&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawPlayerHeads</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Unpopulated Chunks&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">renderer</span><span class="o">.</span><span class="n">TerrainPopulatedRenderer</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawUnpopulatedChunks</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Chunks Borders&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">renderer</span><span class="o">.</span><span class="n">ChunkBorderRenderer</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Chunks Borders&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">renderer</span><span class="o">.</span><span class="n">ChunkBorderRenderer</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawChunkBorders</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Sky&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawSky</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Fog&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawFog</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Ceiling&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showCeiling</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Chunk Redraw&quot;</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Sky&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawSky</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Fog&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawFog</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Ceiling&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showCeiling</span><span class="p">),</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Chunk Redraw&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">),</span>
                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showChunkRedraw</span><span class="p">),</span>
-                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Hidden Ores&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showHiddenOres</span><span class="p">,</span>
+                   <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Hidden Ores&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showHiddenOres</span><span class="p">,</span>
                                  <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Check to show/hide specific ores using the settings below.&quot;</span><span class="p">)]</span>
 
             <span class="k">for</span> <span class="n">ore</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">hiddableOres</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-                <span class="n">col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="n">ore</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot; Ore&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+                <span class="n">col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;* &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="n">ore</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot; Ore&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)),</span> <span class="n">expand</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                          <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s">&quot;showOre{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ore</span><span class="p">)]))</span>
 
-            <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="s">&#39;h&#39;</span><span class="p">)</span>
 
             <span class="n">d</span> <span class="o">=</span> <span class="n">QuickDialog</span><span class="p">()</span>
             <span class="n">d</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
             <span class="n">d</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
             <span class="n">d</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewButton</span><span class="o">.</span><span class="n">bottomleft</span>
             <span class="n">d</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="n">centered</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">viewButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Show...&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">showViewOptions</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span> <span class="o">=</span> <span class="n">WaypointManager</span><span class="p">(</span><span class="n">editor</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="c">#self.loadWaypoints()</span>
@@ -456,6 +470,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">topRow</span><span class="o">.</span><span class="n">calc_size</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">controlPanel</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="c"># Update the unparented widgets.</span>
+            <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">unparented</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
     <span class="c">#-#</span>
 </div>
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -552,8 +568,8 @@
 </div>
 <div class="viewcode-block" id="LevelEditor.mouse_down_session"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.mouse_down_session">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">class</span> <span class="nc">SessionLockOptions</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+                <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Override Minecraft Changes (Not Recommended)&quot;</span><span class="p">,</span>
                                                         <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">override</span><span class="p">,</span>
                                                         <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Always override Minecraft changes when map is open in MCEdit. (Not recommended)&quot;</span><span class="p">)</span>
@@ -564,7 +580,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">sessionLockPanel</span> <span class="o">=</span> <span class="n">SessionLockOptions</span><span class="p">()</span>
+            <span class="n">sessionLockPanel</span> <span class="o">=</span> <span class="n">SessionLockOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">sessionLockPanel</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
 </div>
     <span class="n">_viewMode</span> <span class="o">=</span> <span class="bp">None</span>
@@ -824,7 +840,7 @@
                 <span class="n">types</span><span class="p">[:</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">types</span><span class="p">[:</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
 
                 <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">getEntitiesInBox</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
-                    <span class="n">entID</span> <span class="o">=</span> <span class="n">Entity</span><span class="o">.</span><span class="n">getId</span><span class="p">(</span><span class="n">ent</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">entID</span> <span class="o">=</span> <span class="n">level</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">entityClass</span><span class="o">.</span><span class="n">getId</span><span class="p">(</span><span class="n">ent</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">ent</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Item&quot;</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">v</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">findItem</span><span class="p">(</span><span class="n">ent</span><span class="p">[</span><span class="s">&quot;Item&quot;</span><span class="p">][</span><span class="s">&quot;id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
@@ -847,18 +863,18 @@
 
         <span class="n">blockCounts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="n">t</span> <span class="o">&amp;</span> <span class="mh">0xfff</span><span class="p">,</span> <span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">presentTypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
 
-        <span class="n">blockRows</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="s">&quot;&lt;Blocks&gt;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)]</span>
+        <span class="n">blockRows</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Blocks&quot;</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)]</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blockRows</span><span class="p">)</span>
-        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">count</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;({0}:{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">blockData</span><span class="p">))]</span> <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">blockCounts</span><span class="p">])</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([[</span><span class="n">count</span><span class="p">,</span> <span class="n">trn</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span><span class="s">&quot;({0}:{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">blockData</span><span class="p">))]</span> <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">blockCounts</span><span class="p">])</span>
         <span class="c">#rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)</span>
 
         <span class="k">def</span> <span class="nf">extendEntities</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">entitySum</span><span class="p">:</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">entitySum</span><span class="p">,</span> <span class="s">&quot;&lt;Entities&gt;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)])</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">count</span><span class="p">,</span> <span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">entityCounts</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">entitySum</span><span class="p">,</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Entities&quot;</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">count</span><span class="p">,</span> <span class="n">trn</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">entityCounts</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())])</span>
             <span class="k">if</span> <span class="n">tileEntitySum</span><span class="p">:</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">tileEntitySum</span><span class="p">,</span> <span class="s">&quot;&lt;TileEntities&gt;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)])</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">count</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tileEntityCounts</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">tileEntitySum</span><span class="p">,</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;TileEntities&quot;</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">count</span><span class="p">,</span> <span class="n">trn</span><span class="p">(</span><span class="nb">id</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tileEntityCounts</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())])</span>
 
         <span class="n">extendEntities</span><span class="p">()</span>
 
@@ -914,7 +930,17 @@
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">alert</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">csvfile</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                        <span class="n">_row</span><span class="o">=</span><span class="p">[]</span>
+                        <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">):</span>
+                            <span class="n">_row</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Number&quot;</span><span class="p">,</span> <span class="s">&quot;Type&quot;</span><span class="p">,</span> <span class="s">&quot;ID&quot;</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">:</span>
+                                    <span class="n">_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                        <span class="n">csvfile</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">_row</span><span class="p">)</span>
 
         <span class="n">saveButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Save to file...&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">saveToFile</span><span class="p">)</span>
         <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Analysis&quot;</span><span class="p">),</span> <span class="n">tableBacking</span><span class="p">,</span> <span class="n">saveButton</span><span class="p">))</span>
@@ -937,13 +963,16 @@
 
         <span class="n">dlg</span><span class="o">.</span><span class="n">dispatch_key</span> <span class="o">=</span> <span class="n">dispatch_key</span>
         <span class="n">dlg</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
-</div>
+        </div>
 <div class="viewcode-block" id="LevelEditor.exportSchematic"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.exportSchematic">[docs]</a>    <span class="k">def</span> <span class="nf">exportSchematic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schematic</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askSaveSchematic</span><span class="p">(</span>
-            <span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">displayName</span><span class="p">,</span> <span class="s">&quot;schematic&quot;</span><span class="p">)</span>
+            <span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">displayName</span><span class="p">,</span> <span class="p">({</span><span class="s">&quot;Minecraft Schematics&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;schematic&quot;</span><span class="p">],</span> <span class="s">&quot;Minecraft Structure NBT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;nbt&quot;</span><span class="p">]},[]))</span>
 
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
-            <span class="n">schematic</span><span class="o">.</span><span class="n">saveToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.schematic&quot;</span><span class="p">):</span>
+                <span class="n">schematic</span><span class="o">.</span><span class="n">saveToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.nbt&quot;</span><span class="p">):</span>
+                <span class="n">StructureNBT</span><span class="o">.</span><span class="n">fromSchematic</span><span class="p">(</span><span class="n">schematic</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="LevelEditor.getLastCopiedSchematic"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.getLastCopiedSchematic">[docs]</a>    <span class="k">def</span> <span class="nf">getLastCopiedSchematic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copyStack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -975,8 +1004,45 @@
 <div class="viewcode-block" id="LevelEditor.no"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.no">[docs]</a>    <span class="k">def</span> <span class="nf">no</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yon</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_yon_response</span> <span class="o">=</span> <span class="bp">False</span>
+        </div>
+    <span class="k">def</span> <span class="nf">_resize_selection_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_box</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">inspect</span> <span class="c"># Let&#39;s get our hands dirty</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">old_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">        Filter &quot;{0}&quot; wants to resize the selection box</span>
+<span class="s">        Origin: {1} -&gt; {2}</span>
+<span class="s">        Size: {3} -&gt; {4}</span>
+<span class="s">        Do you want to resize the Selection Box?&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                   <span class="n">filename</span><span class="p">,</span> 
+                   <span class="p">(</span><span class="n">old_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">old_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> 
+                   <span class="p">(</span><span class="n">new_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_box</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> 
+                   <span class="p">(</span><span class="n">old_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">old_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> 
+                   <span class="p">(</span><span class="n">new_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_box</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                   <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Yes&quot;</span><span class="p">,</span> <span class="s">&quot;No&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Yes&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">setSelection</span><span class="p">(</span><span class="n">new_box</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_box</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    
+<div class="viewcode-block" id="LevelEditor.addExternalWidget"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.addExternalWidget">[docs]</a>    <span class="k">def</span> <span class="nf">addExternalWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Widget</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addExternalWidget_Widget</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addExternalWidget_Dict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="LevelEditor.addExternalWidget_Widget"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.addExternalWidget_Widget">[docs]</a>    <span class="k">def</span> <span class="nf">addExternalWidget_Widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Ok&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Ok&quot;</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;user canceled&#39;</span>
 </div>
-<div class="viewcode-block" id="LevelEditor.addExternalWidget"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.addExternalWidget">[docs]</a>    <span class="k">def</span> <span class="nf">addExternalWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provided_fields</span><span class="p">):</span>
+<div class="viewcode-block" id="LevelEditor.addExternalWidget_Dict"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.addExternalWidget_Dict">[docs]</a>    <span class="k">def</span> <span class="nf">addExternalWidget_Dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provided_fields</span><span class="p">):</span>
 
         <span class="k">def</span> <span class="nf">addNumField</span><span class="p">(</span><span class="n">wid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
@@ -1261,6 +1327,7 @@
             <span class="k">return</span>
 
         <span class="k">assert</span> <span class="n">level</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Loaded world is </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="nb">repr</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">addToRecent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">addRecentWorld</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1296,6 +1363,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="mf">0.0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">removeNetherPanel</span><span class="p">()</span>
+
+        <span class="n">gameVersion</span> <span class="o">=</span> <span class="n">level</span><span class="o">.</span><span class="n">gameVersion</span>
+        <span class="k">if</span> <span class="n">gameVersion</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;Schematic&#39;</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s"> file.&#39;</span><span class="o">%</span><span class="n">gameVersion</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading world for version {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="bp">True</span><span class="p">:</span> <span class="s">&quot;pior to 1.9 (detection says &#39;Unknown&#39;)&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">:</span> <span class="n">gameVersion</span><span class="p">}[</span><span class="n">gameVersion</span> <span class="o">==</span> <span class="s">&#39;Unknown&#39;</span><span class="p">]))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">loadLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
 
@@ -1377,9 +1450,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">viewButton</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewportButton</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordUndoButton</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topRow</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">sessionLockLock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sessionLockLock</span>
-            <span class="c">#!# Adding waypoints handling for all world types</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span> <span class="o">=</span> <span class="n">WaypointManager</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="c">#!# Adding waypoints handling for all world types</span>
+        <span class="c"># Need to take care of the dimension.</span>
+        <span class="c"># If the camera last position was saved, changing dimension is broken; the view is sticked to the overworld.</span>
+        <span class="c">#!#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_dimension</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dimension</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span> <span class="o">=</span> <span class="n">WaypointManager</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">allChunks</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1418,7 +1495,10 @@
 <div class="viewcode-block" id="LevelEditor.gotoDimension"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.gotoDimension">[docs]</a>    <span class="k">def</span> <span class="nf">gotoDimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimNo</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dimNo</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">elif</span> <span class="n">dimNo</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Record the new dimension</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_dimension</span> <span class="o">=</span> <span class="n">dimNo</span>
+        <span class="k">if</span> <span class="n">dimNo</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gotoNether</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">dimNo</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gotoEarth</span><span class="p">()</span>
@@ -1436,10 +1516,14 @@
 
 <div class="viewcode-block" id="LevelEditor.initWindowCaption"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.initWindowCaption">[docs]</a>    <span class="k">def</span> <span class="nf">initWindowCaption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot; - MCEdit ~ &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">DEF_ENC</span> <span class="o">!=</span> <span class="s">&quot;UTF-8&quot;</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="c">#         s = os.path.split(filename)</span>
+<span class="c">#         title = os.path.split(s[0])[1] + os.sep + s[1] + u&quot; - MCEdit ~ &quot; + release.get_version()%_(&quot;for&quot;)</span>
+        <span class="n">last_dir</span><span class="p">,</span> <span class="n">f_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">last_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">last_dir</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">u&quot;{f_name} - Unified ~ {ver}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f_name</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">last_dir</span><span class="p">,</span> <span class="n">f_name</span><span class="p">),</span> <span class="n">ver</span><span class="o">=</span><span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;for&quot;</span><span class="p">))</span>
+<span class="c">#        if DEF_ENC != &quot;UTF-8&quot;:</span>
+<span class="c">#            title = title.encode(&#39;utf-8&#39;)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 </div>
     <span class="nd">@mceutils.alertException</span>
@@ -1513,7 +1597,8 @@
     <span class="k">def</span> <span class="nf">saveAs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">shortName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askSaveFile</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">minecraftSaveFileDir</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Name the new copy.&quot;</span><span class="p">),</span>
-                                          <span class="n">shortName</span> <span class="o">+</span> <span class="s">&quot; - Copy&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Minecraft World</span><span class="se">\0</span><span class="s">*.*</span><span class="se">\0\0</span><span class="s">&#39;</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+                                        <span class="n">shortName</span> <span class="o">+</span> <span class="s">&quot; - Copy&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Minecraft World</span><span class="se">\0</span><span class="s">*.*</span><span class="se">\0\0</span><span class="s">&#39;</span><span class="p">),</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="c">#                                           shortName + &quot; - Copy&quot;, &quot;&quot;, &quot;&quot;)</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">worldFolder</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
@@ -2156,7 +2241,7 @@
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">savePositionOnClose</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">saveLastPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainViewport</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerDimension</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">saveLastPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainViewport</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clearUnsavedEdits</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unsavedEdits</span> <span class="o">=</span> <span class="mi">0</span>
@@ -2172,7 +2257,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">removeEditor</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">controlPanel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
-        <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&quot;MCEdit ~ &quot;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">())</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">((</span><span class="s">&quot;MCEdit ~ &quot;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;for&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">revertPlayerSkins</span><span class="p">:</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">downloadPlayerSkins</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">revertPlayerSkins</span> <span class="o">=</span> <span class="bp">False</span>
@@ -2238,7 +2323,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">removeEditor</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">controlPanel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
-            <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s">&quot;MCEdit ~ &quot;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">())</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">((</span><span class="s">&quot;MCEdit ~ &quot;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;for&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_ftp_client</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2295,23 +2380,6 @@
 </div>
     <span class="nd">@mceutils.alertException</span>
     <span class="k">def</span> <span class="nf">showWorldInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">ticksPerDay</span> <span class="o">=</span> <span class="mi">24000</span>
-        <span class="n">ticksPerHour</span> <span class="o">=</span> <span class="n">ticksPerDay</span> <span class="o">/</span> <span class="mi">24</span>
-        <span class="n">ticksPerMinute</span> <span class="o">=</span> <span class="n">ticksPerDay</span> <span class="o">/</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">decomposeMCTime</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
-            <span class="n">day</span> <span class="o">=</span> <span class="n">time</span> <span class="o">/</span> <span class="n">ticksPerDay</span>
-            <span class="n">tick</span> <span class="o">=</span> <span class="n">time</span> <span class="o">%</span> <span class="n">ticksPerDay</span>
-            <span class="n">hour</span> <span class="o">=</span> <span class="n">tick</span> <span class="o">/</span> <span class="n">ticksPerHour</span>
-            <span class="n">tick</span> <span class="o">%=</span> <span class="n">ticksPerHour</span>
-            <span class="n">minute</span> <span class="o">=</span> <span class="n">tick</span> <span class="o">/</span> <span class="n">ticksPerMinute</span>
-            <span class="n">tick</span> <span class="o">%=</span> <span class="n">ticksPerMinute</span>
-
-            <span class="k">return</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">tick</span>
-
-        <span class="k">def</span> <span class="nf">composeMCTime</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">ticksPerDay</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="n">ticksPerHour</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="n">ticksPerMinute</span> <span class="o">+</span> <span class="n">t</span>
-            <span class="k">return</span> <span class="n">time</span>
 
         <span class="n">worldInfoPanel</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
         <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2354,17 +2422,9 @@
             <span class="c"># timezone adjust -</span>
             <span class="c"># minecraft time shows 0:00 on day 0 at the first sunrise</span>
             <span class="c"># I want that to be 6:00 on day 1, so I add 30 hours</span>
-            <span class="n">timezoneAdjust</span> <span class="o">=</span> <span class="n">ticksPerHour</span> <span class="o">*</span> <span class="mi">30</span>
-            <span class="n">time</span> <span class="o">+=</span> <span class="n">timezoneAdjust</span>
 
-            <span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tick</span> <span class="o">=</span> <span class="n">decomposeMCTime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
-
-            <span class="n">dayInput</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Day: &quot;</span><span class="p">),</span> <span class="n">dayInput</span><span class="p">)))</span>
-
-            <span class="n">timeInput</span> <span class="o">=</span> <span class="n">TimeField</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
-            <span class="n">timeInputRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Time of day:&quot;</span><span class="p">),</span> <span class="n">timeInput</span><span class="p">))</span>
-            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timeInputRow</span><span class="p">)</span>
+            <span class="n">time_editor</span> <span class="o">=</span> <span class="n">TimeEditor</span><span class="p">(</span><span class="n">current_tick_time</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time_editor</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;RandomSeed&#39;</span><span class="p">):</span>
             <span class="n">seedField</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span><span class="p">)</span>
@@ -2419,6 +2479,7 @@
         <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">size</span>
         <span class="n">sizelabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;{L}L x {W}W x {H}H&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="n">size</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">H</span><span class="o">=</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">W</span><span class="o">=</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sizelabel</span><span class="p">)</span>
+        <span class="c">#items.append(TimeEditor(current_tick_time=0))</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&quot;Entities&quot;</span><span class="p">):</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} Entities&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Entities</span><span class="p">)))</span>
@@ -2438,10 +2499,12 @@
         <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">Changes</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;Time&#39;</span><span class="p">):</span>
-                <span class="n">h</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">timeInput</span><span class="o">.</span><span class="n">value</span>
-                <span class="n">time</span> <span class="o">=</span> <span class="n">composeMCTime</span><span class="p">(</span><span class="n">dayInput</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span>
-                <span class="n">time</span> <span class="o">-=</span> <span class="n">timezoneAdjust</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">time_editor</span><span class="o">.</span><span class="n">get_time_value</span><span class="p">()</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span> <span class="o">!=</span> <span class="n">time</span><span class="p">:</span>
+                    <span class="n">Changes</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;DayTime&#39;</span><span class="p">):</span>
+                <span class="n">day_time</span> <span class="o">=</span> <span class="n">time_editor</span><span class="o">.</span><span class="n">get_daytime_value</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span> <span class="o">!=</span> <span class="n">day_time</span><span class="p">:</span>
                     <span class="n">Changes</span> <span class="o">=</span> <span class="bp">True</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;RandomSeed&#39;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">seedField</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span><span class="p">:</span>
@@ -2493,6 +2556,7 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">changeLevelName</span> <span class="o">=</span> <span class="n">changeLevelName</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">changeTime</span> <span class="o">=</span> <span class="n">changeTime</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changeDayTime</span> <span class="o">=</span> <span class="n">changeDayTime</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">changeSeed</span> <span class="o">=</span> <span class="n">changeSeed</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">changeGameType</span> <span class="o">=</span> <span class="n">changeGameType</span>
 
@@ -2505,6 +2569,10 @@
                     <span class="k">if</span> <span class="n">changeTime</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">UndoTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">RedoTime</span> <span class="o">=</span> <span class="n">time</span>
+                        
+                    <span class="k">if</span> <span class="n">changeDayTime</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">UndoDayTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">RedoDayTime</span> <span class="o">=</span> <span class="n">day_time</span>
 
                     <span class="k">if</span> <span class="n">changeSeed</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">UndoSeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span>
@@ -2518,6 +2586,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">LevelName</span> <span class="o">=</span> <span class="n">nameField</span><span class="o">.</span><span class="n">value</span>
                 <span class="k">if</span> <span class="n">changeTime</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span> <span class="o">=</span> <span class="n">time</span>
+                <span class="k">if</span> <span class="n">changeDayTime</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span> <span class="o">=</span> <span class="n">day_time</span>
                 <span class="k">if</span> <span class="n">changeSeed</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span> <span class="o">=</span> <span class="n">seedField</span><span class="o">.</span><span class="n">value</span>
                 <span class="k">if</span> <span class="n">changeGameType</span><span class="p">:</span>
@@ -2528,6 +2598,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">LevelName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UndoText</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeTime</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UndoTime</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeDayTime</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UndoDayTime</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeSeed</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UndoSeed</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeGameType</span><span class="p">:</span>
@@ -2538,6 +2610,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">LevelName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RedoText</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeTime</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RedoTime</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeDayTime</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RedoDayTime</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeSeed</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RedoSeed</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeGameType</span><span class="p">:</span>
@@ -2547,13 +2621,17 @@
         <span class="n">changeSeed</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="n">changeLevelName</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="n">changeGameType</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">changeDayTime</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;Time&#39;</span><span class="p">):</span>
-            <span class="n">h</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">timeInput</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">composeMCTime</span><span class="p">(</span><span class="n">dayInput</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span>
-            <span class="n">time</span> <span class="o">-=</span> <span class="n">timezoneAdjust</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">time_editor</span><span class="o">.</span><span class="n">get_time_value</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">Time</span> <span class="o">!=</span> <span class="n">time</span><span class="p">:</span>
                 <span class="n">changeTime</span> <span class="o">=</span> <span class="bp">True</span>
+                
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;DayTime&#39;</span><span class="p">):</span>
+            <span class="n">day_time</span> <span class="o">=</span> <span class="n">time_editor</span><span class="o">.</span><span class="n">get_daytime_value</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">DayTime</span> <span class="o">!=</span> <span class="n">day_time</span><span class="p">:</span>
+                <span class="n">changeDayTime</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;RandomSeed&#39;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">seedField</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">RandomSeed</span><span class="p">:</span>
@@ -2740,7 +2818,7 @@
 <div class="viewcode-block" id="LevelEditor.askOpenFile"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.askOpenFile">[docs]</a>    <span class="k">def</span> <span class="nf">askOpenFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseLookOff</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askOpenFile</span><span class="p">()</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askOpenFile</span><span class="p">(</span><span class="n">schematics</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -2997,7 +3075,6 @@
     <span class="n">averageFPS</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">averageCPS</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">shouldLoadAndRender</span> <span class="o">=</span> <span class="bp">True</span>
-    <span class="n">showWorkInfo</span> <span class="o">=</span> <span class="bp">False</span>
 
 
 <div class="viewcode-block" id="LevelEditor.gl_draw"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.gl_draw">[docs]</a>    <span class="k">def</span> <span class="nf">gl_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -3022,8 +3099,6 @@
         <span class="k">while</span> <span class="n">frameDuration</span> <span class="o">&gt;</span> <span class="p">(</span>
                     <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">frameStartTime</span><span class="p">):</span>  <span class="c"># if it&#39;s less than 0ms until the next frame, go draw.  otherwise, go work.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doWorkUnit</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">showWorkInfo</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">updateWorkInfoPanel</span><span class="p">()</span>
 
         <span class="n">frameStartTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
         <span class="n">timeDelta</span> <span class="o">=</span> <span class="n">frameStartTime</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">frameStartTime</span>
@@ -3066,38 +3141,6 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">addDebugInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addDebugString</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="LevelEditor.createWorkInfoPanel"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.createWorkInfoPanel">[docs]</a>    <span class="k">def</span> <span class="nf">createWorkInfoPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">MCRenderer</span><span class="p">):</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Rendering chunks&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">second</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="s">&quot;.&quot;</span><span class="p">)</span>
-                <span class="n">progress</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span>
-                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} chunks ({1} pending updates)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">chunkRenderers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">invalidChunkQueue</span><span class="p">)))</span>
-                <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="n">progress</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-                <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">w</span><span class="p">,</span>
-                            <span class="n">RunningOperation</span><span class="p">):</span>  <span class="c"># **FIXME** Where is RunningOperation supposed to come from?  -David Sowder 20120311</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-                <span class="n">progress</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">progress</span><span class="p">)</span>
-                <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="n">progress</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-                <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-
-        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">infos</span><span class="p">):</span>
-            <span class="n">panel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Column</span><span class="p">(</span><span class="n">infos</span><span class="p">))</span>
-            <span class="n">panel</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">panel</span>
-</div>
-    <span class="n">workInfoPanel</span> <span class="o">=</span> <span class="bp">None</span>
-
-<div class="viewcode-block" id="LevelEditor.updateWorkInfoPanel"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.updateWorkInfoPanel">[docs]</a>    <span class="k">def</span> <span class="nf">updateWorkInfoPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createWorkInfoPanel</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span><span class="o">.</span><span class="n">topright</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topright</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workInfoPanel</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="LevelEditor.doWorkUnit"><a class="viewcode-back" href="../leveleditor.html#leveleditor.LevelEditor.doWorkUnit">[docs]</a>    <span class="k">def</span> <span class="nf">doWorkUnit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onMenu</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workers</span><span class="p">):</span>
@@ -3454,6 +3497,12 @@
         <span class="n">toolNumber</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tools</span><span class="p">))</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">tw</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">toolNumber</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tools</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </div>
+<div class="viewcode-block" id="EditorToolbar.set_update_ui"><a class="viewcode-back" href="../leveleditor.html#leveleditor.EditorToolbar.set_update_ui">[docs]</a>    <span class="k">def</span> <span class="nf">set_update_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">optionsPanel</span><span class="p">:</span>
+                <span class="n">tool</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">GLOrtho</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</div>
 <div class="viewcode-block" id="EditorToolbar.mouse_down"><a class="viewcode-back" href="../leveleditor.html#leveleditor.EditorToolbar.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
             <span class="n">toolNo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolNumberUnderMouse</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
@@ -3693,7 +3742,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

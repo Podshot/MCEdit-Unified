@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>version_utils &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>version_utils &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -136,122 +136,131 @@
 <span class="kn">from</span> <span class="nn">directories</span> <span class="kn">import</span> <span class="n">userCachePath</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">HTTPError</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">UUID</span>
+<span class="kn">import</span> <span class="nn">httplib</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="deprecated"><a class="viewcode-back" href="../version_utils.html#version_utils.deprecated">[docs]</a><span class="k">def</span> <span class="nf">deprecated</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="c">#logger.warn(&quot;Function \&quot;&quot;+str(func.__name__)+&quot;\&quot; is deprecated and should not be used&quot;)</span>
-        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>   
-    <span class="n">new_func</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
-    <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="n">__doc__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">new_func</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;*Deprecated*</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;&#39;&#39;</span><span class="o">%</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">new_func</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;*Deprecated*&#39;&#39;&#39;</span>
-    <span class="n">new_func</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_func</span>
-
-</div>
+<span class="c">#@Singleton</span>
 <div class="viewcode-block" id="PlayerCache"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache">[docs]</a><span class="k">class</span> <span class="nc">PlayerCache</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Used to cache Player names and UUID&#39;s, provides an small API to interface with it</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
-    <span class="n">_playerCacheList</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span> <span class="nf">__convert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">jsonFile</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">jsonFile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="c"># Assuming JSON file is corrupted, deletes file and creates new one</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_out</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">([],</span> <span class="n">json_out</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">jsonFile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">old_player</span> <span class="ow">in</span> <span class="n">jsonFile</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">player</span> <span class="o">=</span> <span class="n">jsonFile</span><span class="p">[</span><span class="n">old_player</span><span class="p">]</span>
-                <span class="n">new_player</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Playername&quot;</span><span class="p">:</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;username&quot;</span><span class="p">],</span> <span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">:</span> <span class="n">old_player</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
-                              <span class="s">&quot;UUID (Separator)&quot;</span><span class="p">:</span> <span class="n">old_player</span><span class="p">,</span> <span class="s">&quot;WasSuccessful&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&quot;Timstamp&quot;</span><span class="p">:</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;timestamp&quot;</span><span class="p">]}</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_player</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-            <span class="k">print</span> <span class="s">&quot;Convert usercache.json&quot;</span>
+    <span class="n">PATH</span> <span class="o">=</span> <span class="n">userCachePath</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mf">2.5</span>
+    
+    <span class="n">__shared_state</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__shared_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c"># --- Utility Functions ---</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PlayerCache.insertSeperators"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.insertSeperators">[docs]</a>    <span class="k">def</span> <span class="nf">insertSeperators</span><span class="p">(</span><span class="n">uuid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">uuid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">uuid</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">uuid</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">uuid</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">uuid</span><span class="p">[</span><span class="mi">20</span><span class="p">:]</span>
+    </div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PlayerCache.getDeltaTime"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getDeltaTime">[docs]</a>    <span class="k">def</span> <span class="nf">getDeltaTime</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">current</span> <span class="o">-</span> <span class="n">old</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="s">&quot;hours&quot;</span><span class="p">)</span>
+    </div>
+    <span class="k">def</span> <span class="nf">__convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_in</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">json_in</span><span class="p">:</span>
+            <span class="n">new_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_dict</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span>
+            <span class="n">new_dict</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span>
+            <span class="n">new_dict</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">new_dict</span>
             
-<div class="viewcode-block" id="PlayerCache.fixAllOfPodshotsBugs"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.fixAllOfPodshotsBugs">[docs]</a>    <span class="k">def</span> <span class="nf">fixAllOfPodshotsBugs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Convenient function that fixes any bugs/typos (in the usercache.json file) that Podshot may have created</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s">&quot;Timstamp&quot;</span> <span class="ow">in</span> <span class="n">player</span><span class="p">:</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timstamp&quot;</span><span class="p">]</span>
-                <span class="k">del</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timstamp&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
+<div class="viewcode-block" id="PlayerCache.save"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;_cache&quot;</span><span class="p">):</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PATH</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     </div>
 <div class="viewcode-block" id="PlayerCache.load"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Loads from the usercache.json file if it exists, if not an empty one will be generated</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">):</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> 
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;{&quot;</span><span class="p">):</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__convert</span><span class="p">()</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;Connection Timeout&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s">&quot;Cache&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PATH</span><span class="p">):</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PATH</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PATH</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">json_in</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_in</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Usercache.json may be corrupted&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="n">json_in</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fixAllOfPodshotsBugs</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">player_refreshing</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_refreshAll</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">player_refreshing</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">player_refreshing</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>     
-</div>
-    <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">))</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            
-    <span class="k">def</span> <span class="nf">_removePlayerWithName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="n">toRemove</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">toRemove</span> <span class="o">=</span> <span class="n">p</span>
-        <span class="k">if</span> <span class="n">toRemove</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">toRemove</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-    
-    <span class="k">def</span> <span class="nf">_removePlayerWithUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="n">toRemove</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">seperator</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                    <span class="n">toRemove</span> <span class="o">=</span> <span class="n">p</span>
+            <span class="n">json_in</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&quot;Version&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">json_in</span> <span class="ow">or</span> <span class="n">json_in</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__convert</span><span class="p">(</span><span class="n">json_in</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                    <span class="n">toRemove</span> <span class="o">=</span> <span class="n">p</span>
-        <span class="k">if</span> <span class="n">toRemove</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">toRemove</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="n">json_in</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Usercache.json may be corrupted&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_skin_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Connection Timeout&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_refeshing</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_batchRefreshPlayers</span><span class="p">)</span>
+        <span class="c">#self.player_refeshing.daemon(True) # No idea whether to use the property setter function or the attribute, so I&#39;ll use both</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_refeshing</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_refeshing</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        
+    <span class="c"># --- Refreshing ---</span></div>
+    <span class="k">def</span> <span class="nf">_batchRefreshPlayers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">to_refresh_successful</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">to_refresh_failed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">to_refresh</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_lock</span><span class="p">:</span>
+            <span class="c"># TODO: Put this into a thread, since it could take alot of time to run</span>
+            <span class="c"># TODO: Handle entries that weren&#39;t successful last time the cache was modified</span>
+        
+            <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDeltaTime</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">],</span> <span class="s">&quot;hours&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
+                        <span class="n">to_refresh_successful</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">to_refresh_failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+                
+            <span class="n">to_refresh</span> <span class="o">=</span> <span class="n">to_refresh_successful</span> <span class="o">+</span> <span class="n">to_refresh_failed</span>
+            <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="n">to_refresh</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_count</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">error_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_getPlayerInfoUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="PlayerCache.force_refresh"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.force_refresh">[docs]</a>    <span class="k">def</span> <span class="nf">force_refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
             
+    <span class="c"># --- Checking if supplied data is in the Cache ---</span></div>
+<div class="viewcode-block" id="PlayerCache.UUIDInCache"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.UUIDInCache">[docs]</a>    <span class="k">def</span> <span class="nf">UUIDInCache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Checks to see if the UUID is already in the cache</span>
+<span class="sd">        </span>
+<span class="sd">        :param uuid: The UUID of the player</span>
+<span class="sd">        :type uuid: str</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span>
+    </div>
 <div class="viewcode-block" id="PlayerCache.nameInCache"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.nameInCache">[docs]</a>    <span class="k">def</span> <span class="nf">nameInCache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Checks to see if the name is already in the cache</span>
@@ -260,180 +269,26 @@
 <span class="sd">        :type name: str</span>
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">isInCache</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">isInCache</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="n">isInCache</span>
-    </div>
-<div class="viewcode-block" id="PlayerCache.uuidInCache"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.uuidInCache">[docs]</a>    <span class="k">def</span> <span class="nf">uuidInCache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Checks to see if the UUID is already in the cache</span>
-<span class="sd">        </span>
-<span class="sd">        :param uuid: The UUID of the player</span>
-<span class="sd">        :type uuid: str</span>
-<span class="sd">        :param seperator: True if the UUID has separators (&#39;-&#39;)</span>
-<span class="sd">        :type seperator: bool</span>
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">isInCache</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">seperator</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                    <span class="n">isInCache</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                    <span class="n">isInCache</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="n">isInCache</span>
-    </div>
-    <span class="k">def</span> <span class="nf">_refreshAll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh_lock</span><span class="p">:</span>
-            <span class="n">playersNeededToBeRefreshed</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;&lt;Invalid&gt;&quot;</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">t</span> <span class="o">-</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">21600</span><span class="p">:</span>
-                        <span class="n">playersNeededToBeRefreshed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">playersNeededToBeRefreshed</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dontSave</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
     
-<div class="viewcode-block" id="PlayerCache.force_refresh"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.force_refresh">[docs]</a>    <span class="k">def</span> <span class="nf">force_refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Refreshes all players in the cache, regardless of how long ago the name was synced</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">players</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span>
-        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">players</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-            </div>
-    <span class="nd">@deprecated</span>
-<div class="viewcode-block" id="PlayerCache.getPlayerFromUUID"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getPlayerFromUUID">[docs]</a>    <span class="k">def</span> <span class="nf">getPlayerFromUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dontSave</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="n">player</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">forceNetwork</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuidInCache</span><span class="p">(</span><span class="n">uuid</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_removePlayerWithUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://sessionserver.mojang.com/session/minecraft/profile/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">uuid</span>
-            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-                <span class="n">playerJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">dontSave</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">uuid</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]:</span>
-                    <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">False</span>
-                    <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="k">if</span> <span class="n">couldNotFind</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                    <span class="n">player</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Playername&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Unknown&gt;&quot;</span><span class="p">,</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">:</span><span class="n">uuid</span><span class="p">,</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">:</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">),</span><span class="s">&quot;Timestamp&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Invalid&gt;&quot;</span><span class="p">,</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">:</span><span class="bp">False</span><span class="p">}</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">uuid</span></div>
-    <span class="nd">@deprecated</span>
-<div class="viewcode-block" id="PlayerCache.getPlayerFromPlayername"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getPlayerFromPlayername">[docs]</a>    <span class="k">def</span> <span class="nf">getPlayerFromPlayername</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">playername</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">forceNetwork</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nameInCache</span><span class="p">(</span><span class="n">playername</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_removePlayerWithName</span><span class="p">(</span><span class="n">playername</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://api.mojang.com/users/profiles/minecraft/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">playername</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">playername</span>
-            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-                <span class="n">playerJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-                <span class="n">player</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Playername&quot;</span><span class="p">:</span> <span class="n">playername</span><span class="p">,</span> <span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">:</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]}</span>
-                <span class="n">uuid</span> <span class="o">=</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][:</span><span class="mi">8</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">20</span><span class="p">:]</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">separator</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">uuid</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">playerJSON</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">playername</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">playername</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]:</span>
-                    <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">False</span>
-                    <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">couldNotFind</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="k">if</span> <span class="n">couldNotFind</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerFromPlayername</span><span class="p">(</span><span class="n">playername</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="n">playername</span><span class="p">:</span>
-                    <span class="n">player</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Playername&quot;</span><span class="p">:</span><span class="n">playername</span><span class="p">,</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Unknown&gt;&quot;</span><span class="p">,</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Unknown&gt;&quot;</span><span class="p">,</span><span class="s">&quot;Timestamp&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Invalid&gt;&quot;</span><span class="p">,</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">:</span><span class="bp">False</span><span class="p">}</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">playername</span>
-    
-    <span class="c"># 0 if for a list of the playernames, 1 is for a dictionary of all player data</span></div>
-<div class="viewcode-block" id="PlayerCache.getAllPlayersKnown"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getAllPlayersKnown">[docs]</a>    <span class="k">def</span> <span class="nf">getAllPlayersKnown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">returnType</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">include_failed_lookups</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns all players in the cache</span>
-<span class="sd">        </span>
-<span class="sd">        :param returnType: What type should be returned, 0 for a list of playernames, 1 for a dictionary of player data, with the key being the player name</span>
-<span class="sd">        :type returnType: int</span>
-<span class="sd">        :param include_failed_lookups: Whether all current failed lookups also be included</span>
-<span class="sd">        :type include_failed_lookups: bool</span>
-<span class="sd">        :return: All player data in the specified data structure</span>
-<span class="sd">        :rtype: list or dict</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">toReturn</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">returnType</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">toReturn</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]:</span>
-                    <span class="n">toReturn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">])</span>
-                <span class="k">elif</span> <span class="n">include_failed_lookups</span><span class="p">:</span>
-                    <span class="n">toReturn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">])</span>      
-        <span class="k">elif</span> <span class="n">returnType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">toReturn</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]:</span>
-                    <span class="n">toReturn</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">p</span>
-                <span class="k">elif</span> <span class="n">include_failed_lookups</span><span class="p">:</span>
-                    <span class="n">toReturn</span><span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">p</span>
-        <span class="k">return</span> <span class="n">toReturn</span>
-    </div>
-<div class="viewcode-block" id="PlayerCache.getFromCacheUUID"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getFromCacheUUID">[docs]</a>    <span class="k">def</span> <span class="nf">getFromCacheUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="c"># --- Getting data from the Cache ---</span></div>
+    <span class="k">def</span> <span class="nf">_getDataFromCacheUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Checks if the UUID is already in the cache</span>
 <span class="sd">        </span>
 <span class="sd">        :param uuid: The UUID that might be in the cache</span>
 <span class="sd">        :type uuid: str</span>
-<span class="sd">        :param seperator: Whether the UUID is seperated by -&#39;s</span>
-<span class="sd">        :type seperator: bool</span>
 <span class="sd">        :return: The player data that is in the cache for the specified UUID, same format as getPlayerInfo()</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">seperator</span> <span class="ow">and</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span>
-            </div>
-<div class="viewcode-block" id="PlayerCache.getFromCacheName"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getFromCacheName">[docs]</a>    <span class="k">def</span> <span class="nf">getFromCacheName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">clean_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">),</span> <span class="n">clean_uuid</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_getDataFromCacheName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Checks if the Player name is already in the cache</span>
 <span class="sd">        </span>
@@ -441,201 +296,265 @@
 <span class="sd">        :return: The player data that is in the cache for the specified Player name, same format as getPlayerInfo()</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span>
-    </div>
-<div class="viewcode-block" id="PlayerCache.getPlayerInfo"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getPlayerInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getPlayerInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">clean_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Successful&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">],</span> <span class="n">clean_uuid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_wasSuccessfulUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns whether retrieving the player data was Successful</span>
+<span class="sd">        </span>
+<span class="sd">        :param uuid: The UUID of the player to check</span>
+<span class="sd">        :return: True if the last time the player data retrieval from Mojang&#39;s API was successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">clean_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Successful&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_wasSuccessfulName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns whether retrieving the player data was Successful</span>
+<span class="sd">        </span>
+<span class="sd">        :param name: The name of the player to check</span>
+<span class="sd">        :return: True if the last time the player data retrieval from Mojang&#39;s API was successful, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Successful&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+            
+<div class="viewcode-block" id="PlayerCache.getPlayerInfo"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getPlayerInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getPlayerInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_old_data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in &#39;arg&#39;</span>
 <span class="sd">        </span>
-<span class="sd">        :param arg: Either a UUID or Player name to retrieve from the cache/Mojang</span>
+<span class="sd">        :param arg: Either a UUID or Player name to retrieve from the cache/Mojang&#39;s API</span>
 <span class="sd">        :type arg: str</span>
-<span class="sd">        :param force: True if the Player name should be forcefully fetched from Mojang</span>
+<span class="sd">        :param force: True if the Player name should be forcefully fetched from Mojang&#39;s API</span>
 <span class="sd">        :type force: bool</span>
 <span class="sd">        :return: A tuple with the data in this order: (UUID with separator, Player name, UUID without separator)</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">UUID</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuidInCache</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFromCacheUUID</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">UUIDInCache</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasSuccessfulUUID</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromCacheUUID</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getPlayerInfoUUID</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getPlayerInfoUUID</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">use_old_data</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nameInCache</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFromCacheName</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nameInCache</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wasSuccessfulName</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromCacheName</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getPlayerInfoName</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        </div>
-    <span class="k">def</span> <span class="nf">_getPlayerInfoUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
-        <span class="n">response_name</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">response_uuid</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">player</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuidInCache</span><span class="p">(</span><span class="n">uuid</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_removePlayerWithUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response_uuid</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://sessionserver.mojang.com/session/minecraft/profile/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-            <span class="n">response_name</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://api.mojang.com/users/profiles/minecraft/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response_uuid</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">uuid</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s">&quot;Caught value error while getting player info for &quot;</span><span class="o">+</span><span class="n">uuid</span>
-            <span class="k">return</span> <span class="n">uuid</span>
-        <span class="k">if</span> <span class="n">response_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response_name</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span> <span class="ow">and</span> <span class="n">response_uuid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response_uuid</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][:</span><span class="mi">8</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">20</span><span class="p">:]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span>
+    
+    <span class="c"># --- Player Data Getters ---</span></div>
+    <span class="k">def</span> <span class="nf">_getPlayerInfoUUID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">use_old_data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">clean_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromURL</span><span class="p">(</span><span class="s">&quot;https://sessionserver.mojang.com/session/minecraft/profile/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">response</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">))</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">clean_uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temp_skin_cache</span><span class="p">[</span><span class="n">clean_uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">],</span> <span class="n">clean_uuid</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">clean_uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                <span class="k">if</span> <span class="n">use_old_data</span> <span class="ow">and</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">],</span> <span class="n">clean_uuid</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">,</span> <span class="n">clean_uuid</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">uuid</span>
-            <span class="c">#raise Exception(&quot;Couldn&#39;t find player&quot;)</span>
-    
-    <span class="k">def</span> <span class="nf">_getPlayerInfoName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">playername</span><span class="p">):</span>
-        <span class="n">response_name</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">response_uuid</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">player</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nameInCache</span><span class="p">(</span><span class="n">playername</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_removePlayerWithName</span><span class="p">(</span><span class="n">playername</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response_name</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://api.mojang.com/users/profiles/minecraft/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">playername</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-            <span class="n">response_uuid</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;https://sessionserver.mojang.com/session/minecraft/profile/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">playername</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s">&quot;Caught value error while getting player info for &quot;</span><span class="o">+</span><span class="n">playername</span>
-            <span class="k">return</span> <span class="n">playername</span>
-        <span class="k">if</span> <span class="n">response_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response_name</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span> <span class="ow">and</span> <span class="n">response_uuid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">response_uuid</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][:</span><span class="mi">8</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">16</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;-&quot;</span><span class="o">+</span><span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">][</span><span class="mi">20</span><span class="p">:]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_name</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (Separator)&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Playername&quot;</span><span class="p">],</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;UUID (No Separator)&quot;</span><span class="p">]</span>
+            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">clean_uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+            <span class="k">if</span> <span class="n">use_old_data</span> <span class="ow">and</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">],</span> <span class="n">clean_uuid</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">clean_uuid</span><span class="p">),</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">,</span> <span class="n">clean_uuid</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_getPlayerInfoName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromURL</span><span class="p">(</span><span class="s">&quot;https://api.mojang.com/users/profiles/minecraft/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="n">uuid</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
+                <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">,{})</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">player</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown Name&gt;&quot;</span><span class="p">))</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">player</span><span class="p">[</span><span class="s">&quot;Successful&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">uuid</span><span class="p">),</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">],</span> <span class="n">uuid</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">)</span>           
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">playername</span>
-            <span class="c">#raise Exception(&quot;Couldn&#39;t find player&quot;)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">)</span>
+        
+    <span class="c"># --- Skin Getting ---</span>
+    <span class="k">def</span> <span class="nf">_parseSkinResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">decoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s">&quot;properties&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;value&quot;</span><span class="p">])</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&quot;SKIN&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&quot;textures&quot;</span><span class="p">]:</span>
+                <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromURL</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s">&quot;textures&quot;</span><span class="p">][</span><span class="s">&quot;SKIN&quot;</span><span class="p">][</span><span class="s">&quot;url&quot;</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">resp</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">traceback</span>
+            <span class="k">print</span> <span class="s">&quot;Couldn&#39;t parse skin response JSON&quot;</span>
+            <span class="k">print</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">None</span>
     
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">__formats</span><span class="p">():</span>
-        <span class="n">player</span> <span class="o">=</span> <span class="p">{</span>
-                  <span class="s">&quot;Playername&quot;</span><span class="p">:</span><span class="s">&quot;&lt;Username&gt;&quot;</span><span class="p">,</span>
-                  <span class="s">&quot;UUID&quot;</span><span class="p">:</span><span class="s">&quot;&lt;uuid&gt;&quot;</span><span class="p">,</span>
-                  <span class="s">&quot;Timestamp&quot;</span><span class="p">:</span><span class="s">&quot;&lt;timestamp&gt;&quot;</span><span class="p">,</span>
-                  <span class="c"># WasSuccessful will be true if the UUID/Player name was retrieved successfully</span>
-                  <span class="s">&quot;WasSuccessful&quot;</span><span class="p">:</span><span class="bp">True</span>
-                  <span class="p">}</span>
-        <span class="k">pass</span>
-    
-<div class="viewcode-block" id="PlayerCache.cleanup"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PlayerCache.getPlayerSkin"><a class="viewcode-back" href="../version_utils.html#version_utils.PlayerCache.getPlayerSkin">[docs]</a>    <span class="k">def</span> <span class="nf">getPlayerSkin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">force_download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Removes all failed UUID/Player name lookups from the cache</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">remove</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">player</span><span class="p">[</span><span class="s">&quot;WasSuccessful&quot;</span><span class="p">]:</span>
-                <span class="n">remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">toRemove</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_playerCacheList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">toRemove</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">()</span>
-         </div></div>
-<span class="n">_playercache</span> <span class="o">=</span> <span class="n">PlayerCache</span><span class="p">()</span>
-<span class="n">_playercache</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-<span class="n">playercache</span> <span class="o">=</span> <span class="n">_playercache</span>
-            
-<span class="nd">@deprecated</span>
-<div class="viewcode-block" id="getUUIDFromPlayerName"><a class="viewcode-back" href="../version_utils.html#version_utils.getUUIDFromPlayerName">[docs]</a><span class="k">def</span> <span class="nf">getUUIDFromPlayerName</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">seperator</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromPlayername</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="p">,</span> <span class="n">seperator</span><span class="p">)</span>
-</div>
-<span class="nd">@deprecated</span>
-<div class="viewcode-block" id="getPlayerNameFromUUID"><a class="viewcode-back" href="../version_utils.html#version_utils.getPlayerNameFromUUID">[docs]</a><span class="k">def</span> <span class="nf">getPlayerNameFromUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span><span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="p">)</span>     
-</div>
-<div class="viewcode-block" id="getPlayerSkin"><a class="viewcode-back" href="../version_utils.html#version_utils.getPlayerSkin">[docs]</a><span class="k">def</span> <span class="nf">getPlayerSkin</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">trying_again</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Gets the player&#39;s skin from Mojang&#39;s skin servers</span>
+<span class="sd">        Gets the player&#39;s skin from Mojang&#39;s skin servers</span>
 <span class="sd">    </span>
-<span class="sd">    :param uuid: The UUID of the player</span>
-<span class="sd">    :type uuid: str</span>
-<span class="sd">    :param force: Should the skin be redownloaded even if it has already been downloaded</span>
-<span class="sd">    :type force: bool</span>
-<span class="sd">    :param trying_again: True if the method already failed once</span>
-<span class="sd">    :type trying_again: bool</span>
-<span class="sd">    :param instance: The instance of the PlayerTool</span>
-<span class="sd">    :type instance: PlayerTool</span>
-<span class="sd">    :return: The path to the player skin</span>
-<span class="sd">    :rtype: str</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">SKIN_URL</span> <span class="o">=</span> <span class="s">&quot;http://skins.minecraft.net/MinecraftSkins/{}.png&quot;</span>
-    <span class="n">toReturn</span> <span class="o">=</span> <span class="s">&#39;char.png&#39;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)):</span>
+<span class="sd">        :param uuid: The UUID of the player</span>
+<span class="sd">        :type uuid: str</span>
+<span class="sd">        :param force_download: Should the skin be re-downloaded even if it has already been downloaded</span>
+<span class="sd">        :type force: bool</span>
+<span class="sd">        :param instance: The instance of the PlayerTool</span>
+<span class="sd">        :type instance: PlayerTool</span>
+<span class="sd">        :return: The path to the player skin</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">toReturn</span> <span class="o">=</span> <span class="s">&#39;char.png&#39;</span>
+        
+        <span class="n">uuid_sep</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">uuid</span> <span class="o">==</span> <span class="s">&quot;&lt;Unknown UUID&gt;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">toReturn</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span>
+        <span class="n">skin_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid_sep</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.png&quot;</span><span class="p">)</span>
+        <span class="c">#temp_skin_path = os.path.join(&quot;player-skin&quot;, uuid_sep.replace(&quot;-&quot;,&quot;_&quot;) + &quot;.temp.png&quot;)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="c"># Checks to see if the skin even exists</span>
-            <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">SKIN_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">)))</span>
-        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s">&quot;Not Found&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">msg</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">toReturn</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
-            <span class="n">player_skin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">player_skin</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">):</span>
-                <span class="n">player_skin</span> <span class="o">=</span> <span class="n">player_skin</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
-                <span class="n">player_skin</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span>
-            <span class="n">toReturn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">playername</span> <span class="o">=</span> <span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span><span class="n">forceNetwork</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">SKIN_URL</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">playername</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span>
-            <span class="n">toReturn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
-            <span class="n">player_skin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">toReturn</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">player_skin</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">):</span>
-                <span class="n">player_skin</span> <span class="o">=</span> <span class="n">player_skin</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
-                <span class="n">player_skin</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span>
-    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Couldn&#39;t find Image file (&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;) or the file may be corrupted&quot;</span>
-        <span class="k">print</span> <span class="s">&quot;Trying to re-download skin....&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">trying_again</span> <span class="ow">and</span> <span class="n">instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">instance</span><span class="o">.</span><span class="n">delete_skin</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">))</span>
-            <span class="n">toReturn</span> <span class="o">=</span> <span class="n">getPlayerSkin</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">trying_again</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">pass</span>
-    <span class="k">except</span> <span class="n">HTTPError</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Couldn&#39;t connect to a network&quot;</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Could not connect to the skins server, please check your Internet connection and try again.&quot;</span><span class="p">)</span>
-        <span class="k">pass</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Unknown error occurred while reading/downloading skin for &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="n">toReturn</span>
-</div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">force_download</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">skin_path</span><span class="p">):</span>
+                <span class="n">skin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">skin_path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">skin</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">):</span>
+                    <span class="n">skin</span> <span class="o">=</span> <span class="n">skin</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+                    <span class="n">skin</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">skin_path</span><span class="p">)</span>
+                <span class="n">toReturn</span> <span class="o">=</span> <span class="n">skin_path</span>
+            <span class="k">elif</span> <span class="n">force_download</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">skin_path</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">uuid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_skin_cache</span><span class="p">:</span>
+                    <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parseSkinResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_skin_cache</span><span class="p">[</span><span class="n">uuid</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">parsed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_saveSkin</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">parsed</span><span class="p">)</span>
+                        <span class="n">toReturn</span> <span class="o">=</span> <span class="n">skin_path</span>
+                        <span class="n">player</span><span class="p">[</span><span class="s">&quot;Skin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="p">}</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_skin_cache</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getDataFromURL</span><span class="p">(</span><span class="s">&quot;https://sessionserver.mojang.com/session/minecraft/profile/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uuid</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parseSkinResponse</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">parsed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_saveSkin</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">parsed</span><span class="p">)</span>
+                            <span class="n">toReturn</span> <span class="o">=</span> <span class="n">skin_path</span>
+                            <span class="n">player</span><span class="p">[</span><span class="s">&quot;Skin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="p">}</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s">&quot;Cache&quot;</span><span class="p">][</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+               
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Couldn&#39;t find Image file (&quot;</span><span class="o">+</span><span class="n">skin_path</span><span class="o">+</span><span class="s">&quot;) or the file may be corrupted&quot;</span>
+            <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">delete_skin</span><span class="p">(</span><span class="n">uuid_sep</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">))</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">skin_path</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">&quot;Something happened, retrying&quot;</span>
+                <span class="n">toReturn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPlayerSkin</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">traceback</span>
+            <span class="k">print</span> <span class="s">&quot;Unknown error occurred while reading/downloading skin for &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
+            <span class="k">print</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">toReturn</span>
+    </div>
+    <span class="k">def</span> <span class="nf">_saveSkin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">uuid</span><span class="p">:</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">insertSeperators</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+            
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        
+        <span class="n">skin_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">uuid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.png&quot;</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">skin_path</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">skin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">skin_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">skin</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">):</span>
+            <span class="n">skin</span> <span class="o">=</span> <span class="n">skin</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">))</span>
+            <span class="n">skin</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">skin_path</span><span class="p">)</span>
+                            
+    <span class="k">def</span> <span class="nf">_getDataFromURL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">traceback</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="n">response</span>
+        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered a HTTPError while trying to access </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered an URLError while trying to access </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_error</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;_ssl.c:489: The handshake operation timed out&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered a HTTPException while trying to access </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Unknown error occurred while trying to get data from URL: &quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">_postDataToURL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">traceback</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">response</span>
+        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered a HTTPError while trying to POST to </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered an URLError while trying to POST to </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Encountered a HTTPException while trying to POST to </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Unknown error occurred while trying to POST data to URL: &quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">None</span>
+            </div>
 <span class="k">def</span> <span class="nf">_cleanup</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">image_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">):</span>
             <span class="n">fp</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">image_file</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
-                <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="s">&#39;close&#39;</span><span class="p">):</span>
+                    <span class="n">im</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-                <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;player-skins&quot;</span><span class="p">,</span> <span class="n">image_file</span><span class="p">))</span>
-    <span class="n">playercache</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span> <span class="c"># I have no idea why an Attribute Error is thrown on .close(), but this fixes it</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fp</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fp</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     
 <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">_cleanup</span><span class="p">)</span>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">PlayerCache</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
 </pre></div>
 
                 </div>
@@ -652,7 +571,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>glbackground &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>glbackground &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -152,6 +152,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">albow.openglwidgets</span> <span class="kn">import</span> <span class="n">GLOrtho</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">unparented</span>
 <span class="kn">from</span> <span class="nn">OpenGL.GL</span> <span class="kn">import</span> <span class="n">glEnable</span><span class="p">,</span> <span class="n">glColor</span><span class="p">,</span> <span class="n">glVertexPointer</span><span class="p">,</span> <span class="n">glDrawArrays</span><span class="p">,</span> <span class="n">glDisable</span><span class="p">,</span> <span class="n">GL_BLEND</span><span class="p">,</span> <span class="n">GL_FLOAT</span><span class="p">,</span> <span class="n">GL_QUADS</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
 
@@ -175,7 +176,15 @@
 
 </div></div>
 <div class="viewcode-block" id="Panel"><a class="viewcode-back" href="../glbackground.html#glbackground.Panel">[docs]</a><span class="k">class</span> <span class="nc">Panel</span><span class="p">(</span><span class="n">GLBackground</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">GLBackground</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="c"># Destroy the former widget with the same name.</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">unparented</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">w</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">w</span>
+            <span class="n">unparented</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span></div>
 </pre></div>
 
                 </div>
@@ -192,7 +201,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

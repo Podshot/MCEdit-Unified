@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>panels.graphics &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>panels.graphics &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -133,7 +133,7 @@
   <h1>Source code for panels.graphics</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">albow</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
-<span class="kn">import</span> <span class="nn">resource_packs</span>
+<span class="kn">from</span> <span class="nn">resource_packs</span> <span class="kn">import</span> <span class="n">ResourcePackHandler</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 
@@ -156,7 +156,7 @@
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxViewDistance</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxViewDistance</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="p">}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">saveOldResourcePack</span> <span class="o">=</span> <span class="n">resource_packs</span><span class="o">.</span><span class="n">packs</span><span class="o">.</span><span class="n">get_selected_resource_pack_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveOldResourcePack</span> <span class="o">=</span> <span class="n">ResourcePackHandler</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span><span class="o">.</span><span class="n">get_selected_resource_pack_name</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldOfViewRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Field of View: &quot;</span><span class="p">,</span>
                                                 <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fov</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
@@ -189,7 +189,7 @@
                                        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxView</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_increment</span> <span class="o">=</span> <span class="mi">2</span>
 
-        <span class="n">packs</span> <span class="o">=</span> <span class="n">resource_packs</span><span class="o">.</span><span class="n">packs</span><span class="o">.</span><span class="n">get_available_resource_packs</span><span class="p">()</span>
+        <span class="n">packs</span> <span class="o">=</span> <span class="n">ResourcePackHandler</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_resource_packs</span><span class="p">()</span>
         <span class="n">packs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;Default Resource Pack&#39;</span><span class="p">)</span>
         <span class="n">packs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="n">packs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;Default Resource Pack&#39;</span><span class="p">)</span>
@@ -227,7 +227,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">loadTextures</span><span class="p">()</span>
 
 <div class="viewcode-block" id="GraphicsPanel.change_texture"><a class="viewcode-back" href="../../panels.html#panels.graphics.GraphicsPanel.change_texture">[docs]</a>    <span class="k">def</span> <span class="nf">change_texture</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">resource_packs</span><span class="o">.</span><span class="n">packs</span><span class="o">.</span><span class="n">set_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resourcePackButton</span><span class="o">.</span><span class="n">selectedChoice</span><span class="p">)</span>
+        <span class="n">ResourcePackHandler</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span><span class="o">.</span><span class="n">set_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resourcePackButton</span><span class="o">.</span><span class="n">selectedChoice</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">loadTextures</span><span class="p">()</span></div>
     <span class="n">texturePack</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">skin</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="n">_reloadTextures</span><span class="p">)</span>
     
@@ -313,7 +313,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

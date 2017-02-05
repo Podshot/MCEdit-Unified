@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow package &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow package &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="bresenham module" href="bresenham.html" />
     <link rel="prev" title="Welcome to MCEdit-Unified’s documentation!" href="index.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -560,6 +560,32 @@
 <dl class="attribute">
 <dt id="albow.controls.RadioControl.setting">
 <code class="descname">setting</code><em class="property"> = None</em><a class="headerlink" href="#albow.controls.RadioControl.setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="albow.controls.RotatableImage">
+<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">RotatableImage</code><span class="sig-paren">(</span><em>angle=0.0</em>, <em>min_angle=0</em>, <em>max_angle=360</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#RotatableImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.RotatableImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#albow.controls.Image" title="albow.controls.Image"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.Image</span></code></a></p>
+<dl class="method">
+<dt id="albow.controls.RotatableImage.add_angle">
+<code class="descname">add_angle</code><span class="sig-paren">(</span><em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#RotatableImage.add_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.RotatableImage.add_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.controls.RotatableImage.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>surf</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#RotatableImage.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.RotatableImage.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.controls.RotatableImage.get_angle">
+<code class="descname">get_angle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#RotatableImage.get_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.RotatableImage.get_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.controls.RotatableImage.set_angle">
+<code class="descname">set_angle</code><span class="sig-paren">(</span><em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#RotatableImage.set_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.RotatableImage.set_angle" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1126,6 +1152,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.fields.TextEditor.escape_action">
+<code class="descname">escape_action</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditor.escape_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditor.escape_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.fields.TextEditor.get_text">
 <code class="descname">get_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditor.get_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditor.get_text" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1209,6 +1240,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dl class="method">
 <dt id="albow.fields.TextEditorWrapped.draw">
 <code class="descname">draw</code><span class="sig-paren">(</span><em>surface</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.fields.TextEditorWrapped.escape_action">
+<code class="descname">escape_action</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.escape_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.escape_action" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1878,6 +1914,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <code class="descname">border_width</code><em class="property"> = 1</em><a class="headerlink" href="#albow.layout.Frame.border_width" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="albow.layout.Frame.call_handler">
+<code class="descname">call_handler</code><span class="sig-paren">(</span><em>name</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/layout.html#Frame.call_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.layout.Frame.call_handler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="albow.layout.Frame.margin">
 <code class="descname">margin</code><em class="property"> = 2</em><a class="headerlink" href="#albow.layout.Frame.margin" title="Permalink to this definition">¶</a></dt>
@@ -1929,6 +1970,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dl class="method">
 <dt id="albow.layout.RowOrColumn.calc_size">
 <code class="descname">calc_size</code><span class="sig-paren">(</span><em>_items=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/layout.html#RowOrColumn.calc_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.layout.RowOrColumn.calc_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.layout.RowOrColumn.call_handler">
+<code class="descname">call_handler</code><span class="sig-paren">(</span><em>name</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/layout.html#RowOrColumn.call_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.layout.RowOrColumn.call_handler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2429,6 +2475,11 @@ from the current playlist.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.palette_view.PaletteView.draw_scrollbar">
+<code class="descname">draw_scrollbar</code><span class="sig-paren">(</span><em>surface</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.draw_scrollbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.draw_scrollbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.palette_view.PaletteView.item_is_selected">
 <code class="descname">item_is_selected</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.item_is_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.item_is_selected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2444,6 +2495,16 @@ from the current playlist.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.palette_view.PaletteView.mouse_drag">
+<code class="descname">mouse_drag</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.mouse_drag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.mouse_drag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.palette_view.PaletteView.mouse_up">
+<code class="descname">mouse_up</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.mouse_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.mouse_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.palette_view.PaletteView.num_cols">
 <code class="descname">num_cols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.num_cols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.num_cols" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2455,7 +2516,7 @@ from the current playlist.</p>
 
 <dl class="method">
 <dt id="albow.palette_view.PaletteView.scroll_down">
-<code class="descname">scroll_down</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scroll_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scroll_down" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scroll_down</code><span class="sig-paren">(</span><em>delta=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scroll_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scroll_down" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2470,12 +2531,17 @@ from the current playlist.</p>
 
 <dl class="method">
 <dt id="albow.palette_view.PaletteView.scroll_up">
-<code class="descname">scroll_up</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scroll_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scroll_up" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scroll_up</code><span class="sig-paren">(</span><em>delta=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scroll_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scroll_up" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="albow.palette_view.PaletteView.scroll_up_rect">
 <code class="descname">scroll_up_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scroll_up_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scroll_up_rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.palette_view.PaletteView.scrollbar_rect">
+<code class="descname">scrollbar_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/palette_view.html#PaletteView.scrollbar_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.palette_view.PaletteView.scrollbar_rect" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2913,6 +2979,11 @@ the event loop, and only when the frame timer is running.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.scrollpanel.ScrollRow.draw_hscrollbar">
+<code class="descname">draw_hscrollbar</code><span class="sig-paren">(</span><em>surface</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.draw_hscrollbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.draw_hscrollbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.scrollpanel.ScrollRow.draw_item">
 <code class="descname">draw_item</code><span class="sig-paren">(</span><em>surf</em>, <em>row</em>, <em>row_rect</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.draw_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.draw_item" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2938,6 +3009,11 @@ the event loop, and only when the frame timer is running.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.scrollpanel.ScrollRow.hscrollbar_rect">
+<code class="descname">hscrollbar_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.hscrollbar_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.hscrollbar_rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.scrollpanel.ScrollRow.item_is_selected">
 <code class="descname">item_is_selected</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.item_is_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.item_is_selected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2945,6 +3021,16 @@ the event loop, and only when the frame timer is running.</p>
 <dl class="method">
 <dt id="albow.scrollpanel.ScrollRow.mouse_down">
 <code class="descname">mouse_down</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.mouse_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.mouse_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.scrollpanel.ScrollRow.mouse_drag">
+<code class="descname">mouse_drag</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.mouse_drag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.mouse_drag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.scrollpanel.ScrollRow.mouse_up">
+<code class="descname">mouse_up</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.mouse_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.mouse_up" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2969,7 +3055,7 @@ the event loop, and only when the frame timer is running.</p>
 
 <dl class="method">
 <dt id="albow.scrollpanel.ScrollRow.scroll_left">
-<code class="descname">scroll_left</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.scroll_left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.scroll_left" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scroll_left</code><span class="sig-paren">(</span><em>delta=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.scroll_left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.scroll_left" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2979,7 +3065,7 @@ the event loop, and only when the frame timer is running.</p>
 
 <dl class="method">
 <dt id="albow.scrollpanel.ScrollRow.scroll_right">
-<code class="descname">scroll_right</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.scroll_right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.scroll_right" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scroll_right</code><span class="sig-paren">(</span><em>delta=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollRow.scroll_right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollRow.scroll_right" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -3625,7 +3711,7 @@ Returns the template.</p>
 
 <dl class="method">
 <dt id="albow.tree.Tree.deploy">
-<code class="descname">deploy</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/tree.html#Tree.deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.tree.Tree.deploy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">deploy</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/tree.html#Tree.deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.tree.Tree.deploy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -4199,6 +4285,11 @@ Returns the template.</p>
 <code class="descname">mouse_up</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.mouse_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.mouse_up" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="albow.widget.Widget.name">
+<code class="descname">name</code><em class="property"> = 'Widget'</em><a class="headerlink" href="#albow.widget.Widget.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="albow.widget.Widget.next_handler">
 <code class="descname">next_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.next_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.next_handler" title="Permalink to this definition">¶</a></dt>
@@ -4423,7 +4514,7 @@ by Gregory Ewing
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

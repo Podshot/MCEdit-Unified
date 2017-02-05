@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.controls &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.controls &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -136,7 +136,7 @@
 <span class="c">#</span>
 <span class="c">#-# Modified by D.C.-G. for translation purpose</span>
 
-<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">transform</span>
 
 <span class="kn">from</span> <span class="nn">widget</span> <span class="kn">import</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">overridable_property</span>
 <span class="kn">from</span> <span class="nn">theme</span> <span class="kn">import</span> <span class="n">ThemeProperty</span>
@@ -268,7 +268,7 @@
     <span class="c">#-#</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;Label {0}, child of {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;Label {0}, child of {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;backslashreplace&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Label.get_text"><a class="viewcode-back" href="../../albow.html#albow.controls.Label.get_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
@@ -422,7 +422,34 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
         <span class="n">r</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">center</span>
         <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-
+        </div></div>
+<div class="viewcode-block" id="RotatableImage"><a class="viewcode-back" href="../../albow.html#albow.controls.RotatableImage">[docs]</a><span class="k">class</span> <span class="nc">RotatableImage</span><span class="p">(</span><span class="n">Image</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">min_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_angle</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RotatableImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span> <span class="o">=</span> <span class="o">-</span><span class="n">angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_angle</span> <span class="o">=</span> <span class="n">min_angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_angle</span> <span class="o">=</span> <span class="n">max_angle</span>
+    
+<div class="viewcode-block" id="RotatableImage.draw"><a class="viewcode-back" href="../../albow.html#albow.controls.RotatableImage.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">surf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlighted</span><span class="p">:</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_color</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">center</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="RotatableImage.get_angle"><a class="viewcode-back" href="../../albow.html#albow.controls.RotatableImage.get_angle">[docs]</a>    <span class="k">def</span> <span class="nf">get_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span>
+</div>
+<div class="viewcode-block" id="RotatableImage.set_angle"><a class="viewcode-back" href="../../albow.html#albow.controls.RotatableImage.set_angle">[docs]</a>    <span class="k">def</span> <span class="nf">set_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_angle</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_angle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span> <span class="o">=</span> <span class="n">angle</span>
+        </div>
+<div class="viewcode-block" id="RotatableImage.add_angle"><a class="viewcode-back" href="../../albow.html#albow.controls.RotatableImage.add_angle">[docs]</a>    <span class="k">def</span> <span class="nf">add_angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_angle</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">angle</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </div></div>
 <div class="viewcode-block" id="ImageButton"><a class="viewcode-back" href="../../albow.html#albow.controls.ImageButton">[docs]</a><span class="k">class</span> <span class="nc">ImageButton</span><span class="p">(</span><span class="n">ButtonBase</span><span class="p">,</span> <span class="n">Image</span><span class="p">):</span>
     <span class="k">pass</span>
@@ -523,7 +550,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

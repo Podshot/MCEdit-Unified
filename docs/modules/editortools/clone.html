@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools.clone &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools.clone &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -195,7 +195,7 @@
             <span class="n">field</span><span class="o">.</span><span class="n">change_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordsChanged</span>
             <span class="n">field</span><span class="o">.</span><span class="n">enter_passes</span> <span class="o">=</span> <span class="bp">False</span>
 
-        <span class="n">offsetCol</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">xField</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yField</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zField</span><span class="p">))</span>
+        <span class="n">offsetCol</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&#39;X&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xField</span><span class="p">)),</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&#39;Y&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">yField</span><span class="p">)),</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&#39;Z&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">zField</span><span class="p">))))</span>
 
         <span class="n">nudgeOffsetRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">offsetCol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgeButton</span><span class="p">))</span>
 
@@ -367,7 +367,7 @@
         <span class="k">return</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">_parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.CloneToolPanel&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
 
         <span class="n">rotaterollRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span>
@@ -514,7 +514,7 @@
 </div>
 <div class="viewcode-block" id="CloneToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.clone.CloneToolOptions">[docs]</a><span class="k">class</span> <span class="nc">CloneToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.CloneToolOptions&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoPlaceCheckBox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;placeImmediately&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoPlaceLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Place Immediately&quot;</span><span class="p">)</span>
@@ -1244,7 +1244,7 @@
 </div>
 <div class="viewcode-block" id="ConstructionToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.clone.ConstructionToolOptions">[docs]</a><span class="k">class</span> <span class="nc">ConstructionToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.ConstructionToolOptions&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
 
         <span class="n">importNudgeLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Import Fast Nudge Settings:&quot;</span><span class="p">)</span>
@@ -1352,6 +1352,9 @@
         <span class="k">if</span> <span class="n">clipFilename</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;schematic&quot;</span><span class="p">,</span> <span class="s">&quot;schematic.gz&quot;</span><span class="p">,</span> <span class="s">&quot;zip&quot;</span><span class="p">,</span> <span class="s">&quot;inv&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loadSchematic</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;nbt&quot;</span><span class="p">:</span>
+                <span class="n">structure</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">schematic</span><span class="o">.</span><span class="n">StructureNBT</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">clipFilename</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadLevel</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">toSchematic</span><span class="p">())</span>
             <span class="k">elif</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;bo2&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loadLevel</span><span class="p">(</span><span class="n">BOParser</span><span class="o">.</span><span class="n">BO2</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">getSchematic</span><span class="p">())</span>
             <span class="k">elif</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;bo3&quot;</span><span class="p">:</span>
@@ -1442,7 +1445,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>resource_packs &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>resource_packs &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -144,6 +144,8 @@
 
 <span class="kn">import</span> <span class="nn">locale</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">utilities.misc</span> <span class="kn">import</span> <span class="n">Singleton</span>
+
 <span class="n">DEF_ENC</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
 <span class="k">if</span> <span class="n">DEF_ENC</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">DEF_ENC</span> <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span>
@@ -175,8 +177,8 @@
 <span class="sd">    :param slot: Texture slot</span>
 <span class="sd">    :type slot: int</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">texSlot</span> <span class="o">=</span> <span class="n">slot</span><span class="o">*</span><span class="mi">16</span>
-    <span class="k">return</span> <span class="n">texSlot</span></div>
+    <span class="k">return</span> <span class="n">slot</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+</div>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Empty comment lines like:</span>
 <span class="sd">#</span>
@@ -464,6 +466,7 @@
     <span class="s">&quot;command_block_conditional&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">11</span><span class="p">)),</span>
     <span class="s">&quot;command_block_front&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">11</span><span class="p">)),</span>
     <span class="s">&quot;command_block_side&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">11</span><span class="p">)),</span>
+    <span class="s">&quot;bone_block_top&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">19</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">11</span><span class="p">)),</span>
     <span class="c"># End Twelfth Row</span>
 
     <span class="c"># Start Thriteenth Row</span>
@@ -490,6 +493,7 @@
     <span class="s">&quot;repeating_command_block_conditional&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
     <span class="s">&quot;repeating_command_block_front&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
     <span class="s">&quot;repeating_command_block_side&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
+    <span class="s">&quot;bone_block_side&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">19</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
     <span class="c"># End Thriteenth Row</span>
 
     <span class="c"># Start Fourteenth Row</span>
@@ -508,6 +512,7 @@
     <span class="s">&quot;coal_block&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
     <span class="s">&quot;log_acacia_top&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
     <span class="s">&quot;piston_left&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">14</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
+    <span class="s">&quot;magma&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
     <span class="c">#</span>
     <span class="s">&quot;double_plant_rose_bottom&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
     <span class="s">&quot;double_plant_rose_top&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">17</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
@@ -536,6 +541,7 @@
     <span class="c">#</span>
     <span class="s">&quot;double_plant_paeonia_bottom&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">14</span><span class="p">)),</span>
     <span class="s">&quot;double_plant_paeonia_top&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">17</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">14</span><span class="p">)),</span>
+    <span class="s">&quot;nether_wart_block&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">14</span><span class="p">)),</span>
     <span class="c"># End Fifteenth Row</span>
 
     <span class="c"># Start Sixteenth Row</span>
@@ -557,6 +563,7 @@
     <span class="c">#</span>
     <span class="c">#</span>
     <span class="s">&quot;slime&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">17</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">15</span><span class="p">)),</span>
+    <span class="s">&quot;red_nether_brick&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">step</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span><span class="n">step</span><span class="p">(</span><span class="mi">15</span><span class="p">)),</span>
     <span class="c"># End Sixteenth Row</span>
 
     <span class="c"># Start Seventeenth Row</span>
@@ -750,7 +757,7 @@
         <span class="k">return</span> <span class="n">log_tex</span>
 
 </div></div>
-<div class="viewcode-block" id="IResourcePack"><a class="viewcode-back" href="../resource_packs.html#resource_packs.IResourcePack">[docs]</a><span class="k">class</span> <span class="nc">IResourcePack</span><span class="p">:</span>
+<div class="viewcode-block" id="IResourcePack"><a class="viewcode-back" href="../resource_packs.html#resource_packs.IResourcePack">[docs]</a><span class="k">class</span> <span class="nc">IResourcePack</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Sets all base variables for a Resource Pack</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -1097,61 +1104,60 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tooBig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_too_big</span>
-
 </div>
-<div class="viewcode-block" id="setup_resource_packs"><a class="viewcode-back" href="../resource_packs.html#resource_packs.setup_resource_packs">[docs]</a><span class="k">def</span> <span class="nf">setup_resource_packs</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don&#39;t replace any textures</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting up the resource packs.&quot;</span><span class="p">)</span>
-    <span class="n">terrains</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&quot;terrain-textures&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="n">terrains</span><span class="p">[</span><span class="s">&quot;Default Resource Pack&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DefaultResourcePack</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)):</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Gathering zipped packs...&quot;</span><span class="p">)</span>
-        <span class="n">zipResourcePacks</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getAllOfAFile</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)),</span> <span class="s">&quot;.zip&quot;</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Gatering folder packs...&quot;</span><span class="p">)</span>
-        <span class="n">folderResourcePacks</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)))</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Processing zipped packs...&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">zip_tex_pack</span> <span class="ow">in</span> <span class="n">zipResourcePacks</span><span class="p">:</span>
-            <span class="n">zrp</span> <span class="o">=</span> <span class="n">ZipResourcePack</span><span class="p">(</span><span class="n">zip_tex_pack</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">zrp</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">zrp</span><span class="o">.</span><span class="n">tooBig</span><span class="p">:</span>
-                    <span class="n">terrains</span><span class="p">[</span><span class="n">zrp</span><span class="o">.</span><span class="n">pack_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">zrp</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Processing folder packs...&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">folder_tex_pack</span> <span class="ow">in</span> <span class="n">folderResourcePacks</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">,</span> <span class="n">folder_tex_pack</span><span class="p">)):</span>
-                <span class="n">frp</span> <span class="o">=</span> <span class="n">FolderResourcePack</span><span class="p">(</span><span class="n">folder_tex_pack</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">frp</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">frp</span><span class="o">.</span><span class="n">tooBig</span><span class="p">:</span>
-                        <span class="n">terrains</span><span class="p">[</span><span class="n">frp</span><span class="o">.</span><span class="n">pack_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frp</span>
-    <span class="k">for</span> <span class="n">tex</span> <span class="ow">in</span> <span class="n">terrains</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">pack</span> <span class="o">=</span> <span class="n">terrains</span><span class="p">[</span><span class="n">tex</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pack</span><span class="o">.</span><span class="n">terrain_path</span><span class="p">()):</span>
-            <span class="k">del</span> <span class="n">terrains</span><span class="p">[</span><span class="n">tex</span><span class="p">]</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;textures&quot;</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Could not remove </span><span class="se">\&quot;</span><span class="s">textures</span><span class="se">\&quot;</span><span class="s"> directory&quot;</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="n">terrains</span>
-
-</div>
-<div class="viewcode-block" id="ResourcePackHandler"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler">[docs]</a><span class="k">class</span> <span class="nc">ResourcePackHandler</span><span class="p">:</span>
+<span class="nd">@Singleton</span>
+<span class="k">class</span> <span class="nc">ResourcePackHandler</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A single point to manage which Resource Pack is being used and to provide the paths to each parsed PNG</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Instance</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">setup_reource_packs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don&#39;t replace any textures</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting up the resource packs.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s">&quot;terrain-textures&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="s">&quot;Default Resource Pack&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DefaultResourcePack</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Gathering zipped packs...&quot;</span><span class="p">)</span>
+            <span class="n">zipResourcePacks</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getAllOfAFile</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)),</span> <span class="s">&quot;.zip&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Gatering folder packs...&quot;</span><span class="p">)</span>
+            <span class="n">folderResourcePacks</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">)))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Processing zipped packs...&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">zip_tex_pack</span> <span class="ow">in</span> <span class="n">zipResourcePacks</span><span class="p">:</span>
+                <span class="n">zrp</span> <span class="o">=</span> <span class="n">ZipResourcePack</span><span class="p">(</span><span class="n">zip_tex_pack</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">zrp</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">zrp</span><span class="o">.</span><span class="n">tooBig</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="n">zrp</span><span class="o">.</span><span class="n">pack_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">zrp</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Processing folder packs...&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">folder_tex_pack</span> <span class="ow">in</span> <span class="n">folderResourcePacks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;resourcepacks&quot;</span><span class="p">,</span> <span class="n">folder_tex_pack</span><span class="p">)):</span>
+                    <span class="n">frp</span> <span class="o">=</span> <span class="n">FolderResourcePack</span><span class="p">(</span><span class="n">folder_tex_pack</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">frp</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">frp</span><span class="o">.</span><span class="n">tooBig</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="n">frp</span><span class="o">.</span><span class="n">pack_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frp</span>
+        <span class="k">for</span> <span class="n">tex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">pack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="n">tex</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pack</span><span class="o">.</span><span class="n">terrain_path</span><span class="p">()):</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="n">tex</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;textures&quot;</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Could not remove </span><span class="se">\&quot;</span><span class="s">textures</span><span class="se">\&quot;</span><span class="s"> directory&quot;</span>
+            <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;textures&quot;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span> <span class="o">=</span> <span class="n">setup_resource_packs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_reource_packs</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_selected_resource_pack</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">resourcePack</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_resource_pack</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_selected_resource_pack_name</span><span class="p">(</span><span class="s">&quot;Default Resource Pack&quot;</span><span class="p">)</span>
@@ -1163,25 +1169,33 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span>
 
-<div class="viewcode-block" id="ResourcePackHandler.get_available_resource_packs"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler.get_available_resource_packs">[docs]</a>    <span class="k">def</span> <span class="nf">get_available_resource_packs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_available_resource_packs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the names of all the Resource Packs that can be used</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="ResourcePackHandler.reload_resource_packs"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler.reload_resource_packs">[docs]</a>    <span class="k">def</span> <span class="nf">reload_resource_packs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">reload_resource_packs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reparses all Resource Packs</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span> <span class="o">=</span> <span class="n">setup_resource_packs</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="ResourcePackHandler.get_selected_resource_pack_name"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler.get_selected_resource_pack_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_resource_packs</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">reparse_resource_pack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packName</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">packName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">:</span>
+            <span class="n">pack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="n">packName</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pack</span><span class="p">,</span> <span class="n">FolderResourcePack</span><span class="p">):</span>
+                <span class="n">pack</span><span class="o">.</span><span class="n">add_textures</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pack</span><span class="p">,</span> <span class="n">ZipResourcePack</span><span class="p">):</span>
+                <span class="n">pack</span><span class="o">.</span><span class="n">open_pack</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the currently selected Resource Pack&#39;s name</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_resource_pack</span>
-</div>
-<div class="viewcode-block" id="ResourcePackHandler.set_selected_resource_pack_name"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler.set_selected_resource_pack_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">set_selected_resource_pack_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Sets the currently selected Resource Pack</span>
 <span class="sd">        </span>
@@ -1189,14 +1203,14 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">resourcePack</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_selected_resource_pack</span> <span class="o">=</span> <span class="n">name</span>
-</div>
-<div class="viewcode-block" id="ResourcePackHandler.get_selected_resource_pack"><a class="viewcode-back" href="../resource_packs.html#resource_packs.ResourcePackHandler.get_selected_resource_pack">[docs]</a>    <span class="k">def</span> <span class="nf">get_selected_resource_pack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_selected_resource_pack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the selected Resource Pack instance. Can be an instance of either DefaultResourcePack, ZipResourcePack or FolderResourcePack</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource_packs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_resource_pack</span><span class="p">]</span>
-</div></div>
-<span class="n">packs</span> <span class="o">=</span> <span class="n">ResourcePackHandler</span><span class="p">()</span>
+
+<span class="c">#packs = ResourcePackHandler()</span>
 </pre></div>
 
                 </div>
@@ -1213,7 +1227,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

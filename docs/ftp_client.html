@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>ftp_client module &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>ftp_client module &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="glbackground module" href="glbackground.html" />
     <link rel="prev" title="frustum module" href="frustum.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -152,46 +152,63 @@
 <dt id="ftp_client.CouldNotFindPropertiesException">
 <em class="property">exception </em><code class="descclassname">ftp_client.</code><code class="descname">CouldNotFindPropertiesException</code><a class="reference internal" href="modules/ftp_client.html#CouldNotFindPropertiesException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.CouldNotFindPropertiesException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>An Exception that is raised when the &#8216;server.properties&#8217; file could not be found at the default directory of the FTP Server</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="ftp_client.CouldNotFindWorldFolderException">
 <em class="property">exception </em><code class="descclassname">ftp_client.</code><code class="descname">CouldNotFindWorldFolderException</code><a class="reference internal" href="modules/ftp_client.html#CouldNotFindWorldFolderException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.CouldNotFindWorldFolderException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>An Exception that is raised when the world directory that is specified in the the &#8216;server.properties&#8217; cannot be found</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="ftp_client.FTPClient">
 <em class="property">class </em><code class="descclassname">ftp_client.</code><code class="descname">FTPClient</code><span class="sig-paren">(</span><em>ip</em>, <em>username='anonymous'</em>, <em>password=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Wrapper client to download and upload worlds to a FTP Server</p>
+<dl class="method">
 <dt id="ftp_client.FTPClient.cleanup">
 <code class="descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.cleanup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Closes the FTP connection and removes all leftover files from the &#8216;ftp&#8217; directory</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ftp_client.FTPClient.download">
 <code class="descname">download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.download" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Downloads all files in the current FTP directory with their corresponding paths</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ftp_client.FTPClient.get_level_path">
 <code class="descname">get_level_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.get_level_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.get_level_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets the local path to the downloaded FTP world</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ftp_client.FTPClient.safe_download">
 <code class="descname">safe_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.safe_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.safe_download" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Changes the FTP client&#8217;s working directory, downloads the world, then switches back to the original working directory</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ftp_client.FTPClient.upload">
 <code class="descname">upload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.upload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.upload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Uploads an edited world to the current FTP server connection</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="ftp_client.FTPClient.upload_new_world">
 <code class="descname">upload_new_world</code><span class="sig-paren">(</span><em>world</em><span class="sig-paren">)</span><a class="reference internal" href="modules/ftp_client.html#FTPClient.upload_new_world"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.FTPClient.upload_new_world" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Uploads a new world to the current FTP server connection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>world</strong> (<em>InfiniteWorld</em>) &#8211; The InfiniteWorld object for the world to upload</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -199,6 +216,7 @@
 <dt id="ftp_client.InvalidCreditdentialsException">
 <em class="property">exception </em><code class="descclassname">ftp_client.</code><code class="descname">InvalidCreditdentialsException</code><a class="reference internal" href="modules/ftp_client.html#InvalidCreditdentialsException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ftp_client.InvalidCreditdentialsException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>An Exception that is raised when the supplied Username/Password is denied by the FTP Server</p>
 </dd></dl>
 
 </div>
@@ -218,7 +236,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

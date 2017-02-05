@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>directories &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>directories &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -146,6 +146,7 @@
 <span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
 <span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
 <span class="n">t</span><span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -199,6 +200,13 @@
         <span class="k">pass</span>
     </div>
 <div class="viewcode-block" id="getNewDataDir"><a class="viewcode-back" href="../directories.html#directories.getNewDataDir">[docs]</a><span class="k">def</span> <span class="nf">getNewDataDir</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the directory where the executable is located (This function is only ran on Windows OS&#39;s)</span>
+<span class="sd">    </span>
+<span class="sd">    :param path: Additional directories/files to join to the data directory path</span>
+<span class="sd">    </span>
+<span class="sd">    :return unicode</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">dataDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
     <span class="c">#print &quot;Dynamic: &quot; + str(os.getcwdu())</span>
     <span class="c">#print &quot;Fixed: &quot; + str(dataDir) </span>
@@ -209,10 +217,13 @@
 <span class="n">getNewDataDir</span><span class="p">()</span>
 
 <div class="viewcode-block" id="getDataDir"><a class="viewcode-back" href="../directories.html#directories.getDataDir">[docs]</a><span class="k">def</span> <span class="nf">getDataDir</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the folder where the executable is located.</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the folder where the executable is located. (This function is ran on non-Windows OS&#39;s)</span>
+<span class="sd">    </span>
+<span class="sd">    :param path: Additional directories/files to join to the data directory path</span>
+<span class="sd">    </span>
 <span class="sd">    :return unicode</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c"># if sys.platform == &quot;win32&quot;:</span>
     <span class="c">#     def fsdecode(x):</span>
     <span class="c">#         return x.decode(sys.getfilesystemencoding())</span>
@@ -258,10 +269,10 @@
 </div>
 <div class="viewcode-block" id="getMinecraftProfileJSON"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileJSON">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftProfileJSON</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Returns a dictionary object with the minecraft profile information&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&quot;launcher_profiles.json&quot;</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">u&quot;launcher_profiles.json&quot;</span><span class="p">)):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&quot;launcher_profiles.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">jsonString</span><span class="p">:</span>
-                <span class="n">minecraftProfilesJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jsonString</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">u&quot;launcher_profiles.json&quot;</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsonString</span><span class="p">:</span>
+                <span class="n">minecraftProfilesJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">jsonString</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">()))</span>
             <span class="k">return</span> <span class="n">minecraftProfilesJSON</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
@@ -270,8 +281,7 @@
 <div class="viewcode-block" id="getMinecraftProfileDirectory"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileDirectory">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">profileName</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the path to the sent minecraft profile directory&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">profileDir</span> <span class="o">=</span> <span class="n">getMinecraftProfileJSON</span><span class="p">()[</span><span class="s">&#39;profiles&#39;</span><span class="p">][</span><span class="n">profileName</span><span class="p">][</span>
-            <span class="s">&#39;gameDir&#39;</span><span class="p">]</span>  <span class="c"># profileDir update to correct location.</span>
+        <span class="n">profileDir</span> <span class="o">=</span> <span class="n">getMinecraftProfileJSON</span><span class="p">()[</span><span class="s">&#39;profiles&#39;</span><span class="p">][</span><span class="n">profileName</span><span class="p">][</span><span class="s">&#39;gameDir&#39;</span><span class="p">]</span>  <span class="c"># profileDir update to correct location.</span>
         <span class="k">return</span> <span class="n">profileDir</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">())</span>
@@ -332,7 +342,7 @@
 <div class="viewcode-block" id="getMinecraftSaveFileDir"><a class="viewcode-back" href="../directories.html#directories.getMinecraftSaveFileDir">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftSaveFileDir</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">_minecraftSaveFileDir</span>
     <span class="k">if</span> <span class="n">_minecraftSaveFileDir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">_minecraftSaveFileDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;saves&quot;</span><span class="p">)</span>
+        <span class="n">_minecraftSaveFileDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">u&quot;saves&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_minecraftSaveFileDir</span>
 </div>
 <span class="n">minecraftSaveFileDir</span> <span class="o">=</span> <span class="n">getMinecraftSaveFileDir</span><span class="p">()</span>
@@ -364,25 +374,39 @@
     <span class="n">fixedFiltersDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="s">u&quot;Filters&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="goPortable"><a class="viewcode-back" href="../directories.html#directories.goPortable">[docs]</a><span class="k">def</span> <span class="nf">goPortable</span><span class="p">():</span>
+        
+<div class="viewcode-block" id="hasPreviousPortableInstallation"><a class="viewcode-back" href="../directories.html#directories.hasPreviousPortableInstallation">[docs]</a><span class="k">def</span> <span class="nf">hasPreviousPortableInstallation</span><span class="p">():</span>
+    <span class="n">portableDirectoriesFound</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableGenericSupportPath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">portableDirectoriesFound</span>
+</div>
+<div class="viewcode-block" id="hasPreviousFixedInstallation"><a class="viewcode-back" href="../directories.html#directories.hasPreviousFixedInstallation">[docs]</a><span class="k">def</span> <span class="nf">hasPreviousFixedInstallation</span><span class="p">():</span>
+    <span class="n">fixedDirectoriesFound</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedGenericSupportPath</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">fixedDirectoriesFound</span>
+</div>
+<div class="viewcode-block" id="goPortable"><a class="viewcode-back" href="../directories.html#directories.goPortable">[docs]</a><span class="k">def</span> <span class="nf">goPortable</span><span class="p">(</span><span class="n">useExisting</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">global</span> <span class="n">configFilePath</span><span class="p">,</span> <span class="n">schematicsDir</span><span class="p">,</span> <span class="n">filtersDir</span><span class="p">,</span> <span class="n">portable</span><span class="p">,</span> <span class="n">brushesDir</span>
-
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">,</span> <span class="n">portableSchematicsDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">,</span> <span class="n">portableBrushesDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">,</span> <span class="n">portableConfigFilePath</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">,</span> <span class="n">portableFiltersDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">,</span> <span class="n">portableCacheFilePath</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">,</span> <span class="n">portableJarStorageDir</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">useExisting</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">,</span> <span class="n">portableSchematicsDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">,</span> <span class="n">portableBrushesDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">,</span> <span class="n">portableConfigFilePath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">,</span> <span class="n">portableFiltersDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">,</span> <span class="n">portableCacheFilePath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">,</span> <span class="n">portableJarStorageDir</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">filtersDir</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
@@ -416,23 +440,24 @@
         <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="goFixed"><a class="viewcode-back" href="../directories.html#directories.goFixed">[docs]</a><span class="k">def</span> <span class="nf">goFixed</span><span class="p">():</span>
+<div class="viewcode-block" id="goFixed"><a class="viewcode-back" href="../directories.html#directories.goFixed">[docs]</a><span class="k">def</span> <span class="nf">goFixed</span><span class="p">(</span><span class="n">useExisting</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">global</span> <span class="n">configFilePath</span><span class="p">,</span> <span class="n">schematicsDir</span><span class="p">,</span> <span class="n">filtersDir</span><span class="p">,</span> <span class="n">portable</span><span class="p">,</span> <span class="n">cacheDir</span><span class="p">,</span> <span class="n">brushesDir</span>
-
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">,</span> <span class="n">fixedSchematicsDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">,</span> <span class="n">fixedBrushesDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">,</span> <span class="n">fixedConfigFilePath</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">,</span> <span class="n">fixedFiltersDir</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">,</span> <span class="n">fixedCacheFilePath</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">):</span>
-        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">,</span> <span class="n">fixedJarStorageDir</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">useExisting</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">,</span> <span class="n">fixedSchematicsDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">,</span> <span class="n">fixedBrushesDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">,</span> <span class="n">fixedConfigFilePath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">,</span> <span class="n">fixedFiltersDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">,</span> <span class="n">fixedCacheFilePath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">):</span>
+            <span class="n">move_displace</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">,</span> <span class="n">fixedJarStorageDir</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">filtersDir</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
@@ -545,8 +570,8 @@
 
 
 <div class="viewcode-block" id="getFiltersDir"><a class="viewcode-back" href="../directories.html#directories.getFiltersDir">[docs]</a><span class="k">def</span> <span class="nf">getFiltersDir</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">filtersDir</span>
-</pre></div></div>
+    <span class="k">return</span> <span class="n">filtersDir</span></div>
+</pre></div>
 
                 </div>
               </div>
@@ -562,7 +587,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

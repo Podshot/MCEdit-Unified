@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>config &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>config &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -615,6 +615,9 @@
         <span class="p">(</span><span class="s">&quot;targetFPS&quot;</span><span class="p">,</span> <span class="s">&quot;Target FPS&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowWidth&quot;</span><span class="p">,</span> <span class="s">&quot;window width&quot;</span><span class="p">,</span> <span class="mi">1152</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowHeight&quot;</span><span class="p">,</span> <span class="s">&quot;window height&quot;</span><span class="p">,</span> <span class="mi">864</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowMaximized&quot;</span><span class="p">,</span> <span class="s">&quot;window maximized&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowMaximizedHeight&quot;</span><span class="p">,</span> <span class="s">&quot;window maximized height&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowMaximizedWidth&quot;</span><span class="p">,</span> <span class="s">&quot;window maximized width&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowX&quot;</span><span class="p">,</span> <span class="s">&quot;window x&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowY&quot;</span><span class="p">,</span> <span class="s">&quot;window y&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowShowCmd&quot;</span><span class="p">,</span> <span class="s">&quot;window showcmd&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
@@ -652,8 +655,9 @@
         <span class="p">(</span><span class="s">&quot;downloadPlayerSkins&quot;</span><span class="p">,</span> <span class="s">&quot;Download Player Skins&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;maxViewDistance&quot;</span><span class="p">,</span> <span class="s">&quot;Max View Distance&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;drawPlayerHeads&quot;</span><span class="p">,</span> <span class="s">&quot;Draw Player Heads&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;showCommands&quot;</span><span class="p">,</span> <span class="s">&quot;Show Commands when hovering&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;savePositionOnClose&quot;</span><span class="p">,</span> <span class="s">&quot;Save camera position on close&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&quot;showQuickBlockInfo&quot;</span><span class="p">,</span> <span class="s">&quot;Show Block Info when hovering&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;savePositionOnClose&quot;</span><span class="p">,</span> <span class="s">&quot;Save camera position on close&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showWindowSizeWarning&quot;</span><span class="p">,</span> <span class="s">&quot;Show window size warning&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;controls&quot;</span><span class="p">,</span> <span class="s">&quot;Controls&quot;</span><span class="p">):</span> <span class="p">[</span>
         <span class="p">(</span><span class="s">&quot;mouseSpeed&quot;</span><span class="p">,</span> <span class="s">&quot;mouse speed&quot;</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
@@ -720,6 +724,7 @@
         <span class="p">(</span><span class="s">&quot;useBulletStyles&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Styles&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;useBulletText&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Text&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;useBulletImages&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Images&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;defaultBulletImages&quot;</span><span class="p">,</span> <span class="s">&quot;Default Bullet Images&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;bulletFileName&quot;</span><span class="p">,</span> <span class="s">&quot;Bullet Images File&quot;</span><span class="p">,</span> <span class="n">directories</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;Nbtsheet.png&#39;</span><span class="p">)),</span>
         <span class="p">(</span><span class="s">&quot;showAllTags&quot;</span><span class="p">,</span> <span class="s">&quot;Show all the tags in the tree&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
     <span class="p">],</span>
@@ -731,6 +736,9 @@
         <span class="p">(</span><span class="s">&quot;sorting&quot;</span><span class="p">,</span> <span class="s">&quot;Sorting&quot;</span><span class="p">,</span> <span class="s">&quot;chain&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;space&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;fileFormat&quot;</span><span class="p">,</span> <span class="s">&quot;File Format&quot;</span><span class="p">,</span> <span class="s">&quot;txt&quot;</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;schematicCopying&quot;</span><span class="p">,</span> <span class="s">&quot;Schematics Copying&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;cancelCommandBlockOffset&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel Command Block Offset&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
     <span class="p">]</span>
 <span class="p">}</span>
 
@@ -755,7 +763,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

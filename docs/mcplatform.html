@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>mcplatform module &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>mcplatform module &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="panels package" href="panels.html" />
     <link rel="prev" title="mceutils module" href="mceutils.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -159,10 +159,280 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<dl class="class">
+<dt id="mcplatform.BaseWindowHandler">
+<em class="property">class </em><code class="descclassname">mcplatform.</code><code class="descname">BaseWindowHandler</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract class for the platform specific window handlers.
+If initialized, this class casts a NotImplementedError.</p>
+<dl class="attribute">
+<dt id="mcplatform.BaseWindowHandler.desk_env">
+<code class="descname">desk_env</code><em class="property"> = 'windows'</em><a class="headerlink" href="#mcplatform.BaseWindowHandler.desk_env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.flush">
+<code class="descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just does nothing...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.get_position">
+<code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.get_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.get_root_rect">
+<code class="descname">get_root_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.get_root_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.get_root_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.get_size">
+<code class="descname">get_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.get_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.get_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.set_mode">
+<code class="descname">set_mode</code><span class="sig-paren">(</span><em>size</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.set_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.set_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for pygame.display.set_mode().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.set_position">
+<code class="descname">set_position</code><span class="sig-paren">(</span><em>pos</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.set_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.set_size">
+<code class="descname">set_size</code><span class="sig-paren">(</span><em>size</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.set_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.set_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.set_state">
+<code class="descname">set_state</code><span class="sig-paren">(</span><em>state=1</em>, <em>size=(-1</em>, <em>-1)</em>, <em>pos=(-1</em>, <em>-1)</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.BaseWindowHandler.sync">
+<code class="descname">sync</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#BaseWindowHandler.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.BaseWindowHandler.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just does nothing...</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="mcplatform.OSXVersionChecker">
 <code class="descclassname">mcplatform.</code><code class="descname">OSXVersionChecker</code><span class="sig-paren">(</span><em>name</em>, <em>compare</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#OSXVersionChecker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.OSXVersionChecker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rediculously complicated function to compare current System version to inputted version.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mcplatform.WWindowHandler">
+<em class="property">class </em><code class="descclassname">mcplatform.</code><code class="descname">WWindowHandler</code><span class="sig-paren">(</span><em>pos=(0</em>, <em>0)</em>, <em>size=(0</em>, <em>0)</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcplatform.BaseWindowHandler" title="mcplatform.BaseWindowHandler"><code class="xref py py-class docutils literal"><span class="pre">mcplatform.BaseWindowHandler</span></code></a></p>
+<p>Object to deal with Microsoft Window managers.</p>
+<dl class="attribute">
+<dt id="mcplatform.WWindowHandler.desk_env">
+<code class="descname">desk_env</code><em class="property"> = 'windows'</em><a class="headerlink" href="#mcplatform.WWindowHandler.desk_env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.get_position">
+<code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.get_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the window actual position as a tuple.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.get_root_rect">
+<code class="descname">get_root_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.get_root_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.get_root_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a four values tuple containing the position and size of the very first OS window object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.get_size">
+<code class="descname">get_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.get_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.get_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the window actual size as a tuple (width, height).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return wheter the window is maximized or not, or minimized or full screen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.set_mode">
+<code class="descname">set_mode</code><span class="sig-paren">(</span><em>size</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.set_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.set_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for pygame.display.set_mode().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.set_position">
+<code class="descname">set_position</code><span class="sig-paren">(</span><em>pos</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.set_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the window position.
+:pos: list or tuple: the new position (x, y).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.set_size">
+<code class="descname">set_size</code><span class="sig-paren">(</span><em>size</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.set_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.set_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the window size.
+:size: list or tuple: the new size.
+:mode: bool: (re)set the pygame.display mode; self.mode must be a pygame display mode object.
+Raises a TypeError if something else than a list or a tuple is sent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.WWindowHandler.set_state">
+<code class="descname">set_state</code><span class="sig-paren">(</span><em>state=1</em>, <em>size=(-1</em>, <em>-1)</em>, <em>pos=(-1</em>, <em>-1)</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#WWindowHandler.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.WWindowHandler.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set wheter the window is maximized or not, or minimized or full screen.
+If no argument is given, assume the state will be windowed and not maximized.
+If arguments are given, only the first is relevant. The other ones are ignored.</p>
+<p>** Only maximized and normal states are implemented for now. **</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">State:</th><td class="field-body">valid arguments:</td>
+</tr>
+</tbody>
+</table>
+<p>&#8216;minimized&#8217;, MINIMIZED, 0.
+&#8216;normal&#8217;, NORMAL, 1: windowed, not maximized.
+&#8216;maximized&#8217;, MAXIMIZED, 2.
+&#8216;fullscreen, FULLSCREEN, 3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Size:</th><td class="field-body">list, tuple: the new size; if (-1, -1) self.get_size() is used.
+If one element is -1 it is replaced by the corresponding valur from self.get_size().</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Pos:</th><td class="field-body">list, tuple: the new position; if (-1, -1), self.get_position is used.
+If one element is -1 it is replaced by the corresponding valur from self.get_position().</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Update:</th><td class="field-body">bool: whether to call the internal flush method.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mcplatform.WindowHandler">
+<code class="descclassname">mcplatform.</code><code class="descname">WindowHandler</code><a class="headerlink" href="#mcplatform.WindowHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#mcplatform.WWindowHandler" title="mcplatform.WWindowHandler"><code class="xref py py-class docutils literal"><span class="pre">WWindowHandler</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mcplatform.XWindowHandler">
+<em class="property">class </em><code class="descclassname">mcplatform.</code><code class="descname">XWindowHandler</code><span class="sig-paren">(</span><em>pos=(0</em>, <em>0)</em>, <em>size=(0</em>, <em>0)</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mcplatform.BaseWindowHandler" title="mcplatform.BaseWindowHandler"><code class="xref py py-class docutils literal"><span class="pre">mcplatform.BaseWindowHandler</span></code></a></p>
+<p>Object to deal with XWindow managers (Linux).</p>
+<dl class="attribute">
+<dt id="mcplatform.XWindowHandler.desk_env">
+<code class="descname">desk_env</code><em class="property"> = 'windows'</em><a class="headerlink" href="#mcplatform.XWindowHandler.desk_env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.flush">
+<code class="descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around Xlib.Display.flush()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.get_position">
+<code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.get_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the window actual position as a tuple.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.get_root_rect">
+<code class="descname">get_root_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.get_root_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.get_root_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a four values tuple containing the position and size of the very first OS window object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.get_size">
+<code class="descname">get_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.get_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.get_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the window actual size as a tuple (width, height).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return wheter the window is maximized or not, or minimized or full screen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.set_position">
+<code class="descname">set_position</code><span class="sig-paren">(</span><em>pos</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.set_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the window position.
+:pos: list or tuple: the new position (x, y).
+:update: bool: wheteher to call the internal sync method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.set_size">
+<code class="descname">set_size</code><span class="sig-paren">(</span><em>size</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.set_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.set_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the window size.
+:size: list or tuple: the new size.
+Raises a TypeError if something else than a list or a tuple is sent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.set_state">
+<code class="descname">set_state</code><span class="sig-paren">(</span><em>state=1</em>, <em>size=(-1</em>, <em>-1)</em>, <em>pos=(-1</em>, <em>-1)</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set wheter the window is maximized or not, or minimized or full screen.
+If no argument is given, assume the state will be windowed and not maximized.
+If arguments are given, only the first is relevant. The other ones are ignored.</p>
+<p>** Only maximized and normal states are implemented for now. **</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">State:</th><td class="field-body">valid arguments:</td>
+</tr>
+</tbody>
+</table>
+<p>&#8216;minimized&#8217;, MINIMIZED, 0.
+&#8216;normal&#8217;, NORMAL, 1: windowed, not maximized.
+&#8216;maximized&#8217;, MAXIMIZED, 2.
+&#8216;fullscreen, FULLSCREEN, 3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Size:</th><td class="field-body">list, tuple: the new size; if (-1, -1) self.get_size() is used.
+If one element is -1 it is replaced by the corresponding valur from self.get_size().</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Pos:</th><td class="field-body">list, tuple: the new position; if (-1, -1), self.get_position is used.
+If one element is -1 it is replaced by the corresponding valur from self.get_position().</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Update:</th><td class="field-body">bool: whether to call the internal flush method.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mcplatform.XWindowHandler.sync">
+<code class="descname">sync</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#XWindowHandler.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.XWindowHandler.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around Xlib.Display.sync()</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
@@ -172,7 +442,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="function">
 <dt id="mcplatform.askOpenFile">
-<code class="descclassname">mcplatform.</code><code class="descname">askOpenFile</code><span class="sig-paren">(</span><em>title='Select a Minecraft level....', schematics=False, suffixes=['mclevel', 'dat', 'mine', 'mine.gz']</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#askOpenFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.askOpenFile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mcplatform.</code><code class="descname">askOpenFile</code><span class="sig-paren">(</span><em>title='Select a Minecraft level....'</em>, <em>schematics=False</em>, <em>suffixes=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#askOpenFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.askOpenFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -182,7 +452,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="function">
 <dt id="mcplatform.askOpenFileWin32">
-<code class="descclassname">mcplatform.</code><code class="descname">askOpenFileWin32</code><span class="sig-paren">(</span><em>title</em>, <em>schematics</em>, <em>initialDir</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#askOpenFileWin32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.askOpenFileWin32" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mcplatform.</code><code class="descname">askOpenFileWin32</code><span class="sig-paren">(</span><em>title</em>, <em>schematics</em>, <em>initialDir</em>, <em>suffixes=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#askOpenFileWin32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.askOpenFileWin32" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -206,14 +476,40 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="mcplatform.buildFileTypes">
+<code class="descclassname">mcplatform.</code><code class="descname">buildFileTypes</code><span class="sig-paren">(</span><em>filetypes</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#buildFileTypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.buildFileTypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mcplatform.dynamic_arguments">
+<code class="descclassname">mcplatform.</code><code class="descname">dynamic_arguments</code><span class="sig-paren">(</span><em>func_to_replace</em>, <em>askFile_func</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#dynamic_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.dynamic_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="mcplatform.getTexturePacks">
 <code class="descclassname">mcplatform.</code><code class="descname">getTexturePacks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#getTexturePacks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.getTexturePacks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mcplatform.get_desktop_environment">
+<code class="descclassname">mcplatform.</code><code class="descname">get_desktop_environment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#get_desktop_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.get_desktop_environment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mcplatform.is_running">
+<code class="descclassname">mcplatform.</code><code class="descname">is_running</code><span class="sig-paren">(</span><em>process</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.is_running" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="mcplatform.platform_open">
 <code class="descclassname">mcplatform.</code><code class="descname">platform_open</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#platform_open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.platform_open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="mcplatform.setupWindowHandler">
+<code class="descclassname">mcplatform.</code><code class="descname">setupWindowHandler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/mcplatform.html#setupWindowHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcplatform.setupWindowHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8216;Link&#8217; the corresponding window handler class to WindowHandler.</p>
+</dd></dl>
 
 </div>
 
@@ -232,7 +528,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

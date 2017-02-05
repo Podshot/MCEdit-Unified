@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.fields &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.fields &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -366,6 +366,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">selection_end</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">attention_lost</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">event</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TextEditor.key_up"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditor.key_up">[docs]</a>    <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -394,7 +395,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">addUndo</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">:</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_BACKSPACE</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_DELETE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">K_BACKSPACE</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_DELETE</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text_and_insertion_point</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="s">u&quot;&quot;</span>
@@ -412,7 +413,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_handler</span><span class="p">(</span><span class="s">&#39;enter_action&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&quot;</span><span class="se">\x1b</span><span class="s">&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_handler</span><span class="p">(</span><span class="s">&#39;escape_action&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="s">&quot;</span><span class="se">\x20</span><span class="s">&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="s">&quot;</span><span class="se">\x20</span><span class="s">&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_char</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
                 <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text_and_insertion_point</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -425,6 +426,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">insertion_point</span> <span class="o">=</span> <span class="n">i</span>
                 <span class="k">return</span>
         <span class="k">return</span> <span class="s">&#39;pass&#39;</span>
+</div>
+<div class="viewcode-block" id="TextEditor.escape_action"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditor.escape_action">[docs]</a>    <span class="k">def</span> <span class="nf">escape_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_parent_handler</span><span class="p">(</span><span class="s">&#39;escape_action&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TextEditor.addUndo"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditor.addUndo">[docs]</a>    <span class="k">def</span> <span class="nf">addUndo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoNum</span><span class="p">:</span>
@@ -553,7 +557,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">insertion_point</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;pass&#39;</span>
+            <span class="k">return</span> <span class="n">TextEditor</span><span class="o">.</span><span class="n">escape_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Field.attention_lost"><a class="viewcode-back" href="../../albow.html#albow.fields.Field.attention_lost">[docs]</a>    <span class="k">def</span> <span class="nf">attention_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">notify</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -966,6 +970,7 @@
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">notMove</span> <span class="o">=</span> <span class="bp">True</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">cmd</span> <span class="ow">or</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">alt</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unicode</span><span class="p">):</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_LEFT</span><span class="p">:</span>
@@ -1118,6 +1123,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">selection_end</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">attention_lost</span><span class="p">()</span>
+<span class="c">#         self.parent.dispatch_key(evt)</span>
 </div>
 <div class="viewcode-block" id="TextEditorWrapped.key_up"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditorWrapped.key_up">[docs]</a>    <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -1241,7 +1247,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">addUndo</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">:</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_BACKSPACE</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_DELETE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="n">K_BACKSPACE</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_DELETE</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text_and_insertion_point</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selection_start</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection_end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
@@ -1268,7 +1274,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_handler</span><span class="p">(</span><span class="s">&#39;enter_action&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&quot;</span><span class="se">\x1b</span><span class="s">&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_handler</span><span class="p">(</span><span class="s">&#39;escape_action&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="s">&quot;</span><span class="se">\x20</span><span class="s">&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="s">&quot;</span><span class="se">\x20</span><span class="s">&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_char</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
                 <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text_and_insertion_point</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selection_start</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection_end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
@@ -1288,6 +1294,10 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">sync_line_and_step</span><span class="p">()</span>
                 <span class="k">return</span>
         <span class="k">return</span> <span class="s">&#39;pass&#39;</span>
+</div>
+<div class="viewcode-block" id="TextEditorWrapped.escape_action"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditorWrapped.escape_action">[docs]</a>    <span class="k">def</span> <span class="nf">escape_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_parent_handler</span><span class="p">(</span><span class="s">&#39;escape_action&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
 </div>
 <div class="viewcode-block" id="TextEditorWrapped.addUndo"><a class="viewcode-back" href="../../albow.html#albow.fields.TextEditorWrapped.addUndo">[docs]</a>    <span class="k">def</span> <span class="nf">addUndo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoNum</span><span class="p">:</span>
@@ -1543,7 +1553,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">insertion_point</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;pass&#39;</span>
+            <span class="k">return</span> <span class="n">TextEditorWrapped</span><span class="o">.</span><span class="n">escape_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="FieldWrapped.attention_lost"><a class="viewcode-back" href="../../albow.html#albow.fields.FieldWrapped.attention_lost">[docs]</a>    <span class="k">def</span> <span class="nf">attention_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">notify</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -1609,7 +1619,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

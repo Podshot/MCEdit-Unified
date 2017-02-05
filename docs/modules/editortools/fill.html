@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools.fill &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools.fill &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -202,7 +202,7 @@
 </div></div>
 <div class="viewcode-block" id="FillToolPanel"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolPanel">[docs]</a><span class="k">class</span> <span class="nc">FillToolPanel</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.FillToolPanel&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="n">replacing</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">replacing</span>
 
@@ -284,7 +284,7 @@
 </div></div>
 <div class="viewcode-block" id="FillToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolOptions">[docs]</a><span class="k">class</span> <span class="nc">FillToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.FillToolOptions&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBoxFill</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Open Block Picker for Fill&quot;</span><span class="p">,</span>
                                                 <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="p">,</span>
@@ -572,7 +572,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

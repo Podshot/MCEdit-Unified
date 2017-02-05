@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools.filter &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools.filter &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -151,6 +151,8 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">FloatField</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">TabPanel</span><span class="p">,</span> \
     <span class="n">CheckBox</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">TextFieldWrapped</span><span class="p">,</span> <span class="n">translate</span>
+<span class="kn">from</span> <span class="nn">editortools.tooloptions</span> <span class="kn">import</span> <span class="n">ToolOptions</span>
+<span class="kn">from</span> <span class="nn">albow.extended_widgets</span> <span class="kn">import</span> <span class="n">CheckBoxLabel</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">_</span>
 <span class="kn">import</span> <span class="nn">albow</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
@@ -163,7 +165,7 @@
 <span class="kn">from</span> <span class="nn">operation</span> <span class="kn">import</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">wrapped_label</span><span class="p">,</span> <span class="n">alert</span><span class="p">,</span> <span class="n">Dialog</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
-<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">BoundingBox</span>
+<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">BoundingBox</span><span class="p">,</span> <span class="n">MCEDIT_DEFS</span><span class="p">,</span> <span class="n">MCEDIT_IDS</span>
 <span class="kn">import</span> <span class="nn">urllib2</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -177,7 +179,17 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
-
+<div class="viewcode-block" id="FilterUtils"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterUtils">[docs]</a><span class="k">class</span> <span class="nc">FilterUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_given_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_given_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+            
+<div class="viewcode-block" id="FilterUtils.Available_Attributes"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterUtils.Available_Attributes">[docs]</a>    <span class="k">def</span> <span class="nf">Available_Attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_given_data</span>
+</div></div>
 <div class="viewcode-block" id="alertFilterException"><a class="viewcode-back" href="../../editortools.html#editortools.filter.alertFilterException">[docs]</a><span class="k">def</span> <span class="nf">alertFilterException</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -243,6 +255,58 @@
             <span class="k">return</span> <span class="n">filter_json</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span><span class="s">&quot;Macros&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        </div>
+<div class="viewcode-block" id="SingleFileChooser"><a class="viewcode-back" href="../../editortools.html#editortools.filter.SingleFileChooser">[docs]</a><span class="k">class</span> <span class="nc">SingleFileChooser</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">OPEN_FILE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SAVE_FILE</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="k">def</span> <span class="nf">_open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">:</span>
+            <span class="n">file_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_type</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;*.&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askOpenFile</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;Select a file...&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="n">file_types</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">&quot;{filen}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filen</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">)),</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">&quot;Choose a file&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">_save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_types</span> <span class="o">=</span> <span class="s">&#39;Custom File</span><span class="se">\0</span><span class="s">{}</span><span class="se">\0</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askSaveFile</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="s">&quot;Save as...&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">file_types</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">&#39;Save a file&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_types</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;*.*&quot;</span><span class="p">,]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_types</span> <span class="o">=</span> <span class="n">file_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_button</span> <span class="o">=</span> <span class="bp">None</span>
+            
+        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_FILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Choose a file&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_file</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operation</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">SAVE_FILE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Save a file&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_file</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_button</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
 
 </div>
 <div class="viewcode-block" id="MacroModuleOptions"><a class="viewcode-back" href="../../editortools.html#editortools.filter.MacroModuleOptions">[docs]</a><span class="k">class</span> <span class="nc">MacroModuleOptions</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
@@ -350,6 +414,7 @@
 
         <span class="k">for</span> <span class="n">eachPage</span> <span class="ow">in</span> <span class="n">pages</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">optionDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optionDict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="n">eachPage</span><span class="o">.</span><span class="n">optionDict</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            
 
 <div class="viewcode-block" id="FilterModuleOptions.rebuildTabPage"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterModuleOptions.rebuildTabPage">[docs]</a>    <span class="k">def</span> <span class="nf">rebuildTabPage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">makeTabPage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -435,6 +500,42 @@
 
                         <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">field</span><span class="p">))</span>
                         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">optionType</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;block&quot;</span><span class="p">:</span>
+                        <span class="n">blockButton</span> <span class="o">=</span> <span class="n">BlockButton</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="n">optionType</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                            <span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">pocketMaterials</span><span class="p">:</span>
+                                <span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="p">[</span><span class="n">optionType</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">raise</span>
+                
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">blockButton</span><span class="p">))</span>
+                        <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">blockButton</span><span class="p">,</span> <span class="s">&#39;blockInfo&#39;</span><span class="p">)</span>
+                
+                        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">optionType</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;file-save&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">optionType</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">file_types</span><span class="o">=</span><span class="n">optionType</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">SAVE_FILE</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">SAVE_FILE</span><span class="p">)</span>
+                        
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">file_chooser</span><span class="p">))</span>
+                        <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">file_chooser</span><span class="p">,</span> <span class="s">&#39;file_path&#39;</span><span class="p">)</span>
+                        
+                        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">optionType</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;file-open&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">optionType</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">file_types</span><span class="o">=</span><span class="n">optionType</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">OPEN_FILE</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">OPEN_FILE</span><span class="p">)</span>
+                        
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">file_chooser</span><span class="p">))</span>
+                        <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">file_chooser</span><span class="p">,</span> <span class="s">&#39;file_path&#39;</span><span class="p">)</span>
+                        
+                        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">isChoiceButton</span> <span class="o">=</span> <span class="bp">True</span>
 
@@ -448,6 +549,7 @@
                         <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">choiceButton</span><span class="p">,</span> <span class="s">&#39;selectedChoice&#39;</span><span class="p">)</span>
 
                         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">choiceButton</span><span class="p">)))</span>
+                        
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optionType</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
                 <span class="n">cbox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">optionType</span><span class="p">)</span>
@@ -458,7 +560,7 @@
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optionType</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">addNumField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optionName</span><span class="p">,</span> <span class="n">oName</span><span class="p">,</span> <span class="n">optionType</span><span class="p">))</span>
-
+                
             <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;blocktype&quot;</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optionType</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">Block</span><span class="p">):</span>
                 <span class="n">blockButton</span> <span class="o">=</span> <span class="n">BlockButton</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optionType</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">Block</span><span class="p">):</span>
@@ -470,7 +572,6 @@
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;label&quot;</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapped_label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
-
             <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;string&quot;</span><span class="p">:</span>
                 <span class="n">inp</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="c"># not sure how to pull values from filters,</span>
@@ -483,10 +584,21 @@
                 <span class="n">row</span> <span class="o">=</span> <span class="n">TextInputRow</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
                 <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">)</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-
             <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;title&quot;</span><span class="p">:</span>
                 <span class="n">title</span> <span class="o">=</span> <span class="n">oName</span>
-
+                
+            <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;file-save&quot;</span><span class="p">:</span>
+                <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">SAVE_FILE</span><span class="p">)</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">file_chooser</span><span class="p">))</span>
+                <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">file_chooser</span><span class="p">,</span> <span class="s">&#39;file_path&#39;</span><span class="p">)</span>
+                        
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">optionType</span> <span class="o">==</span> <span class="s">&quot;file-open&quot;</span><span class="p">:</span>
+                <span class="n">file_chooser</span> <span class="o">=</span> <span class="n">SingleFileChooser</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">SingleFileChooser</span><span class="o">.</span><span class="n">OPEN_FILE</span><span class="p">)</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">oName</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">file_chooser</span><span class="p">))</span>
+                <span class="n">page</span><span class="o">.</span><span class="n">optionDict</span><span class="p">[</span><span class="n">optionName</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrRef</span><span class="p">(</span><span class="n">file_chooser</span><span class="p">,</span> <span class="s">&#39;file_path&#39;</span><span class="p">)</span>
+                        
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">optionType</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span> <span class="ow">and</span> <span class="n">optionType</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;nbttree&quot;</span><span class="p">:</span>
                 <span class="n">kw</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;close_text&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;load_text&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">optionType</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
@@ -582,7 +694,7 @@
 <span class="sd">    macros would not be saved.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.FilterToolPanel&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macro_steps</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter_json</span> <span class="o">=</span> <span class="bp">None</span>
@@ -606,6 +718,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_save_macro</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selectedName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Last Filter Opened&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        
+        
+        <span class="n">utils</span> <span class="o">=</span> <span class="n">FilterUtils</span><span class="p">(</span>
+                            <span class="n">editor</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> 
+                            <span class="n">materials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">,</span>
+                            <span class="n">custom_widget</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addExternalWidget</span><span class="p">,</span>
+                            <span class="n">resize_selection_box</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">_resize_selection_box</span>
+                            <span class="p">)</span>
+        <span class="n">utils_module</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">new_module</span><span class="p">(</span><span class="s">&quot;filter_utils&quot;</span><span class="p">)</span>
+        <span class="n">utils_module</span> <span class="o">=</span> <span class="n">utils</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&quot;filter_utils&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils_module</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="FilterToolPanel.load_filter_json"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterToolPanel.load_filter_json">[docs]</a>    <span class="k">def</span> <span class="nf">load_filter_json</span><span class="p">():</span>
@@ -806,7 +929,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="FilterToolPanel.bind_key"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterToolPanel.bind_key">[docs]</a>    <span class="k">def</span> <span class="nf">bind_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.FilterToolPanel.bind_key&#39;</span><span class="p">)</span>
         <span class="n">panel</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the filter </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n\n</span><span class="s">&quot;</span>
@@ -907,6 +1030,11 @@
         <span class="k">if</span> <span class="n">recordUndo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="p">)</span>
 
+        <span class="c"># Inject the defs for blocks/entities in the module</span>
+        <span class="c"># Need to reimport the defs and ids to get the &#39;fresh&#39; ones</span>
+        <span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">MCEDIT_DEFS</span><span class="p">,</span> <span class="n">MCEDIT_IDS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">MCEDIT_DEFS</span> <span class="o">=</span> <span class="n">MCEDIT_DEFS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">MCEDIT_IDS</span> <span class="o">=</span> <span class="n">MCEDIT_IDS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">True</span>
@@ -935,7 +1063,24 @@
 </div>
 <div class="viewcode-block" id="MacroOperation.dirtyBox"><a class="viewcode-back" href="../../editortools.html#editortools.filter.MacroOperation.dirtyBox">[docs]</a>    <span class="k">def</span> <span class="nf">dirtyBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span>
+
 </div></div>
+<div class="viewcode-block" id="FilterToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterToolOptions">[docs]</a><span class="k">class</span> <span class="nc">FilterToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.FilterToolOptions&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">notifications_disabled</span> <span class="o">=</span> <span class="bp">False</span>
+        
+        <span class="n">disable_error_popup</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Disable Error Notification&quot;</span><span class="p">,</span>
+                                            <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;notifications_disabled&#39;</span><span class="p">))</span>
+        <span class="n">ok_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Ok&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)</span>
+        
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">disable_error_popup</span><span class="p">,</span> <span class="n">ok_button</span><span class="p">,),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+</div>
 <div class="viewcode-block" id="FilterTool"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterTool">[docs]</a><span class="k">class</span> <span class="nc">FilterTool</span><span class="p">(</span><span class="n">EditorTool</span><span class="p">):</span>
     <span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Filter&quot;</span>
     <span class="n">toolIconName</span> <span class="o">=</span> <span class="s">&quot;filter&quot;</span>
@@ -945,13 +1090,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">filterModules</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">savedOptions</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
-        <span class="n">updateButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Update Filters&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">updateFilters</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">updateButton</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="o">.</span><span class="n">bottomleft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">viewportContainer</span><span class="o">.</span><span class="n">bottomleft</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters_not_imported</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span> <span class="o">=</span> <span class="n">FilterToolOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">statusText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -966,9 +1108,8 @@
     <span class="nd">@alertException</span>
     <span class="k">def</span> <span class="nf">showPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">FilterToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="o">.</span><span class="n">bottomleft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">viewportContainer</span><span class="o">.</span><span class="n">bottomleft</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">not_imported_filters</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reloadFilters</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
@@ -984,37 +1125,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updatePanel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="FilterTool.updateFilters"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterTool.updateFilters">[docs]</a>    <span class="k">def</span> <span class="nf">updateFilters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">totalFilters</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">updatedFilters</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getFiltersDir</span><span class="p">()</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;updates&quot;</span><span class="p">))</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterModules</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">totalFilters</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">&quot;UPDATE_URL&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">&quot;VERSION&quot;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">UPDATE_URL</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)):</span>
-                    <span class="n">versionJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">UPDATE_URL</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-                    <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">VERSION</span> <span class="o">!=</span> <span class="n">versionJSON</span><span class="p">[</span><span class="s">&quot;Version&quot;</span><span class="p">]:</span>
-                        <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">versionJSON</span><span class="p">[</span><span class="s">&quot;Download-URL&quot;</span><span class="p">],</span>
-                                           <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;updates&quot;</span><span class="p">,</span> <span class="n">versionJSON</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">]))</span>
-                        <span class="n">updatedFilters</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;updates&quot;</span><span class="p">)):</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;updates&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="n">filtersDir</span><span class="p">)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;updates&quot;</span><span class="p">))</span>
-        <span class="n">finishedUpdatingWidget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
-        <span class="n">lbl</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Updated </span><span class="si">%s</span><span class="s"> filter(s) out of </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">updatedFilters</span><span class="p">,</span> <span class="n">totalFilters</span><span class="p">))</span>
-        <span class="n">closeBTN</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Close this message&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">finishedUpdatingWidget</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">lbl</span><span class="p">,</span> <span class="n">closeBTN</span><span class="p">))</span>
-        <span class="n">finishedUpdatingWidget</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
-        <span class="n">finishedUpdatingWidget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-        <span class="n">finishedUpdatingWidget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-        <span class="n">finishedUpdatingWidget</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="FilterTool.reloadFilters"><a class="viewcode-back" href="../../editortools.html#editortools.filter.FilterTool.reloadFilters">[docs]</a>    <span class="k">def</span> <span class="nf">reloadFilters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">filterFiles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1075,8 +1186,11 @@
         <span class="k">while</span> <span class="n">shouldContinue</span><span class="p">:</span>
             <span class="n">shouldContinue</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filterFiles</span><span class="p">:</span>
-                <span class="n">module</span> <span class="o">=</span> <span class="n">tryImport</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">unicode_module_names</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_imported_filters</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">tryImport</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">unicode_module_names</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">notifications_disabled</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">module</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">not_imported_filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                     <span class="k">continue</span>
                 <span class="n">filterModules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
                 <span class="n">filterFiles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1112,7 +1226,7 @@
 </div>
 <span class="n">new_method</span> <span class="o">=</span> <span class="bp">True</span>
 
-<div class="viewcode-block" id="tryImport_old"><a class="viewcode-back" href="../../editortools.html#editortools.filter.tryImport_old">[docs]</a><span class="k">def</span> <span class="nf">tryImport_old</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">subFolderString</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">unicode_name</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tryImport_old"><a class="viewcode-back" href="../../editortools.html#editortools.filter.tryImport_old">[docs]</a><span class="k">def</span> <span class="nf">tryImport_old</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">subFolderString</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">unicode_name</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">as</span> <span class="n">module_file</span><span class="p">:</span>
         <span class="n">module_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.py&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1154,11 +1268,12 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
-            <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Exception while importing filter module {}. &quot;</span> <span class="o">+</span>
-                    <span class="s">u&quot;See console for details.</span><span class="se">\n\n</span><span class="s">{}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">notify</span><span class="p">:</span>
+                <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Exception while importing filter module {}. &quot;</span> <span class="o">+</span>
+                        <span class="s">u&quot;See console for details.</span><span class="se">\n\n</span><span class="s">{}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="tryImport_new"><a class="viewcode-back" href="../../editortools.html#editortools.filter.tryImport_new">[docs]</a><span class="k">def</span> <span class="nf">tryImport_new</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">subFolderString</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">unicode_name</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tryImport_new"><a class="viewcode-back" href="../../editortools.html#editortools.filter.tryImport_new">[docs]</a><span class="k">def</span> <span class="nf">tryImport_new</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">org_lang</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">subFolderString</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">unicode_name</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="k">as</span> <span class="n">module_file</span><span class="p">:</span>
         <span class="n">module_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.py&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1189,8 +1304,9 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
-            <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Exception while importing filter module {}. &quot;</span> <span class="o">+</span>
-                    <span class="s">u&quot;See console for details.</span><span class="se">\n\n</span><span class="s">{}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">notify</span><span class="p">:</span>
+                <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Exception while importing filter module {}. &quot;</span> <span class="o">+</span>
+                        <span class="s">u&quot;See console for details.</span><span class="se">\n\n</span><span class="s">{}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
 <span class="k">if</span> <span class="n">new_method</span><span class="p">:</span>
@@ -1213,7 +1329,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

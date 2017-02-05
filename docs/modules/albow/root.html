@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.root &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.root &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -142,7 +142,7 @@
 
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">key</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c">#from pygame.time import get_ticks</span>
+<span class="c"># from pygame.time import get_ticks</span>
 <span class="kn">from</span> <span class="nn">pygame.event</span> <span class="kn">import</span> <span class="n">Event</span>
 
 <span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="o">*</span>
@@ -155,12 +155,12 @@
 
 <span class="kn">from</span> <span class="nn">pymclevel.box</span> <span class="kn">import</span> <span class="n">Vector</span>
 
-<span class="c">#-# This need to be changed. We need albow.translate in the config module.</span>
-<span class="c">#-# he solution can be a set of functions wich let us define the needed MCEdit &#39;config&#39; data</span>
-<span class="c">#-# without importing it.</span>
-<span class="c">#-# It can be a &#39;config&#39; module built only for albow.</span>
+<span class="c"># -# This need to be changed. We need albow.translate in the config module.</span>
+<span class="c"># -# he solution can be a set of functions wich let us define the needed MCEdit &#39;config&#39; data</span>
+<span class="c"># -# without importing it.</span>
+<span class="c"># -# It can be a &#39;config&#39; module built only for albow.</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
-<span class="c">#-#</span>
+<span class="c"># -#</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">directories</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -273,14 +273,14 @@
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="n">screenshot_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> (%I-%M-%S-%p)&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
+        <span class="n">screenshot_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> (%I-%M-%S-%p)&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.png&quot;</span><span class="p">)</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">(),</span> <span class="n">screenshot_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
-        <span class="n">lbl</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Screenshot taken and saved as &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">)</span><span class="o">%</span><span class="n">screenshot_name</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Screenshot taken and saved as &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">screenshot_name</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">folderBtn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Open Folder&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_screenshots_folder</span><span class="p">)</span>
         <span class="n">btn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Ok&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">screenshot_notify</span><span class="p">)</span>
-        <span class="n">buttonsRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">btn</span><span class="p">,</span><span class="n">folderBtn</span><span class="p">))</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">lbl</span><span class="p">,</span><span class="n">buttonsRow</span><span class="p">))</span>
+        <span class="n">buttonsRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">btn</span><span class="p">,</span> <span class="n">folderBtn</span><span class="p">))</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">lbl</span><span class="p">,</span> <span class="n">buttonsRow</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
@@ -303,8 +303,8 @@
     <span class="n">captured_widget</span> <span class="o">=</span> <span class="bp">None</span>
 
 <div class="viewcode-block" id="RootWidget.capture_mouse"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.capture_mouse">[docs]</a>    <span class="k">def</span> <span class="nf">capture_mouse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="c">#put the mouse in &quot;virtual mode&quot; and pass mouse moved events to the</span>
-        <span class="c">#specified widget</span>
+        <span class="c"># put the mouse in &quot;virtual mode&quot; and pass mouse moved events to the</span>
+        <span class="c"># specified widget</span>
         <span class="k">if</span> <span class="n">widget</span><span class="p">:</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">set_grab</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
@@ -369,13 +369,13 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">draw_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">)</span>
                         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">frames</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="c">#events = [pygame.event.wait()]</span>
+                    <span class="c"># events = [pygame.event.wait()]</span>
                     <span class="n">events</span> <span class="o">=</span> <span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">poll</span><span class="p">()]</span>
                     <span class="n">events</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
 
                     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
-                        <span class="c">#if event.type:</span>
-                        <span class="c">#log.debug(&quot;%s&quot;, event)</span>
+                        <span class="c"># if event.type:</span>
+                        <span class="c"># log.debug(&quot;%s&quot;, event)</span>
                         <span class="nb">type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span>
                         <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
@@ -396,7 +396,7 @@
 
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">mouse_widget</span><span class="o">.</span><span class="n">is_inside</span><span class="p">(</span><span class="n">modal_widget</span><span class="p">):</span>
                                 <span class="n">mouse_widget</span> <span class="o">=</span> <span class="n">modal_widget</span>
-                            <span class="c">#if event.button == 1:</span>
+                            <span class="c"># if event.button == 1:</span>
                             <span class="n">clicked_widget</span> <span class="o">=</span> <span class="n">mouse_widget</span>
                             <span class="n">last_mouse_event_handler</span> <span class="o">=</span> <span class="n">mouse_widget</span>
                             <span class="n">last_mouse_event</span> <span class="o">=</span> <span class="n">event</span>
@@ -485,17 +485,45 @@
                                     <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                                     <span class="n">last_mouse_event_handler</span><span class="o">.</span><span class="n">setup_cursor</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">begin_frame</span><span class="p">()</span>
+                        <span class="c"># &#39;# Actual Windows working but Linux non working code.</span>
+<span class="c">#                         elif type == VIDEORESIZE:</span>
+<span class="c">#                             #pygame.display.set_mode(event.dict[&#39;size&#39;], self.surface.get_flags())</span>
+<span class="c">#                             pygame.display.flip()</span>
+<span class="c">#                             #add_modifiers(event)</span>
+<span class="c">#                             #self.bonus_draw_time = False</span>
+<span class="c">#                             old_w, old_h = self.size</span>
+<span class="c">#                             print &quot;Old: &quot; + str(self.size)</span>
+<span class="c">#                             #self.size = (event.w, event.h)</span>
+<span class="c">#                             print &quot;New: &quot; + str(event.__dict__[&#39;size&#39;])</span>
+<span class="c">#                             #self.dispatch_key(&#39;reshape&#39;, event)</span>
+<span class="c">#                             #self.mcedit.displayContext.flip()</span>
+<span class="c">#                             #pygame.display.flip()</span>
+<span class="c">#                             self.root._resized((old_w, old_h))</span>
+<span class="c">#                             print &quot;Resized via pygame&quot;</span>
+                        <span class="c"># &#39;# Old code before the changes for window management (and working on Linux).</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">VIDEORESIZE</span><span class="p">:</span>
-                            <span class="c">#add_modifiers(event)</span>
+                            <span class="c"># add_modifiers(event)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
-                            <span class="c">#self.dispatch_key(&#39;reshape&#39;, event)</span>
+                            <span class="c"># self.dispatch_key(&#39;reshape&#39;, event)</span>
+                        <span class="c"># &#39;#</span>
+                        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">VIDEOEXPOSE</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">win</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
+                                    <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                                <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">y</span><span class="p">:</span>
+                                    <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">ACTIVEEVENT</span><span class="p">:</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="s">&#39;activeevent&#39;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">NOEVENT</span><span class="p">:</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">call_idle_handlers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                        <span class="c"># elif type == VIDEORESIZE:</span>
+                        <span class="c">#    pygame.display.set_mode(event.dict[&#39;size&#39;],self.surface.get_flags())</span>
+                        <span class="c">#    pygame.display.flip()</span>
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sessionStolen</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
@@ -675,8 +703,8 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">currentTooltip</span> <span class="o">=</span> <span class="bp">None</span>
 
-        <span class="k">def</span> <span class="nf">TextTooltip</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-            <span class="n">tooltipBacking</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">TextTooltip</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="n">tooltipBacking</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
             <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labelClass</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
             <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
@@ -701,7 +729,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ttext</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">tooltipText</span>
             <span class="k">if</span> <span class="n">ttext</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">tip</span> <span class="o">=</span> <span class="n">TextTooltip</span><span class="p">(</span><span class="n">ttext</span><span class="p">)</span>
+                <span class="n">tip</span> <span class="o">=</span> <span class="n">TextTooltip</span><span class="p">(</span><span class="n">ttext</span><span class="p">,</span> <span class="s">&#39;Panel.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">widget</span><span class="p">)))</span>
                 <span class="n">showTip</span><span class="p">(</span><span class="n">tip</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="RootWidget.update_tooltip"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.update_tooltip">[docs]</a>    <span class="k">def</span> <span class="nf">update_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -753,7 +781,7 @@
 
         <span class="n">music</span><span class="o">.</span><span class="n">music_end</span><span class="p">()</span>
 
-    <span class="c">#-# Used for debugging the resize stuff.</span>
+    <span class="c"># -# Used for debugging the resize stuff.</span>
 <span class="c">#    def resized(self, *args, **kwargs):</span>
 <span class="c">#        Widget.resized(self, *args, **kwargs)</span>
 <span class="c">#        print self.size</span>
@@ -795,7 +823,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

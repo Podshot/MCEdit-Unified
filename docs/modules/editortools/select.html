@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools.select &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>editortools.select &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -195,7 +195,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">colorPopupButton</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 </div>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ToolOptions</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.SelectionToolOptions&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">colorPopupButton</span> <span class="o">=</span> <span class="n">ChoiceButton</span><span class="p">([],</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorChanged</span><span class="p">)</span>
@@ -279,7 +279,7 @@
 </div></div>
 <div class="viewcode-block" id="SelectionToolPanel"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionToolPanel">[docs]</a><span class="k">class</span> <span class="nc">SelectionToolPanel</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">editor</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.SelectionToolPanel&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">editor</span>
 
@@ -458,7 +458,7 @@
                 <span class="k">del</span> <span class="n">t</span><span class="p">[</span><span class="s">&quot;Items&quot;</span><span class="p">]</span>
 
             <span class="n">text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
+            
         <span class="k">return</span> <span class="n">text</span>
 </div>
     <span class="nd">@property</span>
@@ -502,40 +502,40 @@
     <span class="c"># --- Nudge functions ---</span>
 </div>
     <span class="nd">@alertException</span>
-    <span class="k">def</span> <span class="nf">nudgeBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">nudgeBlocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">rightClickNudge</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidth</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-                <span class="nb">dir</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">__mul__</span><span class="p">,</span> <span class="nb">dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">__mul__</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">nudgeWidth</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidthNumber</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-                <span class="nb">dir</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">nudgeWidth</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">nudgeWidth</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelectionPoints</span><span class="p">()</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">bounds</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">p</span> <span class="o">+</span> <span class="nb">dir</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">p</span> <span class="o">+</span> <span class="n">direction</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">):</span>
             <span class="k">return</span>
 
-        <span class="n">op</span> <span class="o">=</span> <span class="n">NudgeBlocksOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="nb">dir</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">NudgeBlocksOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="n">direction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">canUndo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addUnsavedEdit</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SelectionTool.nudgeSelection"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.nudgeSelection">[docs]</a>    <span class="k">def</span> <span class="nf">nudgeSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+<div class="viewcode-block" id="SelectionTool.nudgeSelection"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.nudgeSelection">[docs]</a>    <span class="k">def</span> <span class="nf">nudgeSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">rightClickNudge</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidth</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-                <span class="nb">dir</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">__mul__</span><span class="p">,</span> <span class="nb">dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">__mul__</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">nudgeWidth</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidthNumber</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-                <span class="nb">dir</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">nudgeWidth</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">nudgeWidth</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
 
         <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelectionPoints</span><span class="p">()</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">bounds</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">p</span> <span class="o">+</span> <span class="nb">dir</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">p</span> <span class="o">+</span> <span class="n">direction</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">points</span><span class="p">):</span>
             <span class="k">return</span>
 
-        <span class="n">op</span> <span class="o">=</span> <span class="n">NudgeSelectionOperation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">NudgeSelectionOperation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="SelectionTool.nudgePoint"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.nudgePoint">[docs]</a>    <span class="k">def</span> <span class="nf">nudgePoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -568,7 +568,7 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.SelectionTool.nudgePanel&#39;</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionColor</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="p">]</span>
 
@@ -1334,6 +1334,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">selectChunks</span><span class="p">()</span>
                         <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span>
 
+        <span class="n">cancelCommandBlockOffset</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">schematicCopying</span><span class="o">.</span><span class="n">cancelCommandBlockOffset</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">with</span> <span class="n">setWindowCaption</span><span class="p">(</span><span class="s">&quot;Copying - &quot;</span><span class="p">):</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="s">&quot;.zip&quot;</span><span class="p">,</span> <span class="s">&quot;mceditcopy&quot;</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -1341,10 +1342,10 @@
             <span class="n">status</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Copying {0:n} blocks...&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fileFormat</span> <span class="o">==</span> <span class="s">&quot;schematic&quot;</span><span class="p">:</span>
                 <span class="n">schematic</span> <span class="o">=</span> <span class="n">showProgress</span><span class="p">(</span><span class="n">status</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">extractSchematicIter</span><span class="p">(</span><span class="n">box</span><span class="p">),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">extractSchematicIter</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">cancelCommandBlockOffset</span><span class="o">=</span><span class="n">cancelCommandBlockOffset</span><span class="p">),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">schematic</span> <span class="o">=</span> <span class="n">showProgress</span><span class="p">(</span><span class="n">status</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">extractZipSchematicIter</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">extractZipSchematicIter</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cancelCommandBlockOffset</span><span class="o">=</span><span class="n">cancelCommandBlockOffset</span><span class="p">),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">schematic</span> <span class="o">==</span> <span class="s">&quot;Canceled&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">None</span>
 
@@ -1353,14 +1354,19 @@
     <span class="nd">@alertException</span>
     <span class="k">def</span> <span class="nf">exportSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">schematic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copySelection</span><span class="p">()</span>
+        
         <span class="k">if</span> <span class="n">schematic</span><span class="p">:</span>
+            <span class="c"># result = ask(&quot;Select a format:&quot;, [&quot;schematic&quot;, &quot;structure&quot;, &quot;Cancel&quot;])</span>
+            <span class="c"># if result == &quot;schematic&quot;:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">exportSchematic</span><span class="p">(</span><span class="n">schematic</span><span class="p">)</span>
+            <span class="c"># elif result == &quot;structure&quot;:</span>
+            <span class="c">#    print &quot;Author: {}&quot;.format(author)</span>
 
     <span class="nd">@alertException</span>
     <span class="k">def</span> <span class="nf">openCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;CommandsFile&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">editFileNumber</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">fileFormat</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">fileEditsFolder</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
         <span class="n">first</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">space</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">sorting</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -1374,20 +1380,20 @@
             <span class="n">chainStored</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">GetSort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="n">sorting</span><span class="p">):</span>
                 <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
-                    <span class="n">skip</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+                    <span class="n">skip</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
                     <span class="k">continue</span>
                 <span class="n">blockID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">211</span><span class="p">:</span>
                     <span class="n">chainStored</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">137</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">210</span><span class="p">:</span>
-                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
                     <span class="n">first</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">chainStored</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">fp</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">GetSort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="n">sorting</span><span class="p">):</span>
@@ -1397,9 +1403,9 @@
                     <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
                 <span class="n">blockID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">137</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">210</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">211</span><span class="p">:</span>
-                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">fp</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
                     <span class="n">first</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
             <span class="n">alert</span><span class="p">(</span><span class="s">&quot;No command blocks found&quot;</span><span class="p">)</span>
@@ -1421,7 +1427,7 @@
 </div></div>
 <div class="viewcode-block" id="CBCommandsOptionsPanel"><a class="viewcode-back" href="../../editortools.html#editortools.select.CBCommandsOptionsPanel">[docs]</a><span class="k">class</span> <span class="nc">CBCommandsOptionsPanel</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Panel.CBCommandsOptionsPanel&#39;</span><span class="p">)</span>
 
         <span class="n">empty</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
@@ -1517,7 +1523,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

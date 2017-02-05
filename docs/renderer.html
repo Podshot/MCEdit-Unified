@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>renderer module &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>renderer module &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="resource_packs module" href="resource_packs.html" />
     <link rel="prev" title="release module" href="release.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -257,6 +257,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd><p>alpha is an unsigned byte value</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="renderer.BlockRenderer.used">
+<code class="descname">used</code><em class="property"> = False</em><a class="headerlink" href="#renderer.BlockRenderer.used" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -264,8 +269,13 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">ButtonRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#ButtonRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.ButtonRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.ButtonRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Wooden Button (Powered, Down) (143:8)&gt;</em><a class="headerlink" href="#renderer.ButtonRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.ButtonRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [77, 143]</em><a class="headerlink" href="#renderer.ButtonRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143]</em><a class="headerlink" href="#renderer.ButtonRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -390,7 +400,17 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="renderer.ChunkCalculator.addTransparentMaterials">
-<code class="descname">addTransparentMaterials</code><span class="sig-paren">(</span><em>mats</em>, <em>materialCount</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#ChunkCalculator.addTransparentMaterials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.ChunkCalculator.addTransparentMaterials" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addTransparentMaterials</code><span class="sig-paren">(</span><em>mats</em>, <em>materialCount</em><span class="sig-paren">)</span><a class="headerlink" href="#renderer.ChunkCalculator.addTransparentMaterials" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="renderer.ChunkCalculator.addTransparentMaterials_new">
+<code class="descname">addTransparentMaterials_new</code><span class="sig-paren">(</span><em>mats</em>, <em>materialCount</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#ChunkCalculator.addTransparentMaterials_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.ChunkCalculator.addTransparentMaterials_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="renderer.ChunkCalculator.addTransparentMaterials_old">
+<code class="descname">addTransparentMaterials_old</code><span class="sig-paren">(</span><em>mats</em>, <em>materialCount</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#ChunkCalculator.addTransparentMaterials_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.ChunkCalculator.addTransparentMaterials_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -793,8 +813,13 @@ for each block facing and material</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">FenceBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#FenceBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.FenceBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.FenceBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Acacia Fence (192:0)&gt;</em><a class="headerlink" href="#renderer.FenceBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.FenceBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [85, 188, 189, 190, 191, 192, 113]</em><a class="headerlink" href="#renderer.FenceBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [85, 113, 139, 139, 188, 189, 190, 191, 192]</em><a class="headerlink" href="#renderer.FenceBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -814,8 +839,13 @@ for each block facing and material</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">FenceGateBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#FenceGateBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.FenceGateBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.FenceGateBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Acacia Fence Gate (Powered, Closed, South) (187:8)&gt;</em><a class="headerlink" href="#renderer.FenceGateBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.FenceGateBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [107, 183, 184, 185, 186, 187]</em><a class="headerlink" href="#renderer.FenceGateBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 107, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 183, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 184, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 185, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187, 187]</em><a class="headerlink" href="#renderer.FenceGateBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1031,8 +1061,13 @@ for each block facing and material</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="renderer.LeafBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Acacia Leaves (Decaying) (161:8)&gt;</em><a class="headerlink" href="#renderer.LeafBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.LeafBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [18, 161]</em><a class="headerlink" href="#renderer.LeafBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 161, 161, 161, 161, 161, 161, 161, 161]</em><a class="headerlink" href="#renderer.LeafBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1405,7 +1440,7 @@ for each block facing and material</p>
 
 <dl class="attribute">
 <dt id="renderer.MCRenderer.lastVisibleLoad">
-<code class="descname">lastVisibleLoad</code><em class="property"> = datetime.datetime(2016, 1, 18, 13, 23, 48, 481000)</em><a class="headerlink" href="#renderer.MCRenderer.lastVisibleLoad" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lastVisibleLoad</code><em class="property"> = datetime.datetime(2017, 2, 5, 10, 21, 49, 724000)</em><a class="headerlink" href="#renderer.MCRenderer.lastVisibleLoad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1616,8 +1651,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">PaneBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#PaneBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.PaneBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.PaneBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Light Gray Stained Glass Pane (160:8)&gt;</em><a class="headerlink" href="#renderer.PaneBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.PaneBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [102, 160, 101]</em><a class="headerlink" href="#renderer.PaneBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [101, 102, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160, 160]</em><a class="headerlink" href="#renderer.PaneBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1664,8 +1704,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">PlateBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#PlateBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.PlateBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.PlateBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Heavy Weighted Pressure Plate (Power 8) (148:8)&gt;</em><a class="headerlink" href="#renderer.PlateBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.PlateBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [70, 72, 147, 148]</em><a class="headerlink" href="#renderer.PlateBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [70, 70, 72, 72, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 147, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148]</em><a class="headerlink" href="#renderer.PlateBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1696,8 +1741,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">RailBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#RailBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.RailBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.RailBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Activator Rail (Powered, North/South) (157:8)&gt;</em><a class="headerlink" href="#renderer.RailBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.RailBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [66, 27, 28, 157]</em><a class="headerlink" href="#renderer.RailBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 157, 157, 157, 157, 157, 157, 157, 157, 157, 157, 157, 157]</em><a class="headerlink" href="#renderer.RailBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1754,8 +1804,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">RepeaterBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#RepeaterBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.RepeaterBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.RepeaterBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Light Gray Carpet (171:8)&gt;</em><a class="headerlink" href="#renderer.RepeaterBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.RepeaterBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [93, 94, 149, 150]</em><a class="headerlink" href="#renderer.RepeaterBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [78, 78, 78, 78, 78, 78, 78, 78, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 94, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 149, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171, 171]</em><a class="headerlink" href="#renderer.RepeaterBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1947,8 +2002,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">TorchBlockRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#TorchBlockRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.TorchBlockRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.TorchBlockRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Redstone Torch (North) (76:4)&gt;</em><a class="headerlink" href="#renderer.TorchBlockRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.TorchBlockRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [50, 75, 76]</em><a class="headerlink" href="#renderer.TorchBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [50, 50, 50, 50, 50, 75, 75, 75, 75, 75, 76, 76, 76, 76, 76]</em><a class="headerlink" href="#renderer.TorchBlockRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2014,8 +2074,13 @@ iterated over for smaller work units.</p>
 <em class="property">class </em><code class="descclassname">renderer.</code><code class="descname">TrapDoorRenderer</code><span class="sig-paren">(</span><em>cc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/renderer.html#TrapDoorRenderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#renderer.TrapDoorRenderer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#renderer.BlockRenderer" title="renderer.BlockRenderer"><code class="xref py py-class docutils literal"><span class="pre">renderer.BlockRenderer</span></code></a></p>
 <dl class="attribute">
+<dt id="renderer.TrapDoorRenderer.block">
+<code class="descname">block</code><em class="property"> = &lt;Block Iron Trapdoor (Top, False, North) (167:8)&gt;</em><a class="headerlink" href="#renderer.TrapDoorRenderer.block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="renderer.TrapDoorRenderer.blocktypes">
-<code class="descname">blocktypes</code><em class="property"> = [167, 96]</em><a class="headerlink" href="#renderer.TrapDoorRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">blocktypes</code><em class="property"> = [96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 96, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167, 167]</em><a class="headerlink" href="#renderer.TrapDoorRenderer.blocktypes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2229,7 +2294,7 @@ TODO: Add ability for multiples of 45</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

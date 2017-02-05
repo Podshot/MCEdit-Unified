@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>mcplatform &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>mcplatform &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -144,8 +144,8 @@
 <span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
 <span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
 <span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
-<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
-<span class="c">#!# Tests for file chooser</span>
+<span class="c"># -# Modified by D.C.-G. for translation purpose</span>
+<span class="c"># !# Tests for file chooser</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">mcplatform.py</span>
@@ -171,10 +171,11 @@
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">architecture</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;64bit&quot;</span><span class="p">:</span>
         <span class="n">plat</span> <span class="o">=</span> <span class="s">&quot;win-amd64&quot;</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;pymclevel&quot;</span><span class="p">,</span> <span class="s">&quot;build&quot;</span><span class="p">,</span> <span class="s">&quot;lib.&quot;</span> <span class="o">+</span> <span class="n">plat</span> <span class="o">+</span> <span class="s">&quot;-2.6&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">))</span>
-<span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">,</span> <span class="s">&#39;darwin&#39;</span><span class="p">]:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">Xlib.display</span>
         <span class="kn">import</span> <span class="nn">Xlib.X</span>
+        <span class="kn">import</span> <span class="nn">Xlib.protocol</span>
         <span class="n">hasXlibDisplay</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">hasXlibDisplay</span> <span class="o">=</span> <span class="bp">None</span>
@@ -188,25 +189,47 @@
 <span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">minecraftSaveFileDir</span><span class="p">,</span> <span class="n">getMinecraftProfileDirectory</span><span class="p">,</span> <span class="n">getSelectedProfile</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
 <span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pygtk</span>
+    <span class="n">pygtk</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s">&#39;2.0&#39;</span><span class="p">)</span>
     <span class="kn">import</span> <span class="nn">gtk</span>
-    <span class="k">if</span> <span class="n">gtk</span><span class="o">.</span><span class="n">pygtk_version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">90</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">gtk</span><span class="o">.</span><span class="n">pygtk_version</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">90</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ImportError</span>
     <span class="n">hasGtk</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">hasGtk</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c">#Using old method as fallback</span>
+    <span class="n">hasGtk</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c"># Using old method as fallback</span>
 
 
 <span class="n">texturePacksDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;texturepacks&quot;</span><span class="p">)</span>
-<span class="c">#Compatibility layer for filters:</span>
+<span class="c"># Compatibility layer for filters:</span>
 <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span>
 <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span>
 
-<span class="c">#!# Disabling platform specific file chooser:</span>
-<span class="c">#!# Please, don&#39;t touch these two lines and the &#39;platChooser&#39; stuff. -- D.C.-G.</span>
+<span class="c"># !# Disabling platform specific file chooser:</span>
+<span class="c"># !# Please, don&#39;t touch these two lines and the &#39;platChooser&#39; stuff. -- D.C.-G.</span>
 <span class="c"># platChooser = sys.platform in (&#39;linux2&#39;, &#39;darwin&#39;)</span>
 <span class="n">platChooser</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;darwin&#39;</span>
 
+<div class="viewcode-block" id="dynamic_arguments"><a class="viewcode-back" href="../mcplatform.html#mcplatform.dynamic_arguments">[docs]</a><span class="k">def</span> <span class="nf">dynamic_arguments</span><span class="p">(</span><span class="n">func_to_replace</span><span class="p">,</span> <span class="n">askFile_func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fileFormat</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func_to_replace</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="k">def</span> <span class="nf">old_askSaveSchematic</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">):</span>
+                <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s">--%H-%M-%S&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">askFile_func</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span>
+                                   <span class="n">title</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Save this schematic...&#39;</span><span class="p">),</span>
+                                   <span class="n">defaultName</span><span class="o">=</span><span class="n">displayName</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">fileFormat</span><span class="p">,</span>
+                                   <span class="n">filetype</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Minecraft Schematics (*.{0})</span><span class="se">\0</span><span class="s">*.{0}</span><span class="se">\0\0</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fileFormat</span><span class="p">),</span>
+                                   <span class="n">suffix</span><span class="o">=</span><span class="n">fileFormat</span><span class="p">,</span>
+                                   <span class="p">)</span>
+            <span class="k">return</span> <span class="n">old_askSaveSchematic</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</div>
 <div class="viewcode-block" id="getTexturePacks"><a class="viewcode-back" href="../mcplatform.html#mcplatform.getTexturePacks">[docs]</a><span class="k">def</span> <span class="nf">getTexturePacks</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">texturePacksDir</span><span class="p">)</span>
@@ -249,7 +272,7 @@
     <span class="n">option_name</span> <span class="o">=</span> <span class="s">&quot;Alt&quot;</span>
 
 
-<div class="viewcode-block" id="OSXVersionChecker"><a class="viewcode-back" href="../mcplatform.html#mcplatform.OSXVersionChecker">[docs]</a><span class="k">def</span> <span class="nf">OSXVersionChecker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">compare</span><span class="p">):</span>
+<div class="viewcode-block" id="OSXVersionChecker"><a class="viewcode-back" href="../mcplatform.html#mcplatform.OSXVersionChecker">[docs]</a><span class="k">def</span> <span class="nf">OSXVersionChecker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">compare</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Rediculously complicated function to compare current System version to inputted version.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">compare</span> <span class="o">!=</span> <span class="s">&#39;gt&#39;</span> <span class="ow">and</span> <span class="n">compare</span> <span class="o">!=</span> <span class="s">&#39;lt&#39;</span> <span class="ow">and</span> <span class="n">compare</span> <span class="o">!=</span> <span class="s">&#39;eq&#39;</span> <span class="ow">and</span> <span class="n">compare</span> <span class="o">!=</span> <span class="s">&#39;gteq&#39;</span> <span class="ow">and</span> <span class="n">compare</span> <span class="o">!=</span> <span class="s">&#39;lteq&#39;</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&quot;Invalid version check {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">compare</span><span class="p">)</span>
@@ -330,10 +353,26 @@
 <span class="n">lastSchematicsDir</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">lastSaveDir</span> <span class="o">=</span> <span class="bp">None</span>
 
-
-<div class="viewcode-block" id="askOpenFile"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFile">[docs]</a><span class="k">def</span> <span class="nf">askOpenFile</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;Select a Minecraft level....&#39;</span><span class="p">,</span> <span class="n">schematics</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;mclevel&quot;</span><span class="p">,</span> <span class="s">&quot;dat&quot;</span><span class="p">,</span> <span class="s">&quot;mine&quot;</span><span class="p">,</span> <span class="s">&quot;mine.gz&quot;</span><span class="p">]):</span>
+<div class="viewcode-block" id="buildFileTypes"><a class="viewcode-back" href="../mcplatform.html#mcplatform.buildFileTypes">[docs]</a><span class="k">def</span> <span class="nf">buildFileTypes</span><span class="p">(</span><span class="n">filetypes</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">filetypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">ftypes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">key</span> <span class="o">+</span> <span class="s">&quot; (&quot;</span>
+        <span class="k">for</span> <span class="n">ftype</span> <span class="ow">in</span> <span class="n">filetypes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">key</span><span class="p">]:</span>
+            <span class="n">ftypes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">ftype</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ftypes</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;)</span><span class="se">\0</span><span class="s">&quot;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ftypes</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span>
+    <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span>
+</div>
+<div class="viewcode-block" id="askOpenFile"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFile">[docs]</a><span class="k">def</span> <span class="nf">askOpenFile</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;Select a Minecraft level....&#39;</span><span class="p">,</span> <span class="n">schematics</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
     <span class="k">global</span> <span class="n">lastSchematicsDir</span><span class="p">,</span> <span class="n">lastSaveDir</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;mclevel&quot;</span><span class="p">,</span> <span class="s">&quot;dat&quot;</span><span class="p">,</span> <span class="s">&quot;mine&quot;</span><span class="p">,</span> <span class="s">&quot;mine.gz&quot;</span><span class="p">]</span>
+        <span class="n">suffixesChanged</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">suffixesChanged</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="n">initialDir</span> <span class="o">=</span> <span class="n">lastSaveDir</span> <span class="ow">or</span> <span class="n">minecraftSaveFileDir</span>
     <span class="k">if</span> <span class="n">schematics</span><span class="p">:</span>
         <span class="n">initialDir</span> <span class="o">=</span> <span class="n">lastSchematicsDir</span> <span class="ow">or</span> <span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span>
@@ -345,26 +384,33 @@
             <span class="n">_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;zip&quot;</span><span class="p">)</span>
 
             <span class="n">_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;inv&quot;</span><span class="p">)</span>
+            
+            <span class="n">_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;nbt&quot;</span><span class="p">)</span>
 
             <span class="c"># BO support</span>
             <span class="n">_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;bo2&quot;</span><span class="p">)</span>
             <span class="n">_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;bo3&quot;</span><span class="p">)</span>
+            <span class="n">_suffixes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span> <span class="c">#!#</span>
-            <span class="k">return</span> <span class="n">askOpenFileWin32</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">schematics</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>  <span class="c"># !#</span>
+            <span class="k">if</span> <span class="n">suffixesChanged</span><span class="p">:</span>
+                <span class="n">sendSuffixes</span> <span class="o">=</span> <span class="n">_suffixes</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sendSuffixes</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="n">askOpenFileWin32</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">schematics</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">,</span> <span class="n">sendSuffixes</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">hasGtk</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">platChooser</span><span class="p">:</span> <span class="c">#!# #Linux (When GTK 2.4 or newer is installed)</span>
+        <span class="k">elif</span> <span class="n">hasGtk</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">platChooser</span><span class="p">:</span>  <span class="c"># !# #Linux (When GTK 2.4 or newer is installed)</span>
             <span class="k">return</span> <span class="n">askOpenFileGtk</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">_suffixes</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Calling internal file chooser.&quot;</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;initialDir&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;initialDir&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)))</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;initialDir&#39; </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">))</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;initialDir&#39; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">request_old_filename</span><span class="p">(</span><span class="n">suffixes</span><span class="o">=</span><span class="n">_suffixes</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">iDir</span><span class="p">)</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">_askOpen</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span>
@@ -377,11 +423,17 @@
     <span class="k">return</span> <span class="n">filename</span>
 
 </div>
-<div class="viewcode-block" id="askOpenFileWin32"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFileWin32">[docs]</a><span class="k">def</span> <span class="nf">askOpenFileWin32</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">schematics</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">):</span>
+<div class="viewcode-block" id="askOpenFileWin32"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFileWin32">[docs]</a><span class="k">def</span> <span class="nf">askOpenFileWin32</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">schematics</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c"># if schematics:</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Levels and Schematics</span><span class="se">\0</span><span class="s">*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv</span><span class="se">\0</span><span class="s">&#39;</span> <span class="o">+</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Levels and Schematics&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\0</span><span class="s">*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt</span><span class="se">\0</span><span class="s">&#39;</span> <span class="o">+</span> 
              <span class="s">&#39;*.*</span><span class="se">\0</span><span class="s">*.*</span><span class="se">\0\0</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="s">&quot;All</span><span class="se">\0</span><span class="s">&quot;</span>
+            <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">+=</span> <span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span>
+            <span class="n">f</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">*.*</span><span class="se">\0\0</span><span class="s">&quot;</span>
         <span class="c">#        else:</span>
         <span class="c">#            f = (&#39;Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0&#39; +</span>
         <span class="c">#                 &#39;*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0&#39; +</span>
@@ -400,55 +452,60 @@
             <span class="n">Filter</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="c">#print &quot;Open File: &quot;, e</span>
+        <span class="c"># print &quot;Open File: &quot;, e</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">filename</span>
 
 </div>
 <div class="viewcode-block" id="askOpenFileGtk"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFileGtk">[docs]</a><span class="k">def</span> <span class="nf">askOpenFileGtk</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">):</span>
-    <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
-                                    <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
-                                    <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
-                                    <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_OPEN</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
+    <span class="n">fls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">run_dlg</span><span class="p">():</span>
+        <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
+                                        <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
+                                        <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
+                                        <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_OPEN</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
+    
+        <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span>  <span class="c"># For some reason the Windows isn&#39;t closing if this line ins missing or the parameter is &quot;&quot;</span>
 
-    <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
-    <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
-    <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span> <span class="c">#For some reason the Windows isn&#39;t closing if this line ins missing or the parameter is &quot;&quot;</span>
+        <span class="c"># Add custom Filter</span>
+        <span class="n">file_filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+        <span class="n">file_filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Levels and Schematics&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+            <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">file_filter</span><span class="p">)</span>
 
-    <span class="c">#Add custom Filter</span>
-    <span class="nb">filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
-    <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;Levels and Schematics&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
-        <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*.&quot;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="c"># Add &quot;All files&quot; Filter</span>
+        <span class="n">file_filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+        <span class="n">file_filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;All files&quot;</span><span class="p">)</span>
+        <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">)</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">file_filter</span><span class="p">)</span>
 
-    <span class="c">#Add &quot;All files&quot; Filter</span>
-    <span class="nb">filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
-    <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;All files&quot;</span><span class="p">)</span>
-    <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">)</span>
-    <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
-
-    <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
+            <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
         <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
-        <span class="k">return</span>  <span class="c"># pressed cancel</span>
-    <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">filename</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="n">run_dlg</span><span class="p">)</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
 
+    <span class="k">return</span> <span class="n">fls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="askSaveSchematic"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askSaveSchematic">[docs]</a><span class="k">def</span> <span class="nf">askSaveSchematic</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">):</span>
+<div class="viewcode-block" id="askSaveSchematic"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askSaveSchematic">[docs]</a><span class="k">def</span> <span class="nf">askSaveSchematic</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">displayName</span><span class="p">,</span> <span class="n">fileFormats</span><span class="p">):</span>
+    <span class="n">fileFormat</span> <span class="o">=</span> <span class="n">buildFileTypes</span><span class="p">(</span><span class="n">fileFormats</span><span class="p">)</span>
+    
     <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s">--%H-%M-%S&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">askSaveFile</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span>
                        <span class="n">title</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Save this schematic...&#39;</span><span class="p">),</span>
-                       <span class="n">defaultName</span><span class="o">=</span><span class="n">displayName</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">fileFormat</span><span class="p">,</span>
-                       <span class="n">filetype</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Minecraft Schematics (*.{0})</span><span class="se">\0</span><span class="s">*.{0}</span><span class="se">\0\0</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fileFormat</span><span class="p">),</span>
+                       <span class="n">defaultName</span><span class="o">=</span><span class="n">displayName</span> <span class="o">+</span> <span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">fileFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">fileFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span>
+                       <span class="n">filetype</span><span class="o">=</span><span class="n">fileFormat</span><span class="p">,</span>
                        <span class="n">suffix</span><span class="o">=</span><span class="n">fileFormat</span><span class="p">,</span>
     <span class="p">)</span>
-
 </div>
 <div class="viewcode-block" id="askCreateWorld"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askCreateWorld">[docs]</a><span class="k">def</span> <span class="nf">askCreateWorld</span><span class="p">(</span><span class="n">initialDir</span><span class="p">):</span>
     <span class="n">defaultName</span> <span class="o">=</span> <span class="n">name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Untitled World&quot;</span><span class="p">)</span>
@@ -466,7 +523,7 @@
 
 </div>
 <div class="viewcode-block" id="askSaveFile"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askSaveFile">[docs]</a><span class="k">def</span> <span class="nf">askSaveFile</span><span class="p">(</span><span class="n">initialDir</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">defaultName</span><span class="p">,</span> <span class="n">filetype</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span> <span class="c">#!#</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>  <span class="c"># !#</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">customfilter</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetSaveFileNameW</span><span class="p">(</span>
                 <span class="n">hwndOwner</span><span class="o">=</span><span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">],</span>
@@ -487,62 +544,112 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="k">elif</span> <span class="n">hasGtk</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">platChooser</span><span class="p">:</span> <span class="c">#!# #Linux (When GTK 2.4 or newer is installed)</span>
-        <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
-                                        <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
-                                        <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
-                                        <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_SAVE</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
-
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="n">defaultName</span><span class="p">)</span>
-
-        <span class="c">#Add custom Filter</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
-        <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">filetype</span><span class="p">[:</span><span class="n">filetype</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">)])</span>
-        <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
-
-        <span class="c">#Add &quot;All files&quot; Filter</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
-        <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;All files&quot;</span><span class="p">)</span>
-        <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Reformat the Windows stuff</span>
+        <span class="k">if</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span> <span class="ow">in</span> <span class="n">suffix</span> <span class="ow">and</span> <span class="n">suffix</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;*.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">_suffix</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
-            <span class="k">return</span> <span class="c"># pressed cancel</span>
+            <span class="n">_suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+        <span class="k">if</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span> <span class="ow">in</span> <span class="n">filetype</span> <span class="ow">and</span> <span class="n">filetype</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;*.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">_filetype</span> <span class="o">=</span> <span class="n">filetype</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_filetype</span> <span class="o">=</span> <span class="n">filetype</span>
 
-        <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hasGtk</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">platChooser</span><span class="p">:</span>  <span class="c"># !# #Linux (When GTK 2.4 or newer is installed)</span>
 
-    <span class="k">else</span><span class="p">:</span> <span class="c">#Fallback</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Calling internal file chooser.&quot;</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;initialDir&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)))</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;defaultName&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">defaultName</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">defaultName</span><span class="p">)))</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;initialDir&#39; </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">))</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">dName</span> <span class="o">=</span> <span class="n">defaultName</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">dName</span> <span class="o">=</span> <span class="n">defaultName</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;defaultName&#39; </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="nb">repr</span><span class="p">(</span><span class="n">defaultName</span><span class="p">))</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="n">request_new_filename</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
-                                    <span class="n">suffix</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span> <span class="k">if</span> <span class="n">suffix</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
-                                    <span class="n">directory</span><span class="o">=</span><span class="n">iDir</span><span class="p">,</span>
-                                    <span class="n">filename</span><span class="o">=</span><span class="n">dName</span><span class="p">,</span>
-                                    <span class="n">pathname</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+            <span class="n">fls</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">def</span> <span class="nf">run_dlg</span><span class="p">():</span>
+                <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
+                                                <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
+                                                <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
+                                                <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_SAVE</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
+
+                <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
+                <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
+                <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="n">defaultName</span><span class="p">)</span>
+
+                <span class="c"># Add custom Filter</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">_filetype</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_filetype</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">file_filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+                            <span class="n">file_filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">filet</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="s">&quot;;&quot;</span> <span class="ow">in</span> <span class="n">_suffix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                                <span class="k">for</span> <span class="n">_suff</span> <span class="ow">in</span> <span class="n">_suffix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;;&quot;</span><span class="p">):</span>
+                                    <span class="k">if</span> <span class="n">_suff</span><span class="p">:</span>
+                                        <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="n">_suff</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="n">_suffix</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                            <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">file_filter</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">file_filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+                    <span class="n">file_filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">filetype</span><span class="p">[:</span><span class="n">filetype</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">)])</span>
+                    <span class="k">if</span> <span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span> <span class="ow">in</span> <span class="n">suffix</span> <span class="ow">and</span> <span class="n">suffix</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&quot;*.&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">__suffix</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">__suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">__suffix</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">suff</span> <span class="ow">in</span> <span class="n">__suffix</span><span class="p">:</span>
+                            <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">suff</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*.&quot;</span> <span class="o">+</span> <span class="n">__suffix</span><span class="p">)</span>
+                    <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">file_filter</span><span class="p">)</span>
+
+                <span class="c"># Add &quot;All files&quot; Filter</span>
+                <span class="n">file_filter</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+                <span class="n">file_filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s">&quot;All files&quot;</span><span class="p">)</span>
+                <span class="n">file_filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">)</span>
+                <span class="n">chooser</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">file_filter</span><span class="p">)</span>
+
+                <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
+                    <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+                <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+                <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+
+            <span class="n">gtk</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="n">run_dlg</span><span class="p">)</span>
+            <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">fls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c"># Fallback</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Calling internal file chooser.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;initialDir&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;&#39;defaultName&#39; is </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">defaultName</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">defaultName</span><span class="p">)))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">iDir</span> <span class="o">=</span> <span class="n">initialDir</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;initialDir&#39; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">initialDir</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dName</span> <span class="o">=</span> <span class="n">defaultName</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">dName</span> <span class="o">=</span> <span class="n">defaultName</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Could not encode &#39;defaultName&#39; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">defaultName</span><span class="p">))</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Encode function returned: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">_suffix</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">sffxs</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">_suffix</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]]</span>
+                <span class="n">sffx</span> <span class="o">=</span> <span class="n">sffxs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">sffxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;.*&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sffx</span> <span class="o">=</span> <span class="n">_suffix</span>
+                <span class="n">sffxs</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">request_new_filename</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                                        <span class="n">suffix</span><span class="o">=</span><span class="n">sffx</span><span class="p">,</span>
+                                        <span class="n">extra_suffixes</span><span class="o">=</span><span class="n">sffxs</span><span class="p">,</span>
+                                        <span class="n">directory</span><span class="o">=</span><span class="n">iDir</span><span class="p">,</span>
+                                        <span class="n">filename</span><span class="o">=</span><span class="n">dName</span><span class="p">,</span>
+                                        <span class="n">pathname</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">filename</span>
+</div>
+<span class="n">askSaveSchematic</span> <span class="o">=</span> <span class="n">dynamic_arguments</span><span class="p">(</span><span class="n">askSaveSchematic</span><span class="p">,</span> <span class="n">askSaveFile</span><span class="p">)</span>
 
 <span class="c"># Start Open Folder Dialogs</span>
-<span class="c"># TODO: Possibly get an OS X dialog</span></div>
+<span class="c"># TODO: Possibly get an OS X dialog</span>
 <div class="viewcode-block" id="askOpenFolderWin32"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFolderWin32">[docs]</a><span class="k">def</span> <span class="nf">askOpenFolderWin32</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">desktop_pidl</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">SHGetFolderLocation</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shellcon</span><span class="o">.</span><span class="n">CSIDL_DESKTOP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -562,25 +669,29 @@
 </div>
 <div class="viewcode-block" id="askOpenFolderGtk"><a class="viewcode-back" href="../mcplatform.html#mcplatform.askOpenFolderGtk">[docs]</a><span class="k">def</span> <span class="nf">askOpenFolderGtk</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">initialDir</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">hasGtk</span><span class="p">:</span>
-        <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
-                                    <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
-                                    <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
-                                    <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_OPEN</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
+        <span class="n">fls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">def</span> <span class="nf">run_dlg</span><span class="p">():</span>
+            <span class="n">chooser</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span><span class="p">,</span>
+                                        <span class="bp">None</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SAVE</span><span class="p">,</span>
+                                        <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_CANCEL</span><span class="p">,</span>
+                                        <span class="n">gtk</span><span class="o">.</span><span class="n">STOCK_OPEN</span><span class="p">,</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">))</span>
 
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SELECT_FOLDER</span><span class="p">)</span>
-    
-        <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span> <span class="c"># Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action</span>
-        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chooser</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">)</span>
+            <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_folder</span><span class="p">(</span><span class="n">initialDir</span><span class="p">)</span>
+            <span class="n">chooser</span><span class="o">.</span><span class="n">set_current_name</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span>
+            <span class="n">chooser</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">FILE_CHOOSER_ACTION_SELECT_FOLDER</span><span class="p">)</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">gtk</span><span class="o">.</span><span class="n">RESPONSE_OK</span><span class="p">:</span>
+                <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chooser</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>  <span class="c"># Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
             <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
-            <span class="k">return</span>  <span class="c"># pressed cancel</span>
-        <span class="n">chooser</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">filename</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="n">run_dlg</span><span class="p">)</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">fls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&quot;You currently need gtk to use an Open Folder Dialog!&quot;</span>
 
@@ -641,6 +752,675 @@
 
 </div>
 <span class="n">win32_window_size</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="c">#=============================================================================</span>
+<span class="c">#=============================================================================</span>
+<span class="c"># DESKTOP ENVIRONMENTS AND OS SIDE WINDOW MANAGEMENT.</span>
+<span class="c">#</span>
+<span class="c"># The idea is to have a single object to deal with underling OS specific window management interface.</span>
+<span class="c"># This will help to save/restore MCEdit window sate, position and size.</span>
+<span class="c">#</span>
+<span class="c"># TODO:</span>
+<span class="c"># * Test on the actually unsupported Linux DEs.</span>
+<span class="c"># * Review WWindowHandler class for Windows.</span>
+<span class="c"># * Create a DWindowHandler class for Darwin (OSX).</span>
+
+<span class="c"># Window states</span>
+<span class="n">MINIMIZED</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">NORMAL</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MAXIMIZED</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">FULLSCREEN</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c">#=============================================================================</span>
+<span class="c"># Linux desktop environment detection.</span>
+<span class="c">#</span>
+<span class="c"># source: http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment (http://stackoverflow.com/a/21213358)</span>
+<span class="c">#</span>
+<span class="c"># Tweaked, of course ;)</span>
+<span class="c">#</span>
+<div class="viewcode-block" id="get_desktop_environment"><a class="viewcode-back" href="../mcplatform.html#mcplatform.get_desktop_environment">[docs]</a><span class="k">def</span> <span class="nf">get_desktop_environment</span><span class="p">():</span>
+        <span class="c"># From http://stackoverflow.com/questions/2035657/what-is-my-current-desktop-environment</span>
+        <span class="c"># and http://ubuntuforums.org/showthread.php?t=652320</span>
+        <span class="c"># and http://ubuntuforums.org/showthread.php?t=652320</span>
+        <span class="c"># and http://ubuntuforums.org/showthread.php?t=1139057</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="s">&quot;cygwin&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="s">&quot;windows&quot;</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;mac&quot;</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c"># Most likely either a POSIX system or something not much common</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;DESKTOP_SESSION&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ds</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;XDG_CURRENT_DESKTOP&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>  <span class="c"># easier to match if we doesn&#39;t have  to deal with caracter cases</span>
+                <span class="n">desktop_session</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r&quot;gnome|unity|cinnamon|mate|xfce4|lxde|fluxbox|blackbox|openbox|icewm|jwm|afterstep|trinity|kde&quot;</span><span class="p">,</span> <span class="n">desktop_session</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;Houston? We have a problem...</span><span class="se">\n\n</span><span class="s">The desktop environment can&#39;t be found: &#39;</span><span class="si">%s</span><span class="s">&#39; has been detected to be </span><span class="si">%s</span><span class="s"> alltogeteher.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s">&quot; and &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">found</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">found</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+                    <span class="k">return</span> <span class="s">&#39;unknown&#39;</span>
+                <span class="c"># # Special cases ##</span>
+                <span class="c"># Canonical sets $DESKTOP_SESSION to Lubuntu rather than LXDE if using LXDE.</span>
+                <span class="c"># There is no guarantee that they will not do the same with the other desktop environments.</span>
+                <span class="k">elif</span> <span class="s">&quot;xfce&quot;</span> <span class="ow">in</span> <span class="n">desktop_session</span> <span class="ow">or</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;xubuntu&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s">&quot;xfce4&quot;</span>
+                <span class="k">elif</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;ubuntu&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s">&quot;unity&quot;</span>       
+                <span class="k">elif</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;lubuntu&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s">&quot;lxde&quot;</span> 
+                <span class="k">elif</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;kubuntu&quot;</span><span class="p">):</span> 
+                    <span class="k">return</span> <span class="s">&quot;kde&quot;</span> 
+                <span class="k">elif</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;razor&quot;</span><span class="p">):</span>  <span class="c"># e.g. razorkwin</span>
+                    <span class="k">return</span> <span class="s">&quot;razor-qt&quot;</span>
+                <span class="k">elif</span> <span class="n">desktop_session</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;wmaker&quot;</span><span class="p">):</span>  <span class="c"># e.g. wmaker-common</span>
+                    <span class="k">return</span> <span class="s">&quot;windowmaker&quot;</span>
+                
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;KDE_FULL_SESSION&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;true&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">&quot;kde&quot;</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;GNOME_DESKTOP_SESSION_ID&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="s">&quot;deprecated&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;GNOME_DESKTOP_SESSION_ID&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="s">&quot;gnome2&quot;</span>
+            <span class="c"># From http://ubuntuforums.org/showthread.php?t=652320</span>
+            <span class="k">elif</span> <span class="n">is_running</span><span class="p">(</span><span class="s">&quot;xfce-mcs-manage&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;xfce4&quot;</span>
+            <span class="k">elif</span> <span class="n">is_running</span><span class="p">(</span><span class="s">&quot;ksmserver&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">&quot;kde&quot;</span>
+        <span class="k">return</span> <span class="s">&quot;unknown&quot;</span>
+</div>
+<div class="viewcode-block" id="is_running"><a class="viewcode-back" href="../mcplatform.html#mcplatform.is_running">[docs]</a><span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="n">process</span><span class="p">):</span>
+    <span class="c"># From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/</span>
+    <span class="c"># and http://richarddingwall.name/2009/06/18/windows-equivalents-of-ps-and-kill-commands/</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c"># Linux/Unix</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&quot;ps&quot;</span><span class="p">,</span> <span class="s">&quot;axw&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>  <span class="c"># Windows</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&quot;tasklist&quot;</span><span class="p">,</span> <span class="s">&quot;/v&quot;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+<span class="c">#=============================================================================</span>
+<span class="c"># Window handling.</span></div>
+<span class="n">desktop_environment</span> <span class="o">=</span> <span class="n">get_desktop_environment</span><span class="p">()</span>
+
+<span class="n">DEBUG_WM</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">USE_WM</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># Desktops settings</span>
+<span class="c"># Each entry in the platform sub-dictionaries represent which object is used to get/set the window metrics.</span>
+<span class="c">#</span>
+<span class="c"># For Linux:</span>
+<span class="c"># Valid entries are: position_gap, position_getter, position_setter, size_getter, size_setter and state.</span>
+<span class="c"># Entries can be omitted; default values will be used.</span>
+<span class="c"># For position_gap the default is (0, 0, False, False)</span>
+<span class="c"># For the other ones, the default is the Pygame window object.</span>
+<span class="c">#</span>
+<span class="c"># position_gap is used on some environment to restore the windows at the coords it was formerly.</span>
+<span class="c"># The two first values of the tuple are the amount of pixels to add to the window x and y coords.</span>
+<span class="c"># The two last ones tell whether these pixels shall be added only once (at program startup) or always.</span>
+<span class="c">#</span>
+<span class="n">desktops</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;linux2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;cinnamon&#39;</span><span class="p">:</span> <span class="p">{</span>  <span class="c"># Actually, there&#39;s a bug when resizing on XCinnamon.</span>
+            <span class="s">&#39;position_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_getter&#39;</span><span class="p">:</span> <span class="s">&#39;parent.parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_gap&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span>
+            <span class="p">},</span>
+        <span class="s">&#39;gnome&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;position_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_getter&#39;</span><span class="p">:</span> <span class="s">&#39;parent.parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;size_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;size_getter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;kde&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;position_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_getter&#39;</span><span class="p">:</span> <span class="s">&#39;parent.parent.parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;unity&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;position_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_getter&#39;</span><span class="p">:</span> <span class="s">&#39;parent.parent.parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;position_gap&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+            <span class="s">&#39;size_setter&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span><span class="p">,</span>
+            <span class="s">&#39;state&#39;</span><span class="p">:</span> <span class="s">&#39;parent&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="c">#     &#39;win32&#39;: {},</span>
+<span class="c">#     &#39;darwin&#39;: {}</span>
+<span class="p">}</span>
+
+<span class="c"># The environments in the next definition need to be tested.</span>
+<span class="n">linux_unsuported</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;afterstep&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;blackbox&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;fluxbox&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;gnome2&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;icewm&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;jwm&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;lxde&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;mate&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;openbox&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;razor-qt&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;trinity&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;windowmaker&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;xfce4&#39;</span><span class="p">)</span>
+
+<span class="c"># Window handlers classes</span>
+<div class="viewcode-block" id="BaseWindowHandler"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler">[docs]</a><span class="k">class</span> <span class="nc">BaseWindowHandler</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Abstract class for the platform specific window handlers.</span>
+<span class="sd">    If initialized, this class casts a NotImplementedError.&quot;&quot;&quot;</span>
+    <span class="n">desk_env</span> <span class="o">=</span> <span class="n">desktop_environment</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract class.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;mode&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BaseWindowHandler.set_mode"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.set_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for pygame.display.set_mode().&quot;&quot;&quot;</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.get_root_rect"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.get_root_rect">[docs]</a>    <span class="k">def</span> <span class="nf">get_root_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.get_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.get_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.set_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.set_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.get_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.get_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.set_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.get_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.set_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="s">&quot;Abstract method.&quot;</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.flush"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Just does nothing...&quot;&quot;&quot;</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="BaseWindowHandler.sync"><a class="viewcode-back" href="../mcplatform.html#mcplatform.BaseWindowHandler.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Just does nothing...&quot;&quot;&quot;</span>
+        <span class="k">return</span>
+
+</div></div>
+<div class="viewcode-block" id="XWindowHandler"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler">[docs]</a><span class="k">class</span> <span class="nc">XWindowHandler</span><span class="p">(</span><span class="n">BaseWindowHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object to deal with XWindow managers (Linux).&quot;&quot;&quot;</span>
+    <span class="n">desk_env</span> <span class="o">=</span> <span class="n">desktop_environment</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up the internal handlers.&quot;&quot;&quot;</span>
+        <span class="n">BaseWindowHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="c"># setup the internal data, especially the Xlib object we need.</span>
+        <span class="c"># Tests</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;#&quot;</span> <span class="o">*</span> <span class="mi">72</span>
+            <span class="k">print</span> <span class="s">&quot;XWindowHandler.__init__&quot;</span>
+            <span class="k">print</span> <span class="s">&quot;Desktop environment:&quot;</span><span class="p">,</span> <span class="n">desktop_environment</span>
+        <span class="n">dis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
+        <span class="n">pygame_win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
+        <span class="n">pygame_win_id</span> <span class="o">=</span> <span class="n">pygame_win</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">screen</span><span class="p">()</span><span class="o">.</span><span class="n">root</span>
+            <span class="n">active_wid_id</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&#39;_NET_ACTIVE_WINDOW&#39;</span><span class="p">),</span> <span class="n">Xlib</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">AnyPropertyType</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">active_win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">active_wid_id</span><span class="p">)</span>
+            <span class="c"># Print pygame_win and active_win styff</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">win</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="p">((</span><span class="n">pygame_win</span><span class="p">,</span> <span class="s">&#39;pygame_win&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">active_win</span><span class="p">,</span> <span class="s">&#39;active_win&#39;</span><span class="p">)):</span>
+                <span class="k">print</span> <span class="s">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">72</span>
+                <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> guts&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;(ID </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">win</span><span class="o">.</span><span class="n">id</span>
+                <span class="k">print</span> <span class="s">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">72</span>
+                <span class="k">print</span> <span class="s">&quot;* State&quot;</span>
+                <span class="n">prop</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE&quot;</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">prop</span>
+                <span class="k">if</span> <span class="n">prop</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="nb">dir</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">&quot;* Geometry&quot;</span>
+                <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.parent&#39;</span> <span class="o">%</span> <span class="n">name</span>
+                <span class="k">while</span> <span class="n">parent</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">root</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">72</span>
+                    <span class="k">print</span> <span class="n">p</span><span class="p">,</span> <span class="s">&quot;ID&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">id</span>
+                    <span class="k">print</span> <span class="s">&quot;* State&quot;</span>
+                    <span class="n">prop</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE&quot;</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+                    <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">prop</span>
+                    <span class="k">if</span> <span class="n">prop</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="nb">dir</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+                    <span class="k">print</span> <span class="s">&quot;* Geometry&quot;</span>
+                    <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="n">p</span> <span class="o">+=</span> <span class="s">&quot;.parent&quot;</span>
+
+        <span class="c"># Size handlers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span> <span class="o">=</span> <span class="n">pygame_win</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;size_getter&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;size_getter.split(&#39;.&#39;)&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">size</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">(),</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizeGetter</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizeGetter</span> <span class="o">=</span> <span class="n">pygame_win</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;size_setter&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;size_setter.split(&#39;.&#39;)&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">size</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">(),</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizeSetter</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizeSetter</span> <span class="o">=</span> <span class="n">pygame_win</span>
+        <span class="c"># Position handlers</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;position_getter&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;pos_getter.split(&#39;.&#39;)&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">(),</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positionGetter</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positionGetter</span> <span class="o">=</span> <span class="n">pygame_win</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;position_setter&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;pos_setter.split(&#39;.&#39;)&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">(),</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positionSetter</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positionSetter</span> <span class="o">=</span> <span class="n">pygame_win</span>
+        <span class="c"># Position gap. Used to correct wrong positions on some environments.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_gap</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;position_gap&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">starting</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="c"># State handler</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">desktops</span><span class="p">[</span><span class="s">&#39;linux2&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">desk_env</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;state&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;state.split(&#39;.&#39;)&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">):</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">(),</span> <span class="n">item</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span> <span class="o">=</span> <span class="n">pygame_win</span>
+
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;self.positionGetter:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionGetter</span><span class="p">,</span> <span class="s">&#39;ID:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionGetter</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">print</span> <span class="s">&quot;self.positionSetter:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionSetter</span><span class="p">,</span> <span class="s">&#39;ID:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionSetter</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">print</span> <span class="s">&quot;self.sizeGetter:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeGetter</span><span class="p">,</span> <span class="s">&#39;ID:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeGetter</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">print</span> <span class="s">&quot;self.sizeSetter:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeSetter</span><span class="p">,</span> <span class="s">&#39;ID:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeSetter</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">print</span> <span class="s">&quot;self.stateHandler:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="p">,</span> <span class="s">&#39;ID:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="o">.</span><span class="n">id</span>
+            <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="o">.</span><span class="n">get_wm_state</span><span class="p">()</span>
+
+<div class="viewcode-block" id="XWindowHandler.get_root_rect"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.get_root_rect">[docs]</a>    <span class="k">def</span> <span class="nf">get_root_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a four values tuple containing the position and size of the very first OS window object.&quot;&quot;&quot;</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">screen</span><span class="p">()</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.get_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.get_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the window actual size as a tuple (width, height).&quot;&quot;&quot;</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeGetter</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Actual size is&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">height</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.set_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.set_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the window size.</span>
+<span class="sd">        :size: list or tuple: the new size.</span>
+<span class="sd">        Raises a TypeError if something else than a list or a tuple is sent.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="c"># Call the Xlib object handling the size to update it.</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Setting size to&quot;</span><span class="p">,</span> <span class="n">size</span>
+                <span class="k">print</span> <span class="s">&quot;actual size&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizeSetter</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Raise a Type error.</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span> <span class="o">%</span> <span class="n">size</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.get_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.get_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the window actual position as a tuple.&quot;&quot;&quot;</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionGetter</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">y</span>
+<span class="c">#         if DEBUG_WM:</span>
+<span class="c">#             print &quot;Actual position is&quot;, x, y</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.set_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the window position.</span>
+<span class="sd">        :pos: list or tuple: the new position (x, y).</span>
+<span class="sd">        :update: bool: wheteher to call the internal sync method.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Setting position to&quot;</span><span class="p">,</span> <span class="n">pos</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">gx</span><span class="p">,</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">gy</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting</span><span class="p">:</span>
+                <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_gap</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_gap</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gx</span> <span class="o">=</span> <span class="n">gx</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_gap</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gy</span> <span class="o">=</span> <span class="n">gy</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">starting</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="c"># Call the Xlib object handling the position to update it.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">positionSetter</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">gx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">gy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Raise a Type error.</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span> <span class="o">%</span> <span class="n">pos</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.get_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return wheter the window is maximized or not, or minimized or full screen.&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE&quot;</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+<span class="c">#         if DEBUG_WM:</span>
+<span class="c">#             print &quot;state_1.value&quot;, state.value</span>
+<span class="c">#             print &quot;max vert&quot;, self.display.intern_atom(&quot;_NET_WM_STATE_MAXIMIZED_VERT&quot;) ,self.display.intern_atom(&quot;_NET_WM_STATE_MAXIMIZED_VERT&quot;) in state.value</span>
+<span class="c">#             print &quot;max horz&quot;, self.display.intern_atom(&quot;_NET_WM_STATE_MAXIMIZED_HORZ&quot;), self.display.intern_atom(&quot;_NET_WM_STATE_MAXIMIZED_HORZ&quot;) in state.value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_MAXIMIZED_HORZ&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_MAXIMIZED_VERT&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+<span class="c">#             if DEBUG_WM:</span>
+<span class="c">#                 print MAXIMIZED</span>
+            <span class="k">return</span> <span class="n">MAXIMIZED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_HIDEN&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+<span class="c">#             if DEBUG_WM:</span>
+<span class="c">#                 print MINIMIZED</span>
+            <span class="k">return</span> <span class="n">MINIMIZED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_FULLSCREEN&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+<span class="c">#             if DEBUG_WM:</span>
+<span class="c">#                 print FULLSCREEN</span>
+            <span class="k">return</span> <span class="n">FULLSCREEN</span>
+<span class="c">#         if DEBUG_WM:</span>
+<span class="c">#             print NORMAL</span>
+        <span class="k">return</span> <span class="n">NORMAL</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.set_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set wheter the window is maximized or not, or minimized or full screen.</span>
+<span class="sd">        If no argument is given, assume the state will be windowed and not maximized.</span>
+<span class="sd">        If arguments are given, only the first is relevant. The other ones are ignored.</span>
+
+<span class="sd">        ** Only maximized and normal states are implemented for now. **</span>
+
+<span class="sd">        :state: valid arguments:</span>
+<span class="sd">        &#39;minimized&#39;, MINIMIZED, 0.</span>
+<span class="sd">        &#39;normal&#39;, NORMAL, 1: windowed, not maximized.</span>
+<span class="sd">        &#39;maximized&#39;, MAXIMIZED, 2.</span>
+<span class="sd">        &#39;fullscreen, FULLSCREEN, 3.</span>
+
+<span class="sd">        :size: list, tuple: the new size; if (-1, -1) self.get_size() is used.</span>
+<span class="sd">               If one element is -1 it is replaced by the corresponding valur from self.get_size().</span>
+<span class="sd">        :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.</span>
+<span class="sd">              If one element is -1 it is replaced by the corresponding valur from self.get_position().</span>
+<span class="sd">        :update: bool: whether to call the internal flush method.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MINIMIZED</span><span class="p">,</span> <span class="s">&#39;minimized&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">MAXIMIZED</span><span class="p">,</span> <span class="s">&#39;maximized&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">FULLSCREEN</span><span class="p">,</span> <span class="s">&#39;fullscreen&#39;</span><span class="p">):</span>
+            <span class="c"># Raise a value error.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;Invalid state argument: </span><span class="si">%s</span><span class="s"> is not a correct value&quot;</span> <span class="o">%</span> <span class="n">state</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;Invalid size argument: </span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;Invalid pos argument: </span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span>
+
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">):</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">sz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MINIMIZED</span><span class="p">,</span> <span class="s">&#39;minimized&#39;</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">MAXIMIZED</span><span class="p">,</span> <span class="s">&#39;maximized&#39;</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_MAXIMIZED_VERT&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE_MAXIMIZED_HORZ&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">5</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))))[:</span><span class="mi">5</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="o">.</span><span class="n">get_wm_state</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;creating event&quot;</span><span class="p">,</span> <span class="n">Xlib</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">ClientMessage</span>
+                <span class="k">print</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="p">)</span>
+            <span class="n">x_event</span> <span class="o">=</span> <span class="n">Xlib</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">ClientMessage</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="p">,</span> <span class="n">client_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&quot;_NET_WM_STATE&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;sending event&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">screen</span><span class="p">()</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">x_event</span><span class="p">,</span> <span class="n">event_mask</span><span class="o">=</span><span class="n">Xlib</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">SubstructureRedirectMask</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">stateHandler</span><span class="o">.</span><span class="n">get_wm_state</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">FULLSCREEN</span><span class="p">,</span> <span class="s">&#39;fullscreen&#39;</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.flush"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper around Xlib.Display.flush()&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;* flushing display&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="XWindowHandler.sync"><a class="viewcode-back" href="../mcplatform.html#mcplatform.XWindowHandler.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper around Xlib.Display.sync()&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;* syncing display&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+
+<span class="c">#=======================================================================</span>
+<span class="c"># WARNING: This class has been built on Linux using wine.</span>
+<span class="c"># Please review this code and change it consequently before using it without &#39;--debug-wm&#39; switch!</span></div></div>
+<div class="viewcode-block" id="WWindowHandler"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler">[docs]</a><span class="k">class</span> <span class="nc">WWindowHandler</span><span class="p">(</span><span class="n">BaseWindowHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Object to deal with Microsoft Window managers.&quot;&quot;&quot;</span>
+    <span class="n">desk_env</span> <span class="o">=</span> <span class="n">desktop_environment</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set up the internal handlers.&quot;&quot;&quot;</span>
+        <span class="n">BaseWindowHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="c"># Tests</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;#&quot;</span> <span class="o">*</span> <span class="mi">72</span>
+            <span class="k">print</span> <span class="s">&quot;WWindowHandler.__init__&quot;</span>
+            <span class="k">print</span> <span class="s">&quot;Desktop environment:&quot;</span><span class="p">,</span> <span class="n">desktop_environment</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">win32con</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s">&#39;maxim&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s">&#39;minim&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s">&#39;full&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="k">print</span> <span class="n">item</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">win32con</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_handler</span> <span class="o">=</span> <span class="n">display</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">dist</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="c"># We&#39;re running on a native Windows.</span>
+        <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Wrapper for pygame.display.set_mode().&quot;&quot;&quot;</span>
+            <span class="c"># Windows pygame implementation seem to work on the display mode and size on it&#39;s own...</span>
+            <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># We&#39;re running on wine.</span>
+<div class="viewcode-block" id="WWindowHandler.set_mode"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.set_mode">[docs]</a>        <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Wrapper for pygame.display.set_mode().&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;wine_state_fix&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wine_state_fix</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wine_state_fix</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.get_root_rect"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.get_root_rect">[docs]</a>    <span class="k">def</span> <span class="nf">get_root_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a four values tuple containing the position and size of the very first OS window object.&quot;&quot;&quot;</span>
+        <span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="n">win32gui</span><span class="o">.</span><span class="n">GetDesktopWindow</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">rect</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.get_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.get_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the window actual size as a tuple (width, height).&quot;&quot;&quot;</span>
+        <span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">rect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.set_size"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.set_size">[docs]</a>    <span class="k">def</span> <span class="nf">set_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the window size.</span>
+<span class="sd">        :size: list or tuple: the new size.</span>
+<span class="sd">        :mode: bool: (re)set the pygame.display mode; self.mode must be a pygame display mode object.</span>
+<span class="sd">        Raises a TypeError if something else than a list or a tuple is sent.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetCursorPos</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Settin size to&quot;</span><span class="p">,</span> <span class="n">size</span>
+                <span class="k">print</span> <span class="s">&quot;actual size&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;actual position&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+                
+                <span class="k">print</span> <span class="s">&#39;cursor pos&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span>
+            <span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;set_size rect&quot;</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="s">&quot;ptMin&quot;</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="s">&quot;ptMax&quot;</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="s">&quot;flags&quot;</span><span class="p">,</span> <span class="n">flags</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">win32gui</span><span class="o">.</span><span class="n">SetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Raise a Type error.</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.get_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.get_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the window actual position as a tuple.&quot;&quot;&quot;</span>
+        <span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rect</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.set_position"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the window position.</span>
+<span class="sd">        :pos: list or tuple: the new position (x, y).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Setting position to&quot;</span><span class="p">,</span> <span class="n">pos</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first_pos</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span>
+            <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+                <span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;set_position rect&quot;</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="s">&quot;ptMin&quot;</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="s">&quot;ptMax&quot;</span><span class="p">,</span> <span class="n">ptMax</span>
+                <span class="n">realW</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rect</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">realH</span> <span class="o">=</span> <span class="n">rect</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">rect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&#39;rect[0]&#39;</span><span class="p">,</span> <span class="n">rect</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;rect[1]&#39;</span><span class="p">,</span> <span class="n">rect</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">print</span> <span class="s">&#39;realW&#39;</span><span class="p">,</span> <span class="n">realW</span><span class="p">,</span> <span class="s">&#39;realH&#39;</span><span class="p">,</span> <span class="n">realH</span>
+                    <span class="k">print</span> <span class="s">&#39;cursor pos&#39;</span><span class="p">,</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetCursorPos</span><span class="p">()</span>
+
+                <span class="n">rect</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">realW</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">realH</span><span class="p">)</span>
+
+                <span class="n">win32gui</span><span class="o">.</span><span class="n">SetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Raise a Type error.</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.get_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return wheter the window is maximized or not, or minimized or full screen.&quot;&quot;&quot;</span>
+        <span class="n">flags</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;state&quot;</span><span class="p">,</span> <span class="n">state</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">win32con</span><span class="o">.</span><span class="n">SW_MAXIMIZE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">MAXIMIZED</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="n">win32con</span><span class="o">.</span><span class="n">SW_MINIMIZE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">MINIMIZED</span>
+        <span class="k">return</span> <span class="n">NORMAL</span>
+</div>
+<div class="viewcode-block" id="WWindowHandler.set_state"><a class="viewcode-back" href="../mcplatform.html#mcplatform.WWindowHandler.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">update</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set wheter the window is maximized or not, or minimized or full screen.</span>
+<span class="sd">        If no argument is given, assume the state will be windowed and not maximized.</span>
+<span class="sd">        If arguments are given, only the first is relevant. The other ones are ignored.</span>
+
+<span class="sd">        ** Only maximized and normal states are implemented for now. **</span>
+
+<span class="sd">        :state: valid arguments:</span>
+<span class="sd">        &#39;minimized&#39;, MINIMIZED, 0.</span>
+<span class="sd">        &#39;normal&#39;, NORMAL, 1: windowed, not maximized.</span>
+<span class="sd">        &#39;maximized&#39;, MAXIMIZED, 2.</span>
+<span class="sd">        &#39;fullscreen, FULLSCREEN, 3.</span>
+
+<span class="sd">        :size: list, tuple: the new size; if (-1, -1) self.get_size() is used.</span>
+<span class="sd">               If one element is -1 it is replaced by the corresponding valur from self.get_size().</span>
+<span class="sd">        :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.</span>
+<span class="sd">              If one element is -1 it is replaced by the corresponding valur from self.get_position().</span>
+<span class="sd">        :update: bool: whether to call the internal flush method.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MINIMIZED</span><span class="p">,</span> <span class="s">&#39;minimized&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">MAXIMIZED</span><span class="p">,</span> <span class="s">&#39;maximized&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">FULLSCREEN</span><span class="p">,</span> <span class="s">&#39;fullscreen&#39;</span><span class="p">):</span>
+            <span class="c"># Raise a value error.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="s">&quot;Invalid state argument: </span><span class="si">%s</span><span class="s"> is not a correct value&quot;</span> <span class="o">%</span> <span class="n">state</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;Invalid size argument: </span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="s">&quot;Invalid pos argument: </span><span class="si">%s</span><span class="s"> is not a list or a tuple.&quot;</span>
+
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="s">&#39;normal&#39;</span><span class="p">):</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">sz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MINIMIZED</span><span class="p">,</span> <span class="s">&#39;minimized&#39;</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">MAXIMIZED</span><span class="p">,</span> <span class="s">&#39;maximized&#39;</span><span class="p">):</span>
+            <span class="n">win32gui</span><span class="o">.</span><span class="n">ShowWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_handler_id</span><span class="p">,</span> <span class="n">win32con</span><span class="o">.</span><span class="n">SW_MAXIMIZE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">FULLSCREEN</span><span class="p">,</span> <span class="s">&#39;fullscreen&#39;</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+
+
+</div></div>
+<span class="n">WindowHandler</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="setupWindowHandler"><a class="viewcode-back" href="../mcplatform.html#mcplatform.setupWindowHandler">[docs]</a><span class="k">def</span> <span class="nf">setupWindowHandler</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;&#39;Link&#39; the corresponding window handler class to WindowHandler.&quot;&quot;&quot;</span>
+    <span class="c"># Don&#39;t initialize the window handler here.</span>
+    <span class="c"># We need MCEdit display objects to get the right object.</span>
+    <span class="k">global</span> <span class="n">WindowHandler</span>
+    <span class="k">if</span> <span class="n">USE_WM</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Initializing window management...&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">XWindowHandler</span><span class="o">.</span><span class="n">desk_env</span> <span class="o">==</span> <span class="s">&#39;unknown&#39;</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Your desktop environment could not be determined. The support for window sizing/moving is not availble.&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">XWindowHandler</span><span class="o">.</span><span class="n">desk_env</span> <span class="ow">in</span> <span class="n">linux_unsuported</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Your desktop environment is not yet supported for window sizing/moving.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">WindowHandler</span> <span class="o">=</span> <span class="n">XWindowHandler</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;XWindowHandler initialized.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span><span class="p">:</span>
+            <span class="n">WindowHandler</span> <span class="o">=</span> <span class="n">WWindowHandler</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;WWindowHandler initialized.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">WindowHandler</span>
+
+<span class="c"># setupWindowHandler()</span></div>
 </pre></div>
 
                 </div>
@@ -657,7 +1437,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

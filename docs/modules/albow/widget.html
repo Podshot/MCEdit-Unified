@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow.widget &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>albow.widget &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -224,6 +224,9 @@
     <span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">doNotTranslate</span> <span class="o">=</span> <span class="bp">False</span>
 
+    <span class="c"># &#39;name&#39; is used to track widgets without parent</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Widget&#39;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">rect</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">Rect</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Widget rect not a pygame.Rect&quot;</span><span class="p">)</span>
@@ -375,7 +378,8 @@
         <span class="k">if</span> <span class="n">resize</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">debug_resize</span><span class="p">:</span>
                 <span class="k">print</span> <span class="s">&quot;Widget.parent_resized: changing rect to&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">move</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">debug_resize</span><span class="p">:</span>
                 <span class="k">print</span> <span class="s">&quot;Widget.parent_resized: moving to&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span>
@@ -551,7 +555,7 @@
 <div class="viewcode-block" id="Widget.dispatch_key"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.dispatch_key">[docs]</a>    <span class="k">def</span> <span class="nf">dispatch_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">cmd</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span><span class="p">:</span>
                 <span class="n">menubar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menubar</span>
                 <span class="k">if</span> <span class="n">menubar</span> <span class="ow">and</span> <span class="n">menubar</span><span class="o">.</span><span class="n">handle_command_key</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
                     <span class="k">return</span>
@@ -959,7 +963,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

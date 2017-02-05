@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>leveleditor module &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>leveleditor module &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="index.html" />
     <link rel="next" title="mce module" href="mce.html" />
     <link rel="prev" title="keys module" href="keys.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -225,6 +225,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="leveleditor.EditorToolbar.set_update_ui">
+<code class="descname">set_update_ui</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#EditorToolbar.set_update_ui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.EditorToolbar.set_update_ui" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="leveleditor.EditorToolbar.showToolOptions">
 <code class="descname">showToolOptions</code><span class="sig-paren">(</span><em>toolNumber</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#EditorToolbar.showToolOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.EditorToolbar.showToolOptions" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -309,7 +314,17 @@ location in the window.  use for hit testing.</p>
 
 <dl class="method">
 <dt id="leveleditor.LevelEditor.addExternalWidget">
-<code class="descname">addExternalWidget</code><span class="sig-paren">(</span><em>provided_fields</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.addExternalWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.addExternalWidget" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addExternalWidget</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.addExternalWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.addExternalWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.addExternalWidget_Dict">
+<code class="descname">addExternalWidget_Dict</code><span class="sig-paren">(</span><em>provided_fields</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.addExternalWidget_Dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.addExternalWidget_Dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.addExternalWidget_Widget">
+<code class="descname">addExternalWidget_Widget</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.addExternalWidget_Widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.addExternalWidget_Widget" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -415,11 +430,6 @@ location in the window.  use for hit testing.</p>
 <dl class="method">
 <dt id="leveleditor.LevelEditor.createRenderers">
 <code class="descname">createRenderers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.createRenderers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.createRenderers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="leveleditor.LevelEditor.createWorkInfoPanel">
-<code class="descname">createWorkInfoPanel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.createWorkInfoPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.createWorkInfoPanel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -629,7 +639,7 @@ location in the window.  use for hit testing.</p>
 
 <dl class="attribute">
 <dt id="leveleditor.LevelEditor.lastRendererDraw">
-<code class="descname">lastRendererDraw</code><em class="property"> = datetime.datetime(2016, 1, 18, 13, 23, 49, 109000)</em><a class="headerlink" href="#leveleditor.LevelEditor.lastRendererDraw" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lastRendererDraw</code><em class="property"> = datetime.datetime(2017, 2, 5, 10, 21, 49, 912000)</em><a class="headerlink" href="#leveleditor.LevelEditor.lastRendererDraw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -900,11 +910,6 @@ location in the window.  use for hit testing.</p>
 <code class="descname">showWaypointsDialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.showWaypointsDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.showWaypointsDialog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="leveleditor.LevelEditor.showWorkInfo">
-<code class="descname">showWorkInfo</code><em class="property"> = False</em><a class="headerlink" href="#leveleditor.LevelEditor.showWorkInfo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="leveleditor.LevelEditor.showWorldInfo">
 <code class="descname">showWorldInfo</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#leveleditor.LevelEditor.showWorldInfo" title="Permalink to this definition">¶</a></dt>
@@ -976,11 +981,6 @@ location in the window.  use for hit testing.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="leveleditor.LevelEditor.updateWorkInfoPanel">
-<code class="descname">updateWorkInfoPanel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.updateWorkInfoPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.updateWorkInfoPanel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="leveleditor.LevelEditor.uploadChanges">
 <code class="descname">uploadChanges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.uploadChanges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.uploadChanges" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -993,11 +993,6 @@ location in the window.  use for hit testing.</p>
 <dl class="attribute">
 <dt id="leveleditor.LevelEditor.viewMode">
 <code class="descname">viewMode</code><a class="headerlink" href="#leveleditor.LevelEditor.viewMode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="leveleditor.LevelEditor.workInfoPanel">
-<code class="descname">workInfoPanel</code><em class="property"> = None</em><a class="headerlink" href="#leveleditor.LevelEditor.workInfoPanel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1024,7 +1019,7 @@ location in the window.  use for hit testing.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

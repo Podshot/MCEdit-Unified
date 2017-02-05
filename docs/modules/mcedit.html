@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>mcedit &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>mcedit &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -148,7 +148,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="k">if</span> <span class="s">&quot;-debug&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+<span class="k">if</span> <span class="s">&quot;--debug-ogl&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
     <span class="n">OpenGL</span><span class="o">.</span><span class="n">ERROR_CHECKING</span> <span class="o">=</span> <span class="bp">False</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -200,8 +200,51 @@
 
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">release</span>
+<span class="n">start_msg</span> <span class="o">=</span> <span class="s">&#39;Starting MCEdit-Unified v</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">release</span><span class="o">.</span><span class="n">TAG</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">start_msg</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;[ ****** ] ~~~~~~~~~~ </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">start_msg</span>
 
-<span class="kn">import</span> <span class="nn">version_utils</span>
+<span class="c">#---------------------------------------------------------------------</span>
+<span class="c"># NEW FEATURES HANDLING</span>
+<span class="c">#</span>
+<span class="c"># The idea is to be able to implement and test/use new code without stripping off the current one.</span>
+<span class="c"># These features/new code will be in the released stuff, but unavailable until explicitly requested.</span>
+<span class="c">#</span>
+<span class="c"># The new features which are under development can be enabled using the &#39;new_features.def&#39; file.</span>
+<span class="c"># This file is a plain text file with one feature to enable a line.</span>
+<span class="c"># The file is parsed and each feature is added to the builtins using the pattern &#39;mcenf_&lt;feature&gt;&#39;.</span>
+<span class="c"># The value for these builtins is &#39;True&#39;.</span>
+<span class="c"># Then, in the code, just check if the builtins has the key &#39;mcenf_&lt;feature&gt;&#39; to use the new version of the code: </span>
+<span class="c">#</span>
+<span class="c"># ```</span>
+<span class="c"># def foo_old():</span>
+<span class="c">#     # Was &#39;foo&#39;, code here is the one used unless the new version is wanted.</span>
+<span class="c">#     [...]</span>
+<span class="c">#</span>
+<span class="c"># def foo_new():</span>
+<span class="c">#     # This is the new version of the former &#39;foo&#39; (current &#39;foo_old&#39;).</span>
+<span class="c">#     [...]</span>
+<span class="c">#</span>
+<span class="c"># if __builtins__.get(&#39;mcenf_foo&#39;, False):</span>
+<span class="c">#     foo = foo_new</span>
+<span class="c"># else:</span>
+<span class="c">#     foo = foo_old</span>
+<span class="c">#</span>
+<span class="c"># ```</span>
+<span class="c">#</span>
+<span class="k">if</span> <span class="s">&#39;--new-features&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s">&#39;new_features.def&#39;</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;New features requested, but file &#39;new_features.def&#39; not found!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;New features mode requested.&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;new_features.def&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">,</span> <span class="s">&#39;mcenf_</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">line</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;New features list loaded.&quot;</span><span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">version_utils</span> <span class="kn">import</span> <span class="n">PlayerCache</span>
 <span class="kn">import</span> <span class="nn">directories</span>
 <span class="kn">import</span> <span class="nn">keys</span>
 
@@ -253,8 +296,23 @@
 
 <span class="kn">import</span> <span class="nn">mceutils</span>
 <span class="kn">import</span> <span class="nn">mcplatform</span>
+
+<span class="c"># The two next switches &#39;--debug-wm&#39; and &#39;--no-wm&#39; are used to debug/disable the internal window handler.</span>
+<span class="c"># They are exclusive. You can&#39;t debug if it is disabled.</span>
+<span class="k">if</span> <span class="s">&quot;--debug-wm&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">mcplatform</span><span class="o">.</span><span class="n">DEBUG_WM</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">if</span> <span class="s">&quot;--no-wm&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">mcplatform</span><span class="o">.</span><span class="n">DEBUG_WM</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">mcplatform</span><span class="o">.</span><span class="n">USE_WM</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">mcplatform</span><span class="o">.</span><span class="n">setupWindowHandler</span><span class="p">()</span>
+
+<span class="n">DEBUG_WM</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">DEBUG_WM</span>
+<span class="n">USE_WM</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">USE_WM</span>
+
+
 <span class="c">#-# DEBUG</span>
-<span class="k">if</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span> <span class="ow">and</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
     <span class="k">print</span> <span class="s">&#39;*** Xlib version&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;found in&#39;</span><span class="p">,</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~/.local/lib/python2.7/site-packages&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">__file__</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&#39;user</span><span class="se">\&#39;</span><span class="s">s&#39;</span><span class="p">,</span>
@@ -271,7 +329,7 @@
 <span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">rect</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
-<span class="kn">import</span> <span class="nn">release</span>
+<span class="c"># import release</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
@@ -289,13 +347,71 @@
 
 
 <div class="viewcode-block" id="MCEdit"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit">[docs]</a><span class="k">class</span> <span class="nc">MCEdit</span><span class="p">(</span><span class="n">GLViewport</span><span class="p">):</span>
-    <span class="c">#debug_resize = True</span>
     <span class="n">def_enc</span> <span class="o">=</span> <span class="n">DEF_ENC</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displayContext</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;############################ __INIT__ ###########################&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showWindowSizeWarning</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximized</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saved_pos</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">win</span> <span class="ow">and</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;* self.displayContext.win.state&quot;</span><span class="p">,</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s">&quot;* self.displayContext.win.position&quot;</span><span class="p">,</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dis</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wParent</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wGrandParent</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">linux</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">linux</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dis</span> <span class="o">=</span> <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="n">win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
+                <span class="n">curDesk</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;XDG_CURRENT_DESKTOP&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">curDesk</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;GNOME&#39;</span><span class="p">,</span> <span class="s">&#39;X-Cinnamon&#39;</span><span class="p">,</span> <span class="s">&#39;Unity&#39;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">geomReciever</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximizeHandler</span> <span class="o">=</span> <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">geomSender</span> <span class="o">=</span> <span class="n">wGrandParent</span> <span class="o">=</span> <span class="n">wParent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                <span class="k">elif</span> <span class="n">curDesk</span> <span class="o">==</span> <span class="s">&#39;KDE&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">maximizeHandler</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="n">wGrandParent</span> <span class="o">=</span> <span class="n">wParent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">geomReciever</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomSender</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">maximizeHandler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomReciever</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomSender</span> <span class="o">=</span> <span class="n">wGrandParent</span> <span class="o">=</span> <span class="n">wParent</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wParent</span> <span class="o">=</span> <span class="n">wParent</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wGrandParent</span> <span class="o">=</span> <span class="n">wGrandParent</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">screen</span><span class="p">()</span><span class="o">.</span><span class="n">root</span>
+                <span class="n">windowID</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get_full_property</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">intern_atom</span><span class="p">(</span><span class="s">&#39;_NET_ACTIVE_WINDOW&#39;</span><span class="p">),</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">AnyPropertyType</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">windowID&quot;</span><span class="p">,</span> <span class="n">windowID</span>
+                <span class="n">window</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">windowID</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">window.get_geometry()&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.win&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.wParent.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wParent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.wGrandParent.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wGrandParent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.wGrandParent.query_tree().parent.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wGrandParent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.maximizeHandler.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximizeHandler</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.geomReciever.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomReciever</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.geomSender.get_geometry()&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomSender</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.win&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.wParent&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wParent</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.wGrandParent&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wGrandParent</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.maximizeHandler&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximizeHandler</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.geomReciever&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomReciever</span>
+                <span class="k">print</span> <span class="s">&quot;###</span><span class="se">\n</span><span class="s">self.geomSender&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomSender</span>
+
         <span class="n">ws</span> <span class="o">=</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">getWindowSize</span><span class="p">()</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ws</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">GLViewport</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;self.size&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;ws&quot;</span><span class="p">,</span> <span class="n">ws</span>
+        <span class="k">if</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">win</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span><span class="p">:</span>
+            <span class="c"># Send a maximize event now</span>
+            <span class="n">displayContext</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">mcplatform</span><span class="o">.</span><span class="n">MAXIMIZED</span><span class="p">)</span>
+            <span class="c"># Flip pygame.display to avoid to see the splash un-centered.</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span> <span class="o">=</span> <span class="n">displayContext</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;tlbr&#39;</span>
@@ -312,6 +428,8 @@
                 <span class="n">lng</span> <span class="o">=</span> <span class="s">&quot;en_US&quot;</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">lng</span><span class="p">)</span>
             <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">setLang</span><span class="p">(</span><span class="n">lng</span><span class="p">)</span>
+        <span class="c"># Set the window caption here again, since the initialization is done through several steps...</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">((</span><span class="s">&#39;MCEdit ~ &#39;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;for&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">),</span> <span class="s">&#39;MCEdit&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">initComponents</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graphicsPanel</span> <span class="o">=</span> <span class="n">panels</span><span class="o">.</span><span class="n">GraphicsPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -450,7 +568,7 @@
             <span class="n">platform_open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;LICENSE.txt&quot;</span><span class="p">))</span>
             
         <span class="k">def</span> <span class="nf">refresh</span><span class="p">():</span>
-            <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">force_refresh</span><span class="p">()</span>
+            <span class="n">PlayerCache</span><span class="p">()</span><span class="o">.</span><span class="n">force_refresh</span><span class="p">()</span>
 
         <span class="n">hotkeys</span> <span class="o">=</span> <span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
                      <span class="s">&quot;Controls&quot;</span><span class="p">,</span>
@@ -515,44 +633,181 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle window resizing events.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">GLViewport</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;############################ RESIZED ############################&quot;</span>
 
         <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">config_w</span><span class="p">,</span> <span class="n">config_h</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">win</span>
+
+        <span class="k">if</span> <span class="n">DEBUG_WM</span> <span class="ow">and</span> <span class="n">win</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;dw&quot;</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="s">&quot;dh&quot;</span><span class="p">,</span> <span class="n">dh</span>
+            <span class="k">print</span> <span class="s">&quot;self.size (w, h) 1&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;win.get_size&quot;</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s">&quot;size 1&quot;</span><span class="p">,</span> <span class="n">config_w</span><span class="p">,</span> <span class="n">config_h</span>
+        <span class="k">elif</span> <span class="n">DEBUG_WM</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">win</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;win is None, unable to print debug messages&quot;</span>
+
+        <span class="k">if</span> <span class="n">win</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span>  <span class="n">win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;position&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+                <span class="k">print</span> <span class="s">&quot;config pos&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
         <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c"># The window has been minimized, no need to draw anything.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="k">return</span>
 
+        <span class="c"># Mac window handling works better now, but `win`</span>
+        <span class="c"># doesn&#39;t exist. So to get this alert to show up</span>
+        <span class="c"># I&#39;m checking if the platform is darwin. This only</span>
+        <span class="c"># works because the code block never actually references</span>
+        <span class="c"># `win`, otherwise it WOULD CRASH!!!</span>
+        <span class="c"># You cannot change further if statements like this</span>
+        <span class="c"># because they reference `win`</span>
+        <span class="k">if</span> <span class="n">win</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+            <span class="c"># Handling too small resolutions.</span>
+            <span class="c"># Dialog texts.</span>
+            <span class="c"># &quot;MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution.&quot;</span>
+            <span class="c"># New buttons:</span>
+            <span class="c"># &quot;Don&#39;t warn me again&quot;: disable the window popup across sessions.</span>
+            <span class="c">#     Tooltip: &quot;Disable this message. Definitively. Even the next time you start MCEdit.&quot;</span>
+            <span class="c"># &quot;OK&quot;: dismiss the window and let go, don&#39;t pop up again for the session</span>
+            <span class="c">#     Tooltip: &quot;Continue and not see this message until you restart MCEdit&quot;</span>
+            <span class="c"># &quot;Cancel&quot;: resizes the window to the minimum size</span>
+            <span class="c">#     Tooltip: &quot;Resize the window to the minimum recommended resolution.&quot;</span>
+
+            <span class="c"># If the config showWindowSizeWarning is true and self.resizeAlert is true, show the popup</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="ow">or</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">680</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showWindowSizeWarning</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="n">_w</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="n">_h</span> <span class="o">=</span> <span class="n">h</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span><span class="p">:</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;_OK&quot;</span>
+
+                    <span class="c"># Force the size only for the dimension that needs it.</span>
+                    <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">680</span><span class="p">:</span>
+                        <span class="n">_w</span> <span class="o">=</span> <span class="mi">1000</span>
+                        <span class="n">_h</span> <span class="o">=</span> <span class="mi">680</span>
+                    <span class="k">elif</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+                        <span class="n">_w</span> <span class="o">=</span> <span class="mi">1000</span>
+                    <span class="k">elif</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">680</span><span class="p">:</span>
+                        <span class="n">_h</span> <span class="o">=</span> <span class="mi">680</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="p">:</span>
+                        <span class="n">answer</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                                           <span class="s">&quot;MCEdit does not support window resolutions below 1000x700.</span><span class="se">\n</span><span class="s">You may not be able to access all functions at this resolution.&quot;</span><span class="p">,</span>
+                                           <span class="p">[</span><span class="s">&quot;Don&#39;t remind me again.&quot;</span><span class="p">,</span> <span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                           <span class="n">responses_tooltips</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Don&#39;t remind me again.&quot;</span><span class="p">:</span> <span class="s">&quot;Disable this message. Definitively. Even the next time you start MCEdit.&quot;</span><span class="p">,</span>
+                                                                 <span class="s">&quot;OK&quot;</span><span class="p">:</span> <span class="s">&quot;Continue and not see this message until you restart MCEdit&quot;</span><span class="p">,</span>
+                                                                 <span class="s">&quot;Cancel&quot;</span><span class="p">:</span> <span class="s">&quot;Resize the window to the minimum recommended resolution.&quot;</span><span class="p">},</span>
+                                           <span class="n">tie_widget_to</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="o">.</span><span class="n">_visible</span><span class="p">:</span>
+                            <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="o">.</span><span class="n">_visible</span> <span class="o">=</span> <span class="bp">True</span>
+                            <span class="n">answer</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Don&#39;t remind me again.&quot;</span><span class="p">:</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showWindowSizeWarning</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="k">elif</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;OK&quot;</span><span class="p">:</span>
+                        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="k">elif</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Cancel&quot;</span><span class="p">:</span>
+                        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">_w</span><span class="p">,</span> <span class="n">_h</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="p">:</span>
+                        <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="s">&quot;_OK&quot;</span><span class="p">)</span>
+                        <span class="k">del</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span>
+                        <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_to</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">1000</span> <span class="ow">or</span> <span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">680</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_tos</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">ask_tied_to</span> <span class="ow">in</span> <span class="n">albow</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">ask_tied_tos</span><span class="p">:</span>
+                        <span class="n">ask_tied_to</span><span class="o">.</span><span class="n">_visible</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="n">ask_tied_to</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="s">&quot;_OK&quot;</span><span class="p">)</span>
+                        <span class="n">ask_tied_to</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+                        <span class="k">del</span> <span class="n">ask_tied_to</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">win</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="mi">1000</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">680</span><span class="p">:</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">680</span><span class="p">)</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="mi">680</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="n">dis</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
-            <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
-            <span class="n">win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
-            <span class="n">geom</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+        <span class="n">save_geom</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">1000</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">680</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">win</span><span class="p">:</span>
+            <span class="n">maximized</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">==</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">MAXIMIZED</span>
+            <span class="n">sz</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;sz&quot;</span><span class="p">,</span> <span class="n">sz</span>
+                <span class="k">print</span> <span class="s">&quot;maximized&quot;</span><span class="p">,</span> <span class="n">maximized</span><span class="p">,</span> <span class="s">&quot;self.maximized&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span>
+
+            <span class="k">if</span> <span class="n">maximized</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;maximize, saving maximized size&quot;</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximizedWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">sz</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximizedHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">sz</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">saved_pos</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">save_geom</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">resizing</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">win</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">displayMode</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;size 2&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="k">print</span> <span class="s">&quot;config_w&quot;</span><span class="p">,</span> <span class="n">config_w</span><span class="p">,</span> <span class="s">&quot;config_h&quot;</span><span class="p">,</span> <span class="n">config_h</span>
+                    <span class="k">print</span> <span class="s">&quot;pos&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span> <span class="o">!=</span> <span class="n">maximized</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="s">&quot;restoring window pos and size&quot;</span>
+                        <span class="k">print</span> <span class="s">&quot;(config.settings.windowX.get(), config.settings.windowY.get())&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+                    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">config_w</span><span class="p">,</span> <span class="n">config_h</span><span class="p">)</span>
+                    <span class="n">win</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_pos</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="s">&quot;window resized&quot;</span>
+                        <span class="k">print</span> <span class="s">&quot;setting size to&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="s">&quot;and pos to&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+                    <span class="n">win</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">displayMode</span><span class="p">())</span>
+                    <span class="n">win</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximizedWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximizedHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span> <span class="o">=</span> <span class="n">maximized</span>
+
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;self.size (w, h) 2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">surf</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">()</span>
+            <span class="k">print</span> <span class="s">&quot;display surf rect&quot;</span><span class="p">,</span> <span class="n">surf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">win</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">win</span><span class="o">.</span><span class="n">base_handler</span><span class="p">,</span> <span class="s">&#39;get_geometry&#39;</span><span class="p">):</span>
+                    <span class="k">print</span> <span class="s">&quot;win.base_handler geometry&quot;</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">base_handler</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                    <span class="k">print</span> <span class="s">&quot;win.base_handler.parent geometry&quot;</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">base_handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                    <span class="k">print</span> <span class="s">&quot;win.base_handler.parent.parent geometry&quot;</span><span class="p">,</span> <span class="n">win</span><span class="o">.</span><span class="n">base_handler</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">save_geom</span><span class="p">:</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
-                <span class="n">win</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">geom</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">geom</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">w</span> <span class="o">!=</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">680</span><span class="p">)</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
-                <span class="n">win</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">680</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dw</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">or</span> <span class="n">dh</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+
+        <span class="c"># The alert window is disabled if win is not None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">win</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dw</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">or</span> <span class="n">dh</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;resizeAlert&#39;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shouldResizeAlert</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span><span class="p">:</span>
                 <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span>
                     <span class="s">&quot;Window size increased. You may have problems using the cursor until MCEdit is restarted.&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
-            <span class="n">dis</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">win</span><span class="p">:</span>
+            <span class="n">win</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+        <span class="n">GLViewport</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">)</span>
 </div>
     <span class="n">shouldResizeAlert</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">shouldResizeAlert</span><span class="o">.</span><span class="n">property</span><span class="p">()</span>
 
@@ -646,7 +901,10 @@
 </div>
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="MCEdit.main"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="n">displayContext</span> <span class="o">=</span> <span class="n">GLDisplayContext</span><span class="p">(</span><span class="n">splash</span><span class="o">.</span><span class="n">splash</span><span class="p">)</span>
+        <span class="n">PlayerCache</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="n">displayContext</span> <span class="o">=</span> <span class="n">GLDisplayContext</span><span class="p">(</span><span class="n">splash</span><span class="o">.</span><span class="n">splash</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="p">((</span><span class="s">&#39;MCEdit ~ &#39;</span> <span class="o">+</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span><span class="o">%</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;for&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">),</span> <span class="s">&#39;MCEdit&#39;</span><span class="p">))</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDL_VIDEO_CENTERED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
 
         <span class="n">rootwidget</span> <span class="o">=</span> <span class="n">RootWidget</span><span class="p">(</span><span class="n">displayContext</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
         <span class="n">mcedit</span> <span class="o">=</span> <span class="n">MCEdit</span><span class="p">(</span><span class="n">displayContext</span><span class="p">)</span>
@@ -768,9 +1026,10 @@
                 <span class="n">exc_txt</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">savePositionOnClose</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-                        <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">saveLastPosition</span><span class="p">(</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="p">,</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerDimension</span><span class="p">())</span>
+                        <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">saveLastPosition</span><span class="p">(</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="p">,</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">)</span>
                     <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">waypointManager</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="c"># The following Windows specific code won&#39;t be executed if we&#39;re using &#39;--debug-wm&#39; switch.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">USE_WM</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
                     <span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span>
                         <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
                     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rect</span>
@@ -806,10 +1065,13 @@
                 <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
                 <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">handleMemoryError</span><span class="p">()</span>
 </div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="MCEdit.saveWindowPosition"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.saveWindowPosition">[docs]</a>    <span class="k">def</span> <span class="nf">saveWindowPosition</span><span class="p">():</span>
+<div class="viewcode-block" id="MCEdit.saveWindowPosition"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.saveWindowPosition">[docs]</a>    <span class="k">def</span> <span class="nf">saveWindowPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the window position in the configuration handler.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;############################ EXITING ############################&quot;</span>
+        <span class="n">win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span><span class="o">.</span><span class="n">win</span>
+        <span class="c"># The following Windows specific code will not be executed if we&#39;re using &#39;--debug-wm&#39; switch.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">USE_WM</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span>
                 <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
             <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rect</span>
@@ -822,21 +1084,17 @@
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowShowCmd</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">showCmd</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
-            <span class="n">win</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">]</span>
-            <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
-            <span class="n">win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">win</span><span class="p">)</span>
-            <span class="n">curDesk</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;XDG_CURRENT_DESKTOP&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">curDesk</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;GNOME&#39;</span><span class="p">,</span> <span class="s">&#39;X-Cinnamon&#39;</span><span class="p">,</span> <span class="s">&#39;Unity&#39;</span><span class="p">):</span>
-                <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
-            <span class="k">elif</span> <span class="n">curDesk</span> <span class="o">==</span> <span class="s">&#39;KDE&#39;</span><span class="p">:</span>
-                <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">elif</span> <span class="n">win</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowMaximized</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximized</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximized</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">wParent</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="k">if</span> <span class="n">wParent</span><span class="p">:</span>
-                <span class="n">geom</span> <span class="o">=</span> <span class="n">wParent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saved_pos</span>
+            <span class="k">if</span> <span class="n">DEBUG_WM</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">y</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            
 </div>
 <div class="viewcode-block" id="MCEdit.restart"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.restart">[docs]</a>    <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saveWindowPosition</span><span class="p">()</span>
@@ -1015,7 +1273,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

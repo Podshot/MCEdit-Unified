@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>viewports.chunk &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <title>viewports.chunk &mdash; MCEdit-Unified v1.5.6.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     'v1.5.1.0',
+            VERSION:     'v1.5.6.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="../../static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.6.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -159,6 +159,8 @@
 </div>
 <div class="viewcode-block" id="ChunkViewport.zoom"><a class="viewcode-back" href="../../viewports.html#viewports.chunk.ChunkViewport.zoom">[docs]</a>    <span class="k">def</span> <span class="nf">zoom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cameraPosition</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">dx</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">mx</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">mz</span> <span class="o">-</span> <span class="n">z</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">4.0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">16.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultScale</span> <span class="o">/</span> <span class="n">f</span><span class="p">))</span>
@@ -238,7 +240,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+        <li><a href="../../index.html">MCEdit-Unified v1.5.6.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
