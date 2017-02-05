@@ -1623,7 +1623,15 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._loadedChunkData[chunkData.chunkPosition] = chunkData
 
     def getChunk(self, cx, cz):
-        """ read the chunk from disk, load it, and return it."""
+        '''
+        Read the chunk from disk, load it, and then return it
+        
+        :param cx: The X coordinate of the Chunk
+        :type cx: int
+        :param cz: The Z coordinate of the Chunk
+        :type cz: int
+        :rtype: pymclevel.infiniteworld.AnvilChunk
+        '''
 
         chunk = self._loadedChunks.get((cx, cz))
         if chunk is not None:
@@ -1663,14 +1671,33 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return heightMap[zInChunk, xInChunk]  # HeightMap indices are backwards
 
     # --- Biome manipulation ---
-
     def biomeAt(self, x, z):
+        '''
+        Gets the biome of the block at the specified coordinates. Since biomes are for the entire column at the coordinate, the Y coordinate wouldn't 
+        change the result
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param z: The Z block coordinate
+        :type z: int
+        :rtype: int
+        '''
         biomes = self.getChunk(int(x/16),int(z/16)).root_tag["Level"]["Biomes"].value
         xChunk = int(x/16) * 16
         zChunk = int(z/16) * 16
-        return biomes[(z - zChunk) * 16 + (x - xChunk)]
+        return int(biomes[(z - zChunk) * 16 + (x - xChunk)])
 
     def setBiomeAt(self, x, z, biomeID):
+        '''
+        Sets the biome data for the Y column at the specified X and Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param biomeID: The wanted biome ID 
+        :type biomeID: int
+        '''
         biomes = self.getChunk(int(x/16), int(z/16)).root_tag["Level"]["Biomes"].value
         xChunk = int(x/16) * 16
         zChunk = int(z/16) * 16
@@ -1679,6 +1706,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     # --- Entities and TileEntities ---
 
     def addEntity(self, entityTag):
+        '''
+        Adds an Entity to the level and sets its position to the values of the 'Pos' tag
+        
+        :param entityTag: The NBT data of the Entity
+        :type entityTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(entityTag, nbt.TAG_Compound)
         x, y, z = map(lambda x: int(floor(x)), Entity.pos(entityTag))
 
@@ -1691,6 +1724,17 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def tileEntityAt(self, x, y, z):
+        '''
+        Gets the TileEntity at the specified X, Y, and Z block coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :rtype: pymclevel.nbt.TAG_Compound
+        '''
         chunk = self.getChunk(x >> 4, z >> 4)
         return chunk.tileEntityAt(x, y, z)
 
