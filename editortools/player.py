@@ -451,6 +451,10 @@ class PlayerPositionPanel(Panel):
         else:
             players = ["Player (Single Player)"]
         self.players = players
+        
+        if 'Player' in self.player_UUID['UUID'] and 'Player (Single Player)' in self.player_UUID['Name']:
+            self.player_UUID['UUID'].insert(0, self.player_UUID['UUID'].pop(self.player_UUID['UUID'].index('Player')))
+            self.player_UUID['Name'].insert(0, self.player_UUID['Name'].pop(self.player_UUID['Name'].index('Player (Single Player)')))
 
         self.pages = TabPanel()
         tab_height = self.pages.tab_height
