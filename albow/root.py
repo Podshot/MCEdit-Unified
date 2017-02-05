@@ -397,7 +397,7 @@ class RootWidget(Widget):
                             if self.editor.level is not None and hasattr(self.editor.level, "checkSessionLock"):
                                 self.editor.level.checkSessionLock()
                         except Exception, e:
-                            log.warn(u"Error reading chunk: %s", e)
+                            log.warn(u"Error reading chunk (?): %s", e)
                             if not config.session.override.get():
                                 self.sessionStolen = True
                             else:
