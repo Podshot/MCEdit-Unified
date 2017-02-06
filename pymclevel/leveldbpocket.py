@@ -25,9 +25,12 @@ try:
     import leveldb_mcpe
     leveldb_mcpe.Options()
 except Exception as e:
-    leveldb_available = False
-    logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
-    leveldb_mcpe = None
+    try:
+        import leveldb as leveldb_mcpe
+    except Exception as e:
+        leveldb_available = False
+        logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
+        leveldb_mcpe = None
 
 #---------------------------------------------------------------------
 # TRACKING ERRORS
@@ -1927,7 +1930,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         Determines whether or not the path in filename has a Pocket Edition 0.9.0 or later in it
         :param filename string with path to level root directory.
         """
-        clp = ("db", "level.dat")
+        clp = ("db", "level.dat", "resource_packs")
         if not os.path.isdir(filename):
             f = os.path.basename(filename)
             if f not in clp:

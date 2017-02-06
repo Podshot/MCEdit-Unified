@@ -55,8 +55,12 @@ import ctypes.util
 import weakref
 import threading
 from collections import namedtuple
+import os
 
-_ldb = ctypes.CDLL(ctypes.util.find_library('leveldb'))
+try:
+    _ldb = ctypes.CDLL(ctypes.util.find_library('leveldb'))
+except:
+    _ldb = ctypes.WinDLL(os.path.join(os.getcwd(), "pymclevel", "LevelDB-MCPE.dll"))
 
 _ldb.leveldb_filterpolicy_create_bloom.argtypes = [ctypes.c_int]
 _ldb.leveldb_filterpolicy_create_bloom.restype = ctypes.c_void_p
@@ -196,6 +200,16 @@ _ldb.leveldb_free.restype = None
 Row = namedtuple('Row', 'key value')
 
 
+def Options():
+    pass
+
+def WriteOptions():
+    pass
+
+def ReadOptions():
+    pass
+
+
 class Error(Exception):
     pass
 
@@ -211,18 +225,21 @@ class Iterator(object):
         self._prefix = prefix
         self._keys_only = keys_only
 
-    def valid(self):
+    def status(self):
+        pass
+
+    def Valid(self):
         """Returns whether the iterator is valid or not
 
         @rtype: bool
         """
-        valid = self._impl.valid()
+        valid = self._impl.Valid()
         if not valid or self._prefix is None:
             return valid
         key = self._impl.key()
         return key[:len(self._prefix)] == self._prefix
 
-    def seekFirst(self):
+    def SeekToFirst(self):
         """
         Jump to first key in database
 
@@ -232,10 +249,10 @@ class Iterator(object):
         if self._prefix is not None:
             self._impl.seek(self._prefix)
         else:
-            self._impl.seekFirst()
+            self._impl.SeekToFirst()
         return self
 
-    def seekLast(self):
+    def SeekToLast(self):
         """
         Jump to last key in database
 
@@ -245,22 +262,22 @@ class Iterator(object):
         # if we have no prefix or the last possible prefix of this length, just
         # seek to the last key in the db.
         if self._prefix is None or self._prefix == "\xff" * len(self._prefix):
-            self._impl.seekLast()
+            self._impl.SeekToLast()
             return self
 
         # we have a prefix. see if there's anything after our prefix.
-        # there's probably a much better way to calculate the next prefix.
+        # there's probably a much better way to calculate the Next prefix.
         hex_prefix = self._prefix.encode('hex')
-        next_prefix = hex(long(hex_prefix, 16) + 1)[2:].rstrip("L")
-        next_prefix = next_prefix.rjust(len(hex_prefix), "0")
-        next_prefix = next_prefix.decode("hex").rstrip("\x00")
-        self._impl.seek(next_prefix)
-        if self._impl.valid():
+        Next_prefix = hex(long(hex_prefix, 16) + 1)[2:].rstrip("L")
+        Next_prefix = Next_prefix.rjust(len(hex_prefix), "0")
+        Next_prefix = Next_prefix.decode("hex").rstrip("\x00")
+        self._impl.seek(Next_prefix)
+        if self._impl.Valid():
             # there is something after our prefix. we're on it, so step back
-            self._impl.prev()
+            self._impl.Prev()
         else:
             # there is nothing after our prefix, just seek to the last key
-            self._impl.seekLast()
+            self._impl.SeekToLast()
         return self
 
     def seek(self, key):
@@ -300,7 +317,7 @@ class Iterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def Next(self):
         """Advances the iterator one step. Also returns the current value prior
         to moving the iterator
 
@@ -309,16 +326,16 @@ class Iterator(object):
 
         @raise StopIteration: if called on an iterator that is not valid
         """
-        if not self.valid():
+        if not self.Valid():
             raise StopIteration()
         if self._keys_only:
             rv = self.key()
         else:
             rv = Row(self.key(), self.value())
-        self._impl.next()
+        self._impl.Next()
         return rv
 
-    def prev(self):
+    def Prev(self):
         """Backs the iterator up one step. Also returns the current value prior
         to moving the iterator.
 
@@ -327,22 +344,22 @@ class Iterator(object):
 
         @raise StopIteration: if called on an iterator that is not valid
         """
-        if not self.valid():
+        if not self.Valid():
             raise StopIteration()
         if self._keys_only:
             rv = self.key()
         else:
             rv = Row(self.key(), self.value())
-        self._impl.prev()
+        self._impl.Prev()
         return rv
 
     def stepForward(self):
-        """Same as next but does not return any data or check for validity"""
-        self._impl.next()
+        """Same as Next but does not return any data or check for validity"""
+        self._impl.Next()
 
     def stepBackward(self):
-        """Same as prev but does not return any data or check for validity"""
-        self._impl.prev()
+        """Same as Prev but does not return any data or check for validity"""
+        self._impl.Prev()
 
     def range(self, start_key=None, end_key=None, start_inclusive=True,
               end_inclusive=False):
@@ -350,9 +367,9 @@ class Iterator(object):
         if start_key is not None:
             self.seek(start_key)
             if not start_inclusive and self.key() == start_key:
-                self._impl.next()
+                self._impl.Next()
         else:
-            self.seekFirst()
+            self.SeekToFirst()
         for row in self:
             if end_key is not None and (row.key > end_key or (
                         not end_inclusive and row.key == end_key)):
@@ -360,12 +377,12 @@ class Iterator(object):
             yield row
 
     def keys(self):
-        while self.valid():
+        while self.Valid():
             yield self.key()
             self.stepForward()
 
     def values(self):
-        while self.valid():
+        while self.Valid():
             yield self.value()
             self.stepForward()
 
@@ -475,14 +492,14 @@ class DBInterface(object):
         batch._puts.pop(key, None)
         batch._deletes.add(key)
 
-    def get(self, key, verify_checksums=None, fill_cache=None):
+    def Get(self, options, key, verify_checksums=None, fill_cache=None):
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
             fill_cache = self._default_fill_cache
         if self._prefix is not None:
             key = self._prefix + key
-        return self._impl.get(key, verify_checksums=verify_checksums,
+        return self._impl.Get(None, key, verify_checksums=verify_checksums,
                               fill_cache=fill_cache)
 
     # pylint: disable=W0212
@@ -498,7 +515,7 @@ class DBInterface(object):
             batch = unscoped_batch
         return self._impl.write(batch, sync=sync)
 
-    def iterator(self, verify_checksums=None, fill_cache=None, prefix=None,
+    def NewIterator(self, options=None, verify_checksums=None, fill_cache=None, prefix=None,
                  keys_only=False):
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
@@ -510,7 +527,7 @@ class DBInterface(object):
             else:
                 prefix = self._prefix + prefix
         return Iterator(
-            self._impl.iterator(verify_checksums=verify_checksums,
+            self._impl.NewIterator(verify_checksums=verify_checksums,
                                 fill_cache=fill_cache),
             keys_only=keys_only, prefix=prefix)
 
@@ -528,10 +545,10 @@ class DBInterface(object):
                            default_fill_cache=default_fill_cache)
 
     def __iter__(self):
-        return self.iterator().seekFirst()
+        return self.NewIterator().SeekToFirst()
 
     def __getitem__(self, k):
-        v = self.get(k)
+        v = self.Get(None, k)
         if v is None:
             raise KeyError(k)
         return v
@@ -546,7 +563,7 @@ class DBInterface(object):
         return self.has(key)
 
     def has(self, key, verify_checksums=None, fill_cache=None):
-        return self.get(key, verify_checksums=verify_checksums,
+        return self.Get(None, key, verify_checksums=verify_checksums,
                         fill_cache=fill_cache) is not None
 
     def scope(self, prefix, default_sync=None, default_verify_checksums=None,
@@ -570,7 +587,7 @@ class DBInterface(object):
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
             fill_cache = self._default_fill_cache
-        return self.iterator(verify_checksums=verify_checksums,
+        return self.NewIterator(verify_checksums=verify_checksums,
                              fill_cache=fill_cache).range(start_key=start_key,
                                                           end_key=end_key, start_inclusive=start_inclusive,
                                                           end_inclusive=end_inclusive)
@@ -580,16 +597,16 @@ class DBInterface(object):
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
             fill_cache = self._default_fill_cache
-        return self.iterator(verify_checksums=verify_checksums,
-                             fill_cache=fill_cache, prefix=prefix).seekFirst().keys()
+        return self.NewIterator(verify_checksums=verify_checksums,
+                             fill_cache=fill_cache, prefix=prefix).SeekToFirst().keys()
 
     def values(self, verify_checksums=None, fill_cache=None, prefix=None):
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
             fill_cache = self._default_fill_cache
-        return self.iterator(verify_checksums=verify_checksums,
-                             fill_cache=fill_cache, prefix=prefix).seekFirst().values()
+        return self.NewIterator(verify_checksums=verify_checksums,
+                             fill_cache=fill_cache, prefix=prefix).SeekToFirst().values()
 
     def approximateDiskSizes(self, *ranges):
         return self._impl.approximateDiskSizes(*ranges)
@@ -619,7 +636,7 @@ class _IteratorMemImpl(object):
         self._data = memdb_data
         self._idx = -1
 
-    def valid(self):
+    def Valid(self):
         return 0 <= self._idx < len(self._data)
 
     def key(self):
@@ -631,16 +648,16 @@ class _IteratorMemImpl(object):
     def seek(self, key):
         self._idx = bisect.bisect_left(self._data, (key, ""))
 
-    def seekFirst(self):
+    def SeekToFirst(self):
         self._idx = 0
 
-    def seekLast(self):
+    def SeekToLast(self):
         self._idx = len(self._data) - 1
 
-    def prev(self):
+    def Prev(self):
         self._idx -= 1
 
-    def next(self):
+    def Next(self):
         self._idx += 1
 
     def close(self):
@@ -683,7 +700,7 @@ class _MemoryDBImpl(object):
             if 0 <= idx < len(self._data) and self._data[idx][0] == key:
                 del self._data[idx]
 
-    def get(self, key, **_kwargs):
+    def Get(self, options, key, **_kwargs):
         with self._lock:
             idx = bisect.bisect_left(self._data, (key, ""))
             if 0 <= idx < len(self._data) and self._data[idx][0] == key:
@@ -700,7 +717,7 @@ class _MemoryDBImpl(object):
             for key in batch._deletes:
                 self.delete(key)
 
-    def iterator(self, **_kwargs):
+    def NewIterator(self, **_kwargs):
         # WARNING: huge performance hit.
         # leveldb iterators are actually lightweight snapshots of the data. in
         # real leveldb, an iterator won't change its idea of the full database
@@ -764,7 +781,7 @@ class _IteratorDbImpl(object):
     def __init__(self, iterator_ref):
         self._ref = iterator_ref
 
-    def valid(self):
+    def Valid(self):
         return _ldb.leveldb_iter_valid(self._ref.ref)
 
     def key(self):
@@ -783,19 +800,19 @@ class _IteratorDbImpl(object):
         _ldb.leveldb_iter_seek(self._ref.ref, key, len(key))
         self._checkError()
 
-    def seekFirst(self):
+    def SeekToFirst(self):
         _ldb.leveldb_iter_seek_to_first(self._ref.ref)
         self._checkError()
 
-    def seekLast(self):
+    def SeekToLast(self):
         _ldb.leveldb_iter_seek_to_last(self._ref.ref)
         self._checkError()
 
-    def prev(self):
+    def Prev(self):
         _ldb.leveldb_iter_prev(self._ref.ref)
         self._checkError()
 
-    def next(self):
+    def Next(self):
         _ldb.leveldb_iter_next(self._ref.ref)
         self._checkError()
 
@@ -808,7 +825,7 @@ class _IteratorDbImpl(object):
         self._ref.close()
 
 
-def DB(path, bloom_filter_size=10, create_if_missing=False,
+def DB(options, path, bloom_filter_size=10, create_if_missing=False,
        error_if_exists=False, paranoid_checks=False,
        write_buffer_size=(4 * 1024 * 1024), max_open_files=1000,
        block_cache_size=(8 * 1024 * 1024), block_size=(4 * 1024),
@@ -888,7 +905,7 @@ class _LevelDBImpl(object):
         _ldb.leveldb_writeoptions_destroy(options)
         _checkError(error)
 
-    def get(self, key, verify_checksums=False, fill_cache=True):
+    def Get(self, options, key, verify_checksums=False, fill_cache=True):
         error = ctypes.POINTER(ctypes.c_char)()
         options = _ldb.leveldb_readoptions_create()
         _ldb.leveldb_readoptions_set_verify_checksums(options,
@@ -927,7 +944,7 @@ class _LevelDBImpl(object):
         _ldb.leveldb_writebatch_destroy(real_batch)
         _checkError(error)
 
-    def iterator(self, verify_checksums=False, fill_cache=True):
+    def NewIterator(self, options=None, verify_checksums=False, fill_cache=True):
         options = _ldb.leveldb_readoptions_create()
         if self._snapshot is not None:
             _ldb.leveldb_readoptions_set_snapshot(options, self._snapshot.ref)
