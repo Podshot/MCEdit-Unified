@@ -1913,7 +1913,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         :return: True if the point exists/has been generated, False otherwise
         :rtype: bool
         '''
-        if y < 0 or y > 127: #TODO: Change height after checking if we support the 256 height limit
+        if y < 0 or y > 256:
             return False
         return self.containsChunk(x >> 4, z >> 4)
 
