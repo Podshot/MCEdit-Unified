@@ -56,11 +56,33 @@ import weakref
 import threading
 from collections import namedtuple
 import os
+import sys
 
+# Let have some logging stuff.
+import logging
+log = logging.getLogger(__name__)
+
+
+# Here we want to load the file corresponding to the current paltform.
+# So, let check for that :)
 try:
-    _ldb = ctypes.CDLL(ctypes.util.find_library('leveldb'))
-except:
-    _ldb = ctypes.WinDLL(os.path.join(os.getcwd(), "pymclevel", "LevelDB-MCPE.dll"))
+    plat = sys.platform
+    if plat == 'linux2':
+        # This library shall not be installed systemwide, let take it from the directory where this module is.
+        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldbpe1plus.so'))
+    elif plat == 'darwin':
+        log.warn("No PE 1+ support for OSX for now :/")
+    elif plat == 'win32':
+        # Can we replace the `os.getcwd(), "pymclevel"` part with the same stuff as for Linux?
+        _ldb = ctypes.WinDLL(os.path.join(os.getcwd(), "pymclevel", "LevelDB-MCPE.dll"))
+    log.debug("Binary support for PE 1+ world succesfully loaded.")
+except Exception, e:
+    # What sahll we do if the library is not found?
+    # If the library is not loaded, the _ldb object does not exists, and every call to it will crash MCEdit...
+    # We may import this module using try/except statement.
+    log.error("The binary support for PE 1+ worlds could not be loaded:")
+    log.error(e)
+
 
 _ldb.leveldb_filterpolicy_create_bloom.argtypes = [ctypes.c_int]
 _ldb.leveldb_filterpolicy_create_bloom.restype = ctypes.c_void_p
@@ -989,3 +1011,5 @@ class _LevelDBImpl(object):
         self._db.addReferrer(snapshot_ref)
         return _LevelDBImpl(self._db, snapshot_ref=snapshot_ref,
                             other_objects=self._objs)
+
+log.debug("MCEdit-Unified internal PE 1+ support initialized.")
