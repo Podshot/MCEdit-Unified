@@ -62,6 +62,7 @@ def threadable(func):
                 break
         with instance.cache_lock:
             t = ThreadRS(target=func, args=args, kwargs=kwargs, callbacks=instance.targets)
+            t.daemon = True
             t.start()
             return t
     return wrapper
