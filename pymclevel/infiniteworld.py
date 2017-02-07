@@ -1025,6 +1025,11 @@ class AnvilWorldFolder(object):
 
 
 class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
+    '''
+    A class that handles the data that is stored in a Minecraft Java level. 
+    
+    This class is the type of the 'level' parameter that is passed to a filter's :func:`perform` function
+    '''
     playersFolder = None
 
     def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
@@ -1744,6 +1749,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return chunk.tileEntityAt(x, y, z)
 
     def addTileEntity(self, tileEntityTag):
+        '''
+        Adds an TileEntity to the level and sets its position to the values of the X, Y, and Z tags
+        
+        :param tileEntityTag: The NBT data of the TileEntity
+        :type tileEntityTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(tileEntityTag, nbt.TAG_Compound)
         if 'x' not in tileEntityTag:
             return
@@ -1758,6 +1769,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def addTileTick(self, tickTag):
+        '''
+        Adds an TileTick to the level and sets its position to the values of the X, Y, and Z tags
+        
+        :param tickTag: The NBT data of the TileTick
+        :type tickTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(tickTag, nbt.TAG_Compound)
 
         if 'x' not in tickTag:
@@ -1771,6 +1788,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def getEntitiesInBox(self, box):
+        '''
+        Get all of the Entities in the specified box
+        
+        :param box: The box to search for Entities in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the Entity tags in the box
+        :rtype: list
+        '''
         entities = []
         for chunk, slices, point in self.getChunkSlices(box):
             entities += chunk.getEntitiesInBox(box)
@@ -1778,6 +1803,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return entities
 
     def getTileEntitiesInBox(self, box):
+        '''
+        Get all of the TileEntities in the specified box
+        
+        :param box: The box to search for TileEntities in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the TileEntity tags in the box
+        :rtype: list
+        '''
         tileEntites = []
         for chunk, slices, point in self.getChunkSlices(box):
             tileEntites += chunk.getTileEntitiesInBox(box)
@@ -1785,6 +1818,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return tileEntites
 
     def getTileTicksInBox(self, box):
+        '''
+        Get all of the TileTicks in the specified box
+        
+        :param box: The box to search for TileTicks in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the TileTick tags in the box
+        :rtype: list
+        '''
         tileticks = []
         for chunk, slices, point in self.getChunkSlices(box):
             tileticks += chunk.getTileTicksInBox(box)
@@ -1792,6 +1833,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return tileticks
 
     def removeEntitiesInBox(self, box):
+        '''
+        Removes all of the Entities in the specified box
+        
+        :param box: The box to remove all Entities from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of Entities removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeEntitiesInBox(box)
@@ -1800,6 +1849,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return count
 
     def removeTileEntitiesInBox(self, box):
+        '''
+        Removes all of the TileEntities in the specified box
+        
+        :param box: The box to remove all TileEntities from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of TileEntities removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeTileEntitiesInBox(box)
@@ -1808,6 +1865,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return count
 
     def removeTileTicksInBox(self, box):
+        '''
+        Removes all of the TileTicks in the specified box
+        
+        :param box: The box to remove all TileTicks from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of TileTicks removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeTileTicksInBox(box)
@@ -1818,6 +1883,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     # --- Chunk manipulation ---
 
     def containsChunk(self, cx, cz):
+        '''
+        Checks if the specified chunk exists/has been generated
+        
+        :param cx: The X coordinate of the Chunk
+        :type cx: int
+        :param cz: The Z coordinate of the Chunk
+        :type cz: int
+        :return: True if the chunk exists/has been generated, False otherwise
+        :rtype: bool
+        '''
         if self._allChunks is not None:
             return (cx, cz) in self._allChunks
         if (cx, cz) in self._loadedChunkData:
@@ -1826,7 +1901,19 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return self.worldFolder.containsChunk(cx, cz)
 
     def containsPoint(self, x, y, z):
-        if y < 0 or y > 127:
+        '''
+        Checks if the specified X, Y, Z coordinate has been generated
+        
+        :param x: The X coordinate
+        :type x: int
+        :param y: The Y coordinate
+        :type y: int
+        :param z: The Z coordinate
+        :type z: int
+        :return: True if the point exists/has been generated, False otherwise
+        :rtype: bool
+        '''
+        if y < 0 or y > 127: #TODO: Change height after checking if we support the 256 height limit
             return False
         return self.containsChunk(x >> 4, z >> 4)
 
