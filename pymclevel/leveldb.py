@@ -71,13 +71,12 @@ try:
         # This library shall not be installed systemwide, let take it from the directory where this module is.
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldbpe1plus.so'))
     elif plat == 'darwin':
-        log.warn("No PE 1+ support for OSX for now :/")
+        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
-        # Can we replace the `os.getcwd(), "pymclevel"` part with the same stuff as for Linux?
-        _ldb = ctypes.WinDLL(os.path.join(os.getcwd(), "pymclevel", "LevelDB-MCPE.dll"))
+        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
     log.debug("Binary support for PE 1+ world succesfully loaded.")
 except Exception, e:
-    # What sahll we do if the library is not found?
+    # What shall we do if the library is not found?
     # If the library is not loaded, the _ldb object does not exists, and every call to it will crash MCEdit...
     # We may import this module using try/except statement.
     log.error("The binary support for PE 1+ worlds could not be loaded:")
