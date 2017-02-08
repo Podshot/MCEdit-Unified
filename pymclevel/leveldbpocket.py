@@ -1724,7 +1724,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         else:
             self.world_version = 'pre1.0'
 
-#         print '**** world_version', self.world_version
+        logger.info('PE world verion found: %s', self.world_version)
 
         self.filename = filename
         self.worldFile = PocketLeveldbDatabase(filename, create=create, world_version=self.world_version)
