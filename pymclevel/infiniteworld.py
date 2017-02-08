@@ -1886,9 +1886,9 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         '''
         Checks if the specified chunk exists/has been generated
         
-        :param cx: The X coordinate of the Chunk
+        :param cx: The X coordinate of the chunk
         :type cx: int
-        :param cz: The Z coordinate of the Chunk
+        :param cz: The Z coordinate of the chunk
         :type cz: int
         :return: True if the chunk exists/has been generated, False otherwise
         :rtype: bool
@@ -1913,11 +1913,20 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         :return: True if the point exists/has been generated, False otherwise
         :rtype: bool
         '''
-        if y < 0 or y > 256:
+        if y < 0 or y > self.Height:
             return False
         return self.containsChunk(x >> 4, z >> 4)
 
     def createChunk(self, cx, cz):
+        '''
+        Creates a chunk at the specified chunk coordinates if it doesn't exist already
+        
+        :param cx: The X coordinate of the chunk
+        :type cx: int
+        :param cz: The Z coordinate of the chunk
+        :type cz: int
+        :raises ValueError: Raise when a chunk is already present/generated at the specified X and Z coordinates
+        '''
         if self.containsChunk(cx, cz):
             raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
         if self._allChunks is not None:
@@ -1927,7 +1936,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._bounds = None
 
     def createChunks(self, chunks):
-
+        '''
+        Creates multiple chunks specified by a list of chunk X and Z coordinate tuples
+        
+        :param chunks: A list of chunk X and Z coordinates in tuple form [(cx, cz), (cx, cz)...]
+        :type chunks: list
+        :return: A list of the chunk coordinates that were created, doesn't include coordinates of ones already present
+        :rtype: list
+        '''
         i = 0
         ret = []
         for cx, cz in chunks:
@@ -1944,11 +1960,27 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return ret
 
     def createChunksInBox(self, box):
+        '''
+        Creates all chunks that would be present in the box
+        
+        :param box: The box to generate chunks in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of the chunk coordinates that were created, doesn't include coordinates of ones already present
+        :rtype: list
+        '''
         log.info(u"Creating {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
                                                       ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         return self.createChunks(box.chunkPositions)
 
     def deleteChunk(self, cx, cz):
+        '''
+        Deletes the chunk at the specified chunk coordinates
+        
+        :param cx: The X coordinate of the chunk
+        :type cx: int 
+        :param cz: The Z coordinate of the chunk
+        :type cz: int
+        '''
         self.worldFolder.deleteChunk(cx, cz)
         if self._allChunks is not None:
             self._allChunks.discard((cx, cz))
@@ -1956,6 +1988,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._bounds = None
 
     def deleteChunksInBox(self, box):
+        '''
+        Deletes all of the chunks in the specified box
+        
+        :param box: The box of chunks to remove
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of the chunk coordinates  of the chunks that were deleted
+        :rtype: list
+        '''
         log.info(u"Deleting {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
                                                       ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
