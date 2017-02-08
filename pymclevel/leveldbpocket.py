@@ -2765,10 +2765,15 @@ class PE1PlusDataContainer:
         # Does not raise an error if the subchunk already has data.
         # The old data is overriden.
         if len(data) != self.subdata_length:
-            raise ValueError("Data does not match the required %s bytes length: %s bytes"%(self.subdata_length, len(data)))
+            raise ValueError("%s: Data does not match the required %s bytes length: %s bytes"%(self.name, self.subdata_length, len(data)))
         self.binary_data[y] = numpy.fromstring(data, self.bin_type)
 #         print self.name, self.shape, self.binary_data[y].shape, self.bin_type
-        self.binary_data[y].shape = self.shape
+        try:
+            self.binary_data[y].shape = self.shape
+        except ValueError, e:
+            a = list(e.args)
+            a[0] += '%s %s: Required: %s, got: %s'%(a[0], self.name, self.shape, self.binary_data[y].shape)
+            e.args = tuple(a)
 
 class PocketLeveldbChunk1Plus(LightedChunk):
     HeightMap = FakeChunk.HeightMap
@@ -2793,10 +2798,10 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         if create:
             self.Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks')
-            self.Data = PE1PlusDataContainer(4096, 'uint8', name='Data')
-            self.SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight')
-            self.BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight')
-            self.DirtyColumns = PE1PlusDataContainer(4096, 'uint8', name='DirtyColumns')
+            self.Data = PE1PlusDataContainer(2048, 'b', name='Data')
+            self.SkyLight = PE1PlusDataContainer(2048, 'b', name='SkyLight')
+            self.BlockLight = PE1PlusDataContainer(2048, 'b', name='BlockLight')
+            self.DirtyColumns = PE1PlusDataContainer(2048, 'uint8', name='DirtyColumns')
             # Is this one relevant?
             self.GrassColors = PE1PlusDataContainer(1024, 'uint8', name='GrassColor')
 
