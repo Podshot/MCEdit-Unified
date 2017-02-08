@@ -126,6 +126,11 @@ class BoundingBox(object):
         """
         Return a box containing the area self and box have in common. Box will have zero volume
          if there is no common area.
+         
+        :param box: The intersecting box
+        :type box: pymclevel.box.BoundingBox
+        :return: A box of the resulting intersection of the two boxes
+        :rtype: pymclevel.box.BoundingBox 
         """
         if (self.minx > box.maxx or self.maxx < box.minx or
                     self.miny > box.maxy or self.maxy < box.miny or

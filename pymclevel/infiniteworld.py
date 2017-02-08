@@ -2038,6 +2038,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             playerSpawnTag[name] = nbt.TAG_Int(val)
 
     def getPlayerPath(self, player, dim=0):
+        '''
+        Gets the file path to the player file
+        
+        :param player: The UUID of the player
+        :type player: str
+        :param dim: The dimension that the player resides in
+        :type dim: int
+        :return: The file path to the player data file
+        :rtype: str
+        '''
         assert player != "Player"
         if dim != 0:
             return os.path.join(os.path.dirname(self.level.filename), "DIM%s" % dim, "playerdata", "%s.dat" % player)
@@ -2045,6 +2055,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return os.path.join(self.playersFolder, "%s.dat" % player)
 
     def getPlayerTag(self, player="Player"):
+        '''
+        Gets the NBT data for the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The NBT data for the player
+        :rtype: pymclevel.nbt.TAG_Compound
+        '''
         if player == "Player":
             if player in self.root_tag["Data"]:
                 # single-player world
@@ -2062,18 +2080,42 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return playerTag
 
     def getPlayerDimension(self, player="Player"):
+        '''
+        Gets the dimension that the specified player is currently in
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The dimension the player is currently in
+        :rtype: int
+        '''
         playerTag = self.getPlayerTag(player)
         if "Dimension" not in playerTag:
             return 0
         return playerTag["Dimension"].value
 
     def setPlayerDimension(self, d, player="Player"):
+        '''
+        Sets the player's current dimension
+        
+        :param d: The desired dimension (0 for Overworld, -1 for Nether, 1 for The End)
+        :type d: int
+        :param player: The UUID of the player
+        :type player: str
+        '''
         playerTag = self.getPlayerTag(player)
         if "Dimension" not in playerTag:
             playerTag["Dimension"] = nbt.TAG_Int(0)
         playerTag["Dimension"].value = d
 
     def setPlayerPosition(self, (x, y, z), player="Player"):
+        '''
+        Sets the specified player's position
+        
+        :param (x, y, z): The desired X, Y, Z coordinates for the specified player
+        :type (x, y, z): tuple, or 3 ints
+        :param player: The UUID of the player
+        :type player: str
+        '''
         posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
         playerTag = self.getPlayerTag(player)
 
