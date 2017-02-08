@@ -1930,7 +1930,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         Determines whether or not the path in filename has a Pocket Edition 0.9.0 or later in it
         :param filename string with path to level root directory.
         """
-        clp = ("db", "level.dat", "resource_packs")
+        clp = ("db", "level.dat")
         if not os.path.isdir(filename):
             f = os.path.basename(filename)
             if f not in clp:
