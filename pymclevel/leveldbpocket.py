@@ -1455,10 +1455,8 @@ class PocketLeveldbDatabase_new(object):
         # Put that in the chunk classes
         key = struct.pack('<i', cx) + struct.pack('<i', cz)
         with self.world_db() as db:
-#             print "--- Loading subchunk %s in chunk %s %s"%(y, cx, cz)
             rop = self.readOptions if readOptions is None else readOptions
             c = chr(y)
-#             print '"\x2f" + c', "\x2f" + repr(c).strip("'")
 
             try:
                 terrain = db.Get(rop, key + "\x2f" + c)
@@ -1466,12 +1464,12 @@ class PocketLeveldbDatabase_new(object):
                 return None
 
             try:
-                tile_entities = db.Get(rop, key + "\x31" + c)
+                tile_entities = db.Get(rop, key + "\x31")
             except RuntimeError:
                 tile_entities = None
 
             try:
-                entities = db.Get(rop, key + "\x32" + c)
+                entities = db.Get(rop, key + "\x32")
             except RuntimeError:
                 entities = None
 
@@ -1639,7 +1637,7 @@ class PocketLeveldbDatabase_new(object):
 
 
 class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
-    Height = 128
+    Height = 256
     Width = 0
     Length = 0
 
@@ -2739,16 +2737,20 @@ class PE1PlusDataContainer:
     def __repr__(self):
         return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
 
-    def __getitem__(self, x, z, y):
-#         if y is None:
-#             data = ''
-#             for i in range(16):
-#                 if i in 
-#         else:
-            subchunk = y / 16
-            if subchunk in self.subchunks:
-                binary_data = self.binary_data[subchunk]
-                return binary_data[x, z, y - (subchunk * 16)]
+    def __getitem__(self, x, z=None, y=None):
+        if z is None and y is None:
+            if len(x) == 3:
+                x, z, y = x
+        if type(x) == numpy.ndarray and type(y) == numpy.ndarray and type(z) == numpy.ndarray:
+            #TODO: make chunk get ndarray paramaters and make it work like inifiniteworld behavior. Can happen when flying really high up. example: renderer.py, lines 1805 and 1810
+            return None
+        if type(x) == slice and type(y) == slice and type(z) == slice:
+            #TODO: make chunk get an array based on slice objects. Can happen when trying to use the Analyze button. example: leveleditor.py, line 704
+            return None
+        subchunk = y / 16
+        if subchunk in self.subchunks:
+            binary_data = self.binary_data[subchunk]
+            return binary_data[x, z, y - (subchunk * 16)]
 
     def __setitem__(self, x, z, y, data):
         subchunk = y / 16
@@ -2764,7 +2766,10 @@ class PE1PlusDataContainer:
         # data: str: data to be added. Must be 4096 bytes long.
         # Does not raise an error if the subchunk already has data.
         # The old data is overriden.
-        if len(data) != self.subdata_length:
+        if len(data) * 2 == self.subdata_length:
+            zero_string = chr(0) + chr(0) + chr(0) + chr(0)
+            data = zero_string + zero_string.join(data[i:i + 4] for i in xrange(0, len(data), 4))
+        elif len(data) != self.subdata_length:
             raise "Data does not match the required %s bytes length: %s bytes"%(self.subdata_length, len(data))
         self.binary_data[y] = numpy.fromstring(data, self.bin_type)
 #         print self.name, self.shape, self.binary_data[y].shape, self.bin_type
@@ -2793,12 +2798,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         if create:
             self.Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks')
-            self.Data = PE1PlusDataContainer(2048, 'uint8', name='Data')
-            self.SkyLight = PE1PlusDataContainer(2048, 'uint8', name='SkyLight')
-            self.BlockLight = PE1PlusDataContainer(2048, 'uint8', name='BlockLight')
-            self.DirtyColumns = PE1PlusDataContainer(2048, 'uint8', name='DirtyColumns')
-            # Is this one relevant?
-            self.GrassColors = PE1PlusDataContainer(1024, 'uint8', name='GrassColor')
+            self.Data = PE1PlusDataContainer(4096, 'uint8', name='Data')
+            self.SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight')
+            self.BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight')
 
             self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
             self.Entities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
@@ -2862,31 +2864,21 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if type(subchunk) != int:
             raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
         if terrain:
-            self.version, terrain = terrain[:1], terrain[1:]
+            self.version, terrain = ord(terrain[:1]), terrain[1:]
             blocks, terrain = terrain[:4096], terrain[4096:]
             data, terrain = terrain[:2048], terrain[2048:]
             skyLight, terrain = terrain[:2048], terrain[2048:]
             blockLight, terrain = terrain[:2048], terrain[2048:]
-#             print "self.Blocks", self.Blocks
-#             print "self.Data", self.Data
-#             print "self.SkyLight", self.SkyLight
-#             print "self.BlockLight", self.BlockLight
-#             print len(blocks)
             self.Blocks.add_data(subchunk, blocks)
-#             print 1
             self.Data.add_data(subchunk, data)
-#             print 2
             self.SkyLight.add_data(subchunk, skyLight)
-#             print 3
             self.BlockLight.add_data(subchunk, blockLight)
-#             print 4
-        if tile_entities:
+        if subchunk == 0 and tile_entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
-            for e in loadNBTCompoundList(tile_entities):
-                self.TileEntities.insert(-1, e)
-        if entities:
-#             print 'loading entities in chunk', cx, cz
+            for tile_entity in loadNBTCompoundList(tile_entities):
+                self.TileEntities.insert(-1, tile_entity)
+        if subchunk == 0 and entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
             Entities = loadNBTCompoundList(entities)
@@ -2925,7 +2917,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 dataArray.shape = (16, 16, 64)
             else:
                 if len(dataArray.data):
-                    dataArray.shape = (16, 16, 8)
+                    dataArray.shape = (16, 16, 16)
                 else:
                     dataArray.shape = (0, 0, 0)
 #             print 'dataArray.shape', dataArray.shape

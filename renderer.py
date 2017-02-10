@@ -1054,11 +1054,11 @@ class ChunkCalculator(object):
                 if bl is None:
                     bl = _null_bl_data
 #                 print bl.shape
-                lights[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = bl
+                lights[1:-1, 1:-1, 1 + i:17 + i] = bl
                 sl = chunk.SkyLight.binary_data[y]
                 if sl is None:
                     sl = _null_sl_data
-                skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = sl
+                skyLight[1:-1, 1:-1, 1 + i:17 + i] = sl
             lights = lights[1:-1, 1:-1, 1:-1]
             skyLight = skyLight[1:-1, 1:-1, 1:-1]
         else:
@@ -1160,43 +1160,43 @@ class ChunkCalculator(object):
                     _fxd_skyLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight.binary_data[y]
                     if _fxd_skyLight is None:
                         _fxd_skyLight = _null_data
-                    fxd_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxd_skyLight
+                    fxd_skyLight[1:-1, 1:-1, 1 + i:17 + i] = _fxd_skyLight
                 if get_fxi_skyLight:
                     _fxi_skyLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight.binary_data[y]
                     if _fxi_skyLight is None:
                         _fxi_skyLight = _null_data
-                    fxi_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxi_skyLight
+                    fxi_skyLight[1:-1, 1:-1, 1 + i:17 + i] = _fxi_skyLight
                 if get_fzd_skyLight:
                     _fzd_skyLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight.binary_data[y]
                     if _fzd_skyLight is None:
                         _fzd_skyLight = _null_data
-                    fzd_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzd_skyLight
+                    fzd_skyLight[1:-1, 1:-1, 1 + i:17 + i] = _fzd_skyLight
                 if get_fzi_skyLight:
                     _fzi_skyLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight.binary_data[y]
                     if _fzi_skyLight is None:
                         _fzi_skyLight = _null_data
-                    fzi_skyLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzi_skyLight
+                    fzi_skyLight[1:-1, 1:-1, 1 + i:17 + i] = _fzi_skyLight
 
                 if get_fxd_blockLight:
                     _fxd_blockLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight.binary_data[y]
                     if _fxd_blockLight is None:
                         _fxd_blockLight = _null_data
-                    fxd_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxd_blockLight
+                    fxd_blockLight[1:-1, 1:-1, 1 + i:17 + i] = _fxd_blockLight
                 if get_fxi_blockLight:
                     _fxi_blockLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight.binary_data[y]
                     if _fxi_blockLight is None:
                         _fxi_blockLight = _null_data
-                    fxi_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fxi_blockLight
+                    fxi_blockLight[1:-1, 1:-1, 1 + i:17 + i] = _fxi_blockLight
                 if get_fzd_blockLight:
                     _fzd_blockLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight.binary_data[y]
                     if _fzd_blockLight is None:
                         _fzd_blockLight = _null_data
-                    fzd_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzd_blockLight
+                    fzd_blockLight[1:-1, 1:-1, 1 + i:17 + i] = _fzd_blockLight
                 if get_fzi_blockLight:
                     _fzi_blockLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight.binary_data[y]
                     if _fzi_blockLight is None:
                         _fzi_blockLight = _null_data
-                    fzi_blockLight[1:-1, 1:-1, 1 + i / 8:9 + i / 8] = _fzi_blockLight
+                    fzi_blockLight[1:-1, 1:-1, 1 + i:17 + i] = _fzi_blockLight
 
 
         else:
@@ -1286,12 +1286,10 @@ class ChunkCalculator(object):
     def computeGeometry(self, chunk, areaBlockMats, facingBlockIndices, areaBlockLights, chunkRenderer, blockRenderers):
 #         print "AAA self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus'", self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus', self.level.gameVersion, getattr(self.level, 'world_version', False)
         if self.level.gameVersion == 'PE' and getattr(self.level, 'world_version', False) == '1.plus':
-            bWidth, bLength, bHeight = chunk.Blocks.shape
-            bHeight = bHeight * 16
-            blocks = numpy.zeros((bWidth + 2, bLength + 2, bHeight + 2), numpy.uint16)
-            dWidth, dLength, dHeight = chunk.Data.shape
+            Width, Length, Height = (16, 16, 256)
+            blocks = numpy.zeros((Width + 2, Length + 2, Height + 2), numpy.uint16)
 #             print chunk.Data.shape
-            blockData = numpy.zeros((dWidth + 2, dLength + 2, dHeight + 2), numpy.uint8)
+            blockData = numpy.zeros((Width + 2, Length + 2, Height + 2), numpy.uint8)
 #             print blockData.shape
             # For each subchunk, we have to add the corresponding binary_data
             # If a subchunk does not exists, fill the corresponding area with zeros
@@ -1308,13 +1306,7 @@ class ChunkCalculator(object):
                 _data = chunk.Data.binary_data[y]
                 if _data is None:
                     _data = _null_d_data
-#                 print len(blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)]), len(_data), _data.shape
-                try:
-                    blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)] = _data
-                except:
-#                     print len(blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)]), len(_data), _data.shape
-                    pass
-#                     blockData[1:-1, 1:-1, 1 + (y / 2):9 + (y / 2)] = _data
+                blockData[1:-1, 1:-1, 1 + i:17 + i] = _data
 
             blocks = blocks[1:-1, 1:-1, 1:-1]
             blockData = blockData[1:-1, 1:-1, 1:-1]
@@ -1790,7 +1782,8 @@ class LowDetailBlockRenderer(BlockRenderer):
         heightMap = ch.HeightMap
 
         heightMap = heightMap[::step, ::step]
-        blocks = blocks[::step, ::step]
+        if type(blocks) == numpy.ndarray:
+            blocks = blocks[::step, ::step]
 
         if 0 in blocks.shape:
             return
