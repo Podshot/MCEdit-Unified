@@ -2448,22 +2448,15 @@ class PocketLeveldbChunk_new(LightedChunk):
         else:
             blocksHeight = 16
             worldHeight = 16
-#         print 'self.Blocks.shape', self.Blocks.shape, len(self.Blocks.data)
-#         print 'self.SkyLight.shape', self.SkyLight.shape, len(self.SkyLight.data)
-#         print 'self.BlockLight.shape', self.BlockLight.shape, len(self.BlockLight.data)
-#         print 'self.Data.shape', self.Data.shape, len(self.Data.data)
+
         if len(self.Blocks.data):
             self.Blocks.shape = (chunkSize, chunkSize, blocksHeight)
-#         print 1
         if len(self.SkyLight.data):
             self.SkyLight.shape = (chunkSize, chunkSize, worldHeight)
-#         print 2
         if len(self.BlockLight.data):
             self.BlockLight.shape = (chunkSize, chunkSize, worldHeight)
-#         print 3
         if len(self.Data.data):
             self.Data.shape = (chunkSize, chunkSize, worldHeight)
-#         print 4
         if self.world_version == 'pre1.0':
             self.DirtyColumns.shape = chunkSize, chunkSize
 
@@ -2969,22 +2962,15 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         else:
             blocksHeight = 16
             worldHeight = 16
-#         print 'self.Blocks.shape', self.Blocks.shape, len(self.Blocks.data)
-#         print 'self.SkyLight.shape', self.SkyLight.shape, len(self.SkyLight.data)
-#         print 'self.BlockLight.shape', self.BlockLight.shape, len(self.BlockLight.data)
-#         print 'self.Data.shape', self.Data.shape, len(self.Data.data)
+
         if len(self.Blocks.data):
             self.Blocks.shape = (chunkSize, chunkSize, blocksHeight)
-#         print 1
         if len(self.SkyLight.data):
             self.SkyLight.shape = (chunkSize, chunkSize, worldHeight)
-#         print 2
         if len(self.BlockLight.data):
             self.BlockLight.shape = (chunkSize, chunkSize, worldHeight)
-#         print 3
         if len(self.Data.data):
             self.Data.shape = (chunkSize, chunkSize, worldHeight)
-#         print 4
         if self.world_version == 'pre1.0':
             self.DirtyColumns.shape = chunkSize, chunkSize
 

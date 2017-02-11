@@ -1560,8 +1560,7 @@ class LowDetailBlockRenderer(BlockRenderer):
         heightMap = ch.HeightMap
 
         heightMap = heightMap[::step, ::step]
-        if type(blocks) == numpy.ndarray:
-            blocks = blocks[::step, ::step]
+        blocks = blocks[::step, ::step]
 
         if 0 in blocks.shape:
             return
