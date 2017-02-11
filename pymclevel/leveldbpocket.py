@@ -1513,9 +1513,13 @@ class PocketLeveldbDatabase_new(object):
         for y in chunk.subchunks:
             c = chr(y)
             ver = chr(chunk.version)
+            chunk._Blocks.update_subchunks()
             blocks = chunk._Blocks.binary_data[y].tostring()
+            chunk._Data.update_subchunks()
             blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
+            chunk._SkyLight.update_subchunks()
             skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
+            chunk._BlockLight.update_subchunks()
             blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
             terrain = ver + blocks + blockData + skyLight + blockLight
 
