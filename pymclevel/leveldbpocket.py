@@ -23,10 +23,12 @@ logger = logging.getLogger(__name__)
 leveldb_available = True
 leveldb_mcpe = None
 
-try:
-    import leveldb as leveldb_mcpe
-except Exception, e:
-    logger.info("Error while trying to import leveldb ({0})".format(e))
+if __builtins__.get('mcenf_levelDBPy', False):
+    
+    try:
+        import leveldb as leveldb_mcpe
+    except Exception, e:
+        logger.info("Error while trying to import leveldb ({0})".format(e))
 
 try:
     if leveldb_mcpe is None:
