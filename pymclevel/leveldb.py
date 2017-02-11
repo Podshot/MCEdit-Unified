@@ -81,6 +81,7 @@ except Exception, e:
     # We may import this module using try/except statement.
     log.error("The binary support for PE 1+ worlds could not be loaded:")
     log.error(e)
+    raise e
 
 
 _ldb.leveldb_filterpolicy_create_bloom.argtypes = [ctypes.c_int]

@@ -11,7 +11,7 @@ from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt
 import numpy
 import struct
-from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData
+from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, unpackNibbleArray, packNibbleArray
 from level import LightedChunk
 from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
@@ -19,18 +19,28 @@ import id_definitions
 
 logger = logging.getLogger(__name__)
 
+# Support for PE 0.9.0 to 1.0.0
 leveldb_available = True
 leveldb_mcpe = None
 try:
     import leveldb_mcpe
     leveldb_mcpe.Options()
 except Exception as e:
-    try:
-        import leveldb as leveldb_mcpe
-    except Exception as e:
-        leveldb_available = False
-        logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
-        leveldb_mcpe = None
+#     try:
+#         import leveldb as leveldb_mcpe
+#     except Exception as e:
+#         leveldb_available = False
+#         logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
+#         leveldb_mcpe = None
+    logger.info("Error while trying to import leveldb_mcpe, starting without PE pre 1 support ({0})".format(e))
+
+# Support for PE 1+
+leveldb1_available = True
+lavaldb = None
+try:
+    import leveldb
+except Exception, e:
+    logger.info("Error while trying to import leveldb, starting without PE 1+ support ({0})".format(e))
 
 #---------------------------------------------------------------------
 # TRACKING ERRORS
@@ -1286,7 +1296,7 @@ class PocketLeveldbChunk_old(LightedChunk):
 # New code for PE 1.0.0
 class PocketLeveldbDatabase_new(object):
     """
-    Not to be confused with leveldb_mcpe.DB
+    Not to be confused with leveldb.DB
     A PocketLeveldbDatabase is an interface around leveldb_mcpe.DB, providing various functions
     to load/write chunk data, and access the level.dat file.
     The leveldb_mcpe.DB object handles the actual leveldb database.
@@ -1304,11 +1314,11 @@ class PocketLeveldbDatabase_new(object):
         """
         if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is None:
-                self._world_db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path), 'db'))
+                self._world_db = self.ldb.DB(self.options, os.path.join(str(self.path), 'db'))
             yield self._world_db
             pass
         else:
-            db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path), 'db'))
+            db = self.ldb.DB(self.options, os.path.join(str(self.path), 'db'))
             yield db
             del db
 
@@ -1324,9 +1334,42 @@ class PocketLeveldbDatabase_new(object):
         if not os.path.exists(path):
             file(path, 'w').close()
 
+# ! # World verion check unactivated for now because of
+# Traceback (most recent call last):
+#   File "<MCEdit-Unified path>/leveleditor.py", line 1187, in loadFile
+#     level = pymclevel.fromFile(filename)
+#   File "<MCEdit-Unified path>/pymclevel/mclevel.py", line 226, in fromFile
+#     return PocketLeveldbWorld(filename)
+#   File "<MCEdit-Unified path>/pymclevel/leveldbpocket.py", line 1747, in __init__
+#     self.worldFile = PocketLeveldbDatabase(filename, create=create, world_version=self.world_version)
+#   File "<MCEdit-Unified path>/pymclevel/leveldbpocket.py", line 1356, in __init__
+#     it.SeekToFirst()
+#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 274, in SeekToFirst
+#     self._impl.SeekToFirst()
+#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 827, in SeekToFirst
+#     self._checkError()
+#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 844, in _checkError
+#     _checkError(error)
+#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 797, in _checkError
+#     raise Error(message)
+# Error: Corruption: corrupted compressed block contents
+
+#         if world_version == '1.plus':
+#             self.options = leveldb.Options()
+#             self.writeOptions = leveldb.WriteOptions()
+#             self.readOptions = leveldb.ReadOptions()
+#             self.ldb = leveldb
+#         else:
+#             self.options = leveldb_mcpe.Options()
+#             self.writeOptions = leveldb_mcpe.WriteOptions()
+#             self.readOptions = leveldb_mcpe.ReadOptions()
+#             self.ldb = leveldb_mcpe
+
         self.options = leveldb_mcpe.Options()
         self.writeOptions = leveldb_mcpe.WriteOptions()
         self.readOptions = leveldb_mcpe.ReadOptions()
+        self.ldb = leveldb_mcpe
+# ! #
 
         if create:
             self.options.create_if_missing = True  # The database will be created once needed first.
@@ -1349,7 +1392,7 @@ class PocketLeveldbDatabase_new(object):
         if needsRepair:
             logger.info("Trying to repair world %s"%path)
             try:
-                leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
+                self.ldb.RepairWrapper(os.path.join(path, 'db'))
             except RuntimeError as err:
                 logger.error("Error while repairing world %s %s"%(path, err))
 
@@ -1466,12 +1509,12 @@ class PocketLeveldbDatabase_new(object):
                 return None
 
             try:
-                tile_entities = db.Get(rop, key + "\x31" + c)
+                tile_entities = db.Get(rop, key + "\x31")
             except RuntimeError:
                 tile_entities = None
 
             try:
-                entities = db.Get(rop, key + "\x32" + c)
+                entities = db.Get(rop, key + "\x32")
             except RuntimeError:
                 entities = None
 
@@ -1639,7 +1682,7 @@ class PocketLeveldbDatabase_new(object):
 
 
 class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
-    Height = 128
+#     Height = 128
     Width = 0
     Length = 0
 
@@ -1721,8 +1764,10 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         # Can we rely on this to know which version of PE was used to create the world?
         if open(os.path.join(filename, 'level.dat')).read(1) == '\x05':
             self.world_version = '1.plus'
+            self.Height = 256
         else:
             self.world_version = 'pre1.0'
+            self.Height = 128
 
         logger.info('PE world verion found: %s', self.world_version)
 
@@ -1876,7 +1921,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
                                                          ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
         ret = []
-        batch = leveldb_mcpe.WriteBatch()
+        batch = self.ldb.WriteBatch()
         for cx, cz in itertools.product(xrange(box.mincx, box.maxcx), xrange(box.mincz, box.maxcz)):
             i += 1
             if self.containsChunk(cx, cz):
@@ -1947,7 +1992,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
 #             print "*** saveInPlaceGen"
             open(dump_fName ,'a').write("*** saveInPlaceGen\n")
         self.saving = True
-        batch = leveldb_mcpe.WriteBatch()
+        batch = self.ldb.WriteBatch()
         dirtyChunkCount = 0
         for c in self.chunksNeedingLighting:
             self.getChunk(*c).genFastLights()
@@ -2725,14 +2770,25 @@ class PocketLeveldbChunkPre1(LightedChunk):
         self._TileEntities = TileEntities
 
 class PE1PlusDataContainer:
-    def __init__(self, subdata_length, bin_type, name='none'):
+    def __init__(self, subdata_length, bin_type, name='none', shape=None, chunk_height=256, bit_shift_indexes=None):
         # subdata_length: int: the length for the underlying numpy objects
         # bin_type: str: the binary data type, like uint8
+        # destination: numpy array class (not instance): destination object to be used by other MCEdit objects as 'chunk.Blocks', or 'chunk.Data'
+        #              If a subchunk does not exists, the corresponding 'destination' aera is filled with zeros
+        #              The 'destination is initialized filled and shaped here.
+        # name: str: the interna name used mainly for debug display
+        # shape: tuple: the subchunk array shape, unused
         self.name = name
         self.subdata_length = subdata_length
         self.bin_type = bin_type
+        self.bit_shift_indexes = bit_shift_indexes
         # the first two argument for the shape always are 16
-        self.shape = (16, 16, subdata_length / (16 * 16))
+        if shape is None:
+            self.shape = (16, 16, subdata_length / (16 * 16))
+        else:
+            self.shape = shape
+        self.destination = numpy.zeros(subdata_length * (chunk_height / 16), bin_type)
+        self.destination.shape = (self.shape[0], self.shape[1], chunk_height)
         self.subchunks = [] # Store here the valid subchunks as ints
         self.binary_data = [None] * 16 # Has to be a numpy arrays. This list is indexed using the subchunks content.
 
@@ -2740,15 +2796,10 @@ class PE1PlusDataContainer:
         return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
 
     def __getitem__(self, x, z, y):
-#         if y is None:
-#             data = ''
-#             for i in range(16):
-#                 if i in 
-#         else:
-            subchunk = y / 16
-            if subchunk in self.subchunks:
-                binary_data = self.binary_data[subchunk]
-                return binary_data[x, z, y - (subchunk * 16)]
+        subchunk = y / 16
+        if subchunk in self.subchunks:
+            binary_data = self.binary_data[subchunk]
+            return binary_data[x, z, y - (subchunk * 16)]
 
     def __setitem__(self, x, z, y, data):
         subchunk = y / 16
@@ -2764,9 +2815,9 @@ class PE1PlusDataContainer:
         # data: str: data to be added. Must be 4096 bytes long.
         # Does not raise an error if the subchunk already has data.
         # The old data is overriden.
+        self.binary_data[y] = numpy.fromstring(data, self.bin_type)
         if len(data) != self.subdata_length:
             raise ValueError("%s: Data does not match the required %s bytes length: %s bytes"%(self.name, self.subdata_length, len(data)))
-        self.binary_data[y] = numpy.fromstring(data, self.bin_type)
 #         print self.name, self.shape, self.binary_data[y].shape, self.bin_type
         try:
             self.binary_data[y].shape = self.shape
@@ -2774,11 +2825,12 @@ class PE1PlusDataContainer:
             a = list(e.args)
             a[0] += '%s %s: Required: %s, got: %s'%(a[0], self.name, self.shape, self.binary_data[y].shape)
             e.args = tuple(a)
+        self.destination[:, :, y * 16:16 + (y * 16)] = self.binary_data[y][:, :, :]
+
 
 class PocketLeveldbChunk1Plus(LightedChunk):
     HeightMap = FakeChunk.HeightMap
 
-    # _Entities = _TileEntities = nbt.TAG_List()
     _Entities = nbt.TAG_List()
     _TileEntities = nbt.TAG_List()
     dirty = False
@@ -2792,22 +2844,24 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if not world_version:
             raise TypeError("Wrong world version sent: %s"%world_version)
         self.world_version = world_version
-#         print 'chunk world version', self.world_version
         self.chunkPosition = (cx, cz)
         self.world = world
 
         if create:
-            self.Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks')
-            self.Data = PE1PlusDataContainer(2048, 'b', name='Data')
-            self.SkyLight = PE1PlusDataContainer(2048, 'b', name='SkyLight')
-            self.BlockLight = PE1PlusDataContainer(2048, 'b', name='BlockLight')
-            self.DirtyColumns = PE1PlusDataContainer(2048, 'uint8', name='DirtyColumns')
-            # Is this one relevant?
-            self.GrassColors = PE1PlusDataContainer(1024, 'uint8', name='GrassColor')
+            self._Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks', chunk_height=self.world.Height)
+            self.Blocks = self._Blocks.destination
+            self._Data = PE1PlusDataContainer(4096, 'uint8', name='Data', bit_shift_indexes=(0,0,0,0))
+            self.Data = self._Data.destination
+            self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight', bit_shift_indexes=(0,0,0,0))
+            self.SkyLight = self._SkyLight.destination
+            self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight', bit_shift_indexes=(0,0,0,0))
+            self.BlockLight = self._BlockLight.destination
 
             self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
             self.Entities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
 
+#=======================================================================
+# Get rid of that, or rework it?
 #         else:
 #             terrain = numpy.fromstring(data[0], dtype='uint8')
 #             if data[1] is not None:
@@ -2862,6 +2916,52 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
 #         self._unpackChunkData()
 #         self.shapeChunkData()
+#=======================================================================
+
+    def half_bytes_to_bytes(self, data, input_shape=(16, 16, 8), output_shape=(16, 16, 16), bin_type='uint8', bit_shift_indexes=(4,4,4,4)):
+        # data: str: data to transform
+        # input_shape: tuple: the shape of 'data', used for transformation
+        # output_shape: tuple: the shape to apply to the data once transformed
+        # bin_type: numpy data type: the data type to apply to 'data'
+        # bit_shift_indexes: tuple of 4 ints: the indexes where to insert zeros during transformation
+        # The input string is converted to a (input_shape[0] * 4, input_shape[1] * 4, 4) array
+        # It is transformed to bits and the size is 'doubled' by adding trailing zeros.
+        # The new object is converted to a new array with a shape of 'output_shape'
+        # THIS STUFF MAY NEED OPTIMIZATION.
+        # It may also possible that numpy itself can permit such operation natively...
+        arr = numpy.fromstring(data, bin_type)
+        bit_arr = numpy.unpackbits(arr)
+        bit_arr.shape = (input_shape[0] * 4, input_shape[1] * 4, 4)
+        new_bit_arr = numpy.insert(bit_arr, bit_shift_indexes, 0, axis=2)
+        new_arr = numpy.packbits(new_bit_arr) #, axis=2)
+        new_arr.shape = output_shape
+        return new_arr
+
+
+#=======================================================================
+#     def bytes_to_half_bytes(data):
+#         # WILL DO THE REVERSE OF half_bytes_to_bytes FOR WORLD SAVING PURPOSE
+#         # data: str
+#         # The input string is converted to a 4*4*4 array
+#         # It is transformed to bits and the size is 'divided by 2' by removing trailing zeros.
+#         # The new object is converted to a new array with a shape of 4*4*2
+#         arr = numpy.fromstring(data, 'uint8')
+#         arr.shape = (4,4,4)
+#         bit_arr = numpy.unpackbits(arr)
+#         bit_arr.shape = (8,8,8)
+#         new_bit_arr = numpy.delete(bit_arr, numpy.s_[4::], 2)
+#         new_bit_arr.shape = (8,8,4)
+#         new_arr = numpy.packbits(new_bit_arr)
+#         new_arr.shape = (4,4,2)
+#         return new_arr
+#      
+#     test_string = 'abcdefghijklmnopqrstuvwxyzABCDEF'
+#      
+#     arr1 = half_bytes_to_bytes(test_string)
+#     arr2 = bytes_to_half_bytes(arr1.tostring())
+#      
+#     # arr2 shall contain the same data than arr1
+#=======================================================================
 
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
         if type(subchunk) != int:
@@ -2872,19 +2972,16 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             data, terrain = terrain[:2048], terrain[2048:]
             skyLight, terrain = terrain[:2048], terrain[2048:]
             blockLight, terrain = terrain[:2048], terrain[2048:]
-#             print "self.Blocks", self.Blocks
-#             print "self.Data", self.Data
-#             print "self.SkyLight", self.SkyLight
-#             print "self.BlockLight", self.BlockLight
-#             print len(blocks)
-            self.Blocks.add_data(subchunk, blocks)
-#             print 1
-            self.Data.add_data(subchunk, data)
-#             print 2
-            self.SkyLight.add_data(subchunk, skyLight)
-#             print 3
-            self.BlockLight.add_data(subchunk, blockLight)
-#             print 4
+
+            # 'Computing' data is needed before sending it to the data holders.
+            self._Blocks.add_data(subchunk, blocks)
+
+            for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
+#                 k.add_data(subchunk, self.half_bytes_to_bytes(v,bit_shift_indexes=k.bit_shift_indexes).tostring())
+                a = numpy.fromstring(v, k.bin_type)
+                a.shape = (16, 16, len(v) / 256)
+                k.add_data(subchunk, unpackNibbleArray(a).tostring())
+
         if tile_entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
@@ -2922,6 +3019,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         """
         Unpacks the terrain data to match mcedit's formatting.
         """
+        print "_unpackChunkData"
         for key in ('SkyLight', 'BlockLight', 'Data'):
 #             print key
             dataArray = getattr(self, key)
@@ -2949,6 +3047,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         Determines the shape of the terrain data.
         :return:
         """
+        print "sahpeChunkData"
         chunkSize = 16
         if self.world_version == 'pre1.0':
             blocksHeight = worldHeight = self.world.Height

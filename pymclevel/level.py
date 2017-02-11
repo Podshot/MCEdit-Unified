@@ -644,20 +644,7 @@ class FakeChunk(ChunkBase):
     def HeightMap(self):
         if hasattr(self, "_heightMap"):
             return self._heightMap
-
-        if getattr(self, 'version', False):
-            blocks = zeros((18, 18, 258), 'uint16')
-            _null_data = zeros(self.Blocks.shape, self.Blocks.bin_type)
-            for i in xrange(0, 256, 16):
-                y = i / 16
-                data = self.Blocks.binary_data[y]
-                if data is None:
-                    data = _null_data
-                blocks[1:-1, 1:-1, 1 + i:17 + i] = data
-            blocks = blocks[1:-1, 1:-1, 1:-1]
-        else:
-            blocks = self.Blocks
-        self._heightMap = computeChunkHeightMap(self.materials, blocks)
+        self._heightMap = computeChunkHeightMap(self.materials, self.Blocks)
         return self._heightMap
 
 
