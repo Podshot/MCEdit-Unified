@@ -1882,7 +1882,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
                                                          ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
         ret = []
-        batch = self.ldb.WriteBatch()
+        batch = leveldb_mcpe.WriteBatch()
         for cx, cz in itertools.product(xrange(box.mincx, box.maxcx), xrange(box.mincz, box.maxcz)):
             i += 1
             if self.containsChunk(cx, cz):
@@ -1953,7 +1953,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
 #             print "*** saveInPlaceGen"
             open(dump_fName ,'a').write("*** saveInPlaceGen\n")
         self.saving = True
-        batch = self.ldb.WriteBatch()
+        batch = leveldb_mcpe.WriteBatch()
         dirtyChunkCount = 0
         for c in self.chunksNeedingLighting:
             self.getChunk(*c).genFastLights()
