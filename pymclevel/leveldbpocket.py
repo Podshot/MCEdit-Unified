@@ -1498,10 +1498,8 @@ class PocketLeveldbDatabase_new(object):
         # Put that in the chunk classes
         key = struct.pack('<i', cx) + struct.pack('<i', cz)
         with self.world_db() as db:
-#             print "--- Loading subchunk %s in chunk %s %s"%(y, cx, cz)
             rop = self.readOptions if readOptions is None else readOptions
             c = chr(y)
-#             print '"\x2f" + c', "\x2f" + repr(c).strip("'")
 
             try:
                 terrain = db.Get(rop, key + "\x2f" + c)
@@ -1682,7 +1680,7 @@ class PocketLeveldbDatabase_new(object):
 
 
 class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
-#     Height = 128
+#     Height = 128 # Let that being defined by the world version
     Width = 0
     Length = 0
 
@@ -2796,6 +2794,7 @@ class PE1PlusDataContainer:
         return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
 
     def __getitem__(self, x, z, y):
+
         subchunk = y / 16
         if subchunk in self.subchunks:
             binary_data = self.binary_data[subchunk]
@@ -2967,7 +2966,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if type(subchunk) != int:
             raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
         if terrain:
-            self.version, terrain = terrain[:1], terrain[1:]
+            self.version, terrain = ord(terrain[:1]), terrain[1:]
             blocks, terrain = terrain[:4096], terrain[4096:]
             data, terrain = terrain[:2048], terrain[2048:]
             skyLight, terrain = terrain[:2048], terrain[2048:]
@@ -2982,13 +2981,12 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 a.shape = (16, 16, len(v) / 256)
                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
 
-        if tile_entities:
+        if subchunk == 0 and tile_entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
-            for e in loadNBTCompoundList(tile_entities):
-                self.TileEntities.insert(-1, e)
-        if entities:
-#             print 'loading entities in chunk', cx, cz
+            for tile_entity in loadNBTCompoundList(tile_entities):
+                self.TileEntities.insert(-1, tile_entity)
+        if subchunk == 0 and entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
             Entities = loadNBTCompoundList(entities)
@@ -3028,7 +3026,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 dataArray.shape = (16, 16, 64)
             else:
                 if len(dataArray.data):
-                    dataArray.shape = (16, 16, 8)
+                    dataArray.shape = (16, 16, 16)
                 else:
                     dataArray.shape = (0, 0, 0)
 #             print 'dataArray.shape', dataArray.shape
