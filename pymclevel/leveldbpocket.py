@@ -22,25 +22,19 @@ logger = logging.getLogger(__name__)
 # Support for PE 0.9.0 to 1.0.0
 leveldb_available = True
 leveldb_mcpe = None
+
 try:
-    import leveldb_mcpe
+    import leveldb as leveldb_mcpe
+except Exception, e:
+    logger.info("Error while trying to import leveldb ({0})".format(e))
+
+try:
+    if leveldb_mcpe is None:
+        import leveldb_mcpe
     leveldb_mcpe.Options()
 except Exception as e:
-#     try:
-#         import leveldb as leveldb_mcpe
-#     except Exception as e:
-#         leveldb_available = False
-#         logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
-#         leveldb_mcpe = None
-    logger.info("Error while trying to import leveldb_mcpe, starting without PE pre 1 support ({0})".format(e))
+    logger.info("Error while trying to import leveldb_mcpe ({0})".format(e))
 
-# Support for PE 1+
-leveldb1_available = True
-lavaldb = None
-try:
-    import leveldb
-except Exception, e:
-    logger.info("Error while trying to import leveldb, starting without PE 1+ support ({0})".format(e))
 
 #---------------------------------------------------------------------
 # TRACKING ERRORS
@@ -1334,42 +1328,11 @@ class PocketLeveldbDatabase_new(object):
         if not os.path.exists(path):
             file(path, 'w').close()
 
-# ! # World verion check unactivated for now because of
-# Traceback (most recent call last):
-#   File "<MCEdit-Unified path>/leveleditor.py", line 1187, in loadFile
-#     level = pymclevel.fromFile(filename)
-#   File "<MCEdit-Unified path>/pymclevel/mclevel.py", line 226, in fromFile
-#     return PocketLeveldbWorld(filename)
-#   File "<MCEdit-Unified path>/pymclevel/leveldbpocket.py", line 1747, in __init__
-#     self.worldFile = PocketLeveldbDatabase(filename, create=create, world_version=self.world_version)
-#   File "<MCEdit-Unified path>/pymclevel/leveldbpocket.py", line 1356, in __init__
-#     it.SeekToFirst()
-#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 274, in SeekToFirst
-#     self._impl.SeekToFirst()
-#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 827, in SeekToFirst
-#     self._checkError()
-#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 844, in _checkError
-#     _checkError(error)
-#   File "<MCEdit-Unified path>/pymclevel/leveldb.py", line 797, in _checkError
-#     raise Error(message)
-# Error: Corruption: corrupted compressed block contents
-
-#         if world_version == '1.plus':
-#             self.options = leveldb.Options()
-#             self.writeOptions = leveldb.WriteOptions()
-#             self.readOptions = leveldb.ReadOptions()
-#             self.ldb = leveldb
-#         else:
-#             self.options = leveldb_mcpe.Options()
-#             self.writeOptions = leveldb_mcpe.WriteOptions()
-#             self.readOptions = leveldb_mcpe.ReadOptions()
-#             self.ldb = leveldb_mcpe
 
         self.options = leveldb_mcpe.Options()
         self.writeOptions = leveldb_mcpe.WriteOptions()
         self.readOptions = leveldb_mcpe.ReadOptions()
         self.ldb = leveldb_mcpe
-# ! #
 
         if create:
             self.options.create_if_missing = True  # The database will be created once needed first.
@@ -2849,11 +2812,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if create:
             self._Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks', chunk_height=self.world.Height)
             self.Blocks = self._Blocks.destination
-            self._Data = PE1PlusDataContainer(4096, 'uint8', name='Data', bit_shift_indexes=(0,0,0,0))
+            self._Data = PE1PlusDataContainer(4096, 'uint8', name='Data', bit_shift_indexes=(0, 0, 0, 0))
             self.Data = self._Data.destination
-            self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight', bit_shift_indexes=(0,0,0,0))
+            self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight', bit_shift_indexes=(0, 0, 0, 0))
             self.SkyLight = self._SkyLight.destination
-            self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight', bit_shift_indexes=(0,0,0,0))
+            self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight', bit_shift_indexes=(0, 0, 0, 0))
             self.BlockLight = self._BlockLight.destination
 
             self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
@@ -2917,51 +2880,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #         self.shapeChunkData()
 #=======================================================================
 
-    def half_bytes_to_bytes(self, data, input_shape=(16, 16, 8), output_shape=(16, 16, 16), bin_type='uint8', bit_shift_indexes=(4,4,4,4)):
-        # data: str: data to transform
-        # input_shape: tuple: the shape of 'data', used for transformation
-        # output_shape: tuple: the shape to apply to the data once transformed
-        # bin_type: numpy data type: the data type to apply to 'data'
-        # bit_shift_indexes: tuple of 4 ints: the indexes where to insert zeros during transformation
-        # The input string is converted to a (input_shape[0] * 4, input_shape[1] * 4, 4) array
-        # It is transformed to bits and the size is 'doubled' by adding trailing zeros.
-        # The new object is converted to a new array with a shape of 'output_shape'
-        # THIS STUFF MAY NEED OPTIMIZATION.
-        # It may also possible that numpy itself can permit such operation natively...
-        arr = numpy.fromstring(data, bin_type)
-        bit_arr = numpy.unpackbits(arr)
-        bit_arr.shape = (input_shape[0] * 4, input_shape[1] * 4, 4)
-        new_bit_arr = numpy.insert(bit_arr, bit_shift_indexes, 0, axis=2)
-        new_arr = numpy.packbits(new_bit_arr) #, axis=2)
-        new_arr.shape = output_shape
-        return new_arr
-
-
-#=======================================================================
-#     def bytes_to_half_bytes(data):
-#         # WILL DO THE REVERSE OF half_bytes_to_bytes FOR WORLD SAVING PURPOSE
-#         # data: str
-#         # The input string is converted to a 4*4*4 array
-#         # It is transformed to bits and the size is 'divided by 2' by removing trailing zeros.
-#         # The new object is converted to a new array with a shape of 4*4*2
-#         arr = numpy.fromstring(data, 'uint8')
-#         arr.shape = (4,4,4)
-#         bit_arr = numpy.unpackbits(arr)
-#         bit_arr.shape = (8,8,8)
-#         new_bit_arr = numpy.delete(bit_arr, numpy.s_[4::], 2)
-#         new_bit_arr.shape = (8,8,4)
-#         new_arr = numpy.packbits(new_bit_arr)
-#         new_arr.shape = (4,4,2)
-#         return new_arr
-#      
-#     test_string = 'abcdefghijklmnopqrstuvwxyzABCDEF'
-#      
-#     arr1 = half_bytes_to_bytes(test_string)
-#     arr2 = bytes_to_half_bytes(arr1.tostring())
-#      
-#     # arr2 shall contain the same data than arr1
-#=======================================================================
-
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
         if type(subchunk) != int:
             raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
@@ -2976,7 +2894,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             self._Blocks.add_data(subchunk, blocks)
 
             for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
-#                 k.add_data(subchunk, self.half_bytes_to_bytes(v,bit_shift_indexes=k.bit_shift_indexes).tostring())
                 a = numpy.fromstring(v, k.bin_type)
                 a.shape = (16, 16, len(v) / 256)
                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
