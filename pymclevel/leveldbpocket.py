@@ -1486,6 +1486,7 @@ class PocketLeveldbDatabase_new(object):
         :param writeOptions: WriteOptions
         :return: None
         """
+#         print '### Saving chunk', chunk.chunkPosition
         cx, cz = chunk.chunkPosition
         key = struct.pack('<i', cx) + struct.pack('<i', cz)
 
@@ -1500,10 +1501,10 @@ class PocketLeveldbDatabase_new(object):
     #             ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
                 id = entity.PocketEntity.getNumId(v)
     #             print id
-                if id >= 1000:
-                    print id
-                    print type(ent)
-                    print ent
+#                 if id >= 1000:
+#                     print id
+#                     print type(ent)
+#                     print ent
                 ent['id'] = nbt.TAG_Int(id)
                 entityData += ent.save(compressed=False)
                 # We have to re-invert after saving otherwise the next save will fail.
@@ -1979,6 +1980,9 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
                     playerData = playerData.save(compressed=False)  # It will get compressed in the DB itself
                     self.worldFile.savePlayer(p, playerData, batch=batch)
 
+#         print 'saveInPlaceGen::writeOptions', self.worldFile.writeOptions.sync
+#         if self.world_version == '1.plus':
+#             self.worldFile.writeOptions.sync = True
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
@@ -2581,8 +2585,25 @@ class PE1PlusDataContainer:
 
     def update_subchunks(self):
         # Auto-updates the existing subchunks data using the 'destination' one
-        for y in self.subchunks:
-            self.binary_data[y][:, :, :] = self.destination[:, :, y * 16:16 + (y * 16)]
+        for y in range(16):
+#             print '*** Updating subchunk', y
+            sub = self.destination[:, :, y * 16:16 + (y * 16)]
+            if sub.any() or self.binary_data[y] is not None:
+#                 if self.binary_data[y] is not None:
+#                     comparison = self.binary_data[y] == sub
+#                     if comparison.all():
+#                         print '    No changes'
+#                         pass
+#                     else:
+# #                         print '*** Updating subchunk', y
+#                         print '    Data changed'
+#                 else:
+# #                     print '*** Updating subchunk', y
+#                     print '    Subchubk does not exists, creating it'
+                self.binary_data[y] = sub
+                if y not in self.subchunks:
+                    self.subchunks.append(y)
+        self.subchunks.sort()
 
 
 class PocketLeveldbChunk1Plus(LightedChunk):
