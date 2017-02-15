@@ -1332,6 +1332,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return shortname
 
     def init_scoreboard(self):
+        '''
+        Creates a scoreboard for the world
+        
+        :return: A scoreboard
+        :rtype: pymclevel.nbt.TAG_Compound()
+        '''
         if os.path.exists(self.worldFolder.getFolderPath("data")):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
                     return nbt.load(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
@@ -1356,6 +1362,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return root_tag
 
     def save_scoreboard(self, score):
+        '''
+        Saves the provided scoreboard
+        
+        :param score: The scoreboard
+        :type score: pymclevel.nbt.TAG_Compound()
+        '''
         score.save(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
 
     def init_player_data(self):
@@ -2106,8 +2118,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         '''
         Sets the specified player's position
         
-        :param (x, y, z): The desired X, Y, Z coordinates for the specified player
-        :type (x, y, z): tuple, or 3 ints
+        :param x: The desired X coordinate
+        :type x: float
+        :param y: The desired Y coordinate
+        :type y: float
+        :param z: The desired Z coordinate
+        :type z: float
         :param player: The UUID of the player
         :type player: str
         '''
@@ -2117,6 +2133,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         playerTag["Pos"] = posList
 
     def getPlayerPosition(self, player="Player"):
+        '''
+        Gets the position for the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The X, Y, Z coordinates of the player
+        :rtype: tuple
+        '''
         playerTag = self.getPlayerTag(player)
         posList = playerTag["Pos"]
 
@@ -2124,10 +2148,25 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return x, y + 1.75, z
 
     def setPlayerOrientation(self, yp, player="Player"):
+        '''
+        Sets the specified player's orientation
+        
+        :param yp: The desired Yaw and Pitch
+        :type yp: tuple or list
+        :param player: The UUID of the player
+        :type player: str
+        '''
         self.getPlayerTag(player)["Rotation"] = nbt.TAG_List([nbt.TAG_Float(p) for p in yp])
 
     def getPlayerOrientation(self, player="Player"):
-        """ returns (yaw, pitch) """
+        '''
+        Gets the orientation of the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The orientation of the player in the format: (yaw, pitch)
+        :rtype: numpy.array
+        '''
         yp = map(lambda x: x.value, self.getPlayerTag(player)["Rotation"])
         y, p = yp
         if p == 0:
@@ -2159,6 +2198,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             playerTag['abilities']['invulnerable'] = nbt.TAG_Byte(0)
 
     def setPlayerGameType(self, gametype, player="Player"):
+        '''
+        Sets the specified player's gametype/gamemode
+        
+        :param gametype: The desired Gametype/Gamemode number
+        :type gametype: int
+        :param player: The UUID of the player
+        :type player: str
+        '''
         playerTag = self.getPlayerTag(player)
         # This annoyingly works differently between single- and multi-player.
         if player == "Player":
@@ -2169,6 +2216,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.setPlayerAbilities(gametype, player)
 
     def getPlayerGameType(self, player="Player"):
+        '''
+        Gets the Gamemode of the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The Gamemode number
+        :rtype: int
+        '''
         if player == "Player":
             return self.GameType
         else:
@@ -2176,6 +2231,13 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return playerTag["playerGameType"].value
 
     def createPlayer(self, playerName):
+        '''
+        ~Deprecated~
+        Creates a player with default values
+        
+        :param playerName: The name of the player
+        :type playerName: str
+        '''
         if playerName == "Player":
             playerTag = self.root_tag["Data"].setdefault(playerName, nbt.TAG_Compound())
         else:
