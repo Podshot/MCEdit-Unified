@@ -17,6 +17,8 @@ from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
 import id_definitions
 
+import traceback
+
 logger = logging.getLogger(__name__)
 
 # Support for PE 0.9.0 to 1.0.0
@@ -28,7 +30,9 @@ if __builtins__.get('mcenf_levelDBPy', False):
     try:
         import leveldb as leveldb_mcpe
     except Exception, e:
-        logger.info("Error while trying to import leveldb ({0})".format(e))
+        trace_msg = traceback.format_exc().splitlines()
+        logger.warn("Error while trying to import leveldb:")
+        [logger.warn(a) for a in trace_msg]
 
 try:
     if leveldb_mcpe is None:

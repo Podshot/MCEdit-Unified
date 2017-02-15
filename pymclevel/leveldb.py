@@ -121,6 +121,9 @@ _ldb.leveldb_options_set_block_size.restype = None
 _ldb.leveldb_options_destroy.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_options_destroy.restype = None
 
+_ldb.leveldb_options_set_compression.argtypes = [ctypes.c_void_p, ctypes.c_int]
+_ldb.leveldb_options_set_compression.restype = None
+
 _ldb.leveldb_open.argtypes = [ctypes.c_void_p, ctypes.c_char_p,
                               ctypes.c_void_p]
 _ldb.leveldb_open.restype = ctypes.c_void_p
@@ -221,7 +224,54 @@ _ldb.leveldb_free.restype = None
 
 Row = namedtuple('Row', 'key value')
 
+#=======================================================================
+#=======================================================================
+# What a silly stuff here...
+# But we need some consistency and compatibility with the code used elsewhere in MCEdit.
+#
+# The fact is some objects here define a 'put' or 'write' method, and we need to use 'Put' or 'Write' ones :/
+# This is due to the current PE support we have.
+# The one implemented here is under development and debugging, so it is considered as a 'new feature'.
+# We need to no break the current support, since it can read and write PE pre 1.0 worlds...
+#
+# This 'DumbyClass' object is used as base object for all other classes in this file until we modify the code
+# either here or everywhere it is needed in MCEdit.
+#
+# THIS IS AN HORRIBLE HACK AND **MUST BE REMOVED AS SOON AS POSSIBLE**! ! !
+#
+#=======================================================================
+class DumbyClass:
+    '''Let define some __getattr_ for the stuff deined in other classes in this module.
+    It is simply return the (un)capitalized method/object of the child class, if the
+    method or object exists.
 
+    THIS IS AN HORRIBLE HACK AND **MUST BE REMOVED AS SOON AS POSSIBLE**! ! !
+    '''
+    def __getattr__(self, attr_name):
+        '''
+        :param: attr_name: string: the 'ttribute' name to look for. Shall *ALWAYS* be a method.
+        * If 'attr_name' is 'foo' and 'foo' is a class/instance method, 'self.foo' is be returned.
+        * If 'self.foo' does not exists, but 'self.Foo' does, 'self.Foo' is returned.
+        * If both 'self.foo' and 'self.Foo' exists, 'self.foo' is returned. If 'attr_name is 'Foo'
+          and both 'self.foo' and 'self.Foo'exists, 'self.Foo' is returned'.
+        * If 'attr_name' is 'bar' and none of 'self.bar' and 'self.Bar' exists, an 'AttributeError'
+          is raised.
+        * If 'attr_name' is 'baz' and 'self.baz' does not exists, but 'self.Baz' exists, 'self.Baz'
+          is returned and a warning is sent to the logging system.
+        '''
+        if hasattr(self, attr_name):
+            return getattr(self, attr_name)
+        elif hasattr(self, attr_name.capitalize()):
+            log.warn("'%s.%s' attribute requested but '%s' returned."(self.__class_, attr_name, attr_name.capitalize()))
+            return getattr(self, attr_name.capitalize())
+        elif hasattr(self, attr_name.lower()):
+            log.warn(''"%s.%s' attribute requested but '%s' returned."(self.__class_, attr_name, attr_name.lower()))
+            return getattr(self, attr_name.lower())
+        else:
+            raise AttributeError("No '%s' or '%s' attribute found for '%s'. ('%s'")
+
+#=======================================================================
+#=======================================================================
 def Options():
     pass
 
@@ -236,7 +286,7 @@ class Error(Exception):
     pass
 
 
-class Iterator(object):
+class Iterator(object, DumbyClass):
     """This class is created by calling __iter__ or iterator on a DB interface
     """
 
@@ -268,9 +318,12 @@ class Iterator(object):
         @return: self
         @rtype: Iter
         """
+#         print 'Iterator.SeekToFirst'
         if self._prefix is not None:
+#             print 'Iterator._prafix'
             self._impl.seek(self._prefix)
         else:
+#             print 'No Iterator._prefix'
             self._impl.SeekToFirst()
         return self
 
@@ -412,7 +465,7 @@ class Iterator(object):
         self._impl.close()
 
 
-class _OpaqueWriteBatch(object):
+class _OpaqueWriteBatch(object, DumbyClass):
     """This is an opaque write batch that must be written to using the putTo
     and deleteFrom methods on DBInterface.
     """
@@ -427,7 +480,7 @@ class _OpaqueWriteBatch(object):
         self._deletes = set()
 
 
-class WriteBatch(_OpaqueWriteBatch):
+class WriteBatch(_OpaqueWriteBatch, DumbyClass):
     """This class is created stand-alone, but then written to some existing
     DBInterface
     """
@@ -445,7 +498,7 @@ class WriteBatch(_OpaqueWriteBatch):
         self._deletes.add(key)
 
 
-class DBInterface(object):
+class DBInterface(object, DumbyClass):
     """This class is created through a few different means:
 
     Initially, it can be created using either the DB() or MemoryDB()
@@ -515,6 +568,7 @@ class DBInterface(object):
         batch._deletes.add(key)
 
     def Get(self, options, key, verify_checksums=None, fill_cache=None):
+#         print 'DBInterface.Get::key'
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
@@ -651,7 +705,7 @@ def MemoryDB(*_args, **kwargs):
     return DBInterface(_MemoryDBImpl(), allow_close=True)
 
 
-class _IteratorMemImpl(object):
+class _IteratorMemImpl(object, DumbyClass):
     __slots__ = ["_data", "_idx"]
 
     def __init__(self, memdb_data):
@@ -687,7 +741,7 @@ class _IteratorMemImpl(object):
         self._idx = -1
 
 
-class _MemoryDBImpl(object):
+class _MemoryDBImpl(object, DumbyClass):
     __slots__ = ["_data", "_lock", "_is_snapshot"]
 
     def __init__(self, data=None, is_snapshot=False):
@@ -764,7 +818,7 @@ class _MemoryDBImpl(object):
             return _MemoryDBImpl(data=self._data[:], is_snapshot=True)
 
 
-class _PointerRef(object):
+class _PointerRef(object, DumbyClass):
     __slots__ = ["ref", "_close", "_referrers", "__weakref__"]
 
     def __init__(self, ref, close_cb):
@@ -797,7 +851,7 @@ def _checkError(error):
         raise Error(message)
 
 
-class _IteratorDbImpl(object):
+class _IteratorDbImpl(object, DumbyClass):
     __slots__ = ["_ref"]
 
     def __init__(self, iterator_ref):
@@ -823,6 +877,11 @@ class _IteratorDbImpl(object):
         self._checkError()
 
     def SeekToFirst(self):
+#         print '_IteratorDbImpl.SeekToFirst'
+#         print '_IteratorDbImpl._ref', self._ref
+#         print dir(self._ref)
+#         print '_IteratorDbImpl._ref.ref', self._ref.ref
+        
         _ldb.leveldb_iter_seek_to_first(self._ref.ref)
         self._checkError()
 
@@ -855,6 +914,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
        default_fill_cache=True):
     """This is the expected way to open a database. Returns a DBInterface.
     """
+#     print "DB::path", path
 
     filter_policy = _PointerRef(
         _ldb.leveldb_filterpolicy_create_bloom(bloom_filter_size),
@@ -864,6 +924,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
         _ldb.leveldb_cache_destroy)
 
     options = _ldb.leveldb_options_create()
+    _ldb.leveldb_options_set_compression(options, 2)
     _ldb.leveldb_options_set_filter_policy(
         options, filter_policy.ref)
     _ldb.leveldb_options_set_create_if_missing(options, create_if_missing)
@@ -875,7 +936,9 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
     _ldb.leveldb_options_set_block_size(options, block_size)
 
     error = ctypes.POINTER(ctypes.c_char)()
-    db = _ldb.leveldb_open(options, path, ctypes.byref(error))
+    db = _ldb.leveldb_open(options, unicode(path), ctypes.byref(error))
+#     print options
+#     print dir(options)
     _ldb.leveldb_options_destroy(options)
     _checkError(error)
 
@@ -889,7 +952,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
                        default_fill_cache=default_fill_cache)
 
 
-class _LevelDBImpl(object):
+class _LevelDBImpl(object), DumbyClass:
     __slots__ = ["_objs", "_db", "_snapshot"]
 
     def __init__(self, db_ref, snapshot_ref=None, other_objects=()):
@@ -928,6 +991,7 @@ class _LevelDBImpl(object):
         _checkError(error)
 
     def Get(self, options, key, verify_checksums=False, fill_cache=True):
+#         print '_LevelDBImpl.Get::key'
         error = ctypes.POINTER(ctypes.c_char)()
         options = _ldb.leveldb_readoptions_create()
         _ldb.leveldb_readoptions_set_verify_checksums(options,
