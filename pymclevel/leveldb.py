@@ -239,39 +239,7 @@ Row = namedtuple('Row', 'key value')
 #
 # THIS IS AN HORRIBLE HACK AND **MUST BE REMOVED AS SOON AS POSSIBLE**! ! !
 #
-#=======================================================================
-class DumbyClass:
-    '''Let define some __getattr_ for the stuff deined in other classes in this module.
-    It is simply return the (un)capitalized method/object of the child class, if the
-    method or object exists.
 
-    THIS IS AN HORRIBLE HACK AND **MUST BE REMOVED AS SOON AS POSSIBLE**! ! !
-    '''
-    def __getattr__(self, attr_name):
-        '''
-        :param: attr_name: string: the 'ttribute' name to look for. Shall *ALWAYS* be a method.
-        * If 'attr_name' is 'foo' and 'foo' is a class/instance method, 'self.foo' is be returned.
-        * If 'self.foo' does not exists, but 'self.Foo' does, 'self.Foo' is returned.
-        * If both 'self.foo' and 'self.Foo' exists, 'self.foo' is returned. If 'attr_name is 'Foo'
-          and both 'self.foo' and 'self.Foo'exists, 'self.Foo' is returned'.
-        * If 'attr_name' is 'bar' and none of 'self.bar' and 'self.Bar' exists, an 'AttributeError'
-          is raised.
-        * If 'attr_name' is 'baz' and 'self.baz' does not exists, but 'self.Baz' exists, 'self.Baz'
-          is returned and a warning is sent to the logging system.
-        '''
-        if hasattr(self, attr_name):
-            return getattr(self, attr_name)
-        elif hasattr(self, attr_name.capitalize()):
-            log.warn("'%s.%s' attribute requested but '%s' returned."(self.__class_, attr_name, attr_name.capitalize()))
-            return getattr(self, attr_name.capitalize())
-        elif hasattr(self, attr_name.lower()):
-            log.warn(''"%s.%s' attribute requested but '%s' returned."(self.__class_, attr_name, attr_name.lower()))
-            return getattr(self, attr_name.lower())
-        else:
-            raise AttributeError("No '%s' or '%s' attribute found for '%s'. ('%s'")
-
-#=======================================================================
-#=======================================================================
 def Options():
     pass
 
@@ -300,6 +268,8 @@ class Iterator(object, DumbyClass):
     def status(self):
         pass
 
+    Status = status
+
     def Valid(self):
         """Returns whether the iterator is valid or not
 
@@ -318,12 +288,9 @@ class Iterator(object, DumbyClass):
         @return: self
         @rtype: Iter
         """
-#         print 'Iterator.SeekToFirst'
         if self._prefix is not None:
-#             print 'Iterator._prafix'
             self._impl.seek(self._prefix)
         else:
-#             print 'No Iterator._prefix'
             self._impl.SeekToFirst()
         return self
 
@@ -370,6 +337,8 @@ class Iterator(object, DumbyClass):
         self._impl.seek(key)
         return self
 
+    Seek = seek
+
     def key(self):
         """Returns the iterator's current key. You should be sure the iterator
         is currently valid first by calling valid()
@@ -381,6 +350,8 @@ class Iterator(object, DumbyClass):
             return key[len(self._prefix):]
         return key
 
+    Key = key
+
     def value(self):
         """Returns the iterator's current value. You should be sure the
         iterator is currently valid first by calling valid()
@@ -388,6 +359,8 @@ class Iterator(object, DumbyClass):
         @rtype: string
         """
         return self._impl.val()
+
+    Value = value
 
     def __iter__(self):
         return self
@@ -432,9 +405,13 @@ class Iterator(object, DumbyClass):
         """Same as Next but does not return any data or check for validity"""
         self._impl.Next()
 
+    StepForward = stepForward
+
     def stepBackward(self):
         """Same as Prev but does not return any data or check for validity"""
         self._impl.Prev()
+
+    StepBackward = stepBackward
 
     def range(self, start_key=None, end_key=None, start_inclusive=True,
               end_inclusive=False):
@@ -451,18 +428,26 @@ class Iterator(object, DumbyClass):
                 break
             yield row
 
+    Range = range
+
     def keys(self):
         while self.Valid():
             yield self.key()
             self.stepForward()
+
+    Keys = keys
 
     def values(self):
         while self.Valid():
             yield self.value()
             self.stepForward()
 
+    Values = values
+
     def close(self):
         self._impl.close()
+
+    Close = close
 
 
 class _OpaqueWriteBatch(object, DumbyClass):
@@ -479,6 +464,8 @@ class _OpaqueWriteBatch(object, DumbyClass):
         self._puts = {}
         self._deletes = set()
 
+    Clear = clear
+
 
 class WriteBatch(_OpaqueWriteBatch, DumbyClass):
     """This class is created stand-alone, but then written to some existing
@@ -493,9 +480,13 @@ class WriteBatch(_OpaqueWriteBatch, DumbyClass):
         self._deletes.discard(key)
         self._puts[key] = val
 
+    Put = put
+
     def delete(self, key):
         self._puts.pop(key, None)
         self._deletes.add(key)
+
+    Delete = delete
 
 
 class DBInterface(object, DumbyClass):
@@ -531,16 +522,22 @@ class DBInterface(object, DumbyClass):
         if self._allow_close:
             self._impl.close()
 
+    Close = close
+
     @staticmethod
     def newBatch():
         return _OpaqueWriteBatch()
 
-    def put(self, key, val, sync=None):
+    NewBatch = newBatch
+
+    def put(self, options, key, val, sync=None):
         if sync is None:
             sync = self._default_sync
         if self._prefix is not None:
             key = self._prefix + key
         self._impl.put(key, val, sync=sync)
+
+    Put = put
 
     # pylint: disable=W0212
     def putTo(self, batch, key, val):
@@ -551,12 +548,16 @@ class DBInterface(object, DumbyClass):
         batch._deletes.discard(key)
         batch._puts[key] = val
 
+    PutTo = putTo
+
     def delete(self, key, sync=None):
         if sync is None:
             sync = self._default_sync
         if self._prefix is not None:
             key = self._prefix + key
         self._impl.delete(key, sync=sync)
+
+    Delete = delete
 
     # pylint: disable=W0212
     def deleteFrom(self, batch, key):
@@ -567,8 +568,9 @@ class DBInterface(object, DumbyClass):
         batch._puts.pop(key, None)
         batch._deletes.add(key)
 
+    DeleteFrom = deleteFrom
+
     def Get(self, options, key, verify_checksums=None, fill_cache=None):
-#         print 'DBInterface.Get::key'
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
@@ -579,7 +581,7 @@ class DBInterface(object, DumbyClass):
                               fill_cache=fill_cache)
 
     # pylint: disable=W0212
-    def write(self, batch, sync=None):
+    def write(self, options, batch, sync=None):
         if sync is None:
             sync = self._default_sync
         if self._prefix is not None and not batch._private:
@@ -590,6 +592,8 @@ class DBInterface(object, DumbyClass):
                 unscoped_batch._deletes.add(self._prefix + key)
             batch = unscoped_batch
         return self._impl.write(batch, sync=sync)
+
+    Write = write
 
     def NewIterator(self, options=None, verify_checksums=None, fill_cache=None, prefix=None,
                  keys_only=False):
@@ -620,6 +624,8 @@ class DBInterface(object, DumbyClass):
                            default_verify_checksums=default_verify_checksums,
                            default_fill_cache=default_fill_cache)
 
+    Snapshot = snapshot
+
     def __iter__(self):
         return self.NewIterator().SeekToFirst()
 
@@ -642,6 +648,8 @@ class DBInterface(object, DumbyClass):
         return self.Get(None, key, verify_checksums=verify_checksums,
                         fill_cache=fill_cache) is not None
 
+    Has = has
+
     def scope(self, prefix, default_sync=None, default_verify_checksums=None,
               default_fill_cache=None):
         if default_sync is None:
@@ -657,6 +665,8 @@ class DBInterface(object, DumbyClass):
                            default_verify_checksums=default_verify_checksums,
                            default_fill_cache=default_fill_cache)
 
+    Scope = scope
+
     def range(self, start_key=None, end_key=None, start_inclusive=True,
               end_inclusive=False, verify_checksums=None, fill_cache=None):
         if verify_checksums is None:
@@ -668,6 +678,8 @@ class DBInterface(object, DumbyClass):
                                                           end_key=end_key, start_inclusive=start_inclusive,
                                                           end_inclusive=end_inclusive)
 
+    Range = range
+
     def keys(self, verify_checksums=None, fill_cache=None, prefix=None):
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
@@ -675,6 +687,8 @@ class DBInterface(object, DumbyClass):
             fill_cache = self._default_fill_cache
         return self.NewIterator(verify_checksums=verify_checksums,
                              fill_cache=fill_cache, prefix=prefix).SeekToFirst().keys()
+
+    Keys = keys
 
     def values(self, verify_checksums=None, fill_cache=None, prefix=None):
         if verify_checksums is None:
@@ -684,11 +698,17 @@ class DBInterface(object, DumbyClass):
         return self.NewIterator(verify_checksums=verify_checksums,
                              fill_cache=fill_cache, prefix=prefix).SeekToFirst().values()
 
+    Values = values
+
     def approximateDiskSizes(self, *ranges):
         return self._impl.approximateDiskSizes(*ranges)
 
+    ApproximateDiskSizes = approximateDiskSizes
+
     def compactRange(self, start_key, end_key):
         return self._impl.compactRange(start_key, end_key)
+
+    CompactRange = compactRange
 
 
 def MemoryDB(*_args, **kwargs):
@@ -718,11 +738,17 @@ class _IteratorMemImpl(object, DumbyClass):
     def key(self):
         return self._data[self._idx][0]
 
+    Key = key
+
     def val(self):
         return self._data[self._idx][1]
 
+    Val = val
+
     def seek(self, key):
         self._idx = bisect.bisect_left(self._data, (key, ""))
+
+    Seek = seek
 
     def SeekToFirst(self):
         self._idx = 0
@@ -740,6 +766,8 @@ class _IteratorMemImpl(object, DumbyClass):
         self._data = []
         self._idx = -1
 
+    Close = close
+
 
 class _MemoryDBImpl(object, DumbyClass):
     __slots__ = ["_data", "_lock", "_is_snapshot"]
@@ -756,7 +784,9 @@ class _MemoryDBImpl(object, DumbyClass):
         with self._lock:
             self._data = []
 
-    def put(self, key, val, **_kwargs):
+    Close = close
+
+    def put(self, options, key, val, **_kwargs):
         if self._is_snapshot:
             raise TypeError("cannot put on leveldb snapshot")
         assert isinstance(key, str)
@@ -768,6 +798,8 @@ class _MemoryDBImpl(object, DumbyClass):
             else:
                 self._data.insert(idx, (key, val))
 
+    Put = put
+
     def delete(self, key, **_kwargs):
         if self._is_snapshot:
             raise TypeError("cannot delete on leveldb snapshot")
@@ -775,6 +807,8 @@ class _MemoryDBImpl(object, DumbyClass):
             idx = bisect.bisect_left(self._data, (key, ""))
             if 0 <= idx < len(self._data) and self._data[idx][0] == key:
                 del self._data[idx]
+
+    Delete = delete
 
     def Get(self, options, key, **_kwargs):
         with self._lock:
@@ -784,7 +818,7 @@ class _MemoryDBImpl(object, DumbyClass):
             return None
 
     # pylint: disable=W0212
-    def write(self, batch, **_kwargs):
+    def write(self, options, batch, **_kwargs):
         if self._is_snapshot:
             raise TypeError("cannot write on leveldb snapshot")
         with self._lock:
@@ -792,6 +826,8 @@ class _MemoryDBImpl(object, DumbyClass):
                 self.put(key, val)
             for key in batch._deletes:
                 self.delete(key)
+
+    Write = write
 
     def NewIterator(self, **_kwargs):
         # WARNING: huge performance hit.
@@ -808,14 +844,20 @@ class _MemoryDBImpl(object, DumbyClass):
             raise TypeError("cannot calculate disk sizes on leveldb snapshot")
         return [0] * len(ranges)
 
+    ApproximateDiskSizes = approximateDiskSizes
+
     def compactRange(self, start_key, end_key):
         pass
+
+    CompactRange = compactRange
 
     def snapshot(self):
         if self._is_snapshot:
             return self
         with self._lock:
             return _MemoryDBImpl(data=self._data[:], is_snapshot=True)
+
+    Snapshot = snapshot
 
 
 class _PointerRef(object, DumbyClass):
@@ -829,6 +871,8 @@ class _PointerRef(object, DumbyClass):
     def addReferrer(self, referrer):
         self._referrers[id(referrer)] = referrer
 
+    AddReferrer = addReferrer
+
     def close(self):
         ref, self.ref = self.ref, None
         close, self._close = self._close, None
@@ -840,6 +884,8 @@ class _PointerRef(object, DumbyClass):
                 referrer.close()
         if ref is not None and close is not None:
             close(ref)
+
+    Close = close
 
     __del__ = close
 
@@ -866,22 +912,23 @@ class _IteratorDbImpl(object, DumbyClass):
         assert bool(val_p)
         return ctypes.string_at(val_p, length.value)
 
+    Key = key
+
     def val(self):
         length = ctypes.c_size_t(0)
         val_p = _ldb.leveldb_iter_value(self._ref.ref, ctypes.byref(length))
         assert bool(val_p)
         return ctypes.string_at(val_p, length.value)
 
+    Val = val
+
     def seek(self, key):
         _ldb.leveldb_iter_seek(self._ref.ref, key, len(key))
         self._checkError()
 
+    Seek = seek
+
     def SeekToFirst(self):
-#         print '_IteratorDbImpl.SeekToFirst'
-#         print '_IteratorDbImpl._ref', self._ref
-#         print dir(self._ref)
-#         print '_IteratorDbImpl._ref.ref', self._ref.ref
-        
         _ldb.leveldb_iter_seek_to_first(self._ref.ref)
         self._checkError()
 
@@ -905,6 +952,8 @@ class _IteratorDbImpl(object, DumbyClass):
     def close(self):
         self._ref.close()
 
+    Close = close
+
 
 def DB(options, path, bloom_filter_size=10, create_if_missing=False,
        error_if_exists=False, paranoid_checks=False,
@@ -914,8 +963,6 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
        default_fill_cache=True):
     """This is the expected way to open a database. Returns a DBInterface.
     """
-#     print "DB::path", path
-
     filter_policy = _PointerRef(
         _ldb.leveldb_filterpolicy_create_bloom(bloom_filter_size),
         _ldb.leveldb_filterpolicy_destroy)
@@ -936,9 +983,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
     _ldb.leveldb_options_set_block_size(options, block_size)
 
     error = ctypes.POINTER(ctypes.c_char)()
-    db = _ldb.leveldb_open(options, unicode(path), ctypes.byref(error))
-#     print options
-#     print dir(options)
+    db = _ldb.leveldb_open(options, path, ctypes.byref(error))
     _ldb.leveldb_options_destroy(options)
     _checkError(error)
 
@@ -968,7 +1013,9 @@ class _LevelDBImpl(object, DumbyClass):
         for obj in objs:
             obj.close()
 
-    def put(self, key, val, sync=False):
+    Close = close
+
+    def put(self, options, key, val, sync=False):
         if self._snapshot is not None:
             raise TypeError("cannot put on leveldb snapshot")
         error = ctypes.POINTER(ctypes.c_char)()
@@ -978,6 +1025,8 @@ class _LevelDBImpl(object, DumbyClass):
                          ctypes.byref(error))
         _ldb.leveldb_writeoptions_destroy(options)
         _checkError(error)
+
+    Put = put
 
     def delete(self, key, sync=False):
         if self._snapshot is not None:
@@ -990,8 +1039,9 @@ class _LevelDBImpl(object, DumbyClass):
         _ldb.leveldb_writeoptions_destroy(options)
         _checkError(error)
 
+    Delete = delete
+
     def Get(self, options, key, verify_checksums=False, fill_cache=True):
-#         print '_LevelDBImpl.Get::key'
         error = ctypes.POINTER(ctypes.c_char)()
         options = _ldb.leveldb_readoptions_create()
         _ldb.leveldb_readoptions_set_verify_checksums(options,
@@ -1012,7 +1062,7 @@ class _LevelDBImpl(object, DumbyClass):
         return val
 
     # pylint: disable=W0212
-    def write(self, batch, sync=False):
+    def write(self, options, batch, sync=False):
         if self._snapshot is not None:
             raise TypeError("cannot delete on leveldb snapshot")
         real_batch = _ldb.leveldb_writebatch_create()
@@ -1029,6 +1079,8 @@ class _LevelDBImpl(object, DumbyClass):
         _ldb.leveldb_writeoptions_destroy(options)
         _ldb.leveldb_writebatch_destroy(real_batch)
         _checkError(error)
+
+    Write = write
 
     def NewIterator(self, options=None, verify_checksums=False, fill_cache=True):
         options = _ldb.leveldb_readoptions_create()
@@ -1063,10 +1115,14 @@ class _LevelDBImpl(object, DumbyClass):
                                        start_lens, end_keys, end_lens, sizes)
         return list(sizes)
 
+    ApproximateDiskSizes = approximateDiskSizes
+
     def compactRange(self, start_key, end_key):
         assert isinstance(start_key, str) and isinstance(end_key, str)
         _ldb.leveldb_compact_range(self._db.ref, start_key, len(start_key),
                                    end_key, len(end_key))
+
+    CompactRange = compactRange
 
     def snapshot(self):
         snapshot_ref = _PointerRef(
@@ -1075,5 +1131,7 @@ class _LevelDBImpl(object, DumbyClass):
         self._db.addReferrer(snapshot_ref)
         return _LevelDBImpl(self._db, snapshot_ref=snapshot_ref,
                             other_objects=self._objs)
+
+    Snapshot = snapshot
 
 log.debug("MCEdit-Unified internal PE 1+ support initialized.")

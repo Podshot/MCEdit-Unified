@@ -749,6 +749,7 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
 
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
+                print 'dirty', chunk.position
                 dirtyChunkCount += 1
                 self.worldFile.saveChunk(chunk, batch=batch)
                 chunk.dirty = False
@@ -1984,9 +1985,6 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
                     playerData = playerData.save(compressed=False)  # It will get compressed in the DB itself
                     self.worldFile.savePlayer(p, playerData, batch=batch)
 
-#         print 'saveInPlaceGen::writeOptions', self.worldFile.writeOptions.sync
-#         if self.world_version == '1.plus':
-#             self.worldFile.writeOptions.sync = True
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
