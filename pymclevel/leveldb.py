@@ -952,7 +952,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
                        default_fill_cache=default_fill_cache)
 
 
-class _LevelDBImpl(object), DumbyClass:
+class _LevelDBImpl(object, DumbyClass):
     __slots__ = ["_objs", "_db", "_snapshot"]
 
     def __init__(self, db_ref, snapshot_ref=None, other_objects=()):
