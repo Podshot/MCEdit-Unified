@@ -578,7 +578,7 @@ class DBInterface(object):
             for key in batch._deletes:
                 unscoped_batch._deletes.add(self._prefix + key)
             batch = unscoped_batch
-        return self._impl.write(batch, sync=sync)
+        return self._impl.write(options, batch, sync=sync)
 
     Write = write
 

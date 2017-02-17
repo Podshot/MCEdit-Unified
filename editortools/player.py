@@ -562,7 +562,7 @@ class PlayerPositionPanel(Panel):
     def selectedPlayer(self):
         if not self.level.oldPlayerFolderFormat:
             player = self.players[self.table.index]
-            if player != "Player (Single Player)" and player != "[No players]":
+            if player != "Player (Single Player)" and player != "[No players]" and player != "~local_player":
                 return self.player_UUID["UUID"][self.table.index]
             else:
                 return player
