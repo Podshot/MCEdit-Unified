@@ -224,27 +224,14 @@ _ldb.leveldb_free.restype = None
 
 Row = namedtuple('Row', 'key value')
 
-#=======================================================================
-#=======================================================================
-# What a silly stuff here...
-# But we need some consistency and compatibility with the code used elsewhere in MCEdit.
-#
-# The fact is some objects here define a 'put' or 'write' method, and we need to use 'Put' or 'Write' ones :/
-# This is due to the current PE support we have.
-# The one implemented here is under development and debugging, so it is considered as a 'new feature'.
-# We need to no break the current support, since it can read and write PE pre 1.0 worlds...
-#
-# This 'DumbyClass' object is used as base object for all other classes in this file until we modify the code
-# either here or everywhere it is needed in MCEdit.
-#
-# THIS IS AN HORRIBLE HACK AND **MUST BE REMOVED AS SOON AS POSSIBLE**! ! !
-#
 
 def Options():
     pass
 
+
 def WriteOptions():
     pass
+
 
 def ReadOptions():
     pass
@@ -254,7 +241,7 @@ class Error(Exception):
     pass
 
 
-class Iterator(object, DumbyClass):
+class Iterator(object):
     """This class is created by calling __iter__ or iterator on a DB interface
     """
 
@@ -450,7 +437,7 @@ class Iterator(object, DumbyClass):
     Close = close
 
 
-class _OpaqueWriteBatch(object, DumbyClass):
+class _OpaqueWriteBatch(object):
     """This is an opaque write batch that must be written to using the putTo
     and deleteFrom methods on DBInterface.
     """
@@ -467,7 +454,7 @@ class _OpaqueWriteBatch(object, DumbyClass):
     Clear = clear
 
 
-class WriteBatch(_OpaqueWriteBatch, DumbyClass):
+class WriteBatch(_OpaqueWriteBatch):
     """This class is created stand-alone, but then written to some existing
     DBInterface
     """
@@ -489,7 +476,7 @@ class WriteBatch(_OpaqueWriteBatch, DumbyClass):
     Delete = delete
 
 
-class DBInterface(object, DumbyClass):
+class DBInterface(object):
     """This class is created through a few different means:
 
     Initially, it can be created using either the DB() or MemoryDB()
@@ -725,7 +712,7 @@ def MemoryDB(*_args, **kwargs):
     return DBInterface(_MemoryDBImpl(), allow_close=True)
 
 
-class _IteratorMemImpl(object, DumbyClass):
+class _IteratorMemImpl(object):
     __slots__ = ["_data", "_idx"]
 
     def __init__(self, memdb_data):
@@ -769,7 +756,7 @@ class _IteratorMemImpl(object, DumbyClass):
     Close = close
 
 
-class _MemoryDBImpl(object, DumbyClass):
+class _MemoryDBImpl(object):
     __slots__ = ["_data", "_lock", "_is_snapshot"]
 
     def __init__(self, data=None, is_snapshot=False):
@@ -860,7 +847,7 @@ class _MemoryDBImpl(object, DumbyClass):
     Snapshot = snapshot
 
 
-class _PointerRef(object, DumbyClass):
+class _PointerRef(object):
     __slots__ = ["ref", "_close", "_referrers", "__weakref__"]
 
     def __init__(self, ref, close_cb):
@@ -897,7 +884,7 @@ def _checkError(error):
         raise Error(message)
 
 
-class _IteratorDbImpl(object, DumbyClass):
+class _IteratorDbImpl(object):
     __slots__ = ["_ref"]
 
     def __init__(self, iterator_ref):
@@ -997,7 +984,7 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
                        default_fill_cache=default_fill_cache)
 
 
-class _LevelDBImpl(object, DumbyClass):
+class _LevelDBImpl(object):
     __slots__ = ["_objs", "_db", "_snapshot"]
 
     def __init__(self, db_ref, snapshot_ref=None, other_objects=()):
