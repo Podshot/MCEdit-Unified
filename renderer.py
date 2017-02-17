@@ -227,6 +227,7 @@ from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 from pymclevel.materials import alphaMaterials
 import sys
 from config import config
+import cProfile
 # import time
 
 
@@ -479,14 +480,14 @@ def rotateTemplate(template, x=0, y=0):
     TODO: Add ability for multiples of 45
     """
     template = template.copy()
-    for _ in range(0, x, 90):
+    for _ in xrange(0, x, 90):
         # y -> -z and z -> y
         template[..., (1, 2)] = template[..., (2, 1)]
         template[..., 2] -= 0.5
         template[..., 2] *= -1
         template[..., 2] += 0.5
 
-    for _ in range(0, y, 90):
+    for _ in xrange(0, y, 90):
         # z -> -x and x -> z
         template[..., (0, 2)] = template[..., (2, 0)]
         template[..., 0] -= 0.5
@@ -528,9 +529,9 @@ def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
             print "Data: " + str(data)
             print "Block Mask: " + str(blockData[mask])
             print "Supplied Mask: " + str(dataMask)
-        for i in range(elements):
+        for i in xrange(elements):
             vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
-            for indicies in range(3):
+            for indicies in xrange(3):
                 dimension = (0, 2, 1)[indicies]
 
                 vertexArray[..., indicies] = blockIndices[dimension][:, numpy.newaxis,
@@ -606,7 +607,7 @@ def createPrecomputedVertices():
     zArray = numpy.arange(16)[numpy.newaxis, :, numpy.newaxis, numpy.newaxis]
     yArray = numpy.arange(height)[numpy.newaxis, numpy.newaxis, :, numpy.newaxis]
 
-    for dir in range(len(faceVertexTemplates)):
+    for dir in xrange(len(faceVertexTemplates)):
         precomputedVertices[dir][_XYZ][..., 0] = xArray
         precomputedVertices[dir][_XYZ][..., 1] = yArray
         precomputedVertices[dir][_XYZ][..., 2] = zArray
@@ -1121,7 +1122,7 @@ class ChunkCalculator(object):
         sx = sz = slice(0, 16)
         asx = asz = slice(0, 18)
 
-        for y in range(0, chunk.world.Height, 16):
+        for y in xrange(0, chunk.world.Height, 16):
             sy = slice(y, y + 16)
             asy = slice(y, y + 18)
 
@@ -1971,7 +1972,7 @@ class TorchBlockRenderer(BlockRenderer):
         texes = texMap(blocks[blockIndices], blockData[blockIndices])
         yield
         arrays = []
-        for direction in range(6):
+        for direction in xrange(6):
             vertexArray = self.makeTemplate(direction, blockIndices)
             if not len(vertexArray):
                 return
@@ -2828,7 +2829,7 @@ class FenceGateBlockRenderer(BlockRenderer):
 
         # closed gate
         vertexArray = numpy.zeros((len(closedGateIndices[0]), 6, 4, 6), dtype='float32')
-        for indicies in range(3):
+        for indicies in xrange(3):
             dimension = (0, 2, 1)[indicies]
 
             vertexArray[..., indicies] = closedGateIndices[dimension][:, numpy.newaxis,
@@ -2847,9 +2848,9 @@ class FenceGateBlockRenderer(BlockRenderer):
         self.vertexArrays = [vertexArray]
 
         # open gate
-        for i in range(2):
+        for i in xrange(2):
             vertexArray = numpy.zeros((len(openGateIndices[0]), 6, 4, 6), dtype='float32')
-            for indicies in range(3):
+            for indicies in xrange(3):
                 dimension = (0, 2, 1)[indicies]
 
                 vertexArray[..., indicies] = openGateIndices[dimension][:, numpy.newaxis,
@@ -2907,7 +2908,7 @@ class StairBlockRenderer(BlockRenderer):
 
         for _ in ("slab", "step"):
             vertexArray = numpy.zeros((len(x), 6, 4, 6), dtype='float32')
-            for i in range(3):
+            for i in xrange(3):
                 vertexArray[_XYZ][..., i] = (x, y, z)[i][:, numpy.newaxis, numpy.newaxis]
 
             if _ == "step":
@@ -3286,11 +3287,19 @@ class MCRenderer(object):
         self.loadableChunkMarkers.invalidate()
 
         if level:
+            #pr_cc = cProfile.Profile()
+            #pr_cc.enable()
             self.chunkCalculator = self.calculatorClass(self.level)
+            #pr_cc.disable()
+            #pr_cc.dump_stats("chunk_calc.prof")
 
             self.oldPosition = None
-
+            
+        #pr_ln = cProfile.Profile()
+        #pr_ln.enable()
         self.loadNearbyChunks()
+        #pr_ln.disable()
+        #pr_ln.dump_stats("load_nearby.prof")
 
     position = (0, 0, 0)
 
@@ -3316,11 +3325,11 @@ class MCRenderer(object):
         step = dir = 1
 
         while True:
-            for i in range(step):
+            for i in xrange(step):
                 cx += dir
                 yield (cx, cz)
 
-            for i in range(step):
+            for i in xrange(step):
                 cz += dir
                 yield (cx, cz)
 
@@ -3917,7 +3926,7 @@ def rendermain():
 
     framestart = datetime.now()
     frames = 200
-    for i in range(frames):
+    for i in xrange(frames):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         renderer.draw()
         pygame.display.flip()

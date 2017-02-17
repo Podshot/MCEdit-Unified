@@ -550,7 +550,7 @@ cdef void swab(void * vbuf, int nbytes):
         return
     cdef unsigned char * buf = <unsigned char *> vbuf
     cdef int i
-    for i in range((nbytes+1)/2):
+    for i in xrange((nbytes+1)/2):
         buf[i], buf[nbytes - i -1] = buf[nbytes - i - 1], buf[i]
 
 
@@ -707,7 +707,7 @@ cdef load_list(load_ctx ctx):
     cdef _TAG_List tag = TAG_List(list_type=list_type)
     cdef list val = tag.value
     cdef int i
-    for i in range(length):
+    for i in xrange(length):
         PyList_Append(val, load_tag(list_type, ctx))
 
     return tag
@@ -822,7 +822,7 @@ cdef load_tag(char tagID, load_ctx ctx):
 
 
 def hexdump(src, length=8):
-    FILTER=''.join([(len(repr(chr(x)))==3) and chr(x) or '.' for x in range(256)])
+    FILTER=''.join([(len(repr(chr(x)))==3) and chr(x) or '.' for x in xrange(256)])
     N=0
     result=''
     while src:

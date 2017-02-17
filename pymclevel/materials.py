@@ -212,9 +212,9 @@ class MCMaterials(object):
         self.blockTextures = zeros((id_limit, 16, 6, 2), dtype='uint16')
         # Sets the array size for terrain.png
         self.blockTextures[:] = self.defaultTexture
-        self.names = [[defaultName] * 16 for _ in range(id_limit)]
-        self.aka = [[""] * 16 for _ in range(id_limit)]
-        self.search = [[""] * 16 for _ in range(id_limit)]
+        self.names = [[defaultName] * 16 for _ in xrange(id_limit)]
+        self.aka = [[""] * 16 for _ in xrange(id_limit)]
+        self.search = [[""] * 16 for _ in xrange(id_limit)]
 
         self.type = [["NORMAL"] * 16] * id_limit
         self.blocksByType = defaultdict(list)
@@ -433,7 +433,7 @@ class MCMaterials(object):
                 texture[:] = [texture[r] for r in rot]
 
             for data, direction in tex_direction_data.items():
-                for _i in range(texDirMap.get(direction, 0)):
+                for _i in xrange(texDirMap.get(direction, 0)):
                     rot90cw()
                 self.blockTextures[blockID][int(data)] = texture
 
@@ -1135,7 +1135,7 @@ def printStaticDefs(name, file_name=None):
         id_max = max(mats_ids)
         msg += "\n\nLowest ID: %s\nHighest ID: %s\n"%(id_min, id_max)
         missing_ids = []
-        for i in range(id_min, id_max + 1):
+        for i in xrange(id_min, id_max + 1):
             if i not in mats_ids:
                 missing_ids.append(i)
         if missing_ids:

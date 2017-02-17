@@ -583,7 +583,7 @@ class MCSchematic(EntityLevel):
         root_tag = nbt.TAG_Compound()
         invTag = nbt.TAG_List()
         root_tag["Inventory"] = invTag
-        for slot in range(9, 36):
+        for slot in xrange(9, 36):
             itemTag = nbt.TAG_Compound()
             itemTag["Slot"] = nbt.TAG_Byte(slot)
             itemTag["Count"] = nbt.TAG_Byte(count)
@@ -863,7 +863,7 @@ class StructureNBT(object):
         return (self._palette[index]["Name"], self._palette[index].get("Properties", {}))
             
     def get_palette_index(self, name, properties=None):  # TODO: Switch to string comparison of properties, instead of dict comparison
-        for i in range(len(self._palette)):
+        for i in xrange(len(self._palette)):
             if self._palette[i]["Name"] == name:
                 if properties and "Properties" in self._palette[i]:
                     for (key, value) in properties.iteritems():
@@ -875,7 +875,7 @@ class StructureNBT(object):
         return -1
         
     def _find_air(self):
-        for i in range(len(self._palette)):
+        for i in xrange(len(self._palette)):
             if self._palette[i]["Name"] == "minecraft:air":
                 return i
         return -1
@@ -907,9 +907,9 @@ class StructureNBT(object):
                                              )
         
         blockstate_api = BlockstateAPI.material_map.get(self._mat, BlockstateAPI.material_map[alphaMaterials])
-        for z in range(self._blocks.shape[2]):  # For some reason, ndenumerate() didn't work, but this does
-            for x in range(self._blocks.shape[0]):
-                for y in range(self._blocks.shape[1]):
+        for z in xrange(self._blocks.shape[2]):  # For some reason, ndenumerate() didn't work, but this does
+            for x in xrange(self._blocks.shape[0]):
+                for y in xrange(self._blocks.shape[1]):
                     
                     value = self._blocks[x, y, z]
                     name, properties = blockstate_api.idToBlockstate(*value)

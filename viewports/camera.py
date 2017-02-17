@@ -866,7 +866,7 @@ class CameraViewport(GLViewport):
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
-        linekeys = ["Text" + str(i) for i in range(1, 5)]
+        linekeys = ["Text" + str(i) for i in xrange(1, 5)]
 
         # From version 1.8, signs accept Json format.
         # 1.9 does no more support the old raw string fomat.
@@ -1713,10 +1713,10 @@ class CameraViewport(GLViewport):
         lines = []
         minz = minx = -256
         maxz = maxx = 256
-        for x in range(minx, maxx + 1, 16):
+        for x in xrange(minx, maxx + 1, 16):
             lines.append((x, 0, minz))
             lines.append((x, 0, maxz))
-        for z in range(minz, maxz + 1, 16):
+        for z in xrange(minz, maxz + 1, 16):
             lines.append((minx, 0, z))
             lines.append((maxx, 0, z))
 

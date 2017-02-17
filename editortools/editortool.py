@@ -170,7 +170,7 @@ class EditorTool(object):
         #        glColor(1.0, 1.0, 0.0, 1.0)
         #        glBegin(GL_POINTS)
 
-        for dim in range(3):
+        for dim in xrange(3):
             dim1 = dim + 1
             dim2 = dim + 2
             dim1 %= 3
@@ -261,7 +261,7 @@ class EditorTool(object):
 
         p1, p2 = list(p1), list(p2)
         # d = [(a-b) for a,b in zip(p1,p2)]
-        for i in range(3):
+        for i in xrange(3):
             if p1[i] > p2[i]:
                 t = p2[i]
                 p2[i] = p1[i]

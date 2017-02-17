@@ -152,7 +152,7 @@ if __name__ == '__main__':
     domain = range(5)
     from random import choice
 
-    for i in range(1000):
+    for i in xrange(1000):
         r = f_lru(choice(domain), choice(domain))
 
     print(f_lru.hits, f_lru.misses)
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     domain = range(5)
     from random import choice
 
-    for i in range(1000):
+    for i in xrange(1000):
         r = f_lfu(choice(domain), choice(domain))
 
     print(f_lfu.hits, f_lfu.misses)

@@ -677,7 +677,7 @@ class ChunkedLevelMixin(MCLevel):
 
             work = 0
 
-            for i in range(14):
+            for i in xrange(14):
                 if len(newDirtyChunks) == 0:
                     workTotal -= len(startingDirtyChunks) * (14 - i)
                     break
@@ -1504,7 +1504,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return s
 
-    dirhashes = [_dirhash(n) for n in range(64)]
+    dirhashes = [_dirhash(n) for n in xrange(64)]
 
     def _oldChunkFilename(self, cx, cz):
         return self.worldFolder.getFilePath(
@@ -2255,8 +2255,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         playerTag["Inventory"] = nbt.TAG_List()
 
-        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in range(3)])
-        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in range(3)])
+        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in xrange(3)])
+        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in xrange(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
         if playerName != "Player":

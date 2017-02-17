@@ -402,7 +402,7 @@ class MCServerChunkGenerator(object):
 
                     simSeconds = max(8, int(duration) + 1)
 
-                    for i in range(simSeconds):
+                    for i in xrange(simSeconds):
                         # process tile ticks
                         yield "%2d/%2d: Simulating the world for a little bit..." % (i, simSeconds)
                         time.sleep(1)

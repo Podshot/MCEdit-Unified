@@ -407,7 +407,7 @@ class MCEdit(GLViewport):
 
     def recentWorlds(self):
         worlds = []
-        for i in range(self.numRecentWorlds):
+        for i in xrange(self.numRecentWorlds):
             if config.config.has_option("Recent Worlds", str(i)):
                 try:
                     filename = (config.config.get("Recent Worlds", str(i)).decode('utf-8'))

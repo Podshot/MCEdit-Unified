@@ -150,7 +150,7 @@ class HalfSlab:
     blocktypes = [b.ID for b in alphaMaterials.AllSlabs]
 
 HalfSlab.flipVertical = arange(16, dtype='uint8')
-for i in range(8):
+for i in xrange(8):
     HalfSlab.flipVertical[i] = i + 8
     HalfSlab.flipVertical[i + 8] = i
 rotationClasses.append(HalfSlab)

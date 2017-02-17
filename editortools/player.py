@@ -217,11 +217,11 @@ class PlayerAddOperation(Operation):
 
         playerTag["Inventory"] = nbt.TAG_List()
 
-        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in range(3)])
+        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in xrange(3)])
         spawn = self.level.playerSpawnPosition()
         spawnX = spawn[0]
         spawnZ = spawn[2]
-        blocks = [self.level.blockAt(spawnX, i, spawnZ) for i in range(self.level.Height)]
+        blocks = [self.level.blockAt(spawnX, i, spawnZ) for i in xrange(self.level.Height)]
         i = self.level.Height
         done = False
         for index, b in enumerate(reversed(blocks)):
@@ -229,7 +229,7 @@ class PlayerAddOperation(Operation):
                 i = index
                 done = True
         spawnY = self.level.Height - i
-        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([spawnX, spawnY, spawnZ][i]) for i in range(3)])
+        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([spawnX, spawnY, spawnZ][i]) for i in xrange(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
         return playerTag
@@ -361,7 +361,7 @@ def okayAt63(level, pos):
 
 def okayAboveSpawn(level, pos):
     """3 blocks above spawn must be open"""
-    return not any([level.blockAt(pos[0], pos[1] + i, pos[2]) for i in range(1, 4)])
+    return not any([level.blockAt(pos[0], pos[1] + i, pos[2]) for i in xrange(1, 4)])
 
 
 def positionValid(level, pos):
@@ -1134,7 +1134,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                             pos = lpos
                             status += _("Spawn point shifted down by one block.\n")
                     if not okayAboveSpawn(level, pos):
-                        for i in range(1, 4):
+                        for i in xrange(1, 4):
                             level.setBlockAt(pos[0], pos[1] + i, pos[2], 0)
 
                             status += _("Blocks above spawn point cleared.\n")

@@ -128,7 +128,7 @@ class BlockCopyOperation(Operation):
 
         blocksToCopy = None
         if not (self.copyAir and self.copyWater):
-            blocksToCopy = range(pymclevel.materials.id_limit)
+            blocksToCopy = xrange(pymclevel.materials.id_limit)
             if not self.copyAir:
                 blocksToCopy.remove(0)
             if not self.copyWater:
@@ -158,7 +158,7 @@ class CloneOperation(Operation):
         else:
             delta = (0, 0, 0)
 
-        for i in range(repeatCount):
+        for i in xrange(repeatCount):
             op = BlockCopyOperation(editor, sourceLevel, sourceBox, destLevel, destPoint, copyAir, copyWater,
                                     copyBiomes, staticCommands, moveSpawnerPos, regenerateUUID)
             dirty = op.dirtyBox()
@@ -784,7 +784,7 @@ class CloneTool(EditorTool):
             if self.draggingFace is not None:
                 o = list(self.draggingOrigin())
                 s = list(box.size)
-                for i in range(3):
+                for i in xrange(3):
                     if i == self.draggingFace >> 1:
                         continue
                     o[i] -= 1000
@@ -823,7 +823,7 @@ class CloneTool(EditorTool):
         # it's not really sensible to repeat a crane because the origin point is literally out of this world.
         delta = box.origin - self.selectionBox().origin
 
-        for i in range(self.repeatCount):
+        for i in xrange(self.repeatCount):
             self.editor.drawConstructionCube(box, color)
             box = BoundingBox(box.origin + delta, box.size)
 
@@ -854,7 +854,7 @@ class CloneTool(EditorTool):
         if self.canRotateLevel:
             self.rotation += amount
             self.rotation &= 0x3
-            for i in range(amount & 0x3):
+            for i in xrange(amount & 0x3):
                 if blocksOnly:
                     self.level.rotateLeftBlocks()
                 else:
@@ -865,7 +865,7 @@ class CloneTool(EditorTool):
     @alertException
     def roll(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
-            for i in range(amount & 0x3):
+            for i in xrange(amount & 0x3):
                 if blocksOnly:
                     self.level.rollBlocks()
                 else:
@@ -876,7 +876,7 @@ class CloneTool(EditorTool):
     @alertException
     def flip(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
-            for i in range(amount & 0x1):
+            for i in xrange(amount & 0x1):
                 if blocksOnly:
                     self.level.flipVerticalBlocks()
                 else:
@@ -1181,7 +1181,7 @@ class ConstructionTool(CloneTool):
 
     def createTestBoard(self, anyBlock=True):
         if anyBlock:
-            allBlocks = [self.editor.level.materials[a, b] for a in range(256) for b in range(16)]
+            allBlocks = [self.editor.level.materials[a, b] for a in xrange(256) for b in xrange(16)]
             blockWidth = 64
         else:
             allBlocks = self.editor.level.materials.allBlocks

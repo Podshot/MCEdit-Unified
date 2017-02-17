@@ -33,7 +33,7 @@ def bresenham(p1, p2):
     otherAxes.remove(longestAxis)
     p = [x, y, z]
     sp = [sx, sy, sz]
-    for i in range(0, int(dl[longestAxis])):
+    for i in xrange(0, int(dl[longestAxis])):
         coords.append(tuple(p))
         for j in otherAxes:
 

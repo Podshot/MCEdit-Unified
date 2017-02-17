@@ -538,14 +538,14 @@ class Tree(Column):
         m = self.column_margin
         d = 2 * m
         x = 0
-        for i in range(0,2):
+        for i in xrange(0,2):
             if i < 1:
                 width = self.width
                 data = row_data[i]
                 yield i, x + m, width - d, None, data
                 x += width
         if self.show_fields:
-            for i in range(len(row_data[2])):
+            for i in xrange(len(row_data[2])):
                 width = 50 * (i + 1)
                 data = row_data[2][i]
                 if type(data) != (str, unicode):

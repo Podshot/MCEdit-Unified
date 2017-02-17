@@ -254,7 +254,7 @@ class MCRegionFile(object):
             try:
                 runStart = self.freeSectors.index(True)
 
-                for i in range(runStart, len(self.freeSectors)):
+                for i in xrange(runStart, len(self.freeSectors)):
                     if runLength:
                         if self.freeSectors[i]:
                             runLength += 1

@@ -465,7 +465,7 @@ class TAG_List(TAG_Value, collections.MutableSequence):
         (list_length,) = TAG_Int.fmt.unpack_from(ctx.data, ctx.offset)
         ctx.offset += TAG_Int.fmt.size
 
-        for i in range(list_length):
+        for i in xrange(list_length):
             tag = tag_classes[self.list_type].load_from(ctx)
             self.append(tag)
 

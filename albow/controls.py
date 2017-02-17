@@ -109,7 +109,7 @@ class Label(Widget):
     def calc_size(self):
         lines = self._text.split("\n")
         tw, th = 0, 0
-        for i in range(len(lines)):
+        for i in xrange(len(lines)):
             line = lines[i]
             if i == len(lines) - 1:
                 w, h = self.font.size(line)

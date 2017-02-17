@@ -88,7 +88,7 @@ def getSlices(box, height):
     miny = max(0, box.miny)
     maxy = min(height, box.maxy)
 
-    for cx in range(box.mincx, box.maxcx):
+    for cx in xrange(box.mincx, box.maxcx):
         localMinX = 0
         localMaxX = 16
         if cx == box.mincx:
@@ -98,7 +98,7 @@ def getSlices(box, height):
             localMaxX = maxxoff
         newMinX = localMinX + (cx << 4) - box.minx
 
-        for cz in range(box.mincz, box.maxcz):
+        for cz in xrange(box.mincz, box.maxcz):
             localMinZ = 0
             localMaxZ = 16
             if cz == box.mincz:

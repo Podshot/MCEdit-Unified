@@ -229,7 +229,7 @@ class LevelEditor(GLViewport):
             self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
         if self.renderer.viewDistance not in range(2,32,2):
             self.renderer.viewDistance = 8
-        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in range(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
+        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in xrange(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
         self.viewDistanceReadout.shrink_wrap()
 
@@ -603,7 +603,7 @@ class LevelEditor(GLViewport):
             return p
 
         page = []
-        for i in range(len(self.copyStack)):
+        for i in xrange(len(self.copyStack)):
             sch = self.copyStack[i]
             p = createOneCopyPanel(sch, i)
             if self.netherPanel is None:
@@ -637,7 +637,7 @@ class LevelEditor(GLViewport):
             else:
                 return
             self.currentCopyPage = m(*a)
-            for i in range(len(this.pages)):
+            for i in xrange(len(this.pages)):
                 page = this.pages[i]
                 if i == self.currentCopyPage:
                     page.visible = True
@@ -1112,7 +1112,7 @@ class LevelEditor(GLViewport):
                               GL.GL_TEXTURE_MAX_LEVEL,
                               maxLevel - 1)
 
-            for lev in range(maxLevel):
+            for lev in xrange(maxLevel):
                 step = 1 << lev
                 if lev:
                     teximage[::16] = 0xff
@@ -3465,7 +3465,7 @@ class EditorToolbar(GLOrtho):
 
         GL.glDrawArrays(GL.GL_QUADS, 0, 4)
 
-        for i in range(len(self.tools)):
+        for i in xrange(len(self.tools)):
             tool = self.tools[i]
             if tool.toolIconName is None:
                 continue
@@ -3556,7 +3556,7 @@ class EditorToolbar(GLOrtho):
 
         redOutBoxes = numpy.zeros(9 * 4 * 2, dtype='float32')
         cursor = 0
-        for i in range(len(self.tools)):
+        for i in xrange(len(self.tools)):
             t = self.tools[i]
             if t.toolEnabled():
                 continue

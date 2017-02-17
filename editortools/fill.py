@@ -252,7 +252,7 @@ class FillTool(EditorTool):
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
-                    for i in range(16):
+                    for i in xrange(16):
                         blocksToReplace.append(self.editor.level.materials.blockWithID(self.blockInfo.ID, i))
                 else:
                     blocksToReplace = [self.blockInfo]

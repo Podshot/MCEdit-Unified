@@ -625,7 +625,7 @@ class SelectionTool(EditorTool):
                     first = self.topRightPoint
                     isFirst = False
                 second = []
-                for i in range(3):
+                for i in xrange(3):
                     if o[i] == first[i]:
                         second.append(m[i])
                     else:
@@ -894,7 +894,7 @@ class SelectionTool(EditorTool):
                             size = [s - off * 2 for s, off in zip(box.size, offs)]
 
                             cv = self.editor.mainViewport.cameraVector
-                            for i in range(3):
+                            for i in xrange(3):
                                 if cv[i] > 0:
                                     origin[i] -= offs[i]
                                     size[i] += offs[i]

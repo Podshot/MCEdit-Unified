@@ -151,7 +151,7 @@ def compound(char, string, pair=None):
     if (name not in enRes.keys() and name not in langRes.values()) and (name not in enMisc.keys() and name not in langMisc.values()):
         addMissing(name)
     head = langRes.get(enRes.get(name, name), name)
-    for i in range(len(misc)):
+    for i in xrange(len(misc)):
         if ' ' in misc[i]:
             if langMisc.get(enMisc.get(misc[i], False), False):
                 misc[i] = langMisc.get(enMisc.get(misc[i], misc[i]), misc[i])
@@ -159,7 +159,7 @@ def compound(char, string, pair=None):
                 misc[i] = langRes.get(enRes.get(misc[i], misc[i]), misc[i])
             else:
                 stop = [False, False]
-                for j in range(1, misc[i].count(' ') + 1):
+                for j in xrange(1, misc[i].count(' ') + 1):
                     elems = misc[i].rsplit(' ', j)
                     if not stop[0]:
                         h = elems[0]

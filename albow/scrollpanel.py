@@ -317,7 +317,7 @@ class ScrollPanel(Column):
         x = 0
         width = 0
         subs = row_data.subwidgets
-        for i in range(len(subs)):
+        for i in xrange(len(subs)):
             sub = subs[i]
             width += sub.width
             surf = Surface((sub.width, sub.height), SRCALPHA)
