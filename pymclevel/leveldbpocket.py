@@ -2719,12 +2719,12 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         if subchunk == 0 and tile_entities:
             if DEBUG_PE:
-                open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+                open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
             for tile_entity in loadNBTCompoundList(tile_entities):
                 self.TileEntities.insert(-1, tile_entity)
         if subchunk == 0 and entities:
             if DEBUG_PE:
-                open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+                open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
             Entities = loadNBTCompoundList(entities)
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.
