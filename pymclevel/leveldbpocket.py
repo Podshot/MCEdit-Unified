@@ -2740,6 +2740,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                     logger.warning("Default 'Unknown' ID is used...")
                     v = 'Unknown'
                 # !
+                v = int(v) & 0xFF
                 id = invertEntities.get(v, "Entity %s"%v)
                 # Add the built one to the entities
                 if id not in entity.PocketEntity.entityList.keys():
