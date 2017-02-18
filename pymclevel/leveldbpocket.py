@@ -14,7 +14,7 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, unpackNibbleArray, packNibbleArray
 from level import LightedChunk
 from contextlib import contextmanager
-from pymclevel import entity, BoundingBox, Entity, TileEntity
+from pymclevel import entity, BoundingBox, Entity, TileEntity, MCEDIT_DEFS, MCEDIT_IDS
 import id_definitions
 
 import traceback
@@ -1504,13 +1504,15 @@ class PocketLeveldbDatabase_new(object):
             for ent in chunk.Entities:
                 v = ent["id"].value
     #             ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
-                id = entity.PocketEntity.getNumId(v)
+#                 id = entity.PocketEntity.getNumId(v)
+                ent_data = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})
+                id = ent_data['id']
     #             print id
 #                 if id >= 1000:
 #                     print id
 #                     print type(ent)
 #                     print ent
-                ent['id'] = nbt.TAG_Int(id)
+                ent['id'] = nbt.TAG_Int(id + MCEDIT_DEFS['entity_types'].get(ent_data.get('type', None),0))
                 entityData += ent.save(compressed=False)
                 # We have to re-invert after saving otherwise the next save will fail.
                 ent["id"] = nbt.TAG_String(v)
@@ -1796,7 +1798,9 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
             self.root_tag = nbt.load(buf=root_tag_buf)
 
         self.__gameVersion = 'PE'
-        id_definitions.ids_loader('PE')
+        global MCEDIT_DEFS
+        global MCEDIT_IDS
+        MCEDIT_DEFS, MCEDIT_IDS = id_definitions.ids_loader('PE')
         if create:
             print "Creating PE level.dat"
             self._createLevelDat(random_seed, last_played)
@@ -1973,6 +1977,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
 
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
+#                 print 'dirty', chunk.chunkPosition
                 dirtyChunkCount += 1
                 self.worldFile.saveChunk(chunk, batch=batch)
                 chunk.dirty = False
@@ -2383,7 +2388,9 @@ class PocketLeveldbChunkPre1(LightedChunk):
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
-                invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+#                 print MCEDIT_DEFS
+#                 print MCEDIT_IDS
+#                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
                 for ent in Entities:
                     # Get the string id, or a build one
                     # ! For PE debugging
@@ -2395,11 +2402,16 @@ class PocketLeveldbChunkPre1(LightedChunk):
                         logger.warning("Default 'Unknown' ID is used...")
                         v = 'Unknown'
                     # !
-                    id = invertEntities.get(v, "Entity %s"%v)
+#                     id = invertEntities.get(v, "Entity %s"%v)
                     # Add the built one to the entities
-                    if id not in entity.PocketEntity.entityList.keys():
-                        logger.warning("Found unknown entity '%s'"%v)
-                        entity.PocketEntity.entityList[id] = v
+#                     if id not in entity.PocketEntity.entityList.keys():
+#                         logger.warning("Found unknown entity '%s'"%v)
+#                         entity.PocketEntity.entityList[id] = v
+                    id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                                         {'name': 'Unknown Entity %s'%v,
+                                          'idStr': 'Unknown Entity %s'%v,
+                                          'id': -1}
+                                         )['name']
                     ent["id"] = nbt.TAG_String(id)
                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
 
@@ -2477,8 +2489,9 @@ class PocketLeveldbChunkPre1(LightedChunk):
             for ent in self.Entities:
                 v = ent["id"].value
 #                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
-                id = entity.PocketEntity.getNumId(v)
-#                 print id
+#                 id = entity.PocketEntity.getNumId(v)
+#                 print v, id, MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})['id']
+                id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})['id']
                 if id >= 1000:
                     print id
                     print type(ent)
@@ -2728,24 +2741,53 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             Entities = loadNBTCompoundList(entities)
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.
-            invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+#             invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
             for ent in Entities:
+#                 print ent
                 # Get the string id, or a build one
                 # ! For PE debugging
                 try:
                     v = ent["id"].value
+                    if DEBUG_PE:
+                        _v = int(v)
+                    v = int(v) & 0xFF
                 except Exception, e:
                     logger.warning("An error occured while getting entity ID:")
                     logger.warning(e)
                     logger.warning("Default 'Unknown' ID is used...")
                     v = 'Unknown'
                 # !
-                v = int(v) & 0xFF
-                id = invertEntities.get(v, "Entity %s"%v)
+#                 id = invertEntities.get(v, "Entity %s"%v)
                 # Add the built one to the entities
-                if id not in entity.PocketEntity.entityList.keys():
-                    logger.warning("Found unknown entity '%s'"%v)
-                    entity.PocketEntity.entityList[id] = v
+#                 if id not in entity.PocketEntity.entityList.keys():
+#                     logger.warning("Found unknown entity '%s'"%v)
+#                     entity.PocketEntity.entityList[id] = v
+
+                id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                                     {'name': 'Unknown Entity %s'%v,
+                                      'idStr': 'Unknown Entity %s'%v,
+                                      'id': -1,
+                                      'type': 'Unknown'}
+                                     )['name']
+                if DEBUG_PE:
+                    ent_def = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                                     {'name': 'Unknown Entity %s'%v,
+                                      'idStr': 'Unknown Entity %s'%v,
+                                      'id': -1,
+                                      'type': 'Unknown'}
+                                     )
+                    _tn = ent_def['type']
+                    _tv = MCEDIT_DEFS['entity_types'].get(_tn, 'Unknown')
+                    open(dump_fName, 'a').write("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
+                                                    id=id,
+                                                    _v=_v,
+                                                    _fid= _v & 0xff,
+                                                    _f1= _v & 0xff00,
+                                                    _f2= _v - (_v & 0xff),
+                                                    _tn=_tn,
+                                                    _tv=_tv)
+                                                )
+
                 ent["id"] = nbt.TAG_String(id)
 
                 self.Entities.insert(-1, ent)
