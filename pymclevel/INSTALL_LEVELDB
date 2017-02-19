@@ -1,0 +1,61 @@
+LEVELDB INSTALLATION INSTRUCTIONS FOR LINUX SYSTEMS
+===================================================
+
+In order to install this library, you will run the 'setup_leveldb.py' script.
+
+It will try to solve the binary and library dependencies for you.
+
+Ensure you're connected to internet. Somes packages need to be
+downloaded.
+
+
+~~~~~~~~~~~~
+DEPENDENCIES
+~~~~~~~~~~~~
+
+BINARIES
+~~~~~~~~
+
+These binaries/tools have to be installed on system in order to compile
+leveldb_mcpe:
+
+* g++
+* make
+* unzip
+* wget
+
+
+LIBRARIES
+~~~~~~~~~
+
+You will need to have zlib v1.2.8 or 1.2.10 installed on your system.
+Other versions can work, but no garantee..
+
+If zlib is not found on your system, the script will build the version 1.2.10
+specifically for PE support. See ZLIB section for more details.
+
+
+~~~~~~~~~~~~
+INSTALLATION
+~~~~~~~~~~~~
+
+Just run 'python setup_leveldb.py' et voilà!
+
+
+~~~~
+ZLIB
+~~~~
+
+The leveldb library need zlib to work.
+
+The ideal version is 1.2.10, but PE support also works with 1.2.8.
+
+If zlib is not found, the script will build it and 'install' it in the
+'pymclevel' directory. This zlib library will be used only for PE support, and
+will no be available for other applications on your system.
+
+If zlib is found on your system, but with another version than 1.2.8 or 1.2.10
+and leveldb compilation fails or does not work at runtime, it is possible to
+force zlib compilation using the '--force-zlib' switch for the script.
+
+

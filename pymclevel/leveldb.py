@@ -69,7 +69,7 @@ try:
     plat = sys.platform
     if plat == 'linux2':
         # This library shall not be installed systemwide, let take it from the directory where this module is.
-        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldbpe1plus.so'))
+        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.so'))
     elif plat == 'darwin':
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
