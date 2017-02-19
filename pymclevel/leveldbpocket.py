@@ -1549,7 +1549,7 @@ class PocketLeveldbDatabase_new(object):
         wop = self.writeOptions if writeOptions is None else writeOptions
         for y in chunk.subchunks:
             c = chr(y)
-            ver = chr(chunk.version)
+            ver = chr(chunk.subchunks_versions[y])
             chunk._Blocks.update_subchunks()
             blocks = chunk._Blocks.binary_data[y].tostring()
             chunk._Data.update_subchunks()
@@ -2674,6 +2674,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.chunkPosition = (cx, cz)
         self.world = world
         self.subchunks = []
+        self.subchunks_versions = {}
 
         self._Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks', chunk_height=self.world.Height)
         self.Blocks = self._Blocks.destination
@@ -2750,12 +2751,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
         if terrain:
             self.subchunks.append(subchunk)
-            # We don't rely on the 'version' byte of the subchunk, since it's sending '0'...
+
             version, terrain = ord(terrain[:1]), terrain[1:]
             blocks, terrain = terrain[:4096], terrain[4096:]
             data, terrain = terrain[:2048], terrain[2048:]
             skyLight, terrain = terrain[:2048], terrain[2048:]
             blockLight, terrain = terrain[:2048], terrain[2048:]
+
+            self.subchunks_versions[subchunk] = version
 
             # 'Computing' data is needed before sending it to the data holders.
             self._Blocks.add_data(subchunk, blocks)
