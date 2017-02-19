@@ -1403,8 +1403,6 @@ class PocketLeveldbDatabase_new(object):
                 entities = db.Get(rop, key + "2")
             except RuntimeError:
                 entities = None
-            ver = db.Get(rop, key + chr(118))
-#             print "*** ver", repr(ver)
 
         if len(terrain) != 83200:
             raise ChunkMalformed(str(len(terrain)))
@@ -1433,9 +1431,6 @@ class PocketLeveldbDatabase_new(object):
                 entities = db.Get(rop, key + "\x32")
             except RuntimeError:
                 entities = None
-            if y == 0:
-                ver = db.Get(rop, key + chr(118))
-#                 print "*** ver", repr(ver)
 
         return terrain, tile_entities, entities
 
@@ -1450,7 +1445,15 @@ class PocketLeveldbDatabase_new(object):
         with self.world_db() as db:
             rop = self.readOptions if readOptions is None else readOptions
             key = struct.pack('<i', cx) + struct.pack('<i', cz)
-            ver = db.Get(rop, key + chr(118))
+            raise_err = False
+            try:
+                ver = db.Get(rop, key + chr(118))
+                if ver is None:
+                    raise_err = True
+            except:
+                raise_err = True
+            if raise_err:
+                raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
                 open(dump_fName, 'a').write("** Loading hunk ({x}, {z}) for PE {vs} ({v}).".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
     
