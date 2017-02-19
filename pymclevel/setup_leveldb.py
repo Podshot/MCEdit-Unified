@@ -130,7 +130,7 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
 def get_sources(name, url):
     print "Downloading sources for %s"%name
     print "URL: %s"%url
-    os.system("wget -O %s.zip %s"%(name, url))
+    os.system("wget --no-check-certificate -O %s.zip %s"%(name, url))
     print "Unpacking %s"%name
     os.system("unzip -q %s.zip"%name)
     os.system("mv $(ls -d1 */ | egrep '{n}-') {n}".format(n=name))
