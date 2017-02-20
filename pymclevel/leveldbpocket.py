@@ -1904,6 +1904,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         """
         Unload all chunks and close all open file-handlers. Discard any unsaved data.
         """
+        self.playerTagCache.clear()
         self.unload()
         try:
             pass  # Setup a way to close a work-folder?
@@ -2026,6 +2027,8 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
+
+        self.playerTagCache.clear()
 
         self.saving = False
         logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
