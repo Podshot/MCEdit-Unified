@@ -2028,8 +2028,6 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
 
-        self.playerTagCache.clear()
-
         self.saving = False
         logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
         path = os.path.join(self.worldFile.path, 'level.dat')
