@@ -496,7 +496,7 @@ def rotateTemplate(template, x=0, y=0):
     return template
 
 
-def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
+def makeVerticesFromModel(templates, dataMask=0):
     """
     Returns a function that creates vertex arrays.
 
@@ -523,12 +523,6 @@ def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
         data = blockData[mask]
         data &= dataMask
         self.vertexArrays = []
-        if debug:
-            print "=== " + id + " ==="
-            print "Elements: " + str(elements)
-            print "Data: " + str(data)
-            print "Block Mask: " + str(blockData[mask])
-            print "Supplied Mask: " + str(dataMask)
         for i in xrange(elements):
             vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
             for indicies in xrange(3):
