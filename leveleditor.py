@@ -227,7 +227,7 @@ class LevelEditor(GLViewport):
 
         def chooseDistance():
             self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
-        if self.renderer.viewDistance not in range(2,32,2):
+        if self.renderer.viewDistance not in xrange(2,32,2):
             self.renderer.viewDistance = 8
         self.viewDistanceReadout = ChoiceButton(["%s"%a for a in xrange(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance

@@ -219,7 +219,10 @@ class BO2:
                 x = int(coords[1])+self._horizontal_tracker_2[2]
                 y = int(coords[0])+self._horizontal_tracker_1[2]
                 z = int(coords[2])+self._vertical_tracker[2]
-                b, s = block[1].split('.')
+                if '.' in block[1]:
+                    b, s = block[1].split('.')
+                else:
+                    b, s = block[1], 0
                 self.__schem.Blocks[x,y,z] = b
                 self.__schem.Data[x, y, z] = s
             

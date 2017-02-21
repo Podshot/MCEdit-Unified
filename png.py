@@ -250,9 +250,9 @@ def interleave_planes(ipixels, apixels, ipsize, apsize):
     out.extend(ipixels)
     out.extend(apixels)
     # Interleave in the pixel data
-    for i in range(ipsize):
+    for i in xrange(ipsize):
         out[i:newtotal:newpsize] = ipixels[i:itotal:ipsize]
-    for i in range(apsize):
+    for i in xrange(apsize):
         out[i + ipsize:newtotal:newpsize] = apixels[i:atotal:apsize]
     return out
 
@@ -905,7 +905,7 @@ class Writer:
             def line():
                 scanline = array('B', infile.read(row_bytes))
                 return scanline
-        for y in range(self.height):
+        for y in xrange(self.height):
             yield line()
 
     def array_scanlines(self, pixels):
@@ -917,7 +917,7 @@ class Writer:
         # Values per row
         vpr = self.width * self.planes
         stop = 0
-        for y in range(self.height):
+        for y in xrange(self.height):
             start = stop
             stop = start + vpr
             yield pixels[start:stop]
@@ -942,7 +942,7 @@ class Writer:
             ppr = int(math.ceil((self.width - xstart) / float(xstep)))
             # number of values in reduced image row.
             row_len = ppr * self.planes
-            for y in range(ystart, self.height, ystep):
+            for y in xrange(ystart, self.height, ystep):
                 if xstep == 1:
                     offset = y * vpr
                     yield pixels[offset:offset + vpr]
@@ -953,7 +953,7 @@ class Writer:
                     offset = y * vpr + xstart * self.planes
                     end_offset = (y + 1) * vpr
                     skip = self.planes * xstep
-                    for i in range(self.planes):
+                    for i in xrange(self.planes):
                         row[i::self.planes] = \
                             pixels[offset + i:end_offset:skip]
                     yield row
@@ -1249,7 +1249,7 @@ class Reader:
             # Loops starts at index fu.  Observe that the initial part
             # of the result is already filled in correctly with
             # scanline.
-            for i in range(fu, len(result)):
+            for i in xrange(fu, len(result)):
                 x = scanline[i]
                 a = result[ai]
                 result[i] = (x + a) & 0xff
@@ -1258,7 +1258,7 @@ class Reader:
         def up():
             """Undo up filter."""
 
-            for i in range(len(result)):
+            for i in xrange(len(result)):
                 x = scanline[i]
                 b = previous[i]
                 result[i] = (x + b) & 0xff
@@ -1267,7 +1267,7 @@ class Reader:
             """Undo average filter."""
 
             ai = -fu
-            for i in range(len(result)):
+            for i in xrange(len(result)):
                 x = scanline[i]
                 if ai < 0:
                     a = 0
@@ -1282,7 +1282,7 @@ class Reader:
 
             # Also used for ci.
             ai = -fu
-            for i in range(len(result)):
+            for i in xrange(len(result)):
                 x = scanline[i]
                 if ai < 0:
                     a = c = 0
@@ -1339,7 +1339,7 @@ class Reader:
             ppr = int(math.ceil((self.width - xstart) / float(xstep)))
             # Row size in bytes for this pass.
             row_size = int(math.ceil(self.psize * ppr))
-            for y in range(ystart, self.height, ystep):
+            for y in xrange(ystart, self.height, ystep):
                 filter_type = raw[source_offset]
                 source_offset += 1
                 scanline = raw[source_offset:source_offset + row_size]
@@ -1355,7 +1355,7 @@ class Reader:
                     offset = y * vpr + xstart * self.planes
                     end_offset = (y + 1) * vpr
                     skip = self.planes * xstep
-                    for i in range(self.planes):
+                    for i in xrange(self.planes):
                         a[offset + i:end_offset:skip] = \
                             flat[i::self.planes]
         return a
@@ -1919,7 +1919,7 @@ class Reader:
         def iterrgb():
             for row in pixels:
                 a = array(typecode, [0]) * 3 * width
-                for i in range(3):
+                for i in xrange(3):
                     a[i::3] = row
                 yield a
 
@@ -1952,7 +1952,7 @@ class Reader:
                     # into first three target channels, and A channel
                     # into fourth channel.
                     a = newarray()
-                    for i in range(3):
+                    for i in xrange(3):
                         a[i::4] = row[0::2]
                     a[3::4] = row[1::2]
                     yield a
@@ -1961,7 +1961,7 @@ class Reader:
             def convert():
                 for row in pixels:
                     a = newarray()
-                    for i in range(3):
+                    for i in xrange(3):
                         a[i::4] = row
                     a[3::4] = array(typecode, maxval) * width
                     yield a
@@ -1972,7 +1972,7 @@ class Reader:
             def convert():
                 for row in pixels:
                     a = newarray()
-                    for i in range(3):
+                    for i in xrange(3):
                         a[i::4] = row[i::3]
                     a[3::4] = array(typecode, [maxval]) * width
                     yield a
@@ -2343,7 +2343,7 @@ class Test(unittest.TestCase):
 
         s = StringIO()
         s.write('P6 8 1 1\n')
-        for pixel in range(8):
+        for pixel in xrange(8):
             s.write(struct.pack('<I', (0x4081 * pixel) & 0x10101)[:3])
         s.flush()
         s.seek(0)
@@ -3155,9 +3155,9 @@ def test_suite(options, args):
         fw = float(width)
         fh = float(height)
         pfun = test_patterns[pattern]
-        for y in range(height):
+        for y in xrange(height):
             fy = float(y) / fh
-            for x in range(width):
+            for x in xrange(width):
                 a.append(int(round(pfun(float(x) / fw, fy) * maxval)))
         return a
 

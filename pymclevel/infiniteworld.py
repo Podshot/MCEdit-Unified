@@ -184,7 +184,7 @@ class AnvilChunkData(object):
         sanitizeBlocks(self)
 
         sections = nbt.TAG_List()
-        for y in range(0, self.world.Height, 16):
+        for y in xrange(0, self.world.Height, 16):
             section = nbt.TAG_Compound()
 
             Blocks = self.Blocks[..., y:y + 16].swapaxes(0, 2)

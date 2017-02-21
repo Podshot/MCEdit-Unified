@@ -961,10 +961,10 @@ class NBTExplorerToolPanel(Panel):
         inventory = parent.get('Inventory', TAG_List())
         rows = []
         items = items[0]
-        slots = [["%s" % i, "", "0", "0"] for i in range(36)]
-        slots += [["%s" % i, "", "0", "0"] for i in range(100, 104)]
+        slots = [["%s" % i, "", "0", "0"] for i in xrange(36)]
+        slots += [["%s" % i, "", "0", "0"] for i in xrange(100, 104)]
         slots_set = []
-        for item, i in zip(items, range(len(items))):
+        for item, i in zip(items, xrange(len(items))):
             # &# Prototype for blocks/items names
             item_dict = mcitems.items.get(item['id'].value, None)
             if item_dict is None:

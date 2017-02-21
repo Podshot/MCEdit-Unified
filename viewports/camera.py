@@ -882,8 +882,8 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-             # Don't know how to handle the difference between wall and standing signs for now...
-             # Just let this like it is until we can find the way!
+            # Don't know how to handle the difference between wall and standing signs for now...
+            # Just let this like it is until we can find the way!
             tileEntity["id"] = pymclevel.TAG_String("Sign")
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
@@ -2000,8 +2000,8 @@ class SpawnerInfoParser(BlockInfoParser):
                     value = repr(NameError("Malformed spawn data: could not find 'EntityId' or 'id' tag."))
                 else:
                     value = id.value
-                return str(value) + " Spawner" + self.nbt_ending + self.edit_ending
-        return "[Empty]"  + self.nbt_ending + self.edit_ending
+                return "{} Spawner{}{}".format(value, self.nbt_ending, self.edit_ending)
+        return "[Empty]{}{}".format(self.nbt_ending, self.edit_ending)
     
 class JukeboxInfoParser(BlockInfoParser):
     id_records = {
@@ -2050,8 +2050,8 @@ class JukeboxInfoParser(BlockInfoParser):
             elif "RecordItem" in tile_entity:
                 value = tile_entity["RecordItem"]["id"].value
                 if value in self.name_records:
-                    return self.name_records[value] + " Record" + self.nbt_ending + self.edit_ending
-        return "[No Record]"  + self.nbt_ending + self.edit_ending
+                    return "{} Record{}{}".format(self.name_records[value], self.nbt_ending, self.edit_ending)
+        return "[No Record]{}{}".format(self.nbt_ending, self.edit_ending)
     
 class CommandBlockInfoParser(BlockInfoParser):
     
@@ -2071,9 +2071,9 @@ class CommandBlockInfoParser(BlockInfoParser):
             value = tile_entity.get("Command", TAG_String("")).value
             if value:
                 if len(value) > 1500:
-                    return value[:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**" + self.nbt_ending + self.edit_ending
-                return value + self.nbt_ending + self.edit_ending
-        return "[Empty Command Block]"  + self.nbt_ending + self.edit_ending
+                    return "{}\n**COMMAND IS TOO LONG TO SHOW MORE**{}{}".format(value[:1500], self.nbt_ending, self.edit_ending)
+                return "{}{}{}".format(value, self.nbt_ending, self.edit_ending)
+        return "[Empty Command Block]{}{}".format(self.nbt_ending, self.edit_ending)
     
 class ContainerInfoParser(BlockInfoParser):
     
@@ -2095,8 +2095,8 @@ class ContainerInfoParser(BlockInfoParser):
     def parse_info(self, pos):
         tile_entity = self.level.tileEntityAt(*pos)
         if tile_entity:
-            return "Contains {} Items".format(len(tile_entity.get("Items", []))) + self.nbt_ending + self.edit_ending
-        return "[Empty Container]" + self.nbt_ending + self.edit_ending
+            return "Contains {} Items {}{}".format(len(tile_entity.get("Items", [])), self.nbt_ending, self.edit_ending)
+        return "[Empty Container]{}{}".format(self.nbt_ending + self.edit_ending)
 
 def unproject(x, y, z):
     try:
