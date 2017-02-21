@@ -1547,27 +1547,28 @@ class PocketLeveldbDatabase_new(object):
                 ent["id"] = nbt.TAG_String(v)
 
         wop = self.writeOptions if writeOptions is None else writeOptions
+        chunk._Blocks.update_subchunks()
+        chunk._Data.update_subchunks()
+        chunk._SkyLight.update_subchunks()
+        chunk._BlockLight.update_subchunks()
+
         for y in chunk.subchunks:
             c = chr(y)
             ver = chr(chunk.subchunks_versions[y])
-            chunk._Blocks.update_subchunks()
             blocks = chunk._Blocks.binary_data[y].tostring()
-            chunk._Data.update_subchunks()
             blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
-            chunk._SkyLight.update_subchunks()
             skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
-            chunk._BlockLight.update_subchunks()
             blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
             terrain = ver + blocks + blockData + skyLight + blockLight
 
             if batch is None:
                 with self.world_db() as db:
-                    db.Put(wop, key + c, terrain)
+                    db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
                         db.Put(wop, key + '\x31', tileEntityData)
                         db.Put(wop, key + '\x33', entityData)
             else:
-                batch.Put(key + c, terrain)
+                batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
                     batch.Put(key + '\x31', tileEntityData)
                     batch.Put(key + '\x32', entityData)
