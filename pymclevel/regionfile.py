@@ -26,7 +26,7 @@ class MCRegionFile(object):
 
     @property
     def file(self):
-        openfile = lambda: file(self.path, "rb+")
+        openfile = lambda: open(self.path, "rb+")
         if MCRegionFile.holdFileOpen:
             if self._file is None:
                 self._file = openfile()
@@ -47,7 +47,7 @@ class MCRegionFile(object):
         self.regionCoords = regionCoords
         self._file = None
         if not os.path.exists(path):
-            file(path, "w").close()
+            open(path, "w").close()
 
         with self.file as f:
 
