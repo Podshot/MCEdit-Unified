@@ -3410,9 +3410,8 @@ class MCRenderer(object):
         self.discardChunks(chunks)
 
     def discardChunks(self, chunks):
-        #for cx, cz in chunks:
-        #    self.discardChunk(cx, cz)
-        map(self.discardChunk, chunks)
+        for cx, cz in chunks:
+            self.discardChunk(cx, cz)
         self.oldPosition = None  # xxx force reload
 
     def discardChunk(self, cx, cz):
