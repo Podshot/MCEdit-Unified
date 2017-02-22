@@ -184,6 +184,7 @@ class AnvilChunkData(object):
         sanitizeBlocks(self)
 
         sections = nbt.TAG_List()
+        append = sections.append
         for y in xrange(0, self.world.Height, 16):
             section = nbt.TAG_Compound()
 
@@ -211,7 +212,7 @@ class AnvilChunkData(object):
             section['SkyLight'] = nbt.TAG_Byte_Array(array(SkyLight))
 
             section["Y"] = nbt.TAG_Byte(y / 16)
-            sections.append(section)
+            append(section)
 
         self.root_tag["Level"]["Sections"] = sections
         data = self.root_tag.save(compressed=False)
@@ -407,6 +408,18 @@ def inflate(data):
 
 class ChunkedLevelMixin(MCLevel):
     def blockLightAt(self, x, y, z):
+        '''
+        Gets the light value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :return: The light value or 0 if the Y coordinate is above the maximum height limit or below 0
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -419,6 +432,20 @@ class ChunkedLevelMixin(MCLevel):
         return ch.BlockLight[xInChunk, zInChunk, y]
 
     def setBlockLightAt(self, x, y, z, newLight):
+        '''
+        Sets the light value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param newLight: The desired light value
+        :type newLight: int
+        :return: Returns 0 if the Y coordinate is above the maximum height limit or below 0. Doesn't return anything otherwise
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -432,6 +459,18 @@ class ChunkedLevelMixin(MCLevel):
         ch.chunkChanged(False)
 
     def blockDataAt(self, x, y, z):
+        '''
+        Gets the data value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :return: The data value of the block or 0 if the Y coordinate is above the maximum height limit or below 0
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -448,6 +487,20 @@ class ChunkedLevelMixin(MCLevel):
         return ch.Data[xInChunk, zInChunk, y]
 
     def setBlockDataAt(self, x, y, z, newdata):
+        '''
+        Sets the data value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param newdata: The desired data value
+        :type newData: int
+        :return: Returns 0 if the Y coordinate is above the maximum height limit or below 0 or the chunk doesn't exist. Doesn't return anything otherwise
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -563,6 +616,7 @@ class ChunkedLevelMixin(MCLevel):
 
         def splitChunkLists(chunkLists):
             newChunkLists = []
+            append = newChunkLists.append
             for l in chunkLists:
                 # list is already sorted on x position, so this splits into left and right
 
@@ -575,11 +629,11 @@ class ChunkedLevelMixin(MCLevel):
 
                 # add quarters to list
 
-                newChunkLists.append(smallX[:len(smallX) / 2])
-                newChunkLists.append(smallX[len(smallX) / 2:])
+                append(smallX[:len(smallX) / 2])
+                append(smallX[len(smallX) / 2:])
 
-                newChunkLists.append(bigX[:len(bigX) / 2])
-                newChunkLists.append(bigX[len(bigX) / 2:])
+                append(bigX[:len(bigX) / 2])
+                append(bigX[len(bigX) / 2:])
 
             return newChunkLists
 
@@ -704,6 +758,7 @@ class ChunkedLevelMixin(MCLevel):
                 dirtyChunks = sorted(newDirtyChunks, key=lambda x: x.chunkPosition)
 
                 newDirtyChunks = list()
+                append = newDirtyChunks.append
 
                 for chunk in dirtyChunks:
                     (cx, cz) = chunk.chunkPosition
@@ -782,7 +837,7 @@ class ChunkedLevelMixin(MCLevel):
                     # check if the left edge changed and dirty or compress the chunk appropriately
                     if (oldLeftEdge != ncLight[15:16, :, :self.Height]).any():
                         # chunk is dirty
-                        newDirtyChunks.append(nc)
+                        append(nc)
 
                     ### Spread light toward -Z
 
@@ -841,7 +896,7 @@ class ChunkedLevelMixin(MCLevel):
                     zerochunkLight[:] = 0
 
                     if (oldBottomEdge != ncLight[:, 15:16, :self.Height]).any():
-                        newDirtyChunks.append(nc)
+                        append(nc)
 
                     newlight = (chunkLight[:, :, 0:self.Height - 1] - chunkLa[:, :, 1:self.Height])
                     clipLight(newlight)
@@ -852,7 +907,7 @@ class ChunkedLevelMixin(MCLevel):
                     maximum(chunkLight[:, :, 0:self.Height - 1], newlight, chunkLight[:, :, 0:self.Height - 1])
 
                     if (oldChunk != chunkLight).any():
-                        newDirtyChunks.append(chunk)
+                        append(chunk)
 
                     work += 1
                     yield workDone + work, workTotal, progressInfo
@@ -1953,10 +2008,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         '''
         i = 0
         ret = []
+        append = ret.append
         for cx, cz in chunks:
             i += 1
             if not self.containsChunk(cx, cz):
-                ret.append((cx, cz))
+                append((cx, cz))
                 self.createChunk(cx, cz)
             assert self.containsChunk(cx, cz), "Just created {0} but it didn't take".format((cx, cz))
             if i % 100 == 0:
@@ -2007,11 +2063,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                                                       ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
         ret = []
+        append = ret.append
         for cx, cz in itertools.product(xrange(box.mincx, box.maxcx), xrange(box.mincz, box.maxcz)):
             i += 1
             if self.containsChunk(cx, cz):
                 self.deleteChunk(cx, cz)
-                ret.append((cx, cz))
+                append((cx, cz))
 
             assert not self.containsChunk(cx, cz), "Just deleted {0} but it didn't take".format((cx, cz))
 

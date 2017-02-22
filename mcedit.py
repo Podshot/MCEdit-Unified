@@ -111,7 +111,7 @@ if '--new-features' in sys.argv:
         logger.warn("New features list loaded.")
 
 
-from version_utils import PlayerCache
+from player_cache import PlayerCache
 import directories
 import keys
 

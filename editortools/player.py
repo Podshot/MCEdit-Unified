@@ -29,7 +29,7 @@ import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import nbt
 import logging
-from version_utils import PlayerCache, ThreadRS
+from player_cache import PlayerCache, ThreadRS
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
 
@@ -63,7 +63,7 @@ class PlayerRemoveOperation(Operation):
         self.level.players.remove(self.player)
         if self.tool.panel:
             if self.player != "Player":
-                #self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+                #self.tool.panel.players.remove(player_cache.getPlayerNameFromUUID(self.player))
                 #self.tool.panel.players.remove(self.playercache.getPlayerInfo(self.player)[0])
                 str()
             else:
