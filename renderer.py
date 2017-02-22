@@ -376,9 +376,10 @@ class ChunkRenderer(object):
             # discard the standard detail renderers
             if minlod > 0:
                 blockRenderers = []
+                append = blockRenderers.append
                 for br in self.blockRenderers:
                     if br.detailLevels != (0,):
-                        blockRenderers.append(br)
+                        append(br)
 
                 self.blockRenderers = blockRenderers
 
@@ -808,12 +809,13 @@ class ChunkCalculator(object):
 
     def addTransparentMaterials_new(self, mats, materialCount):
         transparentMaterials = []
+        append = transparentMaterials.append
         logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
         for b in self.level.materials:
             if hasattr(b, 'yaml'):
                 if b.yaml.get('opacity', 1) < 1:
                     logging.debug("Adding '%s'"%b)
-                    transparentMaterials.append(b)
+                    append(b)
         logging.debug("renderer::ChunkCalculator: Transparent materials added: %s"%len(transparentMaterials))
         for b in transparentMaterials:
             mats[b.ID] = materialCount
@@ -862,6 +864,7 @@ class ChunkCalculator(object):
 
         yield
         brs = []
+        append = brs.append
         classes = [
             TileEntityRenderer,
             MonsterRenderer,
@@ -881,7 +884,7 @@ class ChunkCalculator(object):
                 continue
             if blockRendererClass.layer not in cr.invalidLayers:
                 if blockRendererClass in existingBlockRenderers:
-                    brs.append(existingBlockRenderers[blockRendererClass])
+                    append(existingBlockRenderers[blockRendererClass])
 
                 continue
 
@@ -890,7 +893,7 @@ class ChunkCalculator(object):
 
             for _ in br.makeChunkVertices(chunk):
                 yield
-            brs.append(br)
+            append(br)
 
         blockRenderers = []
 
@@ -1135,7 +1138,9 @@ class ChunkCalculator(object):
     def computeCubeGeometry(self, y, blockRenderers, blocks, blockData, materials, blockMaterials, facingBlockIndices,
                             areaBlockLights, chunkRenderer):
         materialCounts = numpy.bincount(blockMaterials.ravel())
-
+        
+        append = blockRenderers.append
+        
         def texMap(blocks, blockData=0, direction=slice(None)):
             return materials.blockTextures[blocks, blockData, direction]  # xxx slow
 
@@ -1150,7 +1155,7 @@ class ChunkCalculator(object):
             for _ in blockRenderer.makeVertices(facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights,
                                                 texMap):
                 yield
-            blockRenderers.append(blockRenderer)
+            append(blockRenderer)
 
             yield
 
@@ -1208,6 +1213,7 @@ class BlockRenderer(object):
 
     def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         arrays = []
+        append = arrays.append
         materialIndices = self.getMaterialIndices(blockMaterials)
         yield
 
@@ -1219,7 +1225,7 @@ class BlockRenderer(object):
                                                 blockLight, facingBlockLight, texMap)
             yield
             if len(vertexArray):
-                arrays.append(vertexArray)
+                append(vertexArray)
         self.vertexArrays = arrays
 
     def makeArrayList(self, chunkPosition, showRedraw):
@@ -1311,12 +1317,13 @@ class TileEntityRenderer(EntityRendererGeneric):
 
     def makeChunkVertices(self, chunk):
         tilePositions = []
+        append = tilePositions.append # Reduces the amount of lookups needed to find the 'append' function, decent speed up
         for i, ent in enumerate(chunk.TileEntities):
             if i % 10 == 0:
                 yield
             if 'x' not in ent:
                 continue
-            tilePositions.append(pymclevel.TileEntity.pos(ent))
+            append(pymclevel.TileEntity.pos(ent))
         tiles = self._computeVertices(tilePositions, (0xff, 0xff, 0x33, 0x44), chunkPosition=chunk.chunkPosition)
         yield
         self.vertexArrays = [tiles]
@@ -1332,6 +1339,7 @@ class MonsterRenderer(BaseEntityRenderer):
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []
+        append = monsterPositions.append # Reduces the amount of lookups needed to find the 'append' function, decent speed up
         notMonsters = MCEDIT_DEFS.get('notMonsters', self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
@@ -1341,7 +1349,7 @@ class MonsterRenderer(BaseEntityRenderer):
                 continue
             pos = pymclevel.Entity.pos(ent)
             pos[1] += 0.5
-            monsterPositions.append(pos)
+            append(pos)
 
         monsters = self._computeVertices(monsterPositions,
                                          (0xff, 0x22, 0x22, 0x44),
@@ -1381,6 +1389,8 @@ class ItemRenderer(BaseEntityRenderer):
             "ItemFrame": (134, 96, 67, 0x5f),
             "ArmorStand": (0x22, 0xff, 0x22, 0x5f),
         }
+        pos_append = entityPositions.append
+        color_append = entityColors.append
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
@@ -1395,8 +1405,8 @@ class ItemRenderer(BaseEntityRenderer):
             noRenderDelta = MCEDIT_DEFS.get('noRenderDelta', ("Painting", "ItemFrame"))
             if ent["id"].value not in noRenderDelta:
                 pos[1] += 0.5
-            entityPositions.append(pos)
-            entityColors.append(color)
+            pos_append(pos)
+            color_append(color)
 
         entities = self._computeVertices(entityPositions,
                                          numpy.array(entityColors, dtype='uint8')[:, numpy.newaxis, numpy.newaxis],
@@ -1656,6 +1666,7 @@ class GenericBlockRenderer(BlockRenderer):
 
     def makeGenericVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         vertexArrays = []
+        append = vertexArrays.append
         materialIndices = self.getMaterialIndices(blockMaterials)
         yield
 
@@ -1678,7 +1689,7 @@ class GenericBlockRenderer(BlockRenderer):
                     vertexArray.view('uint8')[_RGB][grass] = vertexArray.view('uint8')[_RGB][grass].astype(float) * self.grassColor
             yield
 
-            vertexArrays.append(vertexArray)
+            append(vertexArray)
 
         self.vertexArrays = vertexArrays
 
@@ -1699,6 +1710,7 @@ class LeafBlockRenderer(BlockRenderer):
 
     def makeLeafVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         arrays = []
+        append = arrays.append
         materialIndices = self.getMaterialIndices(blockMaterials)
         yield
 
@@ -1754,7 +1766,7 @@ class LeafBlockRenderer(BlockRenderer):
                 vertexArray.view('uint8')[_RGB][darkoak] = vertexArray.view('uint8')[_RGB][darkoak].astype(float) * self.darkoakLeafColor
 
             yield
-            arrays.append(vertexArray)
+            append(vertexArray)
 
         self.vertexArrays = arrays
 
@@ -1781,6 +1793,7 @@ class PlantBlockRenderer(BlockRenderer):
 
     def makePlantVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         arrays = []
+        append = arrays.append
         blockIndices = self.getMaterialIndices(blockMaterials)
         yield
 
@@ -1821,7 +1834,7 @@ class PlantBlockRenderer(BlockRenderer):
             if colorize is not None:
                 vertexArray.view('uint8')[_RGB][colorize] = vertexArray.view('uint8')[_RGB][colorize].astype(float) * LeafBlockRenderer.leafColor
                 vertexArray.view('uint8')[_RGB][colorize2] = vertexArray.view('uint8')[_RGB][colorize2].astype(float) * LeafBlockRenderer.leafColor
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
 
         self.vertexArrays = arrays
@@ -1966,6 +1979,7 @@ class TorchBlockRenderer(BlockRenderer):
         texes = texMap(blocks[blockIndices], blockData[blockIndices])
         yield
         arrays = []
+        append = arrays.append
         for direction in xrange(6):
             vertexArray = self.makeTemplate(direction, blockIndices)
             if not len(vertexArray):
@@ -1978,7 +1992,7 @@ class TorchBlockRenderer(BlockRenderer):
             if direction == pymclevel.faces.FaceYDecreasing:
                 vertexArray[_ST] = self.downCoords
             vertexArray[_ST] += texes[:, numpy.newaxis, direction]
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2238,6 +2252,7 @@ class SnowBlockRenderer(BlockRenderer):
         materialIndices = self.getMaterialIndices(blockMaterials)
         #snowIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2263,7 +2278,7 @@ class SnowBlockRenderer(BlockRenderer):
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.875
                 vertexArray[_ST][..., 2:4, 1] += 14
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2278,6 +2293,7 @@ class CarpetBlockRenderer(BlockRenderer):
         materialIndices = self.getMaterialIndices(blockMaterials)
         #snowIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2303,7 +2319,7 @@ class CarpetBlockRenderer(BlockRenderer):
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.937
                 vertexArray[_ST][..., 2:4, 1] += 15
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2316,6 +2332,7 @@ class CactusBlockRenderer(BlockRenderer):
     def makeCactusVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2339,7 +2356,7 @@ class CactusBlockRenderer(BlockRenderer):
             if direction == pymclevel.faces.FaceZDecreasing:
                 vertexArray[_XYZ][..., 2] += 0.063
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2352,6 +2369,7 @@ class PaneBlockRenderer(BlockRenderer):  #Basic no thickness panes, add more fac
     def makePaneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2374,7 +2392,7 @@ class PaneBlockRenderer(BlockRenderer):  #Basic no thickness panes, add more fac
             if direction == pymclevel.faces.FaceZDecreasing:
                 vertexArray[_XYZ][..., 2] += 0.5
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2387,6 +2405,7 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
     def makePlateVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2405,7 +2424,7 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.937
                 vertexArray[_ST][..., 2:4, 1] += 15
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2420,6 +2439,7 @@ class EnchantingBlockRenderer(
     def makeEnchantingVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
             if direction != pymclevel.faces.FaceYIncreasing:
@@ -2438,7 +2458,7 @@ class EnchantingBlockRenderer(
             if direction == pymclevel.faces.FaceYIncreasing:
                 vertexArray[_XYZ][..., 1] -= 0.25
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2452,6 +2472,7 @@ class DaylightBlockRenderer(BlockRenderer):
     def makeDaylightVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
             if direction != pymclevel.faces.FaceYIncreasing:
@@ -2473,7 +2494,7 @@ class DaylightBlockRenderer(BlockRenderer):
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.625
                 vertexArray[_ST][..., 2:4, 1] += 10
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2486,6 +2507,7 @@ class BedBlockRenderer(BlockRenderer):
     def makeBedVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
             if direction != pymclevel.faces.FaceYIncreasing:
@@ -2504,7 +2526,7 @@ class BedBlockRenderer(BlockRenderer):
             if direction == pymclevel.faces.FaceYIncreasing:
                 vertexArray[_XYZ][..., 1] -= 0.438
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2517,6 +2539,7 @@ class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
     def makeCakeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2542,7 +2565,7 @@ class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
             if direction == pymclevel.faces.FaceZDecreasing:
                 vertexArray[_XYZ][..., 2] += 0.063
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2555,6 +2578,7 @@ class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
     def makeRepeaterVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
+        append = arrays.append
         yield
         for direction, exposedFaceIndices in enumerate(facingBlockIndices):
 
@@ -2574,7 +2598,7 @@ class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.875
                 vertexArray[_ST][..., 2:4, 1] += 14
 
-            arrays.append(vertexArray)
+            append(vertexArray)
             yield
         self.vertexArrays = arrays
 
@@ -2891,6 +2915,7 @@ class StairBlockRenderer(BlockRenderer):
 
     def stairVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         arrays = []
+        append = arrays.append
         materialIndices = self.getMaterialIndices(blockMaterials)
         yield
         stairBlocks = blocks[materialIndices]
@@ -2919,7 +2944,7 @@ class StairBlockRenderer(BlockRenderer):
 
             vertexArray.shape = (len(x) * 6, 4, 6)
             yield
-            arrays.append(vertexArray)
+            append(vertexArray)
         self.vertexArrays = arrays
 
     makeVertices = stairVertices
@@ -3285,7 +3310,7 @@ class MCRenderer(object):
             #pr_cc.enable()
             self.chunkCalculator = self.calculatorClass(self.level)
             #pr_cc.disable()
-            #pr_cc.dump_stats("chunk_calc.prof")
+            #pr_cc.dump_stats("chunk_calc_3.prof")
 
             self.oldPosition = None
             
@@ -3383,8 +3408,9 @@ class MCRenderer(object):
         self.discardChunks(chunks)
 
     def discardChunks(self, chunks):
-        for cx, cz in chunks:
-            self.discardChunk(cx, cz)
+        #for cx, cz in chunks:
+        #    self.discardChunk(cx, cz)
+        map(self.discardChunk, chunks)
         self.oldPosition = None  # xxx force reload
 
     def discardChunk(self, cx, cz):
