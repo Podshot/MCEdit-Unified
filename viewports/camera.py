@@ -1713,12 +1713,13 @@ class CameraViewport(GLViewport):
         lines = []
         minz = minx = -256
         maxz = maxx = 256
+        append = lines.append
         for x in xrange(minx, maxx + 1, 16):
-            lines.append((x, 0, minz))
-            lines.append((x, 0, maxz))
+            append((x, 0, minz))
+            append((x, 0, maxz))
         for z in xrange(minz, maxz + 1, 16):
-            lines.append((minx, 0, z))
-            lines.append((maxx, 0, z))
+            append((minx, 0, z))
+            append((maxx, 0, z))
 
         GL.glColor(0.3, 0.7, 0.9)
         GL.glVertexPointer(3, GL.GL_FLOAT, 0, numpy.array(lines, dtype='float32'))

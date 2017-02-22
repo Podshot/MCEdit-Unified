@@ -255,12 +255,12 @@ def chunkMarkers(chunkSet):
             o = all4(cx, cz)
             others = set(o).intersection(chunkSet)
             if len(others) == 4:
-                sizedChunks[nextsize].append(o[0])
+                sizedChunks[nextsize].append(o[0]) # Possibly cache append?
                 for c in others:
                     chunkSet.discard(c)
             else:
                 for c in others:
-                    sizedChunks[size].append(c)
+                    sizedChunks[size].append(c) # Possibly cache append?
                     chunkSet.discard(c)
 
         if len(sizedChunks[nextsize]):
@@ -524,6 +524,7 @@ def makeVerticesFromModel(templates, dataMask=0):
         data = blockData[mask]
         data &= dataMask
         self.vertexArrays = []
+        append = self.vertexArrays.append
         for i in xrange(elements):
             vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
             for indicies in xrange(3):
@@ -541,7 +542,7 @@ def makeVerticesFromModel(templates, dataMask=0):
                 ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
             vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
             yield
-            self.vertexArrays.append(vertexArray)
+            append(vertexArray)
     return makeVertices
 
 
@@ -2864,7 +2865,8 @@ class FenceGateBlockRenderer(BlockRenderer):
         vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
         yield
         self.vertexArrays = [vertexArray]
-
+        
+        append = self.vertexArrays.append
         # open gate
         for i in xrange(2):
             vertexArray = numpy.zeros((len(openGateIndices[0]), 6, 4, 6), dtype='float32')
@@ -2885,7 +2887,7 @@ class FenceGateBlockRenderer(BlockRenderer):
                 ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
             vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
             yield
-            self.vertexArrays.append(vertexArray)
+            append(vertexArray)
 
     makeVertices = fenceGateVertices
 
