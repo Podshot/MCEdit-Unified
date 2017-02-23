@@ -53,6 +53,7 @@ class ThreadRS(threading.Thread):
     def __repr__(self, *args, **kwargs):
         return '%s::%s'%(ThreadRS, self.target)
 
+
 def threadable(func):
     def wrapper(*args, **kwargs):
         instance = None
@@ -211,7 +212,7 @@ class PlayerCache:
         '''
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
-        return (self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid)
+        return self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid
     
     def _getDataFromCacheName(self, name):
         '''
@@ -253,7 +254,7 @@ class PlayerCache:
             if player.get("Name", "") == name:
                 return player.get("Successful", False)
         return False
-            
+
     def getPlayerInfo(self, arg, force=False, use_old_data=False):
         '''
         Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in 'arg'
@@ -287,7 +288,7 @@ class PlayerCache:
     # --- Player Data Getters ---
     @threadable
     def _getPlayerInfoUUID(self, uuid, use_old_data=False):
-        clean_uuid = uuid.replace("-","")
+        clean_uuid = uuid.replace("-", "")
         player = self._cache["Cache"].get(clean_uuid, {})
         response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(clean_uuid))
         if response:
@@ -300,21 +301,21 @@ class PlayerCache:
                 self._cache["Cache"][clean_uuid] = player
                 self.temp_skin_cache[clean_uuid] = data
                 self.save()
-                return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+                return self.insertSeperators(clean_uuid), player["Name"], clean_uuid
             except:
                 player["Successful"] = False
                 self._cache["Cache"][clean_uuid] = player
                 if use_old_data and player.get("Name", "<Unknown Name>") != "<Unknown Name>":
-                    return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+                    return self.insertSeperators(clean_uuid), player["Name"], clean_uuid
                 else:
-                    return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
+                    return self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid
         else:
             player["Successful"] = False
             self._cache["Cache"][clean_uuid] = player
             if use_old_data and player.get("Name", "<Unknown Name>") != "<Unknown Name>":
-                return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+                return self.insertSeperators(clean_uuid), player["Name"], clean_uuid
             else:
-                return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
+                return self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid
     
     @threadable
     def _getPlayerInfoName(self, name):
@@ -329,11 +330,11 @@ class PlayerCache:
                 player["Successful"] = True
                 self._cache["Cache"][uuid] = player
                 self.save()
-                return (self.insertSeperators(uuid), player["Name"], uuid)
+                return self.insertSeperators(uuid), player["Name"], uuid
             except:
-                return ("<Unknown UUID>", name, "<Unknown UUID>")           
+                return "<Unknown UUID>", name, "<Unknown UUID>"
         else:
-            return ("<Unknown UUID>", name, "<Unknown UUID>")
+            return "<Unknown UUID>", name, "<Unknown UUID>"
         
     # --- Skin Getting ---
     def _parseSkinResponse(self, response):

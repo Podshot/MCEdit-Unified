@@ -431,7 +431,6 @@ class RootWidget(Widget):
                                 edit.timeChanged = newTime
                                 edit.makeChanges()
 
-
                 except Cancel:
                     pass
         finally:
