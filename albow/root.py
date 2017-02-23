@@ -415,14 +415,13 @@ class RootWidget(Widget):
                             keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
                             if keyName == self.editor.sprintKey:
                                 self.sprint = True
-                            if self.editor.level:
-                                for j, key in enumerate(self.editor.movements):
-                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                        self.changeMovementKeys(j, keyName)
+                            if allKeys[K_LCTRL] or allKeys[K_RCTRL] or allKeys[K_RMETA] or allKeys[K_LMETA]:
+                                return
+                            if keyName in self.editor.movements:
+                                self.changeMovementKeys(self.editor.movements.index(keyName), keyName)
+                            if keyName in self.editor.cameraPan:
+                                self.changeCameraKeys(self.editor.cameraPan.index(keyName))
 
-                                for k, key in enumerate(self.editor.cameraPan):
-                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                        self.changeCameraKeys(k)
                         map(useKeys, allKeysWithData)
 
                         for edit in self.filesToChange:
@@ -445,44 +444,38 @@ class RootWidget(Widget):
     def getKey(evt=None, movement=False, keyname=None):
         if keyname is None:
             keyname = key.name(evt.key)
-        if 'left' in keyname and len(keyname) > 5:
-            keyname = keyname[5:]
-        elif 'right' in keyname and len(keyname) > 6:
-            keyname = keyname[6:]
+        keyname = keyname.replace("right ", "").replace("left ", "").replace("Meta", "Ctrl").replace("Enter", "Return").replace("Delete", "Del")
         try:
             keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
-        finally:
-            if keyname == 'Meta':
-                keyname = 'Ctrl'
-            if not movement:
-                newKeyname = ""
-                if evt.shift and keyname != "Shift":
-                    newKeyname += "Shift-"
-                if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
-                    newKeyname += "Ctrl-"
-                if evt.alt and keyname != "Alt":
-                    newKeyname += "Alt-"
-
-                keyname = newKeyname + keyname
-
-                if not newKeyname:
-                    if sys.platform == 'linux2':
-                        test_key = getattr(evt, 'scancode', None)
-                        tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
-                    else:
-                        test_key = keyname
-                        tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-                    if test_key in tool_keys:
-                        keyname = str(tool_keys.index(test_key) + 1)
-                    elif test_key == 19:
-                        keyname = '0'
-
-            if keyname == 'Enter':
-                keyname = 'Return'
-            elif keyname == 'Delete':
-                keyname = 'Del'
-
+        except:
+            pass
+        if movement:
             return keyname
+
+        newKeyname = ""
+        if evt.shift and keyname != "Shift":
+            newKeyname += "Shift-"
+        if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
+             newKeyname += "Ctrl-"
+        if evt.alt and keyname != "Alt":
+            newKeyname += "Alt-"
+
+        keyname = newKeyname + keyname
+
+        if newKeyname:
+            return keyname
+
+        if sys.platform == 'linux2':
+            test_key = getattr(evt, 'scancode', None)
+            tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
+        else:
+            test_key = keyname
+            tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+        if test_key in tool_keys:
+            keyname = str(tool_keys.index(test_key) + 1)
+        elif test_key == 19:
+            keyname = '0'
+        return keyname
 
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
