@@ -128,7 +128,7 @@ class BlockCopyOperation(Operation):
 
         blocksToCopy = None
         if not (self.copyAir and self.copyWater):
-            blocksToCopy = xrange(pymclevel.materials.id_limit)
+            blocksToCopy = range(pymclevel.materials.id_limit)
             if not self.copyAir:
                 blocksToCopy.remove(0)
             if not self.copyWater:
