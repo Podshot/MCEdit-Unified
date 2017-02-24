@@ -799,7 +799,7 @@ class StructureNBT(object):
     @classmethod
     def fromSchematic(cls, schematic):
         structure = cls(size=(schematic.Width, schematic.Height, schematic.Length), mats=namedMaterials[getattr(schematic, "Materials", 'Alpha')])
-        schematic = copy.deepcopy(schematic)
+        schematic = copy.copy(schematic)
         
         for (x, z, y), b_id in ndenumerate(schematic.Blocks):
             data = schematic.Data[x, z, y]
