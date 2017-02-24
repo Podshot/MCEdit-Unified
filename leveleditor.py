@@ -338,7 +338,8 @@ class LevelEditor(GLViewport):
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
             # Update the unparented widgets.
-            [a.set_update_ui(v) for a in unparented.values()]
+            for a in unparented.values(): 
+                a.set_update_ui(v) 
     #-#
 
     def __del__(self):

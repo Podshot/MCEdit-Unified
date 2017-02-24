@@ -1,0 +1,7 @@
+numpy==1.11.0
+Pillow==2.9.0
+PyOpenGL==3.1.1
+PyOpenGL-accelerate==3.1.1a1
+ftputil==3.3.1
+pygame==1.9.2a0
+#pywin32==220
