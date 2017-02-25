@@ -749,7 +749,7 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
 
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
-                print 'dirty', chunk.position
+#                 print 'dirty', chunk.position
                 dirtyChunkCount += 1
                 self.worldFile.saveChunk(chunk, batch=batch)
                 chunk.dirty = False
@@ -2379,6 +2379,42 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
     def markDirtyBox(self, box):
         for cx, cz in box.chunkPositions:
             self.markDirtyChunk(cx, cz)
+
+    def setSpawnerData(self, tile_entity, mob_id):
+        """Set the data in a given mob spawner"""
+#         print mob_id
+#         print MCEDIT_IDS.get(mob_id, "Unknown")
+#         print MCEDIT_DEFS.get(MCEDIT_IDS.get(mob_id, "Unknown"), {}).get("fullid", None)
+        fullid = MCEDIT_DEFS.get(MCEDIT_IDS.get(mob_id, "Unknown"), {}).get("fullid", None)
+#         print fullid
+        if fullid is not None:
+            # This is mostly a copy of what we have in camera.py.
+            # Has to be optimized for PE...
+            if "EntityId" in tile_entity:
+                tile_entity["EntityId"] = nbt.TAG_Int(fullid)
+            if "SpawnData" in tile_entity:
+                # Try to not clear the spawn data, but only update the mob id
+#                 tile_entity["SpawnData"] = nbt.TAG_Compound()
+                tag_id = nbt.TAG_Int(fullid)
+                if "id" in tile_entity["SpawnData"]:
+                    tag_id.name = "id"
+                    tile_entity["SpawnData"]["id"] = tag_id
+                if "EntityId" in tile_entity["SpawnData"]:
+                    tile_entity["SpawnData"]["EntityId"] = tag_id
+            if "SpawnPotentials" in tile_entity:
+                for potential in tile_entity["SpawnPotentials"]:
+                    if "Entity" in potential:
+                        # MC 1.9+
+                        if potential["Entity"]["id"].value == id or ("EntityId" in potential["Entity"] and potential["Entity"]["EntityId"].value == id):
+                            potential["Entity"] = nbt.TAG_Compound()
+                            potential["Entity"]["id"] = nbt.TAG_Int(fullid)
+                    elif "Properties" in potential:
+                        # MC before 1.9
+                        if "Type" in potential and potential["Type"].value == id:
+                            potential["Type"] = nbt.TAG_Int(fullid)
+        else:
+            raise AttributeError("Could not find entity data for '%s' in MCEDIT_DEFS"%mob_id)
+        return tile_entity
 
 
 class PocketLeveldbChunkPre1(LightedChunk):

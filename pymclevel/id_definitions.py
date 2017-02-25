@@ -40,6 +40,7 @@ import json
 from logging import getLogger
 from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 import pymclevel
+import re
 
 log = getLogger(__name__)
 
@@ -53,6 +54,21 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
     Return the 'load' object value if :ignore_load: is False and the object is present, or a tuple containing the updated 'defs_dict' and ids_dict' objects."""
     if not ignore_load and 'load' in data.keys():
         return data['load']
+    # Find if "autobuild" items are defined
+    autobuilds = data.get("autobuild", {})
+    for a_name, a_value in autobuilds.items():
+        p = re.findall(r"(^|[ ])%s\['(\w+)'"%prefix, a_value)
+        if p:
+            for a in p[0][1:]:
+                if a not in data.keys():
+                    log.error("Found wrong reference while parsing autobuilds for %s: %s"%(prefix, a))
+                    autobuilds.pop(a_name)
+                else:
+                    autobuilds[a_name] = a_value.replace("%s["%prefix, "data[")
+        else:
+            # Just remove stuff which is not related to data internal stuff
+            autobuilds.pop(a_name)
+
     for definition, value in data.iteritems():
         if definition == prefix:
             # We're parsing the block/entity/whatever data
@@ -63,6 +79,14 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
                 ids_dict[item['id']] = ids_dict[_name] = entry_name
                 if item.get('idStr'):
                     ids_dict[u'%s:%s'%(namespace, item['idStr'])] = ids_dict[item['idStr']] = entry_name
+                for a_name, a_value in autobuilds.items():
+                    try:
+                        v = eval(a_value)
+#                             print "###", a_name, a_value, v
+                        defs_dict[entry_name][a_name] = eval(a_value)
+                        ids_dict[v] = entry_name
+                    except Exception as e:
+                        log.error("An error occurred while autobuilding definitions %s (value: \"%s\": %s"%(a_name, a_value, e))
         else:
             # Build extra info in other defs
             defs_dict[definition] = value
@@ -145,4 +169,5 @@ def ids_loader(game_version, namespace=u"minecraft"):
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
     log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
+#     print MCEDIT_IDS
     return MCEDIT_DEFS, MCEDIT_IDS

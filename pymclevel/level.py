@@ -540,9 +540,12 @@ class EntityLevel(MCLevel):
         self.Entities.append(entityTag)
         self._fakeEntities = None
 
-    def tileEntityAt(self, x, y, z):
+    def tileEntityAt(self, x, y, z, print_stuff=False):
         entities = []
+        if print_stuff: print "len(self.TileEntities)", len(self.TileEntities)
         for entityTag in self.TileEntities:
+            if print_stuff:
+                print entityTag["id"].value, TileEntity.pos(entityTag), x, y, z
             if TileEntity.pos(entityTag) == [x, y, z]:
                 entities.append(entityTag)
 
