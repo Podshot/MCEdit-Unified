@@ -945,7 +945,7 @@ class _IteratorDbImpl(object):
 def DB(options, path, bloom_filter_size=10, create_if_missing=False,
        error_if_exists=False, paranoid_checks=False,
        write_buffer_size=(4 * 1024 * 1024), max_open_files=1000,
-       block_cache_size=(8 * 1024 * 1024), block_size=(4 * 1024),
+       block_cache_size=(8 * 1024 * 1024), block_size=163840,
        default_sync=False, default_verify_checksums=False,
        default_fill_cache=True):
     """This is the expected way to open a database. Returns a DBInterface.
