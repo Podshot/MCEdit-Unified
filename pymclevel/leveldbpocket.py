@@ -1410,7 +1410,16 @@ class PocketLeveldbDatabase_new(object):
 #         logger.debug("CHUNK LOAD %s %s"%(cx, cz))
         return terrain, tile_entities, entities
 
-    def _readChunk_1plus(self, cx, cz, y, readOptions=None, key=None):
+    def _readSubChunk_1plus(self, cx, cz, y, readOptions=None, key=None):
+        """Read PE 1.0+ subchunk
+
+        cx, cz: int: coordinates of the chunk.
+        y: int: 'height' index of the subchunk, generaly a0 to 15 number.
+        readOptions: object: Pocket DB read options container to be used with the data base. Default to 'None'.
+            Automatically gathered if the default 'None' value is used.
+        key: str: binary form of the key to request data for. Default to 'None'.
+            Automatically calculated from cx and cz if the default 'None' value is used.
+        """
         if key is None:
             key = struct.pack('<i', cx) + struct.pack('<i', cz)
         with self.world_db() as db:
@@ -1467,7 +1476,7 @@ class PocketLeveldbDatabase_new(object):
                 # PE 1+ chunk detected. Iterate through the subchunks to rebuild the whole data.
                 chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version)
                 for i in range(16):
-                    r = self._readChunk_1plus(cx, cz, i, rop, key)
+                    r = self._readSubChunk_1plus(cx, cz, i, rop, key)
                     if type(r) == tuple:
                         tr, te, en = r
                         terrain = tr
@@ -2381,7 +2390,13 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
             self.markDirtyChunk(cx, cz)
 
     def setSpawnerData(self, tile_entity, mob_id):
-        """Set the data in a given mob spawner"""
+        """Set the data in a given mob spawner.
+
+        tile_entity: TileEntity object: the mob spawner to update.
+        mod_id: str/unicode: the mob string id to update the spawner with.
+
+        Return tile_entity
+        """
 #         print mob_id
 #         print MCEDIT_IDS.get(mob_id, "Unknown")
 #         print MCEDIT_DEFS.get(MCEDIT_IDS.get(mob_id, "Unknown"), {}).get("fullid", None)
@@ -2611,14 +2626,16 @@ class PocketLeveldbChunkPre1(LightedChunk):
         self._TileEntities = TileEntities
 
 class PE1PlusDataContainer:
+    """Container for subchunks data for MCPE 1.0+."""
     def __init__(self, subdata_length, bin_type, name='none', shape=None, chunk_height=256, bit_shift_indexes=None):
-        # subdata_length: int: the length for the underlying numpy objects
-        # bin_type: str: the binary data type, like uint8
-        # destination: numpy array class (not instance): destination object to be used by other MCEdit objects as 'chunk.Blocks', or 'chunk.Data'
-        #              If a subchunk does not exists, the corresponding 'destination' aera is filled with zeros
-        #              The 'destination is initialized filled and shaped here.
-        # name: str: the interna name used mainly for debug display
-        # shape: tuple: the subchunk array shape, unused
+        """subdata_length: int: the length for the underlying numpy objects.
+        bin_type: str: the binary data type, like uint8
+        destination: numpy array class (not instance): destination object to be used by other MCEdit objects as 'chunk.Blocks', or 'chunk.Data'
+                     If a subchunk does not exists, the corresponding 'destination' aera is filled with zeros
+                     The 'destination is initialized filled and shaped here.
+        name: str: the interna name used mainly for debug display
+        shape: tuple: the subchunk array shape, unused
+        """
         self.name = name
         self.subdata_length = subdata_length
         self.bin_type = bin_type
@@ -2637,7 +2654,6 @@ class PE1PlusDataContainer:
         return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
 
     def __getitem__(self, x, z, y):
-
         subchunk = y / 16
         if subchunk in self.subchunks:
             binary_data = self.binary_data[subchunk]
@@ -2653,10 +2669,15 @@ class PE1PlusDataContainer:
         return len(self.subchunks) * self.subdata_length
 
     def add_data(self, y, data):
-        # y: int: the subchunk to add data to
-        # data: str: data to be added. Must be 4096 bytes long.
-        # Does not raise an error if the subchunk already has data.
-        # The old data is overriden.
+        """Add data to 'y' subchunk.
+
+        y: int: the subchunk to add data to
+        data: str: data to be added. Must be 4096 bytes long.
+
+        Does not raise an error if the subchunk already has data.
+        The old data is overriden.
+        Creates the subchunk if it does not exists.
+        """
         self.binary_data[y] = numpy.fromstring(data, self.bin_type)
         if len(data) != self.subdata_length:
             raise ValueError("%s: Data does not match the required %s bytes length: %s bytes"%(self.name, self.subdata_length, len(data)))
@@ -2672,7 +2693,7 @@ class PE1PlusDataContainer:
             self.subchunks.append(y)
 
     def update_subchunks(self):
-        # Auto-updates the existing subchunks data using the 'destination' one
+        """Auto-updates the existing subchunks data using the 'destination' one."""
         for y in range(16):
 #             print '*** Updating subchunk', y
             sub = self.destination[:, :, y * 16:16 + (y * 16)]
@@ -2704,9 +2725,15 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
     def __init__(self, cx, cz, world, data=None, create=False, world_version=None):
         """
-        :param cx, cz int, int Coordinates of the chunk
-        :param data List of 3 strings. (83200 bytes of terrain data, tile-entity data, entity data)
-        :param world PocketLeveldbWorld, instance of the world the chunk belongs too
+        cx, cz: int: coordinates of the chunk.
+        world: PocketLeveldbWorld object: instance of the world the chunk belongs too.
+        data: list of str: terrain, entities and tile entities data. Defaults to 'None'.
+            Unused, but kept for compatibility.
+        create: bool: wether to create the chunk. Defaults to 'False'.
+            Unused, but kept for compatibility.
+        world_version: str: used to track if the 'world' is a pre 1.0 or 1.0+ PE one. Defaults to 'None'.
+
+        Initialize the subchunbk containers.
         """
         self.world_version = world_version # For info and tracking
         self.chunkPosition = (cx, cz)
@@ -2785,6 +2812,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #=======================================================================
 
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
+        """Add data to subchunk.
+
+        terrain, tile_entities, entities: str: 4096 long string. Defaults to 'None'.
+        subchunk: int: subchunk 'height'; generaly 0 to 15 number.
+        """
         if type(subchunk) != int:
             raise TypeError("Bad subchunk type. Must be an int, got %s (%s)"%(type(subchunk), subchunk))
         if terrain:
@@ -2869,6 +2901,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 self.Entities.insert(-1, ent)
 
     def savedData(self):
+        """Unused, raises NotImplementedError()."""
         # Not used for PE 1+ worlds... May change :)
         raise NotImplementedError()
 
