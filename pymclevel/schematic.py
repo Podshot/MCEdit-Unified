@@ -662,7 +662,7 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
 
         tempdir = tempfile.mktemp("schematic")
         if create is False:
-            zf = zipfile.ZipFile(filename)
+            zf = zipfile.ZipFile(filename, allowZip64=True)
             zf.extractall(tempdir)
             zf.close()
 
