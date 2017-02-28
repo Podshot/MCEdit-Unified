@@ -704,7 +704,7 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
 
         basedir = self.worldFolder.filename
         assert os.path.isdir(basedir)
-        with closing(zipfile.ZipFile(filename, "w", zipfile.ZIP_STORED)) as z:
+        with closing(zipfile.ZipFile(filename, "w", zipfile.ZIP_STORED, allowZip64=True)) as z:
             for root, dirs, files in os.walk(basedir):
                 # NOTE: ignore empty directories
                 for fn in files:
