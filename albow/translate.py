@@ -64,20 +64,20 @@ def getPlatInfo(**kwargs):
     """kwargs: dict: {"module_name": module,...}
     used to display version information about modules."""
     log.debug("*** Platform information")
-    log.debug("    System: %s"%platform.system())
-    log.debug("    Release: %s"%platform.release())
-    log.debug("    Version: %s"%platform.version())
-    log.debug("    Architecture: %s, %s"%platform.architecture())
-    log.debug("    Dist: %s, %s, %s"%platform.dist())
-    log.debug("    Machine: %s"%platform.machine())
-    log.debug("    Processor: %s"%platform.processor())
-    log.debug("    Locale: %s"%locale.getdefaultlocale()[0])
-    log.debug("    Encoding: %s"%locale.getdefaultlocale()[1])
-    log.debug("    FS encoding: %s"%os.sys.getfilesystemencoding())
+    log.debug("    System: %s" % platform.system())
+    log.debug("    Release: %s" % platform.release())
+    log.debug("    Version: %s" % platform.version())
+    log.debug("    Architecture: %s, %s" % platform.architecture())
+    log.debug("    Dist: %s, %s, %s" % platform.dist())
+    log.debug("    Machine: %s" % platform.machine())
+    log.debug("    Processor: %s" % platform.processor())
+    log.debug("    Locale: %s" % locale.getdefaultlocale()[0])
+    log.debug("    Encoding: %s" % locale.getdefaultlocale()[1])
+    log.debug("    FS encoding: %s" % os.sys.getfilesystemencoding())
     reVer = re.compile(r"__version__|_version_|__version|_version|version|"
                        "__ver__|_ver_|__ver|_ver|ver", re.IGNORECASE)
     for name, mod in kwargs.items():
-        s = "%s"%dir(mod)
+        s = "%s" % dir(mod)
         verObjNames = list(re.findall(reVer, s))
         if len(verObjNames) > 0:
             while verObjNames:
@@ -85,15 +85,15 @@ def getPlatInfo(**kwargs):
                 verObj = getattr(mod, verObjName, None)
                 if verObj:
                     if type(verObj) in (str, unicode, int, list, tuple):
-                        ver = "%s"%verObj
+                        ver = "%s" % verObj
                         break
-                    elif "%s"%type(verObj) == "<type 'module'>":
-                        verObjNames += ["%s.%s"%(verObjName, a) for a in re.findall(reVer, "%s"%dir(verObj))]
+                    elif "%s" % type(verObj) == "<type 'module'>":
+                        verObjNames += ["%s.%s" % (verObjName, a) for a in re.findall(reVer, "%s" % dir(verObj))]
                     else:
                         ver = verObj()
                 else:
-                    ver = "%s"%type(verObj)
-            log.debug("    %s version: %s"%(name, ver))
+                    ver = "%s" % type(verObj)
+            log.debug("    %s version: %s" % (name, ver))
     log.debug("***")
 
 
@@ -139,6 +139,7 @@ buildTemplateMarker = """
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
 
+
 def _(string, doNotTranslate=False, hotKey=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if type(string) == str:
@@ -147,14 +148,6 @@ def _(string, doNotTranslate=False, hotKey=False):
         return string
     if type(string) not in (str, unicode):
         return string
-#     try:
-#         trn = u"%s"%(string)
-#     except Exception, e:
-#         print "TRANSLATE ERROR", e
-#         log.debug('TRANSLATE ERROR: %s'%e)
-#         trn = string_cache.get(string, string)
-#     if trn == string:
-#         trn = string_cache.get(string, trn)
     trn = string_cache.get(string, string)
     if trn == string and '-' in string:
         # Support for hotkeys
@@ -170,6 +163,7 @@ def _(string, doNotTranslate=False, hotKey=False):
     return trn or string
 
 #-------------------------------------------------------------------------------
+
 
 def loadTemplate(fName="template.trn"):
     """Load the template fName file in the global template variable.
@@ -202,10 +196,10 @@ def loadTemplate(fName="template.trn"):
             g = grp.group()
             if g.startswith(u"o"):
                 oStart = grp.end()
-                tEnd = grp.start() -1
+                tEnd = grp.start() - 1
                 oNum = int(g[1:])
             elif g.startswith(u"t"):
-                oEnd = grp.start() -1
+                oEnd = grp.start() - 1
                 tStart = grp.end()
                 tNum = int(g[1:])
             if oNum == tNum:
@@ -222,6 +216,7 @@ def loadTemplate(fName="template.trn"):
 
 #-------------------------------------------------------------------------------
 
+
 def saveTemplate():
     if buildTemplate:
         fName = os.path.abspath(os.path.join(getLangPath(), "template.trn"))
@@ -231,17 +226,19 @@ def saveTemplate():
         keys.sort()
         for key in keys:
             org, trn = template[key]
-            f.write(u"\no%s %s\nt%s %s"%(key, org, key, trn))
+            f.write(u"\no%s %s\nt%s %s" % (key, org, key, trn))
         f.close()
 
 #-------------------------------------------------------------------------------
+
+
 def setLangPath(path):
     """Changes the default 'lang' folder path. Retrun True if the path is valid, False otherwise."""
     log.debug("setLangPath <<<")
-    log.debug("Argument 'path': %s"%path)
+    log.debug("Argument 'path': %s" % path)
     path = os.path.normpath(os.path.abspath(path))
-    log.debug("   Norm and abs: %s"%path)
-    log.debug("os.access(path, os.F_OK): %s; os.path.isdir(path): %s; os.access(path, os.R_OK): %s"%(os.access(path, os.F_OK), os.path.isdir(path), os.access(path, os.R_OK)))
+    log.debug("   Norm and abs: %s" % path)
+    log.debug("os.access(path, os.F_OK): %s; os.path.isdir(path): %s; os.access(path, os.R_OK): %s" % (os.access(path, os.F_OK), os.path.isdir(path), os.access(path, os.R_OK)))
     if os.access(path, os.F_OK) and os.path.isdir(path) and os.access(path, os.R_OK):
         log.debug("'path' is valid")
         global langPath
@@ -253,11 +250,13 @@ def setLangPath(path):
 
 #-------------------------------------------------------------------------------
 
+
 def getLangPath():
     """Return the actual 'lang' folder."""
     return langPath
 
 #-------------------------------------------------------------------------------
+
 
 def getLang():
     """Return the actual language."""
@@ -283,8 +282,9 @@ def setLang(newlang):
         result = True
     return oldLang, lang, result
 
-
 #-------------------------------------------------------------------------------
+
+
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data.
     Disabled for now..."""

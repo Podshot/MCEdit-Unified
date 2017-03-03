@@ -26,7 +26,6 @@ leveldb_available = True
 leveldb_mcpe = None
 
 if __builtins__.get('mcenf_levelDBPy', False):
-    
     try:
         import leveldb as leveldb_mcpe
     except Exception, e:

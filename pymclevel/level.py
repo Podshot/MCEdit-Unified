@@ -677,7 +677,6 @@ class LightedChunk(ChunkBase):
         heightmap = self.HeightMap
 
         for x, z in itertools.product(xrange(16), xrange(16)):
-
             skylight[x, z, heightmap[z, x]:] = 15
             lv = 15
             for y in reversed(range(heightmap[z, x])):

@@ -29,13 +29,6 @@ logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
 
-# if hasattr(sys, 'frozen'):
-#     if sys.platform == "win32":
-#         import esky
-#         app = esky.Esky(sys.executable)
-
-#         logfile = os.path.join(app.appdir, logfile)
-#
 if sys.platform == "darwin":
     logfile = os.path.expanduser("~/Library/Logs/mcedit.log")
 else:
@@ -67,10 +60,13 @@ ch.setFormatter(fmt)
 
 logger.addHandler(fh)
 logger.addHandler(ch)
+
 import release
-start_msg = 'Starting MCEdit-Unified v%s'%release.TAG
-logger.info(start_msg)
-print '[ ****** ] ~~~~~~~~~~ %s'%start_msg
+
+if __name__ == "__main__":
+    start_msg = 'Starting MCEdit-Unified v%s' % release.TAG
+    logger.info(start_msg)
+    print '[ ****** ] ~~~~~~~~~~ %s' % start_msg
 
 #---------------------------------------------------------------------
 # NEW FEATURES HANDLING
@@ -100,16 +96,15 @@ print '[ ****** ] ~~~~~~~~~~ %s'%start_msg
 #
 # ```
 #
-if '--new-features' in sys.argv:
+if __name__ == "__main__" and '--new-features' in sys.argv:
     if not os.path.exists('new_features.def'):
         logger.warn("New features requested, but file 'new_features.def' not found!")
     else:
         logger.warn("New features mode requested.")
         lines = [a.strip() for a in open('new_features.def', 'r').readlines()]
         for line in lines:
-            setattr(__builtins__, 'mcenf_%s'%line, True)
+            setattr(__builtins__, 'mcenf_%s' % line, True)
         logger.warn("New features list loaded.")
-
 
 from player_cache import PlayerCache
 import directories
@@ -117,6 +112,7 @@ import keys
 
 import albow
 import locale
+
 DEF_ENC = locale.getdefaultlocale()[1]
 if DEF_ENC is None:
     DEF_ENC = "UTF-8"
@@ -127,13 +123,14 @@ from albow.root import RootWidget
 
 from config import config
 
-albow.resource.resource_dir = directories.getDataDir()
+if __name__ == "__main__":
+    albow.resource.resource_dir = directories.getDataDir()
 
 import panels
 import leveleditor
 
 # Building translation template
-if "-tt" in sys.argv:
+if __name__ == "__main__" and "-tt" in sys.argv:
     sys.argv.remove('-tt')
     # Overwrite the default marker to have one adapted to our specific needs.
     albow.translate.buildTemplateMarker = """
@@ -156,57 +153,51 @@ if "-tt" in sys.argv:
     # Save the language defined in config and set en_US as current one.
     logging.warning('MCEdit is invoked to update the translation template.')
     orglang = config.settings.langCode.get()
-    logging.warning('The actual language is %s.'%orglang)
+    logging.warning('The actual language is %s.' % orglang)
     logging.warning('Setting en_US as language for this session.')
     config.settings.langCode.set('en_US')
-
 
 import mceutils
 import mcplatform
 
 # The two next switches '--debug-wm' and '--no-wm' are used to debug/disable the internal window handler.
 # They are exclusive. You can't debug if it is disabled.
-if "--debug-wm" in sys.argv:
-    mcplatform.DEBUG_WM = True
-if "--no-wm" in sys.argv:
-    mcplatform.DEBUG_WM = False
-    mcplatform.USE_WM = False
-else:
-    mcplatform.setupWindowHandler()
-
-DEBUG_WM = mcplatform.DEBUG_WM
-USE_WM = mcplatform.USE_WM
-
-
-#-# DEBUG
-if mcplatform.hasXlibDisplay and DEBUG_WM:
-    print '*** Xlib version', str(mcplatform.Xlib.__version__).replace(' ', '').replace(',', '.')[1:-1], 'found in',
-    if os.path.expanduser('~/.local/lib/python2.7/site-packages') in mcplatform.Xlib.__file__:
-        print 'user\'s',
+if __name__ == "__main__":
+    if "--debug-wm" in sys.argv:
+        mcplatform.DEBUG_WM = True
+    if "--no-wm" in sys.argv:
+        mcplatform.DEBUG_WM = False
+        mcplatform.USE_WM = False
     else:
-        print 'system\'s',
-    print 'libraries.'
-#-#
+        mcplatform.setupWindowHandler()
+
+    DEBUG_WM = mcplatform.DEBUG_WM
+    USE_WM = mcplatform.USE_WM
+
+    #-# DEBUG
+    if mcplatform.hasXlibDisplay and DEBUG_WM:
+        print '*** Xlib version', str(mcplatform.Xlib.__version__).replace(' ', '').replace(',', '.')[1:-1], 'found in',
+        if os.path.expanduser('~/.local/lib/python2.7/site-packages') in mcplatform.Xlib.__file__:
+            print 'user\'s',
+        else:
+            print 'system\'s',
+        print 'libraries.'
+    #-#
 from mcplatform import platform_open
 import numpy
 from pymclevel.minecraft_server import ServerJarStorage
 
-import os
 import os.path
 import pygame
 from pygame import display, rect
 import pymclevel
-# import release
 import shutil
-import sys
 import traceback
 import threading
 
 from utilities.gl_display_context import GLDisplayContext
 
-#&# Prototype fro blocks/items names
 import mclangres
-#&#
 
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
@@ -296,7 +287,7 @@ class MCEdit(GLViewport):
                 config.settings.langCode.set(lng)
             albow.translate.setLang(lng)
         # Set the window caption here again, since the initialization is done through several steps...
-        display.set_caption(('MCEdit ~ ' + release.get_version()%_("for")).encode('utf-8'), 'MCEdit')
+        display.set_caption(('MCEdit ~ ' + release.get_version() % _("for")).encode('utf-8'), 'MCEdit')
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
@@ -349,6 +340,7 @@ class MCEdit(GLViewport):
                 if idx is not None:
                     self.add(self.fileOpener)
                 self.fileOpener.focus()
+
     #-#
 
     editor = None
@@ -433,7 +425,7 @@ class MCEdit(GLViewport):
     def makeSideColumn1(self):
         def showLicense():
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
-            
+
         def refresh():
             PlayerCache().force_refresh()
 
@@ -461,7 +453,7 @@ class MCEdit(GLViewport):
                     ("",
                      "Refresh Player Names",
                      refresh)
-                   ])
+                    ])
 
         c = albow.HotkeyColumn(hotkeys)
 
@@ -490,7 +482,7 @@ class MCEdit(GLViewport):
                      "Screenshots",
                      showScreenshotsDir,
                      os.path.join(directories.getCacheDir(), "screenshots"))
-                   ])
+                    ])
 
         c = albow.HotkeyColumn(hotkeys)
 
@@ -515,7 +507,7 @@ class MCEdit(GLViewport):
             print "win is None, unable to print debug messages"
 
         if win:
-            x, y =  win.get_position()
+            x, y = win.get_position()
             if DEBUG_WM:
                 print "position", x, y
                 print "config pos", (config.settings.windowX.get(), config.settings.windowY.get())
@@ -561,18 +553,19 @@ class MCEdit(GLViewport):
                         _h = 680
                     if not albow.dialogs.ask_tied_to:
                         answer = albow.ask(
-                                           "MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution.",
-                                           ["Don't remind me again.", "OK", "Cancel"], default=1, cancel=1,
-                                           responses_tooltips = {"Don't remind me again.": "Disable this message. Definitively. Even the next time you start MCEdit.",
-                                                                 "OK": "Continue and not see this message until you restart MCEdit",
-                                                                 "Cancel": "Resize the window to the minimum recommended resolution."},
-                                           tie_widget_to=True)
+                            "MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution.",
+                            ["Don't remind me again.", "OK", "Cancel"], default=1, cancel=1,
+                            responses_tooltips={
+                                "Don't remind me again.": "Disable this message. Definitively. Even the next time you start MCEdit.",
+                                "OK": "Continue and not see this message until you restart MCEdit",
+                                "Cancel": "Resize the window to the minimum recommended resolution."},
+                            tie_widget_to=True)
                     else:
                         if not albow.dialogs.ask_tied_to._visible:
                             albow.dialogs.ask_tied_to._visible = True
                             answer = albow.dialogs.ask_tied_to.present()
                     if answer == "Don't remind me again.":
-                        config.settings.showWindowSizeWarning = False
+                        config.settings.showWindowSizeWarning.set(False)
                         self.resizeAlert = False
                     elif answer == "OK":
                         w, h = self.size
@@ -584,7 +577,7 @@ class MCEdit(GLViewport):
                         albow.dialogs.ask_tied_to.dismiss("_OK")
                         del albow.dialogs.ask_tied_to
                         albow.dialogs.ask_tied_to = None
-            elif (w >= 1000 or h >= 680):
+            elif w >= 1000 or h >= 680:
                 if albow.dialogs.ask_tied_tos:
                     for ask_tied_to in albow.dialogs.ask_tied_tos:
                         ask_tied_to._visible = False
@@ -634,13 +627,14 @@ class MCEdit(GLViewport):
                 if self.maximized != maximized:
                     if DEBUG_WM:
                         print "restoring window pos and size"
-                        print "(config.settings.windowX.get(), config.settings.windowY.get())", (config.settings.windowX.get(), config.settings.windowY.get())
+                        print "(config.settings.windowX.get(), config.settings.windowY.get())", (
+                        config.settings.windowX.get(), config.settings.windowY.get())
                     (w, h) = (config_w, config_h)
                     win.set_state(1, (w, h), self.saved_pos)
                 else:
                     if DEBUG_WM:
                         print "window resized"
-                        print "setting size to", (w, h), "and pos to", (x,y)
+                        print "setting size to", (w, h), "and pos to", (x, y)
                     win.set_mode((w, h), self.displayContext.displayMode())
                     win.set_position((x, y))
                 config.settings.windowMaximizedWidth.set(0)
@@ -720,9 +714,6 @@ class MCEdit(GLViewport):
         self.saveWindowPosition()
         config.save()
         if self.editor.unsavedEdits:
-#             if config.settings.savePositionOnClose.get():
-#                 self.editor.waypointManager.saveLastPosition(self.editor.mainViewport, self.editor.level.getPlayerDimension())
-#             self.editor.waypointManager.save()
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
@@ -764,12 +755,15 @@ class MCEdit(GLViewport):
                 platform_open(new_version["html_url"])
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
-                albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
+                albow.alert(_(
+                    ' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(
+                    new_version["asset"]["name"]))
 
     @classmethod
     def main(cls):
         PlayerCache().load()
-        displayContext = GLDisplayContext(splash.splash, caption=(('MCEdit ~ ' + release.get_version()%_("for")).encode('utf-8'), 'MCEdit'))
+        displayContext = GLDisplayContext(splash.splash, caption=(
+        ('MCEdit ~ ' + release.get_version() % _("for")).encode('utf-8'), 'MCEdit'))
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
 
@@ -794,63 +788,6 @@ class MCEdit(GLViewport):
         fetch_version_thread = threading.Thread(target=cls.fetch_version)
         fetch_version_thread.start()
 
-
-# Disabled old update code
-#       if hasattr(sys, 'frozen'):
-#           # We're being run from a bundle, check for updates.
-#           import esky
-#
-#           app = esky.Esky(
-#               sys.executable.decode(sys.getfilesystemencoding()),
-#               'https://bitbucket.org/codewarrior0/mcedit/downloads'
-#           )
-#           try:
-#               update_version = app.find_update()
-#           except:
-#               # FIXME: Horrible, hacky kludge.
-#               update_version = None
-#               logging.exception('Error while checking for updates')
-#
-#           if update_version:
-#               answer = albow.ask(
-#                   'Version "%s" is available, would you like to '
-#                   'download it?' % update_version,
-#                   [
-#                       'Yes',
-#                       'No',
-#                   ],
-#                   default=0,
-#                   cancel=1
-#               )
-#               if answer == 'Yes':
-#                   def callback(args):
-#                       status = args['status']
-#                       status_texts = {
-#                           'searching': u"Finding updates...",
-#                           'found':  u"Found version {new_version}",
-#                           'downloading': u"Downloading: {received} / {size}",
-#                           'ready': u"Downloaded {path}",
-#                           'installing': u"Installing {new_version}",
-#                           'cleaning up': u"Cleaning up...",
-#                           'done': u"Done."
-#                       }
-#                       text = status_texts.get(status, 'Unknown').format(**args)
-#
-#                       panel = Dialog()
-#                       panel.idleevent = lambda event: panel.dismiss()
-#                       label = albow.Label(text, width=600)
-#                       panel.add(label)
-#                       panel.size = (500, 250)
-#                       panel.present()
-#
-#                   try:
-#                       app.auto_update(callback)
-#                   except (esky.EskyVersionError, EnvironmentError):
-#                       albow.alert(_("Failed to install update %s") % update_version)
-#                   else:
-#                       albow.alert(_("Version %s installed. Restart MCEdit to begin using it.") % update_version)
-#                       raise SystemExit()
-
         if config.settings.closeMinecraftWarning.get():
             answer = albow.ask(
                 "Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.",
@@ -858,25 +795,14 @@ class MCEdit(GLViewport):
             if answer == "Don't remind me again.":
                 config.settings.closeMinecraftWarning.set(False)
 
-# Disabled Crash Reporting Option
-#       if not config.settings.reportCrashesAsked.get():
-#           answer = albow.ask(
-#               "When an error occurs, MCEdit can report the details of the error to its developers. "
-#               "The error report will include your operating system version, MCEdit version, "
-#               "OpenGL version, plus the make and model of your CPU and graphics processor. No personal "
-#               "information will be collected.\n\n"
-#               "Error reporting can be enabled or disabled in the Options dialog.\n\n"
-#               "Enable error reporting?",
-#               ["Yes", "No"],
-#               default=0)
-#           config.settings.reportCrashes.set(answer == "Yes")
-#           config.settings.reportCrashesAsked.set(True)
         config.settings.reportCrashes.set(False)
         config.settings.reportCrashesAsked.set(True)
 
         config.save()
         if "update" in config.version.version.get():
-            answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
+            answer = albow.ask(
+                "There are new default controls. Do you want to replace your current controls with the new ones?",
+                ["Yes", "No"])
             if answer == "Yes":
                 for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
                     config.keys[config.convert(configKey)].set(k)
@@ -893,15 +819,14 @@ class MCEdit(GLViewport):
                 exc_txt = traceback.format_exc()
                 if mcedit.editor.level:
                     if config.settings.savePositionOnClose.get():
-                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.dimNo)
+                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport,
+                                                                       mcedit.editor.level.dimNo)
                     mcedit.editor.waypointManager.save()
                 # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
                 if not USE_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
-                    #w = r-X
-                    #h = b-Y
                     if (showCmd == mcplatform.win32con.SW_MINIMIZE or
                                 showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                         showCmd = mcplatform.win32con.SW_SHOWNORMAL
@@ -912,7 +837,7 @@ class MCEdit(GLViewport):
 
                 # Restore the previous language if we ran with '-tt' (update translation template).
                 if albow.translate.buildTemplate:
-                    logging.warning('Restoring %s.'%orglang)
+                    logging.warning('Restoring %s.' % orglang)
                     config.settings.langCode.set(orglang)
                 #
                 config.save()
@@ -942,8 +867,6 @@ class MCEdit(GLViewport):
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                 display.get_wm_info()['window'])
             X, Y, r, b = rect
-            #w = r-X
-            #h = b-Y
             if (showCmd == mcplatform.win32con.SW_MINIMIZE or
                         showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                 showCmd = mcplatform.win32con.SW_SHOWNORMAL
@@ -961,7 +884,6 @@ class MCEdit(GLViewport):
                 print "x", x, "y", y
             config.settings.windowX.set(x)
             config.settings.windowY.set(y)
-            
 
     def restart(self):
         self.saveWindowPosition()
@@ -973,9 +895,9 @@ class MCEdit(GLViewport):
         self.editor.root.RemoveEditFiles()
         python = sys.executable
         if sys.argv[0].endswith('.exe') or hasattr(sys, 'frozen'):
-            os.execl(python, python, * sys.argv[1:])
+            os.execl(python, python, *sys.argv[1:])
         else:
-            os.execl(python, python, * sys.argv)
+            os.execl(python, python, *sys.argv)
 
 
 def main(argv):
@@ -983,36 +905,6 @@ def main(argv):
     Setup display, bundled schematics. Handle unclean
     shutdowns.
     """
-
-# This should eventually be revived, what is "squash_python"?
-#    try:
-#        import squash_python
-#
-#        squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
-#        squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
-#
-#        version = release.get_version()
-#        client = squash_python.get_client()
-#        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
-#        client.environment = "unknown"
-#        client.host = "http://pixelhost.ezekielelin.com"
-#        client.notifyPath = "/mcedit_bugs.php"
-#        client.build = version
-#        client.timeout = 5
-#
-# Disabled Crash Reporting Option
-#       client.disabled = not config.settings.reportCrashesNew.get()
-#       client.disabled = True
-#
-#       def _reportingChanged(val):
-#           client.disabled = not val
-#
-#       config.settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
-#       client.reportErrors()
-#       client.hook()
-#   except (ImportError, UnicodeError) as e:
-#       pass
-
     try:
         display.init()
     except pygame.error:
@@ -1041,7 +933,7 @@ def main(argv):
         ServerJarStorage()
     except Exception, e:
         logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
-        
+
     try:
         MCEdit.main()
     except Exception as e:
@@ -1069,7 +961,8 @@ def getSelectedMinecraftVersion():
 def getLatestMinecraftVersion(snapshots=False):
     import urllib2
     import json
-    versioninfo = json.loads(urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json ").read())
+    versioninfo = json.loads(
+        urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json ").read())
     if snapshots:
         return versioninfo['latest']['snapshot']
     else:
@@ -1089,6 +982,7 @@ class FakeStdOutErr:
     Mimics 'write' and 'close' file objects methods.
     Used on Linux only."""
     mode = 'a'
+
     def __init__(self, *args, **kwargs):
         """*args and **kwargs are ignored.
         Deletes the 'logger' object and reopen 'logfile' in append mode."""
@@ -1103,6 +997,7 @@ class FakeStdOutErr:
     def close(self, *args, **kwargs):
         self.fd.flush()
         self.fd.close()
+
 
 if __name__ == "__main__":
     try:
@@ -1123,4 +1018,3 @@ if __name__ == "__main__":
         print "=================================="
         raw_input("Press the Enter key to close this window")
         pass
-    #sys.exit(main(sys.argv))
