@@ -9,6 +9,8 @@ import ast
 from mcplatform import askSaveFile
 from directories import getDocumentsFolder
 
+RECORD_UNDO = False
+
 displayName = "Find"
 
 tagtypes = {"TAG_Byte": 0, "TAG_Short": 1, "TAG_Int": 2, "TAG_Compound": 3, "TAG_List": 4, "TAG_String": 5,

@@ -66,22 +66,29 @@ class BlockstateAPI(object):
         api = alphaMaterials.blockstate_api
     '''
     material_map = {}
-    
+
     def __init__(self, mats, definition_file):
         self._mats = mats
         self.block_map = {}
         self.blockstates = {}
-        
+
         for b in self._mats:
             if b.ID == 0:
                 b.stringID = "air"
             self.block_map[b.ID] = "minecraft:" + b.stringID
-        
-        with pkg_resources.resource_stream(__name__, definition_file) as def_file:
-            self.blockstates = json.load(def_file)
-            
+
+        # When running from a bundled app on Linux (and possibly on OSX) pkg_resource can't find the needed files.
+        if pkg_resources.resource_exists(__name__, definition_file):
+            # We're running from source or on Windows using the executable (<<== Not sure...)
+            with pkg_resources.resource_stream(__name__, definition_file) as def_file:
+                self.blockstates = json.load(def_file)
+        else:
+            # In all other cases, retrieve the file directly from the file system.
+            with open(os.path.join("pymclevel", definition_file)) as def_file:
+                self.blockstates = json.load(def_file)
+
         self.material_map[self._mats] = self
-        
+
     def idToBlockstate(self, bid, data):
         '''
         Converts from a numerical ID to a BlockState string
