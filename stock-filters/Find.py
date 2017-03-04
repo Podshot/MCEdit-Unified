@@ -9,7 +9,8 @@ import ast
 from mcplatform import askSaveFile
 from directories import getDocumentsFolder
 
-RECORD_UNDO = False
+# The RECODR_UNDO is not yet usable...
+# RECORD_UNDO = False
 
 displayName = "Find"
 
