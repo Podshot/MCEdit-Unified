@@ -895,7 +895,7 @@ class FilterOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
         # Override 'recordUndo' with filter RECORD_UNDO.
-        # Some filters, like Find does not need to record uno stuff, since they're not changing anything
+        # Some filters, like Find does not need to record undo stuff, since they're not changing anything
         recordUndo = getattr(self.filter, 'RECORD_UNDO', recordUndo)
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
