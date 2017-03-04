@@ -68,9 +68,32 @@ log = logging.getLogger(__name__)
 try:
     plat = sys.platform
     if plat == 'linux2':
-        # This library shall not be installed systemwide, let take it from the directory where this module is.
-        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.so'))
+        # This library shall not be installed system wide, let take it from the directory where this module is if
+        # we're running from source, or from the same directory alongside the Linux bundle file.
+        if getattr(sys, 'frozen', False):
+            searched = []
+            p = os.path.dirname(os.path.abspath(__file__))
+            # When running from a bundle the .so shall be in '<program install directory>/<last part of p>
+            # Let's try to find it without taking care of the name of the bundle file.
+            b_dir, so_dir = os.path.split(p)
+            b_dir = os.path.split(b_dir)[0]
+            pth = None
+            while pth is None and b_dir != '/':
+                _p = os.path.join(b_dir, so_dir)
+                if os.path.exists(os.path.join(_p, 'libleveldb.so')):
+                    pth = _p
+                else:
+                    searched.append(_p)
+                    b_dir = os.path.split(b_dir)[0]
+            if pth == None:
+                raise IOError("File 'libleveldb.so' not found in any of these places:\n%s"%'\n'.join(searched))
+            else:
+                log.info("Found 'libleveldb.so' in %s"%pth)
+        else:
+            pth = os.path.dirname(os.path.abspath(__file__))
+        _ldb = ctypes.CDLL(os.path.join(pth, 'libleveldb.so'))
     elif plat == 'darwin':
+        # since on OSX the program is bundled in a .app archive, shall we use the same (or approching) thecnique as for Linux?
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
