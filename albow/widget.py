@@ -154,29 +154,6 @@ class Widget(object):
         self._rect = Rect(x)
         self._resized(old_size)
 
-    #    def get_anchor(self):
-    #        if self.hstretch:
-    #            chars ='lr'
-    #        elif self.hmove:
-    #            chars = 'r'
-    #        else:
-    #            chars = 'l'
-    #        if self.vstretch:
-    #            chars += 'tb'
-    #        elif self.vmove:
-    #            chars += 'b'
-    #        else:
-    #            chars += 't'
-    #        return chars
-    #
-    #    def set_anchor(self, chars):
-    #        self.hmove = 'r' in chars and not 'l' in chars
-    #        self.vmove = 'b' in chars and not 't' in chars
-    #        self.hstretch = 'r' in chars and 'l' in chars
-    #        self.vstretch = 'b' in chars and 't' in chars
-    #
-    #    anchor = property(get_anchor, set_anchor)
-
     resizing_axes = {'h': 'lr', 'v': 'tb'}
     resizing_values = {'': [0], 'm': [1], 's': [0, 1]}
 

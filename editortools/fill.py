@@ -324,7 +324,7 @@ class FillTool(EditorTool):
             self.panel.pickReplaceBlock()
 
     @alertException
-    def swap(self):
+    def swap(self, amount=1):
         if self.panel and self.replacing:
             self.panel.swapBlockTypes()
 

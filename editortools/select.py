@@ -162,7 +162,6 @@ class SelectionToolPanel(Panel):
         deleteEntitiesButton.tooltipText = "Remove all entities within the selection"
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
         deleteTileTicksButton.tooltipText = "Removes all tile ticks within selection. Tile ticks are scheduled block updates"
-        # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText = "Count the different blocks and entities in the selection and display the totals."
         cutButton = Button("Cut", action=self.tool.cutSelection)
@@ -375,7 +374,7 @@ class SelectionTool(EditorTool):
                 direction = map(int.__mul__, direction, self.selectionBox().size)
             else:
                 nudgeWidth = config.fastNudgeSettings.blocksWidthNumber.get()
-                direction = map(lambda x: x * nudgeWidth, direction)
+                direction = [x * nudgeWidth for x in direction]
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -394,7 +393,7 @@ class SelectionTool(EditorTool):
                 direction = map(int.__mul__, direction, self.selectionBox().size)
             else:
                 nudgeWidth = config.fastNudgeSettings.selectionWidthNumber.get()
-                direction = map(lambda x: x * nudgeWidth, direction)
+                direction = [x * nudgeWidth for x in direction]
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -413,7 +412,7 @@ class SelectionTool(EditorTool):
                 n = map(int.__mul__, n, self.selectionBox().size)
             else:
                 nudgeWidth = config.fastNudgeSettings.pointsWidthNumber.get()
-                n = map(lambda x: x * nudgeWidth, n)
+                n = [x * nudgeWidth for x in n]
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):
@@ -437,7 +436,7 @@ class SelectionTool(EditorTool):
         if self.nudgePanel is None:
             self.nudgePanel = Panel(name='Panel.SelectionTool.nudgePanel')
 
-            self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
+            self.nudgePanel.bg_color = [x * 0.5 for x in self.selectionColor] + [0.5, ]
 
             self.bottomLeftNudge = bottomLeftNudge = NudgeButton(self.editor)
             bottomLeftNudge.anchor = "brwh"

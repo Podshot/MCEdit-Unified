@@ -54,6 +54,7 @@ class Block(object):
 
 id_limit = 4096
 
+
 class BlockstateAPI(object):
     '''
     An easy API to convert from numerical ID's to Blockstates and vice-versa. Each
@@ -101,12 +102,12 @@ class BlockstateAPI(object):
         :rtype: str
         '''       
         if bid not in self.block_map:
-            return ("<Unknown>", {})
+            return "<Unknown>", {}
         
         name = self.block_map[bid].replace("minecraft:", "")
 
         if name not in self.blockstates["minecraft"]:
-            return ("<Unknown>", {})
+            return "<Unknown>", {}
         
         properties = {}
         for prop in self.blockstates["minecraft"][name]["properties"]: # TODO: Change this if MCEdit's mod support ever improves
@@ -115,8 +116,8 @@ class BlockstateAPI(object):
                     if field == "<data>":
                         continue
                     properties[field] = prop[field]
-                return (name, properties)
-        return (name, properties)
+                return name, properties
+        return name, properties
     
     def blockstateToID(self, name, properties):
         '''
@@ -136,9 +137,9 @@ class BlockstateAPI(object):
             prefix = "minecraft"
             
         if prefix not in self.blockstates:
-            return (-1, -1)
+            return -1, -1
         elif name not in self.blockstates[prefix]:
-            return (-1, -1)
+            return -1, -1
         
         bid = self.blockstates[prefix][name]["id"]
         for prop in self.blockstates[prefix][name]["properties"]:
@@ -147,8 +148,8 @@ class BlockstateAPI(object):
                 if key in prop:
                     correct = correct and (prop[key] == value)
             if correct:
-                return (bid, prop["<data>"])
-        return (bid, 0)
+                return bid, prop["<data>"]
+        return bid, 0
     
     @staticmethod
     def stringifyBlockstate(name, properties):
@@ -186,7 +187,7 @@ class BlockstateAPI(object):
         if len(seperated) == 1:
             if not seperated[0].startswith("minecraft:"):
                 seperated[0] = "minecraft:" + seperated[0] 
-            return (seperated[0], {})
+            return seperated[0], {}
         
         name, props = seperated
         
@@ -200,7 +201,7 @@ class BlockstateAPI(object):
         for prop in props:
             prop = prop.split("=")
             properties[prop[0]] = prop[1]
-        return (name, properties)
+        return name, properties
 
 
 class MCMaterials(object):
@@ -362,7 +363,6 @@ class MCMaterials(object):
         try:
             log.info(u"Loading block info from %s", f)
             blockyaml = json.load(f)
-            #blockyaml = yaml.load(f)
             self.addJSONBlocks(blockyaml)
 
         except Exception, e:
@@ -1118,8 +1118,6 @@ pocketMaterials.UpdateGameBlock1 = pocketMaterials[248, 0]
 pocketMaterials.UpdateGameBlock2 = pocketMaterials[249, 0]
 pocketMaterials.info_reserved6 = pocketMaterials[255, 0]
 
-# pocketMaterials.RedstoneRepeaterOff = alphaMaterials[93, 0] 
-# pocketMaterials.RedstoneRepeaterOn = alphaMaterials[94, 0]
 
 def printStaticDefs(name, file_name=None):
     # printStaticDefs('alphaMaterials')
@@ -1137,18 +1135,18 @@ def printStaticDefs(name, file_name=None):
             mats_ids.append(b.ID)
     print msg
     if file_name:
-        msg += "\nNumber of materials: %s\n%s"%(len(mats_ids), mats_ids)
+        msg += "\nNumber of materials: %s\n%s" % (len(mats_ids), mats_ids)
         id_min = min(mats_ids)
         id_max = max(mats_ids)
-        msg += "\n\nLowest ID: %s\nHighest ID: %s\n"%(id_min, id_max)
+        msg += "\n\nLowest ID: %s\nHighest ID: %s\n" % (id_min, id_max)
         missing_ids = []
         for i in xrange(id_min, id_max + 1):
             if i not in mats_ids:
                 missing_ids.append(i)
         if missing_ids:
-                msg += "\nIDs not in the list:\n%s\n(%s IDs)\n"%(missing_ids, len(missing_ids))
+                msg += "\nIDs not in the list:\n%s\n(%s IDs)\n" % (missing_ids, len(missing_ids))
         open(file_name, 'w').write(msg)
-        print "Written to '%s'"%file_name
+        print "Written to '%s'" % file_name
 
 
 _indices = rollaxis(indices((id_limit, 16)), 0, 3)
@@ -1287,7 +1285,7 @@ __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, na
 if '--dump-mats' in os.sys.argv:
     os.sys.argv.remove('--dump-mats')
     for n in ("indevMaterials", "pocketMaterials", "alphaMaterials", "classicMaterials"):
-        printStaticDefs(n, "%s.mats"%n.split('M')[0])
+        printStaticDefs(n, "%s.mats" % n.split('M')[0])
         
 if '--find-blockstates' in os.sys.argv:
     pe_blockstates = {'minecraft': {}}
@@ -1298,7 +1296,6 @@ if '--find-blockstates' in os.sys.argv:
         DATA = block.blockData
         pc_block = alphaMaterials.get((ID, DATA))
         if pc_block and pc_block.stringID == block.stringID:
-            #print block
             passed.append(block)
         else:
             failed.append(block)
@@ -1315,5 +1312,3 @@ if '--find-blockstates' in os.sys.argv:
         for (key, value) in blockstate[1].iteritems():
             state[key] = value
         pe_blockstates["minecraft"][block.stringID]['properties'].append(state)
-    #with open('pe_blockstates_test.json', 'wb') as out:
-    #    json.dump(pe_blockstates, out, indent=4, separators=(',', ': '))

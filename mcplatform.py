@@ -80,22 +80,23 @@ schematicsDir = directories.schematicsDir
 # platChooser = sys.platform in ('linux2', 'darwin')
 platChooser = sys.platform == 'darwin'
 
+
 def dynamic_arguments(func_to_replace, askFile_func):
     def wrapper(initialDir, displayName, fileFormat):
         if isinstance(fileFormat, tuple):
             return func_to_replace(initialDir, displayName, fileFormat)
         else:
-            
             def old_askSaveSchematic(initialDir, displayName, fileFormat):
                 dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
                 return askFile_func(initialDir,
-                                   title=_('Save this schematic...'),
-                                   defaultName=displayName + "_" + dt + "." + fileFormat,
-                                   filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
-                                   suffix=fileFormat,
-                                   )
+                                    title=_('Save this schematic...'),
+                                    defaultName=displayName + "_" + dt + "." + fileFormat,
+                                    filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
+                                    suffix=fileFormat,
+                                    )
             return old_askSaveSchematic(initialDir, displayName, fileFormat)
     return wrapper
+
 
 def getTexturePacks():
     try:
@@ -103,11 +104,6 @@ def getTexturePacks():
     except:
         return []
 
-# for k,v in os.environ.iteritems():
-# try:
-#        os.environ[k] = v.decode(sys.getfilesystemencoding())
-#    except:
-#        continue
 if sys.platform == "win32":
     try:
         from win32 import win32gui
@@ -220,6 +216,7 @@ def OSXVersionChecker(name, compare):
 lastSchematicsDir = None
 lastSaveDir = None
 
+
 def buildFileTypes(filetypes):
     result = ""
     for key in filetypes[0]:
@@ -230,6 +227,7 @@ def buildFileTypes(filetypes):
         result += ",".join(ftypes) + ")\0"
         result += ";".join(ftypes) + "\0"
     return result + "\0"
+
 
 def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=None):
     title = _(title)
@@ -292,34 +290,27 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
 
 def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
-        # if schematics:
         if not suffixes:
-            f = (_('Levels and Schematics') + '\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' + 
-             '*.*\0*.*\0\0')
+            f = (_('Levels and Schematics') + '\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' +
+                 '*.*\0*.*\0\0')
         else:
             f = "All\0"
             for suffix in suffixes:
                 f += "*." + suffix + ";"
             f += "\0*.*\0\0"
-        #        else:
-        #            f = ('Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0' +
-        #                 '*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0' +
-        #                 '*.*\0*.*\0\0')
 
-        (filename, customfilter, flags) = win32gui.GetOpenFileNameW(
+        filename, customfilter, flags = win32gui.GetOpenFileNameW(
             hwndOwner=display.get_wm_info()['window'],
             InitialDir=initialDir,
             Flags=(win32con.OFN_EXPLORER
                    | win32con.OFN_NOCHANGEDIR
                    | win32con.OFN_FILEMUSTEXIST
                    | win32con.OFN_LONGNAMES
-                   # |win32con.OFN_EXTENSIONDIFFERENT
-            ),
+                   ),
             Title=title,
             Filter=f,
         )
     except Exception:
-        # print "Open File: ", e
         pass
     else:
         return filename
@@ -327,6 +318,7 @@ def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
 
 def askOpenFileGtk(title, suffixes, initialDir):
     fls = []
+
     def run_dlg():
         chooser = gtk.FileChooserDialog(title,
                                         None, gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -363,6 +355,7 @@ def askOpenFileGtk(title, suffixes, initialDir):
 
     return fls[0]
 
+
 def askSaveSchematic(initialDir, displayName, fileFormats):
     fileFormat = buildFileTypes(fileFormats)
     
@@ -372,7 +365,8 @@ def askSaveSchematic(initialDir, displayName, fileFormats):
                        defaultName=displayName + "_" + dt + "." + fileFormats[0][fileFormats[0].keys()[0]][0],
                        filetype=fileFormat,
                        suffix=fileFormat,
-    )
+                       )
+
 
 def askCreateWorld(initialDir):
     defaultName = name = _("Untitled World")
@@ -436,7 +430,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                 chooser.set_current_name(defaultName)
 
                 # Add custom Filter
-                if type(_filetype) in (list, tuple):
+                if isinstance(_filetype, list) or isinstance(_filetype, tuple):
                     for i, filet in enumerate(_filetype):
                         if i % 2 == 0:
                             file_filter = gtk.FileFilter()
@@ -455,7 +449,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                         __suffix = suffix.split("\0")[:-2]
                     else:
                         __suffix = suffix
-                    if type(__suffix) in (list, tuple):
+                    if isinstance(__suffix, list) or isinstance(__suffix, tuple):
                         for suff in __suffix:
                             file_filter.add_pattern("*." + suff)
                     else:
@@ -487,17 +481,17 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
             try:
                 iDir = initialDir.encode(enc)
-            except:
+            except Exception as e:
                 iDir = initialDir
                 log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
                 log.debug("Encode function returned: %s" % e)
             try:
                 dName = defaultName.encode(enc)
-            except:
+            except Exception as e:
                 dName = defaultName
                 log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
                 log.debug("Encode function returned: %s" % e)
-            if type(_suffix) in (list, tuple):
+            if isinstance(_suffix, list) or isinstance(_suffix, tuple):
                 sffxs = [a[1:] for a in _suffix[1::2]]
                 sffx = sffxs.pop(0)
                 sffxs.append('.*')
@@ -506,14 +500,15 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                 sffxs = []
 
             filename = request_new_filename(prompt=title,
-                                        suffix=sffx,
-                                        extra_suffixes=sffxs,
-                                        directory=iDir,
-                                        filename=dName,
-                                        pathname=None)
+                                            suffix=sffx,
+                                            extra_suffixes=sffxs,
+                                            directory=iDir,
+                                            filename=dName,
+                                            pathname=None)
     return filename
 
 askSaveSchematic = dynamic_arguments(askSaveSchematic, askSaveFile)
+
 
 # Start Open Folder Dialogs
 # TODO: Possibly get an OS X dialog
@@ -532,11 +527,12 @@ def askOpenFolderWin32(title, initialDir):
     except pywintypes.com_error as e:
         if e.args[0] == -2147467259:
             print "Invalid folder selected"
-        pass
+
 
 def askOpenFolderGtk(title, initialDir):
     if hasGtk:
         fls = []
+
         def run_dlg():
             chooser = gtk.FileChooserDialog(title,
                                         None, gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -562,54 +558,12 @@ def askOpenFolderGtk(title, initialDir):
     else:
         print "You currently need gtk to use an Open Folder Dialog!"
 
-# End Open Folder Dialogs
-
-
-#   if sys.platform == "win32":
-#       try:
-#
-#           (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
-#               hwndOwner = display.get_wm_info()['window'],
-#               # InitialDir=minecraftSaveFileDir,
-#               Flags=win32con.OFN_EXPLORER | win32con.OFN_NOCHANGEDIR | win32con.OFN_OVERWRITEPROMPT,
-#               File=initialDir + os.sep + displayName,
-#               DefExt=fileFormat,
-#               Title=,
-#               Filter=,
-#               )
-#       except Exception, e:
-#           print "Error getting filename: {0!r}".format(e)
-#           return
-#
-#   elif sys.platform == "darwin" and AppKit is not None:
-#       sp = AppKit.NSSavePanel.savePanel()
-#       sp.setDirectory_(initialDir)
-#       sp.setAllowedFileTypes_([fileFormat])
-#       # sp.setFilename_(self.editor.level.displayName)
-#
-#       if sp.runModal() == 0:
-#           return;  # pressed cancel
-#
-#       filename = sp.filename()
-#       AppKit.NSApp.mainWindow().makeKeyWindow()
-#
-#   else:
-#
-#       filename = request_new_filename(prompt = "Save this schematic...",
-#                                       suffix = ".{0}".format(fileFormat),
-#                                       directory = initialDir,
-#                                       filename = displayName,
-#                                       pathname = None)
-#
-#   return filename
 
 def platform_open(path):
     try:
         if sys.platform == "win32":
             os.startfile(path)
-            # os.system('start ' + path + '\'')
         elif sys.platform == "darwin":
-            # os.startfile(path)
             os.system('open "' + path + '"')
         else:
             os.system('xdg-open "' + path + '"')
@@ -673,11 +627,11 @@ def get_desktop_environment():
                 elif "xfce" in desktop_session or desktop_session.startswith("xubuntu"):
                     return "xfce4"
                 elif desktop_session.startswith("ubuntu"):
-                    return "unity"       
+                    return "unity"
                 elif desktop_session.startswith("lubuntu"):
-                    return "lxde" 
-                elif desktop_session.startswith("kubuntu"): 
-                    return "kde" 
+                    return "lxde"
+                elif desktop_session.startswith("kubuntu"):
+                    return "kde"
                 elif desktop_session.startswith("razor"):  # e.g. razorkwin
                     return "razor-qt"
                 elif desktop_session.startswith("wmaker"):  # e.g. wmaker-common
@@ -694,6 +648,7 @@ def get_desktop_environment():
             elif is_running("ksmserver"):
                 return "kde"
         return "unknown"
+
 
 def is_running(process):
     # From http://www.bloggerpolis.com/2011/05/how-to-check-if-a-process-is-running-using-python/
@@ -754,8 +709,6 @@ desktops = {'linux2': {
             'state': 'parent'
         }
     },
-#     'win32': {},
-#     'darwin': {}
 }
 
 # The environments in the next definition need to be tested.
@@ -773,8 +726,9 @@ linux_unsuported = ('afterstep',
                     'windowmaker',
                     'xfce4')
 
+
 # Window handlers classes
-class BaseWindowHandler:
+class BaseWindowHandler(object):
     """Abstract class for the platform specific window handlers.
     If initialized, this class casts a NotImplementedError."""
     desk_env = desktop_environment
@@ -782,7 +736,7 @@ class BaseWindowHandler:
     def __init__(self, *args, **kwargs):
         """..."""
         if not len(kwargs):
-            raise NotImplementedError, "Abstract class."
+            raise NotImplementedError("Abstract class.")
         self.mode = kwargs['mode']
 
     def set_mode(self, size, mode):
@@ -791,31 +745,31 @@ class BaseWindowHandler:
 
     def get_root_rect(self):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def get_size(self):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def set_size(self, size, update=True):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def get_position(self):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def set_position(self, pos, update=True):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def get_state(self):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def set_state(self, state=NORMAL, size=(-1, -1), pos=(-1, -1), update=True):
         """..."""
-        raise NotImplementedError, "Abstract method."
+        raise NotImplementedError("Abstract method.")
 
     def flush(self):
         """Just does nothing..."""
@@ -829,6 +783,7 @@ class BaseWindowHandler:
 class XWindowHandler(BaseWindowHandler):
     """Object to deal with XWindow managers (Linux)."""
     desk_env = desktop_environment
+
     def __init__(self, pos=(0, 0), size=(0, 0), mode=None):
         """Set up the internal handlers."""
         BaseWindowHandler.__init__(self, pos=pos, size=size, mode=mode)
@@ -841,7 +796,6 @@ class XWindowHandler(BaseWindowHandler):
             print "Desktop environment:", desktop_environment
         dis = self.display = Xlib.display.Display()
         pygame_win = dis.create_resource_object('window', display.get_wm_info()['window'])
-        pygame_win_id = pygame_win.id
         if DEBUG_WM:
             root = dis.screen().root
             active_wid_id = root.get_full_property(dis.intern_atom('_NET_ACTIVE_WINDOW'), Xlib.X.AnyPropertyType).value[0]
@@ -944,20 +898,20 @@ class XWindowHandler(BaseWindowHandler):
     def get_root_rect(self):
         """Return a four values tuple containing the position and size of the very first OS window object."""
         geom = self.display.screen().root.get_geometry()
-        return (geom.x, geom.y, geom.width, geom.height)
+        return geom.x, geom.y, geom.width, geom.height
 
     def get_size(self):
         """Return the window actual size as a tuple (width, height)."""
         geom = self.sizeGetter.get_geometry()
         if DEBUG_WM:
             print "Actual size is", geom.width, geom.height
-        return (geom.width, geom.height)
+        return geom.width, geom.height
 
     def set_size(self, size, update=True):
         """Set the window size.
         :size: list or tuple: the new size.
         Raises a TypeError if something else than a list or a tuple is sent."""
-        if type(size) in (list, tuple):
+        if isinstance(size, list) or isinstance(size, tuple):
             # Call the Xlib object handling the size to update it.
             if DEBUG_WM:
                 print "Setting size to", size
@@ -967,15 +921,14 @@ class XWindowHandler(BaseWindowHandler):
                 self.sync()
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple." % size
+            raise TypeError("%s is not a list or a tuple." % size)
 
     def get_position(self):
         """Return the window actual position as a tuple."""
         geom = self.positionGetter.get_geometry()
-        x, y = geom.x, geom.y
 #         if DEBUG_WM:
-#             print "Actual position is", x, y
-        return (x, y)
+#             print "Actual position is", geom.x, geom.y
+        return geom.x, geom.y
 
     def set_position(self, pos, update=True):
         """Set the window position.
@@ -983,7 +936,7 @@ class XWindowHandler(BaseWindowHandler):
         :update: bool: wheteher to call the internal sync method."""
         if DEBUG_WM:
             print "Setting position to", pos
-        if type(pos) in (list, tuple):
+        if isinstance(pos, list) or isinstance(pos, tuple):
             gx, gy = 0 or self.gx, 0 or self.gy
             if self.starting:
                 gx, gy = self.position_gap[:2]
@@ -998,7 +951,7 @@ class XWindowHandler(BaseWindowHandler):
                 self.sync()
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple." % pos
+            raise TypeError("%s is not a list or a tuple." % pos)
 
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
@@ -1024,7 +977,7 @@ class XWindowHandler(BaseWindowHandler):
         return NORMAL
 
     def set_state(self, state=NORMAL, size=(-1, -1), pos=(-1, -1), update=True):
-        """Set wheter the window is maximized or not, or minimized or full screen.
+        """Set whether the window is maximized or not, or minimized or full screen.
         If no argument is given, assume the state will be windowed and not maximized.
         If arguments are given, only the first is relevant. The other ones are ignored.
 
@@ -1043,11 +996,11 @@ class XWindowHandler(BaseWindowHandler):
         :update: bool: whether to call the internal flush method."""
         if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
-            raise ValueError, "Invalid state argument: %s is not a correct value" % state
-        if type(size) not in (list, tuple):
-            raise TypeError, "Invalid size argument: %s is not a list or a tuple."
-        if type(pos) not in (list, tuple):
-            raise TypeError, "Invalid pos argument: %s is not a list or a tuple."
+            raise ValueError("Invalid state argument: %s is not a correct value" % state)
+        if not isinstance(size, list) and not isinstance(size, tuple):
+            raise TypeError("Invalid size argument: %s is not a list or a tuple.")
+        if not isinstance(pos, list) and not isinstance(pos, tuple):
+            raise TypeError("Invalid pos argument: %s is not a list or a tuple.")
 
         if state in (1, NORMAL, 'normal'):
             size = list(size)
@@ -1073,7 +1026,7 @@ class XWindowHandler(BaseWindowHandler):
                 print self.stateHandler.get_wm_state()
                 print "creating event", Xlib.protocol.event.ClientMessage
                 print dir(self.stateHandler)
-            x_event = Xlib.protocol.event.ClientMessage(window=self.stateHandler, client_type=self.display.intern_atom("_NET_WM_STATE", False), data=(32, (data)))
+            x_event = Xlib.protocol.event.ClientMessage(window=self.stateHandler, client_type=self.display.intern_atom("_NET_WM_STATE", False), data=(32, data))
             if DEBUG_WM:
                 print "sending event"
             self.display.screen().root.send_event(x_event, event_mask=Xlib.X.SubstructureRedirectMask)
@@ -1104,6 +1057,7 @@ class XWindowHandler(BaseWindowHandler):
 class WWindowHandler(BaseWindowHandler):
     """Object to deal with Microsoft Window managers."""
     desk_env = desktop_environment
+
     def __init__(self, pos=(0, 0), size=(0, 0), mode=None):
         """Set up the internal handlers."""
         BaseWindowHandler.__init__(self, pos=pos, size=size, mode=mode)
@@ -1128,11 +1082,10 @@ class WWindowHandler(BaseWindowHandler):
         # We're running on wine.
         def set_mode(self, size, mode):
             """Wrapper for pygame.display.set_mode()."""
+            self.wine_state_fix = False
             if getattr(self, 'wine_state_fix', False):
                 self.set_size(size)
                 self.wine_state_fix = True
-            else:
-                self.wine_state_fix = False
 
     def get_root_rect(self):
         """Return a four values tuple containing the position and size of the very first OS window object."""
@@ -1144,14 +1097,14 @@ class WWindowHandler(BaseWindowHandler):
         flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(self.base_handler_id)
         w = rect[2] - rect[0]
         h = rect[3] - rect[1]
-        return (w, h)
+        return w, h
 
     def set_size(self, size, update=True):
         """Set the window size.
         :size: list or tuple: the new size.
         :mode: bool: (re)set the pygame.display mode; self.mode must be a pygame display mode object.
         Raises a TypeError if something else than a list or a tuple is sent."""
-        if type(size) in (list, tuple):
+        if isinstance(size, list) or isinstance(size, tuple):
             w, h = size
             cx, cy = win32gui.GetCursorPos()
             if DEBUG_WM:
@@ -1165,17 +1118,17 @@ class WWindowHandler(BaseWindowHandler):
                 print "set_size rect", rect, "ptMin", ptMin, "ptMax", ptMax, "flags", flags
             x = rect[0]
             y = rect[1]
-            rect = (x, y, x + w, y + h)
+            rect = x, y, x + w, y + h
             win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple." % repr(size)
+            raise TypeError("%s is not a list or a tuple." % repr(size))
 
     def get_position(self):
         """Return the window actual position as a tuple."""
-        (flags, showCmd, ptMin, ptMax, rect) = win32gui.GetWindowPlacement(self.base_handler_id)
+        flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(self.base_handler_id)
         x, y, r, b = rect
-        return (x, y)
+        return x, y
 
     def set_position(self, pos, update=True):
         """Set the window position.
@@ -1201,7 +1154,7 @@ class WWindowHandler(BaseWindowHandler):
                 win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple." % repr(pos)
+            raise TypeError("%s is not a list or a tuple." % repr(pos))
 
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
@@ -1234,11 +1187,11 @@ class WWindowHandler(BaseWindowHandler):
         :update: bool: whether to call the internal flush method."""
         if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
-            raise ValueError, "Invalid state argument: %s is not a correct value" % state
-        if type(size) not in (list, tuple):
-            raise TypeError, "Invalid size argument: %s is not a list or a tuple."
-        if type(pos) not in (list, tuple):
-            raise TypeError, "Invalid pos argument: %s is not a list or a tuple."
+            raise ValueError("Invalid state argument: %s is not a correct value" % state)
+        if not isinstance(size, list) and not isinstance(size, tuple):
+            raise TypeError("Invalid size argument: %s is not a list or a tuple.")
+        if not isinstance(pos, list) and not isinstance(pos, tuple):
+            raise TypeError("Invalid pos argument: %s is not a list or a tuple.")
 
         if state in (1, NORMAL, 'normal'):
             size = list(size)
@@ -1263,9 +1216,8 @@ class WWindowHandler(BaseWindowHandler):
             pass
 
 
-
-
 WindowHandler = None
+
 
 def setupWindowHandler():
     """'Link' the corresponding window handler class to WindowHandler."""
@@ -1286,5 +1238,3 @@ def setupWindowHandler():
             WindowHandler = WWindowHandler
             log.info("WWindowHandler initialized.")
     return WindowHandler
-
-# setupWindowHandler()
