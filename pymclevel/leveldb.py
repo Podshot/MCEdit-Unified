@@ -85,8 +85,8 @@ try:
                 else:
                     searched.append(_p)
                     b_dir = os.path.split(b_dir)[0]
-            if pth == None:
-                raise IOError("File 'libleveldb.so' not found in any of these places:\n%s"%'\n'.join(searched))
+            if pth is None:
+                raise IOError("File 'libleveldb.so' not found in any of these places:\n%s" % '\n'.join(searched))
             else:
                 log.info("Found 'libleveldb.so' in %s"%pth)
         else:

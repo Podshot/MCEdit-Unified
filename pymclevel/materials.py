@@ -291,7 +291,7 @@ class MCMaterials(object):
             if "[" not in key:
                 lowest_block = None
                 for b in self.allBlocks:
-                    if ("minecraft:{}".format(b.idStr) == key or b.idStr == key):
+                    if "minecraft:{}".format(b.idStr) == key or b.idStr == key:
                         if b.blockData == 0:
                             return b
                         elif not lowest_block:
@@ -352,7 +352,7 @@ class MCMaterials(object):
         try:
             f = pkg_resources.resource_stream(__name__, filename)
         except (ImportError, IOError), e:
-            log.debug("Cannot get resource_stream for %s %s"%(filename, e))
+            log.debug("Cannot get resource_stream for %s %s" % (filename, e))
             root = os.environ.get("PYMCLEVEL_YAML_ROOT", "pymclevel")  # fall back to cwd as last resort
             path = join(root, filename)
 

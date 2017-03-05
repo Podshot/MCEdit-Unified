@@ -405,7 +405,7 @@ class ChunkRenderer(object):
 
     @property
     def done(self):
-        return len(self.invalidLayers) == 0
+        return not self.invalidLayers
 
 
 _XYZ = numpy.s_[..., 0:3]
@@ -771,63 +771,17 @@ class ChunkCalculator(object):
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
 
-    def addTransparentMaterials_old(self, mats, materialCount):
-        transparentMaterials = [
-            alphaMaterials.Glass,
-            alphaMaterials.StructureVoid,
-            alphaMaterials.GlassPane,
-            alphaMaterials.IronBars,
-            alphaMaterials.MonsterSpawner,
-            alphaMaterials.Vines,
-            alphaMaterials.Fire,
-            alphaMaterials.Trapdoor,
-            alphaMaterials.Lever,
-            alphaMaterials.BrewingStand,
-            alphaMaterials.Anvil,
-            alphaMaterials.Barrier,
-            alphaMaterials.StainedGlass,
-            alphaMaterials.Hopper,
-            alphaMaterials.Cauldron,
-            alphaMaterials.WoodenDoor,
-            alphaMaterials.IronDoor,
-            alphaMaterials.AcaciaDoor,
-            alphaMaterials.JungleDoor,
-            alphaMaterials.IronTrapdoor,
-            alphaMaterials.Button,
-            alphaMaterials.WoodenButton,
-            alphaMaterials.FenceGate,
-            alphaMaterials.SpruceFenceGate,
-            alphaMaterials.BirchFenceGate,
-            alphaMaterials.JungleFenceGate,
-            alphaMaterials.DarkOakFenceGate,
-            alphaMaterials.AcaciaFenceGate,
-            alphaMaterials.Sign,
-            alphaMaterials.StructureVoid
-        ]
-        for b in transparentMaterials:
-            mats[b.ID] = materialCount
-            materialCount += 1
 
-    def addTransparentMaterials_new(self, mats, materialCount):
-        transparentMaterials = []
-        append = transparentMaterials.append
+    def addTransparentMaterials(self, mats, materialCount):
         logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
         for b in self.level.materials:
-            if hasattr(b, 'yaml'):
-                if b.yaml.get('opacity', 1) < 1:
-                    logging.debug("Adding '%s'"%b)
-                    append(b)
-        logging.debug("renderer::ChunkCalculator: Transparent materials added: %s"%len(transparentMaterials))
-        for b in transparentMaterials:
-            mats[b.ID] = materialCount
-            materialCount += 1
+            yaml = getattr(b, 'yaml', None)
+            if yaml is not None and yaml.get('opacity', 1) < 1:
+                logging.debug("Adding '%s'" % b)
+                mats[b.ID] = materialCount
+                materialCount += 1
+        logging.debug("renderer::ChunkCalculator: Transparent materials added.")
 
-#     if __builtins__.get('mcenf_addTransparentMaterials', False):
-#         logging.info("Using new ChunkCalculator.addTransparentMaterials")
-#         addTransparentMaterials = addTransparentMaterials_new
-#     else:
-#         addTransparentMaterials = addTransparentMaterials_old
-    addTransparentMaterials = addTransparentMaterials_new
 
     # don't show boundaries between dirt,grass,sand,gravel,or stone.
     # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
@@ -841,13 +795,9 @@ class ChunkCalculator(object):
 
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype='uint8')
     roughMaterials[0] = 0
-    # Do not pre-load transparent materials, since it is game version dependent.
-    # addTransparentMaterials(None, roughMaterials, 2)
 
     def calcFacesForChunkRenderer(self, cr):
-        if 0 == len(cr.invalidLayers):
-            #            layers = set(br.layer for br in cr.blockRenderers)
-            #            assert set() == cr.visibleLayers.difference(layers)
+        if not cr.invalidLayers:
             return
 
         lod = cr.detailLevel
@@ -925,8 +875,6 @@ class ChunkCalculator(object):
             if not level.containsChunk(cx + dx, cz + dz):
                 neighboringChunks[dir] = pymclevel.infiniteworld.ZeroChunk(level.Height)
             else:
-                # if not level.chunkIsLoaded(cx+dx,cz+dz):
-                #    raise StopIteration
                 try:
                     neighboringChunks[dir] = level.getChunk(cx + dx, cz + dz)
                 except (EnvironmentError, pymclevel.mclevelbase.ChunkNotPresent, pymclevel.mclevelbase.ChunkMalformed):
@@ -1030,13 +978,11 @@ class ChunkCalculator(object):
                       areaBlockLights[1:-1, -1:, 1:-1])
 
         minimumLight = 4
-        # areaBlockLights[areaBlockLights<minimumLight]=minimumLight
         numpy.clip(areaBlockLights, minimumLight, 16, areaBlockLights)
 
         return areaBlockLights
 
-    def calcHighDetailFaces(self, cr,
-                            blockRenderers):  # ForChunk(self, chunkPosition = (0,0), level = None, alpha = 1.0):
+    def calcHighDetailFaces(self, cr, blockRenderers):
         """ calculate the geometry for a chunk renderer from its blockMats, data,
         and lighting array. fills in the cr's blockRenderers with verts
         for each block facing and material"""
@@ -1054,20 +1000,12 @@ class ChunkCalculator(object):
         areaBlockLights = self.getAreaBlockLights(chunk, neighboringChunks)
         yield
 
-        slabs = areaBlocks == alphaMaterials.StoneSlab.ID  #If someone could combine these, that would be great.
-        if slabs.any():
-            areaBlockLights[slabs] = areaBlockLights[:, :, 1:][slabs[:, :, :-1]]
-        yield
-
-        woodSlabs = areaBlocks == alphaMaterials.OakWoodSlab.ID
-        if woodSlabs.any():
-            areaBlockLights[woodSlabs] = areaBlockLights[:, :, 1:][woodSlabs[:, :, :-1]]
-        yield
-
-        redSlabs = areaBlocks == alphaMaterials.RedSandstoneSlab.ID
-        if redSlabs.any():
-            areaBlockLights[redSlabs] = areaBlockLights[:, :, 1:][redSlabs[:, :, :-1]]
-        yield
+        allSlabs = set([b.ID for b in alphaMaterials.allBlocks if "Slab" in b.name])
+        for slab in allSlabs:
+            slabs = areaBlocks == slab
+            if slabs.any():
+                areaBlockLights[slabs] = areaBlockLights[:, :, 1:][slabs[:, :, :-1]]
+            yield
 
         showHiddenOres = cr.renderer.showHiddenOres
         if showHiddenOres:
@@ -1177,7 +1115,6 @@ class Layer:
 
 
 class BlockRenderer(object):
-    # vertexArrays = None
     detailLevels = (0,)
     layer = Layer.Blocks
     directionOffsets = {
@@ -1255,7 +1192,7 @@ class BlockRenderer(object):
                 self.drawFaceVertices(buf)
 
     def drawFaceVertices(self, buf):
-        if 0 == len(buf):
+        if not len(buf):
             return
         stride = elementByteLength
         
@@ -1271,7 +1208,7 @@ class EntityRendererGeneric(BlockRenderer):
     detailLevels = (0, 1, 2)
 
     def drawFaceVertices(self, buf):
-        if 0 == len(buf):
+        if not len(buf):
             return
         stride = elementByteLength
 
@@ -1300,7 +1237,7 @@ class EntityRendererGeneric(BlockRenderer):
         z = cz << 4
 
         vertexArray = numpy.zeros(shape=(len(positions), 6, 4, 6), dtype='float32')
-        if len(positions):
+        if positions:
             positions = numpy.array(positions)
             positions[:, (0, 2)] -= (x, z)
             if offset:
@@ -1318,7 +1255,7 @@ class TileEntityRenderer(EntityRendererGeneric):
 
     def makeChunkVertices(self, chunk):
         tilePositions = []
-        append = tilePositions.append # Reduces the amount of lookups needed to find the 'append' function, decent speed up
+        append = tilePositions.append
         for i, ent in enumerate(chunk.TileEntities):
             if i % 10 == 0:
                 yield
@@ -1340,7 +1277,7 @@ class MonsterRenderer(BaseEntityRenderer):
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []
-        append = monsterPositions.append # Reduces the amount of lookups needed to find the 'append' function, decent speed up
+        append = monsterPositions.append
         notMonsters = MCEDIT_DEFS.get('notMonsters', self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
@@ -1364,17 +1301,6 @@ class EntityRenderer(BaseEntityRenderer):
     @staticmethod
     def makeChunkVertices(chunk):
         yield
-
-
-#        entityPositions = []
-#        for i, ent in enumerate(chunk.Entities):
-#            if i % 10 == 0:
-#                yield
-#            entityPositions.append(pymclevel.Entity.pos(ent))
-#
-#        entities = self._computeVertices(entityPositions, (0x88, 0x00, 0x00, 0x66), offset=True, chunkPosition=chunk.chunkPosition)
-#        yield
-#        self.vertexArrays = [entities]
 
 
 class ItemRenderer(BaseEntityRenderer):
@@ -1436,7 +1362,7 @@ class TerrainPopulatedRenderer(EntityRendererGeneric):
     vertexTemplate.view('uint8')[_RGBA] = color + (72,)
 
     def drawFaceVertices(self, buf):
-        if 0 == len(buf):
+        if not len(buf):
             return
         stride = elementByteLength
 
@@ -1516,7 +1442,7 @@ class ChunkBorderRenderer(EntityRendererGeneric):
         yield
 
     def drawFaceVertices(self, buf):
-        if 0 == len(buf):
+        if not len(buf):
             return
         stride = elementByteLength
   
