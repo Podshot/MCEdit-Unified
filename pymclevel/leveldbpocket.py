@@ -134,6 +134,7 @@ def loadNBTCompoundList_old(data, littleEndian=True):
     else:
         return load(data)
 
+
 def loadNBTCompoundList_new(data, littleEndian=True):
     """
     Loads a list of NBT Compound tags from a bunch of data.
@@ -1609,17 +1610,23 @@ class PocketLeveldbDatabase_new(object):
 
     _allChunks = None
 
-    def deleteChunk(self, cx, cz, batch=None, writeOptions=None):
+    def deleteChunk(self, cx, cz, batch=None):
+        if self.world_version == 'pre1.0':
+            keys = [struct.pack('<i', cx) + struct.pack('<i', cz) + "0"]
+        else:
+            keys = []
+            for i in xrange(16):
+                keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2f" + chr(i))
+
         if batch is None:
             with self.world_db() as db:
-                key = struct.pack('<i', cx) + struct.pack('<i', cz) + "0"
-                wop = self.writeOptions if writeOptions is None else writeOptions
-                db.Delete(wop, key)
+                for key in keys:
+                    db.Delete(key)
         else:
-            key = struct.pack('<i', cx) + struct.pack('<i', cz) + "0"
-            batch.Delete(key)
+            for key in keys:
+                batch.Delete(key)
 
-        logger.debug("DELETED CHUNK %s %s"%(cx, cz))
+        logger.debug("DELETED CHUNK %s %s" % (cx, cz))
 
     def getAllChunks(self, readOptions=None):
         """
