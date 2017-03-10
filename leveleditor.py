@@ -87,7 +87,6 @@ from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
 from pygame import display, event, mouse, MOUSEMOTION, image
 
-from ast import literal_eval
 from depths import DepthOffset
 from editortools.operation import Operation
 from editortools.chunk import GeneratorPanel, ChunkTool
@@ -732,17 +731,17 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        blockRows = [("", "", ""), (box.volume, "<%s>"%_("Blocks"), "")]
+        blockRows = [("", "", ""), (box.volume, "<%s>" % _("Blocks"), "")]
         rows = list(blockRows)
         rows.extend([[count, trn(block.name), ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
             if entitySum:
-                rows.extend([("", "", ""), (entitySum, "<%s>"%_("Entities"), "")])
+                rows.extend([("", "", ""), (entitySum, "<%s>" % _("Entities"), "")])
                 rows.extend([(count, trn(id[1]), id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
-                rows.extend([("", "", ""), (tileEntitySum, "<%s>"%_("TileEntities"), "")])
+                rows.extend([("", "", ""), (tileEntitySum, "<%s>" % _("TileEntities"), "")])
                 rows.extend([(count, trn(id), "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
@@ -1107,9 +1106,6 @@ class LevelEditor(GLViewport):
             teximage[-1:] = darkColor
             teximage[:, -1:] = darkColor
             teximage[:, :2] = darkColor
-            # GL.glTexParameter(GL.GL_TEXTURE_2D,
-            #                  GL.GL_TEXTURE_MIN_FILTER,
-            #                  GL.GL_NEAREST_MIPMAP_NEAREST),
             GL.glTexParameter(GL.GL_TEXTURE_2D,
                               GL.GL_TEXTURE_MAX_LEVEL,
                               maxLevel - 1)
@@ -1234,10 +1230,10 @@ class LevelEditor(GLViewport):
         self.removeNetherPanel()
 
         gameVersion = level.gameVersion
-        if gameVersion in ('Schematic'):
-            log.info('Loading \'%s\' file.'%gameVersion)
+        if gameVersion == 'Schematic':
+            log.info('Loading \'Schematic\' file.')
         else:
-            log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
+            log.info('Loading world for version {}.'.format({True: "prior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
 
         self.loadLevel(level)
 
@@ -1298,10 +1294,7 @@ class LevelEditor(GLViewport):
                 self.gotoDimension(dimNo)
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
-                
-            #!# The two following lines has been moved down.
-#             self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-#             self.waypointManager.load()
+
             dimensionsList = [d[0] for d in dimensionsMenu]
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
@@ -1386,13 +1379,9 @@ class LevelEditor(GLViewport):
 
     def initWindowCaption(self):
         filename = self.level.filename
-#         s = os.path.split(filename)
-#         title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
         last_dir, f_name = os.path.split(filename)
         last_dir = os.path.basename(last_dir)
-        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version()%_("for"))
-#        if DEF_ENC != "UTF-8":
-#            title = title.encode('utf-8')
+        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version() % _("for"))
         title = title.encode('utf-8')
         display.set_caption(title)
 
@@ -1402,7 +1391,6 @@ class LevelEditor(GLViewport):
         for p in self.toolbar.tools[6].nonSavedPlayers:
             if os.path.exists(p):
                 os.remove(p)
-        # self.discardAllChunks()
         self.loadFile(filename)
 
     @mceutils.alertException
@@ -1468,7 +1456,6 @@ class LevelEditor(GLViewport):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
                                         shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
-#                                           shortName + " - Copy", "", "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
@@ -1942,7 +1929,7 @@ class LevelEditor(GLViewport):
             try:
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
-                alert("Result: {0!r}".format(literal_eval(expr, globals(), locals())))
+                alert("Result: {0!r}".format(eval(expr, globals(), locals())))
             except Exception, e:
                 alert("Exception: {0!r}".format(e))
 
