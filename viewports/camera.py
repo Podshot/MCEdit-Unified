@@ -37,7 +37,6 @@ from pygame import mouse
 from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
-from pymclevel.nbt import TAG_String
 from editortools.nbtexplorer import SlotEditor
 
 class SignEditOperation(Operation):
@@ -364,7 +363,7 @@ class CameraViewport(GLViewport):
                     changed = False
                     te = self.editor.level.tileEntityAt(*focusPair[0])
                     backupTE = copy.deepcopy(te)
-                    if te["id"].value == "Sign" or MCEDIT_IDS.GET(e["id"].value) in ("DEF_BLOCKS_STANDING_SIGN", "DEFS_BLOCKS_WALL_SIGN"):
+                    if te["id"].value == "Sign" or MCEDIT_IDS.get(te["id"].value) in ("DEF_BLOCKS_STANDING_SIGN", "DEFS_BLOCKS_WALL_SIGN"):
                         if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
                             for i in xrange(1,5):
                                 if len(te["Text"+str(i)].value) > 32767:
@@ -1096,9 +1095,9 @@ class CameraViewport(GLViewport):
         commandField.value = tileEntity["Command"].value
 
         oldCommand = commandField.value
-        trackOutput.value = tileEntity["TrackOutput"].value
+        trackOutput.value = tileEntity.get("TrackOutput", pymclevel.TAG_Byte(0)).value
         oldTrackOutput = trackOutput.value
-        nameField.value = tileEntity.get("CustomName", TAG_String("@")).value
+        nameField.value = tileEntity.get("CustomName", pymclevel.TAG_String("@")).value
         oldNameField = nameField.value
         successField.subwidgets[1].value = tileEntity.get("SuccessCount", pymclevel.TAG_Int(0)).value
         oldSuccess = successField.subwidgets[1].value
@@ -2076,7 +2075,7 @@ class CommandBlockInfoParser(BlockInfoParser):
     def parse_info(self, pos):
         tile_entity = self.level.tileEntityAt(*pos)
         if tile_entity:
-            value = tile_entity.get("Command", TAG_String("")).value
+            value = tile_entity.get("Command", pymclevel.TAG_String("")).value
             if value:
                 if len(value) > 1500:
                     return "{}\n**COMMAND IS TOO LONG TO SHOW MORE**{}{}".format(value[:1500], self.nbt_ending, self.edit_ending)
