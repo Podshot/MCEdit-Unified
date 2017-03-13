@@ -163,6 +163,12 @@
             "type": "Immobile and projectiles"
         },
         {
+            "id": 100,
+            "idStr": "Minecart with Command Block",
+            "name": "Minecart with Command Block",
+            "type": "Immobile and projectiles"
+        },
+        {
             "id": 101,
             "idStr": "Thrown lingering potion",
             "name": "Thrown lingering potion",

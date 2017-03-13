@@ -542,7 +542,8 @@ class EntityLevel(MCLevel):
 
     def tileEntityAt(self, x, y, z, print_stuff=False):
         entities = []
-        if print_stuff: print "len(self.TileEntities)", len(self.TileEntities)
+        if print_stuff:
+            print "len(self.TileEntities)", len(self.TileEntities)
         for entityTag in self.TileEntities:
             if print_stuff:
                 print entityTag["id"].value, TileEntity.pos(entityTag), x, y, z

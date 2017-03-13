@@ -143,11 +143,12 @@ def loadNBTCompoundList_new(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
+    return loadNBTCompoundList_old(data, littleEndian)
     def load(_data):
         if len(_data):
             try:
                 __data = nbt.load(buf=_data)
-            except Exception, e:
+            except Exception as e:
                 msg1 = "PE support could not read compound list data:"
                 msg2 = "Data dump:"
                 msg3 = "Data length: %s"
@@ -168,7 +169,7 @@ def loadNBTCompoundList_new(data, littleEndian=True):
                         msg_len = len(dump_msg.splitlines())
                         open(dump_fName, 'a').write(dump_msg)
                         logger.warn("Error info and data dumped to %s at line %s (%s lines long)", dump_fName, dump_line, msg_len)
-                    except Exception, _e:
+                    except Exception as _e:
                         logger.error("Could not dump PE debug info:")
                         logger.error(_e)
                 raise e
@@ -188,6 +189,7 @@ if __builtins__.get('mcenf_loadNBTCompoundList', False):
     loadNBTCompoundList = loadNBTCompoundList_new
 else:
     loadNBTCompoundList = loadNBTCompoundList_old
+
 
 def TagProperty(tagName, tagType, default_or_func=None):
     """
@@ -1472,7 +1474,7 @@ class PocketLeveldbDatabase_new(object):
                 if data is None:
                     raise ChunkNotPresent((cx, cz, self))
                 chunk = PocketLeveldbChunkPre1(cx, cz, world, data, world_version=self.world_version)
-            elif ver == "\x03":
+            elif ver == "\x03" or ver == "\x04":
                 # PE 1+ chunk detected. Iterate through the subchunks to rebuild the whole data.
                 chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version)
                 for i in range(16):
@@ -1481,19 +1483,19 @@ class PocketLeveldbDatabase_new(object):
                         tr, te, en = r
                         terrain = tr
                         tile_entities = te
-                        entities  = en
+                        entities = en
                         chunk.add_data(terrain=terrain, tile_entities=tile_entities, entities=entities, subchunk=i)
-            elif not ver is None:
-                raise AttributeError("Unknown PE chunk version %s"%ver)
+            elif ver is not None:
+                raise AttributeError("Unknown PE chunk version %s" % ver)
             elif ver is None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?"%(cx, cz))
+                    open(dump_fName, 'a').write("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?" % (cx, cz))
                 return None
             else:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write("Unknown chunk version detected for chukn (%s, %s): %s"%(cx, cz, ver))
-                raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s"%(cx, cz, ver))
-            logger.debug("CHUNK LOAD %s %s"%(cx, cz))
+                    open(dump_fName, 'a').write("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
+                raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
+            logger.debug("CHUNK LOAD %s %s" % (cx, cz))
             return chunk
 
     def _saveChunk_pre1_0(self, chunk, batch=None, writeOptions=None):
@@ -2502,8 +2504,8 @@ class PocketLeveldbChunkPre1(LightedChunk):
 #                         logger.warning("Found unknown entity '%s'"%v)
 #                         entity.PocketEntity.entityList[id] = v
                     id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
-                                         {'name': 'Unknown Entity %s'%v,
-                                          'idStr': 'Unknown Entity %s'%v,
+                                         {'name': 'Unknown Entity %s' % v,
+                                          'idStr': 'Unknown Entity %s' % v,
                                           'id': -1}
                                          )['name']
                     ent["id"] = nbt.TAG_String(id)
@@ -2878,15 +2880,15 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #                     entity.PocketEntity.entityList[id] = v
 
                 id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
-                                     {'name': 'Unknown Entity %s'%v,
-                                      'idStr': 'Unknown Entity %s'%v,
+                                     {'name': 'Unknown Entity %s' % v,
+                                      'idStr': 'Unknown Entity %s' % v,
                                       'id': -1,
                                       'type': 'Unknown'}
                                      )['name']
                 if DEBUG_PE:
                     ent_def = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
-                                     {'name': 'Unknown Entity %s'%v,
-                                      'idStr': 'Unknown Entity %s'%v,
+                                     {'name': 'Unknown Entity %s' % v,
+                                      'idStr': 'Unknown Entity %s' % v,
                                       'id': -1,
                                       'type': 'Unknown'}
                                      )
