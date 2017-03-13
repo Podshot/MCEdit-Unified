@@ -114,12 +114,10 @@ class FileOpener(albow.Widget):
     #-#
 
     def gl_draw_self(self, root, offset):
-        # self.mcedit.editor.mainViewport.setPerspective();
         self.mcedit.editor.drawStars()
 
-    def idleevent(self, evt):
+    def idleevent(self):
         self.mcedit.editor.doWorkUnit(onMenu=True)
-        # self.invalidate()
 
     def key_down(self, evt):
         keyname = self.root.getKey(evt)

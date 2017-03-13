@@ -623,7 +623,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             if cancel:
                 self.dismiss(False)
 
-        def idleevent(self, evt):
+        def idleevent(self):
             self.invalidate()
 
         def key_down(self, event):

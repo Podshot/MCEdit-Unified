@@ -1553,7 +1553,7 @@ class LevelEditor(GLViewport):
 
     lastRendererDraw = datetime.now()
 
-    def idleevent(self, e):
+    def idleevent(self):
         if any(self.cameraInputs) or any(self.cameraPanKeys):
             self.postMouseMoved()
 

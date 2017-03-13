@@ -239,8 +239,7 @@ class RootWidget(Widget):
 
                     events = pygame.event.get()
                     if not events:
-                        add_modifiers(event)
-                        self.call_idle_handlers(event)
+                        self.call_idle_handlers()
 
                     for event in events:
                         type = event.type
@@ -494,11 +493,11 @@ class RootWidget(Widget):
     def RemoveEditFiles(self):
         self.filesToChange = []
 
-    def call_idle_handlers(self, event):
+    def call_idle_handlers(self):
         def call(ref):
             widget = ref()
             if widget:
-                widget.idleevent(event)
+                widget.idleevent()
             else:
                 print "Idle ref died!"
             return bool(widget)
