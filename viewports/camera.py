@@ -40,28 +40,28 @@ from glutils import gl
 from editortools.nbtexplorer import SlotEditor
 
 class SignEditOperation(Operation):
-        def __init__(self, tool, level, tileEntity, backupTileEntity):
-            self.tool = tool
-            self.level = level
-            self.tileEntity = tileEntity
-            self.undoBackupEntityTag = backupTileEntity
-            self.canUndo = False
+    def __init__(self, tool, level, tileEntity, backupTileEntity):
+        self.tool = tool
+        self.level = level
+        self.tileEntity = tileEntity
+        self.undoBackupEntityTag = backupTileEntity
+        self.canUndo = False
 
-        def perform(self, recordUndo=True):
-            if self.level.saving:
-                alert("Cannot perform action while saving is taking place")
-                return
-            self.level.addTileEntity(self.tileEntity)
-            self.canUndo = True
+    def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert("Cannot perform action while saving is taking place")
+            return
+        self.level.addTileEntity(self.tileEntity)
+        self.canUndo = True
 
-        def undo(self):
-            self.redoBackupEntityTag = copy.deepcopy(self.tileEntity)
-            self.level.addTileEntity(self.undoBackupEntityTag)
-            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
+    def undo(self):
+        self.redoBackupEntityTag = copy.deepcopy(self.tileEntity)
+        self.level.addTileEntity(self.undoBackupEntityTag)
+        return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
 
-        def redo(self):
-            self.level.addTileEntity(self.redoBackupEntityTag)
-            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
+    def redo(self):
+        self.level.addTileEntity(self.redoBackupEntityTag)
+        return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
 
 class CameraViewport(GLViewport):
     anchor = "tlbr"
