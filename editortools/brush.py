@@ -885,7 +885,7 @@ class BrushTool(CloneTool):
         """
         if self.draggedPositions:
             direction = self.draggedDirection
-        return [a + (b * self.reticleOffset) for a, b in pos, direction]
+        return map(lambda a, b: a + (b * self.reticleOffset), pos, direction)
 
     def increaseToolReach(self):
         """
@@ -927,7 +927,7 @@ class BrushTool(CloneTool):
             return self.brushMode.createDirtyBox(self.brushMode, point, tool)
         else:
             size = tool.getBrushSize()
-            origin = [x - (s >> 1) for x, s in point, size]
+            origin = map(lambda x, s: x - (s >> 1), point, size)
             return BoundingBox(origin, size)
 
     def drawTerrainReticle(self):
@@ -954,7 +954,7 @@ class BrushTool(CloneTool):
                 GL.glColor4f(1.0, 1.0, 0.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*[a + 0.5 for a in reticlePoint])  #Center of reticle block
-                    GL.glVertex3f(*[a + 0.5 + b * 0.5 for a, b in pos, direction])  #Top side of surface block
+                    GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
             dirtyBox = self.getDirtyBox(reticlePoint, self)
             self.drawTerrainPreview(dirtyBox.origin)
             if self.lineToolKey and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True):  #If dragging mouse with Linetool pressed.
