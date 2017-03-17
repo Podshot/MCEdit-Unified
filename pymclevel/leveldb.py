@@ -393,6 +393,8 @@ class Iterator(object):
         self._impl.Next()
         return rv
 
+    next = Next
+
     def Prev(self):
         """Backs the iterator up one step. Also returns the current value prior
         to moving the iterator.
@@ -545,7 +547,7 @@ class DBInterface(object):
             sync = self._default_sync
         if self._prefix is not None:
             key = self._prefix + key
-        self._impl.put(key, val, sync=sync)
+        self._impl.put(options, key, val, sync=sync)
 
     Put = put
 
@@ -646,7 +648,7 @@ class DBInterface(object):
         return v
 
     def __setitem__(self, k, v):
-        self.put(k, v)
+        self.put(None, k, v)
 
     def __delitem__(self, k):
         self.delete(k)
@@ -833,7 +835,7 @@ class _MemoryDBImpl(object):
             raise TypeError("cannot write on leveldb snapshot")
         with self._lock:
             for key, val in batch._puts.iteritems():
-                self.put(key, val)
+                self.put(options, key, val)
             for key in batch._deletes:
                 self.delete(key)
 

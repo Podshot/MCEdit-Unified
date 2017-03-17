@@ -104,6 +104,8 @@ If no errors occured, only thing left to do is see if it worked correctly:
 
 
 ## INSTALLING leveldb_mcpe:
+### Legacy PE Support
+__Please, note that this 'legacy PE support' can't work for PE 1+...__
 MCPE support requires a special library. MCEdit will run without it, but to have MCPE support you need to build it yourself.
 For mac and/or windows users:
 This requires a boost.python installation.
@@ -135,6 +137,17 @@ Navigate to the leveldb_mcpe folder
 <br>
 And you should be good to go.
 
+### New PE Support
+MCPE support requires a special library. MCEdit will run without it, but you will not be able to edit Pocket worlds.
+
+This library is embeded in the packages for Linux, OSX and Windows, and will mostly work.
+But it may happen you need to rebuild it.
+
+For Linux, a Python script can be used (`setup_leveldb.py`). See `INSTALL_LEVELDB` file in `pymclevel` subdirectory for details.
+
+[[Windows an OSX part to be written.]]
+
+### Common note for both PE supports.
 It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
 Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
 You can use this option several times to get more information in the file. Currently, using this option more than 2 times will have no effect.
