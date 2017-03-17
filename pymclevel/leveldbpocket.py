@@ -143,7 +143,6 @@ def loadNBTCompoundList_new(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
-    return loadNBTCompoundList_old(data, littleEndian)
     def load(_data):
         if len(_data):
             try:
