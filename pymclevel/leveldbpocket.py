@@ -60,6 +60,16 @@ if '--debug-pe' in sys.argv:
     nbt.DEBUG_PE = DEBUG_PE
     nbt.dump_fName = dump_fName
 
+# Check if the --debug-pe CLI option is given several times to set a higher verbose level.
+# 'True' is considered being 1, so let set DEBUG_PE to 2 if it's found a secondtime on the CLI
+# and add 1 to the value each time it's found.
+while '--debug-pe' in sys.argv:
+    sys.argv.remove('--debug-pe')
+    if DEBUG_PE is True:
+        DEBUG_PE = 2
+    else:
+        DEBUG_PE += 1
+
 if DEBUG_PE:
     open(dump_fName, 'w').close()
 
@@ -172,6 +182,8 @@ def loadNBTCompoundList_new(data, littleEndian=True):
                         logger.error("Could not dump PE debug info:")
                         logger.error(_e)
                 raise e
+            if DEBUG_PE == 2:
+                open(dump_fName, 'a').write("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
             if __data.isCompound():
                 return [__data]
             return __data
@@ -1465,7 +1477,7 @@ class PocketLeveldbDatabase_new(object):
             if raise_err:
                 raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
-                open(dump_fName, 'a').write("** Loading hunk ({x}, {z}) for PE {vs} ({v}).".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
+                open(dump_fName, 'a').write("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
     
             if ver == "\x02":
                 # We have a pre 1.0 chunk

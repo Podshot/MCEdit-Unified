@@ -137,7 +137,7 @@ And you should be good to go.
 
 It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
 Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
-The PE debug mode implies to run the Python NBT support, so you may expereince speed issues.
+You can use this option several times to get more information in the file. Currently, using this option more than 2 times will have no effect.
 
 
 ##New features test mode
