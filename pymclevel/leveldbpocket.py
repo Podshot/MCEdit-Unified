@@ -2860,6 +2860,8 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if subchunk == 0 and tile_entities:
             if DEBUG_PE:
                 open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
+            if DEBUG_PE == 2:
+                open(dump_fName, 'a').write("+ begin tile_entities raw data\n%s\n- end tile_entities raw data\n"%repr(tile_entities))
             for tile_entity in loadNBTCompoundList(tile_entities):
                 self.TileEntities.insert(-1, tile_entity)
         if subchunk == 0 and entities:
