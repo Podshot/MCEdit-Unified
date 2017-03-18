@@ -74,6 +74,11 @@ if DEBUG_PE:
     open(dump_fName, 'w').close()
 
 
+def write_dump(msg):
+    """Helper function to write data to the PE dump file when using '--debug-pe' CLI option."""
+    open(dump_fName, 'a').write(msg)
+
+
 # =====================================================================
 # loadNBTCompoundList
 #
@@ -103,7 +108,7 @@ def loadNBTCompoundList_old(data, littleEndian=True):
         global shortest_complist_len
         global shortest_complist
     
-        open(dump_fName, 'a').write(("=" * 80) + "\n")
+        write_dump(("=" * 80) + "\n")
 
     def load(_data):
         if DEBUG_PE:
@@ -131,8 +136,8 @@ def loadNBTCompoundList_old(data, littleEndian=True):
 
         if DEBUG_PE:
             try:
-                open(dump_fName, 'a').write("**********\nLongest data length: %s\nData:\n%s\n"%(longest_complist_len, longest_complist))
-                open(dump_fName, 'a').write("**********\nShortest data length: %s\nData:\n%s\n"%(shortest_complist_len, shortest_complist))
+                write_dump("**********\nLongest data length: %s\nData:\n%s\n"%(longest_complist_len, longest_complist))
+                write_dump("**********\nShortest data length: %s\nData:\n%s\n"%(shortest_complist_len, shortest_complist))
             except Exception, e:
                 print "Could not write debug info:", e
 
@@ -153,7 +158,7 @@ def loadNBTCompoundList_new(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
-    def load(_data):
+    def _load(_data):
         if len(_data):
             try:
                 __data = nbt.load(buf=_data)
@@ -176,19 +181,56 @@ def loadNBTCompoundList_new(data, littleEndian=True):
                         dump_msg = "**********\n{m1}\n{e}\n{m2}\n{d}\n{m3} {l}".format(m1=msg1,
                                    e=e, m2=msg2, d=repr(_data), m3=msg3, l=len(data))
                         msg_len = len(dump_msg.splitlines())
-                        open(dump_fName, 'a').write(dump_msg)
+                        write_dump(dump_msg)
                         logger.warn("Error info and data dumped to %s at line %s (%s lines long)", dump_fName, dump_line, msg_len)
                     except Exception as _e:
                         logger.error("Could not dump PE debug info:")
                         logger.error(_e)
                 raise e
             if DEBUG_PE == 2:
-                open(dump_fName, 'a').write("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
+                write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
             if __data.isCompound():
                 return [__data]
             return __data
         else:
             return []
+
+    def load(_data):
+        compound_list = []
+        idx = 0
+        while idx < len(_data):
+            try:
+                __data = nbt.load(buf=_data[idx:])
+                idx += len(nbt.gunzip(__data.save()))
+            except Exception as e:
+                msg1 = "PE support could not read compound list data:"
+                msg2 = "Data dump:"
+                msg3 = "Data length: %s"
+                logger.error(msg1)
+                logger.error(e)
+                if len(_data[idx:]) > 80:
+                    logger.error("Partial data dump:")
+                    logger.error("%s [...] %s", repr(_data[:idx + 40]), repr(_data[-40:]))
+                else:
+                    logger.error(msg2)
+                    logger.error(repr(_data[idx:]))
+                logger.error(msg3, len(data))
+                if DEBUG_PE:
+                    try:
+                        dump_line = len(open(dump_fName).read().splitlines()) + 1
+                        dump_msg = "**********\n{m1}\n{e}\n{m2}\n{d}\n{m3} {l}".format(m1=msg1,
+                                   e=e, m2=msg2, d=repr(_data[idx:]), m3=msg3, l=len(data))
+                        msg_len = len(dump_msg.splitlines())
+                        write_dump(dump_msg)
+                        logger.warn("Error info and data dumped to %s at line %s (%s lines long)", dump_fName, dump_line, msg_len)
+                    except Exception as _e:
+                        logger.error("Could not dump PE debug info:")
+                        logger.error(_e)
+                raise e
+            if DEBUG_PE == 2:
+                write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
+            compound_list.append(__data)
+        return compound_list
 
     if littleEndian:
         with nbt.littleEndianNBT():
@@ -635,11 +677,11 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
         :return: PocketLeveldbChunk
         """
         if DEBUG_PE:
-            open(dump_fName, 'a').write("*** Getting chunk %s,%s\n"%(cx, cz))
+            write_dump("*** Getting chunk %s,%s\n"%(cx, cz))
         c = self._loadedChunks.get((cx, cz))
         if c is None:
             if DEBUG_PE:
-                open(dump_fName, 'a').write("    Not loaded, loading\n")
+                write_dump("    Not loaded, loading\n")
             c = self.worldFile.loadChunk(cx, cz, self)
             self._loadedChunks[(cx, cz)] = c
         return c
@@ -1155,13 +1197,13 @@ class PocketLeveldbChunk(LightedChunk):
             terrain = numpy.fromstring(data[0], dtype='uint8')
             if data[1] is not None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+                    write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
                 TileEntities = loadNBTCompoundList(data[1])
                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 
             if data[2] is not None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+                    write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
@@ -1477,7 +1519,7 @@ class PocketLeveldbDatabase_new(object):
             if raise_err:
                 raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
-                open(dump_fName, 'a').write("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
+                write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
     
             if ver == "\x02":
                 # We have a pre 1.0 chunk
@@ -1500,11 +1542,11 @@ class PocketLeveldbDatabase_new(object):
                 raise AttributeError("Unknown PE chunk version %s" % ver)
             elif ver is None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?" % (cx, cz))
+                    write_dump("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?" % (cx, cz))
                 return None
             else:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
+                    write_dump("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
                 raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
             logger.debug("CHUNK LOAD %s %s" % (cx, cz))
             return chunk
@@ -1911,11 +1953,11 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
         :return: PocketLeveldbChunk
         """
         if DEBUG_PE:
-            open(dump_fName, 'a').write("*** Getting chunk %s,%s\n"%(cx, cz))
+            write_dump("*** Getting chunk %s,%s\n"%(cx, cz))
         c = self._loadedChunks.get((cx, cz))
         if c is None:
             if DEBUG_PE:
-                open(dump_fName, 'a').write("    Not loaded, loading\n")
+                write_dump("    Not loaded, loading\n")
 #             print "PE world loading chunk", cx, cz
             c = self.worldFile.loadChunk(cx, cz, self)
             self._loadedChunks[(cx, cz)] = c
@@ -2485,13 +2527,13 @@ class PocketLeveldbChunkPre1(LightedChunk):
             terrain = numpy.fromstring(data[0], dtype='uint8')
             if data[1] is not None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+                    write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
                 TileEntities = loadNBTCompoundList(data[1])
                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 
             if data[2] is not None:
                 if DEBUG_PE:
-                    open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+                    write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
@@ -2779,14 +2821,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #             if data[1] is not None:
 # #                 print 'loading tile entities in chunk', cx, cz
 #                 if DEBUG_PE:
-#                     open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
+#                     write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
 #                 TileEntities = loadNBTCompoundList(data[1])
 #                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 # 
 #             if data[2] is not None:
 # #                 print 'loading entities in chunk', cx, cz
 #                 if DEBUG_PE:
-#                     open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
+#                     write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
 #                 Entities = loadNBTCompoundList(data[2])
 #                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
 #                 # Whenever we save an entity, we need to make sure to swap back.
@@ -2859,14 +2901,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         if subchunk == 0 and tile_entities:
             if DEBUG_PE:
-                open(dump_fName, 'a').write(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
+                write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
             if DEBUG_PE == 2:
-                open(dump_fName, 'a').write("+ begin tile_entities raw data\n%s\n- end tile_entities raw data\n"%repr(tile_entities))
+                write_dump("+ begin tile_entities raw data\n%s\n- end tile_entities raw data\n"%nbt.hexdump(tile_entities, length=16))
             for tile_entity in loadNBTCompoundList(tile_entities):
                 self.TileEntities.insert(-1, tile_entity)
         if subchunk == 0 and entities:
             if DEBUG_PE:
-                open(dump_fName, 'a').write(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
+                write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(self.chunkPosition[0], self.chunkPosition[1]))
             Entities = loadNBTCompoundList(entities)
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.
@@ -2907,7 +2949,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                                      )
                     _tn = ent_def['type']
                     _tv = MCEDIT_DEFS['entity_types'].get(_tn, 'Unknown')
-                    open(dump_fName, 'a').write("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
+                    write_dump("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
                                                     id=id,
                                                     _v=_v,
                                                     _fid= _v & 0xff,

@@ -679,7 +679,7 @@ try:
 #     else:
         from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
                           TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
-                          littleEndianNBT, nested_string, gunzip)
+                          littleEndianNBT, nested_string, gunzip, hexdump)
 except ImportError as err:
     log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")
     log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")
