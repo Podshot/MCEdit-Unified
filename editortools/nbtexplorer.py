@@ -1244,7 +1244,7 @@ def saveFile(fName, data, savePolicy):
         if r == "OK":
             folder, name = os.path.split(fName)
             suffix = os.path.splitext(name)[-1][1:]
-            file_types = _("Levels and Schematics") + "\0*.nbt"
+            file_types = _("Levels and Schematics") + "\0*.dat;*.nbt"
             if "*.%s"%suffix not in file_types:
                 file_types += "\0*.{0}\0*.{0}".format(suffix)
             file_types += "\0\0"

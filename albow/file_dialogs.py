@@ -302,140 +302,7 @@ class FSTree(Tree):
         Tree.select_item(self, n)
         self.client.directory = self.get_item_path(self.selected_item)
 
-class FileDialog_old(Dialog):
-    box_width = 450
-    default_prompt = None
-    up_button_text = ThemeProperty("up_button_text")
-
-    def __init__(self, prompt=None, suffixes=None, **kwds):
-        Dialog.__init__(self, **kwds)
-        label = None
-        d = self.margin
-        self.suffixes = suffixes or ("",)
-        self.file_type = self.suffixes[0]
-        up_button = Button(self.up_button_text, action=self.go_up)
-        dir_box = DirPathView(self.box_width + 250, self)
-        self.dir_box = dir_box
-        top_row = Row([dir_box, up_button])
-        list_box = FileListView(self.box_width - 16, self)
-        self.list_box = list_box
-        tree = FSTree(self, inner_width=250, directory='/')
-        self.tree = tree
-        row = Row((tree, list_box), margin=0)
-        ctrls = [top_row, row]
-        prompt = prompt or self.default_prompt
-        if prompt:
-            label = Label(prompt)
-        if suffixes:
-            filetype_label = Label("File type", width=250)
-
-            def set_file_type():
-                self.file_type = self.filetype_button.get_value()
-                self.list_box.update()
-
-            filetype_button = ChoiceButton(choices=self.suffixes, width=250, choose=set_file_type)
-            self.filetype_button = filetype_button
-        if self.saving:
-            filename_box = TextFieldWrapped(self.box_width)
-            filename_box.change_action = self.update_filename
-            filename_box._enter_action = filename_box.enter_action
-            filename_box.enter_action = self.enter_action
-            self.filename_box = filename_box
-            if suffixes:
-                ctrls.append(Row([Column([label, filename_box], align='l', spacing=0),
-                                  Column([filetype_label, filetype_button], align='l', spacing=0)
-                                  ],
-                                 )
-                             )
-            else:
-                ctrls.append(Column([label, filename_box], align='l', spacing=0))
-        else:
-            if label:
-                ctrls.insert(0, label)
-            if suffixes:
-                ctrls.append(Column([filetype_label, filetype_button], align='l', spacing=0))
-        ok_button = Button(self.ok_label, action=self.ok, enable=self.ok_enable)
-        self.ok_button = ok_button
-        cancel_button = Button("Cancel", action=self.cancel)
-        vbox = Column(ctrls, align='l', spacing=d)
-        vbox.topleft = (d, d)
-        y = vbox.bottom + d
-        ok_button.topleft = (vbox.left, y)
-        cancel_button.topright = (vbox.right, y)
-        self.add(vbox)
-        self.add(ok_button)
-        self.add(cancel_button)
-        self.shrink_wrap()
-        self._directory = None
-        self.directory = os.getcwdu()
-        #print "FileDialog: cwd =", repr(self.directory) ###
-        if self.saving:
-            filename_box.focus()
-
-    def get_directory(self):
-        return self._directory
-
-    def set_directory(self, x):
-        x = os.path.abspath(x)
-        while not os.path.exists(x):
-            y = os.path.dirname(x)
-            if y == x:
-                x = os.getcwdu()
-                break
-            x = y
-        if self._directory != x:
-            self._directory = x
-            self.list_box.update()
-            self.update()
-
-    directory = property(get_directory, set_directory)
-
-    def filter(self, path):
-        if os.path.isdir(path) or path.endswith(self.file_type.lower()) or self.file_type == '.*':
-            return True
-
-    def update(self):
-        self.tree.set_directory(self.directory)
-
-    def update_filename(self):
-        if self.filename_box.text in self.list_box.names:
-            self.directory = os.path.join(self.directory, self.filename_box.text)
-
-    def go_up(self):
-        self.directory = os.path.dirname(self.directory)
-        self.list_box.scroll_to_item(0)
-
-    def dir_box_click(self, double):
-        if double:
-            name = self.list_box.get_selected_name()
-            path = os.path.join(self.directory, name)
-            suffix = os.path.splitext(name)[1]
-            if suffix not in self.suffixes and os.path.isdir(path):
-                self.directory = path
-            else:
-                self.double_click_file(name)
-        self.update()
-
-    def enter_action(self):
-        self.filename_box._enter_action()
-        self.ok()
-
-    def ok(self):
-        self.dir_box_click(True)
-        #self.dismiss(True)
-
-    def cancel(self):
-        self.dismiss(False)
-
-    def key_down(self, evt):
-        k = evt.key
-        if k == K_RETURN or k == K_KP_ENTER:
-            self.dir_box_click(True)
-        if k == K_ESCAPE:
-            self.cancel()
-
-
-class FileDialog_new(Dialog):
+class FileDialog(Dialog):
     box_width = 450
     default_prompt = None
     up_button_text = ThemeProperty("up_button_text")
@@ -587,57 +454,8 @@ class FileDialog_new(Dialog):
         if k == K_ESCAPE:
             self.cancel()
 
-if __builtins__.get('mcenf_FileDialog', False):
-    class FileDialog(FileDialog_new): pass
-else:
-    class FileDialog(FileDialog_old): pass
 
-
-class FileSaveDialog_old(FileDialog):
-    saving = True
-    default_prompt = "Save as:"
-    ok_label = "Save"
-
-    def get_filename(self):
-        return self.filename_box.text
-
-    def set_filename(self, x):
-        dsuf = self.file_type
-        if dsuf and x.endswith(dsuf):
-            x = x[:-len(dsuf)]
-        self.filename_box.text = x
-
-    filename = property(get_filename, set_filename)
-
-    def get_pathname(self):
-        path = os.path.join(self.directory, self.filename_box.text)
-        suff = self.file_type
-        if suff and not path.endswith(suff):
-            path = path + suff
-        return path
-
-    pathname = property(get_pathname)
-
-    def double_click_file(self, name):
-        self.filename_box.text = name
-
-    def ok(self):
-        path = self.pathname
-        if os.path.exists(path):
-            answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
-            if answer != "OK":
-                return
-        #FileDialog.ok(self)
-        self.dismiss(True)
-
-    def update(self):
-        FileDialog.update(self)
-
-    def ok_enable(self):
-        return self.filename_box.text != ""
-
-
-class FileSaveDialog_new(FileDialog):
+class FileSaveDialog(FileDialog):
     saving = True
     default_prompt = "Save as:"
     ok_label = "Save"
@@ -673,11 +491,6 @@ class FileSaveDialog_new(FileDialog):
     def ok_enable(self):
         return self.filename_box.text != ""
 
-
-if __builtins__.get('mcenf_FileDialog', False):
-    class FileSaveDialog(FileSaveDialog_new): pass
-else:
-    class FileSaveDialog(FileSaveDialog_old): pass
 
 class FileOpenDialog(FileDialog):
     saving = False
@@ -721,28 +534,7 @@ class LookForFileDialog(FileOpenDialog):
         return name and os.path.basename(name) == self.target
 
 
-def request_new_filename_old(prompt=None, suffix=None, extra_suffixes=None,
-                         directory=None, filename=None, pathname=None):
-    if pathname:
-        directory, filename = os.path.split(pathname)
-    if extra_suffixes:
-        suffixes = extra_suffixes
-    else:
-        suffixes = []
-    if suffix:
-        suffixes = [suffix] + suffixes
-    dlog = FileSaveDialog(prompt=prompt, suffixes=suffixes)
-    if directory:
-        dlog.directory = directory
-    if filename:
-        dlog.filename = filename
-    if dlog.present():
-        return dlog.pathname
-    else:
-        return None
-
-
-def request_new_filename_new(prompt=None, suffix=None, extra_suffixes=None,
+def request_new_filename(prompt=None, suffix=None, extra_suffixes=None,
                          directory=None, filename=None, pathname=None):
     if pathname:
         directory, filename = os.path.split(pathname)
@@ -760,10 +552,6 @@ def request_new_filename_new(prompt=None, suffix=None, extra_suffixes=None,
     else:
         return None
 
-if __builtins__.get('mcenf_FileDialog', False):
-    request_new_filename = request_new_filename_new
-else:
-    request_new_filename = request_new_filename_old
 
 def request_old_filename(suffixes=None, directory=None):
     dlog = FileOpenDialog(suffixes=suffixes)
