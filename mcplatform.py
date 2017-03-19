@@ -77,8 +77,8 @@ schematicsDir = directories.schematicsDir
 
 # !# Disabling platform specific file chooser:
 # !# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
-# platChooser = sys.platform in ('linux2', 'darwin')
-platChooser = sys.platform == 'darwin'
+platChooser = sys.platform in ('linux2', 'darwin')
+#platChooser = sys.platform == 'darwin'
 
 
 def dynamic_arguments(func_to_replace, askFile_func):
@@ -276,6 +276,9 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
                 iDir = initialDir
                 log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
                 log.debug("Encode function returned: %s" % e)
+            if __builtins__.get("mcenf_FileDialog", False):
+                if "All files (*.*)" not in _suffixes and "*.* (*.*)" not in _suffixes:
+                    _suffixes.append("All files (*.*)")
             return request_old_filename(suffixes=_suffixes, directory=iDir)
 
     filename = _askOpen(suffixes)
@@ -422,8 +425,6 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         else:
             _filetype = filetype
 
-        print "***", _suffix
-        print "+++", _filetype
         if hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
 
             fls = []
@@ -493,35 +494,79 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             filename = fls[0]
 
         else:  # Fallback
-            log.debug("Calling internal file chooser.")
-            log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
-            log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
-            try:
-                iDir = initialDir.encode(enc)
-            except Exception as e:
-                iDir = initialDir
-                log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
-                log.debug("Encode function returned: %s" % e)
-            try:
-                dName = defaultName.encode(enc)
-            except Exception as e:
-                dName = defaultName
-                log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
-                log.debug("Encode function returned: %s" % e)
-            if isinstance(_suffix, list) or isinstance(_suffix, tuple):
-                sffxs = [a[1:] for a in _suffix[1::2]]
-                sffx = sffxs.pop(0)
-                sffxs.append('.*')
-            else:
-                sffx = _suffix
-                sffxs = []
+            if __builtins__.get('mcenf_FileDialog', False):
+                log.debug("Calling internal file chooser.")
+                log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
+                log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
+                try:
+                    iDir = initialDir.encode(enc)
+                except Exception as e:
+                    iDir = initialDir
+                    log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
+                    log.debug("Encode function returned: %s" % e)
+                try:
+                    dName = defaultName.encode(enc)
+                except Exception as e:
+                    dName = defaultName
+                    log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
+                    log.debug("Encode function returned: %s" % e)
+                if isinstance(_suffix, list) or isinstance(_suffix, tuple):
+                    sffxs = [a[1:] for a in _suffix[1::2]]
+                    sffx = sffxs.pop(0)
+                    sffxs.append('.*')
+                else:
+                    sffx = _suffix
+                    sffxs = []
 
-            filename = request_new_filename(prompt=title,
-                                            suffix=sffx,
-                                            extra_suffixes=sffxs,
-                                            directory=iDir,
-                                            filename=dName,
-                                            pathname=None)
+                for i, stuff in enumerate(_filetype):
+                    if i % 2 == 0:
+                        file_filter = stuff
+                    else:
+                        file_filter += " (%s)"%stuff
+                        sffxs.append(file_filter)
+                if i % 2 == 0:
+                    file_filter += " (%s)"%stuff
+                    sffxs.append(file_filter)
+
+                if "All files (*.*)" not in sffxs and "*.* (*.*)" not in sffxs:
+                    sffxs.append("All files (*.*)")
+
+                filename = request_new_filename(prompt=title,
+                                                suffix=sffx,
+                                                extra_suffixes=sffxs,
+                                                directory=iDir,
+                                                filename=dName,
+                                                pathname=None)
+            else:
+                log.debug("Calling internal file chooser.")
+                log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
+                log.debug("'defaultName' is %s (%s)" % (repr(defaultName), type(defaultName)))
+                try:
+                    iDir = initialDir.encode(enc)
+                except Exception as e:
+                    iDir = initialDir
+                    log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
+                    log.debug("Encode function returned: %s" % e)
+                try:
+                    dName = defaultName.encode(enc)
+                except Exception as e:
+                    dName = defaultName
+                    log.debug("Could not encode 'defaultName' %s" % repr(defaultName))
+                    log.debug("Encode function returned: %s" % e)
+                if isinstance(_suffix, list) or isinstance(_suffix, tuple):
+                    sffxs = [a[1:] for a in _suffix[1::2]]
+                    sffx = sffxs.pop(0)
+                    sffxs.append('.*')
+                else:
+                    sffx = _suffix
+                    sffxs = []
+
+                filename = request_new_filename(prompt=title,
+                                                suffix=sffx,
+                                                extra_suffixes=sffxs,
+                                                directory=iDir,
+                                                filename=dName,
+                                                pathname=None)
     return filename
 
 askSaveSchematic = dynamic_arguments(askSaveSchematic, askSaveFile)
