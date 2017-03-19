@@ -744,8 +744,6 @@ def request_new_filename_old(prompt=None, suffix=None, extra_suffixes=None,
 
 def request_new_filename_new(prompt=None, suffix=None, extra_suffixes=None,
                          directory=None, filename=None, pathname=None):
-    print "suffix", suffix
-    print "extra_suffixes", extra_suffixes
     if pathname:
         directory, filename = os.path.split(pathname)
     if extra_suffixes:
