@@ -277,7 +277,7 @@ def perform(level, box, options):
             result = "\n".join("%d, %d, %d" % pos for pos in search)
             answer = ask(result, height=editor.height, colLabel="Matching Coordinates", responses=["Save", "OK"])
             if answer == "Save":
-                fName = askSaveFile(getDocumentsFolder(), "Save to file...", "find.txt", 'Folder\0*.dat\0*.*\0\0', 'txt')
+                fName = askSaveFile(getDocumentsFolder(), "Save to file...", "find.txt", 'TXT\0*.txt\0\0', 'txt')
                 if fName:
                     fData = "# MCEdit find output\n# Search options:\n# Match by: %s\n# Match block type: %s\n# Match block: %s\n# Match block data: %s\n# Match tile entities: %s\n# Match Tag Name:%s\n# Match Tag Value: %s\n# Case insensitive: %s\n# Match Tag Type: %s\n\n%s"%(by, matchtype, matchblock, matchdata, matchtile, matchname, matchval, caseSensitive, matchtagtype, result)
                     open(fName, 'w').write(fData)
