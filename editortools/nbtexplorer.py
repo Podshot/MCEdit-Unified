@@ -1200,7 +1200,7 @@ class NBTExplorerTool(EditorTool):
 # ------------------------------------------------------------------------------
 def loadFile(fName):
     if not fName:
-        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', ])
+        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', 'nbt'])
     if fName:
         if not os.path.isfile(fName):
             alert("The selected object is not a file.\nCan't load it.")
@@ -1241,23 +1241,28 @@ def saveFile(fName, data, savePolicy):
         return
     if os.path.exists(fName):
         r = ask("File already exists.\nClick 'OK' to choose one.")
-        if r == 'OK':
+        if r == "OK":
             folder, name = os.path.split(fName)
             suffix = os.path.splitext(name)[-1][1:]
-            fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, 'Folder\0*.dat\0*.*\0\0', suffix)
+            file_types = _("Levels and Schematics") + "\0*.nbt"
+            if "*.%s"%suffix not in file_types:
+                file_types += "\0*.{0}\0*.{0}".format(suffix)
+            file_types += "\0\0"
+            fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, file_types, suffix)
         else:
             return
-    if savePolicy == -1:
-        if hasattr(data, 'name'):
-            data.name = ""
-    if not os.path.isdir(fName):
-        if savePolicy <= 0:
-            data.save(fName)
-        elif savePolicy == 1:
-            with littleEndianNBT():
-                toSave = data.save(compressed=False)
-                toSave = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(toSave)) + toSave
-                with open(fName, 'w') as f:
-                    f.write(toSave)
-    else:
-        alert("The selected object is not a file.\nCan't save it.")
+    if fName:
+        if savePolicy == -1:
+            if hasattr(data, 'name'):
+                data.name = ""
+        if not os.path.isdir(fName):
+            if savePolicy <= 0:
+                data.save(fName)
+            elif savePolicy == 1:
+                with littleEndianNBT():
+                    toSave = data.save(compressed=False)
+                    toSave = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(toSave)) + toSave
+                    with open(fName, 'w') as f:
+                        f.write(toSave)
+        else:
+            alert("The selected object is not a file.\nCan't save it.")

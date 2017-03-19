@@ -386,6 +386,12 @@ def askCreateWorld(initialDir):
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
     if sys.platform == "win32":  # !#
         try:
+            if type(suffix) in (list, tuple) and suffix:
+                suffix = suffix[0]
+            print repr(filetype)
+            if not filetype.endswith("*.*\0*.*\0\0"):
+                filetype = filetype[:-1] + "*.*\0*.*\0\0"
+            print repr(filetype)
             (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
                 hwndOwner=display.get_wm_info()['window'],
                 InitialDir=initialDir,
@@ -416,6 +422,8 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         else:
             _filetype = filetype
 
+        print "***", _suffix
+        print "+++", _filetype
         if hasGtk and not platChooser:  # !# #Linux (When GTK 2.4 or newer is installed)
 
             fls = []
@@ -431,17 +439,26 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
 
                 # Add custom Filter
                 if isinstance(_filetype, list) or isinstance(_filetype, tuple):
-                    for i, filet in enumerate(_filetype):
+                    for i, stuff in enumerate(_filetype):
                         if i % 2 == 0:
                             file_filter = gtk.FileFilter()
-                            file_filter.set_name(filet)
-                            if ";" in _suffix[i + 1]:
-                                for _suff in _suffix.split(";"):
+                            file_filter.set_name(stuff)
+                        else:
+                            if ";" in stuff:
+                                for _suff in stuff.split(";"):
                                     if _suff:
                                         file_filter.add_pattern(_suff)
                             else:
-                                file_filter.add_pattern(_suffix[i + 1])
+                                file_filter.add_pattern(stuff)
                             chooser.add_filter(file_filter)
+                    if i % 2 == 0:
+                        if ";" in stuff:
+                            for _suff in stuff.split(";"):
+                                if _suff:
+                                    file_filter.add_pattern(_suff)
+                        else:
+                            file_filter.add_pattern(stuff)
+                        chooser.add_filter(file_filter)
                 else:
                     file_filter = gtk.FileFilter()
                     file_filter.set_name(filetype[:filetype.index("\0")])
