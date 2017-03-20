@@ -1560,6 +1560,84 @@
                     "<data>": 5
                 }]
         },
+        "lever": {
+            "id": 69,
+            "properties": [{
+                    "facing": "down_x",
+                    "<data>": 0,
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 1,
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 2,
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 3,
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 4,
+                    "powered": "false"
+                },{
+                    "facing": "up_z",
+                    "<data>": 5,
+                    "powered": "false"
+                },{
+                    "facing": "up_x",
+                    "<data>": 6,
+                    "powered": "false"
+                },{
+                    "facing": "down_z",
+                    "<data>": 7,
+                    "powered": "false"
+                },{
+                    "facing": "down_x",
+                    "<data>": 8,
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 9,
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 10,
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 11,
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 12,
+                    "powered": "true"
+                },{
+                    "facing": "up_z",
+                    "<data>": 13,
+                    "powered": "true"
+                },{
+                    "facing": "up_x",
+                    "<data>": 14,
+                    "powered": "true"
+                },{
+                    "facing": "down_z",
+                    "<data>": 15,
+                    "powered": "true"
+                }]
+        },
+        "stone_pressure_plate": {
+            "id": 70,
+            "properties": [{
+                    "<data>": 0,
+                    "powered": "false"
+                },{
+                    "<data>": 1,
+                    "powered": "true"
+                }]
+        },
         "iron_door": {
             "id": 71,
             "properties": [{

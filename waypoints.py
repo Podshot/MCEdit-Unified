@@ -7,6 +7,7 @@ import shutil
 log = logging.getLogger(__name__)
 DEBUG = False
 
+
 class WaypointManager:
     '''
     Class for handling the API to load and save waypoints

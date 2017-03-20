@@ -26,9 +26,9 @@ class fileEdit():
         file.close()
 
         tileEntities = []
-        for (x,y,z) in self.order:
+        for (x, y, z) in self.order:
             blockAtXYZ = self.level.blockAt(x, y, z)
-            if blockAtXYZ == 137 or blockAtXYZ == 210 or blockAtXYZ == 211:
+            if blockAtXYZ in (137, 210, 211, 188, 189):
                 tileEntities.append(self.level.tileEntityAt(x, y, z))
             else:
                 alert("The blocks are different now!")
@@ -43,7 +43,7 @@ class fileEdit():
         if op.canUndo:
             self.editor.addUnsavedEdit()
 
-    def writeCommandInFile(self, first, space, (x,y,z), fileTemp, skip, chain, done, order):
+    def writeCommandInFile(self, first, space, (x, y, z), fileTemp, skip, chain, done, order):
         block = self.editor.level.tileEntityAt(x, y, z)
         if chain:
             if not block or (x, y, z) in done:
@@ -56,29 +56,29 @@ class fileEdit():
         text = block["Command"].value
         if text == "":
             text = "\"\""
-        order.append((x,y,z))
+        order.append((x, y, z))
         fileTemp.write(text.encode('utf-8'))
 
         if chain:
             done.append((x, y, z))
-            blockData =  self.editor.level.blockDataAt(x, y, z)
-            if blockData == 0 and self.level.blockAt(x, y-1, z) == 211:
-                skip.append((x,y-1,z))
+            blockData = self.editor.level.blockDataAt(x, y, z)
+            if blockData == 0 and self.level.blockAt(x, y-1, z) in (211, 189):
+                skip.append((x, y-1, z))
                 self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order)
-            elif blockData == 1 and self.level.blockAt(x, y+1, z) == 211:
-                skip.append((x,y+1,z))
+            elif blockData == 1 and self.level.blockAt(x, y+1, z) in (211, 189):
+                skip.append((x, y+1, z))
                 self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order)
-            elif blockData == 2 and self.level.blockAt(x, y, z-1) == 211:
-                skip.append((x,y,z-1))
+            elif blockData == 2 and self.level.blockAt(x, y, z-1) in (211, 189):
+                skip.append((x, y, z-1))
                 self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order)
-            elif blockData == 3 and self.level.blockAt(x, y, z+1) == 211:
-                skip.append((x,y,z+1))
+            elif blockData == 3 and self.level.blockAt(x, y, z+1) in (211, 189):
+                skip.append((x, y, z+1))
                 self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order)
-            elif blockData == 4 and self.level.blockAt(x-1, y, z) == 211:
-                skip.append((x-1,y,z))
+            elif blockData == 4 and self.level.blockAt(x-1, y, z) in (211, 189):
+                skip.append((x-1, y, z))
                 self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order)
-            elif blockData == 5 and self.level.blockAt(x+1, y, z) == 211:
-                skip.append((x+1,y,z))
+            elif blockData == 5 and self.level.blockAt(x+1, y, z) in (211, 189):
+                skip.append((x+1, y, z))
                 self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
 
 

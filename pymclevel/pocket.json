@@ -3509,7 +3509,84 @@
                 }
             },
             "id": 68
-        },
+        },{
+			"opacity": 0,
+			"name": "Lever",
+			"data": {
+				"11": {
+					"name": "Lever (Powered, South)"
+				},
+				"10": {
+					"name": "Lever (Powered, West)"
+				},
+				"13": {
+					"name": "Lever (Powered, Up_z)"
+				},
+				"12": {
+					"name": "Lever (Powered, North)"
+				},
+				"15": {
+					"name": "Lever (Powered, Down_z)"
+				},
+				"14": {
+					"name": "Lever (Powered, Up_x)"
+				},
+				"1": {
+					"name": "Lever (East)"
+				},
+				"0": {
+					"name": "Lever (Down_x)"
+				},
+				"3": {
+					"name": "Lever (South)"
+				},
+				"2": {
+					"name": "Lever (West)"
+				},
+				"5": {
+					"name": "Lever (Up_z)"
+				},
+				"4": {
+					"name": "Lever (North)"
+				},
+				"7": {
+					"name": "Lever (Down_z)"
+				},
+				"6": {
+					"name": "Lever (Up_x)"
+				},
+				"9": {
+					"name": "Lever (Powered, East)"
+				},
+				"8": {
+					"name": "Lever (Powered, Down_x)"
+				}
+			},
+			"idStr": "lever",
+			"tex": [0,6],
+			"tex_extra": {
+				"base": [0,1]
+			},
+			"mapcolor": [124,98,62],
+			"type": "LEVER",
+			"id": 69
+		},{
+			"opacity": 0,
+			"name": "Stone Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Stone Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Stone Pressure Plate"
+				}
+			},
+			"idStr": "stone_pressure_plate",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"type": "PRESSURE_PLATE",
+			"id": 70
+		},
         {
             "opacity": 0,
             "name": "Iron Door",

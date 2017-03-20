@@ -1567,20 +1567,22 @@ class CameraViewport(GLViewport):
                 if self.editor.currentTool is self.editor.selectionTool:
                     try:
                         block = self.editor.level.blockAt(*point)
+                        materials = self.editor.level.materials
                         if distance2(point, self.cameraPosition) > 4:
                             blockEditors = {
-                                pymclevel.alphaMaterials.MonsterSpawner.ID: self.editMonsterSpawner,
-                                pymclevel.alphaMaterials.Sign.ID: self.editSign,
-                                pymclevel.alphaMaterials.WallSign.ID: self.editSign,
-                                pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
-                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
-                                210: self.editCommandBlock,
-                                211: self.editCommandBlock,
+                                materials.MonsterSpawner.ID: self.editMonsterSpawner,
+                                materials.Sign.ID: self.editSign,
+                                materials.WallSign.ID: self.editSign,
+                                materials.MobHead.ID: self.editSkull,
+                                materials.CommandBlock.ID: self.editCommandBlock,
+                                materials.CommandBlockRepeating.ID: self.editCommandBlock,
+                                materials.CommandBlockChain.ID: self.editCommandBlock,
                                 pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox,
-                                pymclevel.alphaMaterials.NoteBlock.ID: self.editNoteBlock,
-                                pymclevel.alphaMaterials.FlowerPot.ID: self.editFlowerPot,
-                                pymclevel.alphaMaterials.EnchantmentTable.ID: self.editEnchantmentTable
+                                materials.NoteBlock.ID: self.editNoteBlock,
+                                materials.FlowerPot.ID: self.editFlowerPot,
+                                materials.EnchantmentTable.ID: self.editEnchantmentTable
                             }
+                            print materials.CommandBlockChain
                             edit = blockEditors.get(block)
                             if edit:
                                 self.editor.endSelection()

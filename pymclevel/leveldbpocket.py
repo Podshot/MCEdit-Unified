@@ -28,7 +28,7 @@ leveldb_mcpe = None
 if __builtins__.get('mcenf_levelDBPy', False):
     try:
         import leveldb as leveldb_mcpe
-    except Exception, e:
+    except Exception as e:
         trace_msg = traceback.format_exc().splitlines()
         logger.warn("Error while trying to import leveldb:")
         [logger.warn(a) for a in trace_msg]
@@ -136,9 +136,9 @@ def loadNBTCompoundList_old(data, littleEndian=True):
 
         if DEBUG_PE:
             try:
-                write_dump("**********\nLongest data length: %s\nData:\n%s\n"%(longest_complist_len, longest_complist))
-                write_dump("**********\nShortest data length: %s\nData:\n%s\n"%(shortest_complist_len, shortest_complist))
-            except Exception, e:
+                write_dump("**********\nLongest data length: %s\nData:\n%s\n" % (longest_complist_len, longest_complist))
+                write_dump("**********\nShortest data length: %s\nData:\n%s\n" % (shortest_complist_len, shortest_complist))
+            except Exception as e:
                 print "Could not write debug info:", e
 
         return compounds
@@ -879,7 +879,7 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
             chunk.dirty = True
             self.worldFile.saveChunk(chunk)
         else:
-            logger.info("Tried to import generated chunk at %s, %s but the chunk already existed."%(cx, cz))
+            logger.info("Tried to import generated chunk at %s, %s but the chunk already existed." % (cx, cz))
 
     @property
     def chunksNeedingLighting(self):

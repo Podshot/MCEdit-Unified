@@ -760,17 +760,14 @@ class ChunkCalculator(object):
         materialMap[1:] = 1  # generic blocks
 
         materialCount = 2
-        
-        getBlocktypes = BlockRenderer.getBlocktypes
+
         for br in self.blockRendererClasses[1:]:  # skip generic blocks
-            #materialMap[br.getBlocktypes(materials)] = materialCount
-            materialMap[getBlocktypes(br, materials)] = materialCount
+            materialMap[br.getBlocktypes(materials)] = materialCount
             br.materialIndex = materialCount
             materialCount += 1
 
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
-
 
     def addTransparentMaterials(self, mats, materialCount):
         logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
@@ -1930,7 +1927,8 @@ class TorchBlockRenderer(BlockRenderer):
         self.vertexArrays = arrays
 
     makeVertices = makeTorchVertices
-    
+
+
 class LeverBlockRenderer(BlockRenderer):
     
     @classmethod
@@ -2614,10 +2612,11 @@ class RedstoneBlockRenderer(BlockRenderer):
 # button, floor plate, door -> 1-cube features
 
 class DoorRenderer(BlockRenderer):
-    
+
     @classmethod
     def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["DOOR"]]
+        cls.blocktypes = [block.ID for block in mats.blocksByType["DOOR"]]
+        return cls.blocktypes
 
     doorTemplate = makeVertexTemplatesFromJsonModel(
         (0, 0, 0), (3, 16, 16),
@@ -2785,14 +2784,20 @@ class TrapDoorRenderer(BlockRenderer):
 
 
 class FenceBlockRenderer(BlockRenderer):
-    blocktypes = {
-                  alphaMaterials: [block.ID for block in alphaMaterials.blocksByType["FENCE"]],
-                  pocketMaterials: [block.ID for block in pocketMaterials.blocksByType["FENCE"]]
-                  }
+    blocktypes_alpha = [block.ID for block in alphaMaterials.blocksByType["FENCE"]]
+    blocktypes_pocket = [block.ID for block in pocketMaterials.blocksByType["FENCE"]]
     
     fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
 
     makeVertices = makeVerticesFromModel(fenceTemplates)
+
+    @classmethod
+    def getBlocktypes(cls, mats):
+        if mats.name == "Pocket":
+            cls.blocktypes = cls.blocktypes_pocket
+        else:
+            cls.blocktypes = cls.blocktypes_alpha
+        return cls.blocktypes
 
 
 class FenceGateBlockRenderer(BlockRenderer):
