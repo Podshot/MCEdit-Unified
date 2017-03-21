@@ -174,8 +174,7 @@ class PlayerCache:
         for uuid in self._cache["Cache"].keys():
             self.getPlayerInfo(uuid, force=True)
         self.save()
-        
-            
+
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
         '''
@@ -368,16 +367,12 @@ class PlayerCache:
         toReturn = 'char.png'
         
         raw_data = self.getPlayerInfo(arg)
-#         print "raw_data.__class__", raw_data.__class__
         if raw_data.__class__ != ThreadRS:
-#             print 'raw_data', raw_data
             uuid_sep, name, uuid = raw_data
             if uuid == "<Unknown UUID>" or "Server not ready" in raw_data:
-#                 print 'returning', toReturn
                 return toReturn
             player = self._cache["Cache"][uuid]
             skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
-            #temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
             try:
                 if not force_download and os.path.exists(skin_path):
                     skin = Image.open(skin_path)
@@ -480,7 +475,7 @@ class PlayerCache:
             log.warn("Unknown error occurred while trying to POST data to URL: " + url)
             log.warn(traceback.format_exc())
         return None
-            
+
 def _cleanup():
     if os.path.exists("player-skins"):
         for image_file in os.listdir("player-skins"):

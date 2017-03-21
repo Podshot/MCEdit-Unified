@@ -14,7 +14,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import time
 import traceback
-t= time.time()
+t = time.time()
 import sys
 import os
 import json
@@ -76,7 +76,7 @@ def getNewDataDir(path=""):
     '''
     dataDir = os.path.dirname(os.path.abspath(__file__))
     #print "Dynamic: " + str(os.getcwdu())
-    #print "Fixed: " + str(dataDir) 
+    #print "Fixed: " + str(dataDir)
     if len(path) > 0:
         return os.path.join(dataDir, path)
     return dataDir
@@ -369,13 +369,6 @@ else:
         jarStorageDir = portableJarStorageDir
         genericSupportDir = portableGenericSupportPath
     portable = True
-
-#if portable:
-#    serverJarStorageDir = portableJarStorageDir
-#    ServerJarStorage.defaultCacheDir = serverJarStorageDir
-#    jarStorage = ServerJarStorage(serverJarStorageDir)
-#else:
-#    serverJarStorageDir = fixedJarStorageDir
 
 
 def getAllOfAFile(file_dir, ext):

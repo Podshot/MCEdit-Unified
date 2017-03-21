@@ -161,5 +161,3 @@ class FTPClient:
                 pass
         else:
             raise CouldNotFindWorldFolderException("Could not find the world folder from the server.properties file")
-
-      

@@ -37,9 +37,6 @@ import os
 import png
 from pygame import display
 import pymclevel
-import json
-import hashlib
-import shutil
 
 import logging
 
