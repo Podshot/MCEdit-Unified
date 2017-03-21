@@ -3535,7 +3535,9 @@
                 "11": {
                     "name": "Iron Door (Upper, Right Hinge, Powered)"
                 }
-            },{
+              }
+            },
+            {
 			"opacity": 0,
 			"name": "Lever",
 			"data": {
@@ -3596,7 +3598,8 @@
 			"mapcolor": [124,98,62],
 			"type": "LEVER",
 			"id": 69
-		},{
+		},
+        {
 			"opacity": 0,
 			"name": "Stone Pressure Plate",
 			"data": {
@@ -3613,6 +3616,7 @@
 			"type": "PRESSURE_PLATE",
 			"id": 70
 		},
+        {
             "id": 71,
             "idStr": "iron_door",
             "mapcolor": [
