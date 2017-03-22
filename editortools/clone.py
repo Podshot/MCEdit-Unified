@@ -568,10 +568,6 @@ class CloneTool(EditorTool):
 
     @alertException
     def rescaleLevel(self, factor):
-        # if self.level.cloneToolScaleFactor == newFactor:
-        # return
-        # oldfactor = self.level.cloneToolScaleFactor
-        # factor = newFactor / oldfactor
         if factor == 1:
             self.level = self.originalLevel
             self.setupPreview()
@@ -605,43 +601,6 @@ class CloneTool(EditorTool):
         self.level = newlevel
         self.setupPreview()
 
-    #
-    # """
-    #        use array broadcasting to fill in the extra dimensions with copies of the
-    #        existing ones, then later change the shape to "fold" the extras back
-    #        into the original three
-    #        """
-    #        # if factor > 1.0:
-    #        sourceSlice = slice(0, 1)
-    #        destSlice = slice(None)
-    #
-    #        # if factor < 1.0:
-    #
-    #        destfactor = factor
-    #        srcfactor = 1
-    #        if factor < 1.0:
-    #            destfactor = 1.0
-    #            srcfactor = 1.0 / factor
-    #
-    #        intershape = newshape[0]/destfactor, destfactor, newshape[1]/destfactor, destfactor, newshape[2]/destfactor, destfactor
-    #        srcshape = roundedShape[0]/srcfactor, srcfactor, roundedShape[1]/srcfactor, srcfactor, roundedShape[2]/srcfactor, srcfactor
-    #
-    #        newlevel = MCSchematic(xyzshape)
-    #
-    #        def copyArray(dest, src):
-    #            dest.shape = intershape
-    #            src.shape = srcshape
-    #
-    #            dest[:, destSlice, :, destSlice, :, destSlice] = src[:, sourceSlice, :, sourceSlice, :, sourceSlice]
-    #            dest.shape = newshape
-    #            src.shape = roundedShape
-    #
-    #        copyArray(newlevel.Blocks, blocks)
-    #        copyArray(newlevel.Data, data)
-    #
-    #        newlevel.cloneToolScaleFactor = newFactor
-    #
-
     @alertException
     def updateSchematic(self):
         # extract blocks
@@ -659,9 +618,7 @@ class CloneTool(EditorTool):
             self.panel.set_parent(None)
 
         self.panel = self.panelClass(self, self.editor)
-        # self.panel.performButton.enabled = False
 
-#        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height
         self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
         self.panel.left = self.editor.left
         self.editor.add(self.panel)

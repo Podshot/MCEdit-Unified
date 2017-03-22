@@ -44,6 +44,7 @@ import re
 
 log = getLogger(__name__)
 
+
 def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False):
     """Parse the JSON data and build objects accordingly.
     :data: JSON data.
@@ -57,14 +58,14 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
     # Find if "autobuild" items are defined
     autobuilds = data.get("autobuild", {})
     for a_name, a_value in autobuilds.items():
-        p = re.findall(r"(^|[ ])%s\['(\w+)'"%prefix, a_value)
+        p = re.findall(r"(^|[ ])%s\['(\w+)'" % prefix, a_value)
         if p:
             for a in p[0][1:]:
                 if a not in data.keys():
-                    log.error("Found wrong reference while parsing autobuilds for %s: %s"%(prefix, a))
+                    log.error("Found wrong reference while parsing autobuilds for %s: %s" % (prefix, a))
                     autobuilds.pop(a_name)
                 else:
-                    autobuilds[a_name] = a_value.replace("%s["%prefix, "data[")
+                    autobuilds[a_name] = a_value.replace("%s[" % prefix, "data[")
         else:
             # Just remove stuff which is not related to data internal stuff
             autobuilds.pop(a_name)
@@ -73,12 +74,12 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
         if definition == prefix:
             # We're parsing the block/entity/whatever data
             for item in value:
-                _name = item.get('_name', item.get('idStr', u'%s'%item['id']))
-                entry_name = "DEF_%s_%s"%(prefix.upper(), _name.upper())
+                _name = item.get('_name', item.get('idStr', u'%s' % item['id']))
+                entry_name = "DEF_%s_%s" % (prefix.upper(), _name.upper())
                 defs_dict[entry_name] = item
                 ids_dict[item['id']] = ids_dict[_name] = entry_name
                 if item.get('idStr'):
-                    ids_dict[u'%s:%s'%(namespace, item['idStr'])] = ids_dict[item['idStr']] = entry_name
+                    ids_dict[u'%s:%s' % (namespace, item['idStr'])] = ids_dict[item['idStr']] = entry_name
                 for a_name, a_value in autobuilds.items():
                     try:
                         v = eval(a_value)
@@ -86,20 +87,22 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
                         defs_dict[entry_name][a_name] = eval(a_value)
                         ids_dict[v] = entry_name
                     except Exception as e:
-                        log.error("An error occurred while autobuilding definitions %s (value: \"%s\": %s"%(a_name, a_value, e))
+                        log.error("An error occurred while autobuilding definitions %s (value: \"%s\": %s" % (a_name, a_value, e))
         else:
             # Build extra info in other defs
             defs_dict[definition] = value
     return defs_dict, ids_dict
 
+
 def _get_data(file_name):
     data = {}
     try:
         data = json.loads(open(file_name).read())
-    except Exception, e:
-        log.error("Could not load data from %s"%file_name)
-        log.error("Error is: %s"%e)
+    except Exception as e:
+        log.error("Could not load data from %s" % file_name)
+        log.error("Error is: %s" % e)
     return data
+
 
 def ids_loader(game_version, namespace=u"minecraft"):
     """Load the whole files from mcver directory.
@@ -114,8 +117,7 @@ def ids_loader(game_version, namespace=u"minecraft"):
     if os.path.isdir(d):
         for file_name in os.listdir(d):
             if os.path.splitext(file_name)[-1].lower() == '.json':
-                data = None
-                log.info("Found %s"%file_name)
+                log.info("Found %s" % file_name)
                 data = _get_data(os.path.join(d, file_name))
                 if data:
                     # We use here names coming from the 'minecraft:name_of_the_stuff' ids

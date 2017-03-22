@@ -3498,46 +3498,6 @@
             "type": "WALLSIGN"
         },
         {
-            "data": {
-                "0": {
-                    "name": "Iron Door (Lower, Unopened, East)"
-                },
-                "1": {
-                    "name": "Iron Door (Lower, Unopened, South)"
-                },
-                "2": {
-                    "name": "Iron Door (Lower, Unopened, West)"
-                },
-                "3": {
-                    "name": "Iron Door (Lower, Unopened, North)"
-                },
-                "4": {
-                    "name": "Iron Door (Lower, Opened, East)"
-                },
-                "5": {
-                    "name": "Iron Door (Lower, Opened, South)"
-                },
-                "6": {
-                    "name": "Iron Door (Lower, Opened, West)"
-                },
-                "7": {
-                    "name": "Iron Door (Lower, Opened, North)"
-                },
-                "8": {
-                    "name": "Iron Door (Upper, Left Hinge, Unpowered)"
-                },
-                "9": {
-                    "name": "Iron Door (Upper, Right Hinge, Unpowered)"
-                },
-                "10": {
-                    "name": "Iron Door (Upper, Left Hinge, Powered)"
-                },
-                "11": {
-                    "name": "Iron Door (Upper, Right Hinge, Powered)"
-                }
-              }
-            },
-            {
 			"opacity": 0,
 			"name": "Lever",
 			"data": {
@@ -3617,6 +3577,44 @@
 			"id": 70
 		},
         {
+            "data": {
+                "0": {
+                    "name": "Iron Door (Lower, Unopened, East)"
+                },
+                "1": {
+                    "name": "Iron Door (Lower, Unopened, South)"
+                },
+                "2": {
+                    "name": "Iron Door (Lower, Unopened, West)"
+                },
+                "3": {
+                    "name": "Iron Door (Lower, Unopened, North)"
+                },
+                "4": {
+                    "name": "Iron Door (Lower, Opened, East)"
+                },
+                "5": {
+                    "name": "Iron Door (Lower, Opened, South)"
+                },
+                "6": {
+                    "name": "Iron Door (Lower, Opened, West)"
+                },
+                "7": {
+                    "name": "Iron Door (Lower, Opened, North)"
+                },
+                "8": {
+                    "name": "Iron Door (Upper, Left Hinge, Unpowered)"
+                },
+                "9": {
+                    "name": "Iron Door (Upper, Right Hinge, Unpowered)"
+                },
+                "10": {
+                    "name": "Iron Door (Upper, Left Hinge, Powered)"
+                },
+                "11": {
+                    "name": "Iron Door (Upper, Right Hinge, Powered)"
+                }
+            },
             "id": 71,
             "idStr": "iron_door",
             "mapcolor": [

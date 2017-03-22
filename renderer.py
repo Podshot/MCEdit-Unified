@@ -1522,7 +1522,6 @@ class LowDetailBlockRenderer(BlockRenderer):
             blockTypes = blocks[blockIndices]
 
             flatcolors = level.materials.flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
-            # flatcolors[:,:,:3] *= (0.6 + (h * (0.4 / float(chunkHeight-1)))) [topBlocks != 0][:, numpy.newaxis, numpy.newaxis]
             x, z, y = blockIndices.nonzero()
 
             yield
@@ -1669,7 +1668,6 @@ class LeafBlockRenderer(BlockRenderer):
                     jungle = (data == alphaMaterials.JungleLeaves.blockData)
                     acacia = (data == alphaMaterials.AcaciaLeaves.blockData)
                     darkoak = (data == alphaMaterials.DarkOakLeaves.blockData)
-                    #leaves |= type3
 
                     texes = texMap(blocks[blockIndices], data, 0)
 
@@ -3169,7 +3167,7 @@ class MCRenderer(object):
             
         self.level = level 
             
-        if self.level.__class__.__name__ in ("FakeLevel","MCSchematic"):
+        if self.level.__class__.__name__ in ("FakeLevel", "MCSchematic"):
             self.toggleLayer(False, 'ChunkBorder')
             
 
@@ -3262,7 +3260,6 @@ class MCRenderer(object):
         if vd != self._viewDistance:
             self._viewDistance = vd
             self.viewDistanceChanged()
-            # self.invalidateChunkMarkers()
 
     viewDistance = property(getViewDistance, setViewDistance, None, "View Distance")
 
@@ -3387,7 +3384,6 @@ class MCRenderer(object):
         if not len(self.chunkRenderers):
             return
         (ox, oz) = origin
-        # chunks = numpy.fromiter(self.chunkRenderers.iterkeys(), dtype='int32', count=len(self.chunkRenderers))
         chunks = numpy.fromiter(self.chunkRenderers.iterkeys(), dtype='i,i', count=len(self.chunkRenderers))
         chunks.dtype = 'int32'
         chunks.shape = len(self.chunkRenderers), 2
@@ -3460,11 +3456,8 @@ class MCRenderer(object):
     def invalidateChunk(self, cx, cz, layers=None):
         " marks the chunk for regenerating vertex data and display lists "
         if (cx, cz) in self.chunkRenderers:
-            # self.chunkRenderers[(cx,cz)].invalidate()
-            # self.bufferUsage -= self.chunkRenderers[(cx, cz)].bufferSize
 
             self.chunkRenderers[(cx, cz)].invalidate(layers)
-            # self.bufferUsage += self.chunkRenderers[(cx, cz)].bufferSize
 
             self.invalidChunkQueue.append((cx, cz))  # xxx encapsulate
 
@@ -3597,17 +3590,6 @@ class MCRenderer(object):
             GL.glColor(1.0, 1.0, 1.0, 1.0)
 
             self.floorTexture.bind()
-            # chunkColor = numpy.zeros(shape=(chunks.shape[0], 4, 4), dtype='float32')
-            #            chunkColor[:]= (1, 1, 1, 0.15)
-            #
-            #            cc = numpy.array(chunks[:,0] + chunks[:,1], dtype='int32')
-            #            cc &= 1
-            #            coloredChunks = cc > 0
-            #            chunkColor[coloredChunks] = (1, 1, 1, 0.28)
-            #            chunkColor *= 255
-            #            chunkColor = numpy.array(chunkColor, dtype='uint8')
-            #
-            # GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, 0, chunkColor)
             for size, chunks in sizedChunks.iteritems():
                 if not len(chunks):
                     continue
@@ -3632,8 +3614,6 @@ class MCRenderer(object):
     def drawLoadableChunkMarkers(self):
         if not self.isPreviewer or isinstance(self.level, pymclevel.MCInfdevOldLevel):
             self.loadableChunkMarkers.call(self._drawLoadableChunkMarkers)
-
-            # self.drawCompressedChunkMarkers()
 
     needsImmediateRedraw = False
     viewingFrustum = None
@@ -3668,7 +3648,6 @@ class MCRenderer(object):
                     if len(chunkLists[rs]):
                         lists[rs] = numpy.array(chunkLists[rs], dtype='uint32').ravel()
 
-                # lists = lists[lists.nonzero()]
                 self.masterLists = lists
                 self.shouldRecreateMasterList = shouldRecreateAgain
                 self.needsImmediateRedraw = shouldRecreateAgain
@@ -3735,7 +3714,6 @@ class MCRenderer(object):
 
             GL.glDisable(GL.GL_TEXTURE_2D)
             GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-            # if self.drawLighting:
             self.drawLoadableChunkMarkers()
 
         if self.level.materials.name in ("Pocket", "Alpha"):
@@ -3839,7 +3817,6 @@ class MCRenderer(object):
         if self.level.containsChunk(*c):
             cr = self.getChunkRenderer(c)
             if self.viewingFrustum:
-                # if not self.viewingFrustum.visible(numpy.array([[c[0] * 16 + 8, 64, c[1] * 16 + 8, 1.0]]), 64).any():
                 if not self.viewingFrustum.visible1([c[0] * 16 + 8, self.level.Height / 2, c[1] * 16 + 8, 1.0],
                                                     self.level.Height / 2):
                     raise StopIteration
