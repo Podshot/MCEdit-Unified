@@ -56,7 +56,7 @@ id_limit = 4096
 
 
 class BlockstateAPI(object):
-    '''
+    """
     An easy API to convert from numerical ID's to Blockstates and vice-versa. Each
     material has its own instance of this class. You can access it in a variety of ways::
     
@@ -65,7 +65,7 @@ class BlockstateAPI(object):
         api = BlockStateAPI.material_map[alphaMaterials]
         
         api = alphaMaterials.blockstate_api
-    '''
+    """
     material_map = {}
 
     def __init__(self, mats, definition_file):
@@ -91,7 +91,7 @@ class BlockstateAPI(object):
         self.material_map[self._mats] = self
 
     def idToBlockstate(self, bid, data):
-        '''
+        """
         Converts from a numerical ID to a BlockState string
     
         :param bid: The ID of the block
@@ -100,7 +100,7 @@ class BlockstateAPI(object):
         :type data: int
         :return: The BlockState string
         :rtype: str
-        '''       
+        """
         if bid not in self.block_map:
             return "<Unknown>", {}
         
@@ -120,7 +120,7 @@ class BlockstateAPI(object):
         return name, properties
     
     def blockstateToID(self, name, properties):
-        '''
+        """
         Converts from a BlockState to a numerical ID/Data pair
     
         :param name: The BlockState name
@@ -129,7 +129,7 @@ class BlockstateAPI(object):
         :type properties: list
         :return: A tuple containing the numerical ID/Data pair (<id>, <data>)
         :rtype: tuple
-        '''
+        """
         
         if ":" in name:
             prefix, name = name.split(":")
@@ -153,7 +153,7 @@ class BlockstateAPI(object):
     
     @staticmethod
     def stringifyBlockstate(name, properties):
-        '''
+        """
         Turns a Blockstate into a single string
         
         :param name: The Block's base name. IE: grass, command_block, etc.
@@ -162,7 +162,7 @@ class BlockstateAPI(object):
         :type properties: list
         :return: A complete Blockstate in string form
         :rtype: str
-        '''
+        """
         if not name.startswith("minecraft:"):
             name = "minecraft:" + name # This should be changed as soon as possible
         result = name + "["
@@ -174,14 +174,14 @@ class BlockstateAPI(object):
     
     @staticmethod
     def deStringifyBlockstate(blockstate):
-        '''
+        """
         Turns a single Blockstate string into a base name, properties tuple
         
         :param blockstate: The Blockstate string
         :type blockstate: str
         :return: A tuple containing the base name and the properties for the Blockstate
         :rtype: tuple 
-        '''
+        """
         seperated = blockstate.split("[")
         
         if len(seperated) == 1:

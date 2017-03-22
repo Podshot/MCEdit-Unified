@@ -169,5 +169,4 @@ def ids_loader(game_version, namespace=u"minecraft"):
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
     log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
-#     print MCEDIT_IDS
     return MCEDIT_DEFS, MCEDIT_IDS
