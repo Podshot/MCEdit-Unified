@@ -384,6 +384,7 @@ class MCMaterials(object):
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
         if game_version == 'PE' or game_version == 'old pocket':
             f_name = 'pocket.json'
+            self.setup_blockstates("pe_blockstates.json")
             build_pocket_materials()
         elif game_version == 'javalevel':
             # No reference to materials in javalevel.py and no related JSon file, let use the 'classic' ones?
@@ -394,6 +395,7 @@ class MCMaterials(object):
             build_indev_materials()
         else:
             f_name = 'minecraft.json'
+            self.setup_blockstates("pc_blockstates.json")
             build_alpha_materials()
         if blockyaml:
             self.addJSONBlocks(blockyaml)

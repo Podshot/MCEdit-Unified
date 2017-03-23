@@ -677,8 +677,8 @@ class MCEdit(GLViewport):
             try:
                 self.editor.loadFile(filename, addToRecent=addToRecent)
             except Exception, e:
-                logging.error(u'Failed to load file {0}: {1!r}'.format(
-                    filename, e))
+                logging.error(u'Failed to load file {0}: {1}'.format(
+                    filename, traceback.format_exc()))
                 return None
 
             self.remove(self.fileOpener)

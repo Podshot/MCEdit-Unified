@@ -625,7 +625,7 @@ class ChunkCalculator(object):
     precomputedVertices = createPrecomputedVertices()
 
     def __init__(self, level):
-        self.stoneid = alphaMaterials.Stone.ID
+        self.stoneid = stoneid = alphaMaterials.Stone.ID
         self.hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
         self.hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
         self.hiddenOreMaterials[alphaMaterials.Sand.ID] = stoneid
@@ -769,7 +769,8 @@ class ChunkCalculator(object):
         materialCount = 2
 
         for br in self.blockRendererClasses[1:]:  # skip generic blocks
-            materialMap[br.getBlocktypes(materials)] = materialCount
+#             materialMap[br.getBlocktypes(materials)] = materialCount
+            materialMap[br(self).getBlocktypes(materials)] = materialCount
             br.materialIndex = materialCount
             materialCount += 1
 
@@ -1141,9 +1142,12 @@ class BlockRenderer(object):
         self.vertexArrays = []
         pass
 
-    @classmethod
-    def getBlocktypes(cls, mats):
-        return cls.blocktypes
+#     @classmethod
+#     def getBlocktypes(cls, mats):
+#         return cls.blocktypes
+
+    def getBlocktypes(self, mats):
+        return self.blocktypes
 
     def setAlpha(self, alpha):
         "alpha is an unsigned byte value"
@@ -2005,7 +2009,7 @@ class LeverBlockRenderer(BlockRenderer):
 class RailBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateAlphaTest
 
-    def __init__(self, *args, **kxargs):
+    def __init__(self, *args, **kwargs):
         self.railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
         BlockRenderer.__init__(self, *args, **kwargs)
 
@@ -3103,7 +3107,7 @@ class WaterBlockRenderer(BlockRenderer):
 
     def __init__(self, *args, **kwargs):
         self.waterID = alphaMaterials["minecraft:water"].ID
-        self.blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, waterID]
+        self.blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, self.waterID]
         BlockRenderer.__init__(self, *args, **kwargs)
 
     @classmethod
