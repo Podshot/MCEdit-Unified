@@ -33,10 +33,7 @@ from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
 from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
-import urllib2
-import urllib
 import json
-import shutil
 import directories
 import sys
 import keys
@@ -61,7 +58,7 @@ def alertFilterException(func):
     def _func(*args, **kw):
         try:
             func(*args, **kw)
-        except Exception, e:
+        except Exception as e:
             print traceback.format_exc()
             alert(_(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
 
@@ -466,7 +463,7 @@ class FilterModuleOptions(Widget):
                 page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
                 rows.append(row)
-            elif type(optionType) == list and optionType[0].lower() == "nbttree":
+            elif isinstance(optionType, list) and optionType[0].lower() == "nbttree":
                 kw = {'close_text': None, 'load_text': None}
                 if len(optionType) >= 3:
                     def close():
@@ -833,7 +830,7 @@ class FilterToolPanel(Panel):
         self.keys_panel = panel
         key_name = panel.present()
 
-        if type(key_name) is bool:
+        if isinstance(key_name, bool):
             return True
         if key_name != "Escape":
             if key_name in ["Alt-F4", "F1", "F2", "F3", "F4", "F5", "1", "2", "3",
@@ -902,7 +899,6 @@ class FilterOperation(Operation):
 
         # Inject the defs for blocks/entities in the module
         # Need to reimport the defs and ids to get the 'fresh' ones
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
         self.filter.MCEDIT_DEFS = MCEDIT_DEFS
         self.filter.MCEDIT_IDS = MCEDIT_IDS
         self.filter.perform(self.level, BoundingBox(self.box), self.options)

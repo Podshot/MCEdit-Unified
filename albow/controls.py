@@ -8,7 +8,7 @@ from pygame import Rect, draw, transform
 from widget import Widget, overridable_property
 from theme import ThemeProperty
 import resource
-from translate import _, getLang
+from translate import _
 
 
 class Control(object):

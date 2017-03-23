@@ -19,7 +19,7 @@ class ThemeProperty(object):
             cache_name = self.cache_name
             try:
                 return getattr(obj, cache_name)
-            except AttributeError, e:
+            except AttributeError as e:
                 if debug_theme:
                     print e
                 value = self.get_from_theme(obj.__class__, self.name)

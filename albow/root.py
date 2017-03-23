@@ -31,6 +31,7 @@ import os
 import directories
 import time
 from dialogs import Dialog, Label, Button, Row, Column
+from OpenGL import GL
 
 start_time = datetime.now()
 
@@ -200,7 +201,7 @@ class RootWidget(Widget):
         global top_widget, clicked_widget
         is_modal = modal_widget is not None
         modal_widget = modal_widget or self
-        from OpenGL import GL
+        #from OpenGL import GL
 
         try:
             old_top_widget = top_widget
@@ -368,7 +369,7 @@ class RootWidget(Widget):
                         try:
                             if self.editor.level is not None and hasattr(self.editor.level, "checkSessionLock"):
                                 self.editor.level.checkSessionLock()
-                        except Exception, e:
+                        except Exception as e:
                             log.warn(u"Error reading chunk (?): %s", e)
                             if not config.session.override.get():
                                 self.sessionStolen = True
@@ -595,7 +596,7 @@ class RootWidget(Widget):
         return event
 
     def gl_clear(self):
-        from OpenGL import GL
+        #from OpenGL import GL
         
         bg = self.bg_color
         if bg:

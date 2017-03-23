@@ -24,10 +24,9 @@ class ScrollRow(PaletteView):
         d = self.margin
         if d <= x < W - d and d <= y < H - d:
             row = (y - d) // h
-            col = (x - d) // w
             if row < self.num_items():
                 row_data = self.row_data(row)
-                if type(row_data) == list:
+                if isinstance(row_data, list):
                     return self.row_data(row)[-1]
                 else:
                     return self.__tooltipText
@@ -143,7 +142,7 @@ class ScrollRow(PaletteView):
         v = float(self.width) / _s
         s = float(d) / n
         w = s * v
-        if type(w) == float:
+        if isinstance(w, float):
             if w - int(w) > 0:
                 w += 1
 
@@ -292,7 +291,7 @@ class ScrollPanel(Column):
                 cell_rect.right -= self.scrollRow.scroll_button_size
         elif self.align.lower() == 'c':
             cell_rect.left = self.centerx - (cell_rect.width / 2)
-        if type(data) in (str, unicode):
+        if isinstance(data, (str, unicode)):
             self.draw_text_cell(surf, i, data, cell_rect, self.align, self.font)
         else:
             self.draw_image_cell(surf, i, data, cell_rect, column)

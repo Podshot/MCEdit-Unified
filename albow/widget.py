@@ -12,6 +12,7 @@ import theme
 from theme import ThemeProperty, FontProperty
 import resource
 from numpy import fromstring
+from OpenGL import GL, GLU
 
 debug_rect = False
 debug_tab = True
@@ -344,7 +345,7 @@ class Widget(object):
                 if sub_rect.width > 0 and sub_rect.height > 0:
                     try:
                         sub = surface.subsurface(sub_rect)
-                    except ValueError, e:
+                    except ValueError as e:
                         if str(e) == "subsurface rectangle outside surface area":
                             self.diagnose_subsurface_problem(surface, widget)
                         else:
@@ -755,7 +756,7 @@ class Widget(object):
     def gl_draw_all(self, root, offset):
         if not self.visible:
             return
-        from OpenGL import GL, GLU
+        #from OpenGL import GL, GLU
 
         rect = self.rect.move(offset)
         if self.is_gl_container:

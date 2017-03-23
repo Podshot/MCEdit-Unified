@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #-# Modified by D.C.-G. for translation purpose
 import os
-import sys
 
 import logging
 log = logging.getLogger(__name__)
@@ -57,7 +56,9 @@ def _get_image(names, border=0, optimize=optimize_images, noalpha=False,
     path = _resource_path(prefix, names)
     image = image_cache.get(path)
     if not image:
-        image = pygame.image.load(open(path, 'rb'))
+        fp = open(path, 'rb')
+        image = pygame.image.load(fp)
+        fp.close()
         if noalpha:
             image = image.convert(24)
         elif optimize:
@@ -247,12 +248,12 @@ def get_sound(*names, **kwds):
     if not sound:
         try:
             from pygame.mixer import Sound
-        except ImportError, e:
+        except ImportError as e:
             no_sound(e)
             return dummy_sound
         try:
             sound = Sound(path)
-        except pygame.error, e:
+        except pygame.error as e:
             missing_sound(e, path)
             return dummy_sound
         sound_cache[path] = sound

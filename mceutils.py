@@ -55,7 +55,7 @@ def alertException(func):
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
             alert(_(e.message) + _("\n\nYour changes cannot be saved."))
-        except Exception, e:
+        except Exception as e:
             logging.exception("Exception:")
             ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
@@ -301,7 +301,6 @@ def loadPNGFile(filename):
 
     return w, h, data
 
-
 def loadTextureFunc(w, h, ndata):
     GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w, h, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, ndata)
     return w, h
@@ -315,7 +314,7 @@ def loadPNGTexture(filename, *a, **kw):
         tex = glutils.Texture(functools.partial(loadTextureFunc, w, h, ndata), *a, **kw)
         tex.data = ndata
         return tex
-    except Exception, e:
+    except Exception as e:
         print "Exception loading ", filename, ": ", repr(e)
         return glutils.Texture()
 

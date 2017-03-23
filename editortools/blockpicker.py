@@ -340,7 +340,7 @@ class BlockPicker(Dialog):
             return
         except ValueError:
             pass
-        except Exception, e:
+        except Exception as e:
             print repr(e)
 
         blocks = self.materials.allBlocks

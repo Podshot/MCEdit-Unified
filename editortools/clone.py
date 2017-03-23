@@ -703,7 +703,7 @@ class CloneTool(EditorTool):
         pos = self.getReticleOrigin()
         sizes = self.rotatedSelectionSize()
 
-        if None is sizes:
+        if sizes is None:
             return
 
         return BoundingBox(pos, sizes)
@@ -763,7 +763,6 @@ class CloneTool(EditorTool):
         if self.destPoint:
             box = self.getDestBox()
             if self.draggingFace is not None:
-                face = self.draggingFace
                 box = BoundingBox(self.draggingOrigin(), box.size)
             face, point = self.boxFaceUnderCursor(box)
             if face is not None:
@@ -1203,7 +1202,7 @@ class ConstructionTool(CloneTool):
         try:
             level = pymclevel.fromFile(filename, readonly=True)
             self.loadLevel(level)
-        except Exception, e:
+        except Exception as e:
             logging.warn(u"Unable to import file %s : %s", filename, e)
 
             traceback.print_exc()

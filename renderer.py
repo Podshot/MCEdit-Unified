@@ -1482,7 +1482,6 @@ class LowDetailBlockRenderer(BlockRenderer):
 
     def makeChunkVertices(self, ch):
         step = 1
-
         level = ch.world
         vertexArrays = []
         blocks = ch.Blocks
