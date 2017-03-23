@@ -589,7 +589,7 @@ class PlayerPositionPanel(Panel):
                 elif keyname == 'Page up':
                     self.table.index = max(0, self.table.index - self.table.rows.num_rows())
                 elif keyname == 'Return':
-                    if self.selectedPlayer != None:
+                    if self.selectedPlayer:
                         self.editNBTData()
                 if self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 > self.table.index or self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 < self.table.index:
                     self.table.rows.scroll_to_item(self.table.index)
@@ -1071,8 +1071,8 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
     def _drawToolMarkers(self):
         x, y, z = self.editor.level.playerSpawnPosition()
         
-        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-        GL.glEnable(GL.GL_BLEND);
+        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+        GL.glEnable(GL.GL_BLEND)
         
         color = config.selectionColors.black.get() + (0.35,)
         GL.glColor(*color)

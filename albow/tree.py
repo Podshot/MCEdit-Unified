@@ -107,7 +107,7 @@ def select_item_type(ok_action, types=map_types_item):
         result = SelectItemTypePanel("Choose item type", responses=choices, default=None).present()
     else:
         result = types.keys()[0]
-    if type(result) in (str, unicode):
+    if isinstance(result, (str, unicode)):
         return SetupNewItemPanel(result, types, ok_action).present()
     return None
 
@@ -209,7 +209,8 @@ class Tree(Column):
             if self.treeRow.cell_to_item_no(0, 0) is not None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
                 self.treeRow.scroll_to_item(self.selected_item_index)
 
-            if keyname == 'Return' and self.selected_item_index != None:
+            #if keyname == 'Return' and self.selected_item_index != None:
+            if keyname == 'Return' and self.selected_item_index:
                 self.select_item(self.selected_item_index)
                 if self.selected_item[7] in self.compound_types:
                     self.deploy(self.selected_item[6])
@@ -231,7 +232,7 @@ class Tree(Column):
             name = input_text_buttons("Choose a name", 300, self.copyBuffer[0][3])
         else:
             old_name = ""
-        if name and type(name) in (str, unicode) and name != old_name:
+        if name and isinstance(name, (str, unicode)) and name != old_name:
             new_item = copy.deepcopy(self.copyBuffer[0][9])
             if hasattr(new_item, 'name'):
                 new_item.name = name
@@ -248,7 +249,7 @@ class Tree(Column):
             name = input_text_buttons("Choose a name", 300, self.copyBuffer[0][3])
         else:
             old_name = ""
-        if name and type(name) in (str, unicode) and name != old_name:
+        if name and isinstance(name, (str, unicode)) and name != old_name:
             new_item = copy.deepcopy(self.copyBuffer[0][9])
             if hasattr(new_item, 'name'):
                 new_item.name = name
@@ -268,7 +269,7 @@ class Tree(Column):
         if not name:
             i = 0
             name = 'Item %03d'%i
-            while name in self.data.keys():
+            for name in self.data.keys():
                 i += 1
                 name = 'Item %03d'%i
         meth = getattr(self, 'add_item_to_%s'%tp, None)
@@ -280,7 +281,7 @@ class Tree(Column):
 
     def add_item(self, types_item=None):
         r = select_item_type(None, types_item or self.map_types_item)
-        if type(r) in (list, tuple):
+        if isinstance(r, (list, tuple)):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
             if meth:
@@ -289,7 +290,7 @@ class Tree(Column):
 
     def add_child(self, types_item=None):
         r = select_item_type(None, types_item or self.map_types_item)
-        if type(r) in (list, tuple):
+        if isinstance(r, (list, tuple)):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
             if meth:
@@ -305,7 +306,7 @@ class Tree(Column):
 
     def rename_item(self):
         result = input_text_buttons("Choose a name", 300, self.selected_item[3])
-        if type(result) in (str, unicode):
+        if isinstance(result, (str, unicode)):
             self.selected_item[3] = result
             self.build_layout()
 
@@ -320,7 +321,7 @@ class Tree(Column):
         children = []
         if item:
             if item[6] in self.deployed:
-                cIds = item[5]
+                #cIds = item[5]
                 idx = self.rows.index(item)
                 for child in self.rows[idx:]:
                     if child[8] == item[8] + 1 and child[4] == item[6]:
@@ -341,7 +342,7 @@ class Tree(Column):
                 ks.reverse()
                 for a in ks:
                     b = _v[a]
-                    itm = [lvl + 1, a, b, id, [], aId]
+                    #itm = [lvl + 1, a, b, id, [], aId]
                     itm = [None, None, None, a, id, [], aId, type(b), lvl + 1, b]
                     children.insert(0, itm)
                     aId += 1
@@ -402,14 +403,14 @@ class Tree(Column):
             c = [] + c
             # If the 'v' object is a dict containing the keys 'value' and 'tooltipText',
             # extract the text, and override the 'v' object with the 'value' value.
-            if type(v) == dict and len(v.keys()) and ('value' in v.keys() and 'tooltipText' in v.keys()):
+            if isinstance(v, dict) and len(v.keys()) and ('value' in v.keys() and 'tooltipText' in v.keys()):
                 t = v['tooltipText']
-                if type(t) not in (str, unicode):
+                if not isinstance(t, (str, unicode)):
                     t = repr(t)
                 v = v['value']
-            if type(v) in self.compound_types:
+            if isinstance(v, tuple(self.compound_types)):
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
-                if meth is not None:
+                if meth:
                     _v = meth(k, v)
                 else:
                     _v = v
@@ -425,9 +426,9 @@ class Tree(Column):
                     _c = True
                     aId += 1
             else:
-                if type(v) in (list, tuple):
+                if isinstance(v, (list, tuple)):
                     fields = v
-                elif type(v) not in self.compound_types or hasattr(self._parent, 'build_%s'%k.lower()):
+                elif not isinstance(v, tuple(self.compound_types)) or hasattr(self._parent, 'build_%s'%k.lower()):
                     fields = [v,]
             head = Surface((self.bullet_size * (lvl + 1) + self.font.size(k)[0], self.bullet_size), SRCALPHA)
             if _c:
@@ -457,7 +458,7 @@ class Tree(Column):
             self.deployed.append(id)
         self.build_layout()
         l = (self.clicked_item[3], self.clicked_item[4])
-        if type(self.cached_selected_item_index) != bool:
+        if not isinstance(self.cached_selected_item_index, bool):
             if self.cached_selected_item_index and self.cached_selected_item_index < self.num_rows():
                 r = self.rows[self.cached_selected_item_index]
                 r = (r[3], r[4])
@@ -514,7 +515,7 @@ class Tree(Column):
 
     def draw_tree_cell(self, surf, i, data, cell_rect, column):
         """..."""
-        if type(data) in (str, unicode):
+        if isinstance(data, (str, unicode)):
             self.draw_text_cell(surf, i, data, cell_rect, 'l', self.font)
         else:
             self.draw_image_cell(surf, i, data, cell_rect, column)
@@ -548,7 +549,7 @@ class Tree(Column):
             for i in xrange(len(row_data[2])):
                 width = 50 * (i + 1)
                 data = row_data[2][i]
-                if type(data) != (str, unicode):
+                if not isinstance(data, (str, unicode)):
                     data = repr(data)
                 yield i, x + m, width - d, None, data
                 x += width

@@ -132,8 +132,7 @@ class Widget(object):
 
     def setup_spacings(self):
         def new_size(size):
-            size = float(size * 1000)
-            size = size / float(100)
+            size = float(size * 1000) / float(100)
             size = int(size * resource.font_proportion / 1000)
             return size
         self.margin = new_size(self.margin)
@@ -222,7 +221,6 @@ class Widget(object):
         if resize:
             if debug_resize:
                 print "Widget.parent_resized: changing rect to", (left, top, width, height)
-            r = Rect((left, top, width, height))
             self.rect = Rect((left, top, width, height))
         elif move:
             if debug_resize:
@@ -768,7 +766,7 @@ class Widget(object):
         else:
             try:
                 surface = Surface(self.size, SRCALPHA)
-            except Exception:
+            except:
                 #size error?
                 return
             self.draw_all(surface)

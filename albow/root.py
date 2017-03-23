@@ -9,7 +9,6 @@ import pygame
 
 from pygame import key
 from pygame.locals import *
-# from pygame.time import get_ticks
 from pygame.event import Event
 
 from glbackground import *

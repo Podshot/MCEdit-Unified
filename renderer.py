@@ -3933,7 +3933,7 @@ def rendermain():
 
 
 import traceback
-import cProfile
 
 if __name__ == "__main__":
+    import cProfile
     cProfile.run("rendermain()", "mcedit.profile")

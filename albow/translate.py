@@ -84,10 +84,10 @@ def getPlatInfo(**kwargs):
                 verObjName = verObjNames.pop()
                 verObj = getattr(mod, verObjName, None)
                 if verObj:
-                    if type(verObj) in (str, unicode, int, list, tuple):
+                    if isinstance(verObj, (str, unicode, int, list, tuple)):
                         ver = "%s" % verObj
                         break
-                    elif "%s" % type(verObj) == "<type 'module'>":
+                    elif "%s" % type(verObj) == "<type 'module'>": # There is no define module type, so this should stay
                         verObjNames += ["%s.%s" % (verObjName, a) for a in re.findall(reVer, "%s" % dir(verObj))]
                     else:
                         ver = verObj()
@@ -142,11 +142,11 @@ buildTemplateMarker = """
 
 def _(string, doNotTranslate=False, hotKey=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
-    if type(string) == str:
+    if isinstance(string, str):
         string = unicode(string, enc)
     if doNotTranslate:
         return string
-    if type(string) not in (str, unicode):
+    if not isinstance(string, (str, unicode)):
         return string
     trn = string_cache.get(string, string)
     if trn == string and '-' in string:
@@ -333,7 +333,7 @@ def getLangName(file, path=None):
     return name
 
 
-from time import asctime, time
+from time import time
 #-------------------------------------------------------------------------------
 
 
@@ -346,7 +346,7 @@ def buildTranslation(lang, extend=False, langPath=None):
     tm = time()
     if not langPath:
         langPath = getLangPath()
-    str_cache = {}
+    #str_cache = {}
     global string_cache
     fileFound = False
     lang = u"%s" % lang
@@ -415,7 +415,7 @@ def buildTranslation(lang, extend=False, langPath=None):
             str_cache = json.loads(result)
             if extend:
                 string_cache.update([(a, b) for (a, b) in str_cache.items() if a not in string_cache.keys()])
-        except Exception, e:
+        except Exception as e:
             log.debug("Error while loading JSON resource:")
             log.debug("    %s"%e)
             log.debug("Dumping JSON data in %s.json"%lang)

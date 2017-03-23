@@ -84,9 +84,11 @@ class EditorTool(object):
         pass
 
     def mouseDown(self, evt, pos, direction):
-        '''pos is the coordinates of the block under the cursor,
+        """
+        pos is the coordinates of the block under the cursor,
         direction indicates which face is under it.  the tool performs
-        its action on the specified block'''
+        its action on the specified block
+        """
 
         pass
 
@@ -103,24 +105,33 @@ class EditorTool(object):
         pass
 
     def increaseToolReach(self):
-        "Return True if the tool handles its own reach"
+        """
+        Return True if the tool handles its own reach
+        """
         return False
 
     def decreaseToolReach(self):
-        "Return True if the tool handles its own reach"
+        """
+        Return True if the tool handles its own reach
+        """
         return False
 
     def resetToolReach(self):
-        "Return True if the tool handles its own reach"
+        """
+        Return True if the tool handles its own reach
+        """
         return False
 
     def confirm(self):
-        ''' called when user presses enter '''
+        """
+        Called when user presses enter
+        """
         pass
 
     def cancel(self):
-        '''cancel the current operation.  called when a different tool
-        is picked, escape is pressed, or etc etc'''
+        """
+        Cancel the current operation.  called when a different tool is picked, escape is pressed, or etc etc
+        """
         self.hidePanel()
 
     # pass
@@ -133,19 +144,22 @@ class EditorTool(object):
         return cv.index(max(cv))
 
     def drawToolReticle(self):
-
-        '''get self.editor.blockFaceUnderCursor for pos and direction.
+        """
+        Get self.editor.blockFaceUnderCursor for pos and direction.
         pos is the coordinates of the block under the cursor,
         direction indicates which face is under it. draw something to
         let the user know where the tool is going to act.  e.g. a
-        transparent block for the block placing tool.'''
+        transparent block for the block placing tool.
+        """
 
         pass
 
     def drawToolMarkers(self):
-        ''' draw any markers the tool wants to leave in the field
+        """
+        Draw any markers the tool wants to leave in the field
         while another tool is out.  e.g. the current selection for
-        SelectionTool'''
+        SelectionTool
+        """
 
         pass
 

@@ -273,37 +273,37 @@ class FillTool(EditorTool):
 
     def roll(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            Roll(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            Roll(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
         else:
             self.toggleReplacing()
 
     def mirror(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
             yaw = int(self.editor.mainViewport.yaw) % 360
             if (45 <= yaw < 135) or (225 < yaw <= 315):
-                FlipEastWest(id,data)
+                FlipEastWest(bid,data)
             else:
-                FlipNorthSouth(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+                FlipNorthSouth(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def flip(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            FlipVertical(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            FlipVertical(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def rotate(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            RotateLeft(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            RotateLeft(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def toggleReplacing(self):
         self.replacing = not self.replacing

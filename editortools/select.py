@@ -1222,11 +1222,7 @@ class SelectionTool(EditorTool):
         schematic = self._copySelection()
         
         if schematic:
-            # result = ask("Select a format:", ["schematic", "structure", "Cancel"])
-            # if result == "schematic":
             self.editor.exportSchematic(schematic)
-            # elif result == "structure":
-            #    print "Author: {}".format(author)
 
     @alertException
     def openCommands(self):
