@@ -1194,6 +1194,9 @@ class LevelEditor(GLViewport):
         assert level
         log.debug("Loaded world is %s"%repr(level))
 
+        if hasattr(level, 'materials'):
+            level.materials.addJSONBlocksFromVersion(level.gameVersion)
+
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
 

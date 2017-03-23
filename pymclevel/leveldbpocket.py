@@ -521,6 +521,9 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
 
     entityClass = entity.PocketEntity
 
+    world_version = None # to be set to 'pre1.0' or '1.plus'
+    gameVersion = 'PE'
+
     @property
     def LevelName(self):
         if "LevelName" not in self.root_tag:
