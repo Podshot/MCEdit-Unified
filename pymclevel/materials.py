@@ -401,7 +401,7 @@ class MCMaterials(object):
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
-        build_api_material_map()
+#         build_api_material_map()
 
     def addJSONBlocks(self, blockyaml):
         self.yamlDatas.append(blockyaml)
@@ -815,6 +815,7 @@ def build_alpha_materials():
     alphaMaterials.FrostedIce = alphaMaterials[212, 0]
     alphaMaterials.StructureVoid = alphaMaterials[217, 0]
     alphaMaterials.StructureBlock = alphaMaterials[255, 0]
+    build_api_material_map(alphaMaterials)
 
 # --- Classic static block defs ---
 def build_classic_materials():
@@ -869,6 +870,7 @@ def build_classic_materials():
     classicMaterials.Bookshelf = classicMaterials[47]
     classicMaterials.MossStone = classicMaterials[48]
     classicMaterials.Obsidian = classicMaterials[49]
+    build_api_material_map(classicMaterials)
 
 # --- Indev static block defs ---
 def build_indev_materials():
@@ -937,6 +939,7 @@ def build_indev_materials():
     indevMaterials.Farmland = indevMaterials[60, 0]
     indevMaterials.Furnace = indevMaterials[61, 0]
     indevMaterials.LitFurnace = indevMaterials[62, 0]
+    build_api_material_map(indevMaterials)
 
 # --- Pocket static block defs ---
 def build_pocket_materials():
@@ -1160,6 +1163,7 @@ def build_pocket_materials():
     pocketMaterials.UpdateGameBlock2 = pocketMaterials[249, 0]
     pocketMaterials.info_reserved6 = pocketMaterials[255, 0]
 
+    build_api_material_map(pocketMaterials)
 
 def printStaticDefs(name, file_name=None):
     # printStaticDefs('alphaMaterials')
@@ -1306,13 +1310,16 @@ def convertBlocks(destMats, sourceMats, blocks, blockData):
 
 namedMaterials = dict((i.name, i) for i in allMaterials)
 
-def build_api_material_map():
-    block_map = BlockstateAPI.material_map[alphaMaterials].block_map
-    blockstates = BlockstateAPI.material_map[alphaMaterials].blockstates
-    idToBlockstate = BlockstateAPI.material_map[alphaMaterials].idToBlockstate
-    blockstateToID = BlockstateAPI.material_map[alphaMaterials].blockstateToID
-    stringifyBlockstate = BlockstateAPI.material_map[alphaMaterials].stringifyBlockstate
-    deStringifyBlockstate = BlockstateAPI.material_map[alphaMaterials].deStringifyBlockstate
+def build_api_material_map(mats=alphaMaterials):
+    _mats = BlockstateAPI.material_map.get(mats)
+    if not _mats:
+        raise RuntimeError("BlockstateAPI.material_map[%s] not ready."%mats)
+    block_map = _mats.block_map
+    blockstates = _mats.blockstates
+    idToBlockstate = _mats.idToBlockstate
+    blockstateToID = _mats.blockstateToID
+    stringifyBlockstate = _mats.stringifyBlockstate
+    deStringifyBlockstate = _mats.deStringifyBlockstate
 
     for mat in allMaterials:
         if mat not in BlockstateAPI.material_map:
@@ -1321,6 +1328,9 @@ def build_api_material_map():
             if block == mat.Air:
                 continue
             setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
+
+# alphaMaterials has to be 'preloaded for now...
+alphaMaterials.addJSONBlocksFromVersion('Unknown')
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
 

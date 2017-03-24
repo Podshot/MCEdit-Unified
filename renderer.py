@@ -229,6 +229,10 @@ import sys
 from config import config
 # import time
 
+def get_materials():
+    alphaMaterials = pymclevel.materials.alphaMaterials
+    pocketMaterials = pymclevel.materials.pocketMaterials
+
 def chunkMarkers(chunkSet):
     """ Returns a mapping { size: [position, ...] } for different powers of 2
     as size.
@@ -625,6 +629,8 @@ class ChunkCalculator(object):
     precomputedVertices = createPrecomputedVertices()
 
     def __init__(self, level):
+        if not hasattr(alphaMaterials, 'Stone'):
+            get_materials()
         self.stoneid = stoneid = alphaMaterials.Stone.ID
         self.hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
         self.hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
