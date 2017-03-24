@@ -20,7 +20,6 @@ from albow.controls import Label, Button, Image
 from albow.extended_widgets import ChoiceButton
 from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
-from albow.palette_view import PaletteView # @Unused
 from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
@@ -109,9 +108,6 @@ class DirPathView(Widget):
 class FileListView(ScrollPanel):
 
     def __init__(self, width, client, **kwds):
-        font = self.predict_font(kwds)
-        h = font.get_linesize()
-        d = 2 * self.predict(kwds, 'margin')
         kwds['align'] = kwds.get('align', 'l')
         ScrollPanel.__init__(self, inner_width=width, **kwds)
 
@@ -140,7 +136,7 @@ class FileListView(ScrollPanel):
                 self.names = [unicode(name, 'utf-8') for name in dirnames + filenames if filter(name)]
             except:
                 self.names = [name for name in dirnames + filenames if filter(name)]
-        except EnvironmentError, e:
+        except EnvironmentError as e:
             alert(u"%s: %s" % (dir, e))
             self.names = []
         self.rows = [Row([Image(self.icons[os.path.isdir(os.path.join(dir, a))]),
@@ -254,10 +250,10 @@ class FSTree(Tree):
 #                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
 #                if len(folder) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
 #                if len(folder) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
-                if type(folder) == str:
+                if isinstance(folder, str):
                     folder = unicode(folder, 'utf-8')
                 d[folder] = {}
-                if type(a) == str:
+                if isinstance(a, str):
                     a = unicode(a,'utf-8')
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
@@ -267,7 +263,7 @@ class FSTree(Tree):
 #                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
 #                        if len(f) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
 #                        if len(f) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
-                        if type(f) == str:
+                        if isinstance(f, str):
                             d[folder][unicode(f, 'utf-8')] = {}
                         else:
                             d[folder][f] = {}

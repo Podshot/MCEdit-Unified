@@ -17,7 +17,6 @@ import imp
 import traceback
 import copy
 from OpenGL import GL
-import datetime
 import os
 import sys
 from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextFieldWrapped, TableView, TableColumn
@@ -27,7 +26,6 @@ _ = albow.translate._
 import ast
 import bresenham
 from clone import CloneTool
-import collections
 from config import config
 import directories
 from editortools.blockpicker import BlockPicker
@@ -36,23 +34,18 @@ from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel, GLBackground
 from glutils import gl
-import itertools
 from albow.root import get_root
-import leveleditor
 import logging
 from mceutils import alertException, drawTerrainCuttingWire
 from albow import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow
 import mcplatform
 from numpy import newaxis
 import numpy
-from operation import Operation, mkundotemp
-from os.path import basename
-from pymclevel import block_fill, BoundingBox, materials, blockrotation
+from operation import Operation
+from pymclevel import  BoundingBox, blockrotation
 import pymclevel
 from pymclevel.mclevelbase import exhaust
 from pymclevel.entity import TileEntity
-import random
-from __builtin__ import __import__
 import types
 from pymclevel.materials import Block
 from locale import getdefaultlocale
@@ -515,7 +508,7 @@ class BrushTool(CloneTool):
         embeded = bool(dir == "stock-brushes")
         try:
             path = os.path.join(dir, (name + ".py"))
-            if type(path) == unicode and DEF_ENC != "UTF-8":
+            if isinstance(path, unicode) and DEF_ENC != "UTF-8":
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
             if not embeded:
@@ -608,11 +601,14 @@ class BrushTool(CloneTool):
         :param name, name of the preset to load.
         """
         name += '.preset'
+        f = None
         try:
             f = open(os.path.join(directories.brushesDir, name), "r")
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
+        if f:
+            f.close()
 
         brushMode = self.brushModes.get(loadedBrushOptions.get("Mode", None), None)
         if brushMode is not None:
@@ -766,9 +762,9 @@ class BrushTool(CloneTool):
             self.toolSelected()
         key = getattr(self.brushMode, 'mainBlock', 'Block')
         wcb = getattr(self.brushMode, 'wildcardBlocks', [])
-        aw = False
-        if key in wcb:
-            aw = True
+        aw = (key in wcb)
+        #if key in wcb:
+        #    aw = True
         blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=aw)
         if blockPicker.present():
             self.options[key] = blockPicker.blockInfo
@@ -1016,7 +1012,7 @@ class BrushTool(CloneTool):
         :keyword blocksOnly: Also roll the data value of the block we're brushing with.
         """
         def rollBlock():
-            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block']
+            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block'] # TODO Pod
             list = getattr(self.brushMode, 'rotatableBlocks', list)
             for key in list:
                 bl = self.options[key]

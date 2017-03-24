@@ -72,7 +72,7 @@ class FileOpener(albow.Widget):
                     shortname = lev.LevelName
                     if lev.LevelName != lev.displayName:
                         shortname = u"{0} ({1})".format(lev.LevelName, lev.displayName)
-            except Exception, e:
+            except Exception as e:
                 logging.warning(
                     'Couldn\'t get name from recent world: {0!r}'.format(e))
 

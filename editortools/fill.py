@@ -30,7 +30,6 @@ from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest
 from config import config
 from albow.root import get_root
 import pymclevel
-from numpy import array
 
 
 class BlockFillOperation(Operation):
@@ -214,7 +213,7 @@ class FillTool(EditorTool):
 
     def toolSelected(self):
         box = self.selectionBox()
-        if None is box:
+        if box is None:
             return
 
         self.replacing = False
@@ -241,7 +240,7 @@ class FillTool(EditorTool):
     @alertException
     def confirm(self):
         box = self.selectionBox()
-        if None is box:
+        if box is None:
             return
 
         with setWindowCaption("REPLACING - "):
@@ -400,7 +399,7 @@ class FillTool(EditorTool):
                 return _("Click to use {0} ({1}:{2})").format(
                     self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
-            except Exception, e:
+            except Exception as e:
                 return repr(e)
 
     def mouseUp(self, *args):

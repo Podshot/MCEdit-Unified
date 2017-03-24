@@ -108,7 +108,7 @@ ask_tied_to = None
 # ask_tied_to = []
 ask_tied_tos = []
 
-def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
+def ask(mess, responses=("OK", "Cancel"), default=0, cancel=-1,
         wrap_width=60, **kwds):
     # If height is specified as a keyword, the Dialog object will have this haight, and the inner massage will
     # be displayed in a scrolling widget

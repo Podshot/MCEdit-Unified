@@ -2,7 +2,6 @@
 # Albow - Text Screen
 #
 
-from pygame import Rect
 from pygame.locals import *
 from screen import Screen
 from theme import FontProperty
