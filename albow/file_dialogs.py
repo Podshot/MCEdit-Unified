@@ -465,7 +465,11 @@ class FileSaveDialog(FileDialog):
     filename = property(get_filename, set_filename)
 
     def get_pathname(self):
-        return path
+        name = self.filename
+        if name:
+            return os.path.join(self.directory, name)
+        else:
+            return None
 
     pathname = property(get_pathname)
 
@@ -474,12 +478,13 @@ class FileSaveDialog(FileDialog):
 
     def ok(self):
         path = self.pathname
-        if os.path.exists(path):
-            answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
-            if answer != "OK":
-                return
-        #FileDialog.ok(self)
-        self.dismiss(True)
+        if path:
+            if os.path.exists(path):
+                answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
+                if answer != "OK":
+                    return
+            #FileDialog.ok(self)
+            self.dismiss(True)
 
     def update(self):
         FileDialog.update(self)

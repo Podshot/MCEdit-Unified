@@ -899,6 +899,7 @@ class FilterOperation(Operation):
 
         # Inject the defs for blocks/entities in the module
         # Need to reimport the defs and ids to get the 'fresh' ones
+        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS 
         self.filter.MCEDIT_DEFS = MCEDIT_DEFS
         self.filter.MCEDIT_IDS = MCEDIT_IDS
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
