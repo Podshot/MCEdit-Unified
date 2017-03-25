@@ -1225,7 +1225,9 @@ def loadFile(fName):
         else:
             nbtObject = load(buf=data)
         if fName.endswith('.schematic'):
-            nbtObject = TAG_Compound(name='Data', value=nbtObject)
+            t = TAG_Compound(name='Data')
+            t.add(nbtObject)
+            nbtObject = t
             savePolicy = -1
             dataKeyName = 'Data'
         elif nbtObject.get('Data', None):
