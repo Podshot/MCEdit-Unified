@@ -798,15 +798,6 @@ class ChunkCalculator(object):
     # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
     hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint16')
 
-# #!# MOVED TO __init__
-#     stoneid = alphaMaterials.Stone.ID
-#     hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
-#     hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
-#     hiddenOreMaterials[alphaMaterials.Sand.ID] = stoneid
-#     hiddenOreMaterials[alphaMaterials.Gravel.ID] = stoneid
-#     hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
-# #!#
-
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype='uint8')
     roughMaterials[0] = 0
 
@@ -1147,10 +1138,6 @@ class BlockRenderer(object):
         self.chunkCalculator = cc
         self.vertexArrays = []
         pass
-
-#     @classmethod
-#     def getBlocktypes(cls, mats):
-#         return cls.blocktypes
 
     def getBlocktypes(self, mats):
         return self.blocktypes
@@ -2043,10 +2030,6 @@ class RailBlockRenderer(BlockRenderer):
                                    [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
 
                                ], dtype='float32')
-
-# #!# MOVED TO __init__
-#     railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
-# #!#
 
     railOffsets = numpy.array([
                                   [0, 0, 0, 0],
@@ -2969,10 +2952,6 @@ class StairBlockRenderer(BlockRenderer):
 
 
 class VineBlockRenderer(BlockRenderer):
-    # #!# MOVED TO __init__
-#     blocktypes = [alphaMaterials["minecraft:vine"].ID]
-    # #!#
-
     SouthBit = 1  #FaceZIncreasing
     WestBit = 2  #FaceXDecreasing
     NorthBit = 4  #FaceZDecreasing

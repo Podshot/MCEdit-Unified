@@ -44,7 +44,6 @@ from config import config, DEF_ENC
 from albow.resource import resource_path
 
 # &# Protoype for blocks/items names
-# from pymclevel.materials import block_map, alphaMaterials
 from pymclevel.materials import alphaMaterials
 
 map_block = {}

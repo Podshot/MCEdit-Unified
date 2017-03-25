@@ -166,8 +166,6 @@ class FillToolOptions(ToolOptions):
 
 class FillTool(EditorTool):
     toolIconName = "fill"
-#     _blockInfo = pymclevel.alphaMaterials.Stone
-#     replaceBlockInfo = pymclevel.alphaMaterials.Air
     _blockInfo = None
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
@@ -175,8 +173,6 @@ class FillTool(EditorTool):
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
-#         self._blockInfo = pymclevel.alphaMaterials.Stone
-#         self.replaceBlockInfo = pymclevel.alphaMaterials.Air
         self.optionsPanel = FillToolOptions(self)
         self.pickBlockKey = 0
         self.root = get_root()

@@ -775,8 +775,6 @@ class MCEdit(GLViewport):
 
         rootwidget.add(mcedit)
         rootwidget.focus_switch = mcedit
-#         if 0 == len(pymclevel.alphaMaterials.yamlDatas):
-#             albow.alert("Failed to load minecraft.yaml. Check the console window for details.")
 
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)

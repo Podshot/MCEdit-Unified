@@ -361,17 +361,13 @@ class MCMaterials(object):
 
             log.debug("Failed to read %s using pkg_resources. Trying %s instead." % (filename, path))
 
-            if os.path.exists(path):
-                f = file(path)
-            else:
-                log.debug("'%s' not found, trying versionned file instead."%path)
-                blockyaml = id_definitions.ids_loader('PE', json_dict=True)
+            f = file(path)
         try:
             log.info(u"Loading block info from %s", f)
             blockyaml = json.load(f)
 
         except Exception, e:
-            log.warn(u"Exception while loading block info from %s: %s", path, e)
+            log.warn(u"Exception while loading block info from %s: %s", f, e)
             traceback.print_exc()
 
         if blockyaml:
@@ -519,25 +515,17 @@ class MCMaterials(object):
 
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
-# alphaMaterials.addJSONBlocksFromFile("minecraft.json")
-# alphaMaterials.setup_blockstates("pc_blockstates.json")
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
-# classicMaterials.addJSONBlocksFromFile("classic.json")
 
 indevMaterials = MCMaterials(defaultName="Not present in Indev")
 indevMaterials.name = "Indev"
-# indevMaterials.addJSONBlocksFromFile("indev.json")
 
 pocketMaterials = MCMaterials()
 pocketMaterials.name = "Pocket"
-# pocketMaterials.addJSONBlocksFromFile("pocket.json")
-# pocketMaterials.setup_blockstates("pe_blockstates.json")
 
 
-# Delay this on world loading.
-# Make it also done only once?
 # --- Static block defs ---
 
 def build_alpha_materials():
@@ -1329,7 +1317,7 @@ def build_api_material_map(mats=alphaMaterials):
                 continue
             setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
 
-# alphaMaterials has to be 'preloaded for now...
+# alphaMaterials has to be 'preloaded' for now...
 alphaMaterials.addJSONBlocksFromVersion('Unknown')
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
@@ -1337,10 +1325,20 @@ __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, na
 
 if '--dump-mats' in os.sys.argv:
     os.sys.argv.remove('--dump-mats')
+    alphaMaterials.addJSONBlocksFromFile("minecraft.json")
+    alphaMaterials.setup_blockstates("pc_blockstates.json")
+    classicMaterials.addJSONBlocksFromFile("classic.json")
+    indevMaterials.addJSONBlocksFromFile("indev.json")
+    pocketMaterials.addJSONBlocksFromFile("pocket.json")
+    pocketMaterials.setup_blockstates("pe_blockstates.json")
     for n in ("indevMaterials", "pocketMaterials", "alphaMaterials", "classicMaterials"):
         printStaticDefs(n, "%s.mats" % n.split('M')[0])
-        
+
 if '--find-blockstates' in os.sys.argv:
+    alphaMaterials.addJSONBlocksFromFile("minecraft.json")
+    alphaMaterials.setup_blockstates("pc_blockstates.json")
+    pocketMaterials.addJSONBlocksFromFile("pocket.json")
+    pocketMaterials.setup_blockstates("pe_blockstates.json")
     pe_blockstates = {'minecraft': {}}
     passed = []
     failed = []

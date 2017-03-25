@@ -612,7 +612,6 @@ class INVEditChest(MCSchematic):
     Width = 1
     Height = 1
     Length = 1
-    # Blocks = array([[[alphaMaterials.Chest.ID]]], 'uint8')
     Data = array([[[0]]], 'uint8')
     Entities = nbt.TAG_List()
     Materials = alphaMaterials
