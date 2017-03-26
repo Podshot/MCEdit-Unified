@@ -1225,7 +1225,6 @@ class CameraViewport(GLViewport):
         def changeValue(data):
             s, i, c, d = data
             s = int(s)
-            s_idx = 0
             chestWidget.Slot = s
             chestWidget.id = i
             chestWidget.Count = int(c)

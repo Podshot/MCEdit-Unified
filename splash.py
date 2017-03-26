@@ -17,31 +17,41 @@ no_splash = False
 cur_dir = directories.getDataDir()
 splash_name = os.path.join(cur_dir, 'splash')
 splash = None
+splash_img_fp = None
+fp = None
 
 try:
     found = False
     if os.path.exists(splash_name):
-        splash_img = open(splash_name).read().strip()
+        splash_img_fp = open(splash_name)
+        splash_img = splash_img_fp.read().strip()
         if os.path.exists(splash_img) and splash_img.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
             found = True
-            splash = pygame.image.load(open(splash_img, 'rb'))
+            fp = open(splash_img, 'rb')
+            splash = pygame.image.load(fp)
     if not found:
-        splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
+        fp = open(os.path.join(cur_dir, "splash.png"), 'rb')
+        splash = pygame.image.load(fp)
     screen = pygame.display.set_mode(splash.get_size(), pygame.NOFRAME)
     screen.blit(splash, (0, 0))
-except Exception, e:
+except Exception as e:
     print e
     try:
-        f = open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb')
-        font = pygame.font.Font(f, 48)
+        fp = open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb')
+        font = pygame.font.Font(fp, 48)
         buf = font.render("MCEDit is loading...", True, (128, 128, 128))
         screen = pygame.display.set_mode((buf.get_width() + 20, buf.get_height() + 20), pygame.NOFRAME)
         screen.blit(buf, (10, 10))
         splash = pygame.display.get_surface()
-    except Exception, _e:
+    except Exception as _e:
         print _e
         splash = pygame.display.set_mode((1, 1))
     no_splash = True
+finally:
+    if fp:
+        fp.close()
+    if splash_img_fp:
+        splash_img_fp.close()
 if splash:
     pygame.display.update()
 #os.environ['SDL_VIDEO_CENTERED'] = '0' # Done later, when initializing MCEdit 'real' display.
@@ -57,14 +67,20 @@ if splash:
 write_splash = True
 
 if not os.path.exists(splash_name):
+    splash_fp = None
     try:
-        open(splash_name, 'w').write('scrap')
-    except Exception, e:
+        splash_fp = open(splash_name, 'w')
+        splash_fp.write('scrap')
+    except Exception as e:
         write_splash = False
         print "Could not create 'splash' file:", e
+    finally:
+        if splash_fp:
+            splash_fp.close()
 
 if write_splash:
-    if len(open(splash_name).read()) > 0:
+    f = open(splash_name)
+    if len(f.read()) > 0:
         from random import choice
         splashes_folder = os.path.join(cur_dir, 'splashes')
         if not os.path.exists(splashes_folder):
@@ -72,7 +88,12 @@ if write_splash:
         if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
             new_splash = choice(os.listdir(splashes_folder))
             if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
+                f2 = open(splash_name, 'w')
                 try:
-                    open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
-                except Exception, e:
+                    f2.write(os.path.join(cur_dir, splashes_folder, new_splash))
+                except Exception as e:
                     print "Could not write 'splash' file:", e
+                finally:
+                    if f2:
+                        f2.close()
+    f.close()

@@ -192,7 +192,7 @@ class ConfigValue(object):
 
     def set(self, value):
         log.debug("Property Change: %15s %30s = %s", self.section, self.name, value)
-        if self.type is unicode and type(value) is unicode:
+        if self.type is unicode and isinstance(value, unicode):
             value = value.encode(DEF_ENC)
         self.config.set(self.section, self.name, str(value))
         self._notifyObservers(value)
@@ -366,7 +366,7 @@ class ConfigDict(collections.MutableMapping):
 # 73 Redstone_Ore
 # 129 Emerald_Ore
 # 153 Nether_Quartz_Ore
-hiddableOres = [7, 16, 15, 21, 73, 14, 56, 153]
+hiddableOres = (7, 16, 15, 21, 73, 14, 56, 153)
 
 definitions = {
     ("keys", "Keys"): [

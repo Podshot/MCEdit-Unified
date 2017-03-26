@@ -11,6 +11,7 @@ from uuid import UUID
 import httplib
 import base64
 import datetime
+import traceback
 
 log = logging.getLogger(__name__)
 
@@ -18,17 +19,17 @@ log = logging.getLogger(__name__)
 class ThreadRS(threading.Thread):
     # This class comes from: http://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread-in-python
     # And may have been tweaked ;)
-    '''
+    """
     This class uses a _return instance member to store the result of the underlying Thread object.
     If 'callbacks' objects are send to the constructor, this '_result' object will be sent to all of them
     at the end of the 'run' and 'join' method. The latest one also returns '_return' object.
-    '''
+    """
     def __init__(self, group=None, target=None, name=None, callbacks=[],
                  args=(), kwargs={}, Verbose=None):
-        '''
+        """
         :callbacks: list: callable objects to send the thread result to.
         For other arguments, see threading.Thread documentation.
-        '''
+        """
         self.target = target
         self.callbacks = callbacks
         threading.Thread.__init__(self, group, target, name, args, kwargs, Verbose)
@@ -71,9 +72,9 @@ def threadable(func):
 
 #@Singleton
 class PlayerCache:
-    '''
+    """
     Used to cache Player names and UUID's, provides an small API to interface with it
-    '''
+    """
     
     _PATH = userCachePath
     TIMEOUT = 2.5
@@ -106,10 +107,11 @@ class PlayerCache:
     
     def __convert(self, json_in):
         for player in json_in:
-            new_dict = {}
-            new_dict["Name"] = player["Playername"]
-            new_dict["Timestamp"] = player["Timestamp"]
-            new_dict["Successful"] = player["WasSuccessful"]
+            new_dict = {
+                "Name": player["Playername"],
+                "Timestamp": player["Timestamp"],
+                "Successful": player["WasSuccessful"]
+            }
             self._cache["Cache"][player["UUID (No Separator)"]] = new_dict
             
     def save(self):
@@ -119,9 +121,9 @@ class PlayerCache:
             fp.close()
     
     def load(self):
-        '''
+        """
         Loads from the usercache.json file if it exists, if not an empty one will be generated
-        '''
+        """
         self._cache = {"Version": 2, "Connection Timeout": 10, "Cache": {}}
         if not os.path.exists(self._PATH):
             fp = open(self._PATH, 'w')
@@ -177,23 +179,23 @@ class PlayerCache:
 
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
-        '''
+        """
         Checks to see if the UUID is already in the cache
         
         :param uuid: The UUID of the player
         :type uuid: str
         :rtype: bool
-        '''
+        """
         return uuid.replace("-", "") in self._cache["Cache"]
     
     def nameInCache(self, name):
-        '''
+        """
         Checks to see if the name is already in the cache
         
         :param name: The name of the player
         :type name: str
         :rtype: bool
-        '''
+        """
         for uuid in self._cache["Cache"].keys():
             if self._cache["Cache"][uuid].get("Name", "") == name:
                 return True
@@ -201,26 +203,26 @@ class PlayerCache:
     
     # --- Getting data from the Cache ---
     def _getDataFromCacheUUID(self, uuid):
-        '''
+        """
         Checks if the UUID is already in the cache
         
         :param uuid: The UUID that might be in the cache
         :type uuid: str
         :return: The player data that is in the cache for the specified UUID, same format as getPlayerInfo()
         :rtype: tuple
-        '''
+        """
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         return self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid
     
     def _getDataFromCacheName(self, name):
-        '''
+        """
         Checks if the Player name is already in the cache
         
         :param name: The name of the Player that might be in the cache
         :return: The player data that is in the cache for the specified Player name, same format as getPlayerInfo()
         :rtype: tuple
-        '''
+        """
         for uuid in self._cache["Cache"].keys():
             clean_uuid = uuid.replace("-","")
             player = self._cache["Cache"][uuid]
@@ -229,25 +231,25 @@ class PlayerCache:
         return ("<Unknown UUID>", name, "<Unknown UUID>")
     
     def _wasSuccessfulUUID(self, uuid):
-        '''
+        """
         Returns whether retrieving the player data was Successful
         
         :param uuid: The UUID of the player to check
         :return: True if the last time the player data retrieval from Mojang's API was successful, False otherwise
         :rtype: bool
-        '''
+        """
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         return player.get("Successful", False)
     
     def _wasSuccessfulName(self, name):
-        '''
+        """
         Returns whether retrieving the player data was Successful
         
         :param name: The name of the player to check
         :return: True if the last time the player data retrieval from Mojang's API was successful, False otherwise
         :rtype: bool
-        '''
+        """
         for uuid in self._cache["Cache"].keys():
             player = self._cache["Cache"][uuid]
             if player.get("Name", "") == name:
@@ -255,16 +257,18 @@ class PlayerCache:
         return False
 
     def getPlayerInfo(self, arg, force=False, use_old_data=False):
-        '''
+        """
         Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in 'arg'
         
         :param arg: Either a UUID or Player name to retrieve from the cache/Mojang's API
         :type arg: str
         :param force: True if the Player name should be forcefully fetched from Mojang's API
         :type force: bool
+        :param use_old_data: Fallback to old data even if force is True
+        :type use_old_data: bool
         :return: A tuple with the data in this order: (UUID with separator, Player name, UUID without separator)
         :rtype: tuple
-        '''
+        """
         try:
             UUID(arg, version=4)
             if self.UUIDInCache(arg) and self._wasSuccessfulUUID(arg) and not force:
@@ -352,18 +356,18 @@ class PlayerCache:
     
     @threadable
     def getPlayerSkin(self, arg, force_download=True, instance=None):
-        '''
+        """
         Gets the player's skin from Mojang's skin servers
     
-        :param uuid: The UUID of the player
-        :type uuid: str
+        :param arg: The UUID of the player
+        :type arg: str
         :param force_download: Should the skin be re-downloaded even if it has already been downloaded
-        :type force: bool
+        :type force_download: bool
         :param instance: The instance of the PlayerTool
         :type instance: PlayerTool
         :return: The path to the player skin
         :rtype: str
-        '''
+        """
         toReturn = 'char.png'
         
         raw_data = self.getPlayerInfo(arg)
@@ -458,7 +462,6 @@ class PlayerCache:
         return None
     
     def _postDataToURL(self, url, payload, headers):
-        import traceback
         try:
             request = urllib2.Request(url, payload, headers)
             response = urllib2.urlopen(request, timeout=self.TIMEOUT).read()

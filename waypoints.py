@@ -1,7 +1,6 @@
 from pymclevel import nbt
 import os
 import logging
-import inspect
 import shutil
 
 log = logging.getLogger(__name__)

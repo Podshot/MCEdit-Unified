@@ -272,7 +272,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             log.debug("'initialDir' is %s (%s)" % (repr(initialDir), type(initialDir)))
             try:
                 iDir = initialDir.encode(enc)
-            except Exception, e:
+            except Exception as e:
                 iDir = initialDir
                 log.debug("Could not encode 'initialDir' %s" % repr(initialDir))
                 log.debug("Encode function returned: %s" % e)
@@ -388,7 +388,7 @@ def askCreateWorld(initialDir):
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
     if sys.platform == "win32":  # !#
         try:
-            if type(suffix) in (list, tuple) and suffix:
+            if isinstance(suffix, (list, tuple)) and suffix:
                 suffix = suffix[0]
             print repr(filetype)
             if not filetype.endswith("*.*\0*.*\0\0"):
@@ -403,7 +403,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                 Title=title,
                 Filter=filetype,
             )
-        except Exception, e:
+        except Exception as e:
             print "Error getting file name: ", e
             return
 
@@ -598,7 +598,7 @@ def platform_open(path):
         else:
             os.system('xdg-open "' + path + '"')
 
-    except Exception, e:
+    except Exception as e:
         print "platform_open failed on {0}: {1}".format(sys.platform, e)
 
 
@@ -635,7 +635,7 @@ def get_desktop_environment():
         # and http://ubuntuforums.org/showthread.php?t=652320
         # and http://ubuntuforums.org/showthread.php?t=652320
         # and http://ubuntuforums.org/showthread.php?t=1139057
-        if sys.platform in ["win32", "cygwin"]:
+        if sys.platform in ("win32", "cygwin"):
             return "windows"
         elif sys.platform == "darwin":
             return "mac"
@@ -941,7 +941,7 @@ class XWindowHandler(BaseWindowHandler):
         """Set the window size.
         :size: list or tuple: the new size.
         Raises a TypeError if something else than a list or a tuple is sent."""
-        if isinstance(size, list) or isinstance(size, tuple):
+        if isinstance(size, (list, tuple)):
             # Call the Xlib object handling the size to update it.
             if DEBUG_WM:
                 print "Setting size to", size
@@ -966,7 +966,7 @@ class XWindowHandler(BaseWindowHandler):
         :update: bool: wheteher to call the internal sync method."""
         if DEBUG_WM:
             print "Setting position to", pos
-        if isinstance(pos, list) or isinstance(pos, tuple):
+        if isinstance(pos, (list, tuple)):
             gx, gy = 0 or self.gx, 0 or self.gy
             if self.starting:
                 gx, gy = self.position_gap[:2]
@@ -1027,9 +1027,9 @@ class XWindowHandler(BaseWindowHandler):
         if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
             raise ValueError("Invalid state argument: %s is not a correct value" % state)
-        if not isinstance(size, list) and not isinstance(size, tuple):
+        if not isinstance(size, (list, tuple)):
             raise TypeError("Invalid size argument: %s is not a list or a tuple.")
-        if not isinstance(pos, list) and not isinstance(pos, tuple):
+        if not isinstance(pos, (list, tuple)):
             raise TypeError("Invalid pos argument: %s is not a list or a tuple.")
 
         if state in (1, NORMAL, 'normal'):
@@ -1134,7 +1134,7 @@ class WWindowHandler(BaseWindowHandler):
         :size: list or tuple: the new size.
         :mode: bool: (re)set the pygame.display mode; self.mode must be a pygame display mode object.
         Raises a TypeError if something else than a list or a tuple is sent."""
-        if isinstance(size, list) or isinstance(size, tuple):
+        if isinstance(size, (list, tuple)):
             w, h = size
             cx, cy = win32gui.GetCursorPos()
             if DEBUG_WM:
@@ -1165,7 +1165,7 @@ class WWindowHandler(BaseWindowHandler):
         :pos: list or tuple: the new position (x, y)."""
         if DEBUG_WM:
             print "Setting position to", pos
-        if type(pos) in (list, tuple):
+        if isinstance(pos, (list, tuple)):
             self.first_pos = False
             x, y = pos
             if update:
@@ -1218,9 +1218,9 @@ class WWindowHandler(BaseWindowHandler):
         if state not in (0, MINIMIZED, 'minimized', 1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
             # Raise a value error.
             raise ValueError("Invalid state argument: %s is not a correct value" % state)
-        if not isinstance(size, list) and not isinstance(size, tuple):
+        if not isinstance(size, (list, tuple)):
             raise TypeError("Invalid size argument: %s is not a list or a tuple.")
-        if not isinstance(pos, list) and not isinstance(pos, tuple):
+        if not isinstance(pos, (list, tuple)):
             raise TypeError("Invalid pos argument: %s is not a list or a tuple.")
 
         if state in (1, NORMAL, 'normal'):

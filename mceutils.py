@@ -384,14 +384,14 @@ class HotkeyColumn(Widget):
         self.buttons = list(buttonsColumn)
 
         #.#
-        if item_spacing == None:
+        if not item_spacing:
             buttonsColumn = Column(buttonsColumn)
         else:
             buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
         #.#
         buttonsColumn.anchor = self.anchor
         #.#
-        if item_spacing == None:
+        if not item_spacing:
             keysColumn = Column(keysColumn)
         else:
             keysColumn = Column(keysColumn, spacing=item_spacing)
@@ -531,7 +531,7 @@ def TextInputRow(title, *args, **kw):
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
     prefix = _(prefix)
-    if type(prefix) == unicode:
+    if isinstance(prefix, unicode):
         prefix = prefix.encode("utf8")
 
     class ctx:

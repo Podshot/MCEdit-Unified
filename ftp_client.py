@@ -4,32 +4,32 @@ import shutil
 from ftputil.error import PermanentError
 
 class CouldNotFindPropertiesException(Exception):
-    '''
+    """
     An Exception that is raised when the 'server.properties' file could not be found at the default directory of the FTP Server
-    '''
+    """
     pass
 
 class CouldNotFindWorldFolderException(Exception):
-    '''
+    """
     An Exception that is raised when the world directory that is specified in the the 'server.properties' cannot be found
-    '''
+    """
     pass
 
 class InvalidCreditdentialsException(Exception):
-    '''
+    """
     An Exception that is raised when the supplied Username/Password is denied by the FTP Server
-    '''
+    """
     pass
 
 class FTPClient:
-    '''
+    """
     Wrapper client to download and upload worlds to a FTP Server
-    '''
+    """
     
     def download(self):
-        '''
+        """
         Downloads all files in the current FTP directory with their corresponding paths
-        '''
+        """
         for root, directory, files in self._host.walk(self._host.curdir):
             try:
                 os.makedirs(os.path.join('ftp', self._worldname, root[2:]))
@@ -39,12 +39,12 @@ class FTPClient:
                 self._host.download(self._host.path.join(root, f), os.path.join('ftp', self._worldname, root, f))
                 
     def upload_new_world(self, world):
-        '''
+        """
         Uploads a new world to the current FTP server connection
         
         :param world: The InfiniteWorld object for the world to upload
         :type world: InfiniteWorld
-        '''
+        """
         path = world.worldFolder.getFilePath("level.dat")[:-10]
         world_name = path.split(os.path.sep)[-1]
         if not self._host.path.exists(world_name):
@@ -70,9 +70,9 @@ class FTPClient:
                         print "Error: {0}".format(e.message)
                 
     def upload(self):
-        '''
+        """
         Uploads an edited world to the current FTP server connection
-        '''
+        """
         for root, directory, files in os.walk(os.path.join('ftp', self._worldname)):
             for folder in directory:
                 target = self._host.path.join(root, folder).replace("ftp"+os.path.sep+self._worldname+"/", "").replace("\\", "", 1).replace("\\", "/")
@@ -96,30 +96,30 @@ class FTPClient:
                         pass
         
     def cleanup(self):
-        '''
+        """
         Closes the FTP connection and removes all leftover files from the 'ftp' directory
-        '''
+        """
         if hasattr(self, '_host'):
             self._host.close()
         shutil.rmtree('ftp')
         
     def safe_download(self):
-        '''
+        """
         Changes the FTP client's working directory, downloads the world, then switches back to the original working directory
-        '''
+        """
         old_dir = self._host.curdir
         self._host.chdir(self._worldname)
         self.download()
         self._host.chdir(old_dir)
             
     def get_level_path(self):
-        '''
+        """
         Gets the local path to the downloaded FTP world
-        '''
+        """
         return os.path.join('ftp', self._worldname)
                 
     def __init__(self, ip, username='anonymous', password=''):
-        '''
+        """
         Initializes an FTP client to handle uploading and downloading of a Minecraft world via FTP
         
         :param ip: The IP of the FTP Server
@@ -128,7 +128,7 @@ class FTPClient:
         :type username: str
         :param password: The Password that accompanies the supplied Username
         :type password: str
-        '''
+        """
         try:
             os.mkdir("ftp")
         except OSError:
@@ -137,7 +137,6 @@ class FTPClient:
             self._host = ftputil.FTPHost(ip, username, password)
         except PermanentError:
             raise InvalidCreditdentialsException("Incorrect username or password")
-            return
             
         self._worldname = None
         if 'server.properties' in self._host.listdir(self._host.curdir):
