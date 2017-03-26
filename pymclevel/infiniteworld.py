@@ -1082,7 +1082,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     '''
     playersFolder = None
 
-    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
+    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False, dat_name='level'):
         """
         Load an Alpha level from the given filename. It can point to either
         a level.dat or a folder containing one. If create is True, it will
@@ -1092,6 +1092,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         If you try to create an existing world, its level.dat will be replaced.
         """
+
+        self.dat_name = dat_name
 
         self.Length = 0
         self.Width = 0
@@ -1105,7 +1107,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.lockLoseFuncs = []
         self.initTime = -1
 
-        if os.path.basename(filename) in ("level.dat", "level.dat_old"):
+        if os.path.basename(filename) in ("%s.dat"%dat_name, "%s.dat_old"%dat_name):
             filename = os.path.dirname(filename)
 
         if not os.path.exists(filename):
@@ -1118,7 +1120,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             raise IOError('File is not a Minecraft Alpha world')
 
         self.worldFolder = AnvilWorldFolder(filename)
-        self.filename = self.worldFolder.getFilePath("level.dat")
+        self.filename = self.worldFolder.getFilePath("%s.dat"%dat_name)
         self.readonly = readonly
         if not readonly:
             self.acquireSessionLock()
@@ -1150,33 +1152,34 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         self.loadLevelDat(create, random_seed, last_played)
 
-        assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
+        if dat_name == 'level':
+            assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
 
-        if not readonly:
-            if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
-                    self.worldFolder.getFolderPath("players")) != []:
-                self.playersFolder = self.worldFolder.getFolderPath("players")
-                self.oldPlayerFolderFormat = True
-            if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
-                self.playersFolder = self.worldFolder.getFolderPath("playerdata")
-                self.oldPlayerFolderFormat = False
-            self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
-            for player in self.players:
-                try:
-                    UUID(player, version=4)
-                except ValueError:
+            if not readonly:
+                if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
+                        self.worldFolder.getFolderPath("players")) != []:
+                    self.playersFolder = self.worldFolder.getFolderPath("players")
+                    self.oldPlayerFolderFormat = True
+                if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
+                    self.playersFolder = self.worldFolder.getFolderPath("playerdata")
+                    self.oldPlayerFolderFormat = False
+                self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
+                for player in self.players:
                     try:
-                        print "{0} does not seem to be in a valid UUID format".format(player)
-                    except UnicodeEncode:
+                        UUID(player, version=4)
+                    except ValueError:
                         try:
-                            print u"{0} does not seem to be in a valid UUID format".format(player)
-                        except UnicodeError:
-                            print "{0} does not seem to be in a valid UUID format".format(repr(player))
-                    self.players.remove(player)
-            if "Player" in self.root_tag["Data"]:
-                self.players.append("Player")
-
-            self.preloadDimensions()
+                            print "{0} does not seem to be in a valid UUID format".format(player)
+                        except UnicodeEncode:
+                            try:
+                                print u"{0} does not seem to be in a valid UUID format".format(player)
+                            except UnicodeError:
+                                print "{0} does not seem to be in a valid UUID format".format(repr(player))
+                        self.players.remove(player)
+                if "Player" in self.root_tag["Data"]:
+                    self.players.append("Player")
+    
+                self.preloadDimensions()
 
     # --- Load, save, create ---
 
@@ -1239,6 +1242,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
 
+        dat_name = self.dat_name
+
         if create:
             self._create(self.filename, random_seed, last_played)
             self.saveInPlace()
@@ -1250,16 +1255,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     id_definitions.ids_loader(self.gameVersion)
                 #
             except Exception, e:
-                filename_old = self.worldFolder.getFilePath("level.dat_old")
-                log.info("Error loading level.dat, trying level.dat_old ({0})".format(e))
+                filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)
+                log.info("Error loading {1}.dat, trying {1}.dat_old ({0})".format(e, dat_name))
                 try:
                     self.root_tag = nbt.load(filename_old)
-                    log.info("level.dat restored from backup.")
+                    log.info("%s.dat restored from backup."%dat_name)
                     self.saveInPlace()
                 except Exception, e:
                     traceback.print_exc()
                     print repr(e)
-                    log.info("Error loading level.dat_old. Initializing with defaults.")
+                    log.info("Error loading %s.dat_old. Initializing with defaults."%dat_name)
                     self._create(self.filename, random_seed, last_played)
 
     def saveInPlaceGen(self):
@@ -1426,6 +1431,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         score.save(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
 
     def init_player_data(self):
+        dat_name = self.dat_name
         player_data = {}
         if self.oldPlayerFolderFormat:
             for p in self.players:
@@ -1433,7 +1439,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     player_data_file = os.path.join(self.worldFolder.getFolderPath("players"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
-                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    data = nbt.load(self.worldFolder.getFilePath("%s.dat"%dat_name))
                     player_data[p] = data["Data"]["Player"]
         else:
             for p in self.players:
@@ -1441,7 +1447,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     player_data_file = os.path.join(self.worldFolder.getFolderPath("playerdata"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
-                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    data = nbt.load(self.worldFolder.getFilePath("%s.dat"%dat_name))
                     player_data[p] = data["Data"]["Player"]
 
         #player_data = []
