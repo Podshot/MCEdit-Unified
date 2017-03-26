@@ -25,10 +25,10 @@ from albow.fields import FloatField
 from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow, ScrollPanel
 from editortools.blockview import BlockButton
 import ftp_client
-import sys
-from pymclevel import nbt
-from editortools.select import SelectionTool
-from pymclevel.box import BoundingBox
+#import sys
+#from pymclevel import nbt
+#from editortools.select import SelectionTool
+#from pymclevel.box import BoundingBox
 from waypoints import WaypointManager
 from editortools.timeditor import TimeEditor
 
@@ -45,14 +45,14 @@ imported from editortools/
 
 import gc
 import os
-import math
+#import math
 import csv
-import copy
+#import copy
 import time
 import numpy
 from config import config
-from config import DEF_ENC
-import frustum
+#from config import DEF_ENC
+#import frustum
 import glutils
 import release
 import mceutils
@@ -95,7 +95,7 @@ from glutils import Texture
 from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
-from pymclevel.entity import Entity
+#from pymclevel.entity import Entity
 from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
     MCInfdevOldLevel
 # Block and item translation
@@ -731,8 +731,8 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        blockRows = [("", "", ""), (box.volume, "<%s>" % _("Blocks"), "")]
-        rows = list(blockRows)
+        rows = blockRows = [("", "", ""), (box.volume, "<%s>" % _("Blocks"), "")]
+        #rows = list(blockRows)
         rows.extend([[count, trn(block.name), ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
@@ -795,7 +795,7 @@ class LevelEditor(GLViewport):
             if filename:
                 try:
                     csvfile = csv.writer(open(filename, "wb"))
-                except Exception, e:
+                except Exception as e:
                     alert(str(e))
                 else:
                     for row in rows:
@@ -1183,7 +1183,7 @@ class LevelEditor(GLViewport):
 
         try:
             level = pymclevel.fromFile(filename)
-        except Exception, e:
+        except Exception as e:
             logging.exception(
                 'Wasn\'t able to open a file {file => %s}' % filename
             )
@@ -1629,22 +1629,20 @@ class LevelEditor(GLViewport):
     def statusText(self):
         try:
             return self.currentTool.statusText
-        except Exception, e:
+        except Exception as e:
             return repr(e)
 
     def toolMouseDown(self, evt, f):  # xxx f is a tuple
-        if self.level:
-            if f is not None:
-                focusPoint, direction = f
-                if focusPoint is not None and direction is not None:
-                    self.currentTool.mouseDown(evt, focusPoint, direction)
+        if self.level and f is not None:
+            focusPoint, direction = f
+            if focusPoint is not None and direction is not None:
+                self.currentTool.mouseDown(evt, focusPoint, direction)
 
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
-        if self.level:
-            if f is not None:
-                focusPoint, direction = f
-                if focusPoint is not None and direction is not None:
-                    self.currentTool.mouseUp(evt, focusPoint, direction)
+        if self.level and f is not None:
+            focusPoint, direction = f
+            if focusPoint is not None and direction is not None:
+                self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
         button = keys.remapMouseButton(evt.button)
@@ -1933,7 +1931,7 @@ class LevelEditor(GLViewport):
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
                 alert("Result: {0!r}".format(eval(expr, globals(), locals())))
-            except Exception, e:
+            except Exception as e:
                 alert("Exception: {0!r}".format(e))
 
         if keyname == 'Ctrl-Alt-F10':
@@ -2152,23 +2150,23 @@ class LevelEditor(GLViewport):
         worldInfoPanel = Dialog()
         items = []
 
-        t = functools.partial(isinstance, self.level)
-        if t(pymclevel.MCInfdevOldLevel):
+        #t = functools.partial(isinstance, self.level)
+        if isinstance(self.level, pymclevel.MCInfdevOldLevel):
             if self.level.version == pymclevel.MCInfdevOldLevel.VERSION_ANVIL:
                 levelFormat = "Minecraft Infinite World (Anvil Format)"
             elif self.level.version == pymclevel.MCInfdevOldLevel.VERSION_MCR:
                 levelFormat = "Minecraft Infinite World (Region Format)"
             else:
                 levelFormat = "Minecraft Infinite World (Old Chunk Format)"
-        elif t(pymclevel.MCIndevLevel):
+        elif isinstance(self.level, pymclevel.MCIndevLevel):
             levelFormat = "Minecraft Indev (.mclevel format)"
-        elif t(pymclevel.MCSchematic):
+        elif isinstance(self.level, pymclevel.MCSchematic):
             levelFormat = "MCEdit Schematic"
-        elif t(pymclevel.ZipSchematic):
+        elif isinstance(self.level, pymclevel.ZipSchematic):
             levelFormat = "MCEdit Schematic (Zipped Format)"
-        elif t(pymclevel.MCJavaLevel):
+        elif isinstance(self.level, pymclevel.MCJavaLevel):
             levelFormat = "Minecraft Classic or raw block array"
-        elif t(pymclevel.PocketLeveldbWorld):
+        elif isinstance(self.level, pymclevel.PocketLeveldbWorld):
             levelFormat = "Minecraft Pocket Edition"
         else:
             levelFormat = "Unknown"
@@ -2237,12 +2235,11 @@ class LevelEditor(GLViewport):
 
             items.append(chunkCountLabel)
 
-        if hasattr(self.level, 'worldFolder'):
-            if hasattr(self.level.worldFolder, 'regionFiles'):
-                worldFolder = self.level.worldFolder
-                regionCount = len(worldFolder.regionFiles)
-                regionCountLabel = Label(_("Number of regions: {0}").format(regionCount))
-                items.append(regionCountLabel)
+        if hasattr(self.level, 'worldFolder') and hasattr(self.level.worldFolder, 'regionFiles'):
+            worldFolder = self.level.worldFolder
+            regionCount = len(worldFolder.regionFiles)
+            regionCountLabel = Label(_("Number of regions: {0}").format(regionCount))
+            items.append(regionCountLabel)
 
         size = self.level.size
         sizelabel = Label("{L}L x {W}W x {H}H".format(L=size[2], H=size[1], W=size[0]))
@@ -2273,15 +2270,12 @@ class LevelEditor(GLViewport):
                 day_time = time_editor.get_daytime_value()
                 if self.level.DayTime != day_time:
                     Changes = True
-            if hasattr(self.level, 'RandomSeed'):
-                if seedField.value != self.level.RandomSeed:
-                    Changes = True
-            if hasattr(self.level, 'LevelName'):
-                if nameField.value != self.level.LevelName:
-                    Changes = True
-            if hasattr(self.level, 'GameType'):
-                if b.gametype != self.level.GameType:
-                    Changes = True
+            if hasattr(self.level, 'RandomSeed') and seedField.value != self.level.RandomSeed:
+                Changes = True
+            if hasattr(self.level, 'LevelName') and nameField.value != self.level.LevelName:
+                Changes = True
+            if hasattr(self.level, 'GameType') and b.gametype != self.level.GameType:
+                Changes = True
 
             if not Changes:
                 worldInfoPanel.dismiss(self, *args, **kwargs)
@@ -2400,17 +2394,14 @@ class LevelEditor(GLViewport):
             if self.level.DayTime != day_time:
                 changeDayTime = True
 
-        if hasattr(self.level, 'RandomSeed'):
-            if seedField.value != self.level.RandomSeed:
-                changeSeed = True
+        if hasattr(self.level, 'RandomSeed') and seedField.value != self.level.RandomSeed:
+            changeSeed = True
 
-        if hasattr(self.level, 'LevelName'):
-            if nameField.value != self.level.LevelName:
-                changeLevelName = True
+        if hasattr(self.level, 'LevelName') and nameField.value != self.level.LevelName:
+            changeLevelName = True
 
-        if hasattr(self.level, 'GameType'):
-            if b.gametype != self.level.GameType:
-                changeGameType = True
+        if hasattr(self.level, 'GameType') and b.gametype != self.level.GameType:
+            changeGameType = True
 
         if changeTime or changeSeed or changeLevelName or changeGameType:
             op = WorldInfoChangedOperation(self, self.level)
@@ -3063,7 +3054,7 @@ class LevelEditor(GLViewport):
             x, y, z = self.blockFaceUnderCursor[0]
             cx, cz = x // 16, z // 16
             cr = self.renderer.chunkRenderers.get((cx, cz))
-            if None is cr:
+            if cr is None:
                 return
 
             crNames = [_("%s - %0.1fkb") % (type(br).__name__, br.bufferSize() / 1000.0) for br in cr.blockRenderers]

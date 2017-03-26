@@ -1,9 +1,8 @@
-from albow import alert
 from editortools.operation import Operation
 import itertools
 from albow import alert
 
-class fileEdit():
+class fileEdit:
     def __init__(self, filename, timeChanged, box, editor, level):
         self.filename = filename
         self.timeChanged = timeChanged
@@ -14,16 +13,16 @@ class fileEdit():
 
     def makeChanges(self):
         try:
-            file = open(self.filename, 'rb')
+            f = open(self.filename, 'rb')
         except:
             alert("Couldn't open the file")
             return
         lines = []
-        for line in file.readlines():
+        for line in f.readlines():
             line = line.replace("\r", "")
             if line != "\n":
                 lines.append(line.replace("\n", ""))
-        file.close()
+        f.close()
 
         tileEntities = []
         for (x, y, z) in self.order:

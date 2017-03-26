@@ -2,7 +2,6 @@
 #.# Marks the layout modifications. -- D.C.-G.
 from config import config
 import albow
-from pygame import key
 from albow.dialogs import Dialog
 from albow.translate import _
 from glbackground import Panel
@@ -796,7 +795,7 @@ class KeyConfigPanel(Dialog):
 
         self.panel = panel
         keyname = panel.present()
-        if type(keyname) is bool:
+        if isinstance(keyname, bool):
             return True
         if keyname == "Return" and self.enter == 1:
             self.enter = 0
@@ -805,13 +804,13 @@ class KeyConfigPanel(Dialog):
 
         self.enter = 0
         _keyname = _(keyname)
-        if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+        if keyname != "Escape" and keyname not in ("Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"):
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
                 self.askAssignKey(configKey,
                                     _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel.")
                                     .format(_keyname))
                 return True
-            if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
+            if configKey in ('Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right'):
                 if 'Ctrl' in keyname or '-' in keyname:
                     self.askAssignKey(configKey,
                                     "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel.")

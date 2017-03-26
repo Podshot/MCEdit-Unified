@@ -670,8 +670,10 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
             zf = zipfile.ZipFile(filename, allowZip64=True)
             zf.extractall(tempdir)
             zf.close()
+            if os.path.exists(os.path.join(tempdir, '##MCEDIT.TEMP##', 'region')):
+                shutil.move(os.path.join(tempdir, '##MCEDIT.TEMP##', 'region'), os.path.join(tempdir, 'region'))
 
-        super(ZipSchematic, self).__init__(tempdir, create)
+        super(ZipSchematic, self).__init__(tempdir, create, dat_name='schematic')
         atexit.register(shutil.rmtree, self.worldFolder.filename, True)
 
         try:
@@ -709,11 +711,14 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
 
         basedir = self.worldFolder.filename
         assert os.path.isdir(basedir)
+
         with closing(zipfile.ZipFile(filename, "w", zipfile.ZIP_STORED, allowZip64=True)) as z:
             for root, dirs, files in os.walk(basedir):
                 # NOTE: ignore empty directories
                 for fn in files:
                     absfn = os.path.join(root, fn)
+                    shutil.move(absfn, absfn.replace("##MCEDIT.TEMP##" + os.sep, ""))
+                    absfn = absfn.replace("##MCEDIT.TEMP##" + os.sep, "")
                     zfn = absfn[len(basedir) + len(os.sep):]  # XXX: relative path
                     z.write(absfn, zfn)
 

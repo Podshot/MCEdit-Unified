@@ -4,10 +4,10 @@
 #
 # Collect the Minecraft internal translations.
 #
-'''
+"""
 Uses `.minecraft/assets/indexes/[version].json`. The version is the highest
 found by default.
-'''
+"""
 
 import re
 import os
