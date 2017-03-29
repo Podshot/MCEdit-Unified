@@ -404,7 +404,7 @@ class MCEdit(GLViewport):
                 try:
                     filename = (config.config.get("Recent Worlds", str(i)).decode('utf-8'))
                     worlds.append(self.removeLevelDat(filename))
-                except Exception, e:
+                except Exception as e:
                     logging.error(repr(e))
 
         return list((f for f in worlds if f and os.path.exists(f)))
@@ -676,7 +676,7 @@ class MCEdit(GLViewport):
         if os.path.exists(filename):
             try:
                 self.editor.loadFile(filename, addToRecent=addToRecent)
-            except Exception, e:
+            except Exception as e:
                 logging.error(u'Failed to load file {0}: {1!r}'.format(
                     filename, e))
                 return None
@@ -922,16 +922,16 @@ def main(argv):
                 os.path.join(directories.getDataDir(), u'stock-schematics'),
                 directories.schematicsDir
             )
-    except Exception, e:
+    except Exception as e:
         logging.warning('Error copying bundled schematics: {0!r}'.format(e))
         try:
             os.mkdir(directories.schematicsDir)
-        except Exception, e:
+        except Exception as e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
 
     try:
         ServerJarStorage()
-    except Exception, e:
+    except Exception as e:
         logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:

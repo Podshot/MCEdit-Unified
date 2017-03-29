@@ -8,7 +8,6 @@ from math import isnan
 import random
 import nbt
 from copy import deepcopy
-from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
@@ -149,7 +148,7 @@ class TileEntity(object):
     def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
         # Refresh the MCEDIT_DEFS and MCEDIT_IDS objects
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+        from pymclevel import MCEDIT_DEFS
         _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
         tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
@@ -191,6 +190,7 @@ class TileEntity(object):
         # You'll need to use this function twice
         # The first time with first equals to True
         # The second time with first equals to False
+        from pymclevel import MCEDIT_IDS
         eTag = deepcopy(tileEntity)
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
