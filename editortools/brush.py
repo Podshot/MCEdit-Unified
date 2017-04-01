@@ -841,6 +841,10 @@ class BrushTool(CloneTool):
                 self.chunkCache = {}
 
             Width, Height, Length = brushSize
+            if self.editor.level.gameVersion == "PE" and self.editor.level.world_version == "1.plus":
+                Height = 16
+            else:
+                Height = self.editor.level.Height
             zerolight = numpy.zeros((16, 16, Height), dtype='uint8')
             zerolight[:] = 15
 

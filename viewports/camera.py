@@ -17,7 +17,6 @@ import glutils
 import mceutils
 import itertools
 import pymclevel
-from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 from math import isnan
 from datetime import datetime, timedelta
@@ -507,8 +506,6 @@ class CameraViewport(GLViewport):
                 mobs.append(name)
 
         tileEntity = self.editor.level.tileEntityAt(*point)
-#         print self.editor.level.tileEntityAt
-#         print tileEntity
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
@@ -562,14 +559,12 @@ class CameraViewport(GLViewport):
 
         if "EntityId" in tileEntity:
             _id = tileEntity["EntityId"].value
-#             id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get("name", _id)
         elif "SpawnData" in tileEntity:
             _id = tileEntity["SpawnData"]["id"].value
         else:
             _id = "[Custom]"
 
         id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get("name", _id)
-#         print "_id", _id, "id", id
 
         addMob(id)
 
@@ -1065,6 +1060,7 @@ class CameraViewport(GLViewport):
 
     @mceutils.alertException
     def editCommandBlock(self, point):
+        from pymclevel import MCEDIT_DEFS
         panel = Dialog()
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
@@ -1404,6 +1400,7 @@ class CameraViewport(GLViewport):
 
     @mceutils.alertException
     def editFlowerPot(self, point):
+        from pymclevel import MCEDIT_DEFS
         panel = Dialog()
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
@@ -1581,7 +1578,6 @@ class CameraViewport(GLViewport):
                                 materials.FlowerPot.ID: self.editFlowerPot,
                                 materials.EnchantmentTable.ID: self.editEnchantmentTable
                             }
-                            print materials.CommandBlockChain
                             edit = blockEditors.get(block)
                             if edit:
                                 self.editor.endSelection()
@@ -1987,6 +1983,7 @@ class BlockInfoParser(object):
     
     def parse_info(self, pos):
         raise NotImplementedError()
+
 
 class SpawnerInfoParser(BlockInfoParser):
     
