@@ -229,6 +229,10 @@ import sys
 from config import config
 # import time
 
+def get_materials():
+    alphaMaterials = pymclevel.materials.alphaMaterials
+    pocketMaterials = pymclevel.materials.pocketMaterials
+
 def chunkMarkers(chunkSet):
     """ Returns a mapping { size: [position, ...] } for different powers of 2
     as size.
@@ -625,6 +629,15 @@ class ChunkCalculator(object):
     precomputedVertices = createPrecomputedVertices()
 
     def __init__(self, level):
+        if not hasattr(alphaMaterials, 'Stone'):
+            get_materials()
+        self.stoneid = stoneid = alphaMaterials.Stone.ID
+        self.hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
+        self.hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
+        self.hiddenOreMaterials[alphaMaterials.Sand.ID] = stoneid
+        self.hiddenOreMaterials[alphaMaterials.Gravel.ID] = stoneid
+        self.hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
+
         self.level = level
         self.makeRenderstates(level.materials)
 
@@ -762,7 +775,8 @@ class ChunkCalculator(object):
         materialCount = 2
 
         for br in self.blockRendererClasses[1:]:  # skip generic blocks
-            materialMap[br.getBlocktypes(materials)] = materialCount
+#             materialMap[br.getBlocktypes(materials)] = materialCount
+            materialMap[br(self).getBlocktypes(materials)] = materialCount
             br.materialIndex = materialCount
             materialCount += 1
 
@@ -783,12 +797,6 @@ class ChunkCalculator(object):
     # don't show boundaries between dirt,grass,sand,gravel,or stone.
     # This hiddenOreMaterial definition shall be delayed after the level is loaded, in order to get the exact ones from the game versionned data.
     hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint16')
-    stoneid = alphaMaterials.Stone.ID
-    hiddenOreMaterials[alphaMaterials.Dirt.ID] = stoneid
-    hiddenOreMaterials[alphaMaterials.Grass.ID] = stoneid
-    hiddenOreMaterials[alphaMaterials.Sand.ID] = stoneid
-    hiddenOreMaterials[alphaMaterials.Gravel.ID] = stoneid
-    hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
 
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype='uint8')
     roughMaterials[0] = 0
@@ -1131,9 +1139,8 @@ class BlockRenderer(object):
         self.vertexArrays = []
         pass
 
-    @classmethod
-    def getBlocktypes(cls, mats):
-        return cls.blocktypes
+    def getBlocktypes(self, mats):
+        return self.blocktypes
 
     def setAlpha(self, alpha):
         "alpha is an unsigned byte value"
@@ -1993,7 +2000,11 @@ class LeverBlockRenderer(BlockRenderer):
 
 class RailBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateAlphaTest
-    
+
+    def __init__(self, *args, **kwargs):
+        self.railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
+        BlockRenderer.__init__(self, *args, **kwargs)
+
     @classmethod
     def getBlocktypes(cls, mats):
         return [block.ID for block in mats.blocksByType["SIMPLE_RAIL"]]
@@ -2019,7 +2030,6 @@ class RailBlockRenderer(BlockRenderer):
                                    [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
 
                                ], dtype='float32')
-    railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
 
     railOffsets = numpy.array([
                                   [0, 0, 0, 0],
@@ -2942,14 +2952,16 @@ class StairBlockRenderer(BlockRenderer):
 
 
 class VineBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials["minecraft:vine"].ID]
-
     SouthBit = 1  #FaceZIncreasing
     WestBit = 2  #FaceXDecreasing
     NorthBit = 4  #FaceZDecreasing
     EastBit = 8  #FaceXIncreasing
 
     renderstate = ChunkCalculator.renderstateVines
+
+    def __init__(self, *args, **kwargs):
+        self.blocktypes = [alphaMaterials["minecraft:vine"].ID]
+        BlockRenderer.__init__(self, *args, **kwargs)
 
     def vineFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
                          facingBlockLight, texMap):
@@ -2992,10 +3004,12 @@ class VineBlockRenderer(BlockRenderer):
 
 
 class SlabBlockRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials["minecraft:wooden_slab"].ID,
+    def __init__(self, *args, **kwargs):
+        self.blocktypes = [alphaMaterials["minecraft:wooden_slab"].ID,
                   alphaMaterials["minecraft:stone_slab"].ID,
                   alphaMaterials["minecraft:stone_slab2"].ID,
                   alphaMaterials["minecraft:purpur_slab"].ID]
+        BlockRenderer.__init__(self, *args, **kwargs)
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -3028,7 +3042,9 @@ class SlabBlockRenderer(BlockRenderer):
 
 # 1.9 renderer's
 class EndRodRenderer(BlockRenderer):
-    blocktypes = [alphaMaterials["minecraft:end_rod"].ID]
+    def __init__(self, *args, **kwargs):
+        self.blocktypes = [alphaMaterials["minecraft:end_rod"].ID]
+        BlockRenderer.__init__(self, *args, **kwargs)
 
     rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
         "down": (4, 2, 2, 0),
@@ -3071,10 +3087,13 @@ class EndRodRenderer(BlockRenderer):
     makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
 
 class WaterBlockRenderer(BlockRenderer):
-    waterID = alphaMaterials["minecraft:water"].ID
-    blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, waterID]
     renderstate = ChunkCalculator.renderstateWater
-    
+
+    def __init__(self, *args, **kwargs):
+        self.waterID = alphaMaterials["minecraft:water"].ID
+        self.blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, self.waterID]
+        BlockRenderer.__init__(self, *args, **kwargs)
+
     @classmethod
     def getBlocktypes(cls, mats):
         cls.waterID = mats["minecraft:water"].ID

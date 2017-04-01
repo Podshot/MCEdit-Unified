@@ -14,7 +14,11 @@ import blockrotation
 from box import BoundingBox
 import infiniteworld
 from level import MCLevel, EntityLevel
-from materials import alphaMaterials, MCMaterials, namedMaterials, blockstateToID
+from materials import alphaMaterials, MCMaterials, namedMaterials
+try:
+    from materials import blockstateToID
+except ImportError:
+    pass
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
@@ -608,7 +612,6 @@ class INVEditChest(MCSchematic):
     Width = 1
     Height = 1
     Length = 1
-    Blocks = array([[[alphaMaterials.Chest.ID]]], 'uint8')
     Data = array([[[0]]], 'uint8')
     Entities = nbt.TAG_List()
     Materials = alphaMaterials
@@ -618,6 +621,8 @@ class INVEditChest(MCSchematic):
         return "Inventory" in root_tag
 
     def __init__(self, root_tag, filename):
+
+        self.Blocks = array([[[alphaMaterials.Chest.ID]]], 'uint8')
 
         if filename:
             self.filename = filename
@@ -728,6 +733,8 @@ class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
     
     def __init__(self, filename=None, root_tag=None, size=None, mats=alphaMaterials):
+        if not 'blockstateToID' in globale().keys():
+            from materials import blockstateToID
         self._author = None
         self._blocks = None
         self._palette = None

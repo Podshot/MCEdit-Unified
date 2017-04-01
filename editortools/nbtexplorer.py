@@ -44,11 +44,15 @@ from config import config, DEF_ENC
 from albow.resource import resource_path
 
 # &# Protoype for blocks/items names
-from pymclevel.materials import block_map, alphaMaterials
+from pymclevel.materials import alphaMaterials
 
 map_block = {}
-for k, v in block_map.items():
-    map_block[v] = k
+
+def build_map_block():
+    from pymclevel.materials import block_map
+    global map_block
+    for k, v in block_map.items():
+        map_block[v] = k
 
 from pymclevel.items import items as mcitems
 
@@ -949,6 +953,8 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
+        if not map_block:
+            build_map_block()
         parent = self.tree.get_item_parent(self.displayed_item)
         if parent:
             parent = parent[9]

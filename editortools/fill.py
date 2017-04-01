@@ -166,8 +166,7 @@ class FillToolOptions(ToolOptions):
 
 class FillTool(EditorTool):
     toolIconName = "fill"
-    _blockInfo = pymclevel.alphaMaterials.Stone
-    replaceBlockInfo = pymclevel.alphaMaterials.Air
+    _blockInfo = None
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
     color = (0.75, 1.0, 1.0, 0.7)
@@ -183,6 +182,9 @@ class FillTool(EditorTool):
 
     @property
     def blockInfo(self):
+        if not self._blockInfo:
+            self._blockInfo = pymclevel.alphaMaterials.Stone
+            self.replaceBlockInfo = pymclevel.alphaMaterials.Air
         return self._blockInfo
 
     @blockInfo.setter

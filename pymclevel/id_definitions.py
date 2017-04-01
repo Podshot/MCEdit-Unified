@@ -104,15 +104,18 @@ def _get_data(file_name):
     return data
 
 
-def ids_loader(game_version, namespace=u"minecraft"):
+def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
     """Load the whole files from mcver directory.
     :game_version: str/unicode: the game version for which the resources will be loaded.
-    namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'."""
+    namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'.
+    json_dict: bool: Whether to return a ran dict from the JSon file(s) instead of the (MCEDIT_DEFS, MCEDIT_IDS) pair."""
     log.info("Loading resources for MC %s"%game_version)
     global MCEDIT_DEFS
     global MCEDIT_IDS
     MCEDIT_DEFS = {}
     MCEDIT_IDS = {}
+    if json_dict:
+        _json = {}
     d = os.path.join('mcver', game_version)
     if os.path.isdir(d):
         for file_name in os.listdir(d):
@@ -135,9 +138,13 @@ def ids_loader(game_version, namespace=u"minecraft"):
                     while type(r) in (str, unicode):
                         if first:
                             r = _parse_data(data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS)
+                            if json_dict:
+                                _json.update(data)
                             first = False
                         else:
                             r = _parse_data(_data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS)
+                            if json_dict:
+                                _json.update(_data)
                         if type(r) in (str, unicode):
                             v = game_version
                             if len(deps):
@@ -164,6 +171,8 @@ def ids_loader(game_version, namespace=u"minecraft"):
                         _defs, _ids = _parse_data(_data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS, ignore_load=True)
                         MCEDIT_DEFS.update(_defs)
                         MCEDIT_IDS.update(_ids)
+                        if json_dict:
+                            _json.update(_data)
                     log.info("Done")
     else:
         log.info("MC %s resources not found."%game_version)
@@ -171,4 +180,6 @@ def ids_loader(game_version, namespace=u"minecraft"):
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
     log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
+    if json_dict:
+        return _json
     return MCEDIT_DEFS, MCEDIT_IDS
