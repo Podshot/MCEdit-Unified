@@ -232,12 +232,14 @@ class ChunkTool(EditorTool):
             i = 0
             chunkCount = len(chunks)
 
+            containsChunk = self.editor.level.containsChunk
+            deleteChunk = self.editor.level.deleteChunk
             for cx, cz in chunks:
                 i += 1
                 yield (i, chunkCount)
-                if self.editor.level.containsChunk(cx, cz):
+                if containsChunk(cx, cz):
                     try:
-                        self.editor.level.deleteChunk(cx, cz)
+                        deleteChunk(cx, cz)
                     except Exception as e:
                         print "Error during chunk delete: ", e
 
@@ -257,10 +259,12 @@ class ChunkTool(EditorTool):
         def _pruneChunks():
             maxChunks = self.editor.level.chunkCount
             selectedChunks = self.selectedChunks()
+
+            deleteChunk = self.editor.level.deleteChunk
             for i, cPos in enumerate(list(self.editor.level.allChunks)):
                 if cPos not in selectedChunks:
                     try:
-                        self.editor.level.deleteChunk(*cPos)
+                        deleteChunk(*cPos)
 
                     except Exception as e:
                         print "Error during chunk delete: ", e
@@ -315,9 +319,10 @@ class ChunkTool(EditorTool):
 
     @alertException
     def repopChunks(self):
+        getChunk = self.editor.level.getChunk
         for cpos in self.selectedChunks():
             try:
-                chunk = self.editor.level.getChunk(*cpos)
+                chunk = getChunk(*cpos)
                 chunk.TerrainPopulated = False
             except pymclevel.ChunkNotPresent:
                 continue
@@ -325,9 +330,10 @@ class ChunkTool(EditorTool):
 
     @alertException
     def dontRepopChunks(self):
+        getChunk = self.editor.level.getChunk
         for cpos in self.selectedChunks():
             try:
-                chunk = self.editor.level.getChunk(*cpos)
+                chunk = getChunk(*cpos)
                 chunk.TerrainPopulated = True
             except pymclevel.ChunkNotPresent:
                 continue

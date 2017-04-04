@@ -115,6 +115,7 @@ class PlayerRemoveOperation(Operation):
 
 class PlayerAddOperation(Operation):
     playerTag = None
+    allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
 
     def __init__(self, tool):
         super(PlayerAddOperation, self).__init__(tool.editor, tool.editor.level)
@@ -125,9 +126,8 @@ class PlayerAddOperation(Operation):
 
     def perform(self, recordUndo=True):
         initial = ""
-        allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
         while True:
-            self.player = input_text_buttons("Enter a Player Name: ", 160, initial=initial, allowed_chars=allowed_chars)
+            self.player = input_text_buttons("Enter a Player Name: ", 160, initial=initial, allowed_chars=self.allowed_chars)
             if self.player is None:
                 return
             elif len(self.player) > 16:
@@ -185,7 +185,7 @@ class PlayerAddOperation(Operation):
         self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
 #         print 3
         r = self.playercache.getPlayerSkin(self.uuid, force_download=False)
-        if type(r) not in (str, unicode):
+        if not isinstance(r, (str, unicode)):
 #             print 'r 1', r
             r = r.join()
 #             print 'r 2', r
@@ -267,7 +267,7 @@ class PlayerAddOperation(Operation):
                 self.tool.panel.player_UUID["Name"].append(self.player)
 #             print 4
             r = self.playercache.getPlayerSkin(self.uuid)
-            if type(r) not in (str, unicode):
+            if not isinstance(r, (str, unicode)):
                 r = r.join()
             self.tool.playerTexture[self.uuid] = loadPNGTexture(r)
             self.tool.playerPos[(0,0,0)] = self.uuid
@@ -300,11 +300,11 @@ class PlayerMoveOperation(Operation):
                 self.undoPos = level.getPlayerPosition(self.player)
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
 
             yaw, pitch = self.yp
-            if yaw is not None and pitch is not None:
+            if yaw and pitch:
                 level.setPlayerOrientation((yaw, pitch), self.player)
             level.setPlayerPosition(self.pos, self.player)
             level.setPlayerDimension(level.dimNo, self.player)
@@ -323,7 +323,7 @@ class PlayerMoveOperation(Operation):
                 self.redoPos = level.getPlayerPosition(self.player)
                 self.redoDim = level.getPlayerDimension(self.player)
                 self.redoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.undoPos, self.player)
             level.setPlayerDimension(self.undoDim, self.player)
@@ -337,7 +337,7 @@ class PlayerMoveOperation(Operation):
                 self.undoPos = level.getPlayerPosition(self.player)
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.redoPos, self.player)
             level.setPlayerDimension(self.redoDim, self.player)
@@ -597,7 +597,7 @@ class PlayerPositionPanel(Panel):
                 self.nbttree.dispatch_key(name, evt)
 
     def update_player(self, data):
-        if type(data) == tuple:
+        if isinstance(data, tuple):
             if data[0] in self.player_UUID['UUID']:
                 idx = self.player_UUID['UUID'].index(data[0])
                 self.player_UUID['UUID'][idx] = data[0]
@@ -669,7 +669,7 @@ class PlayerPositionTool(EditorTool):
                     del self.playerTexture[player]
 #                     print 6
                     r = self.playercache.getPlayerSkin(player, force_download=True, instance=self)
-                    if type(r) not in (str, unicode):
+                    if not isinstance(r, (str, unicode)):
                         r = r.join()
                     self.playerTexture[player] = loadPNGTexture(r)
             #self.markerList.call(self._drawToolMarkers)
@@ -866,20 +866,25 @@ class PlayerPositionTool(EditorTool):
 
         GL.glEnable(GL.GL_DEPTH_TEST)
         GL.glMatrixMode(GL.GL_MODELVIEW)
+
+        getPlayerPosition = self.editor.level.getPlayerPosition
+        getPlayerOrientation = self.editor.level.getPlayerOrientation
+        getPlayerDimension = self.editor.level.getPlayerDimension
+        downloadPlayerSkins = config.settings.downloadPlayerSkins.get()
         for player in self.editor.level.players:
             try:
-                pos = self.editor.level.getPlayerPosition(player)
-                yaw, pitch = self.editor.level.getPlayerOrientation(player)
-                dim = self.editor.level.getPlayerDimension(player)
+                pos = getPlayerPosition(player)
+                yaw, pitch = getPlayerOrientation(player)
+                dim = getPlayerDimension(player)
                 
                 self.inOtherDimension[dim].append(player)
                 self.playerPos[dim][pos] = player
                 self.revPlayerPos[dim][player] = pos
                 
-                if player != "Player" and config.settings.downloadPlayerSkins.get():
+                if player != "Player" and downloadPlayerSkins:
 #                     print 7
                     r = self.playercache.getPlayerSkin(player, force_download=False)
-                    if type(r) not in (str, unicode):
+                    if not isinstance(r, (str, unicode)):
                         r = r.join()
                     self.playerTexture[player] = loadPNGTexture(r)
                 else:
@@ -904,7 +909,7 @@ class PlayerPositionTool(EditorTool):
 
                 #GL.glDisable(GL.GL_BLEND)
 
-            except Exception, e:
+            except Exception as e:
                 print repr(e)
                 continue
 
@@ -1115,7 +1120,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 self.editor.addUnsavedEdit()
             self.markerList.invalidate()
 
-        except SpawnPositionInvalid, e:
+        except SpawnPositionInvalid as e:
             if "Okay" != ask(str(e), responses=["Okay", "Fix it for me!"]):
                 level = self.editor.level
                 status = ""

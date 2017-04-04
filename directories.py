@@ -117,7 +117,7 @@ def win32_appdata():
 
         objShell = win32com.client.Dispatch("WScript.Shell")
         return objShell.SpecialFolders("AppData")
-    except Exception, e:
+    except Exception as e:
         print "Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}".format(e)
         try:
             from win32com.shell import shell, shellcon
@@ -171,7 +171,7 @@ def getDocumentsFolder():
             objShell = win32com.client.Dispatch("WScript.Shell")
             docsFolder = objShell.SpecialFolders("MyDocuments")
 
-        except Exception, e:
+        except Exception as e:
             print e
             try:
                 docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)

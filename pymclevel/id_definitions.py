@@ -96,11 +96,14 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
 
 def _get_data(file_name):
     data = {}
+    fp = open(file_name)
     try:
-        data = json.loads(open(file_name).read())
+        data = json.load(fp)
     except Exception as e:
         log.error("Could not load data from %s" % file_name)
         log.error("Error is: %s" % e)
+    finally:
+        fp.close()
     return data
 
 
@@ -132,13 +135,13 @@ def ids_loader(game_version, namespace=u"minecraft"):
                     r = ''
                     _data = {}
                     first = True
-                    while type(r) in (str, unicode):
+                    while isinstance(r, (str, unicode)):
                         if first:
                             r = _parse_data(data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS)
                             first = False
                         else:
                             r = _parse_data(_data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS)
-                        if type(r) in (str, unicode):
+                        if isinstance(r, (str, unicode)):
                             v = game_version
                             if len(deps):
                                 v = deps[-1]

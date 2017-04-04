@@ -265,8 +265,9 @@ class Widget(object):
                 else:
                     arg.set_parent(self)
             else:
-                for item in arg:
-                    self.add(item)
+                map(self.add, arg)
+                #for item in arg:
+                #    self.add(item)
 
     def add_centered(self, widget):
         w, h = self.size

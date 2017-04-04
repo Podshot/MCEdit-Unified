@@ -497,10 +497,11 @@ class EntityLevel(MCLevel):
         if not hasattr(self, "TileEntities"):
             return
         newEnts = []
+        append = newEnts.append
         for ent in self.TileEntities:
             if func(TileEntity.pos(ent)):
                 continue
-            newEnts.append(ent)
+            append(ent)
 
         entsRemoved = len(self.TileEntities) - len(newEnts)
         log.debug("Removed {0} tile entities".format(entsRemoved))
@@ -516,10 +517,11 @@ class EntityLevel(MCLevel):
         if not hasattr(self, "TileTicks"):
             return
         newEnts = []
+        append = newEnts.append
         for ent in self.TileTicks:
             if func(TileTick.pos(ent)):
                 continue
-            newEnts.append(ent)
+            append(ent)
 
         entsRemoved = len(self.TileTicks) - len(newEnts)
         log.debug("Removed {0} tile tickss".format(entsRemoved))
@@ -532,8 +534,9 @@ class EntityLevel(MCLevel):
         return self.removeTileTicks(lambda p: p in box)
 
     def addEntities(self, entities):
-        for e in entities:
-            self.addEntity(e)
+        map(self.addEntity, entities)
+        #for e in entities:
+        #    self.addEntity(e)
 
     def addEntity(self, entityTag):
         assert isinstance(entityTag, nbt.TAG_Compound)
@@ -542,13 +545,14 @@ class EntityLevel(MCLevel):
 
     def tileEntityAt(self, x, y, z, print_stuff=False):
         entities = []
+        append = entities.append
         if print_stuff:
             print "len(self.TileEntities)", len(self.TileEntities)
         for entityTag in self.TileEntities:
             if print_stuff:
                 print entityTag["id"].value, TileEntity.pos(entityTag), x, y, z
             if TileEntity.pos(entityTag) == [x, y, z]:
-                entities.append(entityTag)
+                append(entityTag)
 
         if len(entities) > 1:
             log.info("Multiple tile entities found: {0}".format(entities))
@@ -580,8 +584,9 @@ class EntityLevel(MCLevel):
             self._fakeEntities = None
 
     def addTileTicks(self, tileTicks):
-        for e in tileTicks:
-            self.addTileTick(e)
+        map(self.addTileTick, tileTicks)
+        #for e in tileTicks:
+        #    self.addTileTick(e)
 
     _fakeEntities = None
 

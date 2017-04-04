@@ -41,7 +41,7 @@ if DEBUG:
         try:
             file_image = get_image('file.png', prefix='')
             folder_image = get_image('folder.png', prefix='')
-        except Exception, e:
+        except Exception as e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
             from pygame import draw, Surface
@@ -68,7 +68,7 @@ else:
         try:
             file_image = image.load('file.png')
             folder_image = image.load('folder.png')
-        except Exception, e:
+        except Exception as e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
             from pygame import draw, Surface

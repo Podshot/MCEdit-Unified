@@ -315,7 +315,7 @@ class SelectionTool(EditorTool):
             text += "TileEntity:\n"
             try:
                 text += "{id}: {pos}\n".format(id=t["id"].value, pos=[t[a].value for a in "xyz"])
-            except Exception, e:
+            except Exception as e:
                 text += repr(e)
             if "Items" in t and self.infoKey == 0:
                 text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(
@@ -346,7 +346,7 @@ class SelectionTool(EditorTool):
             else:
                 return self.describeBlockAt(pos)
 
-        except Exception, e:
+        except Exception as e:
             return repr(e)
 
     @alertException
@@ -807,6 +807,8 @@ class SelectionTool(EditorTool):
             else:
                 bottomLeftColor = self.topRightColor
                 topRightColor = self.bottomLeftColor
+
+            blockAt = self.editor.level.blockAt
             for t, c, n in ((self.bottomLeftPoint, bottomLeftColor, self.bottomLeftNudge),
                             (self.topRightPoint, topRightColor, self.topRightNudge)):
                 if t is not None and not self.selectionInProgress:
@@ -816,7 +818,7 @@ class SelectionTool(EditorTool):
                     r, g, b = c
                     alpha = 0.4
                     try:
-                        bt = self.editor.level.blockAt(sx, sy, sz)
+                        bt = blockAt(sx, sy, sz)
                         if bt:
                             alpha = 0.2
                     except (EnvironmentError, pymclevel.ChunkNotPresent):

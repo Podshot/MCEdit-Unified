@@ -57,7 +57,7 @@ import glutils
 import release
 import mceutils
 import platform
-import functools
+#import functools
 import editortools
 import itertools
 import mcplatform
@@ -529,8 +529,9 @@ class LevelEditor(GLViewport):
         self.updateCopyPanel()
 
     def deleteAllCopiedSchematics(self):
-        for s in self.copyStack:
-            self._deleteSchematic(s)
+        map(self._deleteSchematic, self.copyStack)
+        #for s in self.copyStack:
+        #    self._deleteSchematic(s)
 
     copyPanel = None
 
@@ -565,8 +566,9 @@ class LevelEditor(GLViewport):
         panel.bg_color = (0.0, 0.0, 0.0, 0.5)
         panel.pages = []
         if len(self.copyStack) > self.maxCopies:
-            for sch in self.copyStack[self.maxCopies:]:
-                self.deleteCopiedSchematic(sch)
+            map(self.deleteCopiedSchematic, self.copyStack[self.maxCopies])
+            #for sch in self.copyStack[self.maxCopies:]:
+            #    self.deleteCopiedSchematic(sch)
 
         prevButton = Button("Previous Page")
 
@@ -699,6 +701,8 @@ class LevelEditor(GLViewport):
 
         def _analyzeBox():
             i = 0
+            getId = level.__class__.entityClass.getId
+            findItem = pymclevel.items.items.findItem
             for (chunk, slices, point) in level.getChunkSlices(box):
                 i += 1
                 yield i, box.chunkCount
@@ -708,10 +712,10 @@ class LevelEditor(GLViewport):
                 types[:b.shape[0]] = types[:b.shape[0]].astype(int) + b
 
                 for ent in chunk.getEntitiesInBox(box):
-                    entID = level.__class__.entityClass.getId(ent["id"].value)
+                    entID = getId(ent["id"].value)
                     if ent["id"].value == "Item":
                         try:
-                            v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
+                            v = findItem(ent["Item"]["id"].value,
                                                                ent["Item"]["Damage"].value).name
                             v += " (Item)"
                         except pymclevel.items.ItemNotFound:
@@ -793,22 +797,28 @@ class LevelEditor(GLViewport):
                                    )
 
             if filename:
+                fp = None
                 try:
-                    csvfile = csv.writer(open(filename, "wb"))
+                    fp = open(filename, "wb")
+                    csvfile = csv.writer(fp)
                 except Exception as e:
                     alert(str(e))
                 else:
                     for row in rows:
                         _row=[]
+                        append = _row.append
                         if row == ("", "", ""):
                             _row = ["Number", "Type", "ID"]
                         else:
                             for a in row:
                                 if isinstance(a, unicode):
-                                    _row.append(a.encode('utf-8'))
+                                    append(a.encode('utf-8'))
                                 else:
-                                    _row.append(a)
+                                    append(a)
                         csvfile.writerow(_row)
+                finally:
+                    if fp:
+                        fp.close()
 
         saveButton = Button("Save to file...", action=saveToFile)
         col = Column((Label("Analysis"), tableBacking, saveButton))
@@ -843,7 +853,7 @@ class LevelEditor(GLViewport):
                 StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
-        if len(self.copyStack) == 0:
+        if len(self.copyStack):
             return None
         return self.copyStack[0]
 
@@ -1512,8 +1522,9 @@ class LevelEditor(GLViewport):
             self.unsavedEdits = 0
             self.remove(self.saveInfoBackground)
             if saving:
+                append = self.afterSaveUndoStack.append
                 for operation in self.undoStack:
-                    self.afterSaveUndoStack.append(operation)
+                    append(operation)
                 self.undoStack = []
 
     @property
@@ -1630,15 +1641,15 @@ class LevelEditor(GLViewport):
             return repr(e)
 
     def toolMouseDown(self, evt, f):  # xxx f is a tuple
-        if self.level and f is not None:
+        if self.level and f:
             focusPoint, direction = f
-            if focusPoint is not None and direction is not None:
+            if focusPoint and direction:
                 self.currentTool.mouseDown(evt, focusPoint, direction)
 
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
-        if self.level and f is not None:
+        if self.level and f:
             focusPoint, direction = f
-            if focusPoint is not None and direction is not None:
+            if focusPoint and direction:
                 self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
@@ -1649,7 +1660,7 @@ class LevelEditor(GLViewport):
     def mouse_drag(self, evt):
         if self.level:
             f = self.blockFaceUnderCursor
-            if f is not None:
+            if f:
                 focusPoint, direction = f
                 self.currentTool.mouseDrag(evt, focusPoint, direction)
 
@@ -2969,7 +2980,7 @@ class LevelEditor(GLViewport):
                     self.inspectionString += _("ID: %d (%s), ") % (
                         blockID, self.level.materials.names[blockID][0])
 
-        except Exception, e:
+        except Exception as e:
             self.inspectionString += _("Chunk {0} had an error: {1!r}").format(
                 (int(numpy.floor(blockPosition[0])) >> 4, int(numpy.floor(blockPosition[2])) >> 4), e)
 

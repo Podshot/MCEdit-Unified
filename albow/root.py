@@ -181,7 +181,7 @@ class RootWidget(Widget):
             pygame.event.set_grab(False)
             self.captured_widget = None
 
-    frames = 0
+    #frames = 0
     hover_widget = None
 
     def fix_sticky_ctrl(self):
@@ -235,7 +235,7 @@ class RootWidget(Widget):
                         else:
                             self.draw_all(self.surface)
                         pygame.display.flip()
-                        self.frames += 1
+                        #self.frames += 1
 
                     events = pygame.event.get()
                     if not events:
@@ -376,7 +376,7 @@ class RootWidget(Widget):
                             else:
                                 self.editor.level.acquireSessionLock()
 
-                    if self.editor.level is not None:
+                    if self.editor.level:
                         self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
                         self.editor.cameraPanKeys = [0., 0., 0., 0.]
 

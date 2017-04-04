@@ -66,10 +66,10 @@ class Items(object):
         except:
             item = self.findItemID(id)
         if damage <= item["maxdamage"]:
-            if type(item["name"]) == str or type(item["name"]) == unicode:
+            if isinstance(item["name"], str) or isinstance(item["name"], unicode):
                 return ItemType(id, item["name"], item["maxdamage"], damage, item["stacksize"])
             else:
-                if type(item["name"][damage]) == str or type(item["name"][damage]) == unicode:
+                if isinstance(item["name"][damage], str) or isinstance(item["name"][damage], unicode):
                     return ItemType(id, item["name"][damage], item["maxdamage"], damage, item["stacksize"])
                 else:
                     raise ItemNotFound()
@@ -79,7 +79,7 @@ class Items(object):
     def findItemID(self, id):
         for item in self.items:
             itemTemp = self.items[item]
-            if type(itemTemp) != types.UnicodeType:
+            if not isinstance(itemTemp, types.UnicodeType):
                 if itemTemp["id"] == id:
                     return self.items[item]
         raise ItemNotFound()

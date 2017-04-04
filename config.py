@@ -114,7 +114,7 @@ class Config(object):
 
     def save(self):
         try:
-            cf = file(self.getPath(), 'w')
+            cf = open(self.getPath(), 'w')
             self.config.write(cf)
             cf.close()
         except Exception as e:
@@ -153,7 +153,7 @@ class ConfigSection(object):
 
 class ConfigValue(object):
 
-    allowedTypes = [int, float, bool, basestring, str, unicode]
+    allowedTypes = (int, float, bool, basestring, str, unicode)
 
     def __init__(self, key, name, default=None):
         if default is None:

@@ -756,7 +756,7 @@ class PocketEntity(Entity):
         The first unknown entity will have the numerical ID 1001, the second one 1002, and so on.
         :v: the entity string ID to search for."""
         id = cls.getId(v)
-        if type(id) != int and v not in cls.entityList.keys():
+        if not isinstance(id, int) and v not in cls.entityList.keys():
             id = cls.unknown_entity_top + 1
             cls.entityList[v] = cls.entityList['Entity %s'%id] = id
             cls.unknown_entity_top += 1

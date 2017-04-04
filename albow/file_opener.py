@@ -64,10 +64,11 @@ class FileOpener(albow.Widget):
         buttonsColumn = [panels.ControlPanel.getHeader()]
 
         shortnames = []
+        isLevel = pymclevel.MCInfdevOldLevel.isLevel
         for world in self.mcedit.recentWorlds():
             shortname = os.path.basename(world)
             try:
-                if pymclevel.MCInfdevOldLevel.isLevel(world):
+                if isLevel(world):
                     lev = pymclevel.MCInfdevOldLevel(world, readonly=True)
                     shortname = lev.LevelName
                     if lev.LevelName != lev.displayName:

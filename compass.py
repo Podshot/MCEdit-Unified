@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 def makeQuad(minx, miny, width, height):
-    return [minx, miny, minx + width, miny, minx + width, miny + height, minx, miny + height]
+    return minx, miny, minx + width, miny, minx + width, miny + height, minx, miny + height
 
 
 class CompassOverlay(Drawable):

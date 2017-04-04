@@ -3,6 +3,7 @@
 # and tweaked ;)
 import os
 import directories
+
 if os.sys.platform == 'linux2':
     os.sys.path.insert(1, os.path.expanduser('~/.local/lib/python2.7/site-packages'))
     os.sys.path.insert(1, os.path.abspath('./lib'))

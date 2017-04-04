@@ -28,7 +28,6 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,Chunk
 import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
-import logging
 from uuid import UUID
 import id_definitions
 
@@ -193,9 +192,7 @@ class AnvilChunkData(object):
             BlockLight = self.BlockLight[..., y:y + 16].swapaxes(0, 2)
             SkyLight = self.SkyLight[..., y:y + 16].swapaxes(0, 2)
 
-            if (not Blocks.any() and
-                    not BlockLight.any() and
-                    (SkyLight == 15).all()):
+            if not len(Blocks) and not len(BlockLight) and (SkyLight == 15).all():
                 continue
 
             Data = packNibbleArray(Data)
@@ -203,7 +200,7 @@ class AnvilChunkData(object):
             SkyLight = packNibbleArray(SkyLight)
 
             add = Blocks >> 8
-            if add.any():
+            if len(add):
                 section["Add"] = nbt.TAG_Byte_Array(packNibbleArray(add).astype('uint8'))
 
             section['Blocks'] = nbt.TAG_Byte_Array(array(Blocks, 'uint8'))
@@ -685,7 +682,7 @@ class ChunkedLevelMixin(MCLevel):
 
         workDone += len(dirtyChunks)
         workTotal = len(dirtyChunks)
-
+        dC_add = dirtyChunks.add
         for ch in list(dirtyChunks):
             # relight all blocks in neighboring chunks in case their light source disappeared.
             cx, cz = ch.chunkPosition
@@ -694,7 +691,7 @@ class ChunkedLevelMixin(MCLevel):
                     ch = self.getChunk(cx + dx, cz + dz)
                 except (ChunkNotPresent, ChunkMalformed):
                     continue
-                dirtyChunks.add(ch)
+                dC_add(ch)
                 ch.dirty = True
 
         dirtyChunks = sorted(dirtyChunks, key=lambda x: x.chunkPosition)
@@ -1024,6 +1021,7 @@ class AnvilWorldFolder(object):
                 rx, rz = regionFile.regionCoords
                 self.regionFiles[rx, rz] = regionFile
 
+                add = chunks.add
                 for index, offset in enumerate(regionFile.offsets):
                     if offset:
                         cx = index & 0x1f
@@ -1032,7 +1030,7 @@ class AnvilWorldFolder(object):
                         cx += rx << 5
                         cz += rz << 5
 
-                        chunks.add((cx, cz))
+                        add((cx, cz))
             else:
                 log.info(u"Removing empty region file {0}".format(filepath))
                 regionFile.close()
@@ -1214,7 +1212,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     def acquireSessionLock(self):
         lock_file = self.worldFolder.getFilePath("session.lock")
         self.initTime = int(time.time() * 1000)
-        with file(lock_file, "wb") as f:
+        with open(lock_file, "wb") as f:
             f.write(struct.pack(">q", self.initTime))
             f.flush()
             os.fsync(f.fileno())
@@ -1231,10 +1229,13 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             raise SessionLockLost("World is opened read only.")
 
         lockfile = self.worldFolder.getFilePath("session.lock")
+        fp = open(lockfile, "rb")
         try:
-            (lock, ) = struct.unpack(">q", file(lockfile, "rb").read())
+            (lock, ) = struct.unpack(">q", fp.read())
         except struct.error:
             lock = -1
+        finally:
+            fp.close()
         if lock != self.initTime:
             for function in self.lockLoseFuncs:
                 function()
@@ -1254,14 +1255,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 if self.gameVersion != 'Unknown':
                     id_definitions.ids_loader(self.gameVersion)
                 #
-            except Exception, e:
+            except Exception as e:
                 filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)
                 log.info("Error loading {1}.dat, trying {1}.dat_old ({0})".format(e, dat_name))
                 try:
                     self.root_tag = nbt.load(filename_old)
                     log.info("%s.dat restored from backup."%dat_name)
                     self.saveInPlace()
-                except Exception, e:
+                except Exception as e:
                     traceback.print_exc()
                     print repr(e)
                     log.info("Error loading %s.dat_old. Initializing with defaults."%dat_name)
@@ -1287,10 +1288,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 chunk.dirty = False
             yield
 
+        saveChunk = self.worldFolder.saveChunk
         for cx, cz in self.unsavedWorkFolder.listChunks():
             if (cx, cz) not in self._loadedChunkData:
                 data = self.unsavedWorkFolder.readChunk(cx, cz)
-                self.worldFolder.saveChunk(cx, cz, data)
+                saveChunk(cx, cz, data)
                 dirtyChunkCount += 1
             yield
 
@@ -1302,7 +1304,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         for path, tag in self.playerTagCache.iteritems():
             tag.save(path)
 
-        if self.playersFolder is not None:
+        if self.playersFolder:
             for file_ in os.listdir(self.playersFolder):
                 if file_.endswith(".dat") and file_[:-4] not in self.players:
                     os.remove(os.path.join(self.playersFolder, file_))
@@ -1524,7 +1526,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     log.info("Found dimension {0}".format(dirname))
                     dim = MCAlphaDimension(self, dimNo)
                     self.dimensions[dimNo] = dim
-                except Exception, e:
+                except Exception as e:
                     log.error(u"Error loading dimension {0}: {1}".format(dirname, e))
 
     def getDimension(self, dimNo):
@@ -1661,7 +1663,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
     def _getChunkData(self, cx, cz):
         chunkData = self._loadedChunkData.get((cx, cz))
-        if chunkData is not None:
+        #if chunkData is not None:
+        if chunkData:
             return chunkData
 
         if self.saving:
@@ -1673,7 +1676,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             chunkData = AnvilChunkData(self, (cx, cz), root_tag)
         except (MemoryError, ChunkNotPresent):
             raise
-        except Exception, e:
+        except Exception as e:
             raise ChunkMalformed("Chunk {0} had an error: {1!r}".format((cx, cz), e), sys.exc_info()[2])
 
         if not self.readonly and self.unsavedWorkFolder.containsChunk(cx, cz):
@@ -1689,11 +1692,13 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             # are in use by another object. If the chunk is dirty, save it to the temporary folder.
             if not self.readonly:
                 self.checkSessionLock()
+
+            saveChunk = self.unsavedWorkFolder.saveChunk
             for (ocx, ocz), oldChunkData in self._loadedChunkData.items():
                 if (ocx, ocz) not in self._loadedChunks:
                     if oldChunkData.dirty and not self.readonly:
                         data = oldChunkData.savedTagData()
-                        self.unsavedWorkFolder.saveChunk(ocx, ocz, data)
+                        saveChunk(ocx, ocz, data)
 
                     del self._loadedChunkData[ocx, ocz]
                     break
@@ -1712,7 +1717,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         '''
 
         chunk = self._loadedChunks.get((cx, cz))
-        if chunk is not None:
+        if chunk:
             return chunk
 
         chunkData = self._getChunkData(cx, cz)
@@ -1961,7 +1966,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         :return: True if the chunk exists/has been generated, False otherwise
         :rtype: bool
         '''
-        if self._allChunks is not None:
+        #if self._allChunks is not None:
+        if self._allChunks:
             return (cx, cz) in self._allChunks
         if (cx, cz) in self._loadedChunkData:
             return True
@@ -2051,7 +2057,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         :type cz: int
         '''
         self.worldFolder.deleteChunk(cx, cz)
-        if self._allChunks is not None:
+        #if self._allChunks is not None:
+        if self._allChunks:
             self._allChunks.discard((cx, cz))
 
         self._bounds = None

@@ -6,7 +6,7 @@ log = logging.getLogger(__name__)
 import numpy
 
 from mclevelbase import exhaust
-import blockrotation
+#import blockrotation
 from box import BoundingBox
 from entity import TileEntity
 
@@ -80,7 +80,8 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
 
         needsLighting = changesLighting
 
-        if blocktable is not None:
+        #if blocktable is not None:
+        if blocktable:
             mask = blocktable[blocks, data]
 
             blockCount = mask.sum()
@@ -112,9 +113,11 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
         smallBoxSize = (1, 1, 1)
         tileEntitiesToEdit = [t for t in blocksList if chunkBounds.intersect(BoundingBox(TileEntity.pos(t), smallBoxSize)).volume > 0]
 
+        addTileEntity = chunk.addTileEntity
+        remove = blocksList.remove
         for tileEntityObject in tileEntitiesToEdit:
-            chunk.addTileEntity(tileEntityObject)
-            blocksList.remove(tileEntityObject)
+            addTileEntity(tileEntityObject)
+            remove(tileEntityObject)
         
         chunk.chunkChanged(needsLighting)
 

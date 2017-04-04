@@ -241,6 +241,7 @@ class FillTool(EditorTool):
         if box is None:
             return
 
+        blockWithID = self.editor.level.materials.blockWithID
         with setWindowCaption("REPLACING - "):
             self.editor.freezeStatus("Replacing %0.1f million blocks" % (float(box.volume) / 1048576.,))
 
@@ -251,8 +252,9 @@ class FillTool(EditorTool):
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
+                    append = blocksToReplace.append
                     for i in xrange(16):
-                        blocksToReplace.append(self.editor.level.materials.blockWithID(self.blockInfo.ID, i))
+                        append(blockWithID(self.blockInfo.ID, i))
                 else:
                     blocksToReplace = [self.blockInfo]
 

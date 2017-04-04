@@ -313,7 +313,7 @@ class MCServerChunkGenerator(object):
         readme = os.path.join(self.worldCacheDir, "README.TXT")
 
         if not os.path.exists(readme):
-            with file(readme, "w") as f:
+            with open(readme, "w") as f:
                 f.write("""
     About this folder:
 

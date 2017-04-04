@@ -563,7 +563,7 @@ class PocketLeveldbWorld_old(ChunkedLevelMixin, MCLevel):
     @staticmethod
     def getPlayerPath(player, dim=0):
         """
-        player.py loads players from files, but PE caches them differently. This is necessary to make it work.
+        Java Edition loads players from files, but PE caches them differently. This is necessary to make it work.
         :param player: str
         :param dim: int
         :return: str
@@ -1824,7 +1824,7 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
     @staticmethod
     def getPlayerPath(player, dim=0):
         """
-        player.py loads players from files, but PE caches them differently. This is necessary to make it work.
+        Java Edition loads players from files, but PE caches them differently. This is necessary to make it work.
         :param player: str
         :param dim: int
         :return: str

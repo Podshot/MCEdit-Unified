@@ -157,7 +157,7 @@ if __name__ == "__main__" and "-tt" in sys.argv:
     logging.warning('Setting en_US as language for this session.')
     config.settings.langCode.set('en_US')
 
-import mceutils
+#import mceutils
 import mcplatform
 
 # The two next switches '--debug-wm' and '--no-wm' are used to debug/disable the internal window handler.
@@ -420,7 +420,7 @@ class MCEdit(GLViewport):
     @staticmethod
     def setRecentWorlds(worlds):
         for i, filename in enumerate(worlds):
-            config.config.set("Recent Worlds", str(i), filename.encode('utf-8'))
+           config.config.set("Recent Worlds", str(i), filename.encode('utf-8'))
 
     def makeSideColumn1(self):
         def showLicense():
@@ -922,16 +922,16 @@ def main(argv):
                 os.path.join(directories.getDataDir(), u'stock-schematics'),
                 directories.schematicsDir
             )
-    except Exception, e:
+    except Exception as e:
         logging.warning('Error copying bundled schematics: {0!r}'.format(e))
         try:
             os.mkdir(directories.schematicsDir)
-        except Exception, e:
+        except Exception as e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
 
     try:
         ServerJarStorage()
-    except Exception, e:
+    except Exception as e:
         logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:

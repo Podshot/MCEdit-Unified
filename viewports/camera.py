@@ -1922,7 +1922,7 @@ class CameraViewport(GLViewport):
             self.root.update_tooltip()
 
             (blockPosition, faceDirection) = self.blockFaceUnderCursor
-            if None != blockPosition:
+            if blockPosition:
                 self.editor.updateInspectionString(blockPosition)
 
                 if self.find_widget(mouse.get_pos()) == self:
@@ -1946,7 +1946,7 @@ class CameraViewport(GLViewport):
 
             x = getattr(getattr(self.editor, 'copyPanel', None), 'width', 0)
             if x:
-                x = x /float( self.editor.mainViewport.width)
+                x /= float(self.editor.mainViewport.width)
             self._compass.x = x
             self._compass.yawPitch = self.yaw, 0
 

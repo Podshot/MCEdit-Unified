@@ -247,19 +247,23 @@ def chunkMarkers(chunkSet):
     while True:
         nextsize = size << 1
         chunkSet = set(chunkSet)
+        append_ns = sizedChunks[nextsize].append
+        append_s = sizedChunks[size].append
+        discard = chunkSet.discard
+        add = chunkSet.add
         while len(chunkSet):
             cx, cz = chunkSet.pop()
-            chunkSet.add((cx, cz))
+            add((cx, cz))
             o = all4(cx, cz)
             others = set(o).intersection(chunkSet)
             if len(others) == 4:
-                sizedChunks[nextsize].append(o[0]) # Possibly cache append?
+                append_ns(o[0]) # Possibly cache append?
                 for c in others:
-                    chunkSet.discard(c)
+                    discard(c)
             else:
                 for c in others:
-                    sizedChunks[size].append(c) # Possibly cache append?
-                    chunkSet.discard(c)
+                    append_s(c) # Possibly cache append?
+                    discard(c)
 
         if len(sizedChunks[nextsize]):
             chunkSet = set(sizedChunks[nextsize])
@@ -307,6 +311,7 @@ class ChunkRenderer(object):
             self.renderer.discardMasterList()
 
     def debugDraw(self):
+        print "test"
         for blockRenderer in self.blockRenderers:
             blockRenderer.drawArrays(self.chunkPosition, False)
 
@@ -865,17 +870,18 @@ class ChunkCalculator(object):
         level = chunk.world
 
         neighboringChunks = {}
+        ZeroChunk = pymclevel.infiniteworld.ZeroChunk
         for dir, dx, dz in ((pymclevel.faces.FaceXDecreasing, -1, 0),
                             (pymclevel.faces.FaceXIncreasing, 1, 0),
                             (pymclevel.faces.FaceZDecreasing, 0, -1),
                             (pymclevel.faces.FaceZIncreasing, 0, 1)):
             if not level.containsChunk(cx + dx, cz + dz):
-                neighboringChunks[dir] = pymclevel.infiniteworld.ZeroChunk(level.Height)
+                neighboringChunks[dir] = ZeroChunk(level.Height)
             else:
                 try:
                     neighboringChunks[dir] = level.getChunk(cx + dx, cz + dz)
                 except (EnvironmentError, pymclevel.mclevelbase.ChunkNotPresent, pymclevel.mclevelbase.ChunkMalformed):
-                    neighboringChunks[dir] = pymclevel.infiniteworld.ZeroChunk(level.Height)
+                    neighboringChunks[dir] = ZeroChunk(level.Height)
         return neighboringChunks
 
     @staticmethod
@@ -1000,7 +1006,7 @@ class ChunkCalculator(object):
         allSlabs = set([b.ID for b in alphaMaterials.allBlocks if "Slab" in b.name])
         for slab in allSlabs:
             slabs = areaBlocks == slab
-            if slabs.any():
+            if len(slabs):
                 areaBlockLights[slabs] = areaBlockLights[:, :, 1:][slabs[:, :, :-1]]
             yield
 
@@ -1038,16 +1044,17 @@ class ChunkCalculator(object):
             # with the top to form 0-32 metadata(which would be used in door renderer).
             #
             copied = False
+            nonzero = numpy.ndarray.nonzero
             for door in DoorRenderer.blocktypes:
                 doors = blocks == door
-                if doors.any():
+                if len(doors):
                     if not copied:
                         # copy if required but only once
                         blockData = blockData.copy()
                         copied = True
                     # only accept lower part one block below upper part
                     valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
-                    mask = valid.nonzero()
+                    mask = nonzero(valid)
                     upper_mask = (mask[0], mask[1], mask[2]+1)
                     blockData[mask] += (blockData[upper_mask] - 8) * 16
                     blockData[upper_mask] = blockData[mask] + 8
@@ -1129,6 +1136,11 @@ class BlockRenderer(object):
         self.makeTemplate = cc.makeTemplate
         self.chunkCalculator = cc
         self.vertexArrays = []
+        #cls = self.__class__
+        #print dir(pymclevel.faces)
+        #for face in dir(pymclevel.faces): # hack
+        #    if face.startswith('Face'):
+        #        setattr(cls, face, getattr(pymclevel.faces, face))
         pass
 
     @classmethod
@@ -1185,8 +1197,9 @@ class BlockRenderer(object):
 
     def drawVertices(self):
         if self.vertexArrays:
-            for buf in self.vertexArrays:
-                self.drawFaceVertices(buf)
+            map(self.drawFaceVertices, self.vertexArrays)
+            #for buf in self.vertexArrays:
+            #    self.drawFaceVertices(buf)
 
     def drawFaceVertices(self, buf):
         if not len(buf):
@@ -1253,12 +1266,13 @@ class TileEntityRenderer(EntityRendererGeneric):
     def makeChunkVertices(self, chunk):
         tilePositions = []
         append = tilePositions.append
+        pos = pymclevel.TileEntity.pos
         for i, ent in enumerate(chunk.TileEntities):
             if i % 10 == 0:
                 yield
             if 'x' not in ent:
                 continue
-            append(pymclevel.TileEntity.pos(ent))
+            append(pos(ent))
         tiles = self._computeVertices(tilePositions, (0xff, 0xff, 0x33, 0x44), chunkPosition=chunk.chunkPosition)
         yield
         self.vertexArrays = [tiles]
@@ -1275,6 +1289,7 @@ class MonsterRenderer(BaseEntityRenderer):
     def makeChunkVertices(self, chunk):
         monsterPositions = []
         append = monsterPositions.append
+        pos_func = pymclevel.Entity.pos
         notMonsters = MCEDIT_DEFS.get('notMonsters', self.notMonsters)
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
@@ -1282,7 +1297,7 @@ class MonsterRenderer(BaseEntityRenderer):
             id = ent["id"].value
             if id in notMonsters:
                 continue
-            pos = pymclevel.Entity.pos(ent)
+            pos = pos_func(ent)
             pos[1] += 0.5
             append(pos)
 
@@ -1315,6 +1330,7 @@ class ItemRenderer(BaseEntityRenderer):
         }
         pos_append = entityPositions.append
         color_append = entityColors.append
+        pos_func = pymclevel.Entity.pos
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
                 yield
@@ -1325,7 +1341,7 @@ class ItemRenderer(BaseEntityRenderer):
 
             if color is None:
                 continue
-            pos = pymclevel.Entity.pos(ent)
+            pos = pos_func(ent)
             noRenderDelta = MCEDIT_DEFS.get('noRenderDelta', ("Painting", "ItemFrame"))
             if ent["id"].value not in noRenderDelta:
                 pos[1] += 0.5
@@ -3277,7 +3293,7 @@ class MCRenderer(object):
 
     maxWorkFactor = 64
     minWorkFactor = 1
-    workFactor = 2
+    workFactor = 4
 
     chunkCalculator = None
 
@@ -3700,7 +3716,7 @@ class MCRenderer(object):
             try:
                 self.callMasterLists()
 
-            except GL.GLError, e:
+            except GL.GLError as e:
                 if self.errorLimit:
                     self.errorLimit -= 1
                     traceback.print_exc()

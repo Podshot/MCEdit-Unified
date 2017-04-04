@@ -75,7 +75,8 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
     #     Get the slices of the destination chunk
     #     Get the slices of the source chunk
     #     Copy blocks and data
-
+    createChunk = destLevel.createChunk
+    sourceContainsChunk = sourceLevel.containsChunk
     for destCpos in destBox.chunkPositions:
         cx, cz = destCpos
 
@@ -86,7 +87,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
         if not destLevel.containsChunk(*destCpos):
             if create and any(sourceLevel.containsChunk(*c) for c in destChunkBoxInSourceLevel.chunkPositions):
                 # Only create chunks in the destination level if the source level has chunks covering them.
-                destLevel.createChunk(*destCpos)
+                createChunk(*destCpos)
             else:
                 continue
 
@@ -98,7 +99,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
             log.info("Chunk {0}...".format(i))
 
         for srcCpos in destChunkBoxInSourceLevel.chunkPositions:
-            if not sourceLevel.containsChunk(*srcCpos):
+            if not sourceContainsChunk(*srcCpos):
                 continue
 
             sourceChunk = sourceLevel.getChunk(*srcCpos)

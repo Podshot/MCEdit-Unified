@@ -30,7 +30,7 @@ class BlockView(GLOrtho):
 
     def _gl_draw(self):
         blockInfo = self.blockInfo
-        if blockInfo.ID is 0:
+        if not blockInfo.ID:
             return
 
         GL.glColor(1.0, 1.0, 1.0, 1.0)
@@ -84,11 +84,11 @@ class BlockButton(ButtonBase, Panel):
 
         self.bg_color = (1, 1, 1, 0.25)
         self._ref = ref
-        if blockInfo is None and ref is not None:
+        if blockInfo is None and ref:
             blockInfo = ref.get()
         blockInfo = blockInfo or materials["Air"]
 
-        if recentBlocks is not None:
+        if recentBlocks:
             self.recentBlocks = recentBlocks
         else:
             self.recentBlocks = []

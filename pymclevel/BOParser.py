@@ -24,7 +24,7 @@ corrected_states = {'CHEST':(2,6)}
 
 class BO3:
     def __init__(self, filename=''):
-        if type(filename) in (str, unicode):
+        if isinstance(filename, (str, unicode)):
             self.delta_x, self.delta_y, self.delta_z = 0, 0, 0
             self.size_x, self.size_y, self.size_z = 0, 0, 0
             map_block = {}
@@ -49,7 +49,7 @@ class BO3:
                 if debug:
                     output_str = '; '.join(('get_delta: %s, %s %s'%(x, y, z), 'deltas: %s, %s, %s'%(self.delta_x, self.delta_y, self.delta_z), 'size: %s, %s %s'%(self.size_x, self.size_y, self.size_z)))
                     print output_str
-                    if f_obj != None:
+                    if f_obj:
                         f_obj.write(output_str)
 
             raw_data = open(filename).read()
@@ -64,7 +64,7 @@ class BO3:
                 x, y, z = args[:3]
                 b = args[3]
                 nbt_data = None
-                if len(args) == 5 and args[4] != None:
+                if len(args) == 5 and args[4]:
                     f_name = os.path.join(os.path.dirname(filename), os.path.normpath(args[4]))
                     if os.path.exists(f_name):
                         nbt_data = nbt.load(f_name)
@@ -74,7 +74,7 @@ class BO3:
                 x = int(x) + self.delta_x
                 y = int(y) + self.delta_y
                 z = int(z) + self.delta_z
-                if b != None:
+                if b:
                     b_id, b_state = (b + ':0').split(':')[:2]
                 else:
                     b_id, b_state = '', None
@@ -90,18 +90,19 @@ class BO3:
                 bit_id = False
                 bit_path = False
                 bit_chance = False
+                append = obj.append
                 for arg in args[3:]:
                     if not bit_id:
-                        obj.append(arg)
+                        append(arg)
                         bit_id = True
                     elif arg.isdigit():
                         if not bit_path:
-                            obj.append(None)
+                            append(None)
                             bit_path = True
-                        obj.append(int(arg))
+                        append(int(arg))
                         bit_chance = True
                     else:
-                        obj.append(arg)
+                        append(arg)
                         bit_path = True
                     if bit_id and bit_path and bit_chance:
                         chance = randint(1, 100)
@@ -118,14 +119,15 @@ class BO3:
             def verify_state(id, state):
                 states = corrected_states.get(id, None)
                 if states:
-                    if type(states) == tuple:
+                    if isinstance(states, tuple):
                         if state not in range(*states):
                             state = states[0]
-                    elif type(states) == list:
+                    elif isinstance(states, list):
                         if state not in states:
                             state = states[0]
                 return state
 
+            append = self.__schem.TileEntities.append
             for line in lines:
                 if line.startswith('Block') or line.startswith('RandomBlock'):
                     #print 'Parsing', line
@@ -144,11 +146,11 @@ class BO3:
                             nbt_data.add(nbt.TAG_Int(name='x', value=x))
                             nbt_data.add(nbt.TAG_Int(name='y', value=y))
                             nbt_data.add(nbt.TAG_Int(name='z', value=z))
-                            self.__schem.TileEntities.append(nbt_data)
+                            append(nbt_data)
                         try:
                             self.__schem.Blocks[x, z, y] = b_idn
                             self.__schem.Data[x, z, y] = verify_state(b_id, b_state)
-                        except Exception, e:
+                        except Exception as e:
                             print 'Error while building BO3 data:'
                             print e
                             print 'size', self.size_x, self.size_y, self.size_z

@@ -301,6 +301,7 @@ class FilterModuleOptions(Widget):
         page.tool = tool
         title = "Tab"
 
+        rows_append = rows.append
         for optionSpec in inputs:
             optionName = optionSpec[0]
             optionType = optionSpec[1]
@@ -324,7 +325,7 @@ class FilterModuleOptions(Widget):
                     else:
                         val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, oName, val, min, max, increment))
+                    rows_append(addNumField(page, optionName, oName, val, min, max, increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
@@ -363,7 +364,7 @@ class FilterModuleOptions(Widget):
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
                         row = Row((Label(oName, doNotTranslate=True), field))
-                        rows.append(row)
+                        rows_append(row)
                     elif optionType[0] == "block":
                         blockButton = BlockButton(tool.editor.level.materials)
                         try:
@@ -379,7 +380,7 @@ class FilterModuleOptions(Widget):
                         row = Column((Label(oName, doNotTranslate=True), blockButton))
                         page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
                 
-                        rows.append(row)
+                        rows_append(row)
                     elif optionType[0] == "file-save":
                         if len(optionType) == 2:
                             file_chooser = SingleFileChooser(file_types=optionType[1], operation=SingleFileChooser.SAVE_FILE)
@@ -389,7 +390,7 @@ class FilterModuleOptions(Widget):
                         row = Row((Label(oName, doNotTranslate=True), file_chooser))
                         page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
-                        rows.append(row)
+                        rows_append(row)
                     elif optionType[0] == "file-open":
                         if len(optionType) == 2:
                             file_chooser = SingleFileChooser(file_types=optionType[1], operation=SingleFileChooser.OPEN_FILE)
@@ -399,7 +400,7 @@ class FilterModuleOptions(Widget):
                         row = Row((Label(oName, doNotTranslate=True), file_chooser))
                         page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
-                        rows.append(row)
+                        rows_append(row)
                     else:
                         isChoiceButton = True
 
@@ -412,7 +413,7 @@ class FilterModuleOptions(Widget):
                         choiceButton = ChoiceButton(choices, doNotTranslate=True)
                         page.optionDict[optionName] = AttrRef(choiceButton, 'selectedChoice')
 
-                        rows.append(Row((Label(oName, doNotTranslate=True), choiceButton)))
+                        rows_append(Row((Label(oName, doNotTranslate=True), choiceButton)))
                         
 
             elif isinstance(optionType, bool):
@@ -420,10 +421,10 @@ class FilterModuleOptions(Widget):
                 page.optionDict[optionName] = AttrRef(cbox, 'value')
 
                 row = Row((Label(oName, doNotTranslate=True), cbox))
-                rows.append(row)
+                rows_append(row)
 
             elif isinstance(optionType, (int, float)):
-                rows.append(addNumField(self, optionName, oName, optionType))
+                rows_append(addNumField(self, optionName, oName, optionType))
                 
             elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
                 blockButton = BlockButton(tool.editor.level.materials)
@@ -433,9 +434,9 @@ class FilterModuleOptions(Widget):
                 row = Column((Label(oName, doNotTranslate=True), blockButton))
                 page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
 
-                rows.append(row)
+                rows_append(row)
             elif optionType == "label":
-                rows.append(wrapped_label(oName, 50, doNotTranslate=True))
+                rows_append(wrapped_label(oName, 50, doNotTranslate=True))
             elif optionType == "string":
                 inp = None
                 # not sure how to pull values from filters,
@@ -447,7 +448,7 @@ class FilterModuleOptions(Widget):
                 field = TextFieldWrapped(value="")
                 row = TextInputRow(oName, ref=AttrRef(field, 'value'), width=size, doNotTranslate=True)
                 page.optionDict[optionName] = AttrRef(field, 'value')
-                rows.append(row)
+                rows_append(row)
             elif optionType == "title":
                 title = oName
                 
@@ -456,13 +457,13 @@ class FilterModuleOptions(Widget):
                 row = Row((Label(oName, doNotTranslate=True), file_chooser))
                 page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
-                rows.append(row)
+                rows_append(row)
             elif optionType == "file-open":
                 file_chooser = SingleFileChooser(operation=SingleFileChooser.OPEN_FILE)
                 row = Row((Label(oName, doNotTranslate=True), file_chooser))
                 page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
-                rows.append(row)
+                rows_append(row)
             elif isinstance(optionType, list) and optionType[0].lower() == "nbttree":
                 kw = {'close_text': None, 'load_text': None}
                 if len(optionType) >= 3:
@@ -485,7 +486,7 @@ class FilterModuleOptions(Widget):
                         # elif meth_name.startswith('nbt_'):
                         #     setattr(self.nbttree, meth_name.split('nbt_')[-1], getattr(self.module, meth_name))
                 page.optionDict[optionName] = AttrRef(self, 'rebuildTabPage')
-                rows.append(self.nbttree)
+                rows_append(self.nbttree)
                 self.nbttree.page = len(self.pgs)
 
             else:
@@ -503,10 +504,10 @@ class FilterModuleOptions(Widget):
                     rows = rows[i:]
                     break
 
-        if len(rows):
+        if rows:
             cols.append(Column(rows, spacing=0))
 
-        if len(cols):
+        if cols:
             page.add(Row(cols, spacing=0))
         page.shrink_wrap()
 
@@ -624,13 +625,14 @@ class FilterToolPanel(Panel):
                 json.dump(self.filter_json, f)
 
     def reload(self):
-        for i in list(self.subwidgets):
-            self.remove(i)
+        map(self.remove, self.subwidgets)
+        #for i in list(self.subwidgets):
+        #    self.remove(i)
 
         tool = self.tool
 
         # Display "No filter modules found" if there are no filters
-        if len(tool.filterModules) is 0:
+        if tool.filterModules:
             self.add(Label("No filter modules found!"))
             self.shrink_wrap()
             return
@@ -667,7 +669,7 @@ class FilterToolPanel(Panel):
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
             module = self.tool.filterModules.get(self.selectedName, None)
-            if module is not None:
+            if module:
                 try:
                     self.filterOptionsPanel = FilterModuleOptions(self.tool, module, _parent=self)
                 except Exception as e:
@@ -865,7 +867,7 @@ class FilterToolPanel(Panel):
         which will then call this.
         :return:
         """
-        if self.filterOptionsPanel is not None:
+        if self.filterOptionsPanel:
             options = {}
             options.update(self.filterOptionsPanel.options)
             options.pop("", "")

@@ -489,9 +489,14 @@ def _cleanup():
                 if hasattr(im, 'close'):
                     im.close()
             except IOError:
-                os.remove(os.path.join("player-skins", image_file))
+                try:
+                    os.remove(os.path.join("player-skins", image_file))
+                except:
+                    pass
             except AttributeError:
                 pass # I have no idea why an Attribute Error is thrown on .close(), but this fixes it
+            except WindowsError:
+                pass
             finally:
                 if fp and not fp.closed:
                     fp.close()
