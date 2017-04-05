@@ -632,7 +632,7 @@ class FilterToolPanel(Panel):
         tool = self.tool
 
         # Display "No filter modules found" if there are no filters
-        if tool.filterModules:
+        if not tool.filterModules:
             self.add(Label("No filter modules found!"))
             self.shrink_wrap()
             return

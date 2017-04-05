@@ -539,7 +539,7 @@ class LevelEditor(GLViewport):
         if self.copyPanel:
             self.copyPanel.set_parent(None)
             self.copyPanel = None
-        if 0 == len(self.copyStack):
+        if not len(self.copyStack):
             return
 
         self.copyPanel = self.createCopyPanel()
@@ -853,7 +853,7 @@ class LevelEditor(GLViewport):
                 StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
-        if len(self.copyStack):
+        if not len(self.copyStack):
             return None
         return self.copyStack[0]
 

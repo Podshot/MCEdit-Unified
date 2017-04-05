@@ -5,8 +5,12 @@ from Cython.Build import cythonize
 import Cython.Compiler.Options
 Cython.Compiler.Options.annotate = True
 import numpy
+import sys
 
-ext_modules = cythonize(["cpngfilters.pyx", "pymclevel/_nbt.pyx", "cy_renderer.pyx"])
+extensions = ["cpngfilters.pyx", "pymclevel/_nbt.pyx"]
+if '--renderer' in sys.argv:
+    extensions.append("cy_renderer.pyx")
+ext_modules = cythonize(extensions)
 
 setup(
     ext_modules=ext_modules,

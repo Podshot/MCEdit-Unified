@@ -304,7 +304,7 @@ class PlayerMoveOperation(Operation):
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
 
             yaw, pitch = self.yp
-            if yaw and pitch:
+            if not (yaw is None or pitch is None):
                 level.setPlayerOrientation((yaw, pitch), self.player)
             level.setPlayerPosition(self.pos, self.player)
             level.setPlayerDimension(level.dimNo, self.player)

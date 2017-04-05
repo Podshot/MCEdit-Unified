@@ -64,7 +64,7 @@ class BO3:
                 x, y, z = args[:3]
                 b = args[3]
                 nbt_data = None
-                if len(args) == 5 and args[4]:
+                if len(args) == 5 and args[4] is not None:
                     f_name = os.path.join(os.path.dirname(filename), os.path.normpath(args[4]))
                     if os.path.exists(f_name):
                         nbt_data = nbt.load(f_name)
@@ -74,7 +74,7 @@ class BO3:
                 x = int(x) + self.delta_x
                 y = int(y) + self.delta_y
                 z = int(z) + self.delta_z
-                if b:
+                if b is not None:
                     b_id, b_state = (b + ':0').split(':')[:2]
                 else:
                     b_id, b_state = '', None

@@ -192,7 +192,7 @@ class AnvilChunkData(object):
             BlockLight = self.BlockLight[..., y:y + 16].swapaxes(0, 2)
             SkyLight = self.SkyLight[..., y:y + 16].swapaxes(0, 2)
 
-            if not len(Blocks) and not len(BlockLight) and (SkyLight == 15).all():
+            if not Blocks.any() and not BlockLight.any() and (SkyLight == 15).all():
                 continue
 
             Data = packNibbleArray(Data)

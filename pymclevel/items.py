@@ -66,10 +66,10 @@ class Items(object):
         except:
             item = self.findItemID(id)
         if damage <= item["maxdamage"]:
-            if isinstance(item["name"], str) or isinstance(item["name"], unicode):
+            if isinstance(item["name"], (str, unicode)):
                 return ItemType(id, item["name"], item["maxdamage"], damage, item["stacksize"])
             else:
-                if isinstance(item["name"][damage], str) or isinstance(item["name"][damage], unicode):
+                if isinstance(item["name"][damage], (str, unicode)):
                     return ItemType(id, item["name"][damage], item["maxdamage"], damage, item["stacksize"])
                 else:
                     raise ItemNotFound()
