@@ -1,16 +1,12 @@
 """
     compass
 """
-import logging
 from OpenGL import GL
 from drawable import Drawable
 from glutils import gl
 from mceutils import loadPNGTexture
 from config import config
 import os
-
-log = logging.getLogger(__name__)
-
 
 def makeQuad(minx, miny, width, height):
     return minx, miny, minx + width, miny, minx + width, miny + height, minx, miny + height

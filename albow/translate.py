@@ -76,7 +76,7 @@ def getPlatInfo(**kwargs):
     log.debug("    FS encoding: %s" % os.sys.getfilesystemencoding())
     reVer = re.compile(r"__version__|_version_|__version|_version|version|"
                        "__ver__|_ver_|__ver|_ver|ver", re.IGNORECASE)
-    for name, mod in kwargs.items():
+    for name, mod in kwargs.iteritems():
         s = "%s" % dir(mod)
         verObjNames = list(re.findall(reVer, s))
         if len(verObjNames) > 0:
@@ -414,7 +414,7 @@ def buildTranslation(lang, extend=False, langPath=None):
         try:
             str_cache = json.loads(result)
             if extend:
-                string_cache.update([(a, b) for (a, b) in str_cache.items() if a not in string_cache.keys()])
+                string_cache.update([(a, b) for (a, b) in str_cache.iteritems() if a not in string_cache.keys()])
         except Exception as e:
             log.debug("Error while loading JSON resource:")
             log.debug("    %s"%e)

@@ -1207,7 +1207,7 @@ class PocketLeveldbChunk(LightedChunk):
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
-                invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+                invertEntities = {v: k for k, v in entity.PocketEntity.entityList.iteritems()}
                 for ent in Entities:
                     # Get the string id, or a build one
                     # ! For PE debugging

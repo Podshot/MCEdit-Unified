@@ -35,7 +35,7 @@ def setup_map_types_item(mp=None):
     if not mp:
         mp = item_types_map
     map_types_item = {}
-    for k, v in mp.items():
+    for k, v in mp.iteritems():
         if v[0] in map_types_item.keys():
             _v = map_types_item.pop(v[0])
             map_types_item[u"%s (%s)"%(_(v[0]), _v[0].__name__)] = _v

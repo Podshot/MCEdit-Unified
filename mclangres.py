@@ -253,7 +253,7 @@ def search(text, untranslate=False, capitalize=True, filters=[]):
                     results.append('-'.join([b.capitalize() for b in ' '.join([a.capitalize() for a in l.split(' ')]).split('-')]))
                 else:
                     results.append(l.lower())
-    for k, v in serGnal.items():
+    for k, v in serGnal.iteritems():
         if text in k.lower():
             if not filters or map(lambda (x,y):re.match(x,y), zip(filters, [v] * len(filters))) != [None, None]:
                 if untranslate:

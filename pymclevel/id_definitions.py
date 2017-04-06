@@ -57,7 +57,7 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
         return data['load']
     # Find if "autobuild" items are defined
     autobuilds = data.get("autobuild", {})
-    for a_name, a_value in autobuilds.items():
+    for a_name, a_value in autobuilds.iteritems():
         p = re.findall(r"(^|[ ])%s\['(\w+)'" % prefix, a_value)
         if p:
             for a in p[0][1:]:
@@ -80,7 +80,7 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
                 ids_dict[item['id']] = ids_dict[_name] = entry_name
                 if item.get('idStr'):
                     ids_dict[u'%s:%s' % (namespace, item['idStr'])] = ids_dict[item['idStr']] = entry_name
-                for a_name, a_value in autobuilds.items():
+                for a_name, a_value in autobuilds.iteritems():
                     try:
                         v = eval(a_value)
 #                             print "###", a_name, a_value, v

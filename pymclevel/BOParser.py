@@ -30,7 +30,7 @@ class BO3:
             map_block = {}
             not_found = []
             tileentities_list = [a.lower() for a in TileEntity.baseStructures.keys()]
-            for k, v in materials.block_map.items():
+            for k, v in materials.block_map.iteritems():
                 map_block[v.replace('minecraft:', '')] = k
 
             def get_delta(x, y, z, debug=False, f_obj=None):

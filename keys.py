@@ -815,7 +815,7 @@ class KeyConfigPanel(Dialog):
                     self.askAssignKey(configKey,
                                     "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel.")
                     return True
-            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == _keyname]
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].iteritems() if j == _keyname]
             if filter_keys:
                 self.askAssignKey(configKey,
                                     _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))

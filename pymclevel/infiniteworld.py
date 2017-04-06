@@ -1694,7 +1694,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 self.checkSessionLock()
 
             saveChunk = self.unsavedWorkFolder.saveChunk
-            for (ocx, ocz), oldChunkData in self._loadedChunkData.items():
+            for (ocx, ocz), oldChunkData in self._loadedChunkData.iteritems():
                 if (ocx, ocz) not in self._loadedChunks:
                     if oldChunkData.dirty and not self.readonly:
                         data = oldChunkData.savedTagData()
