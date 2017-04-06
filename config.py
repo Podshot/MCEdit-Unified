@@ -38,7 +38,7 @@ class Config(object):
         self.config.observers = {}
         try:
             self.config.read(self.getPath())
-        except Exception, e:
+        except Exception as e:
             log.warn("Error while reading configuration file mcedit.ini: {0}".format(e))
 
         self.transformConfig()

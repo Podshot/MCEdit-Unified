@@ -45,7 +45,7 @@ class ThreadRS(threading.Thread):
     def join(self):
         try:
             threading.Thread.join(self)
-        except Exception, e:
+        except Exception as e:
             print e
         for callback in self.callbacks:
             callback(self._return)

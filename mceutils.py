@@ -43,7 +43,7 @@ import logging
 #!# Used to track the ALBOW stuff imported from here
 def warn(obj):
     name = getattr(obj, '__name__', getattr(getattr(obj, '__class__', obj), '__name__', obj))
-    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.'%(obj.__module__, name, name))
+    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.' % (obj.__module__, name, name))
 #!#
 
 
