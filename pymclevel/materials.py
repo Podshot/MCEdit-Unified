@@ -381,22 +381,23 @@ class MCMaterials(object):
         if game_version == 'PE' or game_version == 'old pocket':
             f_name = 'pocket.json'
             self.setup_blockstates("pe_blockstates.json")
-            build_pocket_materials()
+            meth = build_pocket_materials
         elif game_version == 'javalevel':
             # No reference to materials in javalevel.py and no related JSon file, let use the 'classic' ones?
             f_name = 'classic.json'
-            build_classic_materials()
+            meth = build_classic_materials
         elif game_version == 'indev':
             f_name == 'indev.json'
-            build_indev_materials()
+            meth = build_indev_materials
         else:
             f_name = 'minecraft.json'
             self.setup_blockstates("pc_blockstates.json")
-            build_alpha_materials()
+            meth = build_alpha_materials
         if blockyaml:
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
+        meth()
 #         build_api_material_map()
 
     def addJSONBlocks(self, blockyaml):
@@ -529,6 +530,7 @@ pocketMaterials.name = "Pocket"
 # --- Static block defs ---
 
 def build_alpha_materials():
+    log.info("Building Alpha materials.")
     alphaMaterials.Stone = alphaMaterials[1, 0]
     alphaMaterials.Grass = alphaMaterials[2, 0]
     alphaMaterials.Dirt = alphaMaterials[3, 0]
@@ -807,6 +809,7 @@ def build_alpha_materials():
 
 # --- Classic static block defs ---
 def build_classic_materials():
+    log.info("Building Classic materials.")
     classicMaterials.Stone = classicMaterials[1]
     classicMaterials.Grass = classicMaterials[2]
     classicMaterials.Dirt = classicMaterials[3]
@@ -862,6 +865,7 @@ def build_classic_materials():
 
 # --- Indev static block defs ---
 def build_indev_materials():
+    log.info("Building Indev materials.")
     indevMaterials.Stone = indevMaterials[1]
     indevMaterials.Grass = indevMaterials[2]
     indevMaterials.Dirt = indevMaterials[3]
@@ -931,6 +935,7 @@ def build_indev_materials():
 
 # --- Pocket static block defs ---
 def build_pocket_materials():
+    log.info("Building Pocket materials.")
     pocketMaterials.Air = pocketMaterials[0, 0]
     pocketMaterials.Stone = pocketMaterials[1, 0]
     pocketMaterials.Grass = pocketMaterials[2, 0]
@@ -1128,7 +1133,9 @@ def build_pocket_materials():
     pocketMaterials.HardenedClay = pocketMaterials[172, 0]
     pocketMaterials.BlockOfCoal = pocketMaterials[173, 0]
     pocketMaterials.PackedIce = pocketMaterials[174, 0]
+    # Is 'Sunflower' used?
     pocketMaterials.Sunflower = pocketMaterials[175, 0]
+    pocketMaterials.TallFlowers = pocketMaterials[175, 0]
     pocketMaterials.DaylightSensorOn = pocketMaterials[178, 0]
 
     pocketMaterials.SpruceFenceGate = pocketMaterials[183, 0]

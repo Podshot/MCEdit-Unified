@@ -1137,6 +1137,7 @@ class BlockRenderer(object):
         self.makeTemplate = cc.makeTemplate
         self.chunkCalculator = cc
         self.vertexArrays = []
+        self.materials = cc.level.materials
         pass
 
     def getBlocktypes(self, mats):
@@ -1738,8 +1739,8 @@ class PlantBlockRenderer(BlockRenderer):
 
         colorize = None
         if self.materials.name != "Classic":  #so hacky, someone more competent fix this
-            colorize = (theseBlocks == alphaMaterials.TallGrass.ID) & (bdata != 0)
-            colorize2 = (theseBlocks == alphaMaterials.TallFlowers.ID) & (bdata != 0) & (
+            colorize = (theseBlocks == self.materials.TallGrass.ID) & (bdata != 0)
+            colorize2 = (theseBlocks == self.materials.TallFlowers.ID) & (bdata != 0) & (
             bdata != 1) & (bdata != 4) & (bdata != 5)
 
         for direction in (
@@ -2002,34 +2003,34 @@ class RailBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateAlphaTest
 
     def __init__(self, *args, **kwargs):
-        self.railTextures -= alphaMaterials.blockTextures[alphaMaterials.Rail.ID, 0, 0]
         BlockRenderer.__init__(self, *args, **kwargs)
+        self.railTextures = numpy.array([
+                                       [(0, 128), (0, 144), (16, 144), (16, 128)],  # east-west
+                                       [(0, 128), (16, 128), (16, 144), (0, 144)],  # north-south
+                                       [(0, 128), (16, 128), (16, 144), (0, 144)],  # south-ascending
+                                       [(0, 128), (16, 128), (16, 144), (0, 144)],  # north-ascending
+                                       [(0, 128), (0, 144), (16, 144), (16, 128)],  # east-ascending
+                                       [(0, 128), (0, 144), (16, 144), (16, 128)],  # west-ascending
+
+                                       [(0, 112), (0, 128), (16, 128), (16, 112)],  # northeast corner
+                                       [(0, 128), (16, 128), (16, 112), (0, 112)],  # southeast corner
+                                       [(16, 128), (16, 112), (0, 112), (0, 128)],  # southwest corner
+                                       [(16, 112), (0, 112), (0, 128), (16, 128)],  # northwest corner
+
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                       [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+
+                                   ], dtype='float32')
+
+        self.railTextures -= self.materials.blockTextures[self.materials.Rail.ID, 0, 0]
 
     @classmethod
     def getBlocktypes(cls, mats):
         return [block.ID for block in mats.blocksByType["SIMPLE_RAIL"]]
-
-    railTextures = numpy.array([
-                                   [(0, 128), (0, 144), (16, 144), (16, 128)],  # east-west
-                                   [(0, 128), (16, 128), (16, 144), (0, 144)],  # north-south
-                                   [(0, 128), (16, 128), (16, 144), (0, 144)],  # south-ascending
-                                   [(0, 128), (16, 128), (16, 144), (0, 144)],  # north-ascending
-                                   [(0, 128), (0, 144), (16, 144), (16, 128)],  # east-ascending
-                                   [(0, 128), (0, 144), (16, 144), (16, 128)],  # west-ascending
-
-                                   [(0, 112), (0, 128), (16, 128), (16, 112)],  # northeast corner
-                                   [(0, 128), (16, 128), (16, 112), (0, 112)],  # southeast corner
-                                   [(16, 128), (16, 112), (0, 112), (0, 128)],  # southwest corner
-                                   [(16, 112), (0, 112), (0, 128), (16, 128)],  # northwest corner
-
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                   [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-
-                               ], dtype='float32')
 
     railOffsets = numpy.array([
                                   [0, 0, 0, 0],
@@ -2064,7 +2065,7 @@ class RailBlockRenderer(BlockRenderer):
         tex = texMap(railBlocks, bdata, pymclevel.faces.FaceYIncreasing)[:, numpy.newaxis, :]
 
         # disable 'powered' or 'pressed' bit for powered and detector rails
-        bdata[railBlocks != alphaMaterials.Rail.ID] = bdata[railBlocks != alphaMaterials.Rail.ID].astype(int) & ~0x8
+        bdata[railBlocks != self.materials.Rail.ID] = bdata[railBlocks != self.materials.Rail.ID].astype(int) & ~0x8
 
         vertexArray = self.makeTemplate(direction, blockIndices)
         if not len(vertexArray):
@@ -2598,7 +2599,7 @@ class RedstoneBlockRenderer(BlockRenderer):
         if not len(vertexArray):
             return
 
-        vertexArray[_ST] += alphaMaterials.blockTextures[55, 0, 0]
+        vertexArray[_ST] += self.materials.blockTextures[55, 0, 0]
         vertexArray[_XYZ][..., 1] -= 0.9
 
         bdata = blockData[blockIndices]
@@ -2791,20 +2792,22 @@ class TrapDoorRenderer(BlockRenderer):
 
 
 class FenceBlockRenderer(BlockRenderer):
-    blocktypes_alpha = [block.ID for block in alphaMaterials.blocksByType["FENCE"]]
-    blocktypes_pocket = [block.ID for block in pocketMaterials.blocksByType["FENCE"]]
-    
+#     def __init__(self, *args, **kwargs):
+#         BlockRenderer.__init__(self, *args, **kwargs)
+#         self.blocktypes = [block.ID for block in self.materials.blocksByType["FENCE"]]
+
     fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
 
     makeVertices = makeVerticesFromModel(fenceTemplates)
 
     @classmethod
     def getBlocktypes(cls, mats):
-        if mats.name == "Pocket":
-            cls.blocktypes = cls.blocktypes_pocket
-        else:
-            cls.blocktypes = cls.blocktypes_alpha
-        return cls.blocktypes
+#         if mats.name == "Pocket":
+#             cls.blocktypes = cls.blocktypes_pocket
+#         else:
+#             cls.blocktypes = cls.blocktypes_alpha
+#         return cls.blocktypes
+        return [block.ID for block in mats.blocksByType["FENCE"]]
 
 
 class FenceGateBlockRenderer(BlockRenderer):
@@ -2960,8 +2963,8 @@ class VineBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateVines
 
     def __init__(self, *args, **kwargs):
-        self.blocktypes = [alphaMaterials["minecraft:vine"].ID]
         BlockRenderer.__init__(self, *args, **kwargs)
+        self.blocktypes = [self.materials["minecraft:vine"].ID]
 
     def vineFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
                          facingBlockLight, texMap):
@@ -3005,11 +3008,16 @@ class VineBlockRenderer(BlockRenderer):
 
 class SlabBlockRenderer(BlockRenderer):
     def __init__(self, *args, **kwargs):
-        self.blocktypes = [alphaMaterials["minecraft:wooden_slab"].ID,
-                  alphaMaterials["minecraft:stone_slab"].ID,
-                  alphaMaterials["minecraft:stone_slab2"].ID,
-                  alphaMaterials["minecraft:purpur_slab"].ID]
         BlockRenderer.__init__(self, *args, **kwargs)
+        materials = self.materials
+#         self.blocktypes = [materials["minecraft:wooden_slab"].ID,
+#                   materials["minecraft:stone_slab"].ID,
+#                   materials["minecraft:stone_slab2"].ID,
+#                   materials["minecraft:purpur_slab"].ID]
+#         print "self.blocktypes", self.blocktypes
+#         print "self.materials.AllSlabs", list(set(a.ID for a in self.materials.AllSlabs if "double" not in a.name.lower()))
+#         print list(set(a for a in self.materials.AllSlabs if "double" not in a.name.lower()))
+        self.blocktypes = list(set(a.ID for a in materials.AllSlabs if "double" not in a.name.lower()))
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -3043,8 +3051,8 @@ class SlabBlockRenderer(BlockRenderer):
 # 1.9 renderer's
 class EndRodRenderer(BlockRenderer):
     def __init__(self, *args, **kwargs):
-        self.blocktypes = [alphaMaterials["minecraft:end_rod"].ID]
         BlockRenderer.__init__(self, *args, **kwargs)
+        self.blocktypes = [self.materials["minecraft:end_rod"].ID]
 
     rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
         "down": (4, 2, 2, 0),
@@ -3090,9 +3098,10 @@ class WaterBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateWater
 
     def __init__(self, *args, **kwargs):
-        self.waterID = alphaMaterials["minecraft:water"].ID
-        self.blocktypes = [alphaMaterials["minecraft:flowing_water"].ID, self.waterID]
         BlockRenderer.__init__(self, *args, **kwargs)
+        materials = self.materials
+        self.waterID = materials["minecraft:water"].ID
+        self.blocktypes = [materials["minecraft:flowing_water"].ID, self.waterID]
 
     @classmethod
     def getBlocktypes(cls, mats):

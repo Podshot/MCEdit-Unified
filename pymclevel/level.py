@@ -15,6 +15,7 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent
 import nbt
 from numpy import argmax, swapaxes, zeros, zeros_like
 import os.path
+import id_definitions
 
 log = getLogger(__name__)
 
@@ -160,6 +161,12 @@ class MCLevel(object):
                 if self.root_tag.name:
                     self.__gameVersion = self.root_tag.name
         return self.__gameVersion
+
+    @property
+    def defsIds(self):
+        if self.root_tag and not hasattr(self, '__defs_ids'):
+            self.__defs_ids = id_definitions.MCEditDefsIds(self.gameVersion)
+        return self.__defs_ids
 
     @classmethod
     def isLevel(cls, filename):

@@ -32,7 +32,9 @@ import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
-from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
+# from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
+from pymclevel import BoundingBox
+from pymclevel.id_definitions import version_defs_ids
 import json
 import directories
 import sys
@@ -899,9 +901,9 @@ class FilterOperation(Operation):
 
         # Inject the defs for blocks/entities in the module
         # Need to reimport the defs and ids to get the 'fresh' ones
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS 
-        self.filter.MCEDIT_DEFS = MCEDIT_DEFS
-        self.filter.MCEDIT_IDS = MCEDIT_IDS
+#         from pymclevel import MCEDIT_DEFS, MCEDIT_IDS 
+        self.filter.MCEDIT_DEFS = self.level.defsIds.mcedit_defs
+        self.filter.MCEDIT_IDS = self.level.defsIds.mcedit_ids
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
         self.canUndo = True

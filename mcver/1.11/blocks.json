@@ -7879,7 +7879,7 @@
 			},
 			"id": 202
 		},{
-			"name": "Purpur Staris",
+			"name": "Purpur Stairs",
 			"type": "STAIRS",
 			"idStr": "purpur_stairs",
 			"tex": [18,19],
@@ -8297,6 +8297,74 @@
 			"type": "GLASS",
 			"idStr": "structure_void",
 			"tex": [19,13]
+		},{
+		    "data": {
+		        "0": {
+		            "name": "Observer (Down)",
+		            "tex_direction": {
+						"TOP": [30,0],
+						"BOTTOM": [30,1],
+						"SIDES": [30,2],
+						"FORWARD": [30,3],
+						"BACKWARD": [30,3]
+		            }
+	            },
+		        "1": {
+		            "name": "Observer (Up)",
+		            "tex_direction": {
+						"TOP": [30,1],
+						"BOTTOM": [30,0],
+						"SIDES": [30,2],
+						"FORWARD": [30,3],
+						"BACKWARD": [30,3]
+		            }
+	            },
+		        "2": {
+		            "name": "Observer (South)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"SIDES": [30,2],
+						"FORWARD": [30,1],
+						"BACKWARD": [30,0]
+		            }
+	            },
+		        "3": {
+		            "name": "Observer (North)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"SIDES": [30,2],
+						"FORWARD": [30,0],
+						"BACKWARD": [30,1]
+		            }
+	            },
+		        "4": {
+		            "name": "Observer (East)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"FORWARD": [30,2],
+						"BACKWARD": [30,2],
+						"LEFT": [30,1],
+						"RIGHT": [30,0]
+		            }
+	            },
+		        "5": {
+		            "name": "Observer (West)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"FORWARD": [30,2],
+						"BACKWARD": [30,2],
+						"LEFT": [30,0],
+						"RIGHT": [30,1]
+		            }
+	            }
+		    },
+		    "name": "Observer",
+		    "idStr": "observer",
+		    "id": 218
 		},{
 			"data": {
 				"1": {

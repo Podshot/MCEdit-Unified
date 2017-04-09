@@ -183,3 +183,22 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
     if json_dict:
         return _json
     return MCEDIT_DEFS, MCEDIT_IDS
+
+version_defs_ids = {}
+
+class MCEditDefsIds(object):
+    """Class to handle MCEDIT_DEFS and MCEDIT_IDS dicts."""
+
+    def __init__(self, game_version, namespace=u"minecraft"):
+        """:game_version, namespace: See 'ids_loader() docstring'."""
+        global version_defs_ids
+        self.mcedit_defs, self.mcedit_ids = ids_loader(game_version, namespace)
+        version_defs_ids[game_version] = self
+
+    def get_id(self, obj_id):
+        """Acts like MCEDIT_IDS[obj_id]"""
+        return self.mcedit_ids[obj_id]
+
+    def get_def(self, def_id):
+        """Acts like MCEDIT_DEFS[def_id]"""
+        return self.mcedit_defs[def_id]
