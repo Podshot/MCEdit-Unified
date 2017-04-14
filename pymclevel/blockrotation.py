@@ -2,6 +2,10 @@ import materials
 from materials import alphaMaterials
 from numpy import arange, zeros
 
+# #!# Needed for the bad hack done with 'blocktable'...
+import collections
+import re
+
 class __Rotation:
     def __init__(self):
         for i, blocktype in enumerate(self.blocktypes):
@@ -832,6 +836,13 @@ class EndRod(__Rotation):
     North = 4
     South = 5
 
+def _get_attribute(obj, attr):
+    # Helper function used to get arbitrary attribute from an arbitrary object.
+    if hasattr(obj, attr):
+        return getattr(obj, attr)
+    else:
+        raise AttributeError("Object {0} does not have attribute '{1}".format(obj, attr))
+
 def masterRotationTable(attrname):
     # compute a materials.id_limitx16 table mapping each possible blocktype/data combination to
     # the resulting data when the block is rotated
@@ -841,7 +852,62 @@ def masterRotationTable(attrname):
         if hasattr(cls, attrname):
             blocktable = getattr(cls, attrname)
             for blocktype in cls.blocktypes:
-                table[blocktype] = blocktable
+                print type(blocktable)
+                # Very bad stuff here...
+                try:
+                    table[blocktype] = blocktable
+                except (NameError, ValueError) as e:
+                    try:
+                        table[eval(blocktype)] = blocktable
+                    except (NameError, SyntaxError):
+                        raise_malformed = False
+                        res = re.findall(r"^([a-zA-Z_][,a-zA-Z0-9._]*)[ ]+for[ ]+([(a-zA-Z_][, a-zA-Z0-9_.)]*)[ ]+in[ ]+([a-zA-Z_][,a-zA-Z0-9._]*)$", blocktype)
+                        if res and len(res[0]) == 3:
+                            # No function call is made in 'bolcktype', so we don't need to check for them.
+                            # Only 'stuff for stuff in other_stuff' is used.
+                            # 'res[0]' is split in 3 elements: left part of 'for', inner part between 'for'and 'in', and right part of 'in'
+                            # Let define 'left' is the left part of 'for', 'right' is the inner part between 'for'and 'in', and 'iter_obj' the right part of 'in'.
+
+                            # If the 'left' and 'right' are the same, check 'iter_obj' for nested attributes (like in 'a for a in b.c.d')
+
+                            # If 'left' and 'right' aren't the same, check if 'left' is using calls to attributes (like in 'a.b for a in c')
+                            # If yes, check the 'iter_obj for nested attributes.
+
+                            # To not write repeated code, let use variables to store the status of each of the three elements.
+
+                            left, right, iter_obj = res[0]
+                            left_valid = False
+                            right_valid = False
+                            iter_obj_valid = False
+
+                            # Test 'right' first, since calling attribute on this element in 'for' loops is invalid in Python.
+                            if '.' in right:
+                                SyntaxError("Malformed string: %s. Calling attributes on the right of 'for' is invalid." % blocktype)
+
+                            # Test 'iter_obj'.
+                            _iter_obj, _o_str = iter_obj.split('.', 1)
+                            if _iter_obj in globals().keys():
+                                iter_obj = globals()[_iter_obj]
+                                while '.' in _o_str:
+                                    _iter_obj, _ostr = _ostr.split('.')
+                                    iter_obj = getattr(iter_obj, _iter_obj)
+
+                            # Test 'left'.
+                            left_name, left_attrs = left.split('.')
+                            if left_name != right:
+                                SyntaxError("Malformed string: '%s'" % blocktype)
+
+                            # All checks passed, we can proceed the loop.
+                            if left_attrs:
+                                [table[eval('a.%s' % left_attrs)] for a in iter_obj]
+                                print table
+                            else:
+                                table[blocktype] = [a for a in iter_obj]
+
+                        else:
+                            raise_malformed = True
+                        if raise_malformed:
+                            raise SyntaxError("Malformed string: %s" % blocktype)
 
     return table
 
