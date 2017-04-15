@@ -852,7 +852,6 @@ def masterRotationTable(attrname):
         if hasattr(cls, attrname):
             blocktable = getattr(cls, attrname)
             for blocktype in cls.blocktypes:
-                print type(blocktable)
                 # Very bad stuff here...
                 try:
                     table[blocktype] = blocktable
