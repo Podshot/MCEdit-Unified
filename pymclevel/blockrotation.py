@@ -899,7 +899,7 @@ def masterRotationTable(attrname):
                             # All checks passed, we can proceed the loop.
                             if left_attrs:
                                 [table[eval('a.%s' % left_attrs)] for a in iter_obj]
-                                print table
+                                # print table
                             else:
                                 table[blocktype] = [a for a in iter_obj]
 
@@ -953,3 +953,4 @@ def RotateLeft(blocks, data):
 
 def Roll(blocks, data):
     data[:] = BlockRotation().roll[blocks, data]
+
