@@ -579,7 +579,7 @@ class MCServerChunkGenerator(object):
                         uncreated_chunks.append((cx, cz))
                 else:
                     if (cx, cz) in boxedChunks and (cx, cz) not in uncreated_chunks:
-                        print "adding (%s, %s) to uncreated_chunks"%(cx, cz)
+                        log.info("adding (%s, %s) to uncreated_chunks"%(cx, cz))
                         uncreated_chunks.append((cx, cz))
             yield i, startLength, "Generating..."
 
@@ -589,7 +589,7 @@ class MCServerChunkGenerator(object):
         elif uncreated_chunks:
             msg = "Some chunks were not generated. Reselect them and retry."
         if msg:
-            print msg
+            log.warning(msg)
 
 #         print "len(uncreated_chunks)", len(uncreated_chunks)
 
