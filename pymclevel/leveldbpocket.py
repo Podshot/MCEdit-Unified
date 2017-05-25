@@ -1953,6 +1953,8 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
                 write_dump("    Not loaded, loading\n")
             c = self.worldFile.loadChunk(cx, cz, self)
             self._loadedChunks[(cx, cz)] = c
+            if DEBUG_PE:
+                write_dump("*** Loaded chunks num.: %s" % len(self._loadedChunks))
         return c
 
     def unload(self):
@@ -2081,7 +2083,9 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
 
         with nbt.littleEndianNBT():
             for p in self.players:
-                playerData = self.playerTagCache[p]
+                # The player data may not be in the cache if we have multi-player game.
+                # So, accessing the cache using the player as key crashes the program...
+                playerData = self.playerTagCache.get(p)
                 if playerData is not None:
                     playerData = playerData.save(compressed=False)  # It will get compressed in the DB itself
                     self.worldFile.savePlayer(p, playerData, batch=batch)
