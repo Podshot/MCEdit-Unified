@@ -733,7 +733,7 @@ class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
     
     def __init__(self, filename=None, root_tag=None, size=None, mats=alphaMaterials):
-        if not 'blockstateToID' in globale().keys():
+        if not 'blockstateToID' in globals().keys():
             from materials import blockstateToID
         self._author = None
         self._blocks = None
