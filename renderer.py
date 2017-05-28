@@ -892,14 +892,18 @@ class ChunkCalculator(object):
 
         areaBlocks = numpy.zeros((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint16)
         areaBlocks[1:-1, 1:-1, 1:-1] = chunk.Blocks
-        areaBlocks[:1, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks[-1:, :chunkLength,
-                                     :chunkHeight]
-        areaBlocks[-1:, 1:-1, 1:-1] = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks[:1, :chunkLength,
-                                      :chunkHeight]
-        areaBlocks[1:-1, :1, 1:-1] = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks[:chunkWidth, -1:,
-                                     :chunkHeight]
-        areaBlocks[1:-1, -1:, 1:-1] = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks[:chunkWidth, :1,
-                                      :chunkHeight]
+        nb_fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing]
+        areaBlocks[:1, 1:-1, 1:-1] = nb_fxd.Blocks[-1:, :chunkLength,
+                                     :nb_fxd.Blocks.shape[2]]
+        nb_fxi = neighboringChunks[pymclevel.faces.FaceXIncreasing]
+        areaBlocks[-1:, 1:-1, 1:-1] = nb_fxi.Blocks[:1, :chunkLength,
+                                      :nb_fxi.Blocks.shape[2]]
+        nb_fzd = neighboringChunks[pymclevel.faces.FaceZDecreasing]
+        areaBlocks[1:-1, :1, 1:-1] = nb_fzd.Blocks[:chunkWidth, -1:,
+                                     :nb_fzd.Blocks.shape[2]]
+        nb_fzi = neighboringChunks[pymclevel.faces.FaceZIncreasing]
+        areaBlocks[1:-1, -1:, 1:-1] = nb_fzi.Blocks[:chunkWidth, :1,
+                                      :nb_fzi.Blocks.shape[2]]
         return areaBlocks
 
     @staticmethod
@@ -939,47 +943,55 @@ class ChunkCalculator(object):
         areaBlockLights[1:-1, 1:-1, 1:-1] = finalLight
 
         nc = neighboringChunks[pymclevel.faces.FaceXDecreasing]
-        numpy.maximum(nc.SkyLight[-1:, :chunkLength, :chunkHeight],
-                      nc.BlockLight[-1:, :chunkLength, :chunkHeight],
+        numpy.maximum(nc.SkyLight[-1:, :chunkLength, :nc.Blocks.shape[2]],
+                      nc.BlockLight[-1:, :chunkLength, :nc.Blocks.shape[2]],
                       areaBlockLights[0:1, 1:-1, 1:-1])
  
         nc = neighboringChunks[pymclevel.faces.FaceXIncreasing]
-        numpy.maximum(nc.SkyLight[:1, :chunkLength, :chunkHeight],
-                      nc.BlockLight[:1, :chunkLength, :chunkHeight],
+        numpy.maximum(nc.SkyLight[:1, :chunkLength, :nc.Blocks.shape[2]],
+                      nc.BlockLight[:1, :chunkLength, :nc.Blocks.shape[2]],
                       areaBlockLights[-1:, 1:-1, 1:-1])
  
         nc = neighboringChunks[pymclevel.faces.FaceZDecreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, -1:, :chunkHeight],
-                      nc.BlockLight[:chunkWidth, -1:, :chunkHeight],
+        numpy.maximum(nc.SkyLight[:chunkWidth, -1:, :nc.Blocks.shape[2]],
+                      nc.BlockLight[:chunkWidth, -1:, :nc.Blocks.shape[2]],
                       areaBlockLights[1:-1, 0:1, 1:-1])
  
         nc = neighboringChunks[pymclevel.faces.FaceZIncreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, :1, :chunkHeight],
-                      nc.BlockLight[:chunkWidth, :1, :chunkHeight],
+        numpy.maximum(nc.SkyLight[:chunkWidth, :1, :nc.Blocks.shape[2]],
+                      nc.BlockLight[:chunkWidth, :1, :nc.Blocks.shape[2]],
                       areaBlockLights[1:-1, -1:, 1:-1])
 
-        fxd_skyLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight
-        fxi_skyLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight
-        fzd_skyLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight
-        fzi_skyLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight
-        fxd_blockLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight
-        fxi_blockLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight
-        fzd_blockLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight
-        fzi_blockLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].BlockLight
-        numpy.maximum(fxd_skyLight[-1:, :chunkLength, :chunkHeight],
-                      fxd_blockLight[-1:, :chunkLength, :chunkHeight],
+        fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing]
+        fxi = neighboringChunks[pymclevel.faces.FaceXIncreasing]
+        fzd = neighboringChunks[pymclevel.faces.FaceZDecreasing]
+        fzi = neighboringChunks[pymclevel.faces.FaceZIncreasing]
+        fxd_skyLight = fxd.SkyLight
+        fxi_skyLight = fxi.SkyLight
+        fzd_skyLight = fzd.SkyLight
+        fzi_skyLight = fzi.SkyLight
+        fxd_blockLight = fxd.BlockLight
+        fxi_blockLight = fxi.BlockLight
+        fzd_blockLight = fzd.BlockLight
+        fzi_blockLight = fzi.BlockLight
+        fxd_height = fxd.Blocks.shape[2]
+        fxi_height = fxi.Blocks.shape[2]
+        fzd_height = fzd.Blocks.shape[2]
+        fzi_height = fzi.Blocks.shape[2]
+        numpy.maximum(fxd_skyLight[-1:, :chunkLength, :fxd_height],
+                      fxd_blockLight[-1:, :chunkLength, :fxd_height],
                       areaBlockLights[0:1, 1:-1, 1:-1])
 
-        numpy.maximum(fxi_skyLight[:1, :chunkLength, :chunkHeight],
-                      fxi_blockLight[:1, :chunkLength, :chunkHeight],
+        numpy.maximum(fxi_skyLight[:1, :chunkLength, :fxi_height],
+                      fxi_blockLight[:1, :chunkLength, :fxi_height],
                       areaBlockLights[-1:, 1:-1, 1:-1])
 
-        numpy.maximum(fzd_skyLight[:chunkWidth, -1:, :chunkHeight],
-                      fzd_blockLight[:chunkWidth, -1:, :chunkHeight],
+        numpy.maximum(fzd_skyLight[:chunkWidth, -1:, :fzd_height],
+                      fzd_blockLight[:chunkWidth, -1:, :fzd_height],
                       areaBlockLights[1:-1, 0:1, 1:-1])
 
-        numpy.maximum(fzi_skyLight[:chunkWidth, :1, :chunkHeight],
-                      fzi_blockLight[:chunkWidth, :1, :chunkHeight],
+        numpy.maximum(fzi_skyLight[:chunkWidth, :1, :fzi_height],
+                      fzi_blockLight[:chunkWidth, :1, :fzi_height],
                       areaBlockLights[1:-1, -1:, 1:-1])
 
         minimumLight = 4
