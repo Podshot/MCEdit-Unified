@@ -2142,6 +2142,8 @@ class PocketLeveldbWorld_new(ChunkedLevelMixin, MCLevel):
 #                 magic = 4
 
             magic = self.dat_world_version
+            if isinstance(magic, (str, unicode)):
+                magic = ord(magic)
 
             rootTagData = struct.Struct('<i').pack(magic) + struct.Struct('<i').pack(len(rootTagData)) + rootTagData
             with open(path, 'w') as f:
