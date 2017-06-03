@@ -892,18 +892,28 @@ class ChunkCalculator(object):
 
         areaBlocks = numpy.zeros((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint16)
         areaBlocks[1:-1, 1:-1, 1:-1] = chunk.Blocks
-        nb_fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing]
-        areaBlocks[:1, 1:-1, 1:-1] = nb_fxd.Blocks[-1:, :chunkLength,
-                                     :nb_fxd.Blocks.shape[2]]
-        nb_fxi = neighboringChunks[pymclevel.faces.FaceXIncreasing]
-        areaBlocks[-1:, 1:-1, 1:-1] = nb_fxi.Blocks[:1, :chunkLength,
-                                      :nb_fxi.Blocks.shape[2]]
-        nb_fzd = neighboringChunks[pymclevel.faces.FaceZDecreasing]
-        areaBlocks[1:-1, :1, 1:-1] = nb_fzd.Blocks[:chunkWidth, -1:,
-                                     :nb_fzd.Blocks.shape[2]]
-        nb_fzi = neighboringChunks[pymclevel.faces.FaceZIncreasing]
-        areaBlocks[1:-1, -1:, 1:-1] = nb_fzi.Blocks[:chunkWidth, :1,
-                                      :nb_fzi.Blocks.shape[2]]
+        zeros = numpy.zeros((16, 16, 128), dtype=areaBlocks.dtype)
+
+        nb_fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing].Blocks
+        if nb_fxd.shape[2] == chunkHeight / 2:
+            nb_fxd = numpy.concatenate((nb_fxd, zeros), axis=2)
+        areaBlocks[:1, 1:-1, 1:-1] = nb_fxd[-1:, :chunkLength,
+                                     :chunkHeight]
+        nb_fxi = neighboringChunks[pymclevel.faces.FaceXIncreasing].Blocks
+        if nb_fxi.shape[2] == chunkHeight / 2:
+            nb_fxi = numpy.concatenate((nb_fxi, zeros), axis=2)
+        areaBlocks[-1:, 1:-1, 1:-1] = nb_fxi[:1, :chunkLength,
+                                      :chunkHeight]
+        nb_fzd = neighboringChunks[pymclevel.faces.FaceZDecreasing].Blocks
+        if nb_fzd.shape[2] == chunkHeight / 2:
+            nb_fzd = numpy.concatenate((nb_fzd, zeros), axis=2)
+        areaBlocks[1:-1, :1, 1:-1] = nb_fzd[:chunkWidth, -1:,
+                                     :chunkHeight]
+        nb_fzi = neighboringChunks[pymclevel.faces.FaceZIncreasing].Blocks
+        if nb_fzi.shape[2] == chunkHeight / 2:
+            nb_fzi = numpy.concatenate((nb_fzi, zeros), axis=2)
+        areaBlocks[1:-1, -1:, 1:-1] = nb_fzi[:chunkWidth, :1,
+                                      :chunkHeight]
         return areaBlocks
 
     @staticmethod
@@ -942,24 +952,38 @@ class ChunkCalculator(object):
 
         areaBlockLights[1:-1, 1:-1, 1:-1] = finalLight
 
-        nc = neighboringChunks[pymclevel.faces.FaceXDecreasing]
-        numpy.maximum(nc.SkyLight[-1:, :chunkLength, :nc.Blocks.shape[2]],
-                      nc.BlockLight[-1:, :chunkLength, :nc.Blocks.shape[2]],
+        zeros = numpy.zeros((16, 16, 128), dtype=areaBlockLights.dtype)
+
+        skyLight, blockLight = neighboringChunks[pymclevel.faces.FaceXDecreasing].SkyLight, neighboringChunks[pymclevel.faces.FaceXDecreasing].BlockLight
+        if skyLight.shape[2] == chunkHeight / 2:
+            skyLight = numpy.concatenate((skyLight, zeros), axis=2)
+            blockLight = numpy.concatenate((blockLight, zeros), axis=2)
+        numpy.maximum(skyLight[-1:, :chunkLength, :chunkHeight],
+                      blockLight[-1:, :chunkLength, :chunkHeight],
                       areaBlockLights[0:1, 1:-1, 1:-1])
- 
-        nc = neighboringChunks[pymclevel.faces.FaceXIncreasing]
-        numpy.maximum(nc.SkyLight[:1, :chunkLength, :nc.Blocks.shape[2]],
-                      nc.BlockLight[:1, :chunkLength, :nc.Blocks.shape[2]],
+
+        skyLight, blockLight = neighboringChunks[pymclevel.faces.FaceXIncreasing].SkyLight, neighboringChunks[pymclevel.faces.FaceXIncreasing].BlockLight
+        if skyLight.shape[2] == chunkHeight / 2:
+            skyLight = numpy.concatenate((skyLight, zeros), axis=2)
+            blockLight = numpy.concatenate((blockLight, zeros), axis=2)
+        numpy.maximum(skyLight[:1, :chunkLength, :chunkHeight],
+                      blockLight[:1, :chunkLength, :chunkHeight],
                       areaBlockLights[-1:, 1:-1, 1:-1])
- 
-        nc = neighboringChunks[pymclevel.faces.FaceZDecreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, -1:, :nc.Blocks.shape[2]],
-                      nc.BlockLight[:chunkWidth, -1:, :nc.Blocks.shape[2]],
+
+        skyLight, blockLight = neighboringChunks[pymclevel.faces.FaceZDecreasing].SkyLight, neighboringChunks[pymclevel.faces.FaceZDecreasing].BlockLight
+        if skyLight.shape[2] == chunkHeight / 2:
+            skyLight = numpy.concatenate((skyLight, zeros), axis=2)
+            blockLight = numpy.concatenate((blockLight, zeros), axis=2)
+        numpy.maximum(skyLight[:chunkWidth, -1:, :chunkHeight],
+                      blockLight[:chunkWidth, -1:, :chunkHeight],
                       areaBlockLights[1:-1, 0:1, 1:-1])
- 
-        nc = neighboringChunks[pymclevel.faces.FaceZIncreasing]
-        numpy.maximum(nc.SkyLight[:chunkWidth, :1, :nc.Blocks.shape[2]],
-                      nc.BlockLight[:chunkWidth, :1, :nc.Blocks.shape[2]],
+
+        skyLight, blockLight = neighboringChunks[pymclevel.faces.FaceZIncreasing].SkyLight, neighboringChunks[pymclevel.faces.FaceZIncreasing].BlockLight
+        if skyLight.shape[2] == chunkHeight / 2:
+            skyLight = numpy.concatenate((skyLight, zeros), axis=2)
+            blockLight = numpy.concatenate((blockLight, zeros), axis=2)
+        numpy.maximum(skyLight[:chunkWidth, :1, :chunkHeight],
+                      blockLight[:chunkWidth, :1, :chunkHeight],
                       areaBlockLights[1:-1, -1:, 1:-1])
 
         fxd = neighboringChunks[pymclevel.faces.FaceXDecreasing]
@@ -974,24 +998,32 @@ class ChunkCalculator(object):
         fxi_blockLight = fxi.BlockLight
         fzd_blockLight = fzd.BlockLight
         fzi_blockLight = fzi.BlockLight
-        fxd_height = fxd.Blocks.shape[2]
-        fxi_height = fxi.Blocks.shape[2]
-        fzd_height = fzd.Blocks.shape[2]
-        fzi_height = fzi.Blocks.shape[2]
-        numpy.maximum(fxd_skyLight[-1:, :chunkLength, :fxd_height],
-                      fxd_blockLight[-1:, :chunkLength, :fxd_height],
+        if fxd_skyLight.shape[2] == chunkHeight / 2:
+            fxd_skyLight = numpy.concatenate((fxd_skyLight, zeros), axis=2)
+            fxd_blockLight = numpy.concatenate((fxd_blockLight, zeros), axis=2)
+        if fxi_skyLight.shape[2] == chunkHeight / 2:
+            fxi_skyLight = numpy.concatenate((fxi_skyLight, zeros), axis=2)
+            fxi_blockLight = numpy.concatenate((fxi_blockLight, zeros), axis=2)
+        if fzd_skyLight.shape[2] == chunkHeight / 2:
+            fzd_skyLight = numpy.concatenate((fzd_skyLight, zeros), axis=2)
+            fzd_blockLight = numpy.concatenate((fzd_blockLight, zeros), axis=2)
+        if fzi_skyLight.shape[2] == chunkHeight / 2:
+            fzi_skyLight = numpy.concatenate((fzi_skyLight, zeros), axis=2)
+            fzi_blockLight = numpy.concatenate((fzi_blockLight, zeros), axis=2)
+        numpy.maximum(fxd_skyLight[-1:, :chunkLength, :chunkHeight],
+                      fxd_blockLight[-1:, :chunkLength, :chunkHeight],
                       areaBlockLights[0:1, 1:-1, 1:-1])
 
-        numpy.maximum(fxi_skyLight[:1, :chunkLength, :fxi_height],
-                      fxi_blockLight[:1, :chunkLength, :fxi_height],
+        numpy.maximum(fxi_skyLight[:1, :chunkLength, :chunkHeight],
+                      fxi_blockLight[:1, :chunkLength, :chunkHeight],
                       areaBlockLights[-1:, 1:-1, 1:-1])
 
-        numpy.maximum(fzd_skyLight[:chunkWidth, -1:, :fzd_height],
-                      fzd_blockLight[:chunkWidth, -1:, :fzd_height],
+        numpy.maximum(fzd_skyLight[:chunkWidth, -1:, :chunkHeight],
+                      fzd_blockLight[:chunkWidth, -1:, :chunkHeight],
                       areaBlockLights[1:-1, 0:1, 1:-1])
 
-        numpy.maximum(fzi_skyLight[:chunkWidth, :1, :fzi_height],
-                      fzi_blockLight[:chunkWidth, :1, :fzi_height],
+        numpy.maximum(fzi_skyLight[:chunkWidth, :1, :chunkHeight],
+                      fzi_blockLight[:chunkWidth, :1, :chunkHeight],
                       areaBlockLights[1:-1, -1:, 1:-1])
 
         minimumLight = 4
@@ -3869,7 +3901,7 @@ class MCRenderer(object):
 
                 self.invalidateMasterList()
 
-            except Exception, e:
+            except Exception as e:
                 traceback.print_exc()
                 fn = c
 

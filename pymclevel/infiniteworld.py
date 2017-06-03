@@ -532,7 +532,8 @@ class ChunkedLevelMixin(MCLevel):
             ch = self.getChunk(xc, zc)
         except ChunkNotPresent:
             return 0
-
+        if y >= ch.Height:
+            return 0
         return ch.Blocks[xInChunk, zInChunk, y]
 
     def setBlockAt(self, x, y, z, blockID):
