@@ -1309,8 +1309,10 @@ def build_api_material_map(mats=alphaMaterials):
     _mats = BlockstateAPI.material_map.get(mats)
     if not _mats:
         raise RuntimeError("BlockstateAPI.material_map[%s] not ready."%mats)
+    global block_map
     block_map = _mats.block_map
     blockstates = _mats.blockstates
+    global idToBlockState
     idToBlockstate = _mats.idToBlockstate
     blockstateToID = _mats.blockstateToID
     stringifyBlockstate = _mats.stringifyBlockstate
