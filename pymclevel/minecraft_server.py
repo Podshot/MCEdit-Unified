@@ -110,7 +110,7 @@ this way.
         self.versions = list(
             reversed(sorted([v for v in cacheDirList if os.path.exists(self.jarfileForVersion(v))], key=alphanum_key)))
 
-        if MCServerChunkGenerator.javaExe:
+        if MCServerChunkGenerator.java_exe:
             for f in cacheDirList:
                 p = os.path.join(self._cacheDir, f)
                 if f.startswith("minecraft_server") and f.endswith(".jar") and os.path.isfile(p):
@@ -213,9 +213,23 @@ def saveProperties(filename, properties):
 
 
 def findJava():
+    # Here we implement the Java executable on the CLI.
+    # This is because several version of Java may be installed on the system, and the one
+    # needed fir the server may not be in the path...
+    log.info("Looking for Java")
+    if "--java" in sys.argv:
+        idx = sys.argv.index("--java")
+        java_exe_path = sys.argv.pop(idx + 1)
+        sys.argv.pop(idx)
+        log.info("CLI switch '--java' found: %s" % java_exe_path)
+    else:
+        if sys.platform == "win32":
+            java_exe_path = "java.exe"
+        else:
+            java_exe_path = "java"
     if sys.platform == "win32":
-        javaExe = which("java.exe")
-        if javaExe is None:
+        java_exe = which(java_exe_path)
+        if java_exe is None:
             KEY_NAME = "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment"
             try:
                 p = subprocess.Popen(["REG", "QUERY", KEY_NAME, "/v", "CurrentVersion"], stdout=subprocess.PIPE,
@@ -236,16 +250,16 @@ def findJava():
                             if l.startswith("JavaHome"):
                                 w = l.split(None, 2)
                                 javaHome = w[-1]
-                                javaExe = os.path.join(javaHome, "bin", "java.exe")
-                                print "RegQuery: java.exe found at ", javaExe
+                                java_exe = os.path.join(javaHome, "bin", "java.exe")
+                                print "RegQuery: java.exe found at ", java_exe
                                 break
 
             except Exception, e:
                 print "Error while locating java.exe using the Registry: ", repr(e)
     else:
-        javaExe = which("java")
+        java_exe = which(java_exe_path)
 
-    return javaExe
+    return java_exe
 
 
 class MCServerChunkGenerator(object):
@@ -272,7 +286,7 @@ class MCServerChunkGenerator(object):
     """
     defaultJarStorage = None
 
-    javaExe = findJava()
+    java_exe = findJava()
     jarStorage = None
     _tempWorldCache = {}
     processes = []
@@ -281,7 +295,7 @@ class MCServerChunkGenerator(object):
 
         self.jarStorage = jarStorage or self.getDefaultJarStorage()
 
-        if self.javaExe is None:
+        if self.java_exe is None:
             raise JavaNotFound(
                 "Could not find java. Please check that java is installed correctly. (Could not find java in your PATH environment variable.)")
         if jarfile is None:
@@ -618,8 +632,8 @@ class MCServerChunkGenerator(object):
         else:
             memflags = ["-Xmx1024M", "-Xms1024M", ]
 
-        proc = subprocess.Popen([cls.javaExe, "-Djava.awt.headless=true"] + memflags + ["-jar", jarfile],
-                                executable=cls.javaExe,
+        proc = subprocess.Popen([cls.java_exe, "-Djava.awt.headless=true"] + memflags + ["-jar", jarfile],
+                                executable=cls.java_exe,
                                 cwd=startingDir,
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
