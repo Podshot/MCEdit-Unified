@@ -38,18 +38,18 @@ excludedEntries = ['tile.flower1.name',]
 report_missing = False
 
 def getResourceName(name, data):
-    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",'%name, data, re.DOTALL)
+    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",' % name, data, re.DOTALL)
     if match:
         return match[0]
     else:
-        log.debug('Could not find %s resource name.'%name)
+        log.debug('Could not find %s resource name.' % name)
 
 def findResourceFile(name, basedir):
     for root, dirs, files in os.walk(basedir):
         if name in files:
             return os.path.join(basedir, root, name)
 
-def buildResources(version=None, lang=None):
+def buildResources(version=None, lang=None): 
     """Loads the resource files and builds the resource dictionnaries.
     Four dictionnaries are built. Two for the refering language (English), and two for the language to be used.
     They are 'reversed' dictionnaries; the {foo: bar} pairs of one are the {bar: foo} of the other one."""
@@ -81,12 +81,12 @@ def buildResources(version=None, lang=None):
         log.debug("No valid versions found in minecraft install directory")
         return
     versions.sort()
-    version = "%s.json"%version
+    version = "%s.json" % version
     if version in versions:
         fName = os.path.join(indexesDirectory, version)
     else:
         fName = os.path.join(indexesDirectory, versions[-1])
-    log.debug('Using %s'%fName)
+    log.debug('Using %s' % fName)
     data = open(fName).read()
     name = getResourceName('en_GB', data)
     if name:
@@ -94,10 +94,10 @@ def buildResources(version=None, lang=None):
         if not os.path.exists(fName):
             fName = findResourceFile(name, objectsDirectory)
         if not fName:
-            log.debug('Can\'t get the resource %s.'%name)
+            log.debug('Can\'t get the resource %s.' % name)
             log.debug('Nothing built. Aborted')
             return
-        log.debug('Found %s'%name)
+        log.debug('Found %s' % name)
         lines = codecs.open(fName, encoding='utf_8').readlines()
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
@@ -112,7 +112,7 @@ def buildResources(version=None, lang=None):
         return
     if not lang:
         lang = 'en_GB'
-    log.debug('Looking for %s resources.'%lang)
+    log.debug('Looking for %s resources.' % lang)
     name = getResourceName(lang, data)
     if not name:
         lang = 'en_GB'
@@ -122,9 +122,9 @@ def buildResources(version=None, lang=None):
         if not os.path.exists(fName):
             fName = findResourceFile(name, objectsDirectory)
         if not fName:
-            log.debug('Can\'t get the resource %s.'%name)
+            log.debug('Can\'t get the resource %s.' % name)
             return
-        log.debug('Found %s...'%name)
+        log.debug('Found %s...' % name)
         lines = codecs.open(fName, encoding='utf_8').readlines()
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
@@ -192,7 +192,7 @@ def compound(char, string, pair=None):
             misc[i] = u'_'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('_')])
         else:
             misc[i] = langRes.get(enRes.get(misc[i], misc[i]), misc[i])
-    tail = u'%s%s%s'%(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
+    tail = u'{0}{1}{2}'.format(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
     return u' '.join((head, tail))
 
 if report_missing:
@@ -207,7 +207,7 @@ if report_missing:
         if len(elems) > 1:
             tail = ''.join([a.capitalize() for a in elems[1].split(' ') if not a.isdigit()])
         if not n.isdigit():
-            line = 'missing.%s.%s%s=%s\n'%(cat, head, tail, name)
+            line = 'missing.{0}.{1}{2}={3}\n'.format(cat, head, tail, name)
             f = codecs.open(os.path.join(getDataDir(), 'missingmclangres.txt'), 'a+', encoding='utf_8')
             if line not in f.read():
                 f.write(line)
