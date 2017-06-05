@@ -289,7 +289,7 @@
         {
             "id": 236,
             "name": "Orange glazed terracotta",
-            "idStr": "orang_glazed_terracotta",
+            "idStr": "orange_glazed_terracotta",
             "tex": [15, 23],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
@@ -331,7 +331,7 @@
         {
             "id": 242,
             "name": "Gray glazed terracotta",
-            "idStr": "Gray_glazed_terracotta",
+            "idStr": "gray_glazed_terracotta",
             "tex": [11, 23],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
