@@ -291,10 +291,6 @@ class MCEdit(GLViewport):
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
-        #&# Prototype for blocks/items names
-        mclangres.buildResources(lang=albow.translate.getLang())
-        #&#
-
         #.#
         self.keyConfigPanel = keys.KeyConfigPanel(self)
         #.#
@@ -329,7 +325,7 @@ class MCEdit(GLViewport):
         GLViewport.set_update_ui(self, v)
         if v:
             #&# Prototype for blocks/items names
-            mclangres.buildResources(lang=albow.translate.getLang())
+            mclangres.buildResources(self.editor.level.gameVersion, albow.translate.getLang())
             #&#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)

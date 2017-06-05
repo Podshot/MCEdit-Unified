@@ -84,7 +84,7 @@ get_font = albow.resource.get_font
 from albow.controls import Label, ValueDisplay, Image, RotatableImage
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
-from albow.translate import _
+from albow.translate import _, getLang
 from pygame import display, event, mouse, MOUSEMOTION, image
 
 from depths import DepthOffset
@@ -100,6 +100,7 @@ from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDi
     MCInfdevOldLevel
 # Block and item translation
 from mclangres import translate as trn
+from mclangres import buildResources
 
 try:
     import resource  # @UnresolvedImport
@@ -1237,6 +1238,7 @@ class LevelEditor(GLViewport):
             log.info('Loading \'Schematic\' file.')
         else:
             log.info('Loading world for version {}.'.format({True: "prior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
+            buildResources(gameVersion, getLang())
 
         self.loadLevel(level)
 

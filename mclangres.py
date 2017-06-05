@@ -38,7 +38,7 @@ excludedEntries = ['tile.flower1.name',]
 report_missing = False
 
 def getResourceName(name, data):
-    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",' % name, data, re.DOTALL)
+    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",' % name, data, re.I|re.DOTALL)
     if match:
         return match[0]
     else:
@@ -80,11 +80,24 @@ def buildResources(version=None, lang=None):
     if len(versions) == 0:
         log.debug("No valid versions found in minecraft install directory")
         return
-    versions.sort()
-    version = "%s.json" % version
-    if version in versions:
-        fName = os.path.join(indexesDirectory, version)
-    else:
+    # Sort the version so '1.8' comes after '1.10'.
+    versions = ['%s.json' % '.'.join(map(u"{}".format, c)) for c in sorted((map(int, b) for b in (a.split('.')[:-1] for a in versions)))]
+    version_file = "%s.json" % version
+    fName = None
+    if version_file in versions:
+        fName = os.path.join(indexesDirectory, version_file)
+    elif version:
+        # Let's try to find a corresponding file by reducing the name.
+        # E.g: 1.10.2 don't have an asset definition file, but 1.10 have. All the same for the pre-releases...
+        if '-' in version:
+            version = version.split('-')[0]
+        while '.' in version:
+            version = version.split('.')
+            version_file = "%s.json" % version
+            if version_file in versions:
+                fName = os.path.join(indexesDirectory, version_file)
+                break
+    if not fName:
         fName = os.path.join(indexesDirectory, versions[-1])
     log.debug('Using %s' % fName)
     data = open(fName).read()
@@ -105,8 +118,12 @@ def buildResources(version=None, lang=None):
                 serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
         lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'), encoding='utf_8')
         for line in lines:
-            enMisc[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
-            csimNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+            if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
+                enRes[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+            else:
+                enMisc[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                csimNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
         log.debug('... Loaded!')
     else:
         return
@@ -131,10 +148,15 @@ def buildResources(version=None, lang=None):
                 langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
                 serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
         if os.path.exists(os.path.join(getDataDir(), 'Items', lang)):
+            log.debug("Found Items/%s" % lang)
             lines = codecs.open(os.path.join(getDataDir(), 'Items', lang), encoding='utf_8')
             for line in lines:
-                langMisc[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
-                csimGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
+                    langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+                    serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                else:
+                    langMisc[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+                    csimGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
         log.debug('... Loaded!')
     else:
         return
