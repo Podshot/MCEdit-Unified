@@ -2,7 +2,7 @@
     "load": "1.11",
     "blocks": [
         {
-            "id": "251",
+            "id": 251,
             "name": "Concrete",
             "idStr": "concrete",
             "mapcolor": [128, 128, 128],
@@ -74,8 +74,7 @@
             }
         },
         {
-            {
-            "id": "252",
+            "id": 252,
             "name": "Concrete powder",
             "idStr": "concrete_powder",
             "mapcolor": [128, 128, 128],
@@ -147,100 +146,100 @@
             }
         },
         {
-            "id": "235",
+            "id": 235,
             "name": "White glazed terracotta",
             "idStr": "white_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "236",
+            "id": 236,
             "name": "Orange glazed terracotta",
             "idStr": "orang_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "237",
+            "id": 237,
             "name": "Magent glazed terracotta",
             "idStr": "magenta_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "238",
+            "id": 238,
             "name": "Light blue glazed terracotta",
             "idStr": "light_blue_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "239",
+            "id": 239,
             "name": "Yellow glazed terracotta",
             "idStr": "yellow_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "240",
+            "id": 240,
             "name": "Lime glazed terracotta",
             "idStr": "lime_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "241",
+            "id": 241,
             "name": "Pink glazed terracotta",
             "idStr": "pink_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "242",
+            "id": 242,
             "name": "Gray glazed terracotta",
             "idStr": "Gray_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "243",
+            "id": 243,
             "name": "Light gray glazed terracotta",
             "idStr": "light_gray_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "244",
+            "id": 244,
             "name": "Cyan glazed terracotta",
             "idStr": "cyan_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "245",
+            "id": 245,
             "name": "Purple glazed terracotta",
             "idStr": "purple_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "248",
+            "id": 248,
             "name": "Blue glazed terracotta",
             "idStr": "blue_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "247",
+            "id": 247,
             "name": "Brown glazed terracotta",
             "idStr": "brown_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "248",
+            "id": 248,
             "name": "Green glazed terracotta",
             "idStr": "green_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "249",
+            "id": 249,
             "name": "Red glazed terracotta",
             "idStr": "red_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
         },
         {
-            "id": "250",
+            "id": 250,
             "name": "Black glazed terracotta",
             "idStr": "black_glazed_terracotta",
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
-        },
+        }
     ]
 }
