@@ -284,112 +284,560 @@
             "name": "White glazed terracotta",
             "idStr": "white_glazed_terracotta",
             "tex": [13, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "White glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "White glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "White glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "White glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 236,
             "name": "Orange glazed terracotta",
             "idStr": "orange_glazed_terracotta",
             "tex": [15, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Orange glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Orange glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Orange glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Orange glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 237,
             "name": "Magenta glazed terracotta",
             "idStr": "magenta_glazed_terracotta",
             "tex": [23, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Magenta glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Magenta glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Magenta glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Magenta glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 238,
             "name": "Light blue glazed terracotta",
             "idStr": "light_blue_glazed_terracotta",
             "tex": [20, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Light blue glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Light blue glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Light blue glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Light blue glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 239,
             "name": "Yellow glazed terracotta",
             "idStr": "yellow_glazed_terracotta",
             "tex": [16, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Yellow glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Yellow glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Yellow glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Yellow glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 240,
             "name": "Lime glazed terracotta",
             "idStr": "lime_glazed_terracotta",
             "tex": [17, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Lime glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Lime glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Lime glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Lime glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 241,
             "name": "Pink glazed terracotta",
             "idStr": "pink_glazed_terracotta",
             "tex": [24, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Pink glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Pink glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Pink glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Pink glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 242,
             "name": "Gray glazed terracotta",
             "idStr": "gray_glazed_terracotta",
             "tex": [11, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Gray glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Gray glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Gray glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Gray glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 243,
             "name": "Light gray glazed terracotta",
             "idStr": "light_gray_glazed_terracotta",
             "tex": [12, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Light gray glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Light gray glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Light gray glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Light gray glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 244,
             "name": "Cyan glazed terracotta",
             "idStr": "cyan_glazed_terracotta",
             "tex": [19, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Cyan glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Cyan glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Cyan glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Cyan glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 245,
             "name": "Purple glazed terracotta",
             "idStr": "purple_glazed_terracotta",
             "tex": [22, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Purple glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Purple glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Purple glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Purple glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 248,
             "name": "Blue glazed terracotta",
             "idStr": "blue_glazed_terracotta",
             "tex": [21, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Blue glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Blue glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Blue glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Blue glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 247,
             "name": "Brown glazed terracotta",
             "idStr": "brown_glazed_terracotta",
             "tex": [25, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Brown glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Brown glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Brown glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Brown glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 248,
             "name": "Green glazed terracotta",
             "idStr": "green_glazed_terracotta",
             "tex": [18, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Green glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Green glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Green glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Green glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 249,
             "name": "Red glazed terracotta",
             "idStr": "red_glazed_terracotta",
             "tex": [14, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Red glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Red glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Red glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Red glazed terracotta (West)"
+                }
+            }
         },
         {
             "id": 250,
             "name": "Black glazed terracotta",
             "idStr": "black_glazed_terracotta",
             "tex": [10, 23],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!"
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Black glazed terracotta (North)"
+                },
+                "1": {
+                    "name": "Black glazed terracotta (East)"
+                },
+                "2": {
+                    "name": "Black glazed terracotta (South)"
+                },
+                "3": {
+                    "name": "Black glazed terracotta (West)"
+                }
+            }
         }
     ]
 }
