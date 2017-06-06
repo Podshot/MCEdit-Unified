@@ -5,7 +5,7 @@
 # Compiles and install Minecraft Pocket Edtition binary support.
 #
 __author__ = "D.C.-G. 2017"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 import sys
 import os
@@ -49,22 +49,24 @@ default_paths = ['/lib', '/lib32', '/lib64', '/usr/lib', '/usr/lib32','/usr/lib6
 # Gather the libraries paths.
 def get_lib_paths(file_name):
     paths = []
-    lines = [a.strip() for a in open(file_name).readlines()]
-    for i, line in enumerate(lines):
-        if not line.startswith('#') and line.strip():
-            if line.startswith('include'):
-                line = line.split(' ', 1)[1]
-                if '*' in line:
-                    pat = r"%s"%line.split(os.path.sep)[-1].replace('.', '\.').replace('*', '.*')
-                    d = os.path.split(line)[0]
-                    for n in os.listdir(d):
-                        r = re.findall(pat, n)
-                        if r:
-                            paths += [a for a in get_lib_paths(os.path.join(d, n)) if a not in paths]
-                else:
-                    paths += [a for a in get_lib_paths(line) if not a in paths]
-            elif not line in paths:
-                paths.append(line)
+    if os.path.isfile(file_name):
+        lines = [a.strip() for a in open(file_name).readlines()]
+        for i, line in enumerate(lines):
+            if not line.startswith('#') and line.strip():
+                if line.startswith('include'):
+                    line = line.split(' ', 1)[1]
+                    if '*' in line:
+                        pat = r"%s"%line.split(os.path.sep)[-1].replace('.', '\.').replace('*', '.*')
+                        d = os.path.split(line)[0]
+                        if os.path.isdir(d):
+                            for n in os.listdir(d):
+                                r = re.findall(pat, n)
+                                if r:
+                                    paths += [a for a in get_lib_paths(os.path.join(d, n)) if a not in paths]
+                    else:
+                        paths += [a for a in get_lib_paths(line) if not a in paths]
+                elif not line in paths and os.path.isdir(line):
+                    paths.append(line)
     return paths
 
 def find_lib(lib_name, input_file='/etc/ld.so.conf'):
