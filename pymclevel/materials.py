@@ -1314,8 +1314,11 @@ def build_api_material_map(mats=alphaMaterials):
     blockstates = _mats.blockstates
     global idToBlockState
     idToBlockstate = _mats.idToBlockstate
+    global blockstateToID
     blockstateToID = _mats.blockstateToID
+    global stringifyBlockstate
     stringifyBlockstate = _mats.stringifyBlockstate
+    global deStringifyBlockstate
     deStringifyBlockstate = _mats.deStringifyBlockstate
 
     for mat in allMaterials:
