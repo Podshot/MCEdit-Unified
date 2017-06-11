@@ -78,9 +78,9 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
     while paths:
         path = paths.pop(0)
         if ARCH in path:
-            arch_paths.append(path)
+            arch_paths.insert(0, path)
         elif path.endswith('/lib'):
-            arch_paths.insert(-1, path)
+            arch_paths.append(path)
         else:
             other_paths.append(path)
 
@@ -96,6 +96,7 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
 
     while i <= idx and not found:
         for path in paths:
+            print "Scanning %s for %s" % (path, name)
             if os.path.exists(path):
                 for path, dirnames, filenames in os.walk(path):
                     if name in filenames:

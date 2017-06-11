@@ -1526,7 +1526,7 @@ class PocketLeveldbDatabase_new(object):
             if raise_err:
                 raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
-                write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0+"}.get(ver, 'Unknown'), v=repr(ver)))
+                write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0", "\x04": "1.1"}.get(ver, 'Unknown'), v=repr(ver)))
     
             if ver == "\x02":
                 # We have a pre 1.0 chunk
@@ -1557,6 +1557,9 @@ class PocketLeveldbDatabase_new(object):
                         tile_entities = te
                         entities = en
                         chunk.add_data(terrain=terrain, tile_entities=tile_entities, entities=entities, subchunk=i)
+                # Generate the lights if we have a PE 1.1 chunk.
+                if chunk.version == "\x04":
+                    chunk.genFastLights()
                 if DEBUG_PE:
                     write_dump(">>> Chunk (%s, %s) sub-chunks: %s\n" % (cx, cz, repr(chunk.subchunks)))
             elif ver is not None:
@@ -1626,16 +1629,20 @@ class PocketLeveldbDatabase_new(object):
         wop = self.writeOptions if writeOptions is None else writeOptions
         chunk._Blocks.update_subchunks()
         chunk._Data.update_subchunks()
-        chunk._SkyLight.update_subchunks()
-        chunk._BlockLight.update_subchunks()
+        if chunk.version == "\x03":
+            chunk._SkyLight.update_subchunks()
+            chunk._BlockLight.update_subchunks()
 
         for y in chunk.subchunks:
             c = chr(y)
             ver = chr(chunk.subchunks_versions[y])
             blocks = chunk._Blocks.binary_data[y].tostring()
             blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
-            skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
-            blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
+            skyLight = ""
+            blockLight = ""
+            if chunk.version == "\x03":
+                skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
+                blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
             terrain = ver + blocks + blockData + skyLight + blockLight
 
             if batch is None:
@@ -2912,10 +2919,20 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             # 'Computing' data is needed before sending it to the data holders.
             self._Blocks.add_data(subchunk, blocks)
 
-            for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
-                a = numpy.fromstring(v, k.bin_type)
-                a.shape = (16, 16, len(v) / 256)
-                k.add_data(subchunk, unpackNibbleArray(a).tostring())
+#             for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
+#                 a = numpy.fromstring(v, k.bin_type)
+#                 a.shape = (16, 16, len(v) / 256)
+#                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
+
+            a = numpy.fromstring(data, self._Data.bin_type)
+            a.shape = (16, 16, len(data) / 256)
+            self._Data.add_data(subchunk, unpackNibbleArray(a).tostring())
+
+            if self.version == "\x03":
+                for k, v in ((self._SkyLight, skyLight), (self._BlockLight, blockLight)):
+                    a = numpy.fromstring(v, k.bin_type)
+                    a.shape = (16, 16, len(v) / 256)
+                    k.add_data(subchunk, unpackNibbleArray(a).tostring())
 
 #             if DEBUG_PE:
 #                 write_dump("--- sub-chunk (%s, %s, %s) version: %s\n" % (self.chunkPosition[0], self.chunkPosition[1], subchunk, version))
