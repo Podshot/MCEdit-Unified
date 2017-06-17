@@ -12,6 +12,7 @@ found by default.
 import re
 import os
 import codecs
+from distutils.version import LooseVersion
 from directories import getMinecraftLauncherDirectory, getDataDir
 import logging
 log = logging.getLogger(__name__)
@@ -74,14 +75,23 @@ def buildResources(version=None, lang=None):
         log.debug('Minecraft installation directory is not valid.')
         log.debug('Impossible to load the game language resources.')
         return
-    versions = os.listdir(indexesDirectory)
-    if 'legacy.json' in versions:
-        versions.remove('legacy.json')
-    if len(versions) == 0:
+    _versions = os.listdir(indexesDirectory)
+    if 'legacy.json' in _versions:
+        _versions.remove('legacy.json')
+    if len(_versions) == 0:
         log.debug("No valid versions found in minecraft install directory")
         return
     # Sort the version so '1.8' comes after '1.10'.
-    versions = ['%s.json' % '.'.join(map(u"{}".format, c)) for c in sorted((map(int, filter(lambda d: d.isdigit(), b)) for b in (a.split('.')[:-1] for a in versions)))]
+    versions = [" "]
+    for ver_str in _versions:
+        v1 = LooseVersion(ver_str)
+        idx = -1
+        for i, cur_ver in enumerate(versions):
+            v2 = LooseVersion(cur_ver)
+            if v1>= v2:
+                break
+        versions.insert(i, ver_str)
+    versions = versions[:-1]
     version_file = "%s.json" % version
     fName = None
     if version_file in versions:
