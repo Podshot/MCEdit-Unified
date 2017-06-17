@@ -81,7 +81,7 @@ def buildResources(version=None, lang=None):
         log.debug("No valid versions found in minecraft install directory")
         return
     # Sort the version so '1.8' comes after '1.10'.
-    versions = ['%s.json' % '.'.join(map(u"{}".format, c)) for c in sorted((map(int, b) for b in (a.split('.')[:-1] for a in versions)))]
+    versions = ['%s.json' % '.'.join(map(u"{}".format, c)) for c in sorted((map(int, filter(lambda d: d.isdigit(), b)) for b in (a.split('.')[:-1] for a in versions)))]
     version_file = "%s.json" % version
     fName = None
     if version_file in versions:
