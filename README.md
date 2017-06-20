@@ -19,7 +19,6 @@ Developers don't have to tweak their code so much.
 The only modifications concern strings which need text formatting or concatenation.
 See README.txt in albow subfolder for further information.
 
-
 -- D.C.-G. (LaChal)
 
 ## Random splash screens
@@ -40,104 +39,121 @@ MCEdit-Unified is written in Python using a variety of open source modules. When
 
 Clone MCEdit-Unified using your github client of choice:
 
-`>git clone --recursive https://github.com/Khroki/MCEdit-Unified`
+```sh
+git clone --recursive https://github.com/Khroki/MCEdit-Unified
+```
 
 Or, if you've already cloned MCEdit in the past and need to update, go to the existing source folder then run:
 
-`>git pull`
+```sh
+git pull
+```
 
 Optionally (but highly recommended), setup and activate [virtualenv](http://pypi.python.org/pypi/virtualenv). virtualenv will simplify development by creating an isolated and barebones Python environment. Anything you install while virtualenv is active won't affect your system-wide Python installation, for example.
 
-`>cd mcedit`
-<br>
-`>easy_install virtualenv`
-<br>
-`>virtualenv ENV`
-<br>
-`>. ENV/bin/activate`
+```sh
+cd mcedit
+easy_install virtualenv
+virtualenv ENV
+. ENV/bin/activate
+```
 
 Install various dependencies. This may take a bit (especially numpy). If installing pygame errors, try installing from a [binary packages](http://pygame.org/install.html) or following one of the guides from that page to install from source. On Windows, `easy_install` is preferred because it installs prebuilt binary packages. On Linux and Mac OS X, you may want to use `pip install` instead.
 
-`>easy_install PyOpenGL`
-<br>
-`>easy_install numpy==1.9.3`
-<br>
-`>easy_install pygame`
-<br>
-`>easy_install pyyaml`
-<br>
-`>easy_install Pillow==2.9.0`
-<br>
-`>easy_install ftputil`
-<br>
-`>easy_install pywin32` (Windows only, needed for compiling)
+```sh
+easy_install PyOpenGL
+easy_install numpy==1.9.3
+easy_install pygame
+easy_install pyyaml
+easy_install Pillow==2.9.0
+easy_install ftputil
+easy_install pywin32 (Windows only, needed for compiling)
+```
 
 For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
 
 Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
 
-`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib`
+```sh
+sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib
+```
 
 Mac users need to install python-xlib. This can be done using `pip`:
 
-`>pip install svn+https://svn.code.sf.net/p/python-xlib/code/trunk/`
+```sh
+pip install svn+https://svn.code.sf.net/p/python-xlib/code/trunk/
+```
 
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
-## INSTALLING _nbt.pyx:
+## INSTALLING _nbt.pyx
+
 pymclevel contains a cython version of _nbt. This one is a lot faster, but has to be build manually.
 It requires cython 0.21.2 (Note: there are issues with 0.22)
-<br>
-`>pip install cython==0.21.2`
-<br>
+
+```sh
+pip install cython==0.21.2
+```
+
 It's also worth upgrading setuptools:
-<br>
-`>pip install setuptools --upgrade`
+
+```sh
+pip install setuptools --upgrade
+```
 
 With cython you should be able to build the file.
-<br>
-`>python setup.py develop`
+
+```sh
+python setup.py develop
+```
 
 If no errors occured, only thing left to do is see if it worked correctly:
-<br>
-`>python setuptest.py`
 
+```sh
+python setuptest.py
+```
 
-## INSTALLING leveldb_mcpe:
+## INSTALLING `leveldb_mcpe`
+
 ### Legacy PE Support
+
 __Please, note that this 'legacy PE support' can't work for PE 1+...__
 MCPE support requires a special library. MCEdit will run without it, but to have MCPE support you need to build it yourself.
 For mac and/or windows users:
 This requires a boost.python installation.
-Get boost: http://www.boost.org/ and make sure to build the python libs.
+Get [boost](http://www.boost.org/) and make sure to build the python libs.
 
-Next step is to get leveldb-mcpe from Mojang:
-https://github.com/Mojang/leveldb-mcpe
+Next step is to get [leveldb-mcpe](https://github.com/Mojang/leveldb-mcpe) from Mojang
 
 Build the thing using something like cmake, and copy the created leveldb-mcpe.lib to `./leveldb_mcpe`
 
 After those steps, you should be able to build the required .pyx:
-<br>
-`>cd ./leveldb_mcpe`
-<br>
-`>python setup.py build`
+
+```sh
+cd ./leveldb_mcpe
+python setup.py build
+```
 
 Then head into the build folder and look for the folder containing the .pyx. Copy it to `./leveldb_mcpe`, and test:
-<br>
-`>python test.py`
+
+```sh
+python test.py
+```
 
 If no errors occured, move the .pyx to ../pymclevel, and you should be good to go.
 
 For linux users:
 Navigate to the leveldb_mcpe folder
-<br>
-`> python setupnx.py build`
-<br>
-`> python test.py`
-<br>
+
+```sh
+python setupnx.py build
+python test.py
+```
+
 And you should be good to go.
 
 ### New PE Support
+
 MCPE support requires a special library. MCEdit will run without it, but you will not be able to edit Pocket worlds.
 
 This library is embeded in the packages for Linux, OSX and Windows, and will mostly work.
@@ -145,15 +161,16 @@ But it may happen you need to rebuild it.
 
 For Linux, a Python script can be used (`setup_leveldb.py`). See `INSTALL_LEVELDB` file in `pymclevel` subdirectory for details.
 
-[[Windows an OSX part to be written.]]
+[comment]: <> ([[Windows an OSX part to be written.]])
 
-### Common note for both PE supports.
+### Common note for both PE supports
+
 It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
 Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
 You can use this option several times to get more information in the file. Currently, using this option more than 2 times will have no effect.
 
+## New features test mode
 
-##New features test mode
 Some unfinished features and fixes may be included in future MCEdit-Unified releases, this inactive code can be activated using the process below. Use at your own risk.
 
 To use:
