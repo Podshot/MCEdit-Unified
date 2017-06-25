@@ -5,7 +5,7 @@ In order to install this library, you will run the 'setup_leveldb.py' script.
 
 It will try to solve the binary and library dependencies for you.
 
-Ensure you're connected to internet. Somes packages need to be
+Ensure you're connected to internet. Some packages need to be
 downloaded.
 
 
@@ -22,13 +22,15 @@ leveldb_mcpe:
 * g++
 * make
 * unzip
-* wget
+* wget or curl
+
+The script will check them, and warn you if one (or more) can't be found.
 
 
 LIBRARIES
 ~~~~~~~~~
 
-You will need to have zlib v1.2.8 or 1.2.10 installed on your system.
+You will need to have zlib v1.2.8 or v1.2.10 installed on your system.
 Other versions can work, but no garantee..
 
 If zlib is not found on your system, the script will build the version 1.2.10
@@ -39,7 +41,39 @@ specifically for PE support. See ZLIB section for more details.
 INSTALLATION
 ~~~~~~~~~~~~
 
-Just run 'python setup_leveldb.py' et voilà!
+Just open a shell, go to the 'pymcelvel' directory in MCEdit one and run
+'python setup_leveldb.py' et voilà!
+(Note that you'll have a lot of messages in the console, including warnings.
+Don't pannic, and wait the end!)
+
+You don't have to run this command as root. (Actually, DO NOT RUN IT AS ROOT!)
+If the `python` command invokes Python 3, try with `python2`.
+
+After a successful compilation, you'll have three new files in the 'pymclevel'
+directory:
+
+* libleveldb.so
+* libleveldb.so.1
+* libleveldb.so.1.18
+
+Then you can run 'python test_leveldb.py' to verify the library can run.
+You shall get an output like that:
+
+> ...........................................................
+> ----------------------------------------------------------------------
+> Ran 59 tests in 88.650s
+>
+> OK
+
+
+~~~~~~~~~~~~~
+RECOMPILATION
+~~~~~~~~~~~~~
+
+If you want to recompile the library, you'll have to delete the libleveldb.so
+files and the leveldb directory.
+
+Then, run again the command as described in the INSTALLATION section.
 
 
 ~~~~
