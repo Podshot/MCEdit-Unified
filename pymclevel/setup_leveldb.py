@@ -5,7 +5,7 @@
 # Compiles and install Minecraft Pocket Edtition binary support.
 #
 __author__ = "D.C.-G. 2017"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import sys
 import os
@@ -15,7 +15,11 @@ if sys.platform != "linux2":
     print "This script can't run on other platforms than Linux ones..."
     sys.exit(1)
 
-bin_deps = ('gcc', 'g++', 'unzip', 'wget')
+bin_deps = ('gcc', 'g++', 'unzip', 'wget|curl')
+
+wget_curl = None
+wget_cmd = "wget -q --no-check-certificate -O"
+curl_cmd = "curl -LskS -o"
 
 mojang_sources_url = "https://codeload.github.com/Mojang/leveldb-mcpe/zip/a056ea7c18dfd7b806d6d693726ce79d75543904"
 jocopa3_sources_url = "https://github.com/jocopa3/leveldb-mcpe/archive/56bdd1f38dde7074426d85eab01a5c1c0b5b1cfe.zip"
@@ -25,12 +29,32 @@ zlib_ideal_version = "1.2.10"
 zlib_minimal_version = "1.2.8"
 
 def check_bins(bins):
-    print 'Searching for the binaries needed %s...'%repr(bins).replace("'", '')
+    print 'Searching for the needed binaries %s...'%repr(bins).replace("'", '')
     missing_bin = False 
     for name in bins:
-        if os.system('which %s > /dev/null'%name):
-            print '*** WARNING: %s not found.'%name
-            missing_bin = True
+        names = []
+        if '|' in name:
+            names = name.split('|')
+        if names:
+            found = False
+            for n in names:
+                if not os.system('which %s > /dev/null'%n):
+                    found = True
+                    break
+                else:
+                    print "Could not find %s."%n
+            if found:
+                g_keys = globals().keys()
+                g_name = name.replace('|', '_')
+                print "g_name", g_name, g_name in g_keys
+                if g_name in g_keys:
+                    globals()[g_name] = globals()['%s_cmd'%n]
+            else:
+                print '*** WARNING: None of these binaries were found on your system: %s.'%', '.join(names)
+        else:
+            if os.system('which %s > /dev/null'%name):
+                print '*** WARNING: %s not found.'%name
+                missing_bin = True
     if missing_bin:
         a = raw_input('The binary dependencies are not satisfied. The build may fail.\nContinue [y/N]?')
         if a and a in 'yY':
@@ -39,6 +63,7 @@ def check_bins(bins):
             sys.exit()
     else:
         print 'All the needed binaries were found.'
+
 
 # Picked from another project to find the lib and adapted to the need
 import re
@@ -133,7 +158,7 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
 def get_sources(name, url):
     print "Downloading sources for %s"%name
     print "URL: %s"%url
-    os.system("wget --no-check-certificate -O %s.zip %s"%(name, url))
+    os.system("%s %s.zip %s"%(wget_curl, name, url))
     print "Unpacking %s"%name
     os.system("unzip -q %s.zip"%name)
     os.system("mv $(ls -d1 */ | egrep '{n}-') {n}".format(n=name))
@@ -142,7 +167,7 @@ def get_sources(name, url):
 
 def build_zlib():
     print "Building zlib..."
-    os.system("./configure; make")
+    return os.WEXITSTATUS(os.system("./configure; make"))
 
 def build_leveldb(zlib):
     print "Building leveldb..."
@@ -151,7 +176,7 @@ def build_leveldb(zlib):
         data = open('Makefile').read()
         data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s"%zlib)
         open("Makefile", "w").write(data)
-    os.system("make")
+    return os.WEXITSTATUS(os.system("make"))
 
 def main():
     print "=" * 72
@@ -231,7 +256,10 @@ def main():
 
     if force_zlib:
         os.chdir("leveldb/zlib")
-        build_zlib()
+        r = build_zlib()
+        if r:
+            print "Zlib build failed."
+            return r
         os.chdir(cur_dir)
         os.rename("leveldb/zlib/libz.so.1.2.10", "./libz.so.1.2.10")
         os.rename("leveldb/zlib/libz.so.1", "./libz.so.1")
@@ -245,7 +273,10 @@ def main():
         open("leveldb/Makefile", "w").write(data)
 
     os.chdir("leveldb")
-    build_leveldb(zlib[0])
+    r = build_leveldb(zlib[0])
+    if r:
+        print "PE support build failed."
+        return r
     os.chdir(cur_dir)
     os.rename("leveldb/libleveldb.so.1.18", "./libleveldb.so.1.18")
     os.rename("leveldb/libleveldb.so.1", "./libleveldb.so.1")
@@ -253,4 +284,4 @@ def main():
     print "Setup script ended."
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
