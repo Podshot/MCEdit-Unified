@@ -325,7 +325,8 @@ class MCEdit(GLViewport):
         GLViewport.set_update_ui(self, v)
         if v:
             #&# Prototype for blocks/items names
-            mclangres.buildResources(self.editor.level.gameVersion, albow.translate.getLang())
+            if self.editor.level:
+                mclangres.buildResources(self.editor.level.gameVersion, albow.translate.getLang())
             #&#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)
