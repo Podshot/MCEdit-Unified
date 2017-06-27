@@ -17,7 +17,7 @@ See TRANSLATION.txt for further details.
 
 Developers don't have to tweak their code so much.
 The only modifications concern strings which need text formatting or concatenation.
-See README.txt in albow subfolder for further information.
+See README.txt in `albow` subfolder for further information.
 
 -- D.C.-G. (LaChal)
 
@@ -59,12 +59,12 @@ virtualenv ENV
 ```
 
 Install various dependencies. This may take a bit (especially numpy). If installing pygame errors, try installing from a [binary packages](http://pygame.org/install.html) or following one of the guides from that page to install from source. On Windows, `easy_install` is preferred because it installs prebuilt binary packages. On Linux and Mac OS X, you may want to use `pip install` instead.
+Linux users can also use the package manager to install the dependencies.
 
 ```sh
 easy_install PyOpenGL
 easy_install numpy==1.9.3
 easy_install pygame
-easy_install pyyaml
 easy_install Pillow==2.9.0
 easy_install ftputil
 easy_install pywin32 (Windows only, needed for compiling)
@@ -78,13 +78,16 @@ Debian and Ubuntu Linux users can install the following packages via apt-get to 
 sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib
 ```
 
-Mac users need to install python-xlib. This can be done using `pip`:
+Mac and Linux users need to install python-xlib. This can be done using `pip`:
 
 ```sh
 pip install svn+https://svn.code.sf.net/p/python-xlib/code/trunk/
 ```
 
+Linux users must install python-xlib 0.14 (or over). It may be possible that the pip repository install the wrong version. Google a bit to grab the right version archive, and install it manually. (It's a pure Python package and does not require C extension compilation.)
+
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
+On Linux, it is recommended to use the `mcedit.sh` shell script.
 
 ## INSTALLING _nbt.pyx
 
@@ -113,57 +116,21 @@ If no errors occured, only thing left to do is see if it worked correctly:
 python setuptest.py
 ```
 
-## INSTALLING `leveldb_mcpe`
-
-### Legacy PE Support
-
-__Please, note that this 'legacy PE support' can't work for PE 1+...__
-MCPE support requires a special library. MCEdit will run without it, but to have MCPE support you need to build it yourself.
-For mac and/or windows users:
-This requires a boost.python installation.
-Get [boost](http://www.boost.org/) and make sure to build the python libs.
-
-Next step is to get [leveldb-mcpe](https://github.com/Mojang/leveldb-mcpe) from Mojang
-
-Build the thing using something like cmake, and copy the created leveldb-mcpe.lib to `./leveldb_mcpe`
-
-After those steps, you should be able to build the required .pyx:
-
-```sh
-cd ./leveldb_mcpe
-python setup.py build
-```
-
-Then head into the build folder and look for the folder containing the .pyx. Copy it to `./leveldb_mcpe`, and test:
-
-```sh
-python test.py
-```
-
-If no errors occured, move the .pyx to ../pymclevel, and you should be good to go.
-
-For linux users:
-Navigate to the leveldb_mcpe folder
-
-```sh
-python setupnx.py build
-python test.py
-```
-
-And you should be good to go.
-
-### New PE Support
+### Pocket Edition Support
 
 MCPE support requires a special library. MCEdit will run without it, but you will not be able to edit Pocket worlds.
 
-This library is embeded in the packages for Linux, OSX and Windows, and will mostly work.
-But it may happen you need to rebuild it.
+This library is embeded in the packages for OSX and Windows, and will mostly work.
 
-For Linux, a Python script can be used (`setup_leveldb.py`). See `INSTALL_LEVELDB` file in `pymclevel` subdirectory for details.
+On Linux systems, it is necessary to compile the library, because it requires to be linked to `zlib` one on the system.
+It may be necessary to compile `zlib` specifically for the PE support if the one on the system is not compatible. (It may also happen this library is not on the system...)
 
-[comment]: <> ([[Windows an OSX part to be written.]])
+The Python script `setup_leveldb.py` in the `pymclevel` directory wuill build the PE support, and the `zlib` library when needed.
+Read `INSTALL_LEVELDB` in the `pymclevel` directory for more information.
 
-### Common note for both PE supports
+Note that, if you use the installer for Linux, this script is used during installation to build the library.
+
+([[Compilation on Windows and OSX part to be written.]])
 
 It is possible to enable a debug mode for PE support by running MCEdit with the `--debug-pe` option on the command line.
 Some messages will be displayed in the console. A lot of information will be stored in a `dump_pe.txt` file. This file can be very big, so be carefull with this debug mode!
