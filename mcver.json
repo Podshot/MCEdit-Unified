@@ -1,0 +1,16 @@
+{
+	"1.11": [
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11/blocks.json",
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11/entities.json",
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11/tileentities.json"
+	],
+	"1.11.2": [
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11.2/blocks.json",
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11.2/entities.json",
+	    "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.11.2/tileentities.json"
+	],
+	"1.12": [
+	   "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.12/blocks.json",
+	   "https://raw.githubusercontent.com/Khroki/MCEdit-Unified/master/mcver/1.12/entities.json"
+	]
+}
