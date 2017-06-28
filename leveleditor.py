@@ -57,7 +57,7 @@ import glutils
 import release
 import mceutils
 import platform
-import functools
+#import functools
 import editortools
 import itertools
 import mcplatform

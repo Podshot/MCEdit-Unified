@@ -510,7 +510,7 @@ def makeVerticesFromModel(templates, dataMask=0):
     :param templates: list of templates to draw
     :param dataMask:  mask to mask the data
     """
-    if type(templates) is list:
+    if isinstance(templates, list):
         templates = numpy.array(templates)
     if templates.shape == (6, 4, 6):
         templates = numpy.array([templates])
@@ -858,7 +858,7 @@ class ChunkCalculator(object):
             for _ in self.calcHighDetailFaces(cr, blockRenderers):
                 yield
         else:
-            blockRenderers.extend(br for br in cr.blockRenderers if type(br) not in classes)
+            blockRenderers.extend(br for br in cr.blockRenderers if not isinstance(br, classes))
 
         # Add the layer renderers
         blockRenderers.extend(brs)

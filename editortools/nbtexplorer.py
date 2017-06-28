@@ -58,14 +58,14 @@ from pymclevel.items import items as mcitems
 
 map_items = {}
 for k, v in mcitems.items.items():
-    if type(v) == dict:
+    if isinstance(v, dict):
         names = []
-        if type(v['name']) == list:
+        if isinstance(v['name'], list):
             names = v['name']
         else:
             names = [v['name']]
         for name in names:
-            if name != None and name not in map_items.keys():
+            if name is not None and name not in map_items.keys():
                 map_items[name] = (k, names.index(name))
 
 # # DEBUG
@@ -267,7 +267,7 @@ class NBTTree(Tree):
         for key in styles.keys():
             if hasattr(key, '__name__'):
                 name = key.__name__
-            elif type(key) in (str, unicode):
+            elif isinstance(key, (str, unicode)):
                 name = key
             else:
                 name = repr(key)
@@ -332,7 +332,7 @@ class NBTTree(Tree):
 
     def rename_item(self):
         result = input_text_buttons("Choose a name", 300, self.selected_item[3])
-        if type(result) in (str, unicode):
+        if isinstance(result, (str, unicode)):
             self.selected_item[3] = result
             self.selected_item[9].name = result
             self.build_layout()
@@ -432,12 +432,12 @@ class NBTExplorerOptions(ToolOptions):
             CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
             for sub in defaultBulletImagesBox.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-                if type(sub) in (CheckBox, TextFieldWrapped):
+                if isinstance(sub, (CheckBox, TextFieldWrapped)):
                     if config.nbtTreeSettings.useBulletImages.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
-                if type(sub) == CheckBox:
+                if isinstance(sub, CheckBox):
                     sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
             self.defaultBulletImagesBox_click(None)
 
@@ -471,7 +471,7 @@ class NBTExplorerOptions(ToolOptions):
                     and config.nbtTreeSettings.useBulletStyles.get()
         for sub in self.bulletFilePath.subwidgets:
             sub.enabled = enabled
-            if type(sub) == TextFieldWrapped:
+            if isinstance(sub, TextFieldWrapped):
                 if enabled:
                     sub.fg_color = fg_color
                 else:
@@ -483,21 +483,21 @@ class NBTExplorerOptions(ToolOptions):
         for widget in (self.useTextBox, self.useImagesBox):
             for sub in widget.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletStyles.get()
-                if type(sub) in (CheckBox, TextFieldWrapped):
+                if isinstance(sub, (CheckBox, TextFieldWrapped)):
                     if config.nbtTreeSettings.useBulletStyles.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
-                if type(sub) == CheckBox:
+                if isinstance(sub, CheckBox):
                     sub.set_enabled(config.nbtTreeSettings.useBulletStyles.get())
         for sub in self.defaultBulletImagesBox.subwidgets:
             sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-            if type(sub) in (CheckBox, TextFieldWrapped):
+            if isinstance(sub, (CheckBox, TextFieldWrapped)):
                 if config.nbtTreeSettings.useBulletImages.get():
                     sub.fg_color = fg_color
                 else:
                     sub.fg_color = disabled_color
-            if type(sub) == CheckBox:
+            if isinstance(sub, CheckBox):
                 sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
         self.defaultBulletImagesBox_click(None)
 
@@ -854,7 +854,7 @@ class NBTExplorerToolPanel(Panel):
                 rows.append(Row([Label("Data Type:"), Label(t)], margin=1))
                 fields = self.build_field(itm)
                 for field in fields:
-                    if type(field) == TextFieldWrapped:
+                    if isinstance(field, TextFieldWrapped):
                         field.set_size_for_text(self.side_panel_width)
                     row = Row([field, ], margin=1)
                     rows.append(row)
@@ -877,26 +877,26 @@ class NBTExplorerToolPanel(Panel):
     @staticmethod
     def build_field(itm):
         fields = []
-        if type(itm) in field_types.keys():
+        if isinstance(itm, field_types.keys()):
             f, bounds = field_types[type(itm)]
             if bounds:
                 fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]), ]
             else:
                 fields = [f(ref=AttrRef(itm, 'value')), ]
-        elif type(itm) in array_types.keys():
+        elif isinstance(itm, array_types.keys()):
             idx = 0
             for _itm in itm.value.tolist():
                 f, bounds = array_types[type(itm)]
                 fields.append(f(ref=ItemRef(itm.value, idx)))
                 idx += 1
-        elif type(itm) in (TAG_Compound, TAG_List):
+        elif isinstance(itm, (TAG_Compound, TAG_List)):
             for _itm in itm.value:
                 fields.append(
                     Label("%s" % (_itm.name or "%s #%03d" % (itm.name or _("Item"), itm.value.index(_itm))), align='l',
                           doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
-        elif type(itm) not in (str, unicode):
-            if type(getattr(itm, 'value', itm)) not in (str, unicode, int, float):
+        elif not isinstance(itm, (str, unicode)):
+            if not isinstance(getattr(itm, 'value', itm), (str, unicode, int, float)):
                 fld = Label
                 kw = {'align': 'l'}
             else:
@@ -976,7 +976,7 @@ class NBTExplorerToolPanel(Panel):
             if item_dict is None:
                 item_name = item['id'].value
             else:
-                if type(item_dict['name']) == list:
+                if isinstance(item_dict['name'], list):
                     if int(item['Damage'].value) >= len(item_dict['name']):
                         block_id = map_block.get(item['id'].value, None)
                         item_name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[
@@ -993,7 +993,7 @@ class NBTExplorerToolPanel(Panel):
             slots_set.append(s)
             if s >= 100:
                 s = s - 100 + 36
-            if type(item_name) in (unicode, str):
+            if isinstance(item_name, (unicode, str)):
                 translated_item_name = mclangres.translate(item_name)
             else:
                 translated_item_name = item_name
@@ -1212,7 +1212,9 @@ def loadFile(fName):
             alert("The selected object is not a file.\nCan't load it.")
             return
         savePolicy = 0
-        data = open(fName).read()
+        fp = open(fName)
+        data = fp.read()
+        fp.close()
 
         if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
             if struct.Struct('<i').unpack(data[4:8])[0] != len(data[8:]):

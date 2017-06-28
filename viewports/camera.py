@@ -1558,7 +1558,7 @@ class CameraViewport(GLViewport):
                 return numpy.sum(map(lambda a, b: (a - b) ** 2, p1, p2))
 
             point, face = self.blockFaceUnderCursor
-            if point is not None:
+            if point:
                 point = map(lambda x: int(numpy.floor(x)), point)
                 if self.editor.currentTool is self.editor.selectionTool:
                     try:
@@ -1918,7 +1918,7 @@ class CameraViewport(GLViewport):
             self.root.update_tooltip()
 
             (blockPosition, faceDirection) = self.blockFaceUnderCursor
-            if None != blockPosition:
+            if blockPosition:
                 self.editor.updateInspectionString(blockPosition)
 
                 if self.find_widget(mouse.get_pos()) == self:

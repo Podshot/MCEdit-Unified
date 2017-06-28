@@ -152,7 +152,7 @@ class MCLevel(object):
         """Return the content of the tag 'Name' in the tag 'Version', or 'Unknown'"""
         if self.root_tag and not hasattr(self, '__gameVersion'):
             self.__gameVersion = 'Unknown'
-            if 'Data' in self.root_tag and type(self.root_tag['Data']) == nbt.TAG_Compound:
+            if 'Data' in self.root_tag and isinstance(self.root_tag['Data'], nbt.TAG_Compound):
                 # We're opening a world.
                 if 'Version' in self.root_tag['Data']:
                     if 'Name' in self.root_tag['Data']['Version']:

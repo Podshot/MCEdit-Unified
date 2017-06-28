@@ -114,13 +114,18 @@ class JsonDictProperty(dict):
             json.dump(data, f)
 
     def _getJson(self):
+        fp = None
         try:
-            filter_json = json.load(open(self._filename), 'rb')
+            fp = open(self._filename, 'rb')
+            filter_json = json.load(fp)
             if "Macros" not in filter_json.keys():
                 filter_json["Macros"] = {}
             return filter_json
         except (ValueError, IOError):
             return {"Macros": {}}
+        finally:
+            if fp:
+                fp.close()
         
 class SingleFileChooser(Widget):
     OPEN_FILE = 0
@@ -603,11 +608,16 @@ class FilterToolPanel(Panel):
         if FilterToolPanel.BACKUP_FILTER_JSON:
             filter_json = JsonDictProperty(filter_json_file)
         else:
+            fp = None
             try:
                 if os.path.exists(filter_json_file):
-                    filter_json = json.load(open(filter_json_file, 'rb'))
+                    fp = open(filter_json_file, 'rb')
+                    filter_json = json.load(fp)
             except (ValueError, IOError) as e:
                 log.error("Error while loading filters.json %s", e)
+            finally:
+                if fp:
+                    fp.close()
         if "Macros" not in filter_json.keys():
             filter_json["Macros"] = {}
         return filter_json

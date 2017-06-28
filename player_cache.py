@@ -349,7 +349,6 @@ class PlayerCache:
                 resp = self._getDataFromURL(resp["textures"]["SKIN"]["url"])
                 return resp
         except:
-            import traceback
             print "Couldn't parse skin response JSON"
             print traceback.format_exc()
         return None
@@ -413,7 +412,6 @@ class PlayerCache:
                     print "Something happened, retrying"
                     toReturn = self.getPlayerSkin(arg, True, instance)
             except Exception:
-                import traceback
                 print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
                 print traceback.format_exc()
         else:
@@ -439,9 +437,10 @@ class PlayerCache:
             skin.save(skin_path)
                             
     def _getDataFromURL(self, url):
-        import traceback
+        conn = None
         try:
-            response = urllib2.urlopen(url, timeout=self.TIMEOUT).read()
+            conn = urllib2.urlopen(url, timeout=self.TIMEOUT)
+            response = conn.read()
             self.last_error = False
             return response
         except urllib2.HTTPError, e:
@@ -459,12 +458,16 @@ class PlayerCache:
             log.warn("Unknown error occurred while trying to get data from URL: " + url)
             log.warn(traceback.format_exc())
             self.error_count += 1
+        finally:
+            if conn: conn.close()
         return None
     
     def _postDataToURL(self, url, payload, headers):
+        conn = None
         try:
             request = urllib2.Request(url, payload, headers)
-            response = urllib2.urlopen(request, timeout=self.TIMEOUT).read()
+            conn = urllib2.urlopen(request, timeout=self.TIMEOUT)
+            response = conn.read()
             return response
         except urllib2.HTTPError, e:
             log.warn("Encountered a HTTPError while trying to POST to \"" + url + "\"")
@@ -477,6 +480,8 @@ class PlayerCache:
         except Exception:
             log.warn("Unknown error occurred while trying to POST data to URL: " + url)
             log.warn(traceback.format_exc())
+        finally:
+            if conn: conn.close()
         return None
 
 def _cleanup():

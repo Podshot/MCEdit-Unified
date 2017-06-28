@@ -198,6 +198,7 @@ import threading
 from utilities.gl_display_context import GLDisplayContext
 
 import mclangres
+from utilities import mcver_updater
 
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
@@ -426,6 +427,13 @@ class MCEdit(GLViewport):
         def refresh():
             PlayerCache().force_refresh()
 
+        def update_mcver():
+            num = mcver_updater.run()
+            if num:
+                albow.alert("Version Definitions have been updated!\n\nPlease restart MCEdit-Unified to apply the changes")
+            else:
+                albow.alert("Version Definitions are already up-to-date!")
+
         hotkeys = ([("",
                      "Controls",
                      self.showKeyConfig),
@@ -449,7 +457,10 @@ class MCEdit(GLViewport):
                      os.path.join(directories.getDataDir(), "LICENSE.txt")),
                     ("",
                      "Refresh Player Names",
-                     refresh)
+                     refresh),
+                    ("",
+                     "Download Latest Version Definitions",
+                     update_mcver)
                     ])
 
         c = albow.HotkeyColumn(hotkeys)

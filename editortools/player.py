@@ -185,7 +185,7 @@ class PlayerAddOperation(Operation):
         self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
 #         print 3
         r = self.playercache.getPlayerSkin(self.uuid, force_download=False)
-        if type(r) not in (str, unicode):
+        if not isinstance(r, (str, unicode)):
 #             print 'r 1', r
             r = r.join()
 #             print 'r 2', r
@@ -267,7 +267,7 @@ class PlayerAddOperation(Operation):
                 self.tool.panel.player_UUID["Name"].append(self.player)
 #             print 4
             r = self.playercache.getPlayerSkin(self.uuid)
-            if type(r) not in (str, unicode):
+            if isinstance(r, (str, unicode)):
                 r = r.join()
             self.tool.playerTexture[self.uuid] = loadPNGTexture(r)
             self.tool.playerPos[(0,0,0)] = self.uuid
@@ -597,7 +597,7 @@ class PlayerPositionPanel(Panel):
                 self.nbttree.dispatch_key(name, evt)
 
     def update_player(self, data):
-        if type(data) == tuple:
+        if isinstance(data, tuple):
             if data[0] in self.player_UUID['UUID']:
                 idx = self.player_UUID['UUID'].index(data[0])
                 self.player_UUID['UUID'][idx] = data[0]
@@ -669,7 +669,7 @@ class PlayerPositionTool(EditorTool):
                     del self.playerTexture[player]
 #                     print 6
                     r = self.playercache.getPlayerSkin(player, force_download=True, instance=self)
-                    if type(r) not in (str, unicode):
+                    if isinstance(r, (str, unicode)):
                         r = r.join()
                     self.playerTexture[player] = loadPNGTexture(r)
             #self.markerList.call(self._drawToolMarkers)
@@ -879,7 +879,7 @@ class PlayerPositionTool(EditorTool):
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
 #                     print 7
                     r = self.playercache.getPlayerSkin(player, force_download=False)
-                    if type(r) not in (str, unicode):
+                    if isinstance(r, (str, unicode)):
                         r = r.join()
                     self.playerTexture[player] = loadPNGTexture(r)
                 else:

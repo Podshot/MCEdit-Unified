@@ -199,6 +199,13 @@ class ChunkTool(EditorTool):
             box = box.chunkBox(self.editor.level)
             l, w = box.length // 16, box.width // 16
             return _("%s x %s chunks") % (l, w)
+        else:
+            if config.settings.viewMode.get() == "Chunk":
+                point, face = self.editor.chunkViewport.blockFaceUnderCursor
+            else:
+                point, face = self.editor.mainViewport.blockFaceUnderCursor
+            if point:
+                return "Chunk ({}, {})".format(point[0] // 16, point[2] // 16)
 
     def toolSelected(self):
 

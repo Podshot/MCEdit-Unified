@@ -24,7 +24,7 @@ corrected_states = {'CHEST':(2,6)}
 
 class BO3:
     def __init__(self, filename=''):
-        if type(filename) in (str, unicode):
+        if isinstance(filename, (str, unicode)):
             self.delta_x, self.delta_y, self.delta_z = 0, 0, 0
             self.size_x, self.size_y, self.size_z = 0, 0, 0
             map_block = {}
@@ -118,10 +118,10 @@ class BO3:
             def verify_state(id, state):
                 states = corrected_states.get(id, None)
                 if states:
-                    if type(states) == tuple:
+                    if isinstance(states, tuple):
                         if state not in range(*states):
                             state = states[0]
-                    elif type(states) == list:
+                    elif isinstance(states, list):
                         if state not in states:
                             state = states[0]
                 return state

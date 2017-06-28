@@ -104,7 +104,9 @@ class TAG_Value(object):
             (value,) = cls.fmt.unpack_from(data)
         except Exception, e:
             if DEBUG_PE:
-                n_lines = len(open(dump_fName).readlines()) + 1
+                fp = open(dump_fName)
+                n_lines = len(fp.readlines()) + 1
+                fp.close()
                 msg = ("*** NBT support could not load data\n"
                     "{e}\n"
                     "----------\nctx.data (length: {lcd}):\n{cd}\n"

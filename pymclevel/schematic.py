@@ -1,8 +1,8 @@
-'''
+"""
 Created on Jul 22, 2011
 
 @author: Rio
-'''
+"""
 import atexit
 from contextlib import closing
 import os
@@ -57,7 +57,7 @@ class MCSchematic(EntityLevel):
         I'm not sure what happens when I try to re-save a rotated schematic.
         """
 
-        if DEBUG: log.debug(u"Creating scematic.")
+        if DEBUG: log.debug(u"Creating schematic.")
         if filename:
             if DEBUG: log.debug(u"Using %s"%filename)
             self.filename = filename
@@ -650,7 +650,7 @@ class INVEditChest(MCSchematic):
         chestTag = nbt.TAG_Compound()
         chest_id = "Chest"
         split_ver = self.gameVersion.split('.')
-        if int(split_ver[0]) >= 1 and int(split[1]) >= 11:
+        if int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
             chest_id = "minecraft:chest"
         chestTag["id"] = nbt.TAG_String(chest_id)
         chestTag["Items"] = nbt.TAG_List(self.root_tag["Inventory"])
@@ -860,8 +860,7 @@ class StructureNBT(object):
     def __convertPaletteToDict(self):
         palette = []
         for state in self._root_tag["palette"]:
-            block = {}
-            block["Name"] = state["Name"].value
+            block = {"Name": state["Name"].value}
             if "Properties" in state:
                 block["Properties"] = {}
                 for (key, value) in state["Properties"].iteritems():
@@ -872,7 +871,7 @@ class StructureNBT(object):
     def get_state(self, index):
         if index > (len(self._palette) - 1):
             raise IndexError()
-        return (self._palette[index]["Name"], self._palette[index].get("Properties", {}))
+        return self._palette[index]["Name"], self._palette[index].get("Properties", {})
             
     def get_palette_index(self, name, properties=None):  # TODO: Switch to string comparison of properties, instead of dict comparison
         for i in xrange(len(self._palette)):

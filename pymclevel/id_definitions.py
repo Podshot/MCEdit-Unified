@@ -43,6 +43,7 @@ import pymclevel
 import re
 import collections
 
+
 log = getLogger(__name__)
 
 def update(orig_dict, new_dict):
@@ -114,7 +115,9 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
 def _get_data(file_name):
     data = {}
     try:
-        data = json.loads(open(file_name).read())
+        fp = open(file_name)
+        data = json.loads(fp.read())
+        fp.close()
     except Exception as e:
         log.error("Could not load data from %s" % file_name)
         log.error("Error is: %s" % e)
@@ -181,7 +184,8 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
                             _file_name = os.path.join('mcver', dep, file_name)
                             if os.path.exists(_file_name):
                                 log.info("Found %s"%_file_name)
-                                _data.update(_get_data(_file_name))
+                                #_data.update(_get_data(_file_name))
+                                update(_data, _get_data(_file_name))
                             else:
                                 log.info("Could not find %s"%_file_name)
                         update(_data, data)
@@ -200,6 +204,7 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
     log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
+    #print MCEDIT_DEFS.get('spawner_monsters')
     if json_dict:
         return _json
     return MCEDIT_DEFS, MCEDIT_IDS
