@@ -23,7 +23,7 @@ def run():
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ver = []
 
-    manifest = urllib2.urlopen("http://127.0.0.1:8000/mcver.json")
+    manifest = urllib2.urlopen("https://raw.githubusercontent.com/Khroki/MCEdit-Unified/gh-pages/mcver.json")
     data = json.loads(manifest.read())
     manifest.close()
 
