@@ -693,7 +693,7 @@ class NBTExplorerToolPanel(Panel):
     """..."""
 
     def __init__(self, editor, nbtObject=None, fileName=None, savePolicy=0, dataKeyName='Data', close_text="Close",
-                 load_text="Open", **kwargs):
+                 load_text="Open", magic=None, **kwargs):
         """..."""
         Panel.__init__(self, name='Panel.NBTExplorerToolPanel')
         self.editor = editor
@@ -702,6 +702,7 @@ class NBTExplorerToolPanel(Panel):
         self.savePolicy = savePolicy
         self.displayed_item = None
         self.dataKeyName = dataKeyName
+        self.magic = magic
         self.copy_data = kwargs.get('copy_data', True)
         self.init_data()
         btns = []
@@ -789,7 +790,7 @@ class NBTExplorerToolPanel(Panel):
 
     def save_NBT(self):
         if self.fileName:
-            self.editor.nbtTool.saveFile(self.fileName, self.data, self.savePolicy)
+            self.editor.nbtTool.saveFile(self.fileName, self.data, self.savePolicy, self.magic)
         else:
             op = NBTExplorerOperation(self)
             self.editor.addOperation(op)
@@ -1163,7 +1164,7 @@ class NBTExplorerTool(EditorTool):
     def toolReselected(self):
         self.showPanel()
 
-    def showPanel(self, fName=None, nbtObject=None, savePolicy=0, dataKeyName='Data'):
+    def showPanel(self, fName=None, nbtObject=None, savePolicy=0, dataKeyName='Data', magic=None):
         """..."""
         if self.panel is None and self.editor.currentTool in (self, None):  # or nbtObject:
             # !# BAD HACK
@@ -1181,22 +1182,22 @@ class NBTExplorerTool(EditorTool):
                 return
             # !#
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
-                                              savePolicy=savePolicy, dataKeyName=dataKeyName)
+                                              savePolicy=savePolicy, dataKeyName=dataKeyName, magic=magic)
             self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + \
                                  self.editor.subwidgets[0].height
             self.panel.left = self.editor.left
             self.editor.add(self.panel)
 
     def loadFile(self, fName=None):
-        nbtObject, dataKeyName, savePolicy, fName = loadFile(fName)
+        nbtObject, dataKeyName, savePolicy, fName, magic = loadFile(fName)
         if nbtObject is not None:
             self.editor.toolbar.removeToolPanels()
             self.editor.currentTool = self
-            self.showPanel(fName, nbtObject, savePolicy, dataKeyName)
+            self.showPanel(fName, nbtObject, savePolicy, dataKeyName, magic)
         self.optionsPanel.dismiss()
 
-    def saveFile(self, fName, data, savePolicy):
-        saveFile(fName, data, savePolicy)
+    def saveFile(self, fName, data, savePolicy, magic):
+        saveFile(fName, data, savePolicy, magic)
 
     def keyDown(self, *args, **kwargs):
         if self.panel:
@@ -1205,6 +1206,10 @@ class NBTExplorerTool(EditorTool):
 
 # ------------------------------------------------------------------------------
 def loadFile(fName):
+    """Loads a NBT file.
+    :fName: str/unicode: full file path to load.
+    Returns a 5 element tuple: (object nbtObject, string dataKeyName, int savePolicy, int/None magic).
+    'magic' is used for PE support."""
     if not fName:
         fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', 'nbt'])
     if fName:
@@ -1212,11 +1217,16 @@ def loadFile(fName):
             alert("The selected object is not a file.\nCan't load it.")
             return
         savePolicy = 0
+        magic = None
         fp = open(fName)
         data = fp.read()
         fp.close()
 
-        if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
+        _magic = struct.Struct('<i').unpack(data[:4])[0]
+            
+        if 2 < _magic < 6:
+            # We have a PE world.
+            magic = _magic
             if struct.Struct('<i').unpack(data[4:8])[0] != len(data[8:]):
                 raise NBTFormatError()
             with littleEndianNBT():
@@ -1242,11 +1252,16 @@ def loadFile(fName):
             if savePolicy == 0:
                 savePolicy = -1
             nbtObject = TAG_Compound([nbtObject, ])
-        return nbtObject, dataKeyName, savePolicy, fName
-    return [None] * 4
+        return nbtObject, dataKeyName, savePolicy, fName, magic
+    return [None] * 5
 
 
-def saveFile(fName, data, savePolicy):
+def saveFile(fName, data, savePolicy, magic):
+    """Saves the NBT data to the disk.
+    :fName: str/unicode: full file path to save data to.
+    :data: object: NBT data to be saved.
+    :savePolicy: int (-1, 0 or 1): special bit to handle different data types.
+    :magic: int/None: 'magic' number for PE worlds."""
     if fName is None:
         return
     if os.path.exists(fName):
@@ -1262,7 +1277,7 @@ def saveFile(fName, data, savePolicy):
         else:
             return
     if fName:
-        if savePolicy == -1:
+        if savePolicy in (-1, 1):
             if hasattr(data, 'name'):
                 data.name = ""
         if not os.path.isdir(fName):
@@ -1270,9 +1285,10 @@ def saveFile(fName, data, savePolicy):
                 data.save(fName)
             elif savePolicy == 1:
                 with littleEndianNBT():
+                    # Here we have a PE data file. Just strip out the 
                     toSave = data.save(compressed=False)
-                    toSave = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(toSave)) + toSave
-                    with open(fName, 'w') as f:
+                    toSave = struct.Struct('<i').pack(magic) + struct.Struct('<i').pack(len(toSave)) + toSave
+                    with open(fName, 'wb') as f:
                         f.write(toSave)
         else:
             alert("The selected object is not a file.\nCan't save it.")
