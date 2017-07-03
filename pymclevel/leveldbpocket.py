@@ -1000,7 +1000,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 magic = ord(magic)
 
             rootTagData = struct.Struct('<i').pack(magic) + struct.Struct('<i').pack(len(rootTagData)) + rootTagData
-            with open(path, 'w') as f:
+            with open(path, 'wb') as f:
                 f.write(rootTagData)
 
     def containsChunk(self, cx, cz):
