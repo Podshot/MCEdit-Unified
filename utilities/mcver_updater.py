@@ -13,7 +13,7 @@ def run():
         if not (os.path.exists(dir_path) or os.path.isdir(dir_path)):
             os.mkdir(dir_path)
         if not os.path.exists(file_path):
-            conn = urllib2.urlopen(url)
+            conn = urllib2.urlopen(url, timeout=7.5)
             fp = open(file_path, 'wb')
             fp.write(conn.read())
             conn.close()

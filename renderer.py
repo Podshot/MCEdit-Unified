@@ -821,7 +821,7 @@ class ChunkCalculator(object):
         yield
         brs = []
         append = brs.append
-        classes = [
+        classes = (
             TileEntityRenderer,
             MonsterRenderer,
             ItemRenderer,
@@ -830,7 +830,7 @@ class ChunkCalculator(object):
             ChunkBorderRenderer,
             LowDetailBlockRenderer,
             OverheadBlockRenderer,
-        ]
+        )
         existingBlockRenderers = dict(((type(b), b) for b in cr.blockRenderers))
 
         for blockRendererClass in classes:

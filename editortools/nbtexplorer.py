@@ -877,13 +877,13 @@ class NBTExplorerToolPanel(Panel):
     @staticmethod
     def build_field(itm):
         fields = []
-        if itm in field_types.keys():
+        if type(itm) in field_types.keys():
             f, bounds = field_types[type(itm)]
             if bounds:
                 fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]), ]
             else:
                 fields = [f(ref=AttrRef(itm, 'value')), ]
-        elif itm in array_types.keys():
+        elif type(itm) in array_types.keys():
             idx = 0
             for _itm in itm.value.tolist():
                 f, bounds = array_types[type(itm)]
