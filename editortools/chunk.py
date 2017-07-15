@@ -25,12 +25,12 @@ from glbackground import Panel
 from glutils import DisplayList, gl
 from mceutils import alertException, setWindowCaption
 import mcplatform
-import directories
 import pymclevel
 from pymclevel.minecraft_server import MCServerChunkGenerator
 from config import config
 
 from albow.dialogs import Dialog
+import renderer
 
 
 class ChunkToolPanel(Panel):
@@ -120,7 +120,7 @@ class ChunkTool(EditorTool):
 
         # print len(self._selectedChunks) if self._selectedChunks else None, "!=", len(self.editor.selectedChunks)
 
-        if self._selectedChunks != self.editor.selectedChunks or True:  # xxx
+        if self._selectedChunks != self.editor.selectedChunks or True:  # xxx # TODO Pod
             self._selectedChunks = set(self.editor.selectedChunks)
             self._displayList.invalidate()
 
@@ -145,7 +145,7 @@ class ChunkTool(EditorTool):
         GL.glColor(*color)
         with gl.glEnable(GL.GL_BLEND):
 
-            import renderer
+            #import renderer
 
             sizedChunks = renderer.chunkMarkers(self._selectedChunks)
             for size, chunks in sizedChunks.iteritems():
@@ -199,6 +199,13 @@ class ChunkTool(EditorTool):
             box = box.chunkBox(self.editor.level)
             l, w = box.length // 16, box.width // 16
             return _("%s x %s chunks") % (l, w)
+        else:
+            if config.settings.viewMode.get() == "Chunk":
+                point, face = self.editor.chunkViewport.blockFaceUnderCursor
+            else:
+                point, face = self.editor.mainViewport.blockFaceUnderCursor
+            if point:
+                return "Chunk ({}, {})".format(point[0] // 16, point[2] // 16)
 
     def toolSelected(self):
 
@@ -238,7 +245,7 @@ class ChunkTool(EditorTool):
                 if self.editor.level.containsChunk(cx, cz):
                     try:
                         self.editor.level.deleteChunk(cx, cz)
-                    except Exception, e:
+                    except Exception as e:
                         print "Error during chunk delete: ", e
 
         with setWindowCaption("DELETING - "):
@@ -262,7 +269,7 @@ class ChunkTool(EditorTool):
                     try:
                         self.editor.level.deleteChunk(*cPos)
 
-                    except Exception, e:
+                    except Exception as e:
                         print "Error during chunk delete: ", e
 
                 yield i, maxChunks
@@ -306,7 +313,7 @@ class ChunkTool(EditorTool):
         try:
             with setWindowCaption("CREATING - "):
                 showProgress("Creating {0} chunks...".format(len(chunks)), createChunks, cancel=True)
-        except Exception, e:
+        except Exception as e:
             traceback.print_exc()
             alert(_("Failed to start the chunk generator. {0!r}").format(e))
         finally:
@@ -486,7 +493,7 @@ def GeneratorPanel():
                     #for cx, cz in :
                     try:
                         level.createChunk(cx, cz)
-                    except ValueError, e:  # chunk already present
+                    except ValueError as e:  # chunk already present
                         print e
                         continue
                     else:

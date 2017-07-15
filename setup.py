@@ -5,8 +5,8 @@ from Cython.Build import cythonize
 import Cython.Compiler.Options
 Cython.Compiler.Options.annotate = True
 
-pymclevel_ext_modules = cythonize("pymclevel/_nbt.pyx")
+ext_modules = cythonize(["cpngfilters.pyx", "pymclevel/_nbt.pyx"])
 
 setup(
-    ext_modules=pymclevel_ext_modules
+    ext_modules=ext_modules
 )

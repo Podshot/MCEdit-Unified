@@ -4,14 +4,15 @@
 #
 # Collect the Minecraft internal translations.
 #
-'''
+"""
 Uses `.minecraft/assets/indexes/[version].json`. The version is the highest
 found by default.
-'''
+"""
 
 import re
 import os
 import codecs
+from distutils.version import LooseVersion
 from directories import getMinecraftLauncherDirectory, getDataDir
 import logging
 log = logging.getLogger(__name__)
@@ -38,18 +39,18 @@ excludedEntries = ['tile.flower1.name',]
 report_missing = False
 
 def getResourceName(name, data):
-    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",'%name, data, re.DOTALL)
+    match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",' % name, data, re.I|re.DOTALL)
     if match:
         return match[0]
     else:
-        log.debug('Could not find %s resource name.'%name)
+        log.debug('Could not find %s resource name.' % name)
 
 def findResourceFile(name, basedir):
     for root, dirs, files in os.walk(basedir):
         if name in files:
             return os.path.join(basedir, root, name)
 
-def buildResources(version=None, lang=None):
+def buildResources(version=None, lang=None): 
     """Loads the resource files and builds the resource dictionnaries.
     Four dictionnaries are built. Two for the refering language (English), and two for the language to be used.
     They are 'reversed' dictionnaries; the {foo: bar} pairs of one are the {bar: foo} of the other one."""
@@ -74,19 +75,41 @@ def buildResources(version=None, lang=None):
         log.debug('Minecraft installation directory is not valid.')
         log.debug('Impossible to load the game language resources.')
         return
-    versions = os.listdir(indexesDirectory)
-    if 'legacy.json' in versions:
-        versions.remove('legacy.json')
-    if len(versions) == 0:
+    _versions = os.listdir(indexesDirectory)
+    if 'legacy.json' in _versions:
+        _versions.remove('legacy.json')
+    if len(_versions) == 0:
         log.debug("No valid versions found in minecraft install directory")
         return
-    versions.sort()
-    version = "%s.json"%version
-    if version in versions:
-        fName = os.path.join(indexesDirectory, version)
-    else:
+    # Sort the version so '1.8' comes after '1.10'.
+    versions = [" "]
+    for ver_str in _versions:
+        v1 = LooseVersion(ver_str)
+        idx = -1
+        for i, cur_ver in enumerate(versions):
+            v2 = LooseVersion(cur_ver)
+            if v1>= v2:
+                break
+        versions.insert(i, ver_str)
+    versions = versions[:-1]
+    version_file = "%s.json" % version
+    fName = None
+    if version_file in versions:
+        fName = os.path.join(indexesDirectory, version_file)
+    elif version:
+        # Let's try to find a corresponding file by reducing the name.
+        # E.g: 1.10.2 don't have an asset definition file, but 1.10 have. All the same for the pre-releases...
+        if '-' in version:
+            version = version.split('-')[0]
+        while '.' in version:
+            version = version.split('.')
+            version_file = "%s.json" % version
+            if version_file in versions:
+                fName = os.path.join(indexesDirectory, version_file)
+                break
+    if not fName:
         fName = os.path.join(indexesDirectory, versions[-1])
-    log.debug('Using %s'%fName)
+    log.debug('Using %s' % fName)
     data = open(fName).read()
     name = getResourceName('en_GB', data)
     if name:
@@ -94,10 +117,10 @@ def buildResources(version=None, lang=None):
         if not os.path.exists(fName):
             fName = findResourceFile(name, objectsDirectory)
         if not fName:
-            log.debug('Can\'t get the resource %s.'%name)
+            log.debug('Can\'t get the resource %s.' % name)
             log.debug('Nothing built. Aborted')
             return
-        log.debug('Found %s'%name)
+        log.debug('Found %s' % name)
         lines = codecs.open(fName, encoding='utf_8').readlines()
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
@@ -105,14 +128,18 @@ def buildResources(version=None, lang=None):
                 serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
         lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'), encoding='utf_8')
         for line in lines:
-            enMisc[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
-            csimNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+            if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
+                enRes[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+            else:
+                enMisc[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                csimNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
         log.debug('... Loaded!')
     else:
         return
     if not lang:
         lang = 'en_GB'
-    log.debug('Looking for %s resources.'%lang)
+    log.debug('Looking for %s resources.' % lang)
     name = getResourceName(lang, data)
     if not name:
         lang = 'en_GB'
@@ -122,19 +149,24 @@ def buildResources(version=None, lang=None):
         if not os.path.exists(fName):
             fName = findResourceFile(name, objectsDirectory)
         if not fName:
-            log.debug('Can\'t get the resource %s.'%name)
+            log.debug('Can\'t get the resource %s.' % name)
             return
-        log.debug('Found %s...'%name)
+        log.debug('Found %s...' % name)
         lines = codecs.open(fName, encoding='utf_8').readlines()
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                 langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
                 serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
         if os.path.exists(os.path.join(getDataDir(), 'Items', lang)):
+            log.debug("Found Items/%s" % lang)
             lines = codecs.open(os.path.join(getDataDir(), 'Items', lang), encoding='utf_8')
             for line in lines:
-                langMisc[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
-                csimGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
+                    langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+                    serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
+                else:
+                    langMisc[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
+                    csimGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
         log.debug('... Loaded!')
     else:
         return
@@ -151,7 +183,7 @@ def compound(char, string, pair=None):
     if (name not in enRes.keys() and name not in langRes.values()) and (name not in enMisc.keys() and name not in langMisc.values()):
         addMissing(name)
     head = langRes.get(enRes.get(name, name), name)
-    for i in range(len(misc)):
+    for i in xrange(len(misc)):
         if ' ' in misc[i]:
             if langMisc.get(enMisc.get(misc[i], False), False):
                 misc[i] = langMisc.get(enMisc.get(misc[i], misc[i]), misc[i])
@@ -159,7 +191,7 @@ def compound(char, string, pair=None):
                 misc[i] = langRes.get(enRes.get(misc[i], misc[i]), misc[i])
             else:
                 stop = [False, False]
-                for j in range(1, misc[i].count(' ') + 1):
+                for j in xrange(1, misc[i].count(' ') + 1):
                     elems = misc[i].rsplit(' ', j)
                     if not stop[0]:
                         h = elems[0]
@@ -192,7 +224,7 @@ def compound(char, string, pair=None):
             misc[i] = u'_'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('_')])
         else:
             misc[i] = langRes.get(enRes.get(misc[i], misc[i]), misc[i])
-    tail = u'%s%s%s'%(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
+    tail = u'{0}{1}{2}'.format(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
     return u' '.join((head, tail))
 
 if report_missing:
@@ -207,7 +239,7 @@ if report_missing:
         if len(elems) > 1:
             tail = ''.join([a.capitalize() for a in elems[1].split(' ') if not a.isdigit()])
         if not n.isdigit():
-            line = 'missing.%s.%s%s=%s\n'%(cat, head, tail, name)
+            line = 'missing.{0}.{1}{2}={3}\n'.format(cat, head, tail, name)
             f = codecs.open(os.path.join(getDataDir(), 'missingmclangres.txt'), 'a+', encoding='utf_8')
             if line not in f.read():
                 f.write(line)

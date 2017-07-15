@@ -126,6 +126,11 @@ class BoundingBox(object):
         """
         Return a box containing the area self and box have in common. Box will have zero volume
          if there is no common area.
+         
+        :param box: The intersecting box
+        :type box: pymclevel.box.BoundingBox
+        :return: A box of the resulting intersection of the two boxes
+        :rtype: pymclevel.box.BoundingBox 
         """
         if (self.minx > box.maxx or self.maxx < box.minx or
                     self.miny > box.maxy or self.maxy < box.miny or
@@ -148,9 +153,14 @@ class BoundingBox(object):
         return BoundingBox(origin, maximum - origin)
 
     def union(self, box):
-        """
+        '''
         Return a box large enough to contain both self and box.
-        """
+        
+        :param box: The box to add to the current box (self)
+        :type box: pymclevel.box.BoundingBox
+        :return: A box that contains all of the positions of original box along with the supplied box
+        :rtype: pymclevel.box.BoundingBox
+        '''
         origin = Vector(
             min(self.minx, box.minx),
             min(self.miny, box.miny),
@@ -164,10 +174,18 @@ class BoundingBox(object):
         return BoundingBox(origin, maximum - origin)
 
     def expand(self, dx, dy=None, dz=None):
-        """
-        Return a new box with boundaries expanded by dx, dy, dz.
-        If only dx is passed, expands by dx in all dimensions.
-        """
+        '''
+        Return a new box with boundaries expanded by dx, dy, dz. If only dx is passed, expands by dx in all dimensions
+        
+        :param dx: The direction to expand on the X axis
+        :type dx: int
+        :param dy: The direction to expand on the Y axis
+        :type dy: int
+        :param dz: The direction to expand on the Z axis
+        :type dz: int
+        :return: A new box with the dimensions expanded by the specified values
+        :rtype: pymclevel.box.BoundingBox
+        '''
         if dz is None:
             dz = dx
         if dy is None:

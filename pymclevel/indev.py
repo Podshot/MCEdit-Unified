@@ -98,6 +98,7 @@ class MCIndevLevel(EntityLevel):
     swapping to be consistent with infinite levels."""
 
     materials = indevMaterials
+    gameVersion = 'indev'
 
     def setPlayerSpawnPosition(self, pos, player=None):
         assert len(pos) == 3
@@ -176,7 +177,7 @@ class MCIndevLevel(EntityLevel):
 
             self.Data >>= 4
 
-            self.Spawn = [mapTag[Spawn][i].value for i in range(3)]
+            self.Spawn = [mapTag[Spawn][i].value for i in xrange(3)]
 
             if "Entities" not in root_tag:
                 root_tag["Entities"] = nbt.TAG_List()

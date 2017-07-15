@@ -8,7 +8,7 @@ from pygame import Rect, draw, transform
 from widget import Widget, overridable_property
 from theme import ThemeProperty
 import resource
-from translate import _, getLang
+from translate import _
 
 
 class Control(object):
@@ -109,7 +109,7 @@ class Label(Widget):
     def calc_size(self):
         lines = self._text.split("\n")
         tw, th = 0, 0
-        for i in range(len(lines)):
+        for i in xrange(len(lines)):
             line = lines[i]
             if i == len(lines) - 1:
                 w, h = self.font.size(line)

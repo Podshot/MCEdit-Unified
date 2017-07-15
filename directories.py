@@ -13,8 +13,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import time
-import traceback
-t= time.time()
+t = time.time()
 import sys
 import os
 import json
@@ -67,16 +66,16 @@ def win32_utf8_argv():
         pass
     
 def getNewDataDir(path=""):
-    '''
+    """
     Returns the directory where the executable is located (This function is only ran on Windows OS's)
     
     :param path: Additional directories/files to join to the data directory path
     
     :return unicode
-    '''
+    """
     dataDir = os.path.dirname(os.path.abspath(__file__))
     #print "Dynamic: " + str(os.getcwdu())
-    #print "Fixed: " + str(dataDir) 
+    #print "Fixed: " + str(dataDir)
     if len(path) > 0:
         return os.path.join(dataDir, path)
     return dataDir
@@ -84,25 +83,23 @@ def getNewDataDir(path=""):
 getNewDataDir()
 
 def getDataDir(path=""):
-    '''
+    """
     Returns the folder where the executable is located. (This function is ran on non-Windows OS's)
     
     :param path: Additional directories/files to join to the data directory path
     
     :return unicode
-    '''
+    """
     # if sys.platform == "win32":
     #     def fsdecode(x):
     #         return x.decode(sys.getfilesystemencoding())
     #
     #     dataDir = os.getcwdu()
-    #     '''
-    #     if getattr(sys, 'frozen', False):
+    #     """  #     if getattr(sys, 'frozen', False):
     #         dataDir = os.path.dirname(sys._MEIPASS)
     #     else:
     #         dataDir = os.path.dirname(__file__)
-    #     '''
-    #
+    #     """  #
     # else:
     dataDir = os.getcwdu()
     if len(path) > 0:
@@ -155,9 +152,9 @@ def getMinecraftProfileDirectory(profileName):
 
 
 def getMinecraftLauncherDirectory():
-    '''
+    """
     Returns the /minecraft directory, note: may not contain the /saves folder!
-    '''
+    """
     if sys.platform == "win32":
         return os.path.join(win32_appdata(), ".minecraft")
     elif sys.platform == "darwin":
@@ -370,20 +367,13 @@ else:
         genericSupportDir = portableGenericSupportPath
     portable = True
 
-#if portable:
-#    serverJarStorageDir = portableJarStorageDir
-#    ServerJarStorage.defaultCacheDir = serverJarStorageDir
-#    jarStorage = ServerJarStorage(serverJarStorageDir)
-#else:
-#    serverJarStorageDir = fixedJarStorageDir
-
 
 def getAllOfAFile(file_dir, ext):
-    '''
+    """
     Returns a list of all the files the direcotry with the specified file extenstion
     :param file_dir: Directory to search
     :param ext: The file extension (IE: ".py")
-    '''
+    """
     return glob.glob(file_dir+"/*"+ext)
 
 

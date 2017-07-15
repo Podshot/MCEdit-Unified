@@ -4,8 +4,6 @@ import os
 from albow.widget import Widget
 from albow.layout import Column, Row
 from albow.fields import TimeField, IntField
-import math
-import types
 
 class ModifiedTimeField(TimeField):
     
@@ -49,19 +47,19 @@ class TimeEditor(Widget):
         return time
     
     def deltaToDegrees(self, delta):
-        return ((delta * (24000 / self._distance)) * (1 / self._tickToDegree))
+        return (delta * (24000 / self._distance)) * (1 / self._tickToDegree)
     
     def degreesToTicks(self, deg):
-        return (deg * self._tickToDegree)
+        return deg * self._tickToDegree
     
     def ticksToDegrees(self, ticks):
-        return (ticks * (1 / self._tickToDegree))
+        return ticks * (1 / self._tickToDegree)
     
     def doTimeAdjustment(self, ticks):
-        return (ticks + self._time_adjustment)
+        return ticks + self._time_adjustment
     
     def undoTimeAdjustment(self, ticks):
-        return (ticks - self._time_adjustment)
+        return ticks - self._time_adjustment
     
     # -- Special Callback -- #
     def _timeFieldCallback(self, (h, m)):
@@ -106,7 +104,7 @@ class TimeEditor(Widget):
                                             value=(self.__original_time[1], self.__original_time[2]),
                                             callback=self._timeFieldCallback
                                             )
-        __time_field_old_value = self.time_field.value
+        #__time_field_old_value = self.time_field.value
         self.add(Column((
                          Row((Label("Day: "), self.day_input)), 
                          self.rot_image, 
@@ -120,7 +118,7 @@ class TimeEditor(Widget):
         if self.time_field.editing:
             self._timeFieldCallback(self.time_field.value)
         rot_ticks = max(min(self.degreesToTicks(self.rot_image.get_angle() * -1), 24000.0), 0)
-        return (((self.day_input.value * self.ticksPerDay) + rot_ticks) - self.ticksPerDay)
+        return ((self.day_input.value * self.ticksPerDay) + rot_ticks) - self.ticksPerDay
     
     def get_daytime_value(self):
         if self.time_field.editing:

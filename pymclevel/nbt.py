@@ -104,7 +104,9 @@ class TAG_Value(object):
             (value,) = cls.fmt.unpack_from(data)
         except Exception, e:
             if DEBUG_PE:
-                n_lines = len(open(dump_fName).readlines()) + 1
+                fp = open(dump_fName)
+                n_lines = len(fp.readlines()) + 1
+                fp.close()
                 msg = ("*** NBT support could not load data\n"
                     "{e}\n"
                     "----------\nctx.data (length: {lcd}):\n{cd}\n"
@@ -139,6 +141,9 @@ class TAG_Value(object):
 
     def write_value(self, buf):
         buf.write(self.fmt.pack(self.value))
+
+    def isCompound(self):
+        return False
 
 
 class TAG_Byte(TAG_Value):
@@ -424,6 +429,9 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
     def get_all(self, key):
         return [v for v in self._value if v.name == key]
 
+    def isCompound(self):
+        return True
+
 
 class TAG_List(TAG_Value, collections.MutableSequence):
     """A homogenous list of unnamed data of a single TAG_* type.
@@ -465,7 +473,7 @@ class TAG_List(TAG_Value, collections.MutableSequence):
         (list_length,) = TAG_Int.fmt.unpack_from(ctx.data, ctx.offset)
         ctx.offset += TAG_Int.fmt.size
 
-        for i in range(list_length):
+        for i in xrange(list_length):
             tag = tag_classes[self.list_type].load_from(ctx)
             self.append(tag)
 
@@ -668,12 +676,12 @@ def nested_string(tag, indent_string="  ", indent=0):
 try:
     # noinspection PyUnresolvedReferences
     # Inhibit the _nbt import if we're debugging the PE support errors, because we need to get information concerning NBT malformed data...
-    if DEBUG_PE or '--debug-pe' in sys.argv:
-        log.warning("PE support debug mode is activated. Using full Python NBT support!")
-    else:
+#     if DEBUG_PE or '--debug-pe' in sys.argv:
+#         log.warning("PE support debug mode is activated. Using full Python NBT support!")
+#     else:
         from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
                           TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
-                          littleEndianNBT, nested_string, gunzip)
+                          littleEndianNBT, nested_string, gunzip, hexdump)
 except ImportError as err:
     log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")
     log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")

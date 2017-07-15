@@ -44,7 +44,7 @@ class TextEditor(Widget):
         return self._text
 
     def set_text(self, text):
-        if type(text) == str:
+        if isinstance(text, str):
             try:
                 text = unicode(text, 'utf-8')
             except (UnicodeEncodeError, UnicodeDecodeError):
@@ -399,7 +399,7 @@ class Field(Control, TextEditor):
             return self.format_value(self.value)
 
     def set_text(self, text):
-        if type(text) == str:
+        if isinstance(text, str):
             try:
                 text = unicode(text, 'utf-8')
             except (UnicodeEncodeError, UnicodeDecodeError):
@@ -430,9 +430,9 @@ class Field(Control, TextEditor):
         self.commit(notify=True)
 
     def clamp_value(self, value):
-        if self.max is not None:
+        if self.max:
             value = min(value, self.max)
-        if self.min is not None:
+        if self.min:
             value = max(value, self.min)
         return value
 
@@ -664,7 +664,7 @@ class TextEditorWrapped(Widget):
         kwds['doNotTranslate'] = kwds.get('doNotTranslate', True)
         Widget.__init__(self, **kwds)
         self.set_size_for_text(width, lines)
-        if upper is not None:
+        if upper:
             self.upper = upper
         self.insertion_point = None
         self.insertion_step = None
@@ -685,7 +685,7 @@ class TextEditorWrapped(Widget):
         return self._text
 
     def set_text(self, text):
-        if type(text) == str:
+        if isinstance(text, str):
             try:
                 text = unicode(text, 'utf-8')
             except (UnicodeEncodeError, UnicodeDecodeError):
@@ -928,7 +928,6 @@ class TextEditorWrapped(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c or event.key == K_x:
                 try:
-                    # pygame.scrap.put(SCRAP_TEXT, self.text)
                     text, i = self.get_text_and_insertion_point()
                     if i is None and (self.selection_start is None or self.selection_end is None):
                         text = self.text
@@ -1394,7 +1393,7 @@ class FieldWrapped(Control, TextEditorWrapped):
             return self.format_value(self.value)
 
     def set_text(self, text):
-        if type(text) == str:
+        if isinstance(text, str):
             try:
                 text = unicode(text, 'utf-8')
             except (UnicodeEncodeError, UnicodeDecodeError):

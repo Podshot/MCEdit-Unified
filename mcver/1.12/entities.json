@@ -1,0 +1,26 @@
+{
+  "load": "1.11.2",
+  "entities":
+          [
+            {
+              "id": 37,
+              "idStr": "illusion_illager",
+              "name": "Illusion Illager",
+              "type": "Hostile mobs"
+            },
+            {
+              "id": 105,
+              "idStr": "parrot",
+              "name": "Parrot",
+              "type": "Passive mobs"
+            }
+          ],
+  "spawner_monsters_mapping_begin": "The next entries are used to remap correctly the MCEdit internal names to MC ones when creating/editing mob spawners.",
+  "IllusionIllager": "minecraft:illusion_illager",
+  "Parrot": "minecraft:parrot",
+  "spawner_monsters_mapping_end": "",
+  "spawner_monsters": [
+    "minecraft:illusion_illager",
+    "minecraft:parrot"
+  ]
+}

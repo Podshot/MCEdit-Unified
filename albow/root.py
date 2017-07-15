@@ -9,7 +9,6 @@ import pygame
 
 from pygame import key
 from pygame.locals import *
-# from pygame.time import get_ticks
 from pygame.event import Event
 
 from glbackground import *
@@ -32,6 +31,7 @@ import os
 import directories
 import time
 from dialogs import Dialog, Label, Button, Row, Column
+from OpenGL import GL
 
 start_time = datetime.now()
 
@@ -74,8 +74,8 @@ class Cancel(Exception):
 #---------------------------------------------------------------------------
 
 
-def set_modifier(key, value):
-    attr = modkeys.get(key)
+def set_modifier(modifier_key, value):
+    attr = modkeys.get(modifier_key)
     if attr:
         modifiers[attr] = value
 
@@ -201,7 +201,7 @@ class RootWidget(Widget):
         global top_widget, clicked_widget
         is_modal = modal_widget is not None
         modal_widget = modal_widget or self
-        from OpenGL import GL
+        #from OpenGL import GL
 
         try:
             old_top_widget = top_widget
@@ -236,13 +236,12 @@ class RootWidget(Widget):
                             self.draw_all(self.surface)
                         pygame.display.flip()
                         self.frames += 1
-                    # events = [pygame.event.wait()]
-                    events = [pygame.event.poll()]
-                    events.extend(pygame.event.get())
+
+                    events = pygame.event.get()
+                    if not events:
+                        self.call_idle_handlers()
 
                     for event in events:
-                        # if event.type:
-                        # log.debug("%s", event)
                         type = event.type
                         if type == QUIT:
                             self.quit()
@@ -263,7 +262,6 @@ class RootWidget(Widget):
 
                             if not mouse_widget.is_inside(modal_widget):
                                 mouse_widget = modal_widget
-                            # if event.button == 1:
                             clicked_widget = mouse_widget
                             last_mouse_event_handler = mouse_widget
                             last_mouse_event = event
@@ -302,8 +300,8 @@ class RootWidget(Widget):
                             clicked_widget = None
                             last_mouse_event_handler.handle_mouse('mouse_up', event)
                         elif type == KEYDOWN:
-                            key = event.key
-                            set_modifier(key, True)
+                            key_down = event.key
+                            set_modifier(key_down, True)
                             add_modifiers(event)
                             self.bonus_draw_time = False
                             keyname = self.getKey(event)
@@ -316,8 +314,8 @@ class RootWidget(Widget):
                                 event.dict['local'] = last_mouse_event.local
                                 last_mouse_event_handler.setup_cursor(event)
                         elif type == KEYUP:
-                            key = event.key
-                            set_modifier(key, False)
+                            key_up = event.key
+                            set_modifier(key_up, False)
                             add_modifiers(event)
                             self.bonus_draw_time = False
                             keyname = self.getKey(event)
@@ -325,9 +323,9 @@ class RootWidget(Widget):
                                 self.editor.toolbar.tools[0].infoKey = 0
                                 self.editor.mainViewport.showCommands()
                             if self.nudgeDirection is not None:
-                                keyname = self.getKey(movement=True, keyname=pygame.key.name(key))
-                                for i, key in enumerate(self.editor.movements):
-                                    if keyname == key and i == self.nudgeDirection:
+                                keyname = self.getKey(movement=True, keyname=key.name(key_up))
+                                for i, move_key in enumerate(self.editor.movements):
+                                    if keyname == move_key and i == self.nudgeDirection:
                                         self.nudgeDirection = None
                                         self.testTime = None
                                         self.testTimeBack = 0.4
@@ -352,28 +350,9 @@ class RootWidget(Widget):
                                     add_modifiers(event)
                                     last_mouse_event_handler.setup_cursor(event)
                                 self.begin_frame()
-                        # '# Actual Windows working but Linux non working code.
-#                         elif type == VIDEORESIZE:
-#                             #pygame.display.set_mode(event.dict['size'], self.surface.get_flags())
-#                             pygame.display.flip()
-#                             #add_modifiers(event)
-#                             #self.bonus_draw_time = False
-#                             old_w, old_h = self.size
-#                             print "Old: " + str(self.size)
-#                             #self.size = (event.w, event.h)
-#                             print "New: " + str(event.__dict__['size'])
-#                             #self.dispatch_key('reshape', event)
-#                             #self.mcedit.displayContext.flip()
-#                             #pygame.display.flip()
-#                             self.root._resized((old_w, old_h))
-#                             print "Resized via pygame"
-                        # '# Old code before the changes for window management (and working on Linux).
                         elif type == VIDEORESIZE:
-                            # add_modifiers(event)
                             self.bonus_draw_time = False
                             self.size = (event.w, event.h)
-                            # self.dispatch_key('reshape', event)
-                        # '#
                         elif type == VIDEOEXPOSE:
                             if self.mcedit.displayContext.win and self.mcedit.displayContext.win.get_state() == 1:
                                 x, y = config.settings.windowX.get(), config.settings.windowY.get()
@@ -385,19 +364,13 @@ class RootWidget(Widget):
                         elif type == ACTIVEEVENT:
                             add_modifiers(event)
                             self.dispatch_key('activeevent', event)
-                        elif type == NOEVENT:
-                            add_modifiers(event)
-                            self.call_idle_handlers(event)
-                        # elif type == VIDEORESIZE:
-                        #    pygame.display.set_mode(event.dict['size'],self.surface.get_flags())
-                        #    pygame.display.flip()
 
                     if not self.sessionStolen:
                         try:
                             if self.editor.level is not None and hasattr(self.editor.level, "checkSessionLock"):
                                 self.editor.level.checkSessionLock()
-                        except Exception, e:
-                            log.warn(u"Error reading chunk: %s", e)
+                        except Exception as e:
+                            log.warn(u"Error reading chunk (?): %s", e)
                             if not config.session.override.get():
                                 self.sessionStolen = True
                             else:
@@ -406,31 +379,28 @@ class RootWidget(Widget):
                     if self.editor.level is not None:
                         self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
                         self.editor.cameraPanKeys = [0., 0., 0., 0.]
-                        allKeys = pygame.key.get_pressed()
-                        allKeysWithData = enumerate(allKeys)
 
-                        def useKeys((i, keys)):
-                            if not keys:
-                                return
-                            keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
+                        def useKeys(i):
+                            keyName = self.getKey(movement=True, keyname=key.name(i))
                             if keyName == self.editor.sprintKey:
                                 self.sprint = True
-                            if self.editor.level:
-                                for j, key in enumerate(self.editor.movements):
-                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                        self.changeMovementKeys(j, keyName)
+                            if allKeys[K_LCTRL] or allKeys[K_RCTRL] or allKeys[K_RMETA] or allKeys[K_LMETA]:
+                                return
+                            if keyName in self.editor.movements:
+                                self.changeMovementKeys(self.editor.movements.index(keyName), keyName)
+                            if keyName in self.editor.cameraPan:
+                                self.changeCameraKeys(self.editor.cameraPan.index(keyName))
 
-                                for k, key in enumerate(self.editor.cameraPan):
-                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                        self.changeCameraKeys(k)
-                        map(useKeys, allKeysWithData)
+                        allKeys = key.get_pressed()
+                        for x in enumerate(allKeys):
+                            if x[1]:
+                                useKeys(x[0])
 
                         for edit in self.filesToChange:
                             newTime = os.path.getmtime(edit.filename)
                             if newTime > edit.timeChanged:
                                 edit.timeChanged = newTime
                                 edit.makeChanges()
-
 
                 except Cancel:
                     pass
@@ -446,44 +416,38 @@ class RootWidget(Widget):
     def getKey(evt=None, movement=False, keyname=None):
         if keyname is None:
             keyname = key.name(evt.key)
-        if 'left' in keyname and len(keyname) > 5:
-            keyname = keyname[5:]
-        elif 'right' in keyname and len(keyname) > 6:
-            keyname = keyname[6:]
+        keyname = keyname.replace("right ", "").replace("left ", "").replace("Meta", "Ctrl").replace("Enter", "Return").replace("Delete", "Del")
         try:
             keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
-        finally:
-            if keyname == 'Meta':
-                keyname = 'Ctrl'
-            if not movement:
-                newKeyname = ""
-                if evt.shift and keyname != "Shift":
-                    newKeyname += "Shift-"
-                if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
-                    newKeyname += "Ctrl-"
-                if evt.alt and keyname != "Alt":
-                    newKeyname += "Alt-"
-
-                keyname = newKeyname + keyname
-
-                if not newKeyname:
-                    if sys.platform == 'linux2':
-                        test_key = getattr(evt, 'scancode', None)
-                        tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
-                    else:
-                        test_key = keyname
-                        tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-                    if test_key in tool_keys:
-                        keyname = str(tool_keys.index(test_key) + 1)
-                    elif test_key == 19:
-                        keyname = '0'
-
-            if keyname == 'Enter':
-                keyname = 'Return'
-            elif keyname == 'Delete':
-                keyname = 'Del'
-
+        except:
+            pass
+        if movement:
             return keyname
+
+        newKeyname = ""
+        if evt.shift and keyname != "Shift":
+            newKeyname += "Shift-"
+        if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
+             newKeyname += "Ctrl-"
+        if evt.alt and keyname != "Alt":
+            newKeyname += "Alt-"
+
+        keyname = newKeyname + keyname
+
+        if newKeyname:
+            return keyname
+
+        if sys.platform == 'linux2':
+            test_key = getattr(evt, 'scancode', None)
+            tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
+        else:
+            test_key = keyname
+            tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+        if test_key in tool_keys:
+            keyname = str(tool_keys.index(test_key) + 1)
+        elif test_key == 19:
+            keyname = '0'
+        return keyname
 
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
@@ -518,8 +482,8 @@ class RootWidget(Widget):
             if keyname == self.editor.movements[1]:
                 self.nudge.nudge(Vector(*right))
 
-            for i, key in enumerate(self.editor.movements):
-                if key == keyname:
+            for i, move_key in enumerate(self.editor.movements):
+                if move_key == keyname:
                     self.nudgeDirection = i
 
     def changeCameraKeys(self, keyNum):
@@ -529,11 +493,11 @@ class RootWidget(Widget):
     def RemoveEditFiles(self):
         self.filesToChange = []
 
-    def call_idle_handlers(self, event):
+    def call_idle_handlers(self):
         def call(ref):
             widget = ref()
             if widget:
-                widget.idleevent(event)
+                widget.idleevent()
             else:
                 print "Idle ref died!"
             return bool(widget)
@@ -632,7 +596,7 @@ class RootWidget(Widget):
         return event
 
     def gl_clear(self):
-        from OpenGL import GL
+        #from OpenGL import GL
         
         bg = self.bg_color
         if bg:

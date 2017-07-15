@@ -58,5 +58,3 @@ class CompassOverlay(Drawable):
 
                 with gl.glEnable(GL.GL_BLEND, GL.GL_TEXTURE_2D):
                     GL.glDrawArrays(GL.GL_QUADS, 0, 4)
-
-

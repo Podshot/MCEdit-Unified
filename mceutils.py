@@ -37,16 +37,13 @@ import os
 import png
 from pygame import display
 import pymclevel
-import json
-import hashlib
-import shutil
 
 import logging
 
 #!# Used to track the ALBOW stuff imported from here
 def warn(obj):
     name = getattr(obj, '__name__', getattr(getattr(obj, '__class__', obj), '__name__', obj))
-    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.'%(obj.__module__, name, name))
+    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.' % (obj.__module__, name, name))
 #!#
 
 
@@ -58,7 +55,7 @@ def alertException(func):
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
             alert(_(e.message) + _("\n\nYour changes cannot be saved."))
-        except Exception, e:
+        except Exception as e:
             logging.exception("Exception:")
             ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
@@ -304,7 +301,6 @@ def loadPNGFile(filename):
 
     return w, h, data
 
-
 def loadTextureFunc(w, h, ndata):
     GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w, h, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, ndata)
     return w, h
@@ -318,7 +314,7 @@ def loadPNGTexture(filename, *a, **kw):
         tex = glutils.Texture(functools.partial(loadTextureFunc, w, h, ndata), *a, **kw)
         tex.data = ndata
         return tex
-    except Exception, e:
+    except Exception as e:
         print "Exception loading ", filename, ": ", repr(e)
         return glutils.Texture()
 
@@ -388,14 +384,14 @@ class HotkeyColumn(Widget):
         self.buttons = list(buttonsColumn)
 
         #.#
-        if item_spacing == None:
+        if not item_spacing:
             buttonsColumn = Column(buttonsColumn)
         else:
             buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
         #.#
         buttonsColumn.anchor = self.anchor
         #.#
-        if item_spacing == None:
+        if not item_spacing:
             keysColumn = Column(keysColumn)
         else:
             keysColumn = Column(keysColumn, spacing=item_spacing)
@@ -535,7 +531,7 @@ def TextInputRow(title, *args, **kw):
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
     prefix = _(prefix)
-    if type(prefix) == unicode:
+    if isinstance(prefix, unicode):
         prefix = prefix.encode("utf8")
 
     class ctx:
@@ -623,7 +619,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             if cancel:
                 self.dismiss(False)
 
-        def idleevent(self, evt):
+        def idleevent(self):
             self.invalidate()
 
         def key_down(self, event):

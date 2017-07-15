@@ -8,7 +8,6 @@ from math import isnan
 import random
 import nbt
 from copy import deepcopy
-from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 
 __all__ = ["Entity", "TileEntity", "TileTick"]
 
@@ -149,7 +148,7 @@ class TileEntity(object):
     def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
         # Refresh the MCEDIT_DEFS and MCEDIT_IDS objects
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
+        from pymclevel import MCEDIT_DEFS
         _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
         tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
@@ -191,6 +190,7 @@ class TileEntity(object):
         # You'll need to use this function twice
         # The first time with first equals to True
         # The second time with first equals to False
+        from pymclevel import MCEDIT_IDS
         eTag = deepcopy(tileEntity)
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
@@ -690,7 +690,12 @@ class PocketEntity(Entity):
                   "Iron Golem": 20,
                   "Snow Golem": 21,
                   "Ocelot": 22,
-                  "EntityHorse": 23,
+                  "Horse": 23,
+                  "Donkey": 24,
+                  "Mule": 25,
+                  "SkeletonHorse": 26,
+                  "ZombieHorse": 27,
+                  "PolarBear": 28,
                   "Zombie": 32,
                   "Creeper": 33,
                   "Skeleton": 34,
@@ -705,9 +710,14 @@ class PocketEntity(Entity):
                   "Blaze": 43,
                   "Zombie Villager": 44,
                   "Witch": 45,
+                  "StraySkeleton": 46,
+                  "Hust": 47,
+                  "WitherSkeleton": 48,
                   "Guardian": 49,
+                  "ElderGuardian": 50,
                   "WitherBoss": 52,
                   "EnderDragon": 53,
+                  "Shulker": 54,
                   "Endermite": 55,
                   "Player": 63,
                   "Item": 64,
@@ -717,7 +727,9 @@ class PocketEntity(Entity):
                   "XPOrb": 69,
                   "EyeOfEnderSignal": 70,
                   "EnderCrystal": 71,
+                  "ShulkerBullet": 76,
                   "Fishing Rod Bobber": 77,
+                  "DragonFireball": 79,
                   "Arrow": 80,
                   "Snowball": 81,
                   "Egg": 82,
@@ -731,9 +743,11 @@ class PocketEntity(Entity):
                   "Boat": 90,
                   "Lightning": 93,
                   "Blaze Fireball": 94,
+                  "AreaEffectCloud": 95,
                   "Minecart with Hopper": 96,
                   "Minecart with TNT": 97,
-                  "Minecart with Chest": 98}
+                  "Minecart with Chest": 98,
+                  "LingeringPotion": 101}
 
     @classmethod
     def getNumId(cls, v):

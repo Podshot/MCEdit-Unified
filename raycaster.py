@@ -81,17 +81,17 @@ Finds the first block from origin in the given direction by ray tracing
 def firstBlock(origin, direction, level, radius, viewMode=None):
     if viewMode == "Chunk":
         raise TooFarException("There are no valid blocks within range")
-    startPos =  map(int,map(math.floor,origin))
+    startPos = map(int, map(math.floor, origin))
     block = level.blockAt(*startPos)
     tooMuch = 0
     if block == 8 or block == 9:
         callback = _WaterCallback()
     else:
         callback = _StandardCallback()
-    for i in _rawRaycast(origin,direction):
+    for i in _rawRaycast(origin, direction):
         tooMuch += 1
         block = level.blockAt(*i[0])
-        if callback.check(i[0],block):
+        if callback.check(i[0], block):
             return i[0],i[1]
         if _tooFar(origin, i[0], radius) or _tooHighOrLow(i[0]):
             raise TooFarException("There are no valid blocks within range")
@@ -104,7 +104,7 @@ def _tooFar(origin, position, radius):
     y = abs(origin[1] - position[1])
     z = abs(origin[2] - position[2])
 
-    result = x>radius or y>radius or z>radius
+    result = x > radius or y > radius or z > radius
     return result
 
 
@@ -113,7 +113,7 @@ def _tooHighOrLow(position):
 
 
 class TooFarException(Exception):
-    def __init__(self,value):
+    def __init__(self, value):
         self.value = value
 
     def __str__(self):

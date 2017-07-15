@@ -1560,6 +1560,84 @@
                     "<data>": 5
                 }]
         },
+        "lever": {
+            "id": 69,
+            "properties": [{
+                    "facing": "down_x",
+                    "<data>": 0,
+                    "powered": "false"
+                },{
+                    "facing": "east",
+                    "<data>": 1,
+                    "powered": "false"
+                },{
+                    "facing": "west",
+                    "<data>": 2,
+                    "powered": "false"
+                },{
+                    "facing": "south",
+                    "<data>": 3,
+                    "powered": "false"
+                },{
+                    "facing": "north",
+                    "<data>": 4,
+                    "powered": "false"
+                },{
+                    "facing": "up_z",
+                    "<data>": 5,
+                    "powered": "false"
+                },{
+                    "facing": "up_x",
+                    "<data>": 6,
+                    "powered": "false"
+                },{
+                    "facing": "down_z",
+                    "<data>": 7,
+                    "powered": "false"
+                },{
+                    "facing": "down_x",
+                    "<data>": 8,
+                    "powered": "true"
+                },{
+                    "facing": "east",
+                    "<data>": 9,
+                    "powered": "true"
+                },{
+                    "facing": "west",
+                    "<data>": 10,
+                    "powered": "true"
+                },{
+                    "facing": "south",
+                    "<data>": 11,
+                    "powered": "true"
+                },{
+                    "facing": "north",
+                    "<data>": 12,
+                    "powered": "true"
+                },{
+                    "facing": "up_z",
+                    "<data>": 13,
+                    "powered": "true"
+                },{
+                    "facing": "up_x",
+                    "<data>": 14,
+                    "powered": "true"
+                },{
+                    "facing": "down_z",
+                    "<data>": 15,
+                    "powered": "true"
+                }]
+        },
+        "stone_pressure_plate": {
+            "id": 70,
+            "properties": [{
+                    "<data>": 0,
+                    "powered": "false"
+                },{
+                    "<data>": 1,
+                    "powered": "true"
+                }]
+        },
         "iron_door": {
             "id": 71,
             "properties": [{
@@ -3107,6 +3185,58 @@
                     "half": "top"
                 }]
         },
+        "command_block": {
+            "id": 137,
+            "properties": [{
+                    "facing": "down",
+                    "conditional": "false",
+                    "<data>": 0
+                },{
+                    "facing": "up",
+                    "conditional": "false",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "conditional": "false",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "conditional": "false",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "conditional": "false",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "conditional": "false",
+                    "<data>": 5
+                },{
+                    "facing": "down",
+                    "conditional": "true",
+                    "<data>": 8
+                },{
+                    "facing": "up",
+                    "conditional": "true",
+                    "<data>": 9
+                },{
+                    "facing": "north",
+                    "conditional": "true",
+                    "<data>": 10
+                },{
+                    "facing": "south",
+                    "conditional": "true",
+                    "<data>": 11
+                },{
+                    "facing": "west",
+                    "conditional": "true",
+                    "<data>": 12
+                },{
+                    "facing": "east",
+                    "conditional": "true",
+                    "<data>": 13
+                }]
+        },
         "cobblestone_wall": {
             "id": 139,
             "properties": [{
@@ -3353,6 +3483,58 @@
                     "facing": "east",
                     "<data>": 11,
                     "damage": "2"
+                }]
+        },
+        "daylight_detector": {
+            "id": 151,
+            "properties": [{
+                    "<data>": 9,
+                    "power": "1"
+                },{
+                    "<data>": 9,
+                    "power": "10"
+                },{
+                    "<data>": 9,
+                    "power": "13"
+                },{
+                    "<data>": 9,
+                    "power": "8"
+                },{
+                    "<data>": 9,
+                    "power": "5"
+                },{
+                    "<data>": 9,
+                    "power": "4"
+                },{
+                    "<data>": 9,
+                    "power": "12"
+                },{
+                    "<data>": 9,
+                    "power": "11"
+                },{
+                    "<data>": 9,
+                    "power": "0"
+                },{
+                    "<data>": 9,
+                    "power": "7"
+                },{
+                    "<data>": 9,
+                    "power": "3"
+                },{
+                    "<data>": 9,
+                    "power": "9"
+                },{
+                    "<data>": 9,
+                    "power": "6"
+                },{
+                    "<data>": 9,
+                    "power": "15"
+                },{
+                    "<data>": 9,
+                    "power": "14"
+                },{
+                    "<data>": 9,
+                    "power": "2"
                 }]
         },
         "redstone_block": {
@@ -3785,6 +3967,58 @@
                     "<data>": 11,
                     "variant": "paeonia",
                     "half": "upper"
+                }]
+        },
+        "daylight_detector_inverted": {
+            "id": 178,
+            "properties": [{
+                    "<data>": 0,
+                    "power": "1"
+                },{
+                    "<data>": 0,
+                    "power": "8"
+                },{
+                    "<data>": 0,
+                    "power": "13"
+                },{
+                    "<data>": 0,
+                    "power": "4"
+                },{
+                    "<data>": 0,
+                    "power": "12"
+                },{
+                    "<data>": 0,
+                    "power": "0"
+                },{
+                    "<data>": 0,
+                    "power": "5"
+                },{
+                    "<data>": 0,
+                    "power": "11"
+                },{
+                    "<data>": 0,
+                    "power": "7"
+                },{
+                    "<data>": 0,
+                    "power": "6"
+                },{
+                    "<data>": 0,
+                    "power": "3"
+                },{
+                    "<data>": 0,
+                    "power": "14"
+                },{
+                    "<data>": 0,
+                    "power": "9"
+                },{
+                    "<data>": 0,
+                    "power": "2"
+                },{
+                    "<data>": 0,
+                    "power": "10"
+                },{
+                    "<data>": 0,
+                    "power": "15"
                 }]
         },
         "spruce_fence_gate": {
@@ -4285,6 +4519,110 @@
                     "in_wall": "false",
                     "open": "true",
                     "powered": "true"
+                }]
+        },
+        "repeating_command_block": {
+            "id": 188,
+            "properties": [{
+                    "facing": "down",
+                    "conditional": "false",
+                    "<data>": 0
+                },{
+                    "facing": "up",
+                    "conditional": "false",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "conditional": "false",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "conditional": "false",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "conditional": "false",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "conditional": "false",
+                    "<data>": 5
+                },{
+                    "facing": "down",
+                    "conditional": "true",
+                    "<data>": 8
+                },{
+                    "facing": "up",
+                    "conditional": "true",
+                    "<data>": 9
+                },{
+                    "facing": "north",
+                    "conditional": "true",
+                    "<data>": 10
+                },{
+                    "facing": "south",
+                    "conditional": "true",
+                    "<data>": 11
+                },{
+                    "facing": "west",
+                    "conditional": "true",
+                    "<data>": 12
+                },{
+                    "facing": "east",
+                    "conditional": "true",
+                    "<data>": 13
+                }]
+        },
+        "chain_command_block": {
+            "id": 189,
+            "properties": [{
+                    "facing": "down",
+                    "conditional": "false",
+                    "<data>": 0
+                },{
+                    "facing": "up",
+                    "conditional": "false",
+                    "<data>": 1
+                },{
+                    "facing": "north",
+                    "conditional": "false",
+                    "<data>": 2
+                },{
+                    "facing": "south",
+                    "conditional": "false",
+                    "<data>": 3
+                },{
+                    "facing": "west",
+                    "conditional": "false",
+                    "<data>": 4
+                },{
+                    "facing": "east",
+                    "conditional": "false",
+                    "<data>": 5
+                },{
+                    "facing": "down",
+                    "conditional": "true",
+                    "<data>": 8
+                },{
+                    "facing": "up",
+                    "conditional": "true",
+                    "<data>": 9
+                },{
+                    "facing": "north",
+                    "conditional": "true",
+                    "<data>": 10
+                },{
+                    "facing": "south",
+                    "conditional": "true",
+                    "<data>": 11
+                },{
+                    "facing": "west",
+                    "conditional": "true",
+                    "<data>": 12
+                },{
+                    "facing": "east",
+                    "conditional": "true",
+                    "<data>": 13
                 }]
         }
     }

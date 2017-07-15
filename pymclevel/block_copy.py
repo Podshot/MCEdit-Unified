@@ -4,7 +4,7 @@ import logging
 log = logging.getLogger(__name__)
 
 import numpy
-from box import BoundingBox, Vector
+from box import BoundingBox
 from mclevelbase import exhaust
 import materials
 from entity import Entity, TileEntity

@@ -17,7 +17,6 @@ import imp
 import traceback
 import copy
 from OpenGL import GL
-import datetime
 import os
 import sys
 from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextFieldWrapped, TableView, TableColumn
@@ -27,7 +26,6 @@ _ = albow.translate._
 import ast
 import bresenham
 from clone import CloneTool
-import collections
 from config import config
 import directories
 from editortools.blockpicker import BlockPicker
@@ -36,23 +34,20 @@ from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel, GLBackground
 from glutils import gl
-import itertools
 from albow.root import get_root
-import leveleditor
 import logging
 from mceutils import alertException, drawTerrainCuttingWire
 from albow import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow
 import mcplatform
 from numpy import newaxis
 import numpy
-from operation import Operation, mkundotemp
-from os.path import basename
-from pymclevel import block_fill, BoundingBox, materials, blockrotation
+from operation import Operation
+from pymclevel import  BoundingBox, blockrotation
 import pymclevel
 from pymclevel.mclevelbase import exhaust
 from pymclevel.entity import TileEntity
-import random
-from __builtin__ import __import__
+import types
+from pymclevel.materials import Block
 from locale import getdefaultlocale
 DEF_ENC = getdefaultlocale()[1]
 if DEF_ENC is None:
@@ -171,22 +166,19 @@ class BrushPanel(Panel):
         :param key, key to store the value in, also the name of the label if type is float or int.
         :param value, default value for the field.
         """
-        if hasattr(self.tool.brushMode, "trn"):
-            doNotTranslate = True
-        else:
-            doNotTranslate = False
-        type = value.__class__.__name__
+        doNotTranslate = bool(hasattr(self.tool.brushMode, "trn"))
+        check_value = value
         mi = 0
         ma = 100
         if key in ('W', 'H', 'L'):
             reference = AttrRef(self.tool, key)
         else:
             reference = ItemRef(self.tool.options, key)
-        if type == 'tuple':
-            type = value[0].__class__.__name__
+        if isinstance(check_value, tuple):
+            check_value = value[0]
             mi = value[1]
             ma = value[2]
-        if type == 'Block':
+        if isinstance(check_value, Block):
             if key not in self.tool.recentBlocks:
                 self.tool.recentBlocks[key] = []
             wcb = getattr(self.tool.brushMode, 'wildcardBlocks', [])
@@ -198,22 +190,22 @@ class BrushPanel(Panel):
                                 recentBlocks=self.tool.recentBlocks[key],
                                 allowWildcards=aw
                                 )
-        elif type == 'instancemethod':
+        elif isinstance(check_value, types.MethodType):
             field = Button(key, action=value)
         else:
             if doNotTranslate:
                 key = self.tool.brushMode.trn._(key)
                 value = self.tool.brushMode.trn._(value)
-            if type == 'int':
+            if isinstance(check_value, int):
                 field = IntInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
-            elif type == 'float':
+            elif isinstance(check_value, float):
                 field = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
-            elif type == 'bool':
+            elif isinstance(check_value, bool):
                 field = CheckBoxLabel(key, ref=reference, doNotTranslate=doNotTranslate)
-            elif type == 'str':
+            elif isinstance(check_value, str):
                 field = Label(value, doNotTranslate=doNotTranslate)
             else:
-                print type
+                print type(check_value)
                 field = None
         return field
 
@@ -323,10 +315,10 @@ class BrushPanel(Panel):
         presetTable.row_is_selected = lambda x: x == presetTable.selectedIndex
         presetTable.click_row = selectTableRow
         presetTable.selectedIndex = 0
-        choiceCol = Column((ValueDisplay(width=200, get_value=lambda:"Select preset to delete"), presetTable))
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Select preset to delete"), presetTable))
         okButton = Button("OK", action=okPressed)
         cancelButton = Button("Cancel", action=panel.dismiss)
-        row = Row([okButton,cancelButton])
+        row = Row([okButton, cancelButton])
         panel.add(Column((choiceCol, row)))
         panel.shrink_wrap()
         panel.present()
@@ -352,12 +344,12 @@ class BrushToolOptions(ToolOptions):
         alphaField.increment = 0.1
         alphaRow = Row((Label("Alpha: "), alphaField))
         autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                            ref=ItemRef(tool.settings, "chooseBlockImmediately"),
-                                            tooltipText="When the brush tool is chosen, prompt for a block type.")
+                                           ref=ItemRef(tool.settings, "chooseBlockImmediately"),
+                                           tooltipText="When the brush tool is chosen, prompt for a block type.")
 
         updateOffsetCheckBox = CheckBoxLabel("Reset Distance When Brush Size Changes",
-                                            ref=ItemRef(tool.settings, "updateBrushOffset"),
-                                            tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
+                                             ref=ItemRef(tool.settings, "updateBrushOffset"),
+                                             tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
 
         col = Column((Label("Brush Options"), alphaRow, autoChooseCheckBox, updateOffsetCheckBox, Button("OK", action=self.dismiss)))
         self.add(col)
@@ -370,13 +362,13 @@ class BrushTool(CloneTool):
     toolIconName = "brush"
 
     options = {
-    'Style':'Round',
-    }
+               'Style': 'Round',
+              }
     settings = {
-    'chooseBlockImmediately':False,
-    'updateBrushOffset':False,
-    'brushAlpha':1.0,
-    }
+                'chooseBlockImmediately': False,
+                'updateBrushOffset': False,
+                'brushAlpha': 1.0,
+               }
     brushModes = {}
     recentBlocks = {}
     previewDirty = False
@@ -486,9 +478,9 @@ class BrushTool(CloneTool):
                 for r in m.inputs:
                     for key in r:
                         if not hasattr(self.options, key):
-                            if type(r[key]) == tuple:
+                            if isinstance(r[key], tuple):
                                 self.options[key] = r[key][0]
-                            elif type(r[key]) != str:
+                            elif not isinstance(r[key], str):
                                 self.options[key] = r[key]
             if not hasattr(self.options, 'Minimum Spacing'):
                 self.options['Minimum Spacing'] = 1
@@ -499,11 +491,13 @@ class BrushTool(CloneTool):
         Imports all Stock Brush Modes from their files.
         Called by setupBrushModes
         """
-        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters')) ### Why? Is 'stock-filters' needed here? Should'nt be 'stoch-brushes'?
-        modes = [self.tryImport(x[:-3], 'stock-brushes') for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')))]
-        cust_modes = [self.tryImport(x[:-3], directories.brushesDir) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir))]
-        modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
-        modes.extend(filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs') and hasattr(m, 'trn'), cust_modes))
+        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters')) ### Why? Is 'stock-filters' needed here? Shouldn't be 'stock-brushes'?
+        files = [x for x in os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')) if x.endswith(".py")]
+        more_files = [x for x in os.listdir(directories.brushesDir) if x.endswith(".py")]
+        modes = [self.tryImport(x[:-3], 'stock-brushes') for x in files]
+        cust_modes = [self.tryImport(x[:-3], directories.brushesDir) for x in more_files]
+        modes = [m for m in modes if (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs')]
+        modes.extend([m for m in cust_modes if (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs')])
         return modes
 
     def tryImport(self, name, dir):
@@ -511,13 +505,10 @@ class BrushTool(CloneTool):
         Imports a brush module. Called by importBrushModules
         :param name, name of the module to import.
         """
-        if dir != "stock-brushes":
-            embeded = False
-        else:
-            embeded = True
+        embeded = bool(dir == "stock-brushes")
         try:
             path = os.path.join(dir, (name + ".py"))
-            if type(path) == unicode and DEF_ENC != "UTF-8":
+            if isinstance(path, unicode) and DEF_ENC != "UTF-8":
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
             if not embeded:
@@ -538,7 +529,7 @@ class BrushTool(CloneTool):
             m.tool = self
             m.createInputs(m)
             return m
-        except Exception, e:
+        except Exception as e:
             print traceback.format_exc()
             alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
             return object()
@@ -610,11 +601,14 @@ class BrushTool(CloneTool):
         :param name, name of the preset to load.
         """
         name += '.preset'
+        f = None
         try:
             f = open(os.path.join(directories.brushesDir, name), "r")
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
+        if f:
+            f.close()
 
         brushMode = self.brushModes.get(loadedBrushOptions.get("Mode", None), None)
         if brushMode is not None:
@@ -623,7 +617,7 @@ class BrushTool(CloneTool):
             for key in loadedBrushOptions:
                 if key.endswith('blockID'):
                     key = key[:-7]
-                    self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key+ 'blockData'])
+                    self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key + 'blockData'])
                     if key + 'recentBlocks' in loadedBrushOptions:
                         list = []
                         blockList = loadedBrushOptions[key + 'recentBlocks']
@@ -634,9 +628,6 @@ class BrushTool(CloneTool):
                     continue
                 elif key.endswith('recentBlocks'):
                     continue
-#                elif key == "Mode":
-#                    self.selectedBrushMode = loadedBrushOptions[key]
-#                    self.brushMode = self.brushModes[self.selectedBrushMode]
                 else:
                     self.options[key] = loadedBrushOptions[key]
         self.showPanel()
@@ -656,7 +647,7 @@ class BrushTool(CloneTool):
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
                 return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
-            except Exception, e:
+            except Exception as e:
                 return repr(e)
 
     def keyDown(self, evt):
@@ -741,7 +732,7 @@ class BrushTool(CloneTool):
         Called on releasing the Mouse Button.
         Creates Operation object and passes it to the leveleditor.
         """
-        if 0 == len(self.draggedPositions):
+        if not self.draggedPositions:
             return
         op = BrushOperation(self)
         self.editor.addOperation(op)
@@ -756,7 +747,7 @@ class BrushTool(CloneTool):
         Swaps the BrushStyleButton to the next Brush Style.
         Called by pressing BrushStyleButton in panel.
         """
-        styles = ["Square","Round","Diamond"]
+        styles = ["Square", "Round", "Diamond"]
         brushStyleIndex = styles.index(self.options["Style"]) + 1
         brushStyleIndex %= 3
         self.options["Style"] = styles[brushStyleIndex]
@@ -771,9 +762,9 @@ class BrushTool(CloneTool):
             self.toolSelected()
         key = getattr(self.brushMode, 'mainBlock', 'Block')
         wcb = getattr(self.brushMode, 'wildcardBlocks', [])
-        aw = False
-        if key in wcb:
-            aw = True
+        aw = (key in wcb)
+        #if key in wcb:
+        #    aw = True
         blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=aw)
         if blockPicker.present():
             self.options[key] = blockPicker.blockInfo
@@ -825,8 +816,8 @@ class BrushTool(CloneTool):
         """
         size = []
         if getattr(self.brushMode, 'disableStyleButton', False):
-            return 1,1,1
-        for dim in ['W','H','L']:
+            return 1, 1, 1
+        for dim in ['W', 'H', 'L']:
             size.append(self.options[dim])
         return size
 
@@ -850,6 +841,10 @@ class BrushTool(CloneTool):
                 self.chunkCache = {}
 
             Width, Height, Length = brushSize
+            if self.editor.level.gameVersion == "PE" and self.editor.level.world_version == "1.plus":
+                Height = 16
+            else:
+                Height = self.editor.level.Height
             zerolight = numpy.zeros((16, 16, Height), dtype='uint8')
             zerolight[:] = 15
 
@@ -888,7 +883,7 @@ class BrushTool(CloneTool):
         Calculates the position of the reticle.
         Called by drawTerrainReticle.
         """
-        if len(self.draggedPositions):
+        if self.draggedPositions:
             direction = self.draggedDirection
         return map(lambda a, b: a + (b * self.reticleOffset), pos, direction)
 
@@ -958,15 +953,15 @@ class BrushTool(CloneTool):
             if reticlePoint != pos:
                 GL.glColor4f(1.0, 1.0, 0.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
-                    GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))  #Center of reticle block
+                    GL.glVertex3f(*[a + 0.5 for a in reticlePoint])  #Center of reticle block
                     GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
             dirtyBox = self.getDirtyBox(reticlePoint, self)
             self.drawTerrainPreview(dirtyBox.origin)
             if self.lineToolKey and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True):  #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
-                    GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
-                    GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))
+                    GL.glVertex3f(*[a + 0.5 for a in self.lastPosition])
+                    GL.glVertex3f(*[a + 0.5 for a in reticlePoint])
 
     def decreaseBrushSize(self):
         """
@@ -984,7 +979,7 @@ class BrushTool(CloneTool):
             self.options[key] += 1
         self.setupPreview()
 
-    def swap(self):
+    def swap(self, amount=1):
         main = getattr(self.brushMode, 'mainBlock', 'Block')
         secondary = getattr(self.brushMode, 'secondaryBlock', 'Block To Replace With')
         bi = self.options[main]
@@ -992,13 +987,13 @@ class BrushTool(CloneTool):
         self.options[secondary] = bi
         self.showPanel()
 
-    def rotate(self, blocksOnly=False):
+    def rotate(self, amount=1, blocksOnly=False):
         """
         Rotates the brush.
         :keyword blocksOnly: Also rotate the data value of the block we're brushing with.
         """
         def rotateBlock():
-            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block']
+            list = [key for key in self.options if isinstance(self.options[key], Block)]
             list = getattr(self.brushMode, 'rotatableBlocks', list)
             for key in list:
                 bl = self.options[key]
@@ -1015,13 +1010,13 @@ class BrushTool(CloneTool):
             self.options['L'] = W
         self.setupPreview()
 
-    def roll(self, blocksOnly=False):
+    def roll(self, amount=1, blocksOnly=False):
         """
         Rolls the brush.
         :keyword blocksOnly: Also roll the data value of the block we're brushing with.
         """
         def rollBlock():
-            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block']
+            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block'] # TODO Pod
             list = getattr(self.brushMode, 'rotatableBlocks', list)
             for key in list:
                 bl = self.options[key]
@@ -1063,11 +1058,11 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
     If 'offset' and 'box' are given, then the brush is offset into the world
     and only the part of the world contained in box is returned as an array.
     :param shape, UNKWOWN
-    :keyword style, style of the brush. Round if not given.
-    :keyword offset, UNKWOWN
-    :keyword box, UNKWOWN
-    :keyword chance, also known as Noise. Input in stock-brushes like Fill and Replace.
-    :keyword hollow, input to calculate a hollow brush.
+    :param style, style of the brush. Round if not given.
+    :param offset, UNKWOWN
+    :param box, UNKWOWN
+    :param chance, also known as Noise. Input in stock-brushes like Fill and Replace.
+    :param hollow, input to calculate a hollow brush.
     """
 
     #We are returning indices for a Blocks array, so swap axes
@@ -1108,8 +1103,6 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         pass
 
     elif style == "Square":
-        # mask = ones(outputShape, dtype=bool)
-        # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
         blockCenters /= shape[:, None, None, None]
 
         distances = numpy.absolute(blockCenters).max(0)
@@ -1150,6 +1143,7 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask[1:-1, 1:-1, 1:-1]
     else:
         return mask
+
 
 def createTileEntities(block, box, chunk):
     if box is None or block.stringID not in TileEntity.stringNames.keys():

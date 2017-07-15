@@ -18,17 +18,17 @@ log = logging.getLogger(__name__)
 
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-from editortools.thumbview import ThumbView 
+from editortools.thumbview import ThumbView
 import keys
 import pygame
 from albow.fields import FloatField
 from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow, ScrollPanel
 from editortools.blockview import BlockButton
 import ftp_client
-import sys
-from pymclevel import nbt
-from editortools.select import SelectionTool
-from pymclevel.box import BoundingBox
+#import sys
+#from pymclevel import nbt
+#from editortools.select import SelectionTool
+#from pymclevel.box import BoundingBox
 from waypoints import WaypointManager
 from editortools.timeditor import TimeEditor
 
@@ -45,19 +45,19 @@ imported from editortools/
 
 import gc
 import os
-import math
+#import math
 import csv
-import copy
+#import copy
 import time
 import numpy
 from config import config
-from config import DEF_ENC
-import frustum
+#from config import DEF_ENC
+#import frustum
 import glutils
 import release
 import mceutils
 import platform
-import functools
+#import functools
 import editortools
 import itertools
 import mcplatform
@@ -84,7 +84,7 @@ get_font = albow.resource.get_font
 from albow.controls import Label, ValueDisplay, Image, RotatableImage
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
-from albow.translate import _
+from albow.translate import _, getLang
 from pygame import display, event, mouse, MOUSEMOTION, image
 
 from depths import DepthOffset
@@ -95,11 +95,12 @@ from glutils import Texture
 from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
-from pymclevel.entity import Entity
+#from pymclevel.entity import Entity
 from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
     MCInfdevOldLevel
 # Block and item translation
 from mclangres import translate as trn
+from mclangres import buildResources
 
 try:
     import resource  # @UnresolvedImport
@@ -227,9 +228,9 @@ class LevelEditor(GLViewport):
 
         def chooseDistance():
             self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
-        if self.renderer.viewDistance not in range(2,32,2):
+        if self.renderer.viewDistance not in xrange(2,32,2):
             self.renderer.viewDistance = 8
-        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in range(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
+        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in xrange(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
         self.viewDistanceReadout.shrink_wrap()
 
@@ -286,7 +287,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLabel = Label("Session:", margin=0)
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.mouse_down = self.mouse_down_session
-        
+
         # TODO: Marker
         row = (self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
                self.viewButton, self.viewportButton, self.recordUndoButton,
@@ -338,7 +339,8 @@ class LevelEditor(GLViewport):
             self.topRow.calc_size()
             self.controlPanel.set_update_ui(v)
             # Update the unparented widgets.
-            [a.set_update_ui(v) for a in unparented.values()]
+            for a in unparented.values():
+                a.set_update_ui(v)
     #-#
 
     def __del__(self):
@@ -404,8 +406,8 @@ class LevelEditor(GLViewport):
             self.gotoDimension(lastPos["Dimension"].value)
             self.mainViewport.skyList = None
             self.mainViewport.drawSkyBackground()
-            self.mainViewport.cameraPosition = [lastPos["Coordinates"][0].value, 
-                                                lastPos["Coordinates"][1].value, 
+            self.mainViewport.cameraPosition = [lastPos["Coordinates"][0].value,
+                                                lastPos["Coordinates"][1].value,
                                                 lastPos["Coordinates"][2].value
                                                 ]
             self.mainViewport.yaw = lastPos["Rotation"][0].value
@@ -603,7 +605,7 @@ class LevelEditor(GLViewport):
             return p
 
         page = []
-        for i in range(len(self.copyStack)):
+        for i in xrange(len(self.copyStack)):
             sch = self.copyStack[i]
             p = createOneCopyPanel(sch, i)
             if self.netherPanel is None:
@@ -637,7 +639,7 @@ class LevelEditor(GLViewport):
             else:
                 return
             self.currentCopyPage = m(*a)
-            for i in range(len(this.pages)):
+            for i in xrange(len(this.pages)):
                 page = this.pages[i]
                 if i == self.currentCopyPage:
                     page.visible = True
@@ -730,17 +732,17 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        blockRows = [("", "", ""), (box.volume, "<%s>"%_("Blocks"), "")]
-        rows = list(blockRows)
+        rows = blockRows = [("", "", ""), (box.volume, "<%s>" % _("Blocks"), "")]
+        #rows = list(blockRows)
         rows.extend([[count, trn(block.name), ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
             if entitySum:
-                rows.extend([("", "", ""), (entitySum, "<%s>"%_("Entities"), "")])
+                rows.extend([("", "", ""), (entitySum, "<%s>" % _("Entities"), "")])
                 rows.extend([(count, trn(id[1]), id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
-                rows.extend([("", "", ""), (tileEntitySum, "<%s>"%_("TileEntities"), "")])
+                rows.extend([("", "", ""), (tileEntitySum, "<%s>" % _("TileEntities"), "")])
                 rows.extend([(count, trn(id), "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
@@ -794,7 +796,7 @@ class LevelEditor(GLViewport):
             if filename:
                 try:
                     csvfile = csv.writer(open(filename, "wb"))
-                except Exception, e:
+                except Exception as e:
                     alert(str(e))
                 else:
                     for row in rows:
@@ -803,7 +805,7 @@ class LevelEditor(GLViewport):
                             _row = ["Number", "Type", "ID"]
                         else:
                             for a in row:
-                                if type(a) == unicode:
+                                if isinstance(a, unicode):
                                     _row.append(a.encode('utf-8'))
                                 else:
                                     _row.append(a)
@@ -882,10 +884,10 @@ class LevelEditor(GLViewport):
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?""".format(
-                   filename, 
-                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]), 
-                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]), 
-                   (old_box.size[0], old_box.size[1], old_box.size[2]), 
+                   filename,
+                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]),
+                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]),
+                   (old_box.size[0], old_box.size[1], old_box.size[2]),
                    (new_box.size[0], new_box.size[1], new_box.size[2])
                    )
         result = ask(msg, ["Yes", "No"])
@@ -1105,14 +1107,11 @@ class LevelEditor(GLViewport):
             teximage[-1:] = darkColor
             teximage[:, -1:] = darkColor
             teximage[:, :2] = darkColor
-            # GL.glTexParameter(GL.GL_TEXTURE_2D,
-            #                  GL.GL_TEXTURE_MIN_FILTER,
-            #                  GL.GL_NEAREST_MIPMAP_NEAREST),
             GL.glTexParameter(GL.GL_TEXTURE_2D,
                               GL.GL_TEXTURE_MAX_LEVEL,
                               maxLevel - 1)
 
-            for lev in range(maxLevel):
+            for lev in xrange(maxLevel):
                 step = 1 << lev
                 if lev:
                     teximage[::16] = 0xff
@@ -1185,7 +1184,7 @@ class LevelEditor(GLViewport):
 
         try:
             level = pymclevel.fromFile(filename)
-        except Exception, e:
+        except Exception as e:
             logging.exception(
                 'Wasn\'t able to open a file {file => %s}' % filename
             )
@@ -1195,6 +1194,9 @@ class LevelEditor(GLViewport):
 
         assert level
         log.debug("Loaded world is %s"%repr(level))
+
+        if hasattr(level, 'materials'):
+            level.materials.addJSONBlocksFromVersion(level.gameVersion)
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
@@ -1232,10 +1234,11 @@ class LevelEditor(GLViewport):
         self.removeNetherPanel()
 
         gameVersion = level.gameVersion
-        if gameVersion in ('Schematic'):
-            log.info('Loading \'%s\' file.'%gameVersion)
+        if gameVersion == 'Schematic':
+            log.info('Loading \'Schematic\' file.')
         else:
-            log.info('Loading world for version {}.'.format({True: "pior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
+            log.info('Loading world for version {}.'.format({True: "prior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
+            buildResources(gameVersion, getLang())
 
         self.loadLevel(level)
 
@@ -1269,7 +1272,8 @@ class LevelEditor(GLViewport):
         self.initWindowCaption()
         self.selectionTool.selectNone()
 
-        [t.levelChanged() for t in self.toolbar.tools]
+        for t in self.toolbar.tools:
+            t.levelChanged()
         if "select" not in str(self.currentTool):
             self.toolbar.selectTool(0)
 
@@ -1295,10 +1299,7 @@ class LevelEditor(GLViewport):
                 self.gotoDimension(dimNo)
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
-                
-            #!# The two following lines has been moved down.
-#             self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-#             self.waypointManager.load()
+
             dimensionsList = [d[0] for d in dimensionsMenu]
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
@@ -1383,13 +1384,9 @@ class LevelEditor(GLViewport):
 
     def initWindowCaption(self):
         filename = self.level.filename
-#         s = os.path.split(filename)
-#         title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit ~ " + release.get_version()%_("for")
         last_dir, f_name = os.path.split(filename)
         last_dir = os.path.basename(last_dir)
-        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version()%_("for"))
-#        if DEF_ENC != "UTF-8":
-#            title = title.encode('utf-8')
+        title = u"{f_name} - Unified ~ {ver}".format(f_name=os.path.join(last_dir, f_name), ver=release.get_version() % _("for"))
         title = title.encode('utf-8')
         display.set_caption(title)
 
@@ -1399,7 +1396,6 @@ class LevelEditor(GLViewport):
         for p in self.toolbar.tools[6].nonSavedPlayers:
             if os.path.exists(p):
                 os.remove(p)
-        # self.discardAllChunks()
         self.loadFile(filename)
 
     @mceutils.alertException
@@ -1465,7 +1461,6 @@ class LevelEditor(GLViewport):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
                                         shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
-#                                           shortName + " - Copy", "", "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
@@ -1563,7 +1558,7 @@ class LevelEditor(GLViewport):
 
     lastRendererDraw = datetime.now()
 
-    def idleevent(self, e):
+    def idleevent(self):
         if any(self.cameraInputs) or any(self.cameraPanKeys):
             self.postMouseMoved()
 
@@ -1579,8 +1574,7 @@ class LevelEditor(GLViewport):
 
             while frameDuration > (datetime.now() - self.frameStartTime):
                 self.doWorkUnit()
-            else:
-                return
+            return
 
         self.doWorkUnit()
 
@@ -1637,22 +1631,20 @@ class LevelEditor(GLViewport):
     def statusText(self):
         try:
             return self.currentTool.statusText
-        except Exception, e:
+        except Exception as e:
             return repr(e)
 
     def toolMouseDown(self, evt, f):  # xxx f is a tuple
-        if self.level:
-            if None != f:
-                (focusPoint, direction) = f
-                if focusPoint is not None and direction is not None:
-                    self.currentTool.mouseDown(evt, focusPoint, direction)
+        if self.level and f is not None:
+            focusPoint, direction = f
+            if focusPoint is not None and direction is not None:
+                self.currentTool.mouseDown(evt, focusPoint, direction)
 
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
-        if self.level:
-            if None != f:
-                (focusPoint, direction) = f
-                if focusPoint is not None and direction is not None:
-                    self.currentTool.mouseUp(evt, focusPoint, direction)
+        if self.level and f is not None:
+            focusPoint, direction = f
+            if focusPoint is not None and direction is not None:
+                self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
         button = keys.remapMouseButton(evt.button)
@@ -1660,12 +1652,10 @@ class LevelEditor(GLViewport):
         self.key_up(evt)
 
     def mouse_drag(self, evt):
-        # if 'button' not in evt.dict or evt.button != 1:
-        #    return
         if self.level:
             f = self.blockFaceUnderCursor
-            if None != f:
-                (focusPoint, direction) = f
+            if f is not None:
+                focusPoint, direction = f
                 self.currentTool.mouseDrag(evt, focusPoint, direction)
 
     def mouse_down(self, evt):
@@ -1675,20 +1665,6 @@ class LevelEditor(GLViewport):
         self.mcedit.focus_switch = self
         self.turn_off_focus()
         self.key_down(evt)
-
-    '''
-    def mouseDragOn(self):
-
-        x,y = mouse.get_pos(0)
-        if None != self.currentOperation:
-            self.dragInProgress = True
-            self.dragStartPoint = (x,y)
-            self.currentOperation.dragStart(x,y)
-
-    def mouseDragOff(self):
-        if self.dragInProgress:
-            self.dragInProgress = False
-            '''
 
     def mouseLookOff(self):
         self.mouseWasCaptured = False
@@ -1703,20 +1679,6 @@ class LevelEditor(GLViewport):
     @property
     def blockFaceUnderCursor(self):
         return self.currentViewport.blockFaceUnderCursor
-
-    #    @property
-    #    def worldTooltipText(self):
-    #        try:
-    #            if self.blockFaceUnderCursor:
-    #                pos = self.blockFaceUnderCursor[0]
-    #                blockID = self.level.blockAt(*pos)
-    #                blockData = self.level.blockDataAt(*pos)
-    #
-    #                return "{name} ({bid})\n{pos}".format(name=self.level.materials.names[blockID][blockData], bid=blockID,pos=pos)
-    #
-    #        except Exception, e:
-    #            return None
-    #
 
     def generateStars(self):
         starDistance = 999.0
@@ -1772,7 +1734,7 @@ class LevelEditor(GLViewport):
 
     def drawStars(self):
         pos = self.mainViewport.cameraPosition
-        self.mainViewport.cameraPosition = map(lambda x: x / 128.0, pos)
+        self.mainViewport.cameraPosition = [x / 128.0 for x in pos]
         self.mainViewport.setModelview()
 
         GL.glColor(.5, .5, .5, 1.)
@@ -1866,8 +1828,6 @@ class LevelEditor(GLViewport):
             else:
                 self.mouseLookOff()
                 self.showControls()
-#            return
-        #!#
 
         self.currentTool.keyDown(evt)
 
@@ -1973,7 +1933,7 @@ class LevelEditor(GLViewport):
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
                 alert("Result: {0!r}".format(eval(expr, globals(), locals())))
-            except Exception, e:
+            except Exception as e:
                 alert("Exception: {0!r}".format(e))
 
         if keyname == 'Ctrl-Alt-F10':
@@ -1993,24 +1953,6 @@ class LevelEditor(GLViewport):
             self.decreaseReach()
         if keyname == config.keys.swap.get():
             self.currentTool.swap()
-
-#        #!# D.C.-G.
-#        #!# Here we have the part which is responsible for the fallback to the
-#        #!# select tool when pressing 'Escape' key.
-#        #!# It may be interesting to work on this to be able to return to a tool
-#        #!# which have called another.
-#        if keyname == 'Escape':
-#            if self.selectionTool.selectionInProgress:
-#                self.selectionTool.cancel()
-#            elif self.toolbar.tools[3].replacing:
-#                self.toolbar.tools[3].replacing = False
-#                self.toolbar.tools[3].showPanel()
-#            elif "select" not in str(self.currentTool):
-#                self.toolbar.selectTool(0)
-#            else:
-#                self.mouseLookOff()
-#                self.showControls()
-#        #!#
 
         if keyname == config.keys.confirmConstruction.get():
             self.confirmConstruction()
@@ -2039,7 +1981,7 @@ class LevelEditor(GLViewport):
             self.testBoardKey = 1
 
         if self.selectionSize():
-            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            filter_keys = [i for (i, j) in config.config.items("Filter Keys") if j == keyname]
             if filter_keys:
                 if not self.toolbar.tools[4].filterModules:
                     self.toolbar.tools[4].reloadFilters()
@@ -2157,7 +2099,7 @@ class LevelEditor(GLViewport):
             else:
                 try:
                     self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(),
-                        password=ftp_pass_field.get_text())
+                                                            password=ftp_pass_field.get_text())
                 except ftp_client.InvalidCreditdentialsException as e:
                     alert(e.message)
                     return
@@ -2195,46 +2137,6 @@ class LevelEditor(GLViewport):
             self._ftp_client.cleanup()
         else:
             alert("This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible")
-        '''
-        else:
-            if self.unsavedEdits:
-                answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
-                self.root.fix_sticky_ctrl()
-                if answer == "Save":
-                    self.saveFile()
-                if answer == "Cancel":
-                    return
-            widget = Widget()
-        
-            ftp_ip_lbl = Label("FTP Server IP:")
-            ftp_ip_field = TextFieldWrapped(width=400)
-            ip_row = Row((ftp_ip_lbl, ftp_ip_field))
-        
-            ftp_user_lbl = Label("FTP Username:")
-            ftp_user_field = TextFieldWrapped(width=400)
-            user_row = Row((ftp_user_lbl, ftp_user_field))
-        
-            ftp_pass_lbl = Label("FTP Password:")
-            ftp_pass_field = TextFieldWrapped(width=400)
-            pass_row = Row((ftp_pass_lbl, ftp_pass_field))
-        
-            note_creds = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
-            note_wait = Label("Please wait while MCEdit-Unified upload the world. The world will be closed once completed")
-            col = Column((ip_row, user_row, pass_row, note_creds, note_wait))
-            widget.add(col)
-            widget.shrink_wrap()
-            d = Dialog(widget, ["Upload", "Cancel"])
-            if d.present() == "Upload":
-                if ftp_user_field.get_text() == "" and ftp_pass_field.get_text() == "":
-                    self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text())
-                else:
-                    try:
-                        self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
-                    except ftp_client.InvalidCreditdentialsException as e:
-                        alert(e.message)
-                        return
-                    self._ftp_client.upload_new_world(self.level)
-        '''
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
@@ -2247,27 +2149,26 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def showWorldInfo(self):
-
         worldInfoPanel = Dialog()
         items = []
 
-        t = functools.partial(isinstance, self.level)
-        if t(pymclevel.MCInfdevOldLevel):
+        #t = functools.partial(isinstance, self.level)
+        if isinstance(self.level, pymclevel.MCInfdevOldLevel):
             if self.level.version == pymclevel.MCInfdevOldLevel.VERSION_ANVIL:
                 levelFormat = "Minecraft Infinite World (Anvil Format)"
             elif self.level.version == pymclevel.MCInfdevOldLevel.VERSION_MCR:
                 levelFormat = "Minecraft Infinite World (Region Format)"
             else:
                 levelFormat = "Minecraft Infinite World (Old Chunk Format)"
-        elif t(pymclevel.MCIndevLevel):
+        elif isinstance(self.level, pymclevel.MCIndevLevel):
             levelFormat = "Minecraft Indev (.mclevel format)"
-        elif t(pymclevel.MCSchematic):
+        elif isinstance(self.level, pymclevel.MCSchematic):
             levelFormat = "MCEdit Schematic"
-        elif t(pymclevel.ZipSchematic):
+        elif isinstance(self.level, pymclevel.ZipSchematic):
             levelFormat = "MCEdit Schematic (Zipped Format)"
-        elif t(pymclevel.MCJavaLevel):
+        elif isinstance(self.level, pymclevel.MCJavaLevel):
             levelFormat = "Minecraft Classic or raw block array"
-        elif t(pymclevel.PocketLeveldbWorld):
+        elif isinstance(self.level, pymclevel.PocketLeveldbWorld):
             levelFormat = "Minecraft Pocket Edition"
         else:
             levelFormat = "Unknown"
@@ -2336,17 +2237,15 @@ class LevelEditor(GLViewport):
 
             items.append(chunkCountLabel)
 
-        if hasattr(self.level, 'worldFolder'):
-            if hasattr(self.level.worldFolder, 'regionFiles'):
-                worldFolder = self.level.worldFolder
-                regionCount = len(worldFolder.regionFiles)
-                regionCountLabel = Label(_("Number of regions: {0}").format(regionCount))
-                items.append(regionCountLabel)
+        if hasattr(self.level, 'worldFolder') and hasattr(self.level.worldFolder, 'regionFiles'):
+            worldFolder = self.level.worldFolder
+            regionCount = len(worldFolder.regionFiles)
+            regionCountLabel = Label(_("Number of regions: {0}").format(regionCount))
+            items.append(regionCountLabel)
 
         size = self.level.size
         sizelabel = Label("{L}L x {W}W x {H}H".format(L=size[2], H=size[1], W=size[0]))
         items.append(sizelabel)
-        #items.append(TimeEditor(current_tick_time=0))
 
         if hasattr(self.level, "Entities"):
             label = Label(_("{0} Entities").format(len(self.level.Entities)))
@@ -2373,15 +2272,12 @@ class LevelEditor(GLViewport):
                 day_time = time_editor.get_daytime_value()
                 if self.level.DayTime != day_time:
                     Changes = True
-            if hasattr(self.level, 'RandomSeed'):
-                if seedField.value != self.level.RandomSeed:
-                    Changes = True
-            if hasattr(self.level, 'LevelName'):
-                if nameField.value != self.level.LevelName:
-                    Changes = True
-            if hasattr(self.level, 'GameType'):
-                if b.gametype != self.level.GameType:
-                    Changes = True
+            if hasattr(self.level, 'RandomSeed') and seedField.value != self.level.RandomSeed:
+                Changes = True
+            if hasattr(self.level, 'LevelName') and nameField.value != self.level.LevelName:
+                Changes = True
+            if hasattr(self.level, 'GameType') and b.gametype != self.level.GameType:
+                Changes = True
 
             if not Changes:
                 worldInfoPanel.dismiss(self, *args, **kwargs)
@@ -2500,17 +2396,14 @@ class LevelEditor(GLViewport):
             if self.level.DayTime != day_time:
                 changeDayTime = True
 
-        if hasattr(self.level, 'RandomSeed'):
-            if seedField.value != self.level.RandomSeed:
-                changeSeed = True
+        if hasattr(self.level, 'RandomSeed') and seedField.value != self.level.RandomSeed:
+            changeSeed = True
 
-        if hasattr(self.level, 'LevelName'):
-            if nameField.value != self.level.LevelName:
-                changeLevelName = True
+        if hasattr(self.level, 'LevelName') and nameField.value != self.level.LevelName:
+            changeLevelName = True
 
-        if hasattr(self.level, 'GameType'):
-            if b.gametype != self.level.GameType:
-                changeGameType = True
+        if hasattr(self.level, 'GameType') and b.gametype != self.level.GameType:
+            changeGameType = True
 
         if changeTime or changeSeed or changeLevelName or changeGameType:
             op = WorldInfoChangedOperation(self, self.level)
@@ -2661,7 +2554,6 @@ class LevelEditor(GLViewport):
         self.worldData = [[dateFormat(d), nameFormat(w), w, d]
                           for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
         self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
-        # worlds = [w[2] for w in self.worldData]
 
         worldTable.selectedWorldIndex = 0
         worldTable.num_rows = lambda: len(self.worldData)
@@ -2713,10 +2605,6 @@ class LevelEditor(GLViewport):
 
         winput = IntInputRow("East-West Chunks: ", ref=AttrRef(newWorldPanel, "w"), min=0)
         hinput = IntInputRow("North-South Chunks: ", ref=AttrRef(newWorldPanel, "h"), min=0)
-        # grassinputrow = Row( (Label("Grass: ")
-        # from editortools import BlockButton
-        # blockInput = BlockButton(pymclevel.alphaMaterials, pymclevel.alphaMaterials.Grass)
-        # blockInputRow = Row( (Label("Surface: "), blockInput) )
 
         gametypes = ["Survival", "Creative"]
         worldtypes = {"Default": ("DEFAULT", "default"), "Superflat": ("FLAT", "flat"),
@@ -3019,7 +2907,8 @@ class LevelEditor(GLViewport):
                 if hasattr(w, "needsRedraw") and w.needsRedraw:
                     self.invalidate()
 
-        time.sleep(0.001)
+        if onMenu:
+            time.sleep(0.001)
 
     def updateInspectionString(self, blockPosition):
         self.inspectionString += str(blockPosition) + ": "
@@ -3088,7 +2977,6 @@ class LevelEditor(GLViewport):
         except Exception, e:
             self.inspectionString += _("Chunk {0} had an error: {1!r}").format(
                 (int(numpy.floor(blockPosition[0])) >> 4, int(numpy.floor(blockPosition[2])) >> 4), e)
-            pass
 
     def drawWireCubeReticle(self, color=(1.0, 1.0, 1.0, 1.0), position=None):
         GL.glPolygonOffset(DepthOffset.TerrainWire, DepthOffset.TerrainWire)
@@ -3108,22 +2996,6 @@ class LevelEditor(GLViewport):
     @staticmethod
     def freezeStatus(string):
         return
-
-    #        GL.glColor(1.0, 0., 0., 1.0)
-    #
-    #        # glDrawBuffer(GL.GL_FRONT)
-    #        GL.glMatrixMode(GL.GL_PROJECTION)
-    #        GL.glPushMatrix()
-    #        glRasterPos(50, 100)
-    #        for i in string:
-    #            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(i))
-    #
-    #        # glDrawBuffer(GL.GL_BACK)
-    #        GL.glMatrixMode(GL.GL_PROJECTION)
-    #        GL.glPopMatrix()
-    #        glFlush()
-    #        display.flip()
-    #        # while(True): pass
 
     def selectionSize(self):
         return self.selectionTool.selectionSize()
@@ -3181,11 +3053,10 @@ class LevelEditor(GLViewport):
         infoPanel.add(Label(""))
 
         def idleHandler(evt):
-
             x, y, z = self.blockFaceUnderCursor[0]
             cx, cz = x // 16, z // 16
             cr = self.renderer.chunkRenderers.get((cx, cz))
-            if None is cr:
+            if cr is None:
                 return
 
             crNames = [_("%s - %0.1fkb") % (type(br).__name__, br.bufferSize() / 1000.0) for br in cr.blockRenderers]
@@ -3201,79 +3072,6 @@ class LevelEditor(GLViewport):
         infoPanel.topleft = self.viewportContainer.topleft
         self.add(infoPanel)
         infoPanel.click_outside_response = -1
-        # infoPanel.present()
-
-    ##    def testGLSL(self):
-    ##        print "Hello"
-    ##        level = MCLevel.fromFile("mrchunk.schematic")
-    ##        blocks = level.Blocks
-    ##        blockCount = level.Width * level.Length * level.Height,
-    ##        fbo = glGenFramebuffersEXT(1)
-    ##        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo)
-    ##
-    ##        print blockCount, fbo
-    ##
-    ##        destBlocks = numpy.zeros(blockCount, 'uint8')
-    ##        (sourceTex, destTex) = glGenTextures(2)
-    ##
-    ##        glBindTexture(GL_TEXTURE_3D, sourceTex)
-    ##        glTexImage3D(GL_TEXTURE_3D, 0, 1,
-    ##                     level.Width, level.Length, level.Height,
-    ##                     0, GL_RED, GL.GL_UNSIGNED_BYTE,
-    ##                     blocks)
-    ##
-    ##        # return
-    ##
-    ##        glBindTexture(GL.GL_TEXTURE_2D, destTex)
-    ##        glTexImage2D(GL.GL_TEXTURE_2D, 0, 1,
-    ##                     level.Width, level.Length,
-    ##                     0, GL_RED, GL.GL_UNSIGNED_BYTE, destBlocks)
-    ##        glTexParameter(GL.GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-    ##        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, destTex, 0)
-    ##
-    ##        vertShader = glCreateShader(GL_VERTEX_SHADER)
-    ##
-    ##        vertShaderSource = """
-    ##        void main()
-    ##        {
-    ##            gl_Position = gl_Vertex
-    ##        }
-    ##        """
-    ##
-    ##        glShaderSource(vertShader, vertShaderSource);
-    ##        glCompileShader(vertShader);
-    ##
-    ##        fragShader = glCreateShader(GL_FRAGMENT_SHADER)
-    ##
-    ##        fragShaderSource = """
-    ##        void main()
-    ##        {
-    ##            gl_FragColor = vec4(1.0, 0.0, 1.0, 0.75);
-    ##        }
-    ##        """
-    ##
-    ##        glShaderSource(fragShader, fragShaderSource);
-    ##        glCompileShader(fragShader);
-    ##
-    ##
-    ##
-    ##        prog = glCreateProgram()
-    ##
-    ##        glAttachShader(prog, vertShader)
-    ##        glAttachShader(prog, fragShader)
-    ##        glLinkProgram(prog)
-    ##
-    ##        glUseProgram(prog);
-    ##        # return
-    ##        GL.glDisable(GL.GL_DEPTH_TEST);
-    ##        GL.glVertexPointer(2, GL.GL_FLOAT, 0, [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]);
-    ##        GL.glDrawArrays(GL.GL_QUADS, 0, 4);
-    ##        GL.glEnable(GL.GL_DEPTH_TEST);
-    ##
-    ##        glFlush();
-    ##        destBlocks = glGetTexImage(GL.GL_TEXTURE_2D, 0, GL_RED, GL.GL_UNSIGNED_BYTE);
-    ##        print destBlocks, destBlocks[0:8];
-    ##        raise SystemExit;
 
     def handleMemoryError(self):
         if self.renderer.viewDistance <= 2:
@@ -3309,7 +3107,6 @@ class LevelEditor(GLViewport):
         self.root.sessionStolen = False
 
 class EditorToolbar(GLOrtho):
-    # is_gl_container = True
     toolbarSize = (204, 24)
     tooltipsUp = True
 
@@ -3321,10 +3118,7 @@ class EditorToolbar(GLOrtho):
     def toolbarSizeForScreenWidth(self, width):
         f = max(1, int(width + 418) / 420)
 
-        return map(lambda x: x * f, self.toolbarSize)
-
-        # return ( self.toolbarWidthRatio * width,
-        #         self.toolbarWidthRatio * width * self.toolbarTextureSize[1] / self.toolbarTextureSize[0] )
+        return [x * f for x in self.toolbarSize]
 
     def __init__(self, rect, tools, *args, **kw):
         GLOrtho.__init__(self, xmin=0, ymin=0,
@@ -3340,8 +3134,8 @@ class EditorToolbar(GLOrtho):
         self.toolbarDisplayList = glutils.DisplayList()
         self.reloadTextures()
 
-    def set_parent(self, parent):
-        GLOrtho.set_parent(self, parent)
+    def set_parent(self, parent, index=None):
+        GLOrtho.set_parent(self, parent, index)
         self.parent_resized(0, 0)
 
     def parent_resized(self, dw, dh):
@@ -3465,7 +3259,7 @@ class EditorToolbar(GLOrtho):
 
         GL.glDrawArrays(GL.GL_QUADS, 0, 4)
 
-        for i in range(len(self.tools)):
+        for i in xrange(len(self.tools)):
             tool = self.tools[i]
             if tool.toolIconName is None:
                 continue
@@ -3506,12 +3300,6 @@ class EditorToolbar(GLOrtho):
         self.toolbarDisplayList.call(self.drawToolbar)
         GL.glColor(1.0, 1.0, 0.0)
 
-        # GL.glEnable(GL.GL_BLEND)
-
-        # with gl.glPushMatrix(GL_TEXTURE):
-        #    GL.glLoadIdentity()
-        #    self.gfont.flatPrint("ADLADLADLADLADL")
-
         try:
             currentToolNumber = self.tools.index(self.parent.currentTool)
         except ValueError:
@@ -3519,15 +3307,7 @@ class EditorToolbar(GLOrtho):
         else:
             # draw a bright rectangle around the current tool
             (texx, texy, texw, texh) = self.currentToolTextureRect
-            # ===================================================================
-            # tx = tx + tw * float(currentToolNumber) / 9.
-            # tx = tx - (2./20.)*float(tw) / 9
-            # ty = ty - (2./20.)*th
-            # # tw = th
-            # tw = (24./20.)* th
-            # th = tw
-            #
-            # ===================================================================
+
             tx = 20. * float(currentToolNumber)
             ty = 0.
             tw = 24.
@@ -3556,7 +3336,7 @@ class EditorToolbar(GLOrtho):
 
         redOutBoxes = numpy.zeros(9 * 4 * 2, dtype='float32')
         cursor = 0
-        for i in range(len(self.tools)):
+        for i in xrange(len(self.tools)):
             t = self.tools[i]
             if t.toolEnabled():
                 continue
@@ -3576,21 +3356,4 @@ class EditorToolbar(GLOrtho):
         GL.glDisable(GL.GL_BLEND)
 
 
-
 from albow.resource import get_image
-
-# class LogFilter(logging.Filter):
-#     def __init__(self, editor):
-#         super(LogFilter, self).__init__()
-#         self.level = logging.WARNING
-#         self.editor = editor
-#
-#     def filter(self, record):
-#         message = record.getMessage()
-#         if "Session lock lost. This world is being accessed from another location." in message:
-#             image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
-#             self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
-#             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
-#             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
-#         if "Re-acquired session lock" in message:
-

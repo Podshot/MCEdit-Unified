@@ -15,6 +15,7 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent
 import nbt
 from numpy import argmax, swapaxes, zeros, zeros_like
 import os.path
+import id_definitions
 
 log = getLogger(__name__)
 
@@ -88,7 +89,7 @@ def getSlices(box, height):
     miny = max(0, box.miny)
     maxy = min(height, box.maxy)
 
-    for cx in range(box.mincx, box.maxcx):
+    for cx in xrange(box.mincx, box.maxcx):
         localMinX = 0
         localMaxX = 16
         if cx == box.mincx:
@@ -98,7 +99,7 @@ def getSlices(box, height):
             localMaxX = maxxoff
         newMinX = localMinX + (cx << 4) - box.minx
 
-        for cz in range(box.mincz, box.maxcz):
+        for cz in xrange(box.mincz, box.maxcz):
             localMinZ = 0
             localMaxZ = 16
             if cz == box.mincz:
@@ -151,7 +152,7 @@ class MCLevel(object):
         """Return the content of the tag 'Name' in the tag 'Version', or 'Unknown'"""
         if self.root_tag and not hasattr(self, '__gameVersion'):
             self.__gameVersion = 'Unknown'
-            if 'Data' in self.root_tag and type(self.root_tag['Data']) == nbt.TAG_Compound:
+            if 'Data' in self.root_tag and isinstance(self.root_tag['Data'], nbt.TAG_Compound):
                 # We're opening a world.
                 if 'Version' in self.root_tag['Data']:
                     if 'Name' in self.root_tag['Data']['Version']:
@@ -160,6 +161,12 @@ class MCLevel(object):
                 if self.root_tag.name:
                     self.__gameVersion = self.root_tag.name
         return self.__gameVersion
+
+    @property
+    def defsIds(self):
+        if self.root_tag and not hasattr(self, '__defs_ids'):
+            self.__defs_ids = id_definitions.MCEditDefsIds(self.gameVersion)
+        return self.__defs_ids
 
     @classmethod
     def isLevel(cls, filename):
@@ -540,9 +547,13 @@ class EntityLevel(MCLevel):
         self.Entities.append(entityTag)
         self._fakeEntities = None
 
-    def tileEntityAt(self, x, y, z):
+    def tileEntityAt(self, x, y, z, print_stuff=False):
         entities = []
+        if print_stuff:
+            print "len(self.TileEntities)", len(self.TileEntities)
         for entityTag in self.TileEntities:
+            if print_stuff:
+                print entityTag["id"].value, TileEntity.pos(entityTag), x, y, z
             if TileEntity.pos(entityTag) == [x, y, z]:
                 entities.append(entityTag)
 
@@ -644,7 +655,6 @@ class FakeChunk(ChunkBase):
     def HeightMap(self):
         if hasattr(self, "_heightMap"):
             return self._heightMap
-
         self._heightMap = computeChunkHeightMap(self.materials, self.Blocks)
         return self._heightMap
 
@@ -675,7 +685,6 @@ class LightedChunk(ChunkBase):
         heightmap = self.HeightMap
 
         for x, z in itertools.product(xrange(16), xrange(16)):
-
             skylight[x, z, heightmap[z, x]:] = 15
             lv = 15
             for y in reversed(range(heightmap[z, x])):

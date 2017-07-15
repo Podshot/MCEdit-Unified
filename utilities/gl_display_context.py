@@ -1,9 +1,8 @@
 from OpenGL import GL, GLU
 from config import config
 import pygame
-from pygame import display, image, Surface
+from pygame import display, image
 import logging
-import release
 import sys
 import directories
 import os
@@ -38,7 +37,7 @@ class GLDisplayContext(object):
 
         try:
             display.gl_set_attribute(pygame.GL_SWAP_CONTROL, config.settings.vsync.get())
-        except Exception, e:
+        except Exception as e:
             logging.warning('Unable to set vertical sync: {0!r}'.format(e))
 
         display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
@@ -141,7 +140,7 @@ class GLDisplayContext(object):
             iconfile = file(iconpath, 'rb')
             icon = pygame.image.load(iconfile, 'favicon.png')
             display.set_icon(icon)
-        except Exception, e:
+        except Exception as e:
             logging.warning('Unable to set icon: {0!r}'.format(e))
 
         # Let initialize OpenGL stuff after the splash.
@@ -194,7 +193,7 @@ class GLDisplayContext(object):
                 else:
                     tex = mceutils.loadPNGTexture(matFile)
                 self.terrainTextures[mats.name] = tex
-            except Exception, e:
+            except Exception as e:
                 logging.warning(
                     'Unable to load terrain from {0}, using flat colors.'
                     'Error was: {1!r}'.format(matFile, e)

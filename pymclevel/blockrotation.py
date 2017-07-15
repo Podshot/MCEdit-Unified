@@ -2,6 +2,14 @@ import materials
 from materials import alphaMaterials
 from numpy import arange, zeros
 
+# #!# Needed for the bad hack done with 'blocktable'...
+import collections
+import re
+
+class __Rotation:
+    def __init__(self):
+        for i, blocktype in enumerate(self.blocktypes):
+            self.blocktypes[i] = eval(blocktype)
 
 def genericRoll(cls):
     rotation = arange(16, dtype='uint8')
@@ -84,11 +92,11 @@ def genericFlipRotation(cls):
 
 
 # Note, directions are based on the old north. North in here is East ingame.
-class Torch:
+class Torch(__Rotation):
     blocktypes = [
-        alphaMaterials.Torch.ID,
-        alphaMaterials.RedstoneTorchOn.ID,
-        alphaMaterials.RedstoneTorchOff.ID,
+        'alphaMaterials.Torch.ID',
+        'alphaMaterials.RedstoneTorchOn.ID',
+        'alphaMaterials.RedstoneTorchOff.ID',
     ]
 
     South = 1
@@ -105,8 +113,8 @@ Torch.roll[Torch.Up] = Torch.North
 Torch.roll[Torch.South] = Torch.Up
 
 
-class Ladder:
-    blocktypes = [alphaMaterials.Ladder.ID]
+class Ladder(__Rotation):
+    blocktypes = ['alphaMaterials.Ladder.ID']
 
     East = 2
     West = 3
@@ -117,8 +125,8 @@ class Ladder:
 genericFlipRotation(Ladder)
 
 
-class Stair:
-    blocktypes = [b.ID for b in alphaMaterials.AllStairs]
+class Stair(__Rotation):
+    blocktypes = ['b.ID for b in alphaMaterials.AllStairs']
 
     South = 0
     North = 1
@@ -146,18 +154,18 @@ Stair.roll[Stair.TopNorth] = Stair.North
 # data value 0-8 bottom and 9-15 Top
 
 
-class HalfSlab:
-    blocktypes = [b.ID for b in alphaMaterials.AllSlabs]
+class HalfSlab(__Rotation):
+    blocktypes = ['b.ID for b in alphaMaterials.AllSlabs']
 
 HalfSlab.flipVertical = arange(16, dtype='uint8')
-for i in range(8):
+for i in xrange(8):
     HalfSlab.flipVertical[i] = i + 8
     HalfSlab.flipVertical[i + 8] = i
 rotationClasses.append(HalfSlab)
 
 
-class WallSign:
-    blocktypes = [alphaMaterials.WallSign.ID, alphaMaterials.WallBanner.ID]
+class WallSign(__Rotation):
+    blocktypes = ['alphaMaterials.WallSign.ID', 'alphaMaterials.WallBanner.ID']
 
     East = 2
     West = 3
@@ -168,13 +176,13 @@ class WallSign:
 genericFlipRotation(WallSign)
 
 
-class FurnaceDispenserChest:
+class FurnaceDispenserChest(__Rotation):
     blocktypes = [
-        alphaMaterials.Furnace.ID,
-        alphaMaterials.LitFurnace.ID,
-        alphaMaterials.Chest.ID,
-        alphaMaterials.EnderChest.ID,
-        alphaMaterials.TrappedChest.ID
+        'alphaMaterials.Furnace.ID',
+        'alphaMaterials.LitFurnace.ID',
+        'alphaMaterials.Chest.ID',
+        'alphaMaterials.EnderChest.ID',
+        'alphaMaterials.TrappedChest.ID'
     ]
     East = 2
     West = 3
@@ -185,10 +193,10 @@ class FurnaceDispenserChest:
 genericFlipRotation(FurnaceDispenserChest)
 
 
-class Pumpkin:
+class Pumpkin(__Rotation):
     blocktypes = [
-        alphaMaterials.Pumpkin.ID,
-        alphaMaterials.JackOLantern.ID,
+        'alphaMaterials.Pumpkin.ID',
+        'alphaMaterials.JackOLantern.ID',
     ]
 
     East = 0
@@ -200,8 +208,8 @@ class Pumpkin:
 genericFlipRotation(Pumpkin)
 
 
-class Rail:
-    blocktypes = [alphaMaterials.Rail.ID]
+class Rail(__Rotation):
+    blocktypes = ['alphaMaterials.Rail.ID']
 
     EastWest = 0
     NorthSouth = 1
@@ -284,7 +292,7 @@ applyThrownBit = applyBit8
 
 
 class PoweredDetectorRail(Rail):
-    blocktypes = [alphaMaterials.PoweredRail.ID, alphaMaterials.DetectorRail.ID, alphaMaterials.ActivatorRail.ID]
+    blocktypes = ['alphaMaterials.PoweredRail.ID', 'alphaMaterials.DetectorRail.ID', 'alphaMaterials.ActivatorRail.ID']
 
 
 PoweredDetectorRail.rotateLeft = genericRotation(PoweredDetectorRail)
@@ -298,8 +306,8 @@ applyThrownBit(PoweredDetectorRail)
 rotationClasses.append(PoweredDetectorRail)
 
 
-class Lever:
-    blocktypes = [alphaMaterials.Lever.ID]
+class Lever(__Rotation):
+    blocktypes = ['alphaMaterials.Lever.ID']
     ThrownBit = 0x8
     # DownSouth indicates floor lever pointing South in off state
     DownSouth = 0
@@ -337,8 +345,8 @@ rotationClasses.append(Lever)
 
 
 @genericFlipRotation
-class Button:
-    blocktypes = [alphaMaterials.Button.ID, alphaMaterials.WoodenButton.ID]
+class Button(__Rotation):
+    blocktypes = ['alphaMaterials.Button.ID', 'alphaMaterials.WoodenButton.ID']
     PressedBit = 0x8
     Down = 0
     South = 1
@@ -350,8 +358,8 @@ class Button:
 applyThrownBit(Button)
 
 
-class SignPost:
-    blocktypes = [alphaMaterials.Sign.ID, alphaMaterials.MobHead.ID, alphaMaterials.StandingBanner.ID]
+class SignPost(__Rotation):
+    blocktypes = ['alphaMaterials.Sign.ID', 'alphaMaterials.MobHead.ID', 'alphaMaterials.StandingBanner.ID']
 
     South = 0
     SouthSouthWest = 1
@@ -411,8 +419,8 @@ SignPost.flipEastWest[SignPost.SouthWestWest] = SignPost.NorthWestWest
 rotationClasses.append(SignPost)
 
 
-class Bed:
-    blocktypes = [alphaMaterials.Bed.ID]
+class Bed(__Rotation):
+    blocktypes = ['alphaMaterials.Bed.ID']
     West = 0
     North = 1
     East = 2
@@ -424,8 +432,8 @@ applyBit8(Bed)
 applyBit4(Bed)
 
 
-class EndPortal:
-    blocktypes = [alphaMaterials.PortalFrame.ID]
+class EndPortal(__Rotation):
+    blocktypes = ['alphaMaterials.PortalFrame.ID']
     West = 0
     North = 1
     East = 2
@@ -436,16 +444,16 @@ genericFlipRotation(EndPortal)
 applyBit4(EndPortal)
 
 
-class Door:
+class Door(__Rotation):
     blocktypes = [
-        alphaMaterials.IronDoor.ID,
-        alphaMaterials.WoodenDoor.ID,
-        alphaMaterials.SpruceDoor.ID,
-        alphaMaterials.BirchDoor.ID,
-        alphaMaterials.JungleDoor.ID,
-        alphaMaterials.AcaciaDoor.ID,
-        alphaMaterials.DarkOakDoor.ID,
-        alphaMaterials.WoodenDoor.ID,
+        'alphaMaterials.IronDoor.ID',
+        'alphaMaterials.WoodenDoor.ID',
+        'alphaMaterials.SpruceDoor.ID',
+        'alphaMaterials.BirchDoor.ID',
+        'alphaMaterials.JungleDoor.ID',
+        'alphaMaterials.AcaciaDoor.ID',
+        'alphaMaterials.DarkOakDoor.ID',
+        'alphaMaterials.WoodenDoor.ID',
     ]
     South = 0
     West = 1
@@ -490,10 +498,10 @@ Door.flipNorthSouth[Door.SouthOpen] = Door.NorthOpen
 rotationClasses.append(Door)
 
 
-class Log:
+class Log(__Rotation):
     blocktypes = [
-        alphaMaterials.Wood.ID,
-        alphaMaterials.Wood2.ID,
+        'alphaMaterials.Wood.ID',
+        'alphaMaterials.Wood2.ID',
     ]
     Type1Up = 0
     Type2Up = 1
@@ -532,10 +540,10 @@ Log.roll[Log.Type4Up] = Log.Type4NorthSouth
 rotationClasses.append(Log)
 
 
-class RedstoneRepeater:
+class RedstoneRepeater(__Rotation):
     blocktypes = [
-        alphaMaterials.RedstoneRepeaterOff.ID,
-        alphaMaterials.RedstoneRepeaterOn.ID
+        'alphaMaterials.RedstoneRepeaterOff.ID',
+        'alphaMaterials.RedstoneRepeaterOn.ID'
     ]
 
     East = 0
@@ -550,8 +558,8 @@ genericFlipRotation(RedstoneRepeater)
 applyBits48(RedstoneRepeater)
 
 
-class Trapdoor:
-    blocktypes = [alphaMaterials.Trapdoor.ID, alphaMaterials.IronTrapdoor.ID]
+class Trapdoor(__Rotation):
+    blocktypes = ['alphaMaterials.Trapdoor.ID', 'alphaMaterials.IronTrapdoor.ID']
 
     West = 0
     East = 1
@@ -568,8 +576,8 @@ applyOpenedBit = applyBit8
 applyOpenedBit(Trapdoor)
 
 
-class PistonBody:
-    blocktypes = [alphaMaterials.StickyPiston.ID, alphaMaterials.Piston.ID]
+class PistonBody(__Rotation):
+    blocktypes = ['alphaMaterials.StickyPiston.ID', 'alphaMaterials.Piston.ID']
 
     Down = 0
     Up = 1
@@ -585,7 +593,7 @@ applyPistonBit(PistonBody)
 
 
 class PistonHead(PistonBody):
-    blocktypes = [alphaMaterials.PistonHead.ID]
+    blocktypes = ['alphaMaterials.PistonHead.ID']
 
 
 rotationClasses.append(PistonHead)
@@ -606,8 +614,8 @@ rotationClasses.append(PistonHead)
 #10     Stem piece     Stem texture on all four sides, pores on top and bottom
 
 
-class HugeMushroom:
-    blocktypes = [alphaMaterials.HugeRedMushroom.ID, alphaMaterials.HugeBrownMushroom.ID]
+class HugeMushroom(__Rotation):
+    blocktypes = ['alphaMaterials.HugeRedMushroom.ID', 'alphaMaterials.HugeBrownMushroom.ID']
     Northeast = 1
     East = 2
     Southeast = 3
@@ -625,8 +633,8 @@ HugeMushroom.roll[HugeMushroom.South] = HugeMushroom.North
 HugeMushroom.roll[HugeMushroom.Southwest] = HugeMushroom.Northwest
 
 
-class Vines:
-    blocktypes = [alphaMaterials.Vines.ID]
+class Vines(__Rotation):
+    blocktypes = ['alphaMaterials.Vines.ID']
 
     WestBit = 1
     NorthBit = 2
@@ -649,8 +657,8 @@ Vines.flipNorthSouth[(Vines.flipNorthSouth & NorthSouthBits) > 0] ^= NorthSouthB
 rotationClasses.append(Vines)
 
 
-class Anvil:
-    blocktypes = [alphaMaterials.Anvil.ID]
+class Anvil(__Rotation):
+    blocktypes = ['alphaMaterials.Anvil.ID']
 
     East = 0
     South = 1
@@ -664,8 +672,8 @@ applyAnvilBit(Anvil)
 
 
 @genericFlipRotation
-class Hay:
-    blocktypes = [alphaMaterials.HayBlock.ID]
+class Hay(__Rotation):
+    blocktypes = ['alphaMaterials.HayBlock.ID']
 
     Up = 0
     Down = 0
@@ -676,8 +684,8 @@ class Hay:
 
 
 @genericFlipRotation
-class QuartzPillar:
-    blocktypes = [alphaMaterials.BlockofQuartz.ID]
+class QuartzPillar(__Rotation):
+    blocktypes = ['alphaMaterials.BlockofQuartz.ID']
 
     Up = 2
     Down = 2
@@ -688,8 +696,8 @@ class QuartzPillar:
 
 
 @genericFlipRotation
-class PurpurPillar:
-    blocktypes = [alphaMaterials.PurpurPillar.ID]
+class PurpurPillar(__Rotation):
+    blocktypes = ['alphaMaterials.PurpurPillar.ID']
 
     Up = 0
     Down = 0
@@ -700,8 +708,8 @@ class PurpurPillar:
 
 
 @genericFlipRotation
-class NetherPortal:
-    blocktypes = [alphaMaterials.NetherPortal.ID]
+class NetherPortal(__Rotation):
+    blocktypes = ['alphaMaterials.NetherPortal.ID']
 
     East = 1
     West = 1
@@ -709,13 +717,13 @@ class NetherPortal:
     South = 2
 
 
-class FenceGate:
-    blocktypes = [materials.alphaMaterials.FenceGate.ID,
-                  materials.alphaMaterials.SpruceFenceGate.ID,
-                  materials.alphaMaterials.BirchFenceGate.ID,
-                  materials.alphaMaterials.JungleFenceGate.ID,
-                  materials.alphaMaterials.DarkOakFenceGate.ID,
-                  materials.alphaMaterials.AcaciaFenceGate.ID]
+class FenceGate(__Rotation):
+    blocktypes = ['materials.alphaMaterials.FenceGate.ID',
+                  'materials.alphaMaterials.SpruceFenceGate.ID',
+                  'materials.alphaMaterials.BirchFenceGate.ID',
+                  'materials.alphaMaterials.JungleFenceGate.ID',
+                  'materials.alphaMaterials.DarkOakFenceGate.ID',
+                  'materials.alphaMaterials.AcaciaFenceGate.ID']
 
     South = 1
     West = 2
@@ -728,8 +736,8 @@ applyFenceGateBits(FenceGate)
 
 
 @genericFlipRotation
-class EnderPortal:
-    blocktypes = [alphaMaterials.EnderPortal.ID]
+class EnderPortal(__Rotation):
+    blocktypes = ['alphaMaterials.EnderPortal.ID']
 
     South = 0
     West = 1
@@ -738,8 +746,8 @@ class EnderPortal:
 
 
 @genericFlipRotation
-class CocoaPlant:
-    blocktypes = [alphaMaterials.CocoaPlant.ID]
+class CocoaPlant(__Rotation):
+    blocktypes = ['alphaMaterials.CocoaPlant.ID']
 
     North = 0
     East = 1
@@ -750,8 +758,8 @@ class CocoaPlant:
 applyBits48(CocoaPlant)  # growth state
 
 @genericFlipRotation
-class TripwireHook:
-    blocktypes = [alphaMaterials.TripwireHook.ID]
+class TripwireHook(__Rotation):
+    blocktypes = ['alphaMaterials.TripwireHook.ID']
 
     South = 1
     West = 2
@@ -762,8 +770,8 @@ applyBits48(TripwireHook)
 
 @genericFlipRotation
 
-class MobHead:
-    blocktypes = [alphaMaterials.MobHead.ID]
+class MobHead(__Rotation):
+    blocktypes = ['alphaMaterials.MobHead.ID']
 
     East = 2
     West = 3
@@ -772,8 +780,8 @@ class MobHead:
 
 
 @genericFlipRotation
-class Hopper:
-    blocktypes = [alphaMaterials.Hopper.ID]
+class Hopper(__Rotation):
+    blocktypes = ['alphaMaterials.Hopper.ID']
     Down = 0
     East = 2
     West = 3
@@ -787,13 +795,13 @@ Hopper.roll[Hopper.North] = Hopper.Down
 
 
 @genericFlipRotation
-class DropperCommandblock:
+class DropperCommandblock(__Rotation):
     blocktypes = [
-        alphaMaterials.Dropper.ID, 
-        alphaMaterials.Dispenser.ID, 
-        alphaMaterials.CommandBlock.ID,
-        alphaMaterials.CommandBlockRepeating.ID, 
-        alphaMaterials.CommandBlockChain.ID
+        'alphaMaterials.Dropper.ID', 
+        'alphaMaterials.Dispenser.ID', 
+        'alphaMaterials.CommandBlock.ID',
+        'alphaMaterials.CommandBlockRepeating.ID', 
+        'alphaMaterials.CommandBlockChain.ID'
     ]
     Down = 0
     Up = 1
@@ -806,8 +814,8 @@ applyBit8(DropperCommandblock)
 
 
 @genericFlipRotation 
-class RedstoneComparator:
-    blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
+class RedstoneComparator(__Rotation):
+    blocktypes = ['alphaMaterials.RedstoneComparatorInactive.ID', 'alphaMaterials.RedstoneComparatorActive.ID']
 
     East = 0
     South = 1
@@ -819,14 +827,21 @@ applyBits48(RedstoneComparator)
 
 
 @genericFlipRotation
-class EndRod:
-    blocktypes = [alphaMaterials.EndRod.ID]
+class EndRod(__Rotation):
+    blocktypes = ['alphaMaterials.EndRod.ID']
     Down = 0
     Up = 1
     East = 2
     West = 3
     North = 4
     South = 5
+
+def _get_attribute(obj, attr):
+    # Helper function used to get arbitrary attribute from an arbitrary object.
+    if hasattr(obj, attr):
+        return getattr(obj, attr)
+    else:
+        raise AttributeError("Object {0} does not have attribute '{1}".format(obj, attr))
 
 def masterRotationTable(attrname):
     # compute a materials.id_limitx16 table mapping each possible blocktype/data combination to
@@ -837,7 +852,61 @@ def masterRotationTable(attrname):
         if hasattr(cls, attrname):
             blocktable = getattr(cls, attrname)
             for blocktype in cls.blocktypes:
-                table[blocktype] = blocktable
+                # Very bad stuff here...
+                try:
+                    table[blocktype] = blocktable
+                except (NameError, ValueError) as e:
+                    try:
+                        table[eval(blocktype)] = blocktable
+                    except (NameError, SyntaxError):
+                        raise_malformed = False
+                        res = re.findall(r"^([a-zA-Z_][,a-zA-Z0-9._]*)[ ]+for[ ]+([(a-zA-Z_][, a-zA-Z0-9_.)]*)[ ]+in[ ]+([a-zA-Z_][,a-zA-Z0-9._]*)$", blocktype)
+                        if res and len(res[0]) == 3:
+                            # No function call is made in 'bolcktype', so we don't need to check for them.
+                            # Only 'stuff for stuff in other_stuff' is used.
+                            # 'res[0]' is split in 3 elements: left part of 'for', inner part between 'for'and 'in', and right part of 'in'
+                            # Let define 'left' is the left part of 'for', 'right' is the inner part between 'for'and 'in', and 'iter_obj' the right part of 'in'.
+
+                            # If the 'left' and 'right' are the same, check 'iter_obj' for nested attributes (like in 'a for a in b.c.d')
+
+                            # If 'left' and 'right' aren't the same, check if 'left' is using calls to attributes (like in 'a.b for a in c')
+                            # If yes, check the 'iter_obj for nested attributes.
+
+                            # To not write repeated code, let use variables to store the status of each of the three elements.
+
+                            left, right, iter_obj = res[0]
+                            left_valid = False
+                            right_valid = False
+                            iter_obj_valid = False
+
+                            # Test 'right' first, since calling attribute on this element in 'for' loops is invalid in Python.
+                            if '.' in right:
+                                SyntaxError("Malformed string: %s. Calling attributes on the right of 'for' is invalid." % blocktype)
+
+                            # Test 'iter_obj'.
+                            _iter_obj, _o_str = iter_obj.split('.', 1)
+                            if _iter_obj in globals().keys():
+                                iter_obj = globals()[_iter_obj]
+                                while '.' in _o_str:
+                                    _iter_obj, _ostr = _ostr.split('.')
+                                    iter_obj = getattr(iter_obj, _iter_obj)
+
+                            # Test 'left'.
+                            left_name, left_attrs = left.split('.')
+                            if left_name != right:
+                                SyntaxError("Malformed string: '%s'" % blocktype)
+
+                            # All checks passed, we can proceed the loop.
+                            if left_attrs:
+                                [table[eval('a.%s' % left_attrs)] for a in iter_obj]
+                                # print table
+                            else:
+                                table[blocktype] = [a for a in iter_obj]
+
+                        else:
+                            raise_malformed = True
+                        if raise_malformed:
+                            raise SyntaxError("Malformed string: %s" % blocktype)
 
     return table
 
@@ -852,34 +921,36 @@ def rotationTypeTable():
 
 
 class BlockRotation:
-    rotateLeft = masterRotationTable("rotateLeft")
-    flipEastWest = masterRotationTable("flipEastWest")
-    flipNorthSouth = masterRotationTable("flipNorthSouth")
-    flipVertical = masterRotationTable("flipVertical")
-    roll = masterRotationTable("roll")
-    typeTable = rotationTypeTable()
+    def __init__(self):
+        self.rotateLeft = masterRotationTable("rotateLeft")
+        self.flipEastWest = masterRotationTable("flipEastWest")
+        self.flipNorthSouth = masterRotationTable("flipNorthSouth")
+        self.flipVertical = masterRotationTable("flipVertical")
+        self.roll = masterRotationTable("roll")
+        self.typeTable = rotationTypeTable()
 
 
 def SameRotationType(blocktype1, blocktype2):
     #use different default values for typeTable.get() to make it return false when neither blocktype is present
-    return BlockRotation.typeTable.get(blocktype1.ID) == BlockRotation.typeTable.get(blocktype2.ID, BlockRotation)
+    return BlockRotation().typeTable.get(blocktype1.ID) == BlockRotation().typeTable.get(blocktype2.ID, BlockRotation())
 
 
 def FlipVertical(blocks, data):
-    data[:] = BlockRotation.flipVertical[blocks, data]
+    data[:] = BlockRotation().flipVertical[blocks, data]
 
 
 def FlipNorthSouth(blocks, data):
-    data[:] = BlockRotation.flipNorthSouth[blocks, data]
+    data[:] = BlockRotation().flipNorthSouth[blocks, data]
 
 
 def FlipEastWest(blocks, data):
-    data[:] = BlockRotation.flipEastWest[blocks, data]
+    data[:] = BlockRotation().flipEastWest[blocks, data]
 
 
 def RotateLeft(blocks, data):
-    data[:] = BlockRotation.rotateLeft[blocks, data]
+    data[:] = BlockRotation().rotateLeft[blocks, data]
 
 
 def Roll(blocks, data):
-    data[:] = BlockRotation.roll[blocks, data]
+    data[:] = BlockRotation().roll[blocks, data]
+

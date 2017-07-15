@@ -20,7 +20,6 @@ from albow.controls import Label, Button, Image
 from albow.extended_widgets import ChoiceButton
 from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
-from albow.palette_view import PaletteView # @Unused
 from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
@@ -109,9 +108,6 @@ class DirPathView(Widget):
 class FileListView(ScrollPanel):
 
     def __init__(self, width, client, **kwds):
-        font = self.predict_font(kwds)
-        h = font.get_linesize()
-        d = 2 * self.predict(kwds, 'margin')
         kwds['align'] = kwds.get('align', 'l')
         ScrollPanel.__init__(self, inner_width=width, **kwds)
 
@@ -140,7 +136,7 @@ class FileListView(ScrollPanel):
                 self.names = [unicode(name, 'utf-8') for name in dirnames + filenames if filter(name)]
             except:
                 self.names = [name for name in dirnames + filenames if filter(name)]
-        except EnvironmentError, e:
+        except EnvironmentError as e:
             alert(u"%s: %s" % (dir, e))
             self.names = []
         self.rows = [Row([Image(self.icons[os.path.isdir(os.path.join(dir, a))]),
@@ -254,10 +250,10 @@ class FSTree(Tree):
 #                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
 #                if len(folder) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
 #                if len(folder) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
-                if type(folder) == str:
+                if isinstance(folder, str):
                     folder = unicode(folder, 'utf-8')
                 d[folder] = {}
-                if type(a) == str:
+                if isinstance(a, str):
                     a = unicode(a,'utf-8')
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
@@ -267,7 +263,7 @@ class FSTree(Tree):
 #                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
 #                        if len(f) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
 #                        if len(f) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
-                        if type(f) == str:
+                        if isinstance(f, str):
                             d[folder][unicode(f, 'utf-8')] = {}
                         else:
                             d[folder][f] = {}
@@ -307,12 +303,14 @@ class FileDialog(Dialog):
     default_prompt = None
     up_button_text = ThemeProperty("up_button_text")
 
-    def __init__(self, prompt=None, suffixes=None, **kwds):
+    def __init__(self, prompt=None, suffixes=None, default_suffix=None, **kwds):
         Dialog.__init__(self, **kwds)
         label = None
         d = self.margin
         self.suffixes = suffixes or ("",)
-        self.file_type = self.suffixes[0]
+        self.file_type = self.suffixes[0] # To be removed
+        self.compute_file_types()
+        self.default_suffix = default_suffix  # The default file extension. Will be searched in 'suffixes'.
         up_button = Button(self.up_button_text, action=self.go_up)
         dir_box = DirPathView(self.box_width + 250, self)
         self.dir_box = dir_box
@@ -330,10 +328,16 @@ class FileDialog(Dialog):
             filetype_label = Label("File type", width=250)
 
             def set_file_type():
-                self.file_type = self.filetype_button.get_value()
+                self.file_type = self.filetype_button.get_value() # To be removed
+                self.compute_file_types(self.filetype_button.get_value())
                 self.list_box.update()
 
             filetype_button = ChoiceButton(choices=self.suffixes, width=250, choose=set_file_type)
+            if default_suffix:
+                v = next((s for s in self.suffixes if ("*.%s;"%default_suffix in s or "*.%s)"%default_suffix in s)), None)
+                if v:
+                    filetype_button.selectedChoice = v
+                    self.compute_file_types(v)
             self.filetype_button = filetype_button
         if self.saving:
             filename_box = TextFieldWrapped(self.box_width)
@@ -372,6 +376,14 @@ class FileDialog(Dialog):
         if self.saving:
             filename_box.focus()
 
+    def compute_file_types(self, suffix=None):
+        if suffix is None:
+            suffix = self.suffixes[0]
+        if suffix:
+            self.file_types = [a.replace('*.', '.') for a in suffix.split('(')[-1].split(')')[0].split(';')]
+        else:
+            self.file_types = [".*"]
+
     def get_directory(self):
         return self._directory
 
@@ -383,6 +395,8 @@ class FileDialog(Dialog):
                 x = os.getcwdu()
                 break
             x = y
+        if os.path.isfile(x):
+            x = os.path.dirname(x)
         if self._directory != x:
             self._directory = x
             self.list_box.update()
@@ -391,6 +405,8 @@ class FileDialog(Dialog):
     directory = property(get_directory, set_directory)
 
     def filter(self, path):
+        if os.path.isdir(path) or os.path.splitext(path)[1] in self.file_types or self.file_types == ['.*']:
+            return True
         if os.path.isdir(path) or path.endswith(self.file_type.lower()) or self.file_type == '.*':
             return True
 
@@ -444,19 +460,16 @@ class FileSaveDialog(FileDialog):
         return self.filename_box.text
 
     def set_filename(self, x):
-        dsuf = self.file_type
-        if dsuf and x.endswith(dsuf):
-            x = x[:-len(dsuf)]
         self.filename_box.text = x
 
     filename = property(get_filename, set_filename)
 
     def get_pathname(self):
-        path = os.path.join(self.directory, self.filename_box.text)
-        suff = self.file_type
-        if suff and not path.endswith(suff):
-            path = path + suff
-        return path
+        name = self.filename
+        if name:
+            return os.path.join(self.directory, name)
+        else:
+            return None
 
     pathname = property(get_pathname)
 
@@ -465,12 +478,13 @@ class FileSaveDialog(FileDialog):
 
     def ok(self):
         path = self.pathname
-        if os.path.exists(path):
-            answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
-            if answer != "OK":
-                return
-        #FileDialog.ok(self)
-        self.dismiss(True)
+        if path:
+            if os.path.exists(path):
+                answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
+                if answer != "OK":
+                    return
+            #FileDialog.ok(self)
+            self.dismiss(True)
 
     def update(self):
         FileDialog.update(self)
@@ -529,9 +543,7 @@ def request_new_filename(prompt=None, suffix=None, extra_suffixes=None,
         suffixes = extra_suffixes
     else:
         suffixes = []
-    if suffix:
-        suffixes = [suffix] + suffixes
-    dlog = FileSaveDialog(prompt=prompt, suffixes=suffixes)
+    dlog = FileSaveDialog(prompt=prompt, suffixes=suffixes, default_suffix=suffix)
     if directory:
         dlog.directory = directory
     if filename:

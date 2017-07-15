@@ -7435,6 +7435,7 @@
 			"name": "Spruce Door",
 			"idStr": "spruce_door",
 			"tex": [5,20],
+            "type": "DOOR",
 			"mapcolor": [157,128,79],
 			"data": {
 				"11": {
@@ -7503,6 +7504,7 @@
 			"opacity": 0,
 			"name": "Birch Door",
 			"idStr": "birch_door",
+            "type": "DOOR",
 			"tex": [6,20],
 			"mapcolor": [157,128,79],
 			"data": {
@@ -7572,6 +7574,7 @@
 			"opacity": 0,
 			"name": "Jungle Door",
 			"idStr": "jungle_door",
+            "type": "DOOR",
 			"tex": [7,20],
 			"mapcolor": [157,128,79],
 			"data": {
@@ -7641,6 +7644,7 @@
 			"opacity": 0,
 			"name": "Acacia Door",
 			"idStr": "acacia_door",
+            "type": "DOOR",
 			"tex": [8,20],
 			"mapcolor": [157,128,79],
 			"data": {
@@ -7710,6 +7714,7 @@
 			"opacity": 0,
 			"name": "Dark Oak Door",
 			"idStr": "dark_oak_door",
+            "type": "DOOR",
 			"tex": [9,20],
 			"mapcolor": [157,128,79],
 			"data": {

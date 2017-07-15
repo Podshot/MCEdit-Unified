@@ -32,11 +32,10 @@ import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
-from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
-import urllib2
-import urllib
+# from pymclevel import BoundingBox, MCEDIT_DEFS, MCEDIT_IDS
+from pymclevel import BoundingBox
+from pymclevel.id_definitions import version_defs_ids
 import json
-import shutil
 import directories
 import sys
 import keys
@@ -61,7 +60,7 @@ def alertFilterException(func):
     def _func(*args, **kw):
         try:
             func(*args, **kw)
-        except Exception, e:
+        except Exception as e:
             print traceback.format_exc()
             alert(_(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
 
@@ -115,13 +114,18 @@ class JsonDictProperty(dict):
             json.dump(data, f)
 
     def _getJson(self):
+        fp = None
         try:
-            filter_json = json.load(open(self._filename), 'rb')
+            fp = open(self._filename, 'rb')
+            filter_json = json.load(fp)
             if "Macros" not in filter_json.keys():
                 filter_json["Macros"] = {}
             return filter_json
         except (ValueError, IOError):
             return {"Macros": {}}
+        finally:
+            if fp:
+                fp.close()
         
 class SingleFileChooser(Widget):
     OPEN_FILE = 0
@@ -466,7 +470,7 @@ class FilterModuleOptions(Widget):
                 page.optionDict[optionName] = AttrRef(file_chooser, 'file_path')
                         
                 rows.append(row)
-            elif type(optionType) == list and optionType[0].lower() == "nbttree":
+            elif isinstance(optionType, list) and optionType[0].lower() == "nbttree":
                 kw = {'close_text': None, 'load_text': None}
                 if len(optionType) >= 3:
                     def close():
@@ -604,11 +608,16 @@ class FilterToolPanel(Panel):
         if FilterToolPanel.BACKUP_FILTER_JSON:
             filter_json = JsonDictProperty(filter_json_file)
         else:
+            fp = None
             try:
                 if os.path.exists(filter_json_file):
-                    filter_json = json.load(open(filter_json_file, 'rb'))
+                    fp = open(filter_json_file, 'rb')
+                    filter_json = json.load(fp)
             except (ValueError, IOError) as e:
                 log.error("Error while loading filters.json %s", e)
+            finally:
+                if fp:
+                    fp.close()
         if "Macros" not in filter_json.keys():
             filter_json["Macros"] = {}
         return filter_json
@@ -833,7 +842,7 @@ class FilterToolPanel(Panel):
         self.keys_panel = panel
         key_name = panel.present()
 
-        if type(key_name) is bool:
+        if isinstance(key_name, bool):
             return True
         if key_name != "Escape":
             if key_name in ["Alt-F4", "F1", "F2", "F3", "F4", "F5", "1", "2", "3",
@@ -894,14 +903,17 @@ class FilterOperation(Operation):
         if self.level.saving:
             alert(_("Cannot perform action while saving is taking place"))
             return
+        # Override 'recordUndo' with filter RECORD_UNDO.
+        # Some filters, like Find does not need to record undo stuff, since they're not changing anything
+        recordUndo = getattr(self.filter, 'RECORD_UNDO', recordUndo)
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
 
         # Inject the defs for blocks/entities in the module
         # Need to reimport the defs and ids to get the 'fresh' ones
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
-        self.filter.MCEDIT_DEFS = MCEDIT_DEFS
-        self.filter.MCEDIT_IDS = MCEDIT_IDS
+#         from pymclevel import MCEDIT_DEFS, MCEDIT_IDS 
+        self.filter.MCEDIT_DEFS = self.level.defsIds.mcedit_defs
+        self.filter.MCEDIT_IDS = self.level.defsIds.mcedit_ids
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
         self.canUndo = True

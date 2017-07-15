@@ -2,10 +2,9 @@
 # extended_widgets.py
 # Moved albow related stuff from mceutils.
 from controls import ValueDisplay
-from dialogs import alert, ask, Dialog
+from dialogs import Dialog
 from controls import Button, Label, ValueButton, CheckBox, AttrRef
 from widget import Widget
-import root
 from layout import Column, Row
 from translate import _
 from menu import Menu
@@ -57,9 +56,9 @@ class HotkeyColumn(Widget):
             self.remove(w)
 
         for i, t in enumerate(items):
-            if type(self.translateButtons) is bool:
+            if isinstance(self.translateButtons, bool):
                 trn = not self.translateButtons
-            elif type(self.translateButtons) in (list, tuple):
+            elif isinstance(self.translateButtons, (list, tuple)):
                 trn = not i in self.translateButtons
             if len(t) == 3:
                 (hotkey, title, action) = t
@@ -321,7 +320,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             if cancel:
                 self.dismiss(False)
 
-        def idleevent(self, evt):
+        def idleevent(self):
             self.invalidate()
 
         def key_down(self, event):

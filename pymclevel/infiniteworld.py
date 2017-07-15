@@ -184,7 +184,8 @@ class AnvilChunkData(object):
         sanitizeBlocks(self)
 
         sections = nbt.TAG_List()
-        for y in range(0, self.world.Height, 16):
+        append = sections.append
+        for y in xrange(0, self.world.Height, 16):
             section = nbt.TAG_Compound()
 
             Blocks = self.Blocks[..., y:y + 16].swapaxes(0, 2)
@@ -211,7 +212,7 @@ class AnvilChunkData(object):
             section['SkyLight'] = nbt.TAG_Byte_Array(array(SkyLight))
 
             section["Y"] = nbt.TAG_Byte(y / 16)
-            sections.append(section)
+            append(section)
 
         self.root_tag["Level"]["Sections"] = sections
         data = self.root_tag.save(compressed=False)
@@ -407,6 +408,18 @@ def inflate(data):
 
 class ChunkedLevelMixin(MCLevel):
     def blockLightAt(self, x, y, z):
+        '''
+        Gets the light value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :return: The light value or 0 if the Y coordinate is above the maximum height limit or below 0
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -419,6 +432,20 @@ class ChunkedLevelMixin(MCLevel):
         return ch.BlockLight[xInChunk, zInChunk, y]
 
     def setBlockLightAt(self, x, y, z, newLight):
+        '''
+        Sets the light value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param newLight: The desired light value
+        :type newLight: int
+        :return: Returns 0 if the Y coordinate is above the maximum height limit or below 0. Doesn't return anything otherwise
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -432,6 +459,18 @@ class ChunkedLevelMixin(MCLevel):
         ch.chunkChanged(False)
 
     def blockDataAt(self, x, y, z):
+        '''
+        Gets the data value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :return: The data value of the block or 0 if the Y coordinate is above the maximum height limit or below 0
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -448,6 +487,20 @@ class ChunkedLevelMixin(MCLevel):
         return ch.Data[xInChunk, zInChunk, y]
 
     def setBlockDataAt(self, x, y, z, newdata):
+        '''
+        Sets the data value of the block at the specified X, Y, Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param newdata: The desired data value
+        :type newData: int
+        :return: Returns 0 if the Y coordinate is above the maximum height limit or below 0 or the chunk doesn't exist. Doesn't return anything otherwise
+        :rtype: int
+        '''
         if y < 0 or y >= self.Height:
             return 0
         zc = z >> 4
@@ -479,7 +532,8 @@ class ChunkedLevelMixin(MCLevel):
             ch = self.getChunk(xc, zc)
         except ChunkNotPresent:
             return 0
-
+        if y >= ch.Height:
+            return 0
         return ch.Blocks[xInChunk, zInChunk, y]
 
     def setBlockAt(self, x, y, z, blockID):
@@ -563,6 +617,7 @@ class ChunkedLevelMixin(MCLevel):
 
         def splitChunkLists(chunkLists):
             newChunkLists = []
+            append = newChunkLists.append
             for l in chunkLists:
                 # list is already sorted on x position, so this splits into left and right
 
@@ -575,11 +630,11 @@ class ChunkedLevelMixin(MCLevel):
 
                 # add quarters to list
 
-                newChunkLists.append(smallX[:len(smallX) / 2])
-                newChunkLists.append(smallX[len(smallX) / 2:])
+                append(smallX[:len(smallX) / 2])
+                append(smallX[len(smallX) / 2:])
 
-                newChunkLists.append(bigX[:len(bigX) / 2])
-                newChunkLists.append(bigX[len(bigX) / 2:])
+                append(bigX[:len(bigX) / 2])
+                append(bigX[len(bigX) / 2:])
 
             return newChunkLists
 
@@ -677,7 +732,7 @@ class ChunkedLevelMixin(MCLevel):
 
             work = 0
 
-            for i in range(14):
+            for i in xrange(14):
                 if len(newDirtyChunks) == 0:
                     workTotal -= len(startingDirtyChunks) * (14 - i)
                     break
@@ -704,6 +759,7 @@ class ChunkedLevelMixin(MCLevel):
                 dirtyChunks = sorted(newDirtyChunks, key=lambda x: x.chunkPosition)
 
                 newDirtyChunks = list()
+                append = newDirtyChunks.append
 
                 for chunk in dirtyChunks:
                     (cx, cz) = chunk.chunkPosition
@@ -782,7 +838,7 @@ class ChunkedLevelMixin(MCLevel):
                     # check if the left edge changed and dirty or compress the chunk appropriately
                     if (oldLeftEdge != ncLight[15:16, :, :self.Height]).any():
                         # chunk is dirty
-                        newDirtyChunks.append(nc)
+                        append(nc)
 
                     ### Spread light toward -Z
 
@@ -841,7 +897,7 @@ class ChunkedLevelMixin(MCLevel):
                     zerochunkLight[:] = 0
 
                     if (oldBottomEdge != ncLight[:, 15:16, :self.Height]).any():
-                        newDirtyChunks.append(nc)
+                        append(nc)
 
                     newlight = (chunkLight[:, :, 0:self.Height - 1] - chunkLa[:, :, 1:self.Height])
                     clipLight(newlight)
@@ -852,7 +908,7 @@ class ChunkedLevelMixin(MCLevel):
                     maximum(chunkLight[:, :, 0:self.Height - 1], newlight, chunkLight[:, :, 0:self.Height - 1])
 
                     if (oldChunk != chunkLight).any():
-                        newDirtyChunks.append(chunk)
+                        append(chunk)
 
                     work += 1
                     yield workDone + work, workTotal, progressInfo
@@ -1020,9 +1076,14 @@ class AnvilWorldFolder(object):
 
 
 class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
+    '''
+    A class that handles the data that is stored in a Minecraft Java level. 
+    
+    This class is the type of the 'level' parameter that is passed to a filter's :func:`perform` function
+    '''
     playersFolder = None
 
-    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
+    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False, dat_name='level'):
         """
         Load an Alpha level from the given filename. It can point to either
         a level.dat or a folder containing one. If create is True, it will
@@ -1032,6 +1093,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         If you try to create an existing world, its level.dat will be replaced.
         """
+
+        self.dat_name = dat_name
 
         self.Length = 0
         self.Width = 0
@@ -1045,7 +1108,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.lockLoseFuncs = []
         self.initTime = -1
 
-        if os.path.basename(filename) in ("level.dat", "level.dat_old"):
+        if os.path.basename(filename) in ("%s.dat"%dat_name, "%s.dat_old"%dat_name):
             filename = os.path.dirname(filename)
 
         if not os.path.exists(filename):
@@ -1058,7 +1121,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             raise IOError('File is not a Minecraft Alpha world')
 
         self.worldFolder = AnvilWorldFolder(filename)
-        self.filename = self.worldFolder.getFilePath("level.dat")
+        self.filename = self.worldFolder.getFilePath("%s.dat"%dat_name)
         self.readonly = readonly
         if not readonly:
             self.acquireSessionLock()
@@ -1090,33 +1153,34 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         self.loadLevelDat(create, random_seed, last_played)
 
-        assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
+        if dat_name == 'level':
+            assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
 
-        if not readonly:
-            if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
-                    self.worldFolder.getFolderPath("players")) != []:
-                self.playersFolder = self.worldFolder.getFolderPath("players")
-                self.oldPlayerFolderFormat = True
-            if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
-                self.playersFolder = self.worldFolder.getFolderPath("playerdata")
-                self.oldPlayerFolderFormat = False
-            self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
-            for player in self.players:
-                try:
-                    UUID(player, version=4)
-                except ValueError:
+            if not readonly:
+                if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
+                        self.worldFolder.getFolderPath("players")) != []:
+                    self.playersFolder = self.worldFolder.getFolderPath("players")
+                    self.oldPlayerFolderFormat = True
+                if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
+                    self.playersFolder = self.worldFolder.getFolderPath("playerdata")
+                    self.oldPlayerFolderFormat = False
+                self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
+                for player in self.players:
                     try:
-                        print "{0} does not seem to be in a valid UUID format".format(player)
-                    except UnicodeEncode:
+                        UUID(player, version=4)
+                    except ValueError:
                         try:
-                            print u"{0} does not seem to be in a valid UUID format".format(player)
-                        except UnicodeError:
-                            print "{0} does not seem to be in a valid UUID format".format(repr(player))
-                    self.players.remove(player)
-            if "Player" in self.root_tag["Data"]:
-                self.players.append("Player")
-
-            self.preloadDimensions()
+                            print "{0} does not seem to be in a valid UUID format".format(player)
+                        except UnicodeEncode:
+                            try:
+                                print u"{0} does not seem to be in a valid UUID format".format(player)
+                            except UnicodeError:
+                                print "{0} does not seem to be in a valid UUID format".format(repr(player))
+                        self.players.remove(player)
+                if "Player" in self.root_tag["Data"]:
+                    self.players.append("Player")
+    
+                self.preloadDimensions()
 
     # --- Load, save, create ---
 
@@ -1179,6 +1243,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
 
+        dat_name = self.dat_name
+
         if create:
             self._create(self.filename, random_seed, last_played)
             self.saveInPlace()
@@ -1190,16 +1256,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     id_definitions.ids_loader(self.gameVersion)
                 #
             except Exception, e:
-                filename_old = self.worldFolder.getFilePath("level.dat_old")
-                log.info("Error loading level.dat, trying level.dat_old ({0})".format(e))
+                filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)
+                log.info("Error loading {1}.dat, trying {1}.dat_old ({0})".format(e, dat_name))
                 try:
                     self.root_tag = nbt.load(filename_old)
-                    log.info("level.dat restored from backup.")
+                    log.info("%s.dat restored from backup."%dat_name)
                     self.saveInPlace()
                 except Exception, e:
                     traceback.print_exc()
                     print repr(e)
-                    log.info("Error loading level.dat_old. Initializing with defaults.")
+                    log.info("Error loading %s.dat_old. Initializing with defaults."%dat_name)
                     self._create(self.filename, random_seed, last_played)
 
     def saveInPlaceGen(self):
@@ -1327,6 +1393,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return shortname
 
     def init_scoreboard(self):
+        '''
+        Creates a scoreboard for the world
+        
+        :return: A scoreboard
+        :rtype: pymclevel.nbt.TAG_Compound()
+        '''
         if os.path.exists(self.worldFolder.getFolderPath("data")):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
                     return nbt.load(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
@@ -1351,9 +1423,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return root_tag
 
     def save_scoreboard(self, score):
+        '''
+        Saves the provided scoreboard
+        
+        :param score: The scoreboard
+        :type score: pymclevel.nbt.TAG_Compound()
+        '''
         score.save(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
 
     def init_player_data(self):
+        dat_name = self.dat_name
         player_data = {}
         if self.oldPlayerFolderFormat:
             for p in self.players:
@@ -1361,7 +1440,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     player_data_file = os.path.join(self.worldFolder.getFolderPath("players"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
-                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    data = nbt.load(self.worldFolder.getFilePath("%s.dat"%dat_name))
                     player_data[p] = data["Data"]["Player"]
         else:
             for p in self.players:
@@ -1369,7 +1448,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     player_data_file = os.path.join(self.worldFolder.getFolderPath("playerdata"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
-                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    data = nbt.load(self.worldFolder.getFilePath("%s.dat"%dat_name))
                     player_data[p] = data["Data"]["Player"]
 
         #player_data = []
@@ -1487,7 +1566,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return s
 
-    dirhashes = [_dirhash(n) for n in range(64)]
+    dirhashes = [_dirhash(n) for n in xrange(64)]
 
     def _oldChunkFilename(self, cx, cz):
         return self.worldFolder.getFilePath(
@@ -1623,7 +1702,15 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._loadedChunkData[chunkData.chunkPosition] = chunkData
 
     def getChunk(self, cx, cz):
-        """ read the chunk from disk, load it, and return it."""
+        '''
+        Read the chunk from disk, load it, and then return it
+        
+        :param cx: The X coordinate of the Chunk
+        :type cx: int
+        :param cz: The Z coordinate of the Chunk
+        :type cz: int
+        :rtype: pymclevel.infiniteworld.AnvilChunk
+        '''
 
         chunk = self._loadedChunks.get((cx, cz))
         if chunk is not None:
@@ -1663,14 +1750,33 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return heightMap[zInChunk, xInChunk]  # HeightMap indices are backwards
 
     # --- Biome manipulation ---
-
     def biomeAt(self, x, z):
+        '''
+        Gets the biome of the block at the specified coordinates. Since biomes are for the entire column at the coordinate, the Y coordinate wouldn't 
+        change the result
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param z: The Z block coordinate
+        :type z: int
+        :rtype: int
+        '''
         biomes = self.getChunk(int(x/16),int(z/16)).root_tag["Level"]["Biomes"].value
         xChunk = int(x/16) * 16
         zChunk = int(z/16) * 16
-        return biomes[(z - zChunk) * 16 + (x - xChunk)]
+        return int(biomes[(z - zChunk) * 16 + (x - xChunk)])
 
     def setBiomeAt(self, x, z, biomeID):
+        '''
+        Sets the biome data for the Y column at the specified X and Z coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param z: The Z block coordinate
+        :type z: int
+        :param biomeID: The wanted biome ID 
+        :type biomeID: int
+        '''
         biomes = self.getChunk(int(x/16), int(z/16)).root_tag["Level"]["Biomes"].value
         xChunk = int(x/16) * 16
         zChunk = int(z/16) * 16
@@ -1679,6 +1785,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     # --- Entities and TileEntities ---
 
     def addEntity(self, entityTag):
+        '''
+        Adds an Entity to the level and sets its position to the values of the 'Pos' tag
+        
+        :param entityTag: The NBT data of the Entity
+        :type entityTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(entityTag, nbt.TAG_Compound)
         x, y, z = map(lambda x: int(floor(x)), Entity.pos(entityTag))
 
@@ -1691,10 +1803,27 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def tileEntityAt(self, x, y, z):
+        '''
+        Gets the TileEntity at the specified X, Y, and Z block coordinates
+        
+        :param x: The X block coordinate
+        :type x: int
+        :param y: The Y block coordinate
+        :type y: int
+        :param z: The Z block coordinate
+        :type z: int
+        :rtype: pymclevel.nbt.TAG_Compound
+        '''
         chunk = self.getChunk(x >> 4, z >> 4)
         return chunk.tileEntityAt(x, y, z)
 
     def addTileEntity(self, tileEntityTag):
+        '''
+        Adds an TileEntity to the level and sets its position to the values of the X, Y, and Z tags
+        
+        :param tileEntityTag: The NBT data of the TileEntity
+        :type tileEntityTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(tileEntityTag, nbt.TAG_Compound)
         if 'x' not in tileEntityTag:
             return
@@ -1709,6 +1838,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def addTileTick(self, tickTag):
+        '''
+        Adds an TileTick to the level and sets its position to the values of the X, Y, and Z tags
+        
+        :param tickTag: The NBT data of the TileTick
+        :type tickTag: pymclevel.nbt.TAG_Compound
+        '''
         assert isinstance(tickTag, nbt.TAG_Compound)
 
         if 'x' not in tickTag:
@@ -1722,6 +1857,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk.dirty = True
 
     def getEntitiesInBox(self, box):
+        '''
+        Get all of the Entities in the specified box
+        
+        :param box: The box to search for Entities in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the Entity tags in the box
+        :rtype: list
+        '''
         entities = []
         for chunk, slices, point in self.getChunkSlices(box):
             entities += chunk.getEntitiesInBox(box)
@@ -1729,6 +1872,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return entities
 
     def getTileEntitiesInBox(self, box):
+        '''
+        Get all of the TileEntities in the specified box
+        
+        :param box: The box to search for TileEntities in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the TileEntity tags in the box
+        :rtype: list
+        '''
         tileEntites = []
         for chunk, slices, point in self.getChunkSlices(box):
             tileEntites += chunk.getTileEntitiesInBox(box)
@@ -1736,6 +1887,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return tileEntites
 
     def getTileTicksInBox(self, box):
+        '''
+        Get all of the TileTicks in the specified box
+        
+        :param box: The box to search for TileTicks in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of all the TileTick tags in the box
+        :rtype: list
+        '''
         tileticks = []
         for chunk, slices, point in self.getChunkSlices(box):
             tileticks += chunk.getTileTicksInBox(box)
@@ -1743,6 +1902,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return tileticks
 
     def removeEntitiesInBox(self, box):
+        '''
+        Removes all of the Entities in the specified box
+        
+        :param box: The box to remove all Entities from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of Entities removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeEntitiesInBox(box)
@@ -1751,6 +1918,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return count
 
     def removeTileEntitiesInBox(self, box):
+        '''
+        Removes all of the TileEntities in the specified box
+        
+        :param box: The box to remove all TileEntities from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of TileEntities removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeTileEntitiesInBox(box)
@@ -1759,6 +1934,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return count
 
     def removeTileTicksInBox(self, box):
+        '''
+        Removes all of the TileTicks in the specified box
+        
+        :param box: The box to remove all TileTicks from
+        :type box: pymclevel.box.BoundingBox
+        :return: The number of TileTicks removed
+        :rtype: int
+        '''
         count = 0
         for chunk, slices, point in self.getChunkSlices(box):
             count += chunk.removeTileTicksInBox(box)
@@ -1769,6 +1952,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     # --- Chunk manipulation ---
 
     def containsChunk(self, cx, cz):
+        '''
+        Checks if the specified chunk exists/has been generated
+        
+        :param cx: The X coordinate of the chunk
+        :type cx: int
+        :param cz: The Z coordinate of the chunk
+        :type cz: int
+        :return: True if the chunk exists/has been generated, False otherwise
+        :rtype: bool
+        '''
         if self._allChunks is not None:
             return (cx, cz) in self._allChunks
         if (cx, cz) in self._loadedChunkData:
@@ -1777,11 +1970,32 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return self.worldFolder.containsChunk(cx, cz)
 
     def containsPoint(self, x, y, z):
-        if y < 0 or y > 127:
+        '''
+        Checks if the specified X, Y, Z coordinate has been generated
+        
+        :param x: The X coordinate
+        :type x: int
+        :param y: The Y coordinate
+        :type y: int
+        :param z: The Z coordinate
+        :type z: int
+        :return: True if the point exists/has been generated, False otherwise
+        :rtype: bool
+        '''
+        if y < 0 or y > self.Height:
             return False
         return self.containsChunk(x >> 4, z >> 4)
 
     def createChunk(self, cx, cz):
+        '''
+        Creates a chunk at the specified chunk coordinates if it doesn't exist already
+        
+        :param cx: The X coordinate of the chunk
+        :type cx: int
+        :param cz: The Z coordinate of the chunk
+        :type cz: int
+        :raises ValueError: Raise when a chunk is already present/generated at the specified X and Z coordinates
+        '''
         if self.containsChunk(cx, cz):
             raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
         if self._allChunks is not None:
@@ -1791,13 +2005,21 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._bounds = None
 
     def createChunks(self, chunks):
-
+        '''
+        Creates multiple chunks specified by a list of chunk X and Z coordinate tuples
+        
+        :param chunks: A list of chunk X and Z coordinates in tuple form [(cx, cz), (cx, cz)...]
+        :type chunks: list
+        :return: A list of the chunk coordinates that were created, doesn't include coordinates of ones already present
+        :rtype: list
+        '''
         i = 0
         ret = []
+        append = ret.append
         for cx, cz in chunks:
             i += 1
             if not self.containsChunk(cx, cz):
-                ret.append((cx, cz))
+                append((cx, cz))
                 self.createChunk(cx, cz)
             assert self.containsChunk(cx, cz), "Just created {0} but it didn't take".format((cx, cz))
             if i % 100 == 0:
@@ -1808,11 +2030,27 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return ret
 
     def createChunksInBox(self, box):
+        '''
+        Creates all chunks that would be present in the box
+        
+        :param box: The box to generate chunks in
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of the chunk coordinates that were created, doesn't include coordinates of ones already present
+        :rtype: list
+        '''
         log.info(u"Creating {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
                                                       ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         return self.createChunks(box.chunkPositions)
 
     def deleteChunk(self, cx, cz):
+        '''
+        Deletes the chunk at the specified chunk coordinates
+        
+        :param cx: The X coordinate of the chunk
+        :type cx: int 
+        :param cz: The Z coordinate of the chunk
+        :type cz: int
+        '''
         self.worldFolder.deleteChunk(cx, cz)
         if self._allChunks is not None:
             self._allChunks.discard((cx, cz))
@@ -1820,15 +2058,24 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._bounds = None
 
     def deleteChunksInBox(self, box):
+        '''
+        Deletes all of the chunks in the specified box
+        
+        :param box: The box of chunks to remove
+        :type box: pymclevel.box.BoundingBox
+        :return: A list of the chunk coordinates  of the chunks that were deleted
+        :rtype: list
+        '''
         log.info(u"Deleting {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
                                                       ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
         ret = []
+        append = ret.append
         for cx, cz in itertools.product(xrange(box.mincx, box.maxcx), xrange(box.mincz, box.maxcz)):
             i += 1
             if self.containsChunk(cx, cz):
                 self.deleteChunk(cx, cz)
-                ret.append((cx, cz))
+                append((cx, cz))
 
             assert not self.containsChunk(cx, cz), "Just deleted {0} but it didn't take".format((cx, cz))
 
@@ -1862,6 +2109,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             playerSpawnTag[name] = nbt.TAG_Int(val)
 
     def getPlayerPath(self, player, dim=0):
+        '''
+        Gets the file path to the player file
+        
+        :param player: The UUID of the player
+        :type player: str
+        :param dim: The dimension that the player resides in
+        :type dim: int
+        :return: The file path to the player data file
+        :rtype: str
+        '''
         assert player != "Player"
         if dim != 0:
             return os.path.join(os.path.dirname(self.level.filename), "DIM%s" % dim, "playerdata", "%s.dat" % player)
@@ -1869,6 +2126,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return os.path.join(self.playersFolder, "%s.dat" % player)
 
     def getPlayerTag(self, player="Player"):
+        '''
+        Gets the NBT data for the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The NBT data for the player
+        :rtype: pymclevel.nbt.TAG_Compound
+        '''
         if player == "Player":
             if player in self.root_tag["Data"]:
                 # single-player world
@@ -1886,24 +2151,60 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return playerTag
 
     def getPlayerDimension(self, player="Player"):
+        '''
+        Gets the dimension that the specified player is currently in
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The dimension the player is currently in
+        :rtype: int
+        '''
         playerTag = self.getPlayerTag(player)
         if "Dimension" not in playerTag:
             return 0
         return playerTag["Dimension"].value
 
     def setPlayerDimension(self, d, player="Player"):
+        '''
+        Sets the player's current dimension
+        
+        :param d: The desired dimension (0 for Overworld, -1 for Nether, 1 for The End)
+        :type d: int
+        :param player: The UUID of the player
+        :type player: str
+        '''
         playerTag = self.getPlayerTag(player)
         if "Dimension" not in playerTag:
             playerTag["Dimension"] = nbt.TAG_Int(0)
         playerTag["Dimension"].value = d
 
     def setPlayerPosition(self, (x, y, z), player="Player"):
+        '''
+        Sets the specified player's position
+        
+        :param x: The desired X coordinate
+        :type x: float
+        :param y: The desired Y coordinate
+        :type y: float
+        :param z: The desired Z coordinate
+        :type z: float
+        :param player: The UUID of the player
+        :type player: str
+        '''
         posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
         playerTag = self.getPlayerTag(player)
 
         playerTag["Pos"] = posList
 
     def getPlayerPosition(self, player="Player"):
+        '''
+        Gets the position for the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The X, Y, Z coordinates of the player
+        :rtype: tuple
+        '''
         playerTag = self.getPlayerTag(player)
         posList = playerTag["Pos"]
 
@@ -1911,10 +2212,25 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         return x, y + 1.75, z
 
     def setPlayerOrientation(self, yp, player="Player"):
+        '''
+        Sets the specified player's orientation
+        
+        :param yp: The desired Yaw and Pitch
+        :type yp: tuple or list
+        :param player: The UUID of the player
+        :type player: str
+        '''
         self.getPlayerTag(player)["Rotation"] = nbt.TAG_List([nbt.TAG_Float(p) for p in yp])
 
     def getPlayerOrientation(self, player="Player"):
-        """ returns (yaw, pitch) """
+        '''
+        Gets the orientation of the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The orientation of the player in the format: (yaw, pitch)
+        :rtype: numpy.array
+        '''
         yp = map(lambda x: x.value, self.getPlayerTag(player)["Rotation"])
         y, p = yp
         if p == 0:
@@ -1946,6 +2262,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             playerTag['abilities']['invulnerable'] = nbt.TAG_Byte(0)
 
     def setPlayerGameType(self, gametype, player="Player"):
+        '''
+        Sets the specified player's gametype/gamemode
+        
+        :param gametype: The desired Gametype/Gamemode number
+        :type gametype: int
+        :param player: The UUID of the player
+        :type player: str
+        '''
         playerTag = self.getPlayerTag(player)
         # This annoyingly works differently between single- and multi-player.
         if player == "Player":
@@ -1956,6 +2280,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.setPlayerAbilities(gametype, player)
 
     def getPlayerGameType(self, player="Player"):
+        '''
+        Gets the Gamemode of the specified player
+        
+        :param player: The UUID of the player
+        :type player: str
+        :return: The Gamemode number
+        :rtype: int
+        '''
         if player == "Player":
             return self.GameType
         else:
@@ -1963,6 +2295,13 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             return playerTag["playerGameType"].value
 
     def createPlayer(self, playerName):
+        '''
+        ~Deprecated~
+        Creates a player with default values
+        
+        :param playerName: The name of the player
+        :type playerName: str
+        '''
         if playerName == "Player":
             playerTag = self.root_tag["Data"].setdefault(playerName, nbt.TAG_Compound())
         else:
@@ -1980,8 +2319,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         playerTag["Inventory"] = nbt.TAG_List()
 
-        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in range(3)])
-        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in range(3)])
+        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in xrange(3)])
+        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in xrange(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
         if playerName != "Player":

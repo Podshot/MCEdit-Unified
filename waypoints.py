@@ -1,11 +1,10 @@
 from pymclevel import nbt
 import os
 import logging
-import inspect
 import shutil
 
 log = logging.getLogger(__name__)
-DEBUG = False
+
 
 class WaypointManager:
     '''
@@ -63,10 +62,6 @@ class WaypointManager:
         '''
         Saves all waypoint information to the 'mcedit_waypoints.dat' file in the world directory
         '''
-        if DEBUG:
-            current_frame = inspect.currentframe()
-            outerframe = inspect.getouterframes(current_frame, 2)[1]
-            print "Called by '" + str(outerframe[3]) + "()' in '" + str(outerframe[1].split("\\")[-1]) + "' at line " + str(outerframe[2])
         del self.nbt_waypoints["Waypoints"]
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
         for waypoint in self.waypoints.keys():

@@ -12,6 +12,7 @@ import theme
 from theme import ThemeProperty, FontProperty
 import resource
 from numpy import fromstring
+from OpenGL import GL, GLU
 
 debug_rect = False
 debug_tab = True
@@ -132,8 +133,7 @@ class Widget(object):
 
     def setup_spacings(self):
         def new_size(size):
-            size = float(size * 1000)
-            size = size / float(100)
+            size = float(size * 1000) / float(100)
             size = int(size * resource.font_proportion / 1000)
             return size
         self.margin = new_size(self.margin)
@@ -153,29 +153,6 @@ class Widget(object):
         old_size = self._rect.size
         self._rect = Rect(x)
         self._resized(old_size)
-
-    #    def get_anchor(self):
-    #        if self.hstretch:
-    #            chars ='lr'
-    #        elif self.hmove:
-    #            chars = 'r'
-    #        else:
-    #            chars = 'l'
-    #        if self.vstretch:
-    #            chars += 'tb'
-    #        elif self.vmove:
-    #            chars += 'b'
-    #        else:
-    #            chars += 't'
-    #        return chars
-    #
-    #    def set_anchor(self, chars):
-    #        self.hmove = 'r' in chars and not 'l' in chars
-    #        self.vmove = 'b' in chars and not 't' in chars
-    #        self.hstretch = 'r' in chars and 'l' in chars
-    #        self.vstretch = 'b' in chars and 't' in chars
-    #
-    #    anchor = property(get_anchor, set_anchor)
 
     resizing_axes = {'h': 'lr', 'v': 'tb'}
     resizing_values = {'': [0], 'm': [1], 's': [0, 1]}
@@ -245,7 +222,6 @@ class Widget(object):
         if resize:
             if debug_resize:
                 print "Widget.parent_resized: changing rect to", (left, top, width, height)
-            r = Rect((left, top, width, height))
             self.rect = Rect((left, top, width, height))
         elif move:
             if debug_resize:
@@ -369,7 +345,7 @@ class Widget(object):
                 if sub_rect.width > 0 and sub_rect.height > 0:
                     try:
                         sub = surface.subsurface(sub_rect)
-                    except ValueError, e:
+                    except ValueError as e:
                         if str(e) == "subsurface rectangle outside surface area":
                             self.diagnose_subsurface_problem(surface, widget)
                         else:
@@ -780,7 +756,7 @@ class Widget(object):
     def gl_draw_all(self, root, offset):
         if not self.visible:
             return
-        from OpenGL import GL, GLU
+        #from OpenGL import GL, GLU
 
         rect = self.rect.move(offset)
         if self.is_gl_container:
@@ -791,7 +767,7 @@ class Widget(object):
         else:
             try:
                 surface = Surface(self.size, SRCALPHA)
-            except Exception:
+            except:
                 #size error?
                 return
             self.draw_all(surface)

@@ -30,7 +30,6 @@ from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest
 from config import config
 from albow.root import get_root
 import pymclevel
-from numpy import array
 
 
 class BlockFillOperation(Operation):
@@ -167,8 +166,7 @@ class FillToolOptions(ToolOptions):
 
 class FillTool(EditorTool):
     toolIconName = "fill"
-    _blockInfo = pymclevel.alphaMaterials.Stone
-    replaceBlockInfo = pymclevel.alphaMaterials.Air
+    _blockInfo = None
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
     color = (0.75, 1.0, 1.0, 0.7)
@@ -184,6 +182,9 @@ class FillTool(EditorTool):
 
     @property
     def blockInfo(self):
+        if not self._blockInfo:
+            self._blockInfo = pymclevel.alphaMaterials.Stone
+            self.replaceBlockInfo = pymclevel.alphaMaterials.Air
         return self._blockInfo
 
     @blockInfo.setter
@@ -212,7 +213,7 @@ class FillTool(EditorTool):
 
     def toolSelected(self):
         box = self.selectionBox()
-        if None is box:
+        if box is None:
             return
 
         self.replacing = False
@@ -239,7 +240,7 @@ class FillTool(EditorTool):
     @alertException
     def confirm(self):
         box = self.selectionBox()
-        if None is box:
+        if box is None:
             return
 
         with setWindowCaption("REPLACING - "):
@@ -252,7 +253,7 @@ class FillTool(EditorTool):
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
-                    for i in range(16):
+                    for i in xrange(16):
                         blocksToReplace.append(self.editor.level.materials.blockWithID(self.blockInfo.ID, i))
                 else:
                     blocksToReplace = [self.blockInfo]
@@ -273,37 +274,37 @@ class FillTool(EditorTool):
 
     def roll(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            Roll(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            Roll(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
         else:
             self.toggleReplacing()
 
     def mirror(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
             yaw = int(self.editor.mainViewport.yaw) % 360
             if (45 <= yaw < 135) or (225 < yaw <= 315):
-                FlipEastWest(id,data)
+                FlipEastWest(bid,data)
             else:
-                FlipNorthSouth(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+                FlipNorthSouth(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def flip(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            FlipVertical(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            FlipVertical(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def rotate(self, amount=1, blocksOnly=False):
         if blocksOnly:
-            id = [self._blockInfo.ID]
+            bid = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
-            RotateLeft(id,data)
-            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+            RotateLeft(bid,data)
+            self.blockInfo = self.editor.level.materials[(bid[0], data[0])]
 
     def toggleReplacing(self):
         self.replacing = not self.replacing
@@ -324,7 +325,7 @@ class FillTool(EditorTool):
             self.panel.pickReplaceBlock()
 
     @alertException
-    def swap(self):
+    def swap(self, amount=1):
         if self.panel and self.replacing:
             self.panel.swapBlockTypes()
 
@@ -398,7 +399,7 @@ class FillTool(EditorTool):
                 return _("Click to use {0} ({1}:{2})").format(
                     self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
-            except Exception, e:
+            except Exception as e:
                 return repr(e)
 
     def mouseUp(self, *args):

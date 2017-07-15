@@ -44,24 +44,28 @@ from config import config, DEF_ENC
 from albow.resource import resource_path
 
 # &# Protoype for blocks/items names
-from pymclevel.materials import block_map, alphaMaterials
+from pymclevel.materials import alphaMaterials
 
 map_block = {}
-for k, v in block_map.items():
-    map_block[v] = k
+
+def build_map_block():
+    from pymclevel.materials import block_map
+    global map_block
+    for k, v in block_map.items():
+        map_block[v] = k
 
 from pymclevel.items import items as mcitems
 
 map_items = {}
 for k, v in mcitems.items.items():
-    if type(v) == dict:
+    if isinstance(v, dict):
         names = []
-        if type(v['name']) == list:
+        if isinstance(v['name'], list):
             names = v['name']
         else:
             names = [v['name']]
         for name in names:
-            if name != None and name not in map_items.keys():
+            if name is not None and name not in map_items.keys():
                 map_items[name] = (k, names.index(name))
 
 # # DEBUG
@@ -105,8 +109,8 @@ def get_bullet_image(index, w=16, h=16):
             from pygame import Surface, draw, SRCALPHA
             bullet_image = Surface((64, 64), SRCALPHA)
             bullet_image.fill((0, 0, 0, 0))
-            for i in range(4):
-                for j in range(4):
+            for i in xrange(4):
+                for j in xrange(4):
                     bullet_image.fill((255/(i or 1), 255/(j or 1), 255, 255), [16*i, 16*j, 16*i+16, 16*j+16])
 
     r = Rect(0, 0, w, h)
@@ -263,7 +267,7 @@ class NBTTree(Tree):
         for key in styles.keys():
             if hasattr(key, '__name__'):
                 name = key.__name__
-            elif type(key) in (str, unicode):
+            elif isinstance(key, (str, unicode)):
                 name = key
             else:
                 name = repr(key)
@@ -328,7 +332,7 @@ class NBTTree(Tree):
 
     def rename_item(self):
         result = input_text_buttons("Choose a name", 300, self.selected_item[3])
-        if type(result) in (str, unicode):
+        if isinstance(result, (str, unicode)):
             self.selected_item[3] = result
             self.selected_item[9].name = result
             self.build_layout()
@@ -428,12 +432,12 @@ class NBTExplorerOptions(ToolOptions):
             CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
             for sub in defaultBulletImagesBox.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-                if type(sub) in (CheckBox, TextFieldWrapped):
+                if isinstance(sub, (CheckBox, TextFieldWrapped)):
                     if config.nbtTreeSettings.useBulletImages.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
-                if type(sub) == CheckBox:
+                if isinstance(sub, CheckBox):
                     sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
             self.defaultBulletImagesBox_click(None)
 
@@ -467,7 +471,7 @@ class NBTExplorerOptions(ToolOptions):
                     and config.nbtTreeSettings.useBulletStyles.get()
         for sub in self.bulletFilePath.subwidgets:
             sub.enabled = enabled
-            if type(sub) == TextFieldWrapped:
+            if isinstance(sub, TextFieldWrapped):
                 if enabled:
                     sub.fg_color = fg_color
                 else:
@@ -479,21 +483,21 @@ class NBTExplorerOptions(ToolOptions):
         for widget in (self.useTextBox, self.useImagesBox):
             for sub in widget.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletStyles.get()
-                if type(sub) in (CheckBox, TextFieldWrapped):
+                if isinstance(sub, (CheckBox, TextFieldWrapped)):
                     if config.nbtTreeSettings.useBulletStyles.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
-                if type(sub) == CheckBox:
+                if isinstance(sub, CheckBox):
                     sub.set_enabled(config.nbtTreeSettings.useBulletStyles.get())
         for sub in self.defaultBulletImagesBox.subwidgets:
             sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-            if type(sub) in (CheckBox, TextFieldWrapped):
+            if isinstance(sub, (CheckBox, TextFieldWrapped)):
                 if config.nbtTreeSettings.useBulletImages.get():
                     sub.fg_color = fg_color
                 else:
                     sub.fg_color = disabled_color
-            if type(sub) == CheckBox:
+            if isinstance(sub, CheckBox):
                 sub.set_enabled(config.nbtTreeSettings.useBulletImages.get())
         self.defaultBulletImagesBox_click(None)
 
@@ -689,7 +693,7 @@ class NBTExplorerToolPanel(Panel):
     """..."""
 
     def __init__(self, editor, nbtObject=None, fileName=None, savePolicy=0, dataKeyName='Data', close_text="Close",
-                 load_text="Open", **kwargs):
+                 load_text="Open", magic=None, **kwargs):
         """..."""
         Panel.__init__(self, name='Panel.NBTExplorerToolPanel')
         self.editor = editor
@@ -698,6 +702,7 @@ class NBTExplorerToolPanel(Panel):
         self.savePolicy = savePolicy
         self.displayed_item = None
         self.dataKeyName = dataKeyName
+        self.magic = magic
         self.copy_data = kwargs.get('copy_data', True)
         self.init_data()
         btns = []
@@ -785,7 +790,7 @@ class NBTExplorerToolPanel(Panel):
 
     def save_NBT(self):
         if self.fileName:
-            self.editor.nbtTool.saveFile(self.fileName, self.data, self.savePolicy)
+            self.editor.nbtTool.saveFile(self.fileName, self.data, self.savePolicy, self.magic)
         else:
             op = NBTExplorerOperation(self)
             self.editor.addOperation(op)
@@ -850,7 +855,7 @@ class NBTExplorerToolPanel(Panel):
                 rows.append(Row([Label("Data Type:"), Label(t)], margin=1))
                 fields = self.build_field(itm)
                 for field in fields:
-                    if type(field) == TextFieldWrapped:
+                    if isinstance(field, TextFieldWrapped):
                         field.set_size_for_text(self.side_panel_width)
                     row = Row([field, ], margin=1)
                     rows.append(row)
@@ -885,14 +890,14 @@ class NBTExplorerToolPanel(Panel):
                 f, bounds = array_types[type(itm)]
                 fields.append(f(ref=ItemRef(itm.value, idx)))
                 idx += 1
-        elif type(itm) in (TAG_Compound, TAG_List):
+        elif isinstance(itm, (TAG_Compound, TAG_List)):
             for _itm in itm.value:
                 fields.append(
                     Label("%s" % (_itm.name or "%s #%03d" % (itm.name or _("Item"), itm.value.index(_itm))), align='l',
                           doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
-        elif type(itm) not in (str, unicode):
-            if type(getattr(itm, 'value', itm)) not in (str, unicode, int, float):
+        elif not isinstance(itm, (str, unicode)):
+            if not isinstance(getattr(itm, 'value', itm), (str, unicode, int, float)):
                 fld = Label
                 kw = {'align': 'l'}
             else:
@@ -949,6 +954,8 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
+        if not map_block:
+            build_map_block()
         parent = self.tree.get_item_parent(self.displayed_item)
         if parent:
             parent = parent[9]
@@ -961,16 +968,16 @@ class NBTExplorerToolPanel(Panel):
         inventory = parent.get('Inventory', TAG_List())
         rows = []
         items = items[0]
-        slots = [["%s" % i, "", "0", "0"] for i in range(36)]
-        slots += [["%s" % i, "", "0", "0"] for i in range(100, 104)]
+        slots = [["%s" % i, "", "0", "0"] for i in xrange(36)]
+        slots += [["%s" % i, "", "0", "0"] for i in xrange(100, 104)]
         slots_set = []
-        for item, i in zip(items, range(len(items))):
+        for item, i in zip(items, xrange(len(items))):
             # &# Prototype for blocks/items names
             item_dict = mcitems.items.get(item['id'].value, None)
             if item_dict is None:
                 item_name = item['id'].value
             else:
-                if type(item_dict['name']) == list:
+                if isinstance(item_dict['name'], list):
                     if int(item['Damage'].value) >= len(item_dict['name']):
                         block_id = map_block.get(item['id'].value, None)
                         item_name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[
@@ -987,7 +994,7 @@ class NBTExplorerToolPanel(Panel):
             slots_set.append(s)
             if s >= 100:
                 s = s - 100 + 36
-            if type(item_name) in (unicode, str):
+            if isinstance(item_name, (unicode, str)):
                 translated_item_name = mclangres.translate(item_name)
             else:
                 translated_item_name = item_name
@@ -1157,7 +1164,7 @@ class NBTExplorerTool(EditorTool):
     def toolReselected(self):
         self.showPanel()
 
-    def showPanel(self, fName=None, nbtObject=None, savePolicy=0, dataKeyName='Data'):
+    def showPanel(self, fName=None, nbtObject=None, savePolicy=0, dataKeyName='Data', magic=None):
         """..."""
         if self.panel is None and self.editor.currentTool in (self, None):  # or nbtObject:
             # !# BAD HACK
@@ -1175,22 +1182,22 @@ class NBTExplorerTool(EditorTool):
                 return
             # !#
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
-                                              savePolicy=savePolicy, dataKeyName=dataKeyName)
+                                              savePolicy=savePolicy, dataKeyName=dataKeyName, magic=magic)
             self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + \
                                  self.editor.subwidgets[0].height
             self.panel.left = self.editor.left
             self.editor.add(self.panel)
 
     def loadFile(self, fName=None):
-        nbtObject, dataKeyName, savePolicy, fName = loadFile(fName)
+        nbtObject, dataKeyName, savePolicy, fName, magic = loadFile(fName)
         if nbtObject is not None:
             self.editor.toolbar.removeToolPanels()
             self.editor.currentTool = self
-            self.showPanel(fName, nbtObject, savePolicy, dataKeyName)
+            self.showPanel(fName, nbtObject, savePolicy, dataKeyName, magic)
         self.optionsPanel.dismiss()
 
-    def saveFile(self, fName, data, savePolicy):
-        saveFile(fName, data, savePolicy)
+    def saveFile(self, fName, data, savePolicy, magic):
+        saveFile(fName, data, savePolicy, magic)
 
     def keyDown(self, *args, **kwargs):
         if self.panel:
@@ -1199,16 +1206,27 @@ class NBTExplorerTool(EditorTool):
 
 # ------------------------------------------------------------------------------
 def loadFile(fName):
+    """Loads a NBT file.
+    :fName: str/unicode: full file path to load.
+    Returns a 5 element tuple: (object nbtObject, string dataKeyName, int savePolicy, int/None magic).
+    'magic' is used for PE support."""
     if not fName:
-        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', ])
+        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', 'nbt'])
     if fName:
         if not os.path.isfile(fName):
             alert("The selected object is not a file.\nCan't load it.")
             return
         savePolicy = 0
-        data = open(fName).read()
+        magic = None
+        fp = open(fName)
+        data = fp.read()
+        fp.close()
 
-        if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
+        _magic = struct.Struct('<i').unpack(data[:4])[0]
+            
+        if 2 < _magic < 6:
+            # We have a PE world.
+            magic = _magic
             if struct.Struct('<i').unpack(data[4:8])[0] != len(data[8:]):
                 raise NBTFormatError()
             with littleEndianNBT():
@@ -1219,7 +1237,9 @@ def loadFile(fName):
         else:
             nbtObject = load(buf=data)
         if fName.endswith('.schematic'):
-            nbtObject = TAG_Compound(name='Data', value=nbtObject)
+            t = TAG_Compound(name='Data')
+            t.add(nbtObject)
+            nbtObject = t
             savePolicy = -1
             dataKeyName = 'Data'
         elif nbtObject.get('Data', None):
@@ -1232,32 +1252,43 @@ def loadFile(fName):
             if savePolicy == 0:
                 savePolicy = -1
             nbtObject = TAG_Compound([nbtObject, ])
-        return nbtObject, dataKeyName, savePolicy, fName
-    return [None] * 4
+        return nbtObject, dataKeyName, savePolicy, fName, magic
+    return [None] * 5
 
 
-def saveFile(fName, data, savePolicy):
+def saveFile(fName, data, savePolicy, magic):
+    """Saves the NBT data to the disk.
+    :fName: str/unicode: full file path to save data to.
+    :data: object: NBT data to be saved.
+    :savePolicy: int (-1, 0 or 1): special bit to handle different data types.
+    :magic: int/None: 'magic' number for PE worlds."""
     if fName is None:
         return
     if os.path.exists(fName):
         r = ask("File already exists.\nClick 'OK' to choose one.")
-        if r == 'OK':
+        if r == "OK":
             folder, name = os.path.split(fName)
             suffix = os.path.splitext(name)[-1][1:]
-            fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, 'Folder\0*.dat\0*.*\0\0', suffix)
+            file_types = _("Levels and Schematics") + "\0*.dat;*.nbt"
+            if "*.%s"%suffix not in file_types:
+                file_types += "\0*.{0}\0*.{0}".format(suffix)
+            file_types += "\0\0"
+            fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, file_types, suffix)
         else:
             return
-    if savePolicy == -1:
-        if hasattr(data, 'name'):
-            data.name = ""
-    if not os.path.isdir(fName):
-        if savePolicy <= 0:
-            data.save(fName)
-        elif savePolicy == 1:
-            with littleEndianNBT():
-                toSave = data.save(compressed=False)
-                toSave = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(toSave)) + toSave
-                with open(fName, 'w') as f:
-                    f.write(toSave)
-    else:
-        alert("The selected object is not a file.\nCan't save it.")
+    if fName:
+        if savePolicy in (-1, 1):
+            if hasattr(data, 'name'):
+                data.name = ""
+        if not os.path.isdir(fName):
+            if savePolicy <= 0:
+                data.save(fName)
+            elif savePolicy == 1:
+                with littleEndianNBT():
+                    # Here we have a PE data file. Just strip out the 
+                    toSave = data.save(compressed=False)
+                    toSave = struct.Struct('<i').pack(magic) + struct.Struct('<i').pack(len(toSave)) + toSave
+                    with open(fName, 'wb') as f:
+                        f.write(toSave)
+        else:
+            alert("The selected object is not a file.\nCan't save it.")

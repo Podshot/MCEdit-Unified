@@ -1,5 +1,5 @@
 import nbt
-import version_utils
+import player_cache
 
 
 class Player:
@@ -11,7 +11,7 @@ class Player:
 
         # Properties setup
         self._uuid = self.nbtFileName.split(".")[0]
-        playerName = version_utils.getPlayerNameFromUUID(self._uuid)
+        playerName = player_cache.getPlayerNameFromUUID(self._uuid)
         if playerName != self._uuid:
             self._name = playerName
         else:

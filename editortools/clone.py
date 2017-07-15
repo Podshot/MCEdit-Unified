@@ -158,7 +158,7 @@ class CloneOperation(Operation):
         else:
             delta = (0, 0, 0)
 
-        for i in range(repeatCount):
+        for i in xrange(repeatCount):
             op = BlockCopyOperation(editor, sourceLevel, sourceBox, destLevel, destPoint, copyAir, copyWater,
                                     copyBiomes, staticCommands, moveSpawnerPos, regenerateUUID)
             dirty = op.dirtyBox()
@@ -568,10 +568,6 @@ class CloneTool(EditorTool):
 
     @alertException
     def rescaleLevel(self, factor):
-        # if self.level.cloneToolScaleFactor == newFactor:
-        # return
-        # oldfactor = self.level.cloneToolScaleFactor
-        # factor = newFactor / oldfactor
         if factor == 1:
             self.level = self.originalLevel
             self.setupPreview()
@@ -605,43 +601,6 @@ class CloneTool(EditorTool):
         self.level = newlevel
         self.setupPreview()
 
-    #
-    # """
-    #        use array broadcasting to fill in the extra dimensions with copies of the
-    #        existing ones, then later change the shape to "fold" the extras back
-    #        into the original three
-    #        """
-    #        # if factor > 1.0:
-    #        sourceSlice = slice(0, 1)
-    #        destSlice = slice(None)
-    #
-    #        # if factor < 1.0:
-    #
-    #        destfactor = factor
-    #        srcfactor = 1
-    #        if factor < 1.0:
-    #            destfactor = 1.0
-    #            srcfactor = 1.0 / factor
-    #
-    #        intershape = newshape[0]/destfactor, destfactor, newshape[1]/destfactor, destfactor, newshape[2]/destfactor, destfactor
-    #        srcshape = roundedShape[0]/srcfactor, srcfactor, roundedShape[1]/srcfactor, srcfactor, roundedShape[2]/srcfactor, srcfactor
-    #
-    #        newlevel = MCSchematic(xyzshape)
-    #
-    #        def copyArray(dest, src):
-    #            dest.shape = intershape
-    #            src.shape = srcshape
-    #
-    #            dest[:, destSlice, :, destSlice, :, destSlice] = src[:, sourceSlice, :, sourceSlice, :, sourceSlice]
-    #            dest.shape = newshape
-    #            src.shape = roundedShape
-    #
-    #        copyArray(newlevel.Blocks, blocks)
-    #        copyArray(newlevel.Data, data)
-    #
-    #        newlevel.cloneToolScaleFactor = newFactor
-    #
-
     @alertException
     def updateSchematic(self):
         # extract blocks
@@ -659,9 +618,7 @@ class CloneTool(EditorTool):
             self.panel.set_parent(None)
 
         self.panel = self.panelClass(self, self.editor)
-        # self.panel.performButton.enabled = False
 
-#        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height
         self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
         self.panel.left = self.editor.left
         self.editor.add(self.panel)
@@ -746,7 +703,7 @@ class CloneTool(EditorTool):
         pos = self.getReticleOrigin()
         sizes = self.rotatedSelectionSize()
 
-        if None is sizes:
+        if sizes is None:
             return
 
         return BoundingBox(pos, sizes)
@@ -784,7 +741,7 @@ class CloneTool(EditorTool):
             if self.draggingFace is not None:
                 o = list(self.draggingOrigin())
                 s = list(box.size)
-                for i in range(3):
+                for i in xrange(3):
                     if i == self.draggingFace >> 1:
                         continue
                     o[i] -= 1000
@@ -806,7 +763,6 @@ class CloneTool(EditorTool):
         if self.destPoint:
             box = self.getDestBox()
             if self.draggingFace is not None:
-                face = self.draggingFace
                 box = BoundingBox(self.draggingOrigin(), box.size)
             face, point = self.boxFaceUnderCursor(box)
             if face is not None:
@@ -823,7 +779,7 @@ class CloneTool(EditorTool):
         # it's not really sensible to repeat a crane because the origin point is literally out of this world.
         delta = box.origin - self.selectionBox().origin
 
-        for i in range(self.repeatCount):
+        for i in xrange(self.repeatCount):
             self.editor.drawConstructionCube(box, color)
             box = BoundingBox(box.origin + delta, box.size)
 
@@ -854,7 +810,7 @@ class CloneTool(EditorTool):
         if self.canRotateLevel:
             self.rotation += amount
             self.rotation &= 0x3
-            for i in range(amount & 0x3):
+            for i in xrange(amount & 0x3):
                 if blocksOnly:
                     self.level.rotateLeftBlocks()
                 else:
@@ -865,7 +821,7 @@ class CloneTool(EditorTool):
     @alertException
     def roll(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
-            for i in range(amount & 0x3):
+            for i in xrange(amount & 0x3):
                 if blocksOnly:
                     self.level.rollBlocks()
                 else:
@@ -876,7 +832,7 @@ class CloneTool(EditorTool):
     @alertException
     def flip(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
-            for i in range(amount & 0x1):
+            for i in xrange(amount & 0x1):
                 if blocksOnly:
                     self.level.flipVerticalBlocks()
                 else:
@@ -1181,7 +1137,7 @@ class ConstructionTool(CloneTool):
 
     def createTestBoard(self, anyBlock=True):
         if anyBlock:
-            allBlocks = [self.editor.level.materials[a, b] for a in range(256) for b in range(16)]
+            allBlocks = [self.editor.level.materials[a, b] for a in xrange(256) for b in xrange(16)]
             blockWidth = 64
         else:
             allBlocks = self.editor.level.materials.allBlocks
@@ -1246,7 +1202,7 @@ class ConstructionTool(CloneTool):
         try:
             level = pymclevel.fromFile(filename, readonly=True)
             self.loadLevel(level)
-        except Exception, e:
+        except Exception as e:
             logging.warn(u"Unable to import file %s : %s", filename, e)
 
             traceback.print_exc()

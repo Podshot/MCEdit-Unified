@@ -566,7 +566,7 @@ textureSlots = {
     }
 
 class MultipartTexture(object):
-    
+
     def __init__(self, texture_objects):
         self.subclasses = []
         self.runAnyways = []
@@ -773,7 +773,6 @@ class IResourcePack(object):
         '''
         self._too_big = True
         log.debug("Resource pack is too big.")
-        #print u"{} seems to be a higher resolution than supported".format(self._pack_name)
         try:
             os.remove(self._terrain_path)
         except:
@@ -810,13 +809,11 @@ class ZipResourcePack(IResourcePack):
         self.fps = []
         for name in zfile.infolist():
             if name.filename.endswith(".png") and not name.filename.split(os.path.sep)[-1].startswith("._"):
-#                 log.debug("Image found: %s"%name.filename)
                 filename = "assets/minecraft/textures/blocks"
                 if name.filename.startswith(filename) and name.filename.replace(filename+"/", "").replace(".png","") in textureSlots:
                     log.debug("            Is a possible texture.")
                     block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
-                    #zfile.extract(name.filename, self.texture_path)
                     log.debug("            Block name: %s"%block_name)
                     log.debug("            Opening %s"%name)
                     fp = zfile.open(name)
@@ -830,7 +827,6 @@ class ZipResourcePack(IResourcePack):
                     fp.close()
                     fp1.seek(0)
                     log.debug("                Done.")
-                    #possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
                     try:
                         possible_texture = Image.open(fp1)
                         log.debug("            File descriptor for %s opened."%block_name)
@@ -1076,5 +1072,3 @@ class ResourcePackHandler:
         Returns the selected Resource Pack instance. Can be an instance of either DefaultResourcePack, ZipResourcePack or FolderResourcePack
         '''
         return self._resource_packs[self._selected_resource_pack]
-
-#packs = ResourcePackHandler()

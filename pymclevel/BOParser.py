@@ -24,7 +24,7 @@ corrected_states = {'CHEST':(2,6)}
 
 class BO3:
     def __init__(self, filename=''):
-        if type(filename) in (str, unicode):
+        if isinstance(filename, (str, unicode)):
             self.delta_x, self.delta_y, self.delta_z = 0, 0, 0
             self.size_x, self.size_y, self.size_z = 0, 0, 0
             map_block = {}
@@ -57,9 +57,7 @@ class BO3:
             # Doubling the schematic size calculation avoids missbuilt objects.
             # Rework the get_delta function?
             [get_delta(*b) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
-            #print 'Size:', self.size_x, self.size_y, self.size_z
             [get_delta(*b) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
-            #print 'Size:', self.size_x, self.size_y, self.size_z
             self.__schem = schematic.MCSchematic(shape=(self.size_x, self.size_y, self.size_z))
 
             def get_block_data(args):
@@ -120,10 +118,10 @@ class BO3:
             def verify_state(id, state):
                 states = corrected_states.get(id, None)
                 if states:
-                    if type(states) == tuple:
+                    if isinstance(states, tuple):
                         if state not in range(*states):
                             state = states[0]
-                    elif type(states) == list:
+                    elif isinstance(states, list):
                         if state not in states:
                             state = states[0]
                 return state
@@ -137,10 +135,10 @@ class BO3:
                         x, y, z, b_id, b_state, nbt_data = get_randomblock_data(line.replace("RandomBlock(", "").replace(")","").strip().split(","))
 
                     b_idn = map_block.get(b_id.lower(), bo3_blocks.get(b_id, None))
-                    if b_idn != None:
+                    if b_idn:
                         b_idn = int(b_idn)
                         if b_id.lower() in tileentities_list:
-                            if nbt_data == None:
+                            if not nbt_data:
                                 nbt_data = nbt.TAG_Compound()
                                 nbt_data.add(nbt.TAG_String(name='id', value=b_id.capitalize()))
                             nbt_data.add(nbt.TAG_Int(name='x', value=x))
@@ -156,7 +154,7 @@ class BO3:
                             print 'size', self.size_x, self.size_y, self.size_z
                             print line
                             [get_delta(*b, debug=True) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
-                    elif b_id != '':
+                    elif b_id:
                         print 'BO3 Block not found: %s'%b_id
 
         else:
@@ -176,7 +174,7 @@ class BO2:
         self._vertical_tracker = [0,0,0]
         self._horizontal_tracker_1 = [0,0,0]
         self._horizontal_tracker_2 = [0,0,0]
-        if filename != '':
+        if filename:
             self._parser.read(filename)
             self.__version = self._parser.get('META', 'version')
             for item in self._parser.items("META"):
@@ -219,7 +217,10 @@ class BO2:
                 x = int(coords[1])+self._horizontal_tracker_2[2]
                 y = int(coords[0])+self._horizontal_tracker_1[2]
                 z = int(coords[2])+self._vertical_tracker[2]
-                b, s = block[1].split('.')
+                if '.' in block[1]:
+                    b, s = block[1].split('.')
+                else:
+                    b, s = block[1], 0
                 self.__schem.Blocks[x,y,z] = b
                 self.__schem.Data[x, y, z] = s
             

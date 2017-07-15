@@ -80,7 +80,7 @@ class BlockPicker(Dialog):
                                        TableColumn("Name", 415, "l", formatBlockName),
                                        TableColumn("ID", 45, "l", formatBlockID)
                                        ])
-        tableicons = [blockview.BlockView(materials) for i in range(tableview.rows.num_rows())]
+        tableicons = [blockview.BlockView(materials) for i in xrange(tableview.rows.num_rows())]
         for t in tableicons:
             t.size = (16, 16)
             t.margin = 0
@@ -221,7 +221,7 @@ class BlockPicker(Dialog):
                                        TableColumn("Name", 415, "l", formatBlockName),
                                        TableColumn("ID", 45, "l", formatBlockID)
                                        ])
-        tableicons = [blockview.BlockView(materials) for i in range(tableview.rows.num_rows())]
+        tableicons = [blockview.BlockView(materials) for i in xrange(tableview.rows.num_rows())]
         for t in tableicons:
             t.size = (16, 16)
             t.margin = 0
@@ -340,7 +340,7 @@ class BlockPicker(Dialog):
             return
         except ValueError:
             pass
-        except Exception, e:
+        except Exception as e:
             print repr(e)
 
         blocks = self.materials.allBlocks
