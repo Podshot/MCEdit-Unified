@@ -459,7 +459,7 @@ class MCEdit(GLViewport):
                      "Refresh Player Names",
                      refresh),
                     ("",
-                     "Download Latest Version Definitions",
+                     "Update Version Definitions",
                      update_mcver)
                     ])
 
