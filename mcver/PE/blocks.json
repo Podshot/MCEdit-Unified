@@ -97,20 +97,23 @@
                 ]
             }
         },
-        {
-            "id": 3,
-            "idStr": "dirt",
-            "mapcolor": [
-                134,
-                96,
-                67
-            ],
-            "name": "Dirt",
-            "tex": [
-                2,
-                0
-            ]
-        },
+		{
+			"id": 3,
+			"name": "Dirt",
+			"idStr": "dirt",
+			"tex": [2,0],
+			"mapcolor": [134,96,67],
+			"data": {
+				"1": {
+					"name": "Coarse",
+					"tex": [2,0]
+				},
+				"0": {
+				    "name": "Dirt",
+					"tex": [2,0]
+				}
+			}
+		},
         {
             "id": 4,
             "idStr": "cobblestone",
@@ -1097,37 +1100,32 @@
             ],
             "type": "GLASS"
         },
-        {
-            "id": 19,
-            "idStr": "sponge",
-            "mapcolor": [
-                193,
-                193,
-                57
-            ],
-            "name": "Sponge",
-            "tex": [
-                0,
-                3
-            ]
-        },
-        {
-            "aka": "Block",
-            "id": 20,
-            "idStr": "glass",
-            "mapcolor": [
-                255,
-                255,
-                255
-            ],
-            "name": "Glass",
-            "opacity": 0,
-            "tex": [
-                1,
-                3
-            ],
-            "type": "GLASS"
-        },
+		{
+			"name": "Sponge",
+			"idStr": "sponge",
+			"tex": [0,3],
+			"mapcolor": [193,193,57],
+			"data": {
+				"1": {
+					"tex": [16,18],
+					"name": "Wet Sponge"
+				},
+				"0": {
+					"name": "Sponge"
+				}
+			},
+			"id": 19
+		},
+		{
+			"opacity": 0,
+			"name": "Glass",
+			"idStr": "glass",
+			"tex": [1,3],
+			"aka": "Block",
+			"mapcolor": [255,255,255],
+			"type": "GLASS",
+			"id": 20
+		},
         {
             "id": 21,
             "idStr": "lapis_ore",
@@ -1156,64 +1154,138 @@
                 9
             ]
         },
+		{
+			"name": "Dispenser",
+			"idStr": "dispenser",
+			"tex": [13,2],
+			"mapcolor": [96,96,96],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [14,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [14,2]
+					},
+					"name": "Dispenser (On ,West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,5],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,5]
+					},
+					"name": "Dispenser (Off, Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [14,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [14,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (Off, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [14,2]
+					},
+					"name": "Dispenser (Off, West)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,5],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dispenser (On, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,5]
+					},
+					"name": "Dispenser (On, Down)"
+				}
+			},
+			"id": 23
+		},
         {
-            "data": {
-                "0": {
-                    "mapcolor": [
-                        218,
-                        210,
-                        158
-                    ],
-                    "name": "Sandstone",
-                    "tex": [
-                        0,
-                        12
-                    ]
-                },
-                "1": {
-                    "mapcolor": [
-                        218,
-                        210,
-                        158
-                    ],
-                    "name": "Chiseled Sandstone",
-                    "tex": [
-                        5,
-                        14
-                    ]
-                },
-                "2": {
-                    "mapcolor": [
-                        218,
-                        210,
-                        158
-                    ],
-                    "name": "Smooth Sandstone",
-                    "tex": [
-                        6,
-                        14
-                    ]
-                }
-            },
-            "id": 24,
-            "idStr": "sandstone",
-            "mapcolor": [
-                218,
-                210,
-                158
-            ],
-            "name": "Sandstone",
-            "tex_direction": {
-                "BOTTOM": [
-                    0,
-                    13
-                ],
-                "TOP": [
-                    0,
-                    11
-                ]
-            }
-        },
+			"name": "Sandstone",
+			"idStr": "sandstone",
+			"mapcolor": [218,210,158],
+			"data": {
+				"1": {
+					"tex": [5,14],
+					"mapcolor": [218,210,158],
+					"name": "Chiseled Sandstone"
+				},
+				"0": {
+					"tex": [0,12],
+					"mapcolor": [218,210,158],
+					"name": "Sandstone"
+				},
+				"2": {
+					"tex": [6,14],
+					"mapcolor": [218,210,158],
+					"name": "Smooth Sandstone"
+				}
+			},
+			"id": 24
+		},
+		{
+			"search": "noteblock",
+			"name": "Note Block",
+			"idStr": "noteblock",
+			"tex": [10,4],
+			"mapcolor": [114,88,56],
+			"id": 25
+		},
         {
             "data": {
                 "0": {
@@ -1661,6 +1733,195 @@
             },
             "type": "SIMPLE_RAIL"
         },
+		{
+			"opacity": 0,
+			"name": "Detector Rail",
+			"data": {
+				"11": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, West)"
+				},
+				"10": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, East)"
+				},
+				"13": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, South)"
+				},
+				"12": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, Ascending, North)"
+				},
+				"1": {
+					"name": "Detector Rail (Unpowered, East/West)"
+				},
+				"0": {
+					"name": "Detector Rail (Unpowered, North/South)"
+				},
+				"3": {
+					"name": "Detector Rail (Unpowered, Ascending, West)"
+				},
+				"2": {
+					"name": "Detector Rail (Unpowered, Ascending, East)"
+				},
+				"5": {
+					"name": "Detector Rail (Unpowered, Ascending, South)"
+				},
+				"4": {
+					"name": "Detector Rail (Unpowered, Ascending, North)"
+				},
+				"9": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, East/West)"
+				},
+				"8": {
+					"tex": [20,3],
+					"name": "Detector Rail (Powered, North/South)"
+				}
+			},
+			"idStr": "detector_rail",
+			"tex": [3,12],
+			"tex_extra": {
+				"powered": [3,12]
+			},
+			"mapcolor": [200,189,189],
+			"type": "SIMPLE_RAIL",
+			"id": 28
+		},
+		{
+			"opacity": 0,
+			"name": "Sticky Piston",
+			"data": {
+				"11": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,3],
+						"BOTTOM": [29,2],
+						"TOP": [29,2],
+						"FORWARD": [14,3],
+						"BACKWARD": [14,6],
+						"LEFT": [29,1]
+					},
+					"name": "Sticky Piston (Extended, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"RIGHT": [29,1],
+						"BOTTOM": [29,0],
+						"TOP": [29,0],
+						"FORWARD": [14,6],
+						"BACKWARD": [14,3],
+						"LEFT": [29,3]
+					},
+					"name": "Sticky Piston (Extended, North)"
+				},
+				"13": {
+					"tex": [14,12],
+					"tex_direction": {
+						"RIGHT": [14,6],
+						"BOTTOM": [29,1],
+						"TOP": [29,1],
+						"FORWARD": [29,3],
+						"BACKWARD": [29,1],
+						"LEFT": [14,3]
+					},
+					"name": "Sticky Piston (Extended, East)"
+				},
+				"12": {
+					"tex": [14,13],
+					"tex_direction": {
+						"RIGHT": [14,3],
+						"BOTTOM": [29,3],
+						"TOP": [29,3],
+						"FORWARD": [29,1],
+						"BACKWARD": [29,3],
+						"LEFT": [14,6]
+					},
+					"name": "Sticky Piston (Extended, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [10,6],
+						"BOTTOM": [14,3]
+					},
+					"name": "Sticky Piston (Up)"
+				},
+				"0": {
+					"tex": [15,12],
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [10,6]
+					},
+					"name": "Sticky Piston (Down)"
+				},
+				"3": {
+					"tex": [15,12],
+					"tex_direction": {
+						"FORWARD": [14,3],
+						"RIGHT": [14,13],
+						"BACKWARD": [10,6],
+						"LEFT": [14,12]
+					},
+					"name": "Sticky Piston (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,6],
+						"RIGHT": [14,12],
+						"BACKWARD": [14,3],
+						"LEFT": [14,13]
+					},
+					"name": "Sticky Piston (North)"
+				},
+				"5": {
+					"tex": [14,12],
+					"tex_direction": {
+						"FORWARD": [14,13],
+						"RIGHT": [10,6],
+						"LEFT": [14,3]
+					},
+					"name": "Sticky Piston (East)"
+				},
+				"4": {
+					"tex": [14,13],
+					"tex_direction": {
+						"FORWARD": [14,12],
+						"RIGHT": [14,3],
+						"LEFT": [10,6]
+					},
+					"name": "Sticky Piston (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [29,0],
+						"BOTTOM": [14,3],
+						"TOP": [14,6],
+						"FORWARD": [29,0],
+						"BACKWARD": [29,0],
+						"LEFT": [29,0]
+					},
+					"name": "Sticky Piston (Extended, Up)"
+				},
+				"8": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,2],
+						"BOTTOM": [14,6],
+						"TOP": [14,3],
+						"FORWARD": [29,2],
+						"BACKWARD": [29,2],
+						"LEFT": [29,2]
+					},
+					"name": "Sticky Piston (Extended, Down)"
+				}
+			},
+			"idStr": "sticky_piston",
+			"tex": [12,6],
+			"mapcolor": [132,132,132],
+			"type": "PISTON_BODY",
+			"id": 29
+		},
         {
             "id": 30,
             "idStr": "web",
@@ -1733,6 +1994,144 @@
             ],
             "type": "DECORATION_CROSS"
         },
+		{
+			"opacity": 0,
+			"name": "Piston",
+			"data": {
+				"11": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,3],
+						"BOTTOM": [29,2],
+						"TOP": [29,2],
+						"FORWARD": [14,3],
+						"BACKWARD": [14,6],
+						"LEFT": [29,1]
+					},
+					"name": "Piston (Extended, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"RIGHT": [29,1],
+						"BOTTOM": [29,0],
+						"TOP": [29,0],
+						"FORWARD": [14,6],
+						"BACKWARD": [14,3],
+						"LEFT": [29,3]
+					},
+					"name": "Piston (Extended, North)"
+				},
+				"13": {
+					"tex": [14,12],
+					"tex_direction": {
+						"RIGHT": [14,6],
+						"BOTTOM": [29,1],
+						"TOP": [29,1],
+						"FORWARD": [29,3],
+						"BACKWARD": [29,1],
+						"LEFT": [14,3]
+					},
+					"name": "Piston (Extended, East)"
+				},
+				"12": {
+					"tex": [14,13],
+					"tex_direction": {
+						"RIGHT": [14,3],
+						"BOTTOM": [29,3],
+						"TOP": [29,3],
+						"FORWARD": [29,1],
+						"BACKWARD": [29,3],
+						"LEFT": [14,6]
+					},
+					"name": "Piston (Extended, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [11,6],
+						"BOTTOM": [14,3]
+					},
+					"name": "Piston (Up)"
+				},
+				"0": {
+					"tex": [15,12],
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [11,6]
+					},
+					"name": "Piston (Down)"
+				},
+				"3": {
+					"tex": [15,12],
+					"tex_direction": {
+						"FORWARD": [14,3],
+						"RIGHT": [14,13],
+						"BACKWARD": [11,6],
+						"LEFT": [14,12]
+					},
+					"name": "Piston (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [11,6],
+						"RIGHT": [14,12],
+						"BACKWARD": [14,3],
+						"LEFT": [14,13]
+					},
+					"name": "Piston (North)"
+				},
+				"5": {
+					"tex": [14,12],
+					"tex_direction": {
+						"FORWARD": [14,13],
+						"RIGHT": [11,6],
+						"LEFT": [14,3]
+					},
+					"name": "Piston (East)"
+				},
+				"4": {
+					"tex": [14,13],
+					"tex_direction": {
+						"FORWARD": [14,12],
+						"RIGHT": [14,3],
+						"LEFT": [11,6]
+					},
+					"name": "Piston (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"RIGHT": [29,0],
+						"BOTTOM": [14,3],
+						"TOP": [14,6],
+						"FORWARD": [29,0],
+						"BACKWARD": [29,0],
+						"LEFT": [29,0]
+					},
+					"name": "Piston (Extended, Up)"
+				},
+				"8": {
+					"tex": [15,12],
+					"tex_direction": {
+						"RIGHT": [29,2],
+						"BOTTOM": [14,6],
+						"TOP": [14,3],
+						"FORWARD": [29,2],
+						"BACKWARD": [29,2],
+						"LEFT": [29,2]
+					},
+					"name": "Piston (Extended, Down)"
+				}
+			},
+			"idStr": "piston",
+			"tex": [12,6],
+			"tex_extra": {
+				"front": [14,6],
+				"head": [11,6],
+				"back": [13,6]
+			},
+			"mapcolor": [132,132,132],
+			"type": "PISTON_BODY",
+			"id": 33
+		},
         {
             "data": {
                 "0": {
@@ -2173,17 +2572,17 @@
                     ]
                 },
                 "14": {
-                    "name": "Quartz Double Slab (Seamless)",
+                    "name": "Quartz Stone Double Slab (Seamless)",
                     "tex": [
                         9,
                         13
                     ]
                 },
                 "15": {
-                    "name": "Stone Double Slab (Seamless)",
+                    "name": "Nether Brick Double Slab (Seamless)",
                     "tex": [
-                        6,
-                        0
+                        0,
+                        14
                     ]
                 },
                 "2": {
@@ -2216,17 +2615,17 @@
                     ]
                 },
                 "6": {
-                    "name": "Quartz Double Slab (Seamed)",
+                    "name": "Quartz Stone Double Slab (Seamed)",
                     "tex": [
                         9,
                         13
                     ]
                 },
                 "7": {
-                    "name": "Stone Double Slab (Seamless)",
+                    "name": "Nether Brick Double Slab (Seamed)",
                     "tex": [
-                        6,
-                        0
+                        0,
+                        14
                     ]
                 },
                 "8": {
@@ -2331,18 +2730,18 @@
                         3
                     ]
                 },
+                "15": {
+                    "name": "Nether Brick Slab (Top)",
+                    "tex": [
+                        0,
+                        14
+                    ]
+                },
                 "14": {
                     "name": "Quartz Slab (Top)",
                     "tex": [
                         9,
                         13
-                    ]
-                },
-                "15": {
-                    "name": "Stone Slab (Seamless, Top)",
-                    "tex": [
-                        6,
-                        0
                     ]
                 },
                 "2": {
@@ -2374,18 +2773,18 @@
                         3
                     ]
                 },
+                "7": {
+                    "name": "Nether Brick Slab (Bottom)",
+                    "tex": [
+                        0,
+                        14
+                    ]
+                },
                 "6": {
                     "name": "Quartz Slab (Bottom)",
                     "tex": [
                         9,
                         13
-                    ]
-                },
-                "7": {
-                    "name": "Stone Slab (Seamless, Bottom)",
-                    "tex": [
-                        6,
-                        0
                     ]
                 },
                 "8": {
@@ -3653,6 +4052,23 @@
             },
             "type": "DOOR"
         },
+		{
+			"opacity": 0,
+			"name": "Wooden Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Wooden Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Wooden Pressure Plate"
+				}
+			},
+			"idStr": "wooden_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 72
+		},
         {
             "id": 73,
             "idStr": "redstone_ore",
@@ -3682,6 +4098,109 @@
                 4
             ]
         },
+		{
+			"opacity": 0,
+			"name": "Redstone Torch (Off)",
+			"data": {
+				"1": {
+					"name": "Unlit Redstone Torch (East)"
+				},
+				"3": {
+					"name": "Unlit Redstone Torch (South)"
+				},
+				"2": {
+					"name": "Unlit Redstone Torch (West)"
+				},
+				"5": {
+					"name": "Unlit Redstone Torch (Up)"
+				},
+				"4": {
+					"name": "Unlit Redstone Torch (North)"
+				}
+			},
+			"idStr": "unlit_redstone_torch",
+			"tex": [3,7],
+			"explored": true,
+			"mapcolor": [181,140,64],
+			"type": "TORCH",
+			"id": 75
+		},
+		{
+			"opacity": 0,
+			"search": "lit",
+			"name": "Redstone Torch (On)",
+			"brightness": 7,
+			"data": {
+				"1": {
+					"name": "Redstone Torch (East)"
+				},
+				"3": {
+					"name": "Redstone Torch (South)"
+				},
+				"2": {
+					"name": "Redstone Torch (West)"
+				},
+				"5": {
+					"name": "Redstone Torch (Up)"
+				},
+				"4": {
+					"name": "Redstone Torch (North)"
+				}
+			},
+			"idStr": "redstone_torch",
+			"tex": [3,6],
+			"explored": true,
+			"mapcolor": [255,0,0],
+			"type": "TORCH",
+			"id": 76
+		},
+		{
+			"opacity": 0,
+			"name": "Stone Button",
+			"data": {
+				"11": {
+					"name": "Stone Button (Powered, South)"
+				},
+				"10": {
+					"name": "Stone Button (Powered, West)"
+				},
+				"13": {
+					"name": "Stone Button (Powered, Up)"
+				},
+				"12": {
+					"name": "Stone Button (Powered, North)"
+				},
+				"1": {
+					"name": "Stone Button (East)"
+				},
+				"0": {
+					"name": "Stone Button (Down)"
+				},
+				"3": {
+					"name": "Stone Button (South)"
+				},
+				"2": {
+					"name": "Stone Button (West)"
+				},
+				"5": {
+					"name": "Stone Button (Up)"
+				},
+				"4": {
+					"name": "Stone Button (North)"
+				},
+				"9": {
+					"name": "Stone Button (Powered, East)"
+				},
+				"8": {
+					"name": "Stone Button (Powered, Down)"
+				}
+			},
+			"idStr": "stone_button",
+			"tex": [1,0],
+			"mapcolor": [120,120,120],
+			"type": "BUTTON",
+			"id": 77
+		},
         {
             "data": {
                 "0": {
@@ -4588,57 +5107,71 @@
                 31
             ]
         },
+		{
+			"data": {
+				"1": {
+					"name": "Barrier"
+				}
+			},
+			"id": 20,
+			"opacity": 0,
+			"search": "block",
+			"name": "Barrier",
+			"idStr": "barrier",
+			"tex": [10,1],
+			"mapcolor": [255,255,255]
+		},
         {
-            "data": {
-                "0": {
-                    "name": "Wooden Trapdoor (Bottom, False, North)"
-                },
-                "1": {
-                    "name": "Wooden Trapdoor (Bottom, False, South)"
-                },
-                "10": {
-                    "name": "Wooden Trapdoor (Top, False, West)"
-                },
-                "11": {
-                    "name": "Wooden Trapdoor (Top, False, East)"
-                },
-                "12": {
-                    "name": "Wooden Trapdoor (Top, True, North)"
-                },
-                "13": {
-                    "name": "Wooden Trapdoor (Top, True, South)"
-                },
-                "14": {
-                    "name": "Wooden Trapdoor (Top, True, West)"
-                },
-                "15": {
-                    "name": "Wooden Trapdoor (Top, True, East)"
-                },
-                "2": {
-                    "name": "Wooden Trapdoor (Bottom, False, West)"
-                },
-                "3": {
-                    "name": "Wooden Trapdoor (Bottom, False, East)"
-                },
-                "4": {
-                    "name": "Wooden Trapdoor (Bottom, True, North)"
-                },
-                "5": {
-                    "name": "Wooden Trapdoor (Bottom, True, South)"
-                },
-                "6": {
-                    "name": "Wooden Trapdoor (Bottom, True, West)"
-                },
-                "7": {
-                    "name": "Wooden Trapdoor (Bottom, True, East)"
-                },
-                "8": {
-                    "name": "Wooden Trapdoor (Top, False, North)"
-                },
-                "9": {
-                    "name": "Wooden Trapdoor (Top, False, South)"
-                }
-            },
+			"data": {
+				"11": {
+					"name": "Wooden Trapdoor (Top, False, East)"
+				},
+				"10": {
+					"name": "Wooden Trapdoor (Top, False, West)"
+				},
+				"13": {
+					"name": "Wooden Trapdoor (Top, True, South)"
+				},
+				"12": {
+					"name": "Wooden Trapdoor (Top, True, North)"
+				},
+				"15": {
+					"name": "Wooden Trapdoor (Top, True, East)"
+				},
+				"14": {
+					"name": "Wooden Trapdoor (Top, True, West)"
+				},
+				"1": {
+					"name": "Wooden Trapdoor (Bottom, False, South)"
+				},
+				"0": {
+					"name": "Wooden Trapdoor (Bottom, False, North)"
+				},
+				"3": {
+					"name": "Wooden Trapdoor (Bottom, False, East)"
+				},
+				"2": {
+					"name": "Wooden Trapdoor (Bottom, False, West)"
+				},
+				"5": {
+					"name": "Wooden Trapdoor (Bottom, True, South)"
+				},
+				"4": {
+					"name": "Wooden Trapdoor (Bottom, True, North)"
+				},
+				"7": {
+					"name": "Wooden Trapdoor (Bottom, True, East)"
+				},
+				"6": {
+					"name": "Wooden Trapdoor (Bottom, True, West)"
+				},
+				"9": {
+					"name": "Wooden Trapdoor (Top, False, South)"
+				},
+				"8": {
+					"name": "Wooden Trapdoor (Top, False, North)"
+				}
+			},
             "id": 96,
             "idStr": "trapdoor",
             "mapcolor": [
@@ -5937,6 +6470,33 @@
             ],
             "type": "STAIRS"
         },
+		{
+			"opacity": 0,
+			"name": "Nether Wart",
+			"data": {
+				"1": {
+					"tex": [3,14],
+					"name": "Nether Wart (Age 1)"
+				},
+				"0": {
+					"tex": [2,14],
+					"name": "Nether Wart (Age 0)"
+				},
+				"3": {
+					"tex": [4,14],
+					"name": "Nether Wart (Age 3)"
+				},
+				"2": {
+					"tex": [3,14],
+					"name": "Nether Wart (Age 2)"
+				}
+			},
+			"idStr": "nether_wart",
+			"tex": [4,14],
+			"mapcolor": [112,8,28],
+			"type": "NETHER_WART",
+			"id": 115
+		},
         {
             "id": 116,
             "idStr": "enchanting_table",
@@ -6013,6 +6573,51 @@
             },
             "type": "DECORATION_CROSS"
         },
+		{
+			"tex_direction": {
+				"TOP": [11,8],
+				"BOTTOM": [11,8]
+			},
+			"opacity": 0,
+			"name": "Cauldron",
+			"data": {
+				"1": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 1)"
+				},
+				"0": {
+					"name": "Cauldron (Level 0)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 3)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [0,22]
+					},
+					"name": "Cauldron (Level 2)"
+				}
+			},
+			"idStr": "cauldron",
+			"tex": [10,9],
+			"mapcolor": [79,79,79],
+			"type": "CAULDRON",
+			"id": 118
+		},
+		{
+			"opacity": 0,
+			"name": "End Portal",
+			"idStr": "end_portal",
+			"tex": [16,15],
+			"mapcolor": [0,0,0],
+			"type": "ENDER_PORTAL",
+			"id": 119
+		},
         {
             "brightness": 1,
             "data": {
@@ -6104,6 +6709,190 @@
                 10
             ]
         },
+		{
+			"opacity": 0,
+			"search": "ender",
+			"name": "Dragon Egg",
+			"brightness": 1,
+			"idStr": "dragon_egg",
+			"tex": [7,10],
+			"mapcolor": [45,1,51],
+			"id": 122
+		},
+		{
+			"tex": [3,13],
+			"mapcolor": [156,104,54],
+			"idStr": "redstone_lamp",
+			"name": "Redstone Lamp (Off)",
+			"id": 123
+		},
+		{
+			"search": "lit",
+			"name": "Redstone Lamp (On)",
+			"brightness": 15,
+			"idStr": "lit_redstone_lamp",
+			"tex": [4,13],
+			"mapcolor": [208,152,70],
+			"id": 124
+		},
+		{
+			"opacity": 0,
+			"name": "Dropper",
+			"idStr": "dropper",
+			"tex": [13,2],
+			"mapcolor": [100,100,100],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [10,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [10,2]
+					},
+					"name": "Dropper (On, West)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [18,4],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (Up)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,4]
+					},
+					"name": "Dropper (Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BACKWARD": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,2],
+						"TOP": [14,3],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"RIGHT": [10,2],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [14,3],
+						"LEFT": [10,2]
+					},
+					"name": "Dropper (West)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [18,4],
+						"BOTTOM": [14,3]
+					},
+					"name": "Dropper (On, Up)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [14,3],
+						"BOTTOM": [18,4]
+					},
+					"name": "Dropper (On, Down)"
+				}
+			},
+			"id": 125
+		},
+		{
+			"opacity": 0,
+			"name": "Activator Rail",
+			"data": {
+				"11": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, West)"
+				},
+				"10": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, East)"
+				},
+				"13": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, South)"
+				},
+				"12": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, Ascending, North)"
+				},
+				"1": {
+					"name": "Activator Rail (Unpowered, East/West)"
+				},
+				"0": {
+					"name": "Activator Rail (Unpowered, North/South)"
+				},
+				"3": {
+					"name": "Activator Rail (Unpowered, Ascending, West)"
+				},
+				"2": {
+					"name": "Activator Rail (Unpowered, Ascending, East)"
+				},
+				"5": {
+					"name": "Activator Rail (Unpowered, Ascending, South)"
+				},
+				"4": {
+					"name": "Activator Rail (Unpowered, Ascending, North)"
+				},
+				"9": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, East/West)"
+				},
+				"8": {
+					"tex": [11,13],
+					"name": "Activator Rail (Powered, North/South)"
+				}
+			},
+			"idStr": "activator_rail",
+			"tex": [10,13],
+			"tex_extra": {
+				"powered": [11,13]
+			},
+			"mapcolor": [100,100,100],
+			"type": "SIMPLE_RAIL",
+			"id": 126
+		},
         {
             "data": {
                 "0": {
@@ -6223,6 +7012,167 @@
                 10
             ]
         },
+		{
+			"opacity": 0,
+			"name": "Ender Chest",
+			"brightness": 7,
+			"idStr": "ender_chest",
+			"tex": [18,2],
+			"mapcolor": [200,200,200],
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"BACKWARD": [16,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [16,2],
+						"TOP": [17,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"RIGHT": [16,2],
+						"BOTTOM": [19,2]
+					},
+					"name": "Ender Chest (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [17,2],
+						"BOTTOM": [19,2],
+						"LEFT": [16,2]
+					},
+					"name": "Ender Chest (West)"
+				}
+			},
+			"id": 130
+		},
+		{
+			"opacity": 0,
+			"name": "Tripwire Hook",
+			"data": {
+				"11": {
+					"name": "Tripwire Hook (Unattached, Powered, East)"
+				},
+				"10": {
+					"name": "Tripwire Hook (Unattached, Powered, North)"
+				},
+				"13": {
+					"name": "Tripwire Hook (Attached, Powered, West)"
+				},
+				"12": {
+					"name": "Tripwire Hook (Attached, Powered, South)"
+				},
+				"15": {
+					"name": "Tripwire Hook (Attached, Powered, East)"
+				},
+				"14": {
+					"name": "Tripwire Hook (Attached, Powered, North)"
+				},
+				"1": {
+					"name": "Tripwire Hook (Unattached, Unpowered, West)"
+				},
+				"0": {
+					"name": "Tripwire Hook (Unattached, Unpowered, South)"
+				},
+				"3": {
+					"name": "Tripwire Hook (Unattached, Unpowered, East)"
+				},
+				"2": {
+					"name": "Tripwire Hook (Unattached, Unpowered, North)"
+				},
+				"5": {
+					"name": "Tripwire Hook (Attached, Unpowered, West)"
+				},
+				"4": {
+					"name": "Tripwire Hook (Attached, Unpowered, South)"
+				},
+				"7": {
+					"name": "Tripwire Hook (Attached, Unpowered, East)"
+				},
+				"6": {
+					"name": "Tripwire Hook (Attached, Unpowered, North)"
+				},
+				"9": {
+					"name": "Tripwire Hook (Unattached, Powered, West)"
+				},
+				"8": {
+					"name": "Tripwire Hook (Unattached, Powered, South)"
+				}
+			},
+			"idStr": "tripwire_hook",
+			"tex": [12,10],
+			"mapcolor": [200,200,200],
+			"type": "DECORATION_CROSS",
+			"id": 131
+		},
+		{
+			"opacity": 0,
+			"name": "Tripwire",
+			"data": {
+				"11": {
+					"name": "Tripwire (Unattached, Disarmed, Powered, Suspended)"
+				},
+				"10": {
+					"name": "Tripwire (Unattached, Disarmed, Unpowered, Suspended)"
+				},
+				"13": {
+					"name": "Tripwire (Attached, Disarmed, Powered, Unsuspended)"
+				},
+				"12": {
+					"name": "Tripwire (Attached, Disarmed, Unpowered, Unsuspended)"
+				},
+				"15": {
+					"name": "Tripwire (Attached, Disarmed, Powered, Suspended)"
+				},
+				"14": {
+					"name": "Tripwire (Attached, Disarmed, Unpowered, Suspended)"
+				},
+				"1": {
+					"name": "Tripwire (Unattached, Armed, Powered, Unsuspended)"
+				},
+				"0": {
+					"name": "Tripwire (Unattached, Armed, Unpowered, Unsuspended)"
+				},
+				"3": {
+					"name": "Tripwire (Unattached, Armed, Powered, Suspended)"
+				},
+				"2": {
+					"name": "Tripwire (Unattached, Armed, Unpowered, Suspended)"
+				},
+				"5": {
+					"name": "Tripwire (Attached, Armed, Powered, Unsuspended)"
+				},
+				"4": {
+					"name": "Tripwire (Attached, Armed, Unpowered, Unsuspended)"
+				},
+				"7": {
+					"name": "Tripwire (Attached, Armed, Powered, Suspended)"
+				},
+				"6": {
+					"name": "Tripwire (Attached, Armed, Unpowered, Suspended)"
+				},
+				"9": {
+					"name": "Tripwire (Unattached, Disarmed, Powered, Unsuspended)"
+				},
+				"8": {
+					"name": "Tripwire (Unattached, Disarmed, Unpowered, Unsuspended)"
+				}
+			},
+			"idStr": "tripwire",
+			"tex": [13,10],
+			"mapcolor": [200,200,200],
+			"type": "DECORATION_CROSS",
+			"id": 132
+		},
         {
             "id": 133,
             "idStr": "emerald_block",
@@ -6661,6 +7611,19 @@
                 3
             ]
         },
+		{
+			"tex_direction": {
+				"TOP": [20,7],
+				"BOTTOM": [20,8]
+			},
+			"opacity": 0,
+			"name": "Beacon",
+			"brightness": 15,
+			"idStr": "beacon",
+			"tex": [20,6],
+			"mapcolor": [200,200,200],
+			"id": 138
+		},
         {
             "data": {
                 "0": {
@@ -6907,6 +7870,53 @@
             ],
             "type": "CROPS"
         },
+		{
+			"opacity": 0,
+			"name": "Wooden Button",
+			"data": {
+				"11": {
+					"name": "Wooden Button (Powered, South)"
+				},
+				"10": {
+					"name": "Wooden Button (Powered, West)"
+				},
+				"13": {
+					"name": "Wooden Button (Powered, Up)"
+				},
+				"12": {
+					"name": "Wooden Button (Powered, North)"
+				},
+				"1": {
+					"name": "Wooden Button (East)"
+				},
+				"0": {
+					"name": "Wooden Button (Down)"
+				},
+				"3": {
+					"name": "Wooden Button (South)"
+				},
+				"2": {
+					"name": "Wooden Button (West)"
+				},
+				"5": {
+					"name": "Wooden Button (Up)"
+				},
+				"4": {
+					"name": "Wooden Button (North)"
+				},
+				"9": {
+					"name": "Wooden Button (Powered, East)"
+				},
+				"8": {
+					"name": "Wooden Button (Powered, Down)"
+				}
+			},
+			"idStr": "wooden_button",
+			"tex": [4,0],
+			"mapcolor": [200,100,100],
+			"type": "BUTTON",
+			"id": 143
+		},
         {
             "data": {
                 "0": {
@@ -7134,6 +8144,382 @@
                 15
             ]
         },
+		{
+			"opacity": 0,
+			"name": "Trapped Chest",
+			"data": {
+				"3": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"BACKWARD": [18,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [18,6],
+						"TOP": [16,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"RIGHT": [18,6],
+						"BOTTOM": [16,6]
+					},
+					"name": "Trapped Chest (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [16,6],
+						"BOTTOM": [16,6],
+						"LEFT": [18,6]
+					},
+					"name": "Trapped Chest (West)"
+				}
+			},
+			"idStr": "trapped_chest",
+			"tex": [17,6],
+			"mapcolor": [100,100,100],
+			"type": "CHEST",
+			"id": 146
+		},
+		{
+			"opacity": 0,
+			"name": "Light Weighted Pressure Plate",
+			"data": {
+				"11": {
+					"name": "Light Weighted Pressure Plate (Power 11)"
+				},
+				"10": {
+					"name": "Light Weighted Pressure Plate (Power 10)"
+				},
+				"13": {
+					"name": "Light Weighted Pressure Plate (Power 13)"
+				},
+				"12": {
+					"name": "Light Weighted Pressure Plate (Power 12)"
+				},
+				"15": {
+					"name": "Light Weighted Pressure Plate (Power 15)"
+				},
+				"14": {
+					"name": "Light Weighted Pressure Plate (Power 14)"
+				},
+				"1": {
+					"name": "Light Weighted Pressure Plate (Power 1)"
+				},
+				"0": {
+					"name": "Light Weighted Pressure Plate (Power 0)"
+				},
+				"3": {
+					"name": "Light Weighted Pressure Plate (Power 3)"
+				},
+				"2": {
+					"name": "Light Weighted Pressure Plate (Power 2)"
+				},
+				"5": {
+					"name": "Light Weighted Pressure Plate (Power 5)"
+				},
+				"4": {
+					"name": "Light Weighted Pressure Plate (Power 4)"
+				},
+				"7": {
+					"name": "Light Weighted Pressure Plate (Power 7)"
+				},
+				"6": {
+					"name": "Light Weighted Pressure Plate (Power 6)"
+				},
+				"9": {
+					"name": "Light Weighted Pressure Plate (Power 9)"
+				},
+				"8": {
+					"name": "Light Weighted Pressure Plate (Power 8)"
+				}
+			},
+			"idStr": "light_weighted_pressure_plate",
+			"tex": [7,1],
+			"mapcolor": [231,165,45],
+			"type": "PRESSURE_PLATE",
+			"id": 147
+		},
+		{
+			"opacity": 0,
+			"name": "Heavy Weighted Pressure Plate",
+			"data": {
+				"11": {
+					"name": "Heavy Weighted Pressure Plate (Power 11)"
+				},
+				"10": {
+					"name": "Heavy Weighted Pressure Plate (Power 10)"
+				},
+				"13": {
+					"name": "Heavy Weighted Pressure Plate (Power 13)"
+				},
+				"12": {
+					"name": "Heavy Weighted Pressure Plate (Power 12)"
+				},
+				"15": {
+					"name": "Heavy Weighted Pressure Plate (Power 15)"
+				},
+				"14": {
+					"name": "Heavy Weighted Pressure Plate (Power 14)"
+				},
+				"1": {
+					"name": "Heavy Weighted Pressure Plate (Power 1)"
+				},
+				"0": {
+					"name": "Heavy Weighted Pressure Plate (Power 0)"
+				},
+				"3": {
+					"name": "Heavy Weighted Pressure Plate (Power 3)"
+				},
+				"2": {
+					"name": "Heavy Weighted Pressure Plate (Power 2)"
+				},
+				"5": {
+					"name": "Heavy Weighted Pressure Plate (Power 5)"
+				},
+				"4": {
+					"name": "Heavy Weighted Pressure Plate (Power 4)"
+				},
+				"7": {
+					"name": "Heavy Weighted Pressure Plate (Power 7)"
+				},
+				"6": {
+					"name": "Heavy Weighted Pressure Plate (Power 6)"
+				},
+				"9": {
+					"name": "Heavy Weighted Pressure Plate (Power 9)"
+				},
+				"8": {
+					"name": "Heavy Weighted Pressure Plate (Power 8)"
+				}
+			},
+			"idStr": "heavy_weighted_pressure_plate",
+			"tex": [6,1],
+			"mapcolor": [191,191,191],
+			"type": "PRESSURE_PLATE",
+			"id": 148
+		},
+		{
+			"opacity": 0,
+			"name": "Redstone Comparator (Off)",
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [27,3]
+					},
+					"name": "Redstone Comparator (On, Compare, East)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [27,2]
+					},
+					"name": "Redstone Comparator (On, Compare, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [28,1]
+					},
+					"name": "Redstone Comparator (On, Subtract, West)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [28,0]
+					},
+					"name": "Redstone Comparator (On, Subtract, South)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [28,3]
+					},
+					"name": "Redstone Comparator (On, Subtract, East)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [28,2]
+					},
+					"name": "Redstone Comparator (On, Subtract, North)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [25,1]
+					},
+					"name": "Redstone Comparator (Off, Compare, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [25,0]
+					},
+					"name": "Redstone Comparator (Off, Compare, South)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [25,3]
+					},
+					"name": "Redstone Comparator (Off, Compare, East)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [25,2]
+					},
+					"name": "Redstone Comparator (Off, Compare, North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [26,1]
+					},
+					"name": "Redstone Comparator (Off, Subtract, West)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [26,0]
+					},
+					"name": "Redstone Comparator (Off, Subtract, South)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [26,3]
+					},
+					"name": "Redstone Comparator (Off, Subtract, East)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [26,2]
+					},
+					"name": "Redstone Comparator (Off, Subtract, North)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [27,1]
+					},
+					"name": "Redstone Comparator (On, Compare, West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [27,0]
+					},
+					"name": "Redstone Comparator (On, Compare, South)"
+				}
+			},
+			"idStr": "unpowered_comparator",
+			"tex": [11,11],
+			"mapcolor": [100,100,100],
+			"type": "THINSLICE",
+			"id": 149
+		},
+		{
+			"opacity": 0,
+			"name": "Redstone Comparator (On)",
+			"brightness": 8,
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [27,3]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, West)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [27,2]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, South)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [28,1]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [28,0]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, North)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [28,3]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, West)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [28,2]
+					},
+					"name": "OLD/Redstone Comparator (On, Subtract, South)"
+				},
+				"1": {
+					"tex_direction": {
+						"TOP": [25,1]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [25,0]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, North)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [25,3]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, West)"
+				},
+				"2": {
+					"tex_direction": {
+						"TOP": [25,2]
+					},
+					"name": "OLD/Redstone Comparator (Off, Compare, South)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [26,1]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [26,0]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, North)"
+				},
+				"7": {
+					"tex_direction": {
+						"TOP": [26,3]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, West)"
+				},
+				"6": {
+					"tex_direction": {
+						"TOP": [26,2]
+					},
+					"name": "OLD/Redstone Comparator (Off, Subtract, South)"
+				},
+				"9": {
+					"tex_direction": {
+						"TOP": [27,1]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, East)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [27,0]
+					},
+					"name": "OLD/Redstone Comparator (On, Compare, North)"
+				}
+			},
+			"idStr": "powered_comparator",
+			"tex": [12,11],
+			"mapcolor": [100,100,100],
+			"type": "THINSLICE",
+			"id": 150
+		},
         {
             "data": {
                 "0": {
@@ -7238,6 +8624,94 @@
                 11
             ]
         },
+		{
+			"opacity": 0,
+			"name": "Hopper",
+			"idStr": "hopper",
+			"tex": [12,15],
+			"mapcolor": [100,100,100],
+			"data": {
+				"11": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BACKWARD": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, South)"
+				},
+				"10": {
+					"tex_direction": {
+						"FORWARD": [10,8],
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, North)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"RIGHT": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15],
+						"LEFT": [10,8]
+					},
+					"name": "Hopper (Disabled, West)"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Down)"
+				},
+				"3": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BACKWARD": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (South)"
+				},
+				"2": {
+					"tex_direction": {
+						"FORWARD": [10,8],
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (North)"
+				},
+				"5": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"RIGHT": [10,8],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (East)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15],
+						"LEFT": [10,8]
+					},
+					"name": "Hopper (West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [13,15],
+						"BOTTOM": [13,15]
+					},
+					"name": "Hopper (Disabled, Down)"
+				}
+			},
+			"id": 154
+		},
         {
             "data": {
                 "0": {
@@ -7277,7 +8751,24 @@
                         ]
                     }
                 },
-                "3": {
+                "5": {
+                    "name": "Chiseled Quartz Block (East/West)",
+                    "tex": [
+                        8,
+                        15
+                    ],
+                    "tex_direction": {
+                        "BOTTOM": [
+                            9,
+                            15
+                        ],
+                        "TOP": [
+                            9,
+                            15
+                        ]
+                    }
+                },
+			    "6": {
                     "name": "Pillar Quartz Block (East/West)",
                     "tex": [
                         17,
@@ -7288,30 +8779,22 @@
                             11,
                             15
                         ]
-                    }
+					}
                 },
-                "4": {
+			    "10": {
                     "name": "Pillar Quartz Block (North/South)",
                     "tex": [
-                        10,
-                        15
+                        17,
+                        19
                     ],
                     "tex_direction": {
-                        "BACKWARD": [
-                            11,
-                            15
-                        ],
-                        "FORWARD": [
-                            11,
-                            15
-                        ],
                         "SIDES": [
-                            17,
-                            19
+                            11,
+                            15
                         ]
-                    }
+					}
                 }
-            },
+			},
             "id": 155,
             "idStr": "quartz_block",
             "mapcolor": [
@@ -7365,165 +8848,96 @@
                 13
             ]
         },
-        {
-            "data": {
-                "0": {
-                    "name": "Oak Double Slab",
-                    "tex": [
-                        4,
-                        0
-                    ]
-                },
-                "1": {
-                    "name": "Spruce Double Slab",
-                    "tex": [
-                        6,
-                        12
-                    ]
-                },
-                "2": {
-                    "name": "Birch Double Slab",
-                    "tex": [
-                        6,
-                        13
-                    ]
-                },
-                "3": {
-                    "name": "Jungle Double Slab",
-                    "tex": [
-                        7,
-                        12
-                    ]
-                },
-                "4": {
-                    "name": "Acacia Double Slab",
-                    "tex": [
-                        0,
-                        15
-                    ]
-                },
-                "5": {
-                    "name": "Dark Oak Double Slab",
-                    "tex": [
-                        1,
-                        15
-                    ]
-                }
-            },
-            "id": 157,
-            "idStr": "double_wooden_slab",
-            "mapcolor": [
-                200,
-                200,
-                200
-            ],
-            "name": "Double Wooden Slab",
-            "tex": [
-                4,
-                0
-            ]
-        },
-        {
-            "data": {
-                "0": {
-                    "name": "Oak Wood Slab (Bottom)",
-                    "tex": [
-                        4,
-                        0
-                    ]
-                },
-                "1": {
-                    "name": "Spruce Wood Slab (Bottom)",
-                    "tex": [
-                        6,
-                        12
-                    ]
-                },
-                "10": {
-                    "name": "Birch Wood Slab (Top)",
-                    "tex": [
-                        6,
-                        13
-                    ]
-                },
-                "11": {
-                    "name": "Jungle Wood Slab (Top)",
-                    "tex": [
-                        7,
-                        12
-                    ]
-                },
-                "12": {
-                    "name": "Acacia Wood Slab (Top)",
-                    "tex": [
-                        0,
-                        15
-                    ]
-                },
-                "13": {
-                    "name": "Dark Oak Wood Slab (Top)",
-                    "tex": [
-                        1,
-                        15
-                    ]
-                },
-                "2": {
-                    "name": "Birch Wood Slab (Bottom)",
-                    "tex": [
-                        6,
-                        13
-                    ]
-                },
-                "3": {
-                    "name": "Jungle Wood Slab (Bottom)",
-                    "tex": [
-                        7,
-                        12
-                    ]
-                },
-                "4": {
-                    "name": "Acacia Wood Slab (Bottom)",
-                    "tex": [
-                        0,
-                        15
-                    ]
-                },
-                "5": {
-                    "name": "Dark Oak Wood Slab (Bottom)",
-                    "tex": [
-                        1,
-                        15
-                    ]
-                },
-                "8": {
-                    "name": "Oak Wood Slab (Top)",
-                    "tex": [
-                        4,
-                        0
-                    ]
-                },
-                "9": {
-                    "name": "Spruce Wood Slab (Top)",
-                    "tex": [
-                        6,
-                        12
-                    ]
-                }
-            },
-            "id": 158,
-            "idStr": "wooden_slab",
-            "mapcolor": [
-                200,
-                200,
-                200
-            ],
-            "name": "Wooden Slab",
-            "tex": [
-                4,
-                0
-            ],
-            "type": "HALFHEIGHT"
-        },
+		{
+			"name": "Double Wooden Slab",
+			"idStr": "double_wooden_slab",
+			"tex": [4,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"1": {
+					"tex": [6,12],
+					"name": "Spruce Double Slab"
+				},
+				"0": {
+					"tex": [4,0],
+					"name": "Oak Double Slab"
+				},
+				"3": {
+					"tex": [7,12],
+					"name": "Jungle Double Slab"
+				},
+				"2": {
+					"tex": [6,13],
+					"name": "Birch Double Slab"
+				},
+				"5": {
+					"tex": [1,15],
+					"name": "Dark Oak Double Slab"
+				},
+				"4": {
+					"tex": [0,15],
+					"name": "Acacia Double Slab"
+				}
+			},
+			"id": 157
+		},
+{
+			"name": "Wooden Slab",
+			"idStr": "wooden_slab",
+			"tex": [4,0],
+			"mapcolor": [200,200,200],
+			"data": {
+				"11": {
+					"tex": [7,12],
+					"name": "Jungle Wood Slab (Top)"
+				},
+				"10": {
+					"tex": [6,13],
+					"name": "Birch Wood Slab (Top)"
+				},
+				"13": {
+					"tex": [1,15],
+					"name": "Dark Oak Wood Slab (Top)"
+				},
+				"12": {
+					"tex": [0,15],
+					"name": "Acacia Wood Slab (Top)"
+				},
+				"1": {
+					"tex": [6,12],
+					"name": "Spruce Wood Slab (Bottom)"
+				},
+				"0": {
+					"tex": [4,0],
+					"name": "Oak Wood Slab (Bottom)"
+				},
+				"3": {
+					"tex": [7,12],
+					"name": "Jungle Wood Slab (Bottom)"
+				},
+				"2": {
+					"tex": [6,13],
+					"name": "Birch Wood Slab (Bottom)"
+				},
+				"5": {
+					"tex": [1,15],
+					"name": "Dark Oak Wood Slab (Bottom)"
+				},
+				"4": {
+					"tex": [0,15],
+					"name": "Acacia Wood Slab (Bottom)"
+				},
+				"9": {
+					"tex": [6,12],
+					"name": "Spruce Wood Slab (Top)"
+				},
+				"8": {
+					"tex": [4,0],
+					"name": "Oak Wood Slab (Top)"
+				}
+			},
+			"id": 158
+		},
         {
             "data": {
                 "0": {
@@ -7729,6 +9143,162 @@
                 50
             ]
         },
+		{
+			"opacity": 0,
+			"name": "Stained Glass Pane",
+			"data": {
+				"11": {
+					"tex": [11,19],
+					"tex_direction": {
+						"TOP": [11,17],
+						"BOTTOM": [11,17]
+					},
+					"mapcolor": [39,51,161],
+					"name": "Blue Stained Glass Pane"
+				},
+				"10": {
+					"tex": [10,19],
+					"tex_direction": {
+						"TOP": [10,17],
+						"BOTTOM": [10,17]
+					},
+					"mapcolor": [129,54,196],
+					"name": "Purple Stained Glass Pane"
+				},
+				"13": {
+					"tex": [13,19],
+					"tex_direction": {
+						"TOP": [13,17],
+						"BOTTOM": [13,17]
+					},
+					"mapcolor": [56,77,24],
+					"name": "Green Stained Glass Pane"
+				},
+				"12": {
+					"tex": [12,19],
+					"tex_direction": {
+						"TOP": [12,17],
+						"BOTTOM": [12,17]
+					},
+					"mapcolor": [86,51,28],
+					"name": "Brown Stained Glass Pane"
+				},
+				"15": {
+					"tex": [15,19],
+					"tex_direction": {
+						"TOP": [15,17],
+						"BOTTOM": [15,17]
+					},
+					"mapcolor": [0,0,0],
+					"name": "Black Stained Glass Pane"
+				},
+				"14": {
+					"tex": [14,19],
+					"tex_direction": {
+						"TOP": [14,17],
+						"BOTTOM": [14,17]
+					},
+					"mapcolor": [164,45,41],
+					"name": "Red Stained Glass Pane"
+				},
+				"1": {
+					"tex": [1,19],
+					"tex_direction": {
+						"TOP": [1,17],
+						"BOTTOM": [1,17]
+					},
+					"mapcolor": [234,127,55],
+					"name": "Orange Stained Glass Pane"
+				},
+				"0": {
+					"tex_direction": {
+						"TOP": [0,17],
+						"BOTTOM": [0,17]
+					},
+					"mapcolor": [222,222,222],
+					"name": "White Stained Glass Pane"
+				},
+				"3": {
+					"tex": [3,19],
+					"tex_direction": {
+						"TOP": [3,17],
+						"BOTTOM": [3,17]
+					},
+					"mapcolor": [104,139,212],
+					"name": "Light Blue Stained Glass Pane"
+				},
+				"2": {
+					"tex": [2,19],
+					"tex_direction": {
+						"TOP": [2,17],
+						"BOTTOM": [2,17]
+					},
+					"mapcolor": [191,75,201],
+					"name": "Magenta Stained Glass Pane"
+				},
+				"5": {
+					"tex": [5,19],
+					"tex_direction": {
+						"TOP": [5,17],
+						"BOTTOM": [5,17]
+					},
+					"mapcolor": [59,189,48],
+					"name": "Lime Stained Glass Pane"
+				},
+				"4": {
+					"tex": [4,19],
+					"tex_direction": {
+						"TOP": [4,17],
+						"BOTTOM": [4,17]
+					},
+					"mapcolor": [104,139,212],
+					"name": "Yellow Stained Glass Pane"
+				},
+				"7": {
+					"tex": [7,19],
+					"tex_direction": {
+						"TOP": [7,17],
+						"BOTTOM": [7,17]
+					},
+					"search": "grey",
+					"mapcolor": [66,66,66],
+					"name": "Gray Stained Glass Pane"
+				},
+				"6": {
+					"tex": [6,19],
+					"tex_direction": {
+						"TOP": [6,17],
+						"BOTTOM": [6,17]
+					},
+					"mapcolor": [217,131,155],
+					"name": "Pink Stained Glass Pane"
+				},
+				"9": {
+					"tex": [9,19],
+					"tex_direction": {
+						"TOP": [9,17],
+						"BOTTOM": [9,17]
+					},
+					"mapcolor": [39,117,149],
+					"name": "Cyan Stained Glass Pane"
+				},
+				"8": {
+					"tex": [8,19],
+					"tex_direction": {
+						"TOP": [8,17],
+						"BOTTOM": [8,17]
+					},
+					"search": "grey",
+					"mapcolor": [166,166,166],
+					"name": "Light Gray Stained Glass Pane"
+				}
+			},
+			"idStr": "stained_glass_pane",
+			"tex": [0,19],
+			"mapcolor": [255,255,255],
+			"type": "SOLID_PANE",
+			"id": 160
+		},
         {
             "data": {
                 "0": {
@@ -8612,6 +10182,117 @@
                 ]
             }
         },
+		{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone",
+			"idStr": "red_sandstone",
+			"mapcolor": [140,90,90],
+			"data": {
+				"1": {
+					"tex": [1,20],
+					"name": "Chiseled Red Sandstone"
+				},
+				"0": {
+					"tex": [2,20],
+					"name": "Red Sandstone"
+				},
+				"2": {
+					"tex": [3,20],
+					"name": "Smooth Red Sandstone"
+				}
+			},
+			"id": 179
+		},
+		{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone Stairs",
+			"data": {
+				"1": {
+					"name": "Red Sandstone Stairs (Bottom, West)"
+				},
+				"0": {
+					"name": "Red Sandstone Stairs (Bottom, East)"
+				},
+				"3": {
+					"name": "Red Sandstone Stairs (Bottom, North)"
+				},
+				"2": {
+					"name": "Red Sandstone Stairs (Bottom, South)"
+				},
+				"5": {
+					"name": "Red Sandstone Stairs (Top, West)"
+				},
+				"4": {
+					"name": "Red Sandstone Stairs (Top, East)"
+				},
+				"7": {
+					"name": "Red Sandstone Stairs (Top, North)"
+				},
+				"6": {
+					"name": "Red Sandstone Stairs (Top, South)"
+				}
+			},
+			"idStr": "red_sandstone_stairs",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"type": "STAIRS",
+			"id": 180
+		},
+		{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Double Red Sandstone Slab",
+			"idStr": "double_stone_slab2",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"data": {
+				"0": {
+					"name": "Red Sandstone Double Slab (Seamed)"
+				},
+				"1": {
+					"tex": [18,19],
+					"name": "Purpur Double Slab"
+				},
+				"8": {
+					"name": "Red Sandstone Double Slab (Seamless)"
+				}
+			},
+			"id": 181
+		},
+		{
+			"tex_direction": {
+				"TOP": [4,20],
+				"BOTTOM": [0,20]
+			},
+			"name": "Red Sandstone Slab",
+			"data": {
+				"0": {
+					"name": "Red Sandstone Slab (Bottom)"
+				},
+				"1": {
+					"name": "Purpur Slab (Bottom)"
+				},
+				"8": {
+					"name": "Red Sandstone Slab (Top)"
+				},
+				"9": {
+					"name": "Purpur Slab (Bottom)"
+				}
+			},
+			"idStr": "stone_slab2",
+			"tex": [2,20],
+			"mapcolor": [140,90,90],
+			"type": "HALFHEIGHT",
+			"id": 182
+		},
         {
             "data": {
                 "0": {
@@ -8663,6 +10344,7 @@
                     "name": "Spruce Fence Gate (Powered, Closed, West)"
                 }
             },
+			
             "id": 183,
             "idStr": "spruce_fence_gate",
             "mapcolor": [
@@ -9950,6 +11632,20 @@
 			"mapcolor": [120,120,120],
 			"idStr": "purpur_block",
 			"name": "Purpur Block",
+			"data": {
+				"0": {
+					"name": "Purpur Block"
+				},
+				"1": {
+					"name": "Purpur Block (Chiseled)"
+				},
+				"2": {
+					"name": "Purpur Block (Lined)"
+				},
+				"3": {
+					"name": "Purpur Block"
+				}
+			},
 			"id": 201
 		},
 		{
@@ -9993,6 +11689,26 @@
 			"name": "End Stone Bricks",
 			"id": 206
 		},
+		{
+			"tex": [19,16],
+			"data": {
+				"1": {
+					"name": "Frosted Ice (Stage 1 Cracks)"
+				},
+				"0": {
+					"name": "Frosted Ice"
+				},
+				"3": {
+					"name": "Frosted Ice (Stage 3 Cracks)"
+				},
+				"2": {
+					"name": "Frosted Ice (Stage 2 Cracks)"
+				}
+			},
+			"idStr": "frosted_ice",
+			"name": "Frosted Ice",
+			"id": 207
+		},
         {
             "brightness": 14,
             "data": {
@@ -10035,6 +11751,1423 @@
 			"id": 209,
 			"name": "End Gateway"
 		},
+		{
+            "id": 218,
+            "name": "Shulker Box",
+            "idStr": "shulker_box",
+            "mapcolor": [128, 128, 128],
+            "__comment__": "Invalidated named colors for now...",
+            "__data": {
+                "black": {
+                    "name": "Black Shulker Box",
+                    "tex": [10, 21]
+                },
+                "gray": {
+                    "name": "Gray Shulker Box",
+                    "tex": [11, 21]
+                },
+                "silver": {
+                    "name": "Silver Shulker Box",
+                    "tex": [12, 21]
+                },
+                "white": {
+                    "name": "White Shulker Box",
+                    "tex": [13, 21]
+                },
+                "red": {
+                    "name": "Red Shulker Box",
+                    "tex": [14, 21]
+                },
+                "orange": {
+                    "name": "Orange Shulker Box",
+                    "tex": [15, 21]
+                },
+                "yellow": {
+                    "name": "Yellow Shulker Box",
+                    "tex": [16, 21]
+                },
+                "lime": {
+                    "name": "Lime Shulker Box",
+                    "tex": [17, 21]
+                },
+                "green": {
+                    "name": "Green Shulker Box",
+                    "tex": [18, 21]
+                },
+                "cyan": {
+                    "name": "Cyan Shulker Box",
+                    "tex": [19, 21]
+                },
+                "light_blue": {
+                    "name": "Light blue Shulker Box",
+                    "tex": [20, 21]
+                },
+                "blue": {
+                    "name": "Blue Shulker Box",
+                    "tex": [21, 21]
+                },
+                "purple": {
+                    "name": "Purple Shulker Box",
+                    "tex": [22, 21]
+                },
+                "magenta": {
+                    "name": "Magenta Shulker Box",
+                    "tex": [23, 21]
+                },
+                "pink": {
+                    "name": "Pink Shulker Box",
+                    "tex": [24, 21]
+                },
+                "brown": {
+                    "name": "Brown Shulker Box",
+                    "tex": [25, 21]
+                }
+            },
+            "data": {
+                "15": {
+                    "name": "Black Shulker Box",
+                    "tex": [10, 21]
+                },
+                "7": {
+                    "name": "Gray Shulker Box",
+                    "tex": [11, 21]
+                },
+                "8": {
+                    "name": "Silver Shulker Box",
+                    "tex": [12, 21]
+                },
+                "0": {
+                    "name": "White Shulker Box",
+                    "tex": [13, 21]
+                },
+                "14": {
+                    "name": "Red Shulker Box",
+                    "tex": [14, 21]
+                },
+                "1": {
+                    "name": "Orange Shulker Box",
+                    "tex": [15, 21]
+                },
+                "4": {
+                    "name": "Yellow Shulker Box",
+                    "tex": [16, 21]
+                },
+                "5": {
+                    "name": "Lime Shulker Box",
+                    "tex": [17, 21]
+                },
+                "13": {
+                    "name": "Green Shulker Box",
+                    "tex": [18, 21]
+                },
+                "9": {
+                    "name": "Cyan Shulker Box",
+                    "tex": [19, 21]
+                },
+                "3": {
+                    "name": "Light blue Shulker Box",
+                    "tex": [20, 21]
+                },
+                "11": {
+                    "name": "Blue Shulker Box",
+                    "tex": [21, 21]
+                },
+                "10": {
+                    "name": "Purple Shulker Box",
+                    "tex": [22, 21]
+                },
+                "2": {
+                    "name": "Magenta Shulker Box",
+                    "tex": [23, 21]
+                },
+                "6": {
+                    "name": "Pink Shulker Box",
+                    "tex": [24, 21]
+                },
+                "12": {
+                    "name": "Brown Shulker Box",
+                    "tex": [25, 21]
+                }
+            }
+        },
+		{
+            "id": 220,
+            "name": "White glazed terracotta",
+            "idStr": "white_glazed_terracotta",
+            "tex": [
+                13,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "White glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        13,
+                        24
+                    ],
+                    "name": "White glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        13,
+                        25
+                    ],
+                    "name": "White glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        13,
+                        26
+                    ],
+                    "name": "White glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 221,
+            "name": "Orange glazed terracotta",
+            "idStr": "orange_glazed_terracotta",
+            "tex": [
+                15,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Orange glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        15,
+                        24
+                    ],
+                    "name": "Orange glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        15,
+                        25
+                    ],
+                    "name": "Orange glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        15,
+                        26
+                    ],
+                    "name": "Orange glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 222,
+            "name": "Magenta glazed terracotta",
+            "idStr": "magenta_glazed_terracotta",
+            "tex": [
+                23,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Magenta glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        23,
+                        24
+                    ],
+                    "name": "Magenta glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        23,
+                        25
+                    ],
+                    "name": "Magenta glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        23,
+                        26
+                    ],
+                    "name": "Magenta glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 223,
+            "name": "Light blue glazed terracotta",
+            "idStr": "light_blue_glazed_terracotta",
+            "tex": [
+                20,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Light blue glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        20,
+                        24
+                    ],
+                    "name": "Light blue glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        20,
+                        25
+                    ],
+                    "name": "Light blue glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        20,
+                        26
+                    ],
+                    "name": "Light blue glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 224,
+            "name": "Yellow glazed terracotta",
+            "idStr": "yellow_glazed_terracotta",
+            "tex": [
+                16,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Yellow glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        16,
+                        24
+                    ],
+                    "name": "Yellow glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        16,
+                        25
+                    ],
+                    "name": "Yellow glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        16,
+                        26
+                    ],
+                    "name": "Yellow glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 225,
+            "name": "Lime glazed terracotta",
+            "idStr": "lime_glazed_terracotta",
+            "tex": [
+                17,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Lime glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        17,
+                        24
+                    ],
+                    "name": "Lime glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        17,
+                        25
+                    ],
+                    "name": "Lime glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        17,
+                        26
+                    ],
+                    "name": "Lime glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 226,
+            "name": "Pink glazed terracotta",
+            "idStr": "pink_glazed_terracotta",
+            "tex": [
+                24,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Pink glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        24,
+                        24
+                    ],
+                    "name": "Pink glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        24,
+                        25
+                    ],
+                    "name": "Pink glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        24,
+                        26
+                    ],
+                    "name": "Pink glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 227,
+            "name": "Gray glazed terracotta",
+            "idStr": "gray_glazed_terracotta",
+            "tex": [
+                11,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Gray glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        11,
+                        24
+                    ],
+                    "name": "Gray glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        11,
+                        25
+                    ],
+                    "name": "Gray glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        11,
+                        26
+                    ],
+                    "name": "Gray glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 228,
+            "name": "Light gray glazed terracotta",
+            "idStr": "light_gray_glazed_terracotta",
+            "tex": [
+                12,
+                24
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Light gray glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        12,
+                        25
+                    ],
+                    "name": "Light gray glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        12,
+                        26
+                    ],
+                    "name": "Light gray glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        12,
+                        23
+                    ],
+                    "name": "Light gray glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 229,
+            "name": "Cyan glazed terracotta",
+            "idStr": "cyan_glazed_terracotta",
+            "tex": [
+                19,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Cyan glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        19,
+                        24
+                    ],
+                    "name": "Cyan glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        19,
+                        25
+                    ],
+                    "name": "Cyan glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        19,
+                        26
+                    ],
+                    "name": "Cyan glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 219,
+            "name": "Purple glazed terracotta",
+            "idStr": "purple_glazed_terracotta",
+            "tex": [
+                22,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Purple glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        22,
+                        24
+                    ],
+                    "name": "Purple glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        22,
+                        25
+                    ],
+                    "name": "Purple glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        22,
+                        26
+                    ],
+                    "name": "Purple glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 231,
+            "name": "Blue glazed terracotta",
+            "idStr": "blue_glazed_terracotta",
+            "tex": [
+                21,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Blue glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        21,
+                        24
+                    ],
+                    "name": "Blue glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        21,
+                        25
+                    ],
+                    "name": "Blue glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        21,
+                        26
+                    ],
+                    "name": "Blue glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 232,
+            "name": "Brown glazed terracotta",
+            "idStr": "brown_glazed_terracotta",
+            "tex": [
+                25,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Brown glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        25,
+                        24
+                    ],
+                    "name": "Brown glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        25,
+                        25
+                    ],
+                    "name": "Brown glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        25,
+                        26
+                    ],
+                    "name": "Brown glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 233,
+            "name": "Green glazed terracotta",
+            "idStr": "green_glazed_terracotta",
+            "tex": [
+                18,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Green glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        18,
+                        24
+                    ],
+                    "name": "Green glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        18,
+                        25
+                    ],
+                    "name": "Green glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        18,
+                        26
+                    ],
+                    "name": "Green glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 234,
+            "name": "Red glazed terracotta",
+            "idStr": "red_glazed_terracotta",
+            "tex": [
+                14,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Red glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        14,
+                        24
+                    ],
+                    "name": "Red glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        14,
+                        25
+                    ],
+                    "name": "Red glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        14,
+                        26
+                    ],
+                    "name": "Red glazed terracotta (West)"
+                }
+            }
+        },
+        {
+            "id": 235,
+            "name": "Black glazed terracotta",
+            "idStr": "black_glazed_terracotta",
+            "tex": [
+                10,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Black glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        10,
+                        24
+                    ],
+                    "name": "Black glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        10,
+                        25
+                    ],
+                    "name": "Black glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        10,
+                        26
+                    ],
+                    "name": "Black glazed terracotta (West)"
+                }
+            }
+		},
+		{
+            "id": 236,
+            "name": "Concrete",
+            "idStr": "concrete",
+            "mapcolor": [
+                128,
+                128,
+                128
+            ],
+            "__comment__": "Invalidated named colors for now...",
+            "__data": {
+                "black": {
+                    "name": "Black concrete",
+                    "tex": [
+                        10,
+                        21
+                    ]
+                },
+                "gray": {
+                    "name": "Gray concrete",
+                    "tex": [
+                        11,
+                        21
+                    ]
+                },
+                "silver": {
+                    "name": "Silver concrete",
+                    "tex": [
+                        12,
+                        21
+                    ]
+                },
+                "white": {
+                    "name": "White concrete",
+                    "tex": [
+                        13,
+                        21
+                    ]
+                },
+                "red": {
+                    "name": "Red concrete",
+                    "tex": [
+                        14,
+                        21
+                    ]
+                },
+                "orange": {
+                    "name": "Orange concrete",
+                    "tex": [
+                        15,
+                        21
+                    ]
+                },
+                "yellow": {
+                    "name": "Yellow concrete",
+                    "tex": [
+                        16,
+                        21
+                    ]
+                },
+                "lime": {
+                    "name": "Lime concrete",
+                    "tex": [
+                        17,
+                        21
+                    ]
+                },
+                "green": {
+                    "name": "Green concrete",
+                    "tex": [
+                        18,
+                        21
+                    ]
+                },
+                "cyan": {
+                    "name": "Cyan concrete",
+                    "tex": [
+                        19,
+                        21
+                    ]
+                },
+                "light_blue": {
+                    "name": "Light blue concrete",
+                    "tex": [
+                        20,
+                        21
+                    ]
+                },
+                "blue": {
+                    "name": "Blue concrete",
+                    "tex": [
+                        21,
+                        21
+                    ]
+                },
+                "purple": {
+                    "name": "Purple concrete",
+                    "tex": [
+                        22,
+                        21
+                    ]
+                },
+                "magenta": {
+                    "name": "Magenta concrete",
+                    "tex": [
+                        23,
+                        21
+                    ]
+                },
+                "pink": {
+                    "name": "Pink concrete",
+                    "tex": [
+                        24,
+                        21
+                    ]
+                },
+                "brown": {
+                    "name": "Brown concrete",
+                    "tex": [
+                        25,
+                        21
+                    ]
+                }
+            },
+            "data": {
+                "15": {
+                    "name": "Black concrete",
+                    "tex": [
+                        10,
+                        21
+                    ]
+                },
+                "7": {
+                    "name": "Gray concrete",
+                    "tex": [
+                        11,
+                        21
+                    ]
+                },
+                "8": {
+                    "name": "Silver concrete",
+                    "tex": [
+                        12,
+                        21
+                    ]
+                },
+                "0": {
+                    "name": "White concrete",
+                    "tex": [
+                        13,
+                        21
+                    ]
+                },
+                "14": {
+                    "name": "Red concrete",
+                    "tex": [
+                        14,
+                        21
+                    ]
+                },
+                "1": {
+                    "name": "Orange concrete",
+                    "tex": [
+                        15,
+                        21
+                    ]
+                },
+                "4": {
+                    "name": "Yellow concrete",
+                    "tex": [
+                        16,
+                        21
+                    ]
+                },
+                "5": {
+                    "name": "Lime concrete",
+                    "tex": [
+                        17,
+                        21
+                    ]
+                },
+                "13": {
+                    "name": "Green concrete",
+                    "tex": [
+                        18,
+                        21
+                    ]
+                },
+                "9": {
+                    "name": "Cyan concrete",
+                    "tex": [
+                        19,
+                        21
+                    ]
+                },
+                "3": {
+                    "name": "Light blue concrete",
+                    "tex": [
+                        20,
+                        21
+                    ]
+                },
+                "11": {
+                    "name": "Blue concrete",
+                    "tex": [
+                        21,
+                        21
+                    ]
+                },
+                "10": {
+                    "name": "Purple concrete",
+                    "tex": [
+                        22,
+                        21
+                    ]
+                },
+                "2": {
+                    "name": "Magenta concrete",
+                    "tex": [
+                        23,
+                        21
+                    ]
+                },
+                "6": {
+                    "name": "Pink concrete",
+                    "tex": [
+                        24,
+                        21
+                    ]
+                },
+                "12": {
+                    "name": "Brown concrete",
+                    "tex": [
+                        25,
+                        21
+                    ]
+                }
+            }
+        },
+	    {
+            "id": 237,
+            "name": "Concrete powder",
+            "idStr": "concrete_powder",
+            "mapcolor": [
+                128,
+                128,
+                128
+            ],
+            "__comment__": "Invalidated named colors for now...",
+            "__data": {
+                "black": {
+                    "name": "Black concrete powder",
+                    "tex": [
+                        10,
+                        22
+                    ]
+                },
+                "gray": {
+                    "name": "Gray concrete powder",
+                    "tex": [
+                        11,
+                        22
+                    ]
+                },
+                "silver": {
+                    "name": "Silver concrete powder",
+                    "tex": [
+                        12,
+                        22
+                    ]
+                },
+                "white": {
+                    "name": "White concrete powder",
+                    "tex": [
+                        13,
+                        22
+                    ]
+                },
+                "red": {
+                    "name": "Red concrete powder",
+                    "tex": [
+                        14,
+                        22
+                    ]
+                },
+                "orange": {
+                    "name": "Orange concrete powder",
+                    "tex": [
+                        15,
+                        22
+                    ]
+                },
+                "yellow": {
+                    "name": "Yellow concrete powder",
+                    "tex": [
+                        16,
+                        22
+                    ]
+                },
+                "lime": {
+                    "name": "Lime concrete powder",
+                    "tex": [
+                        17,
+                        22
+                    ]
+                },
+                "green": {
+                    "name": "Green concrete powder",
+                    "tex": [
+                        18,
+                        22
+                    ]
+                },
+                "cyan": {
+                    "name": "Cyan concrete powder",
+                    "tex": [
+                        19,
+                        22
+                    ]
+                },
+                "light_blue": {
+                    "name": "Light blue concrete powder",
+                    "tex": [
+                        20,
+                        22
+                    ]
+                },
+                "blue": {
+                    "name": "Blue concrete powder",
+                    "tex": [
+                        21,
+                        22
+                    ]
+                },
+                "purple": {
+                    "name": "Purple concrete powder",
+                    "tex": [
+                        22,
+                        22
+                    ]
+                },
+                "magenta": {
+                    "name": "Magenta concrete powder",
+                    "tex": [
+                        23,
+                        22
+                    ]
+                },
+                "pink": {
+                    "name": "Pink concrete powder",
+                    "tex": [
+                        24,
+                        22
+                    ]
+                },
+                "brown": {
+                    "name": "Brown concrete powder",
+                    "tex": [
+                        25,
+                        22
+                    ]
+                }
+            },
+            "data": {
+                "15": {
+                    "name": "Black concrete powder",
+                    "tex": [
+                        10,
+                        22
+                    ]
+                },
+                "7": {
+                    "name": "Gray concrete powder",
+                    "tex": [
+                        11,
+                        22
+                    ]
+                },
+                "8": {
+                    "name": "Silver concrete powder",
+                    "tex": [
+                        12,
+                        22
+                    ]
+                },
+                "0": {
+                    "name": "White concrete powder",
+                    "tex": [
+                        13,
+                        22
+                    ]
+                },
+                "14": {
+                    "name": "Red concrete powder",
+                    "tex": [
+                        14,
+                        22
+                    ]
+                },
+                "1": {
+                    "name": "Orange concrete powder",
+                    "tex": [
+                        15,
+                        22
+                    ]
+                },
+                "4": {
+                    "name": "Yellow concrete powder",
+                    "tex": [
+                        16,
+                        22
+                    ]
+                },
+                "5": {
+                    "name": "Lime concrete powder",
+                    "tex": [
+                        17,
+                        22
+                    ]
+                },
+                "13": {
+                    "name": "Green concrete powder",
+                    "tex": [
+                        18,
+                        22
+                    ]
+                },
+                "9": {
+                    "name": "Cyan concrete powder",
+                    "tex": [
+                        19,
+                        22
+                    ]
+                },
+                "3": {
+                    "name": "Light blue concrete powder",
+                    "tex": [
+                        20,
+                        22
+                    ]
+                },
+                "11": {
+                    "name": "Blue concrete powder",
+                    "tex": [
+                        21,
+                        22
+                    ]
+                },
+                "10": {
+                    "name": "Purple concrete powder",
+                    "tex": [
+                        22,
+                        22
+                    ]
+                },
+                "2": {
+                    "name": "Magenta concrete powder",
+                    "tex": [
+                        23,
+                        22
+                    ]
+                },
+                "6": {
+                    "name": "Pink concrete powder",
+                    "tex": [
+                        24,
+                        22
+                    ]
+                },
+                "12": {
+                    "name": "Brown concrete powder",
+                    "tex": [
+                        25,
+                        22
+                    ]
+                }
+            }
+        },
         {
 			"tex": [13,20],
 			"mapcolor": [120,120,120],
@@ -10465,7 +13598,7 @@
 		    },
 		    "name": "Observer",
 		    "idStr": "observer",
-		    "id": 218
+		    "id": 251
 		},
         {
             "id": 255,

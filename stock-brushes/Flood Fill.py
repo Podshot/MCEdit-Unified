@@ -34,7 +34,12 @@ def createTileEntities(tileEntityTag, level):
 
 def apply(self, op, point):
 
-    undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
+    # undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
+    # Use the same world as the one loaded.
+    create = True
+    if op.level.gameVersion == 'PE':
+        create = op.level.world_version
+    undoLevel = type(op.level)(mkundotemp(), create=create)
     dirtyChunks = set()
 
     def saveUndoChunk(cx, cz):
@@ -66,7 +71,7 @@ def apply(self, op, point):
     if tileEntity:
         if op.level.tileEntityAt(x, y, z):
             op.level.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
-        tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+        tileEntityObject = TileEntity.Create(tileEntity, (x, y, z), defsIds=op.level.defsIds)
         createTileEntities(tileEntityObject, op.level)
 
     def processCoords(coords):

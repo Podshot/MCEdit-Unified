@@ -1278,7 +1278,9 @@ def saveFile(fName, data, savePolicy, magic):
             return
     if fName:
         if savePolicy in (-1, 1):
-            if hasattr(data, 'name'):
+            if data.get('Schematic'):
+                data = data['Schematic']
+            elif hasattr(data, 'name'):
                 data.name = ""
         if not os.path.isdir(fName):
             if savePolicy <= 0:

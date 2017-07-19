@@ -145,10 +145,13 @@ class TileEntity(object):
     }
 
     @classmethod
-    def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
+    def Create(cls, tileEntityID, pos=(0, 0, 0), defsIds=None, **kw):
         tileEntityTag = nbt.TAG_Compound()
-        # Refresh the MCEDIT_DEFS and MCEDIT_IDS objects
-        from pymclevel import MCEDIT_DEFS
+        # If defsIds is None, lets use the current MCEDIT_DEFS and MCEDIT_IDS objects.
+        if not defsIds:
+            from pymclevel import MCEDIT_DEFS
+        else:
+            MCEDIT_DEFS = defsIds.mcedit_defs
         _id = MCEDIT_DEFS.get(tileEntityID, tileEntityID)
         tileEntityTag["id"] = nbt.TAG_String(_id)
         base = cls.baseStructures.get(tileEntityID, None)
@@ -186,11 +189,15 @@ class TileEntity(object):
             tag[a] = nbt.TAG_Int(p)
 
     @classmethod
-    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first, cancelCommandBlockOffset=False):
+    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first, cancelCommandBlockOffset=False, defsIds=None):
         # You'll need to use this function twice
         # The first time with first equals to True
         # The second time with first equals to False
-        from pymclevel import MCEDIT_IDS
+        # If defsIds is None, lets use the current MCEDIT_DEFS and MCEDIT_IDS objects.
+        if not defsIds:
+            from pymclevel import MCEDIT_IDS
+        else:
+            MCEDIT_IDS = defsIds.mcedit_ids
         eTag = deepcopy(tileEntity)
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])

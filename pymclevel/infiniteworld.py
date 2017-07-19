@@ -1253,7 +1253,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 self.root_tag = nbt.load(self.filename)
                 # Load the resource for the game version
                 if self.gameVersion != 'Unknown':
-                    id_definitions.ids_loader(self.gameVersion)
+                    # Force the definitions to be loaded by calling the attribute.
+                    self.defsIds
                 #
             except Exception, e:
                 filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)

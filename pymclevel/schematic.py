@@ -22,7 +22,6 @@ except ImportError:
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
-from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 from pymclevel.materials import BlockstateAPI
 from release import TAG as RELEASE_TAG
 import math
@@ -264,6 +263,7 @@ class MCSchematic(EntityLevel):
         blockrotation.RotateLeft(self.Blocks, self.Data)
 
         log.info(u"Relocating entities...")
+        mcedit_ids_get = self.defsIds.mcedit_ids.get
         for entity in self.Entities:
             for p in "Pos", "Motion":
                 if p == "Pos":
@@ -276,7 +276,7 @@ class MCSchematic(EntityLevel):
                 entity[p][0].value = newX
                 entity[p][2].value = newZ
             entity["Rotation"][0].value -= 90.0
-            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
+            if entity["id"].value in ("Painting", "ItemFrame") or mcedit_ids_get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 x, z = entity["TileX"].value, entity["TileZ"].value
                 newx = z
                 newz = self.Length - x - 1
@@ -331,6 +331,7 @@ class MCSchematic(EntityLevel):
         blockrotation.Roll(self.Blocks, self.Data)
 
         log.info(u"N/S Roll: Relocating entities...")
+        mcedit_ids_get = self.defsIds.mcedit_ids.get
         for i, entity in enumerate(self.Entities):
             newX = self.Width - entity["Pos"][1].value
             newY = entity["Pos"][0].value
@@ -348,7 +349,7 @@ class MCSchematic(EntityLevel):
             entity["Rotation"][0].value = newX
             entity["Rotation"][1].value = newY
 
-            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
+            if entity["id"].value in ("Painting", "ItemFrame") or mcedit_ids_get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 newX = self.Width - entity["TileY"].value - 1
                 newY = entity["TileX"].value
                 entity["TileX"].value = newX
@@ -378,11 +379,13 @@ class MCSchematic(EntityLevel):
         self.root_tag["Data"].value = self.root_tag["Data"].value[::-1, :, :]
 
         log.info(u"N/S Flip: Relocating entities...")
+        mcedit_ids_get = self.defIds.mcedit_ids.get
         for entity in self.Entities:
+            ent_id_val = entity["id"].value
             entity["Pos"][1].value = self.Height - entity["Pos"][1].value
             entity["Motion"][1].value = -entity["Motion"][1].value
             entity["Rotation"][1].value = -entity["Rotation"][1].value
-            if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
+            if ent_id_val in ("Painting", "ItemFrame") or mcedit_ids_get(ent_id_val) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 entity["TileY"].value = self.Height - entity["TileY"].value - 1
         for tileEntity in self.TileEntities:
             tileEntity["y"].value = self.Height - tileEntity["y"].value - 1
@@ -433,6 +436,7 @@ class MCSchematic(EntityLevel):
         northSouthPaintingMap = [0, 3, 2, 1]
 
         log.info(u"N/S Flip: Relocating entities...")
+        mcedit_ids_get = self.defIds.mcedit_ids.get
         for entity in self.Entities:
 
             try:
@@ -452,7 +456,9 @@ class MCSchematic(EntityLevel):
             # Special logic for old width painting as TileX/TileZ favours -x/-z
 
             try:
-                if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
+                ent_id_val = entity["id"].value
+                mce_ent_id_val = mcedit_ids_get(ent_id_val)
+                if ent_id_val in ("Painting", "ItemFrame") or mce_ent_id_val in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                     facing = entity.get("Facing", entity.get("Direction"))
                     if facing is None:
                         dirFacing = entity.get("Dir")
@@ -463,9 +469,9 @@ class MCSchematic(EntityLevel):
                                 dirFacing.value = 0
                             facing = dirFacing
                         else:
-                            raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
+                            raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (ent_id_val, entity))
 
-                if entity["id"].value == "Painting" or MCEDIT_IDS.get(entity["id"].value) == 'DEFS_ENTITIES_PAINTING':
+                if ent_id_val == "Painting" or mce_ent_id_val == 'DEFS_ENTITIES_PAINTING':
                     if facing.value == 2:
                         entity["TileX"].value = self.Width - entity["TileX"].value - self.paintingMap[entity["Motive"].value] % 2
                     elif facing.value == 0:
@@ -477,7 +483,7 @@ class MCSchematic(EntityLevel):
                     elif facing.value == 1:
                         entity["TileZ"].value = entity["TileZ"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
                     facing.value = northSouthPaintingMap[facing.value]
-                elif entity["id"].value == "ItemFrame" or MCEDIT_IDS.get(entity["id"].value) == 'DEFS_ENTITIES_ITEM_FRAME':
+                elif ent_id_val == "ItemFrame" or mce_ent_id_val == 'DEFS_ENTITIES_ITEM_FRAME':
                     entity["TileX"].value = self.Width - entity["TileX"].value - 1
                     facing.value = northSouthPaintingMap[facing.value]
             except:
@@ -508,6 +514,7 @@ class MCSchematic(EntityLevel):
         eastWestPaintingMap = [2, 1, 0, 3]
 
         log.info(u"E/W Flip: Relocating entities...")
+        mcedit_ids_get = self.defIds.mcedit_ids.get
         for entity in self.Entities:
 
             try:
@@ -527,7 +534,9 @@ class MCSchematic(EntityLevel):
             # Special logic for old width painting as TileX/TileZ favours -x/-z
 
             try:
-                if entity["id"].value in ("Painting", "ItemFrame") or MCEDIT_IDS.get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
+                ent_id_val = entity["id"].value
+                mce_ent_id_val = mcedit_ids_get(ent_id_val)
+                if ent_id_val in ("Painting", "ItemFrame") or mce_ent_id_val in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                     facing = entity.get("Facing", entity.get("Direction"))
                     if facing is None:
                         dirFacing = entity.get("Dir")
@@ -540,7 +549,7 @@ class MCSchematic(EntityLevel):
                         else:
                             raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
 
-                if entity["id"].value == "Painting" or MCEDIT_IDS.get(entity["id"].value) == 'DEFS_ENTITIES_PAINTING':
+                if ent_id_val == "Painting" or mce_ent_id_val == 'DEFS_ENTITIES_PAINTING':
                     if facing.value == 1:
                         entity["TileZ"].value = self.Length - entity["TileZ"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
                     elif facing.value == 3:
@@ -552,7 +561,7 @@ class MCSchematic(EntityLevel):
                     elif facing.value == 2:
                         entity["TileX"].value = entity["TileX"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
                     facing.value = eastWestPaintingMap[facing.value]
-                elif entity["id"].value == "ItemFrame" or MCEDIT_IDS.get(entity["id"].value) == 'DEFS_ENTITIES_ITEM_FRAME':
+                elif ent_id_val == "ItemFrame" or mce_ent_id_val == 'DEFS_ENTITIES_ITEM_FRAME':
                     entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
                     facing.value = eastWestPaintingMap[facing.value]
             except:

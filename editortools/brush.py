@@ -1145,7 +1145,9 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask
 
 
-def createTileEntities(block, box, chunk):
+def createTileEntities(block, box, chunk, defsIds=None):
+    # If defIds is not None, it must be an instance of pymclevel.id_definitions.MCEditDefsIds.
+    # Every Level instance has such an object attached as defsIds.
     if box is None or block.stringID not in TileEntity.stringNames.keys():
         return
 
@@ -1154,6 +1156,6 @@ def createTileEntities(block, box, chunk):
         if chunk.world.blockAt(x, y, z) == block.ID:
             if chunk.tileEntityAt(x, y, z):
                 chunk.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
-            tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+            tileEntityObject = TileEntity.Create(tileEntity, (x, y, z), defsIds=defsIds)
             chunk.TileEntities.append(tileEntityObject)
             chunk._fakeEntities = None

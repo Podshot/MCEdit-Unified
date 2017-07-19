@@ -42,6 +42,7 @@ from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
 import pymclevel
 import re
 import collections
+import sys
 
 
 log = getLogger(__name__)
@@ -124,11 +125,12 @@ def _get_data(file_name):
     return data
 
 
-def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
+def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps=False):
     """Load the whole files from mcver directory.
     :game_version: str/unicode: the game version for which the resources will be loaded.
-    namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'.
-    json_dict: bool: Whether to return a ran dict from the JSon file(s) instead of the (MCEDIT_DEFS, MCEDIT_IDS) pair."""
+    :namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'.
+    :json_dict: bool: Whether to return a ran dict from the JSon file(s) instead of the (MCEDIT_DEFS, MCEDIT_IDS) pair.
+    :timestamp: bool: wheter the return also the loaded file timestamp."""
     log.info("Loading resources for MC %s"%game_version)
     global MCEDIT_DEFS
     global MCEDIT_IDS
@@ -136,12 +138,17 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
     MCEDIT_IDS = {}
     if json_dict:
         _json = {}
+    if timestamps:
+        _timestamps = {}
     d = os.path.join('mcver', game_version)
     if os.path.isdir(d):
         for file_name in os.listdir(d):
             if os.path.splitext(file_name)[-1].lower() == '.json':
                 log.info("Found %s" % file_name)
-                data = _get_data(os.path.join(d, file_name))
+                path_name = os.path.join(d, file_name)
+                data = _get_data(path_name)
+                if timestamps:
+                    _timestamps[path_name] = os.stat(path_name).st_mtime
                 if data:
                     # We use here names coming from the 'minecraft:name_of_the_stuff' ids
                     # The second part of the name is present in the first file used (for MC 1.11) in the 'idStr' value).
@@ -186,6 +193,8 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
                                 log.info("Found %s"%_file_name)
                                 #_data.update(_get_data(_file_name))
                                 update(_data, _get_data(_file_name))
+                                if timestamps:
+                                    _timestamps[_file_name] = os.stat(_file_name).st_mtime
                             else:
                                 log.info("Could not find %s"%_file_name)
                         update(_data, data)
@@ -204,10 +213,23 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False):
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
     log.info("Loaded %s defs and %s ids"%(len(MCEDIT_DEFS), len(MCEDIT_IDS)))
-    #print MCEDIT_DEFS.get('spawner_monsters')
+    toreturn = (MCEDIT_DEFS, MCEDIT_IDS)
     if json_dict:
-        return _json
-    return MCEDIT_DEFS, MCEDIT_IDS
+        toreturn = _json
+    if '--dump-defs' in sys.argv:
+        dump_f_name = 'defs_ids-%s.json' % game_version
+        log.info("Dumping definitions as Json data in '%s'." % dump_f_name)
+        with open(dump_f_name, 'w') as f:
+            f.write("#" * 80)
+            f.write("\nDEFS\n")
+            f.write(json.dumps(MCEDIT_DEFS, indent=4))
+            f.write("\n\n" + "#" * 80)
+            f.write("\nIDS\n")
+            f.write(json.dumps(MCEDIT_IDS, indent=4))
+            f.close()
+    if timestamps:
+        toreturn += (_timestamps,)
+    return toreturn
 
 version_defs_ids = {}
 
@@ -217,8 +239,18 @@ class MCEditDefsIds(object):
     def __init__(self, game_version, namespace=u"minecraft"):
         """:game_version, namespace: See 'ids_loader() docstring'."""
         global version_defs_ids
-        self.mcedit_defs, self.mcedit_ids = ids_loader(game_version, namespace)
+        self.mcedit_defs, self.mcedit_ids, self.timestamps = ids_loader(game_version, namespace, timestamps=True)
         version_defs_ids[game_version] = self
+
+    def check_timestamps(self, timestamps):
+        """Compare the stored and current modification time stamp of files.
+        :timestamps: dict: {"file_path": <modification timestamp>}
+        Returns a list of files which has'nt same timestamp as stored."""
+        result = []
+        for file_name, ts in timestamps.items():
+            if os.stat(file_name).st_mtime != ts:
+                result.append(file_name)
+        return result
 
     def get_id(self, obj_id):
         """Acts like MCEDIT_IDS[obj_id]"""
@@ -227,3 +259,16 @@ class MCEditDefsIds(object):
     def get_def(self, def_id):
         """Acts like MCEDIT_DEFS[def_id]"""
         return self.mcedit_defs[def_id]
+
+def get_defs_ids(game_version, namespace=u"minecraft"):
+    """Create a MCEditDefsIds instance only if one for the game version does not already exists, or a definition file has been changed.
+    See MCEditDefsIds doc.
+    Returns a MCEditDefsIds instance."""
+    if game_version in version_defs_ids.keys():
+        obj = version_defs_ids[game_version]
+        timestamps = obj.timestamps
+        if not obj.check_timestamps(timestamps):
+            return obj
+    else:
+        return MCEditDefsIds(game_version, namespace=namespace)
+

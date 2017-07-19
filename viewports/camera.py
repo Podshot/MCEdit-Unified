@@ -362,7 +362,7 @@ class CameraViewport(GLViewport):
                     changed = False
                     te = self.editor.level.tileEntityAt(*focusPair[0])
                     backupTE = copy.deepcopy(te)
-                    if te["id"].value == "Sign" or MCEDIT_IDS.get(te["id"].value) in ("DEF_BLOCKS_STANDING_SIGN", "DEFS_BLOCKS_WALL_SIGN"):
+                    if te["id"].value == "Sign" or self.editor.level.defsIds.mcedit_ids.get(te["id"].value) in ("DEF_BLOCKS_STANDING_SIGN", "DEFS_BLOCKS_WALL_SIGN"):
                         if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
                             for i in xrange(1,5):
                                 if len(te["Text"+str(i)].value) > 32767:
@@ -495,12 +495,14 @@ class CameraViewport(GLViewport):
         mobs = self.mobs
         _mobs = {}
         # Get the mobs from the versionned data
-        from pymclevel import MCEDIT_DEFS, MCEDIT_IDS
-        if MCEDIT_DEFS.get('spawner_monsters'):
+        defsIds = self.editor.level.defsIds
+        mcedit_defs = defsIds.mcedit_defs
+        mcedit_ids = defsIds.mcedit_ids
+        if mcedit_defs.get('spawner_monsters'):
             mobs = []
-            for a in MCEDIT_DEFS['spawner_monsters']:
-                _id = MCEDIT_IDS[a]
-                name = _(MCEDIT_DEFS[_id]['name'])
+            for a in mcedit_defs['spawner_monsters']:
+                _id = mcedit_ids[a]
+                name = _(mcedit_defs[_id]['name'])
                 _mobs[name] = a
                 _mobs[a] = name
                 mobs.append(name)
@@ -510,12 +512,12 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("MobSpawner", "MobSpawner"))
+            tileEntity["id"] = pymclevel.TAG_String(mcedit_defs.get("MobSpawner", "MobSpawner"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["Delay"] = pymclevel.TAG_Short(120)
-            tileEntity["EntityId"] = pymclevel.TAG_String(MCEDIT_DEFS.get(mobs[0], mobs[0]))
+            tileEntity["EntityId"] = pymclevel.TAG_String(mcedit_defs.get(mobs[0], mobs[0]))
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -564,7 +566,17 @@ class CameraViewport(GLViewport):
         else:
             _id = "[Custom]"
 
-        id = MCEDIT_DEFS.get(MCEDIT_IDS.get(_id, _id), {}).get("name", _id)
+        # Something weird here since the first implementation of the versionned definition.
+        # It may happen 'mcedit_defs.get(mcedit_ids.get(_id, _id), {}).get("name", _id)'
+        # does not return the wanted data (dict).
+        # Could not yet debug that, but I guess it is related to the versionned data loading...
+        # -- D.C.-G.
+        # print mcedit_ids.get(_id, _id)
+        # print mcedit_defs.get(mcedit_ids.get(_id, _id), {})
+        _id2 = mcedit_defs.get(mcedit_ids.get(_id, _id), {})
+        if isinstance(_id2, (str, unicode)):
+            _id = _id2
+        id = mcedit_defs.get(mcedit_ids.get(_id, _id), {}).get("name", _id)
 
         addMob(id)
 
@@ -787,7 +799,7 @@ class CameraViewport(GLViewport):
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("MobSpawner", "MobSpawner"))
+            tileEntity["id"] = pymclevel.TAG_String(self.editor.level.defsIds.mcedit_defs.get("MobSpawner", "MobSpawner"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -1060,14 +1072,13 @@ class CameraViewport(GLViewport):
 
     @mceutils.alertException
     def editCommandBlock(self, point):
-        from pymclevel import MCEDIT_DEFS
         panel = Dialog()
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("Control", "Control"))
+            tileEntity["id"] = pymclevel.TAG_String(self.editor.level.defsIds.mcedit_defs.get("Control", "Control"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -1400,13 +1411,12 @@ class CameraViewport(GLViewport):
 
     @mceutils.alertException
     def editFlowerPot(self, point):
-        from pymclevel import MCEDIT_DEFS
         panel = Dialog()
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("FlowerPot", "FlowerPot"))
+            tileEntity["id"] = pymclevel.TAG_String(self.editor.level.mcedit_defs.get("FlowerPot", "FlowerPot"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
@@ -1470,7 +1480,7 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String(MCEDIT_DEFS.get("EnchantTable", "EnchantTable"))
+            tileEntity["id"] = pymclevel.TAG_String(self.editor.level.defsIds.mcedit_defs.get("EnchantTable", "EnchantTable"))
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])

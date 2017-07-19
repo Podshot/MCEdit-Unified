@@ -14,7 +14,7 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, unpackNibbleArray, packNibbleArray
 from level import LightedChunk
 from contextlib import contextmanager
-from pymclevel import entity, BoundingBox, Entity, TileEntity, MCEDIT_DEFS, MCEDIT_IDS
+from pymclevel import entity, BoundingBox, Entity, TileEntity
 import id_definitions
 
 import traceback
@@ -226,9 +226,12 @@ class PocketLeveldbDatabase(object):
             yield db
             del db
 
-    def __init__(self, path, create=False, world_version=None):
+    def __init__(self, path, level, create=False, world_version=None):
         """
-        :param path: string, path to file
+        :param path: string, path to file.
+        :param level: parent PocketLeveldbWorld instance.
+        :param create: bool, wheter to create the world. Defaults to False.
+        :param world_version: string or None, world version. Defaults to None.
         :return: None
         """
         if not world_version:
@@ -237,6 +240,7 @@ class PocketLeveldbDatabase(object):
         self.path = path
         if not os.path.exists(path):
             file(path, 'w').close()
+        self.level = level
 
 
         self.options = leveldb_mcpe.Options()
@@ -245,7 +249,8 @@ class PocketLeveldbDatabase(object):
         self.ldb = leveldb_mcpe
 
         if create:
-            self.options.create_if_missing = True  # The database will be created once needed first.
+            # Rework this, because leveldb.Options() is a function...
+            #self.options.create_if_missing = True  # The database will be created once needed first.
             return
 
         needsRepair = False
@@ -458,6 +463,9 @@ class PocketLeveldbDatabase(object):
         key = struct.pack('<i', cx) + struct.pack('<i', cz)
 
         with nbt.littleEndianNBT():
+            mcedit_defs = self.level.defsIds.mcedit_defs
+            defs_get = mcedit_defs.get
+            ids_get = self.level.defsIds.mcedit_ids.get
             tileEntityData = ''
             for ent in chunk.TileEntities:
                 tileEntityData += ent.save(compressed=False)
@@ -465,9 +473,9 @@ class PocketLeveldbDatabase(object):
             entityData = ''
             for ent in chunk.Entities:
                 v = ent["id"].value
-                ent_data = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})
+                ent_data = defs_get(ids_get(v, v), {'id': -1})
                 id = ent_data['id']
-                ent['id'] = nbt.TAG_Int(id + MCEDIT_DEFS['entity_types'].get(ent_data.get('type', None),0))
+                ent['id'] = nbt.TAG_Int(id + mcedit_defs['entity_types'].get(ent_data.get('type', None),0))
                 entityData += ent.save(compressed=False)
                 # We have to re-invert after saving otherwise the next save will fail.
                 ent["id"] = nbt.TAG_String(v)
@@ -638,6 +646,10 @@ class PocketLeveldbDatabase(object):
 
 # =====================================================================
 class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
+
+    # Methods are missing and prvent some parts of MCEdit to work properly.
+    # brush.py need copyChunkFrom()
+
 #     Height = 128 # Let that being defined by the world version
     Width = 0
     Length = 0
@@ -717,6 +729,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
         """
         :param filename: path to the root dir of the level
+        :param create: bool or hexstring/int: wether to create the level. If bool, only False is allowed.
+            Hex strings or ints must reflect a valid PE world version as '\x02' or 5.
         :return:
         """
         if not os.path.isdir(filename):
@@ -724,18 +738,22 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
         # Can we rely on this to know which version of PE was used to create the world?
         # Looks like that 1+ world can also have a storage version equal to 4...
-        self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
-        if dat_world_version == '\x05':
-            self.world_version = '1.plus'
-            self.Height = 256
+        if not create:
+            self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
+            if dat_world_version == '\x05':
+                self.world_version = '1.plus'
+                self.Height = 256
+            else:
+                self.world_version = 'pre1.0'
+                self.Height = 128
+    
+            logger.info('PE world verion found: %s', self.world_version)
         else:
-            self.world_version = 'pre1.0'
-            self.Height = 128
-
-        logger.info('PE world verion found: %s', self.world_version)
+            self.world_version = create
+            logger.info('Creating PE world version %s', self.world_version)
 
         self.filename = filename
-        self.worldFile = PocketLeveldbDatabase(filename, create=create, world_version=self.world_version)
+        self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version)
         self.world_version = self.worldFile.world_version
         self.readonly = readonly
         self.loadLevelDat(create, random_seed, last_played)
@@ -786,9 +804,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             self.root_tag = nbt.load(buf=root_tag_buf)
 
         self.__gameVersion = 'PE'
-        global MCEDIT_DEFS
-        global MCEDIT_IDS
-        MCEDIT_DEFS, MCEDIT_IDS = id_definitions.ids_loader('PE')
         if create:
             print "Creating PE level.dat"
             self._createLevelDat(random_seed, last_played)
@@ -1349,7 +1364,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
         Return tile_entity
         """
-        fullid = MCEDIT_DEFS.get(MCEDIT_IDS.get(mob_id, "Unknown"), {}).get("fullid", None)
+        fullid = self.defsIds.mcedit_defs.get(self.defsIds.mcedit_ids.get(mob_id, "Unknown"), {}).get("fullid", None)
 #         print fullid
         if fullid is not None:
             # This is mostly a copy of what we have in camera.py.
@@ -1426,6 +1441,8 @@ class PocketLeveldbChunkPre1(LightedChunk):
                 Entities = loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
+                defs_get = self.world.defsIds.mcedit_defs.get
+                ids_get = self.world.defsIds.mcedit_ids.get
                 for ent in Entities:
                     # Get the string id, or a build one
                     # ! For PE debugging
@@ -1437,7 +1454,7 @@ class PocketLeveldbChunkPre1(LightedChunk):
                         logger.warning("Default 'Unknown' ID is used...")
                         v = 'Unknown'
 
-                    id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                    id = defs_get(ids_get(v, 'Unknown'),
                                          {'name': 'Unknown Entity %s' % v,
                                           'idStr': 'Unknown Entity %s' % v,
                                           'id': -1}
@@ -1512,6 +1529,8 @@ class PocketLeveldbChunkPre1(LightedChunk):
         with nbt.littleEndianNBT():
             entityData = ""
             tileEntityData = ""
+            defs_get = self.world.defsIds.mcedit_defs.get
+            ids_get = self.world.defsIds.mcedit_ids.get
 
             for ent in self.TileEntities:
                 tileEntityData += ent.save(compressed=False)
@@ -1521,7 +1540,7 @@ class PocketLeveldbChunkPre1(LightedChunk):
 #                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
 #                 id = entity.PocketEntity.getNumId(v)
 #                 print v, id, MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})['id']
-                id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, v), {'id': -1})['id']
+                id = defs_get(ids_get(v, v), {'id': -1})['id']
                 if id >= 1000:
                     print id
                     print type(ent)
@@ -1801,6 +1820,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             for tile_entity in loadNBTCompoundList(tile_entities):
                 self.TileEntities.insert(-1, tile_entity)
         if subchunk == 0 and entities:
+            mcedit_defs = self.world.defsIds.mcedit_defs
+            defs_get = mcedit_defs.get
+            ids_get = self.world.defsIds.mcedit_ids.get
             if DEBUG_PE:
                 write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n' % (self.chunkPosition[0], self.chunkPosition[1]))
             Entities = loadNBTCompoundList(entities)
@@ -1825,21 +1847,21 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #                     logger.warning("Found unknown entity '%s'"%v)
 #                     entity.PocketEntity.entityList[id] = v
 
-                id = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                id = defs_get(ids_get(v, 'Unknown'),
                                      {'name': 'Unknown Entity %s' % v,
                                       'idStr': 'Unknown Entity %s' % v,
                                       'id': -1,
                                       'type': 'Unknown'}
                                      )['name']
                 if DEBUG_PE:
-                    ent_def = MCEDIT_DEFS.get(MCEDIT_IDS.get(v, 'Unknown'),
+                    ent_def = defs_get(ids_get(v, 'Unknown'),
                                      {'name': 'Unknown Entity %s' % v,
                                       'idStr': 'Unknown Entity %s' % v,
                                       'id': -1,
                                       'type': 'Unknown'}
                                      )
                     _tn = ent_def.get('type', 'Unknown')
-                    _tv = MCEDIT_DEFS['entity_types'].get(_tn, 'Unknown')
+                    _tv = mcedit_defs['entity_types'].get(_tn, 'Unknown')
                     write_dump("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
                                                     id=id,
                                                     _v=_v,
