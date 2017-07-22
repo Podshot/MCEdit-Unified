@@ -879,7 +879,7 @@ class PlayerPositionTool(EditorTool):
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
 #                     print 7
                     r = self.playercache.getPlayerSkin(player, force_download=False)
-                    if isinstance(r, (str, unicode)):
+                    if not isinstance(r, (str, unicode)):
                         r = r.join()
                     self.playerTexture[player] = loadPNGTexture(r)
                 else:
@@ -905,7 +905,9 @@ class PlayerPositionTool(EditorTool):
                 #GL.glDisable(GL.GL_BLEND)
 
             except Exception, e:
-                print repr(e)
+                print "Exception in editortools.player.PlayerPositionTool._drawToolMarkers:", repr(e)
+                import traceback
+                print traceback.format_exc()
                 continue
 
         GL.glDisable(GL.GL_DEPTH_TEST)
