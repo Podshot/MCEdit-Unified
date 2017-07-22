@@ -1040,8 +1040,8 @@ class ChunkCalculator(object):
         level = cr.renderer.level
 
         chunk = level.getChunk(cx, cz)
-        if isinstance(chunk, pymclevel.level.FakeChunk):
-            return
+#         if isinstance(chunk, pymclevel.level.FakeChunk):
+#             return
         neighboringChunks = self.getNeighboringChunks(chunk)
 
         areaBlocks = self.getAreaBlocks(chunk, neighboringChunks)
