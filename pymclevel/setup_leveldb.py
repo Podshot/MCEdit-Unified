@@ -253,6 +253,7 @@ def main():
                     sys.exit(1)
             else:
                 print "Found compliant zlib v%s."%zlib[2]
+                zlib = zlib[0]
 
     if force_zlib:
         os.chdir("leveldb/zlib")
@@ -271,9 +272,10 @@ def main():
                             "LDFLAGS += $(PLATFORM_LDFLAGS)\nPSL = -L{d} -lz -Wl,-R{d} $(PLATFORM_SHARED_LDFLAGS)".format(d=cur_dir))
         data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += -L{d} -lz -Wl,-R{d} $(PLATFORM_LIBS)".format(d=cur_dir))
         open("leveldb/Makefile", "w").write(data)
+        zlib = None
 
     os.chdir("leveldb")
-    r = build_leveldb(zlib[0])
+    r = build_leveldb(zlib)
     if r:
         print "PE support build failed."
         return r
