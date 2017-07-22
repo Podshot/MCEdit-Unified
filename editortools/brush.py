@@ -836,6 +836,8 @@ class BrushTool(CloneTool):
         class FakeLevel(pymclevel.MCLevel):
             filename = "Fake Level"
             materials = self.editor.level.materials
+            root_tag = "Dummy"
+            gameVersion = "Unknown"
 
             def __init__(self):
                 self.chunkCache = {}
