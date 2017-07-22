@@ -1040,6 +1040,8 @@ class ChunkCalculator(object):
         level = cr.renderer.level
 
         chunk = level.getChunk(cx, cz)
+        if isinstance(chunk, pymclevel.level.FakeChunk):
+            return
         neighboringChunks = self.getNeighboringChunks(chunk)
 
         areaBlocks = self.getAreaBlocks(chunk, neighboringChunks)
@@ -1148,7 +1150,6 @@ class ChunkCalculator(object):
 
     def makeTemplate(self, direction, blockIndices):
         return self.precomputedVertices[direction][blockIndices]
-
 
 class Layer:
     Blocks = "Blocks"
