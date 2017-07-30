@@ -378,7 +378,7 @@ class PocketLeveldbDatabase(object):
                 raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
                 write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0", "\x04": "1.1"}.get(ver, 'Unknown'), v=repr(ver)))
-    
+
             if ver == "\x02":
                 # We have a pre 1.0 chunk
                 data = self._readChunk_pre1_0(cx, cz, rop, key)
@@ -400,14 +400,19 @@ class PocketLeveldbDatabase(object):
                     world.allChunks
 
                 chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version, chunk_version=ver)
+                d2d = db.Get(rop, key + "\x2d")
+                if d2d:
+                    # data_2d contains the heightmap (currently computed dynamically, may change)
+                    # and the biome information of the chunk on the last 256 bytes.
+                    chunk.data_2d = d2d
+                    biomes = numpy.fromstring(d2d[512:], 'uint8')
+                    biomes.shape = (16 ,16)
+                    chunk.Biomes = biomes
                 for i in range(16):
                     r = self._readSubChunk_1plus(cx, cz, i, rop, key)
                     if type(r) == tuple:
                         tr, te, en = r
-                        terrain = tr
-                        tile_entities = te
-                        entities = en
-                        chunk.add_data(terrain=terrain, tile_entities=tile_entities, entities=entities, subchunk=i)
+                        chunk.add_data(terrain=tr, tile_entities=te, entities=en, subchunk=i)
                 # Generate the lights if we have a PE 1.1 chunk.
                 if chunk.version == "\x04":
                     chunk.genFastLights()
@@ -483,6 +488,9 @@ class PocketLeveldbDatabase(object):
         wop = self.writeOptions if writeOptions is None else writeOptions
         chunk._Blocks.update_subchunks()
         chunk._Data.update_subchunks()
+        data_2d = getattr(chunk, 'data_2d', None)
+        if hasattr(chunk, 'Biomes') and data_2d:
+            data_2d = data_2d[:512] + chunk.Biomes.tostring()
         if chunk.version == "\x03":
             chunk._SkyLight.update_subchunks()
             chunk._BlockLight.update_subchunks()
@@ -505,11 +513,15 @@ class PocketLeveldbDatabase(object):
                     if y == 0:
                         db.Put(wop, key + '\x31', tileEntityData)
                         db.Put(wop, key + '\x33', entityData)
+                        if data_2d:
+                            db.Put(wop, key + '\x2d', data_2d)
             else:
                 batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
                     batch.Put(key + '\x31', tileEntityData)
                     batch.Put(key + '\x32', entityData)
+                    if data_2d:
+                        batch.Put(key + '\x2d', data_2d)
 
     def saveChunk(self, chunk, batch=None, writeOptions=None):
         """
@@ -1708,6 +1720,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
         self.Entities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
+
+        self.Biomes = numpy.zeros((16, 16), 'uint8')
+        self.data2d = None
 
 #=======================================================================
 # Get rid of that, or rework it?
