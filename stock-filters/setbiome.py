@@ -129,7 +129,7 @@ biomes = {
     "Flower Forest": 132,
     "Taiga M": 133,
     "Swampland M": 134,
-    "Ice Plains S#                 chunk.Biomes.reshape((256,))pikes": 140,
+    "Ice Plains Spikes": 140,
     "Ice Mountains Spikes": 141,
     "Jungle M": 149,
     "JungleEdge M": 151,
