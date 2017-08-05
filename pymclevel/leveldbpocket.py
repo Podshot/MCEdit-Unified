@@ -385,7 +385,8 @@ class PocketLeveldbDatabase(object):
                 if data is None:
                     raise ChunkNotPresent((cx, cz, self))
                 chunk = PocketLeveldbChunkPre1(cx, cz, world, data, world_version=self.world_version)
-            elif ver == "\x03" or ver == "\x04":
+            # Let assume that any chunk wich version is greater or equal to 3 in a PE 1+ one.
+            elif ord(ver) >= 3:
                 # PE 1+ chunk detected. Iterate through the subchunks to rebuild the whole data.
                 # If the world version was set o pre1.0 during initialization, change it for 1+.
                 # Change also the world height to 256...
@@ -414,20 +415,20 @@ class PocketLeveldbDatabase(object):
                         tr, te, en = r
                         chunk.add_data(terrain=tr, tile_entities=te, entities=en, subchunk=i)
                 # Generate the lights if we have a PE 1.1 chunk.
-                if chunk.version == "\x04":
+                if ord(chunk.version) >= 4:
                     chunk.genFastLights()
                 if DEBUG_PE:
                     write_dump(">>> Chunk (%s, %s) sub-chunks: %s\n" % (cx, cz, repr(chunk.subchunks)))
             elif ver is not None:
-                raise AttributeError("Unknown PE chunk version %s" % ver)
+                raise AttributeError("Unknown PE chunk version %s" % repr(ver))
             elif ver is None:
                 if DEBUG_PE:
                     write_dump("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?" % (cx, cz))
                 return None
             else:
                 if DEBUG_PE:
-                    write_dump("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
-                raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, ver))
+                    write_dump("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, repr(ver)))
+                raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, repr(ver)))
             logger.debug("CHUNK LOAD %s %s" % (cx, cz))
             return chunk
 
@@ -535,7 +536,7 @@ class PocketLeveldbDatabase(object):
         ver = chunk.version
         if ver == "\x02":
             self._saveChunk_pre1_0(chunk, batch, writeOptions)
-        elif ver == "\x03" or ver == "\x04":
+        elif ord(ver) >= 3:
             self._saveChunk_1plus(chunk, batch, writeOptions)
         else:
             raise AttributeError("Unknown version %s for chunk %s"%(ver, chunk.chunkPosition()))
