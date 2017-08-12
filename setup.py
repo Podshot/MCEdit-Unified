@@ -46,12 +46,15 @@ else:
             print "'%s' is not a valid argument. Use 'help' one for information." % arg
             sys.exit(1)
         else:
-            src = modules_map[arg]
+            src = modules_map[arg]["source"]
             if src not in ext_modules:
                 ext_list.append(arg)
                 ext_modules.append(src)
+        sys.argv.remove(arg)
     print msg % ", ".join(ext_list)
 
+sys.argv.append('build_ext')
+
 setup(
-    ext_modules=ext_modules
+    ext_modules=cythonize(ext_modules)
 )
