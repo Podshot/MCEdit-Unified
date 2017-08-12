@@ -52,7 +52,7 @@ class ThreadRS(threading.Thread):
         return self._return
 
     def __repr__(self, *args, **kwargs):
-        return '%s::%s'%(ThreadRS, self.target)
+        return '%s::%s' % (ThreadRS, self.target)
 
 
 def threadable(func):
@@ -75,18 +75,18 @@ class PlayerCache:
     """
     Used to cache Player names and UUID's, provides an small API to interface with it
     """
-    
+
     _PATH = userCachePath
     TIMEOUT = 2.5
     targets = [] # Used to send data update when subprocesses has finished.
-    
+
     __shared_state = {}
-    
+
     def __init__(self):
         self.__dict__ = self.__shared_state
         self.last_error = None
         self.error_count = 0
-    
+
     # --- Utility Functions ---
     def add_target(self, target):
         global targets
@@ -96,7 +96,7 @@ class PlayerCache:
     @staticmethod
     def insertSeperators(uuid):
         return uuid[:8] + "-" + uuid[8:12] + "-" + uuid[12:16] + "-" + uuid[16:20] + "-" + uuid[20:]
-    
+
     @staticmethod
     def getDeltaTime(timestamp, unit):
         t = time.time()
@@ -104,7 +104,7 @@ class PlayerCache:
         current = datetime.datetime.fromtimestamp(t)
         delta = current - old
         return getattr(delta, unit, "hours")
-    
+
     def __convert(self, json_in):
         for player in json_in:
             new_dict = {
@@ -113,13 +113,13 @@ class PlayerCache:
                 "Successful": player["WasSuccessful"]
             }
             self._cache["Cache"][player["UUID (No Separator)"]] = new_dict
-            
+
     def save(self):
         if hasattr(self, "_cache"):
             fp = open(self._PATH, 'w')
             json.dump(self._cache, fp, indent=4, separators=(',', ':'))
             fp.close()
-    
+
     def load(self):
         """
         Loads from the usercache.json file if it exists, if not an empty one will be generated
@@ -147,7 +147,7 @@ class PlayerCache:
         #self.player_refeshing.daemon(True) # No idea whether to use the property setter function or the attribute, so I'll use both
         self.player_refeshing.daemon = True
         self.player_refeshing.start()
-        
+
     # --- Refreshing ---
     def _batchRefreshPlayers(self):
         to_refresh_successful = []
@@ -156,7 +156,7 @@ class PlayerCache:
         with self.cache_lock:
             # TODO: Put this into a thread, since it could take alot of time to run
             # TODO: Handle entries that weren't successful last time the cache was modified
-        
+
             for uuid in self._cache["Cache"].keys():
                 player = self._cache["Cache"][uuid]
                 if player["Successful"]:
@@ -164,14 +164,14 @@ class PlayerCache:
                         to_refresh_successful.append(uuid)
                 else:
                     to_refresh_failed.append(uuid)
-                
+
             to_refresh = to_refresh_successful + to_refresh_failed
             for uuid in to_refresh:
                 if self.error_count >= 4:
                     break
                 self._getPlayerInfoUUID(uuid)
         self.save()
-        
+
     def force_refresh(self):
         for uuid in self._cache["Cache"].keys():
             self.getPlayerInfo(uuid, force=True)
@@ -181,17 +181,17 @@ class PlayerCache:
     def UUIDInCache(self, uuid):
         """
         Checks to see if the UUID is already in the cache
-        
+
         :param uuid: The UUID of the player
         :type uuid: str
         :rtype: bool
         """
         return uuid.replace("-", "") in self._cache["Cache"]
-    
+
     def nameInCache(self, name):
         """
         Checks to see if the name is already in the cache
-        
+
         :param name: The name of the player
         :type name: str
         :rtype: bool
@@ -200,12 +200,12 @@ class PlayerCache:
             if self._cache["Cache"][uuid].get("Name", "") == name:
                 return True
         return False
-    
+
     # --- Getting data from the Cache ---
     def _getDataFromCacheUUID(self, uuid):
         """
         Checks if the UUID is already in the cache
-        
+
         :param uuid: The UUID that might be in the cache
         :type uuid: str
         :return: The player data that is in the cache for the specified UUID, same format as getPlayerInfo()
@@ -214,11 +214,11 @@ class PlayerCache:
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         return self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid
-    
+
     def _getDataFromCacheName(self, name):
         """
         Checks if the Player name is already in the cache
-        
+
         :param name: The name of the Player that might be in the cache
         :return: The player data that is in the cache for the specified Player name, same format as getPlayerInfo()
         :rtype: tuple
@@ -229,11 +229,11 @@ class PlayerCache:
             if player.get("Name", "") == name and player.get("Successful", False):
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
         return ("<Unknown UUID>", name, "<Unknown UUID>")
-    
+
     def _wasSuccessfulUUID(self, uuid):
         """
         Returns whether retrieving the player data was Successful
-        
+
         :param uuid: The UUID of the player to check
         :return: True if the last time the player data retrieval from Mojang's API was successful, False otherwise
         :rtype: bool
@@ -241,11 +241,11 @@ class PlayerCache:
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         return player.get("Successful", False)
-    
+
     def _wasSuccessfulName(self, name):
         """
         Returns whether retrieving the player data was Successful
-        
+
         :param name: The name of the player to check
         :return: True if the last time the player data retrieval from Mojang's API was successful, False otherwise
         :rtype: bool
@@ -259,7 +259,7 @@ class PlayerCache:
     def getPlayerInfo(self, arg, force=False, use_old_data=False):
         """
         Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in 'arg'
-        
+
         :param arg: Either a UUID or Player name to retrieve from the cache/Mojang's API
         :type arg: str
         :param force: True if the Player name should be forcefully fetched from Mojang's API
@@ -287,7 +287,7 @@ class PlayerCache:
                     return 'Server not ready', arg, 'Server not ready'
                 else:
                     return r
-    
+
     # --- Player Data Getters ---
     @threadable
     def _getPlayerInfoUUID(self, uuid, use_old_data=False):
@@ -319,7 +319,7 @@ class PlayerCache:
                 return self.insertSeperators(clean_uuid), player["Name"], clean_uuid
             else:
                 return self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid
-    
+
     @threadable
     def _getPlayerInfoName(self, name):
         response = self._getDataFromURL("https://api.mojang.com/users/profiles/minecraft/{}".format(name))
@@ -338,7 +338,7 @@ class PlayerCache:
                 return "<Unknown UUID>", name, "<Unknown UUID>"
         else:
             return "<Unknown UUID>", name, "<Unknown UUID>"
-        
+
     # --- Skin Getting ---
     def _parseSkinResponse(self, response):
         try:
@@ -352,12 +352,12 @@ class PlayerCache:
             print "Couldn't parse skin response JSON"
             print traceback.format_exc()
         return None
-    
+
     @threadable
     def getPlayerSkin(self, arg, force_download=True, instance=None):
         """
         Gets the player's skin from Mojang's skin servers
-    
+
         :param arg: The UUID of the player
         :type arg: str
         :param force_download: Should the skin be re-downloaded even if it has already been downloaded
@@ -368,7 +368,7 @@ class PlayerCache:
         :rtype: str
         """
         toReturn = 'char.png'
-        
+
         raw_data = self.getPlayerInfo(arg)
         if raw_data.__class__ != ThreadRS:
             uuid_sep, name, uuid = raw_data
@@ -403,7 +403,7 @@ class PlayerCache:
                                 player["Skin"] = { "Timestamp": time.time() }
                                 self._cache["Cache"][uuid] = player
                                 self.save()
-                   
+
             except IOError:
                 print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
                 if instance is not None:
@@ -417,25 +417,25 @@ class PlayerCache:
         else:
             toReturn = raw_data.join()
         return toReturn
-    
+
     def _saveSkin(self, uuid, data):
         if "-" not in uuid:
             uuid = self.insertSeperators(uuid)
-            
+
         try:
             os.mkdir("player-skins")
         except OSError:
             pass
-        
+
         skin_path = os.path.join("player-skins", uuid.replace("-","_") + ".png")
-        
+
         with open(skin_path, 'wb') as fp:
             fp.write(data)
         skin = Image.open(skin_path)
         if skin.size == (64,64):
             skin = skin.crop((0,0,64,32))
             skin.save(skin_path)
-                            
+
     def _getDataFromURL(self, url):
         conn = None
         try:
@@ -459,9 +459,10 @@ class PlayerCache:
             log.warn(traceback.format_exc())
             self.error_count += 1
         finally:
-            if conn: conn.close()
+            if conn:
+                conn.close()
         return None
-    
+
     def _postDataToURL(self, url, payload, headers):
         conn = None
         try:
@@ -500,6 +501,7 @@ def _cleanup():
             finally:
                 if fp and not fp.closed:
                     fp.close()
-    
+
+
 atexit.register(_cleanup)
 atexit.register(PlayerCache().save)
