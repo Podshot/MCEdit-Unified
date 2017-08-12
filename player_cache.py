@@ -293,13 +293,20 @@ class PlayerCache:
     def _getPlayerInfoUUID(self, uuid, use_old_data=False):
         clean_uuid = uuid.replace("-", "")
         player = self._cache["Cache"].get(clean_uuid, {})
+
+        # If delta between the player timestamp and the actual time is lower the 30 seconds,
+        # return the current player data to avoid 429 error.
+        delta = self.getDeltaTime(player.get("Timestamp", 0), 'seconds')
+        if delta < 30:
+            return self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid
+
+        player["Timestamp"] = time.time()
         response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(clean_uuid))
         if response:
             try:
                 data = response
                 response = json.loads(response)
                 player["Name"] = response.get("name", player.get("Name", "<Unknown Name>"))
-                player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][clean_uuid] = player
                 self.temp_skin_cache[clean_uuid] = data
@@ -374,7 +381,9 @@ class PlayerCache:
             uuid_sep, name, uuid = raw_data
             if uuid == "<Unknown UUID>" or "Server not ready" in raw_data:
                 return toReturn
+
             player = self._cache["Cache"][uuid]
+
             skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
             try:
                 if not force_download and os.path.exists(skin_path):
@@ -394,7 +403,13 @@ class PlayerCache:
                             del self.temp_skin_cache[uuid]
                             self.save()
                     else:
-                        response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
+                        # If delta between the player timestamp and the actual time is lower the 30 seconds,
+                        # set the 'response' to None to avoid 429 error.
+                        delta = self.getDeltaTime(player.get("Timestamp", 0), 'seconds')
+                        if delta < 30:
+                            response = None
+                        else:
+                            response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
                         if response is not None:
                             parsed = self._parseSkinResponse(response)
                             if parsed is not None:
