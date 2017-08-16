@@ -512,6 +512,7 @@ class PocketLeveldbDatabase(object):
                 with self.world_db() as db:
                     db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
+                        db.Put(wop, key, '\x76', chunk.version)
                         db.Put(wop, key + '\x31', tileEntityData)
                         db.Put(wop, key + '\x33', entityData)
                         if data_2d:
@@ -519,6 +520,7 @@ class PocketLeveldbDatabase(object):
             else:
                 batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
+                    batch.Put(key, '\x76', chunk.version)
                     batch.Put(key + '\x31', tileEntityData)
                     batch.Put(key + '\x32', entityData)
                     if data_2d:
