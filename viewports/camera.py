@@ -2111,7 +2111,7 @@ class ContainerInfoParser(BlockInfoParser):
         tile_entity = self.level.tileEntityAt(*pos)
         if tile_entity:
             return "Contains {} Items {}{}".format(len(tile_entity.get("Items", [])), self.nbt_ending, self.edit_ending)
-        return "[Empty Container]{}{}".format(self.nbt_ending + self.edit_ending)
+        return "[Empty Container]{}{}".format(self.nbt_ending, self.edit_ending)
 
 def unproject(x, y, z):
     try:
