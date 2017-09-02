@@ -210,6 +210,11 @@ class PocketLeveldbDatabase(object):
     _world_db = None
     world_version = None # to be set to 'pre1.0' or '1.plus'
 
+    def __open_db(self):
+        """Opens a DB and return the associated object."""
+        pth = os.path.join(self.path, 'db').encode(sys.getfilesystemencoding())
+        return self.ldb.DB(self.options, pth)
+
     @contextmanager
     def world_db(self):
         """
@@ -218,11 +223,11 @@ class PocketLeveldbDatabase(object):
         """
         if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is None:
-                self._world_db = self.ldb.DB(self.options, os.path.join(str(self.path), 'db'))
+                self._world_db = self.__open_db()
             yield self._world_db
             pass
         else:
-            db = self.ldb.DB(self.options, os.path.join(str(self.path), 'db'))
+            db = self.__open_db()
             yield db
             del db
 
