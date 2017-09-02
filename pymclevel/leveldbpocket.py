@@ -512,7 +512,7 @@ class PocketLeveldbDatabase(object):
                 with self.world_db() as db:
                     db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
-                        db.Put(wop, key, '\x76', chunk.version)
+                        db.Put(wop, key + '\x76', chunk.version)
                         db.Put(wop, key + '\x31', tileEntityData)
                         db.Put(wop, key + '\x33', entityData)
                         if data_2d:
@@ -520,7 +520,7 @@ class PocketLeveldbDatabase(object):
             else:
                 batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
-                    batch.Put(key, '\x76', chunk.version)
+                    batch.Put(key + '\x76', chunk.version)
                     batch.Put(key + '\x31', tileEntityData)
                     batch.Put(key + '\x32', entityData)
                     if data_2d:
@@ -561,6 +561,17 @@ class PocketLeveldbDatabase(object):
             keys = []
             for i in xrange(16):
                 keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2f" + chr(i))
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2d")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2e")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x30")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x31")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x32")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x33")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x34")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x35")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x36")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x76")
+            
 
         if batch is None:
             with self.world_db() as db:
@@ -754,13 +765,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         # Can we rely on this to know which version of PE was used to create the world?
         # Looks like that 1+ world can also have a storage version equal to 4...
         if not create:
-            self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
-            if dat_world_version == '\x05':
-                self.world_version = '1.plus'
-                self.Height = 256
-            else:
-                self.world_version = 'pre1.0'
-                self.Height = 128
+            self.dat_world_version = dat_world_version = '\x05'
+            # if ord(dat_world_version) > 4:
+            self.world_version = '1.plus'
+            self.Height = 256
+            # else:
+                # self.world_version = 'pre1.0'
+                # self.Height = 128
     
             logger.info('PE world verion found: %s', self.world_version)
         else:
@@ -1179,7 +1190,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     def tileEntityAt(self, x, y, z):
         """
-        Retrieves a tile tick at given x, y, z coordinates
+        Retrieves a tile entity at given x, y, z coordinates
         :param x: int
         :param y: int
         :param z: int
@@ -1843,7 +1854,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             ids_get = self.world.defsIds.mcedit_ids.get
             if DEBUG_PE:
                 write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n' % (self.chunkPosition[0], self.chunkPosition[1]))
-            Entities = loadNBTCompoundList(entities)
+            try:
+                Entities = loadNBTCompoundList(entities)
+            except:
+                logger.error('potential entity corruption at chunk '+str(self.chunkPosition))
+                Entities = []
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.
 #             invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
