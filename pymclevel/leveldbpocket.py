@@ -760,17 +760,17 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         # Looks like that 1+ world can also have a storage version equal to 4...
         if not create:
             self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
-            if dat_world_version == '\x05':
+            if ord(dat_world_version) >= 5:
                 self.world_version = '1.plus'
                 self.Height = 256
             else:
                 self.world_version = 'pre1.0'
                 self.Height = 128
     
-            logger.info('PE world verion found: %s', self.world_version)
+            logger.info('PE world verion found: %s (%s)' % (self.world_version, repr(self.dat_world_version)))
         else:
             self.world_version = create
-            logger.info('Creating PE world version %s', self.world_version)
+            logger.info('Creating PE world version %s (%s)' % (self.world_version, repr(self.dat_world_version)))
 
         self.filename = filename
         self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version)
