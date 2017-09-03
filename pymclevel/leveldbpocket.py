@@ -765,13 +765,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         # Can we rely on this to know which version of PE was used to create the world?
         # Looks like that 1+ world can also have a storage version equal to 4...
         if not create:
-            self.dat_world_version = dat_world_version = '\x05'
-            # if ord(dat_world_version) > 4:
-            self.world_version = '1.plus'
-            self.Height = 256
-            # else:
-                # self.world_version = 'pre1.0'
-                # self.Height = 128
+            self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
+            if dat_world_version == '\x05':
+                self.world_version = '1.plus'
+                self.Height = 256
+            else:
+                self.world_version = 'pre1.0'
+                self.Height = 128
     
             logger.info('PE world verion found: %s', self.world_version)
         else:
