@@ -841,6 +841,16 @@ class LevelEditor(GLViewport):
             if filename.endswith(".schematic"):
                 schematic.saveToFile(filename)
             elif filename.endswith(".nbt"):
+                if (schematic.Height, schematic.Length, schematic.Width) >= (50, 50, 50):
+                    result = ask("You're trying to export a large selection as a Structure NBT file, this is not recommended " +
+                                 "and may cause MCEdit to hang and/or crash. We recommend you export this selection as a Schematic instead.",
+                    responses=['Export as Structure anyway', 'Export as Schematic', 'Cancel Export'], wrap_width=80)
+                    if result == 'Export as Structure anyway':
+                        StructureNBT.fromSchematic(schematic).save(filename)
+                    elif result == 'Export as Schematic':
+                        schematic.saveToFile(filename.replace('.nbt', '.schematic'))
+                    elif result == 'Cancel Export':
+                        return
                 StructureNBT.fromSchematic(schematic).save(filename)
 
     def getLastCopiedSchematic(self):
