@@ -76,6 +76,11 @@ class TileEntity(object):
         "Hopper": (
             ("Items", nbt.TAG_List),
         ),
+        "MobHead": {
+            ("SkullType", nbt.TAG_Byte),
+            ("Rot", nbt.TAG_Byte),
+            ("Owner", nbt.TAG_Compound),
+        }
     }
 
     otherNames = {
@@ -94,6 +99,7 @@ class TileEntity(object):
         "Dropper": "Dropper",
         "Dispenser": "Dispenser",
         "Hopper": "Hopper",
+        "MobHead": "Skull",
     }
 
     stringNames = {
@@ -118,6 +124,7 @@ class TileEntity(object):
         "dropper": "Dropper",
         "dispenser": "Dispenser",
         "hopper": "Hopper",
+        "skull": "MobHead",
     }
 
     knownIDs = baseStructures.keys()

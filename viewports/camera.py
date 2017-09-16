@@ -1014,6 +1014,8 @@ class CameraViewport(GLViewport):
         skullMenu = ChoiceButton(map(str, skullTypes))
 
         if "Owner" in tileEntity:
+            if "Owner" not in tileEntity["Owner"]:
+                tileEntity["Owner"]["Name"] = pymclevel.TAG_String()
             usernameField.value = str(tileEntity["Owner"]["Name"].value)
         elif "ExtraType" in tileEntity:
             usernameField.value = str(tileEntity["ExtraType"].value)
