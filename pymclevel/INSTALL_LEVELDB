@@ -31,7 +31,7 @@ LIBRARIES
 ~~~~~~~~~
 
 You will need to have zlib v1.2.8 or v1.2.10 installed on your system.
-Other versions can work, but no garantee..
+Other versions can work, but no garantee...
 
 If zlib is not found on your system, the script will build the version 1.2.10
 specifically for PE support. See ZLIB section for more details.
@@ -65,6 +65,13 @@ You shall get an output like that:
 >
 > OK
 
+It is possible to compile this library using another source version with the
+following command line argument:
+
+`--leveldb-commit <commit SHA1>`
+
+Where `<commit SHA1>` is a full Github commit hash.
+
 
 ~~~~~~~~~~~~~
 RECOMPILATION
@@ -92,4 +99,10 @@ If zlib is found on your system, but with another version than 1.2.8 or 1.2.10
 and leveldb compilation fails or does not work at runtime, it is possible to
 force zlib compilation using the '--force-zlib' switch for the script.
 
+It is possible to compile this library using another source version with the
+following command line argument:
+
+`--zlib-commit <commit SHA1>`
+
+Where `<commit SHA1>` is a full Github commit hash.
 

@@ -89,32 +89,45 @@ Linux users must install python-xlib 0.14 (or over). It may be possible that the
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 On Linux, it is recommended to use the `mcedit.sh` shell script.
 
-## INSTALLING _nbt.pyx
+## BUILDING NBT AND PNG SUPPORT
 
-pymclevel contains a cython version of _nbt. This one is a lot faster, but has to be build manually.
-It requires cython 0.21.2 (Note: there are issues with 0.22)
+__Please, mind to adapt the following information according to your operating system!__
 
-```sh
-pip install cython==0.21.2
-```
+### DEPENDENCIES
 
-It's also worth upgrading setuptools:
+To build these libaries, you'll need _Cython 0.21_ and _setuptools_.
 
-```sh
-pip install setuptools --upgrade
-```
+First, install or update _setuptools_:
 
-With cython you should be able to build the file.
+* Download [get-pypi.py](https://bootstrap.pypa.io/get-pip.py)
+* Run it: `python pypi.py`
 
-```sh
-python setup.py develop
-```
+Then, install Cython:
 
-If no errors occured, only thing left to do is see if it worked correctly:
+`pip install cython==0.21.2`
 
-```sh
-python setuptest.py
-```
+
+### SETUP SCRIPT
+
+This script is intended to be run in a shell opened in MCEdit-Unified folder.
+
+It takes arguments on the command line to work correctly.
+Invoke it like this:
+
+`python setup.py <argument> [argument [argument [...]]]`
+
+Without argument, it will fail. (And let you know...)
+
+
+Use the `all` argument to build all the libraries the script can handle.  
+The `nbt` one will build only the NBT support.  
+The `png` one will build only the PNG support.  
+The `help` one can, ehhh, help...
+
+After the NBT support is built, you can run a very simple test:
+
+`python setuptest.py`
+
 
 ### Pocket Edition Support
 

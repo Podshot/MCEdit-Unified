@@ -21,15 +21,19 @@ wget_curl = None
 wget_cmd = "wget -q --no-check-certificate -O"
 curl_cmd = "curl -LskS -o"
 
-mojang_sources_url = "https://codeload.github.com/Mojang/leveldb-mcpe/zip/a056ea7c18dfd7b806d6d693726ce79d75543904"
-jocopa3_sources_url = "https://github.com/jocopa3/leveldb-mcpe/archive/56bdd1f38dde7074426d85eab01a5c1c0b5b1cfe.zip"
-zlib_sources_url = "https://github.com/madler/zlib/archive/4a090adef8c773087ec8916ad3c2236ef560df27.zip"
+mojang_sources_url = "https://codeload.github.com/Mojang/leveldb-mcpe/zip/"
+mojang_commit = "a056ea7c18dfd7b806d6d693726ce79d75543904"
+jocopa3_sources_url = "https://codeload.github.com/jocopa3/leveldb-mcpe/zip/"
+jocopa3_commit = "56bdd1f38dde7074426d85eab01a5c1c0b5b1cfe"
+zlib_sources_url = "https://codeload.github.com/madler/zlib/zip/"
+zlib_commit = "4a090adef8c773087ec8916ad3c2236ef560df27"
 
 zlib_ideal_version = "1.2.10"
 zlib_minimal_version = "1.2.8"
 
+
 def check_bins(bins):
-    print 'Searching for the needed binaries %s...'%repr(bins).replace("'", '')
+    print 'Searching for the needed binaries %s...' % repr(bins).replace("'", '')
     missing_bin = False 
     for name in bins:
         names = []
@@ -38,22 +42,22 @@ def check_bins(bins):
         if names:
             found = False
             for n in names:
-                if not os.system('which %s > /dev/null'%n):
+                if not os.system('which %s > /dev/null' % n):
                     found = True
                     break
                 else:
-                    print "Could not find %s."%n
+                    print "Could not find %s." % n
             if found:
                 g_keys = globals().keys()
                 g_name = name.replace('|', '_')
                 print "g_name", g_name, g_name in g_keys
                 if g_name in g_keys:
-                    globals()[g_name] = globals()['%s_cmd'%n]
+                    globals()[g_name] = globals()['%s_cmd' % n]
             else:
                 print '*** WARNING: None of these binaries were found on your system: %s.'%', '.join(names)
         else:
-            if os.system('which %s > /dev/null'%name):
-                print '*** WARNING: %s not found.'%name
+            if os.system('which %s > /dev/null' % name):
+                print '*** WARNING: %s not found.' % name
                 missing_bin = True
     if missing_bin:
         a = raw_input('The binary dependencies are not satisfied. The build may fail.\nContinue [y/N]?')
@@ -71,6 +75,7 @@ ARCH = {'32bit': '32', '64bit': '64'}[platform.architecture()[0]]
 default_paths = ['/lib', '/lib32', '/lib64', '/usr/lib', '/usr/lib32','/usr/lib64', 
                  '/usr/local/lib', os.path.expanduser('~/.local/lib'), '.']
 
+
 # Gather the libraries paths.
 def get_lib_paths(file_name):
     paths = []
@@ -81,7 +86,7 @@ def get_lib_paths(file_name):
                 if line.startswith('include'):
                     line = line.split(' ', 1)[1]
                     if '*' in line:
-                        pat = r"%s"%line.split(os.path.sep)[-1].replace('.', '\.').replace('*', '.*')
+                        pat = r"%s" % line.split(os.path.sep)[-1].replace('.', '\.').replace('*', '.*')
                         d = os.path.split(line)[0]
                         if os.path.isdir(d):
                             for n in os.listdir(d):
@@ -93,6 +98,7 @@ def get_lib_paths(file_name):
                 elif not line in paths and os.path.isdir(line):
                     paths.append(line)
     return paths
+
 
 def find_lib(lib_name, input_file='/etc/ld.so.conf'):
     paths = default_paths + get_lib_paths(input_file)
@@ -141,7 +147,7 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
         if not found.startswith("/"):
             found = os.path.abspath(os.path.join(base_path, found))
         # Verify the architecture of the library
-        inp, outp = os.popen2('file %s | grep "ELF %s"'%(found, ARCH))
+        inp, outp = os.popen2('file %s | grep "ELF %s"' % (found, ARCH))
         r = bool(outp.read())
         inp.close()
         outp.close()
@@ -155,33 +161,42 @@ def find_lib(lib_name, input_file='/etc/ld.so.conf'):
 
     return found, r, ver
 
+
 def get_sources(name, url):
-    print "Downloading sources for %s"%name
-    print "URL: %s"%url
-    os.system("%s %s.zip %s"%(wget_curl, name, url))
-    print "Unpacking %s"%name
-    os.system("unzip -q %s.zip"%name)
+    print "Downloading sources for %s" % name
+    print "URL: %s" % url
+    os.system("%s %s.zip %s" % (wget_curl, name, url))
+    print "Unpacking %s" % name
+    os.system("unzip -q %s.zip" % name)
     os.system("mv $(ls -d1 */ | egrep '{n}-') {n}".format(n=name))
     print "Cleaning archive."
-    os.remove("%s.zip"%name)
+    os.remove("%s.zip" % name)
+
 
 def build_zlib():
     print "Building zlib..."
     return os.WEXITSTATUS(os.system("./configure; make"))
+
 
 def build_leveldb(zlib):
     print "Building leveldb..."
     # Looks like the '-lz' option has to be changed...
     if zlib:
         data = open('Makefile').read()
-        data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s"%zlib)
+        data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s" % zlib)
         open("Makefile", "w").write(data)
     return os.WEXITSTATUS(os.system("make"))
+
 
 def main():
     print "=" * 72
     print "Building Linux Minecraft Pocket Edition for MCEdit..."
     print "-----------------------------------------------------"
+    global mojang_sources_url
+    global mojang_commit
+    global jocopa3_sources_url
+    global zlib_sources_url
+    global zlib_commit
     force_zlib = False
     leveldb_source_url = mojang_sources_url
     cur_dir = os.getcwd()
@@ -190,6 +205,16 @@ def main():
         sys.argv.remove("--force-zlib")
     if "--alt-leveldb" in sys.argv:
         leveldb_source_url = jocopa3_sources_url
+    for arg, var in (("--leveldb-commit", leveldb_source_url), ("--zlib-commit", zlib_sources_url)):
+        if arg in sys.argv:
+            var += sys.argv[sys.argv.index(arg)]
+    if "--leveldb-commit" not in sys.argv:
+        if "--alt-leveldb" in sys.argv:
+            leveldb_source_url += jocopa3_commit
+        else:
+            leveldb_source_url += mojang_commit
+    if "--zlib-commit" not in sys.argv:
+        zlib_sources_url += zlib_commit
     check_bins(bin_deps)
     # Get the sources here.
     get_sources("leveldb", leveldb_source_url)
@@ -201,12 +226,12 @@ def main():
     # Check zlib
     if not force_zlib:
         print "Checking zlib."
-        zlib = find_lib("libz.so.%s"%zlib_ideal_version)
+        zlib = find_lib("libz.so.%s" % zlib_ideal_version)
         print zlib
         if zlib == (None, None, None):
             zlib = None
             print "*** WARNING: zlib not found!"
-            print "             It is recommended you install zlib v%s on your system or"%zlib_ideal_version
+            print "             It is recommended you install zlib v%s on your system or" % zlib_ideal_version
             print "             let this script install it only for leveldb."
             print "             Enter 'b' to build zlib v1.2.10 only for leveldb."
             print "             Enter 'a' to quit now and install zlib on your yourself."
@@ -223,14 +248,14 @@ def main():
             if zlib[2] == None:
                 print "*** WARNING: zlib has been found, but the exact version could not be"
                 print "             determined."
-                print "             The sources for zlib v%s will be downloaded and the"%zlib_ideal_version
+                print "             The sources for zlib v%s will be downloaded and the" % zlib_ideal_version
                 print "             build will start."
                 print "             If the build fails or the support does not work, install"
-                print "             the version %s and retry. You may also install another"%zlib_ideal_version
+                print "             the version %s and retry. You may also install another" % zlib_ideal_version
                 print "             version and retry with this one."
                 err = True
             elif zlib[2] not in ("1.2.8", "1.2.10"):
-                print "*** WARNING: zlib was found, but its version is %s."%zlib[2]
+                print "*** WARNING: zlib was found, but its version is %s." % zlib[2]
                 print "             You can try to build with this version, but it may fail,"
                 print "             or the generated libraries may not work..."
                 err = True
@@ -238,7 +263,7 @@ def main():
             if zlib[1] == False:
                 print "*** WARNING: zlib has been found on your system, but not for the"
                 print "             current architecture."
-                print "             You apparently run on a %s, and the found zlib is %s"%(ARCH, zlib[0])
+                print "             You apparently run on a %s, and the found zlib is %s" % (ARCH, zlib[0])
                 print "             Building the Pocket Edition support may fail. If not,"
                 print "             the support may not work."
                 print "             You can continue, but it is recommended to install zlib"
@@ -252,7 +277,7 @@ def main():
                 else:
                     sys.exit(1)
             else:
-                print "Found compliant zlib v%s."%zlib[2]
+                print "Found compliant zlib v%s." % zlib[2]
                 zlib = zlib[0]
 
     if force_zlib:
