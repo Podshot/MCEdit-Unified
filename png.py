@@ -160,6 +160,14 @@ import zlib
 from array import array
 from functools import reduce
 
+# Test CLI switch
+# This is used to force exception raising if cpngfilters binary can' be found.
+test_clib = False
+
+if '--test-clib' in sys.argv:
+    test_clib = True
+    sys.argv.remove('--test-clib')
+
 try:
     # `cpngfilters` is a Cython module: it must be compiled by
     # Cython for this import to work.
@@ -167,8 +175,11 @@ try:
     # filtering functions defined later in this file (see `class
     # pngfilters`).
     import cpngfilters as pngfilters
-except ImportError:
-    pass
+except ImportError as ix:
+    if test_clib:
+        raise ix
+    else:
+        pass
 
 __all__ = ['Image', 'Reader', 'Writer', 'write_chunks', 'from_array']
 
