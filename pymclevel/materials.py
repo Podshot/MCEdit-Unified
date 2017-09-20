@@ -14,6 +14,13 @@ NOTEX = (496, 496)
 
 log = getLogger(__name__)
 
+try:
+    pkg_resources.resource_exists(__name__, 'minecraft.json')
+except:
+    import sys
+    if getattr(sys, '_MEIPASS', None):
+        base = getattr(sys, '_MEIPASS')
+        pkg_resources.resource_exists = lambda n,f: os.path.join(base, 'pymclevel', f)
 
 class Block(object):
     """
@@ -377,6 +384,8 @@ class MCMaterials(object):
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
+        print "Game Version: " + game_version
+        game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
         if game_version == 'PE' or game_version == 'old pocket':
             f_name = 'pocket.json'
