@@ -63,5 +63,3 @@ deploy:
   prerelease: true
   force_update: true
   repository: Podshot/MCEdit-Unified-Preview
-  on:
-    branch: master
