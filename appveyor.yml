@@ -53,15 +53,15 @@ build_script:
 artifacts:
   - path: dist/*.zip
 
-#deploy:
-#  description: 'MCEdit-Unified testing release $(APPVEYOR_REPO_TAG_NAME)'
-#  provider: GitHub
-#  auth_token: "$(GITHUB_AUTH_TOKEN)"
-#  artifact: /dist/*.zip
-#  draft: false
-#  prerelease: true
-#  force_update: true
-#  repository: Podshot/MCEdit-Unified-Preview
-#  on:
-#    branch: master
-#    appveyor_repo_tag: false       # deploy on tag push only
+deploy:
+  release: 'MCEdit-Unified $(APPVEYOR_BUILD_VERSION)'
+  description: '### This is a testing build! Use precautions, backup all data, do not use unless you know what you are doing. I am not responsible for any data loss or crashing that may occur, these builds are not guaranteed to work nor contain any features that may or may not be in the final release.'
+  provider: GitHub
+  auth_token: "$(GITHUB_AUTH_TOKEN)"
+  artifact: /dist/*.zip
+  draft: false
+  prerelease: true
+  force_update: true
+  repository: Podshot/MCEdit-Unified-Preview
+  on:
+    branch: master
