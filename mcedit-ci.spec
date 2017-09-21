@@ -33,9 +33,14 @@ with open('directories.py', 'wb') as out:
 
 subprocess.check_call([sys.executable, 'setup.py', 'all'])
 
+DLL_PATH = os.path.join(os.path.dirname(sys.executable), 'Lib', 'site-packages', 'OpenGL', 'DLLS', 'freeglut64.vc9.dll')
+
+print "DLL Path: {}".format(DLL_PATH)
+print "DLL Path Exists: {}".format(os.path.exists(DLL_PATH))
+
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
-             binaries=[], # ('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),
+             binaries=[('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),],
              datas=[],
              hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate'],
              hookspath=[],
