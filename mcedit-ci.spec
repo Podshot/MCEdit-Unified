@@ -47,14 +47,14 @@ DLL_PATH = os.path.join(os.path.dirname(sys.executable), 'Lib', 'site-packages',
 print "DLL Path: {}".format(DLL_PATH)
 print "DLL Path Exists: {}".format(os.path.exists(DLL_PATH))
 print "Starting file list..."
-list_files(os.path.dirname(sys.executable))
+#list_files(os.path.dirname(sys.executable))
 print "==== Finished ===="
 
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
              binaries=[('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),],
              datas=[],
-             hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate'],
+             hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate', 'OpenGL.platform.win32'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
