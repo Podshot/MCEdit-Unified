@@ -119,8 +119,10 @@ subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unifie
 
 if str(os.environ.get('WHL_ARCH')) == '32':
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
+    VERSION += '-win32'
 elif str(os.environ.get('WHL_ARCH')) == '_amd64':
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
+    VERSION += '-win64'
 
 subprocess.check_call([
     SEVENZIP,
