@@ -131,3 +131,5 @@ subprocess.check_call([
     os.path.join('.', 'mcedit', '*')
     ],
     cwd='dist')
+
+list_files(os.path.join('.', 'dist'))
