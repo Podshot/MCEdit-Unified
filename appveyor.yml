@@ -58,7 +58,7 @@ deploy:
   description: '### This is a testing build! Use precautions, backup all data, do not use unless you know what you are doing. I am not responsible for any data loss or crashing that may occur, these builds are not guaranteed to work nor contain any features that may or may not be in the final release.'
   provider: GitHub
   auth_token: "$(GITHUB_AUTH_TOKEN)"
-  artifact: ./dist/*.zip
+  artifact: /dist\/mcedit-unified-.*\.zip/
   draft: false
   prerelease: true
   force_update: true
