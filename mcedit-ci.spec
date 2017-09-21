@@ -115,6 +115,13 @@ fp.close()
 with open('directories.py', 'wb') as out:
     out.write(data)
 
+subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unified-Preview.git'])
+
+if str(os.environ.get('WHL_ARCH')) == '32':
+    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.vc9.dll'))
+elif str(os.environ.get('WHL_ARCH')) == '_amd64':
+    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.vc9.dll'))
+
 subprocess.check_call([
     SEVENZIP,
     'a',
