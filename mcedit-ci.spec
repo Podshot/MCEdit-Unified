@@ -52,7 +52,7 @@ print "==== Finished ===="
 
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
-             binaries=[('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),],
+             binaries=[], # ('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),
              datas=[],
              hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate', 'OpenGL.platform.win32'],
              hookspath=[],
