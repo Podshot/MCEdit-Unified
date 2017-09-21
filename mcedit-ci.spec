@@ -35,9 +35,9 @@ subprocess.check_call([sys.executable, 'setup.py', 'all'])
 
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
-             binaries=[],
+             binaries=[], # ('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),
              datas=[],
-             hiddenimports=['pkg_resources'],
+             hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
