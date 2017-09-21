@@ -33,7 +33,8 @@ environment:
       WHL_ARCH: _amd64
 
   global:
-    MCEDIT_BUILD_VERSION: 1.6.0.{build}-testing
+    MCEDIT_BUILD_VERSION: %version%
+#    MCEDIT_BUILD_VERSION: 1.6.0.{build}-testing
 
 
 # scripts that run after cloning repository
