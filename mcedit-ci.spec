@@ -16,8 +16,8 @@ replace_map = {
     "usercache.json": "usercache_testing.ini"
 }
 
-if os.environ.get('MCEDIT_BUILD_VERSION'):
-    VERSION = os.environ.get('MCEDIT_BUILD_VERSION')
+if os.environ.get('APPVEYOR_BUILD_VERSION'):
+    VERSION = os.environ.get('APPVEYOR_BUILD_VERSION')
 else:
     VERSION = "1.6.0.0-testing"
 
@@ -118,9 +118,9 @@ with open('directories.py', 'wb') as out:
 subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unified-Preview.git'])
 
 if str(os.environ.get('WHL_ARCH')) == '32':
-    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.vc9.dll'))
+    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
 elif str(os.environ.get('WHL_ARCH')) == '_amd64':
-    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.vc9.dll'))
+    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
 
 subprocess.check_call([
     SEVENZIP,
