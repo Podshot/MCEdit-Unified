@@ -33,10 +33,22 @@ with open('directories.py', 'wb') as out:
 
 subprocess.check_call([sys.executable, 'setup.py', 'all'])
 
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print '{}{}/'.format(indent, os.path.basename(root))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print '{}{}'.format(subindent, f)
+
 DLL_PATH = os.path.join(os.path.dirname(sys.executable), 'Lib', 'site-packages', 'OpenGL', 'DLLS', 'freeglut64.vc9.dll')
 
 print "DLL Path: {}".format(DLL_PATH)
 print "DLL Path Exists: {}".format(os.path.exists(DLL_PATH))
+print "Starting file list..."
+list_files(os.path.dirname(sys.executable))
+print "==== Finished ===="
 
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
