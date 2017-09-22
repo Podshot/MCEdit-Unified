@@ -837,6 +837,12 @@ class LevelEditor(GLViewport):
         filename = mcplatform.askSaveSchematic(
             directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
 
+        def save_as_nbt(schem, filename):
+            structure = StructureNBT.fromSchematic(schem)
+            if 'Version' in self.level.root_tag['Data']:
+                structure._version = self.level.root_tag['Data']['Version'].get('Id', pymclevel.TAG_Int(1)).value
+            structure.save(filename)
+
         if filename:
             if filename.endswith(".schematic"):
                 schematic.saveToFile(filename)
@@ -846,12 +852,12 @@ class LevelEditor(GLViewport):
                                  "and may cause MCEdit to hang and/or crash. We recommend you export this selection as a Schematic instead.",
                     responses=['Export as Structure anyway', 'Export as Schematic', 'Cancel Export'], wrap_width=80)
                     if result == 'Export as Structure anyway':
-                        StructureNBT.fromSchematic(schematic).save(filename)
+                        save_as_nbt(schematic, filename)
                     elif result == 'Export as Schematic':
                         schematic.saveToFile(filename.replace('.nbt', '.schematic'))
                     elif result == 'Cancel Export':
                         return
-                StructureNBT.fromSchematic(schematic).save(filename)
+                save_as_nbt(schematic, filename)
 
     def getLastCopiedSchematic(self):
         if len(self.copyStack) == 0:

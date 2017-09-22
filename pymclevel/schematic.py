@@ -761,7 +761,6 @@ class StructureNBT(object):
             self._size = (self._root_tag["size"][0].value, self._root_tag["size"][1].value, self._root_tag["size"][2].value)
                 
             self._author = self._root_tag.get("author", nbt.TAG_String()).value
-            self._version = self._root_tag.get("version", nbt.TAG_Int(1)).value
             self._version = self._root_tag.get("DataVersion", nbt.TAG_Int(1)).value
                 
             self._palette = self.__toPythonPrimitive(self._root_tag["palette"])
@@ -914,7 +913,7 @@ class StructureNBT(object):
         
         structure_tag["author"] = nbt.TAG_String(self._author)
         if self._version:
-            structure_tag["DataVersion"] = nbt.TAG_Int(self.Version)
+            structure_tag["DataVersion"] = nbt.TAG_Int(self.DataVersion)
         else:
             structure_tag["DataVersion"] = nbt.TAG_Int(self.SUPPORTED_VERSIONS[-1])
             
@@ -987,10 +986,6 @@ class StructureNBT(object):
             
         structure_tag["entities"] = entities_tag
         structure_tag.save(filename)
-        
-    @property
-    def Version(self):
-        return self._version
     
     @property
     def Author(self):
@@ -1011,6 +1006,10 @@ class StructureNBT(object):
     @property
     def Palette(self):
         return self._palette
+
+    @property
+    def DataVersion(self):
+        return self._version
 
 def adjustExtractionParameters(self, box):
     x, y, z = box.origin

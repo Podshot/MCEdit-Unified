@@ -55,7 +55,7 @@ artifacts:
 
 deploy:
   release: 'MCEdit-Unified $(APPVEYOR_BUILD_VERSION)'
-  description: '### This is a testing build! Use precautions, backup all data, do not use unless you know what you are doing. I am not responsible for any data loss or crashing that may occur, these builds are not guaranteed to work nor contain any features that may or may not be in the final release.'
+  description: '### This is a testing build! \n### Use precautions, backup all data, do not use unless you know what you are doing. Read the [Warning and FAQ](https://github.com/Podshot/MCEdit-Unified-Preview/blob/master/README.md#warnings) page before downloading.'
   provider: GitHub
   auth_token: "$(GITHUB_AUTH_TOKEN)"
   artifact: /dist\/mcedit-unified-.*\.zip/
