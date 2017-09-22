@@ -86,22 +86,15 @@
 					if (contributorDB[contributor.login].payment) {
 						contributorDiv += '<a href="' + contributorDB[contributor.login].payment + '"><i class="fa fa-usd"></i></a> ';
 					}
-					if (contributorDB[contributor.login].webcheck === true) {
-						webcheck = true;
-					} else {
-						webcheck = false;
-					}
+					webcheck = contributorDB[contributor.login].webcheck;
 				}
 
-				var branch = 'master';
+				var branch = webcheck ? 'gh-pages' : 'master';
 
 				var lastDate = new Date();
 				var events = [];
 				if (contributor && contributor.events_url) {
-					if (webcheck) {
-						branch = 'gh-pages';
-					}
-					$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="circle" contrib-id="' + contributor.login + '" data-toggle="tooltip" data-placement="bottom" title="Last activity on ' + branch + ' branch was ' + lastDate.toLocaleDateString() + '"></div><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor')) + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
+					$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="circle" contrib-id="' + contributor.login + '" data-toggle="tooltip" data-placement="bottom"></div><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor')) + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
 
 					getJSONAsync('https://api.github.com/repos/Khroki/MCEdit-Unified/commits?author=' + contributor.login + '&sha=' + branch, false, function(events){
 						var badgeClass = 'contrib-danger';
@@ -116,6 +109,7 @@
 							} else if (timedif < RECENT_COMMITTER_MAX) {
 								badgeClass = 'contrib-old';
 							}
+							$('.circle[contrib-id="' + contributor.login + '"]').attr('title', 'Last activity on ' + branch + ' branch was ' + lastDate.toLocaleDateString() + '');
 						}
 						$('div[contrib-id="' + contributor.login + '"]').addClass(badgeClass);
 					});
