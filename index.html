@@ -42,6 +42,8 @@
 			var is_OSX = navigator.platform.match(/(Mac)/i);
 			var is_Win = (navigator.platform.match(/(Win)/i) && !is_OSX);
 
+			$('.beta-container').hide();
+
 			if (is_OSX) {
 				$('#Win-downloads-toplevel').hide();
 				$('#Lin-downloads-toplevel').hide();
@@ -62,6 +64,7 @@
 				} else if (is_Win) {
 					$('#Win-downloads-toplevel').removeClass('col-md-offset-4');
 				}
+				$('.beta-container').show();
 				$('.override-platform-specific-downloads-container').hide();
 				return false;
 			});
@@ -257,7 +260,14 @@
 					<!-- Row to reveal all platforms on md/lg -->
 					<div class="row hidden-xs hidden-sm override-platform-specific-downloads-container" style="position:absolute;bottom:30px;right:70px;display:none;">
 						<div class="col-md-12">
-							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view other platforms
+							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view all versions
+						</div>
+					</div>
+
+					<!-- Row to see beta -->
+					<div class="row hidden-xs hidden-sm beta-container" style="position:absolute;bottom:30px;right:70px;display:none;">
+						<div class="col-md-12">
+							<i class="fa fa-star"></i> Click <a href="https://github.com/Podshot/MCEdit-Unified-Preview/releases">here</a> for test releases (Windows)
 						</div>
 					</div>
 
