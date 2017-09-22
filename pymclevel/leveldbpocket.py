@@ -566,6 +566,17 @@ class PocketLeveldbDatabase(object):
             keys = []
             for i in xrange(16):
                 keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2f" + chr(i))
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2d")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x2e")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x30")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x31")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x32")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x33")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x34")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x35")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x36")
+            keys.append(struct.pack('<i', cx) + struct.pack('<i', cz) + "\x76")
+            
 
         if batch is None:
             with self.world_db() as db:
@@ -1184,7 +1195,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     def tileEntityAt(self, x, y, z):
         """
-        Retrieves a tile tick at given x, y, z coordinates
+        Retrieves a tile entity at given x, y, z coordinates
         :param x: int
         :param y: int
         :param z: int
@@ -1848,7 +1859,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             ids_get = self.world.defsIds.mcedit_ids.get
             if DEBUG_PE:
                 write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n' % (self.chunkPosition[0], self.chunkPosition[1]))
-            Entities = loadNBTCompoundList(entities)
+            try:
+                Entities = loadNBTCompoundList(entities)
+            except:
+                logger.error('potential entity corruption at chunk '+str(self.chunkPosition))
+                Entities = []
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.
 #             invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
