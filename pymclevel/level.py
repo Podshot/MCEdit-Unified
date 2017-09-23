@@ -148,6 +148,20 @@ class MCLevel(object):
     # Game version check. Stores the info found in the 'Version::Name' tag
 
     @property
+    def gamePlatform(self):
+        if not hasattr(self, '__gamePlatform'):
+            self.__gamePlatform = 'Unknown'
+            if self.gameVersion == 'PE':
+                self.__gamePlatform = 'PE'
+            elif self.gameVersion == 'Schematic':
+                self.__gamePlatform = 'Schematic'
+            elif 'Player' in self.root_tag or 'Player' in self.root_tag:
+                self.__gamePlatform = 'Java'
+            else:
+                self.__gamePlatform = 'Unknown'
+        return self.__gamePlatform
+
+    @property
     def gameVersion(self):
         """Return the content of the tag 'Name' in the tag 'Version', or 'Unknown'"""
         if self.root_tag and not hasattr(self, '__gameVersion'):
