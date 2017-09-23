@@ -10,6 +10,7 @@ __version__ = "0.3.0"
 import sys
 import os
 import platform
+import fnmatch
 
 if sys.platform != "linux2":
     print "This script can't run on other platforms than Linux ones..."
@@ -185,6 +186,11 @@ def build_leveldb(zlib):
         data = open('Makefile').read()
         data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s" % zlib)
         open("Makefile", "w").write(data)
+    cpath = os.environ.get("CPATH")
+    if cpath:
+        os.environ["CPATH"] = "./zlib:$CPATH"
+    else:
+        os.environ["CPATH"] = "./zlib"
     return os.WEXITSTATUS(os.system("make"))
 
 
@@ -192,29 +198,24 @@ def main():
     print "=" * 72
     print "Building Linux Minecraft Pocket Edition for MCEdit..."
     print "-----------------------------------------------------"
-    global mojang_sources_url
-    global mojang_commit
-    global jocopa3_sources_url
-    global zlib_sources_url
+    global leveldb_commit
     global zlib_commit
+    global zlib_sources_url
     force_zlib = False
     leveldb_source_url = mojang_sources_url
+    leveldb_commit = mojang_commit
     cur_dir = os.getcwd()
     if "--force-zlib" in sys.argv:
         force_zlib = True
         sys.argv.remove("--force-zlib")
     if "--alt-leveldb" in sys.argv:
         leveldb_source_url = jocopa3_sources_url
-    for arg, var in (("--leveldb-commit", leveldb_source_url), ("--zlib-commit", zlib_sources_url)):
+        leveldb_commit = jocopa3_commit
+    for arg, var in (("--leveldb-commit", 'leveldb_commit'), ("--zlib-commit", 'zlib_commit')):
         if arg in sys.argv:
-            var += sys.argv[sys.argv.index(arg)]
-    if "--leveldb-commit" not in sys.argv:
-        if "--alt-leveldb" in sys.argv:
-            leveldb_source_url += jocopa3_commit
-        else:
-            leveldb_source_url += mojang_commit
-    if "--zlib-commit" not in sys.argv:
-        zlib_sources_url += zlib_commit
+            globals()[var] = sys.argv[sys.argv.index(arg) + 1]
+    leveldb_source_url += leveldb_commit
+    zlib_sources_url += zlib_commit
     check_bins(bin_deps)
     # Get the sources here.
     get_sources("leveldb", leveldb_source_url)
@@ -305,9 +306,9 @@ def main():
         print "PE support build failed."
         return r
     os.chdir(cur_dir)
-    os.rename("leveldb/libleveldb.so.1.18", "./libleveldb.so.1.18")
-    os.rename("leveldb/libleveldb.so.1", "./libleveldb.so.1")
-    os.rename("leveldb/libleveldb.so", "./libleveldb.so")
+    for root, d_names, f_names in os.walk("leveldb"):
+        for f_name in fnmatch.filter(f_names, "libleveldb.so*"):
+            os.rename(os.path.join(root, f_name), os.path.join(".", f_name))
     print "Setup script ended."
 
 if __name__ == "__main__":
