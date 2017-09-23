@@ -1018,7 +1018,7 @@ class FilterTool(EditorTool):
             for root, folders, files in os.walk(os.path.join(searchFolder), True):
                 filter_dir = os.path.basename(root)
 
-                if filter_dir.startswith('demo') or filter_dir.startswith('lib'):
+                if filter_dir.startswith('demo'):
                     continue
 
                 subFolderString = root.replace(searchFolder, "")

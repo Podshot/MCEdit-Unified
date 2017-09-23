@@ -410,10 +410,6 @@ for directory in (filtersDir, brushesDir, schematicsDir):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-bundledLibsDir = os.path.join(filtersDir, 'lib', 'Bundled Libraries')
-if not os.path.exists(bundledLibsDir):
-    os.makedirs(bundledLibsDir)
-
 # set userCachePath
 userCachePath = os.path.join(getCacheDir(),'usercache.json')
 # Make sure it exists
