@@ -97,7 +97,7 @@ try:
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
-    log.debug("Binary support for PE 1+ world succesfully loaded.")
+    log.debug("Binary support v%s.%s for PE 1+ world succesfully loaded." % (_ldb.leveldb_major_version(), _ldb.leveldb_minor_version()))
 except Exception, e:
     # What shall we do if the library is not found?
     # If the library is not loaded, the _ldb object does not exists, and every call to it will crash MCEdit...
@@ -146,6 +146,17 @@ _ldb.leveldb_options_destroy.restype = None
 
 _ldb.leveldb_options_set_compression.argtypes = [ctypes.c_void_p, ctypes.c_int]
 _ldb.leveldb_options_set_compression.restype = None
+
+try:
+    # options obj, index, compressor obj, error checker pointer
+    _ldb.leveldb_options_set_compressor.argtypes = [ctypes.c_int,
+                                                    ctypes.c_int,
+                                                    ctypes.c_int,
+                                                    ctypes.c_void_p]
+    _ldb.leveldb_options_set_compressor.restype = None
+except Exception as exc:
+    log.debug("ERROR: leveldb::Options.compressors interface could not be accessed:")
+    log.debug("%s" % exc)
 
 _ldb.leveldb_open.argtypes = [ctypes.c_void_p, ctypes.c_char_p,
                               ctypes.c_void_p]
@@ -261,6 +272,10 @@ def ReadOptions():
 
 
 class Error(Exception):
+    pass
+
+
+class ZipCompressionError(Exception):
     pass
 
 
@@ -906,7 +921,10 @@ def _checkError(error):
     if bool(error):
         message = ctypes.string_at(error)
         _ldb.leveldb_free(ctypes.cast(error, ctypes.c_void_p))
-        raise Error(message)
+        _err = Error
+        if 'corrupted compressed block contents' in message:
+            _err = ZipCompressionError
+        raise _err(message)
 
 
 class _IteratorDbImpl(object):
@@ -967,12 +985,12 @@ class _IteratorDbImpl(object):
     Close = close
 
 
-def DB(options, path, bloom_filter_size=10, create_if_missing=False,
+def DB(options_, path, bloom_filter_size=10, create_if_missing=False,
        error_if_exists=False, paranoid_checks=False,
        write_buffer_size=(4 * 1024 * 1024), max_open_files=1000,
        block_cache_size=(8 * 1024 * 1024), block_size=163840,
        default_sync=False, default_verify_checksums=False,
-       default_fill_cache=True):
+       default_fill_cache=True, compressors=(2,)):
     """This is the expected way to open a database. Returns a DBInterface.
     """
     filter_policy = _PointerRef(
@@ -982,8 +1000,30 @@ def DB(options, path, bloom_filter_size=10, create_if_missing=False,
         _ldb.leveldb_cache_create_lru(block_cache_size),
         _ldb.leveldb_cache_destroy)
 
+    global options
     options = _ldb.leveldb_options_create()
-    _ldb.leveldb_options_set_compression(options, 2)
+
+    # Handling the dual compression in PE 1.2+
+    # Since the code on Mojang's side is not compatible with this for now,
+    # let fallback to the prior behaviour calling leveldb_options_set_compression
+    # with first element in 'compressors'.
+    if hasattr(_ldb, 'leveldb_options_set_compressor'):
+        log.debug("Found 'leveldb_options_set_compressors' in _ldb")
+        if isinstance(compressors, int):
+            # Old behaviour, only one compressor
+            _ldb.leveldb_options_set_compression(options, compressors)
+        elif isinstance(compressors, (list, tuple)):
+            # Here we need more than one compressors
+            for i, compr in enumerate(compressors):
+                if isinstance(compr, int):
+                    error = ctypes.POINTER(ctypes.c_char)()
+                    _ldb.leveldb_options_set_compressor(options, i, compr, ctypes.byref(error))
+                    _checkError(error)
+                else:
+                    raise TypeError("Wrong type for compressor #%s: int wanted, %s found (%s)." % (i, type(compr), compr))
+    else:
+        _ldb.leveldb_options_set_compression(options, compressors[0])
+
     _ldb.leveldb_options_set_filter_policy(
         options, filter_policy.ref)
     _ldb.leveldb_options_set_create_if_missing(options, create_if_missing)

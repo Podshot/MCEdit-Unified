@@ -213,14 +213,25 @@ class PocketLeveldbDatabase(object):
     def __open_db(self):
         """Opens a DB and return the associated object."""
         pth = os.path.join(self.path, 'db').encode(sys.getfilesystemencoding())
-        return self.ldb.DB(self.options, pth)
+        compressors = self.compressors
+        if not compressors:
+            compressors = (2,)
+            if ord(self.dat_world_version) >= 6:
+                compressors = (4, 2)
+        if DEBUG_PE:
+            write_dump("Binary world version: %s; compressor: %s\n" % (repr(self.dat_world_version), compressors))
+        return self.ldb.DB(self.options, pth, compressors=compressors)
 
     @contextmanager
-    def world_db(self):
+    def world_db(self, compressors=None):
         """
         Opens a leveldb and keeps it open until editing finished.
+        :param compressors: None or tuple of ints: The compressor type(s) to be used.
+                If None, the value is decided according to the 'dat_world_version'.
         :yield: DB
         """
+        if not self.compressors:
+            self.compressors = compressors
         if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is None:
                 self._world_db = self.__open_db()
@@ -231,21 +242,26 @@ class PocketLeveldbDatabase(object):
             yield db
             del db
 
-    def __init__(self, path, level, create=False, world_version=None):
+    def __init__(self, path, level, create=False, world_version=None, dat_world_version=None, compressors=None):
         """
         :param path: string, path to file.
         :param level: parent PocketLeveldbWorld instance.
         :param create: bool, wheter to create the world. Defaults to False.
         :param world_version: string or None, world version. Defaults to None.
+        :param dat_world_version: char or None, binary world version as stored on the disk.
+        :param compressors: None or tuple of ints: The compressor type(s) to be used.
+                If None, the value is decided according to the 'dat_world_version'.
         :return: None
         """
         if not world_version:
             raise TypeError("Wrong world version sent: %s"%world_version)
         self.world_version = world_version
+        self.dat_world_version = dat_world_version
         self.path = path
         if not os.path.exists(path):
             file(path, 'w').close()
         self.level = level
+        self.compressors = compressors
 
 
         self.options = leveldb_mcpe.Options()
@@ -260,13 +276,29 @@ class PocketLeveldbDatabase(object):
 
         needsRepair = False
         try:
-            with self.world_db() as db:
-                it = db.NewIterator(self.readOptions)
-                it.SeekToFirst()
-                if not db.Get(self.readOptions, it.key()) == it.value():
-                    needsRepair = True
-                it.status()
-                del it
+
+            # Let's try to 'magicaly' find the right compression for the world.
+            compressors_list = (None, (4,), (2,))
+            i = 0
+            while True:
+                compressors = compressors_list[i]
+                with self.world_db(compressors) as db:
+                    try:
+                        it = db.NewIterator(self.readOptions)
+                        it.SeekToFirst()
+                        if not db.Get(self.readOptions, it.key()) == it.value():
+                            needsRepair = True
+                        it.status()
+                        del it
+                        break
+                    except leveldb_mcpe.ZipCompressionError:
+                        if i < len(compressors_list) - 1:
+                            i += 1
+                            self._world_db.close()
+                            self._world_db = None
+                            self.compressors = None
+                        else:
+                            raise
 
         except RuntimeError as err:
             logger.error("Error while opening world database from %s (%s)"%(path, err))
@@ -771,14 +803,15 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             else:
                 self.world_version = 'pre1.0'
                 self.Height = 128
-    
+
             logger.info('PE world verion found: %s (%s)' % (self.world_version, repr(self.dat_world_version)))
         else:
             self.world_version = create
             logger.info('Creating PE world version %s (%s)' % (self.world_version, repr(self.dat_world_version)))
 
         self.filename = filename
-        self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version)
+        self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version, dat_world_version=dat_world_version)
+
         self.world_version = self.worldFile.world_version
         self.readonly = readonly
         self.loadLevelDat(create, random_seed, last_played)
