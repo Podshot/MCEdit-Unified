@@ -106,8 +106,8 @@ class BlockstateAPI(object):
         :type bid: int
         :param data: The data value of the block
         :type data: int
-        :return: The BlockState string
-        :rtype: str
+        :return: A tuple of BlockState name and it's properties
+        :rtype: tuple
         """
         if bid not in self.block_map:
             return "<Unknown>", {}
