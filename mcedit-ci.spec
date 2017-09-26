@@ -102,9 +102,17 @@ subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unifie
 
 if str(os.environ.get('WHL_ARCH')) == '32':
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
+    try:
+        shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-32bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+    except IOError:
+        pass
     VERSION += '-win32'
 elif str(os.environ.get('WHL_ARCH')) == '_amd64':
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
+    try:
+        shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-64bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+    except IOError:
+        pass
     VERSION += '-win64'
 
 subprocess.check_call([
