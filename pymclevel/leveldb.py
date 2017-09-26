@@ -96,7 +96,10 @@ try:
         # since on OSX the program is bundled in a .app archive, shall we use the same (or approching) thecnique as for Linux?
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
-        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
+        if getattr(sys, '_MEIPASS', None):
+            _ldb = ctypes.CDLL(os.path.join('.', 'pymclevel', "LevelDB-MCPE.dll"))
+        else:
+            _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
     log.debug("Binary support v%s.%s for PE 1+ world succesfully loaded." % (_ldb.leveldb_major_version(), _ldb.leveldb_minor_version()))
 except Exception, e:
     # What shall we do if the library is not found?
