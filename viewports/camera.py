@@ -2088,9 +2088,12 @@ class CommandBlockInfoParser(BlockInfoParser):
             value = tile_entity.get("Command", pymclevel.TAG_String("")).value
             if value:
                 if len(value) > 1500:
-                    return "{}\n**COMMAND IS TOO LONG TO SHOW MORE**{}{}".format(value[:1500], self.nbt_ending, self.edit_ending)
-                return "{}{}{}".format(value, self.nbt_ending, self.edit_ending)
-        return "[Empty Command Block]{}{}".format(self.nbt_ending, self.edit_ending)
+                    return u"{}\n**COMMAND IS TOO LONG TO SHOW MORE**{}{}".format(value[:1500], self.nbt_ending, self.edit_ending)
+                try:
+                    return u"{}{}{}".format(value, self.nbt_ending, self.edit_ending)
+                except:
+                    return u"[Command Block Parsing Failed]"
+        return u"[Empty Command Block]{}{}".format(self.nbt_ending, self.edit_ending)
     
 class ContainerInfoParser(BlockInfoParser):
     
