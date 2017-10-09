@@ -96,9 +96,12 @@ try:
         # since on OSX the program is bundled in a .app archive, shall we use the same (or approching) thecnique as for Linux?
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libleveldb.dylib'))
     elif plat == 'win32':
+        if getattr(sys, '_MEIPASS', False):
+            import win32api
+            win32api.SetDllDirectory(sys._MEIPASS)
         _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
     log.debug("Binary support v%s.%s for PE 1+ world succesfully loaded." % (_ldb.leveldb_major_version(), _ldb.leveldb_minor_version()))
-except Exception, e:
+except Exception as e:
     # What shall we do if the library is not found?
     # If the library is not loaded, the _ldb object does not exists, and every call to it will crash MCEdit...
     # We may import this module using try/except statement.
@@ -149,10 +152,9 @@ _ldb.leveldb_options_set_compression.restype = None
 
 try:
     # options obj, index, compressor obj, error checker pointer
-    _ldb.leveldb_options_set_compressor.argtypes = [ctypes.c_int,
+    _ldb.leveldb_options_set_compressor.argtypes = [ctypes.c_void_p,
                                                     ctypes.c_int,
-                                                    ctypes.c_int,
-                                                    ctypes.c_void_p]
+                                                    ctypes.c_int]
     _ldb.leveldb_options_set_compressor.restype = None
 except Exception as exc:
     log.debug("ERROR: leveldb::Options.compressors interface could not be accessed:")
@@ -1016,9 +1018,7 @@ def DB(options_, path, bloom_filter_size=10, create_if_missing=False,
             # Here we need more than one compressors
             for i, compr in enumerate(compressors):
                 if isinstance(compr, int):
-                    error = ctypes.POINTER(ctypes.c_char)()
-                    _ldb.leveldb_options_set_compressor(options, i, compr, ctypes.byref(error))
-                    _checkError(error)
+                    _ldb.leveldb_options_set_compressor(options, i, compr)
                 else:
                     raise TypeError("Wrong type for compressor #%s: int wanted, %s found (%s)." % (i, type(compr), compr))
     else:
