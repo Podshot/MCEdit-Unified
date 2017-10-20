@@ -345,8 +345,8 @@ class LevelEditor(GLViewport):
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
-        
-        
+
+
     def showCreateDialog(self):
         widg = Widget()
 
@@ -427,7 +427,7 @@ class LevelEditor(GLViewport):
         deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
 
         saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
-                                    ref=config.settings.savePositionOnClose)
+                                          ref=config.settings.savePositionOnClose)
 
         col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), saveCameraOnClose, Button("Close", action=self.waypointDialog.dismiss)))
         self.waypointDialog.add(col)
@@ -814,7 +814,7 @@ class LevelEditor(GLViewport):
         saveButton = Button("Save to file...", action=saveToFile)
         col = Column((Label("Analysis"), tableBacking, saveButton))
         dlg = Dialog(client=col, responses=["OK"])
-        
+
         def dispatch_key(name, evt):
             super(Dialog, dlg).dispatch_key(name, evt)
             if not hasattr(evt, 'key'):
@@ -832,7 +832,7 @@ class LevelEditor(GLViewport):
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
-        
+
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
             directories.schematicsDir, self.level.displayName, ({"Minecraft Schematics": ["schematic"], "Minecraft Structure NBT": ["nbt"]},[]))
@@ -850,7 +850,7 @@ class LevelEditor(GLViewport):
                 if (schematic.Height, schematic.Length, schematic.Width) >= (50, 50, 50):
                     result = ask("You're trying to export a large selection as a Structure NBT file, this is not recommended " +
                                  "and may cause MCEdit to hang and/or crash. We recommend you export this selection as a Schematic instead.",
-                    responses=['Export as Structure anyway', 'Export as Schematic', 'Cancel Export'], wrap_width=80)
+                                 responses=['Export as Structure anyway', 'Export as Schematic', 'Cancel Export'], wrap_width=80)
                     if result == 'Export as Structure anyway':
                         save_as_nbt(schematic, filename)
                     elif result == 'Export as Schematic':
@@ -889,7 +889,7 @@ class LevelEditor(GLViewport):
     def no(self):
         self.yon.dismiss()
         self.user_yon_response = False
-        
+
     def _resize_selection_box(self, new_box):
         import inspect # Let's get our hands dirty
         stack = inspect.stack()
@@ -900,25 +900,25 @@ class LevelEditor(GLViewport):
         Origin: {1} -> {2}
         Size: {3} -> {4}
         Do you want to resize the Selection Box?""".format(
-                   filename,
-                   (old_box.origin[0], old_box.origin[1], old_box.origin[2]),
-                   (new_box.origin[0], new_box.origin[1], new_box.origin[2]),
-                   (old_box.size[0], old_box.size[1], old_box.size[2]),
-                   (new_box.size[0], new_box.size[1], new_box.size[2])
-                   )
+            filename,
+            (old_box.origin[0], old_box.origin[1], old_box.origin[2]),
+            (new_box.origin[0], new_box.origin[1], new_box.origin[2]),
+            (old_box.size[0], old_box.size[1], old_box.size[2]),
+            (new_box.size[0], new_box.size[1], new_box.size[2])
+        )
         result = ask(msg, ["Yes", "No"])
         if result == "Yes":
             self.selectionTool.setSelection(new_box)
             return new_box
         else:
             return False
-    
+
     def addExternalWidget(self, obj):
         if isinstance(obj, Widget):
             return self.addExternalWidget_Widget(obj)
         elif isinstance(obj, dict):
             return self.addExternalWidget_Dict(obj)
-        
+
     def addExternalWidget_Widget(self, obj):
         obj.shrink_wrap()
         result = Dialog(obj, ["Ok", "Cancel"]).present()
@@ -1209,7 +1209,7 @@ class LevelEditor(GLViewport):
             return
 
         assert level
-        log.debug("Loaded world is %s"%repr(level))
+        log.debug("Loaded world is %s" % repr(level))
 
         if hasattr(level, 'materials'):
             level.materials.addJSONBlocksFromVersion(level.gameVersion)
@@ -1414,6 +1414,9 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         self.loadFile(filename)
 
+        self.mainViewport.skyList = None
+        self.mainViewport.drawSkyBackground()
+
     @mceutils.alertException
     def saveFile(self):
         with mceutils.setWindowCaption("SAVING - "):
@@ -1425,7 +1428,7 @@ class LevelEditor(GLViewport):
                 if hasattr(level, 'checkSessionLock'):
                     try:
                         level.checkSessionLock()
-                    except SessionLockLost, e:
+                    except SessionLockLost as e:
                         alert(_(e.message) + _("\n\nYour changes cannot be saved."))
                         return
 
@@ -1476,7 +1479,7 @@ class LevelEditor(GLViewport):
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
         filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
-                                        shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
@@ -2348,7 +2351,7 @@ class LevelEditor(GLViewport):
                     if changeTime:
                         self.UndoTime = self.level.Time
                         self.RedoTime = time
-                        
+
                     if changeDayTime:
                         self.UndoDayTime = self.level.DayTime
                         self.RedoDayTime = day_time
@@ -2406,7 +2409,7 @@ class LevelEditor(GLViewport):
             time = time_editor.get_time_value()
             if self.level.Time != time:
                 changeTime = True
-                
+
         if hasattr(self.level, 'DayTime'):
             day_time = time_editor.get_daytime_value()
             if self.level.DayTime != day_time:
@@ -2726,7 +2729,7 @@ class LevelEditor(GLViewport):
                 selectedChunks.update(boxedChunks)
 
         self.selectionTool.selectNone()
-        
+
     def chunksToSelection(self):
         if len(self.selectedChunks) == 0:
             return
