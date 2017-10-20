@@ -809,7 +809,7 @@ class ChunkCalculator(object):
         level = cr.renderer.level
         try:
             chunk = level.getChunk(cx, cz)
-        except Exception, e:
+        except Exception as e:
             if "Session lock lost" in e.message:
                 yield
                 return
@@ -1149,12 +1149,7 @@ class ChunkCalculator(object):
             yield
 
     def makeTemplate(self, direction, blockIndices):
-        # Possible fix for #808:
-        #    + https://stackoverflow.com/questions/35465176/visible-deprecation-warning
-        #    + https://stackoverflow.com/questions/34296141/logical-indices-in-numpy-throwing-exception/34296620#34296620
-        #    + https://stackoverflow.com/questions/45207650/indexerror-boolean-index-did-not-match-indexed-array-along-dimension-0
-        #    + https://stackoverflow.com/questions/33098765/visibledeprecationwarning-boolean-index-did-not-match-indexed-array-along-dimen
-        return self.precomputedVertices[direction][blockIndices]
+        return self.precomputedVertices[direction][numpy.where(blockIndices)]
 
 class Layer:
     Blocks = "Blocks"
