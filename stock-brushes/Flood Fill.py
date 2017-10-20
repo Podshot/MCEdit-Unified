@@ -32,14 +32,16 @@ def createTileEntities(tileEntityTag, level):
     chunk.TileEntities.append(tileEntityTag)
     chunk._fakeEntities = None
 
-def apply(self, op, point):
 
+def apply(self, op, point):
     # undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
     # Use the same world as the one loaded.
     create = True
     if op.level.gameVersion == 'PE':
         create = op.level.world_version
     undoLevel = type(op.level)(mkundotemp(), create=create)
+    if op.level.gameVersion == 'PE':
+        undoLevel.Height = op.level.Height
     dirtyChunks = set()
 
     def saveUndoChunk(cx, cz):

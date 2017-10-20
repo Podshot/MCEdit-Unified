@@ -182,6 +182,10 @@ class MCLevel(object):
             self.__defs_ids = id_definitions.get_defs_ids(self.gameVersion)
         return self.__defs_ids
 
+    def loadDefIds(self):
+        if self.root_tag and not hasattr(self, '__defs_ids'):
+            self.__defs_ids = id_definitions.get_defs_ids(self.gameVersion)
+
     @classmethod
     def isLevel(cls, filename):
         """Tries to find out whether the given filename can be loaded

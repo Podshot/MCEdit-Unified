@@ -758,6 +758,37 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 self._allChunks += self.worldFile.getAllChunks(version='pre1.0')
         return self._allChunks
 
+    def copyChunkFrom(self, oldLevel, cx, cz):
+        assert isinstance(oldLevel, PocketLeveldbWorld)
+        if self.readonly:
+            raise IOError("World is opened read only.")
+
+        destChunk = self._loadedChunks.get((cx, cz))
+        sourceChunk = oldLevel._loadedChunks.get((cx, cz))
+
+        if sourceChunk:
+            if destChunk:
+                logger.debug("Both chunks loaded. Using block copy.")
+                # Both chunks loaded. Use block copy.
+                self.copyBlocksFrom(oldLevel, destChunk.bounds, destChunk.bounds.origin)
+                return
+            else:
+                logger.debug("Source chunk loaded. Saving into work folder.")
+
+                # Only source chunk loaded. Discard destination chunk and save source chunk in its place.
+                self._loadedChunkData.pop((cx, cz), None)
+                self.unsavedWorkFolder.saveChunk(cx, cz, sourceChunk.savedTagData())
+                return
+        else:
+            if destChunk:
+                logger.debug("Destination chunk loaded. Using block copy.")
+                # Only destination chunk loaded. Use block copy.
+                self.copyBlocksFrom(oldLevel, destChunk.bounds, destChunk.bounds.origin)
+            else:
+                logger.debug("No chunk loaded. Using world folder.copyChunkFrom")
+                # Neither chunk loaded. Copy via world folders.
+                raise NotImplementedError
+
     @property
     def players(self):
         if self._playerList is None:
@@ -783,7 +814,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if dim == 0:
             return player
 
-    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
+    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False, height=None):
         """
         :param filename: path to the root dir of the level
         :param create: bool or hexstring/int: wether to create the level. If bool, only False is allowed.
@@ -796,8 +827,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         # Can we rely on this to know which version of PE was used to create the world?
         # Looks like that 1+ world can also have a storage version equal to 4...
         if not create:
-            self.dat_world_version = dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
-            if ord(dat_world_version) >= 5:
+            self.dat_world_version = open(os.path.join(filename, 'level.dat')).read(1)
+            if ord(self.dat_world_version) >= 5:
                 self.world_version = '1.plus'
                 self.Height = 256
             else:
@@ -807,10 +838,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             logger.info('PE world verion found: %s (%s)' % (self.world_version, repr(self.dat_world_version)))
         else:
             self.world_version = create
+            if height is not None:
+                self.Height = height
             logger.info('Creating PE world version %s (%s)' % (self.world_version, repr(self.dat_world_version)))
 
         self.filename = filename
-        self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version, dat_world_version=dat_world_version)
+        self.worldFile = PocketLeveldbDatabase(filename, self, create=create, world_version=self.world_version, dat_world_version=self.dat_world_version)
 
         self.world_version = self.worldFile.world_version
         self.readonly = readonly

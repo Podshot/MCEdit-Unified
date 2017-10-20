@@ -1108,7 +1108,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.lockLoseFuncs = []
         self.initTime = -1
 
-        if os.path.basename(filename) in ("%s.dat"%dat_name, "%s.dat_old"%dat_name):
+        if os.path.basename(filename) in ("%s.dat" % dat_name, "%s.dat_old" % dat_name):
             filename = os.path.dirname(filename)
 
         if not os.path.exists(filename):
@@ -1121,7 +1121,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             raise IOError('File is not a Minecraft Alpha world')
 
         self.worldFolder = AnvilWorldFolder(filename)
-        self.filename = self.worldFolder.getFilePath("%s.dat"%dat_name)
+        self.filename = self.worldFolder.getFilePath("%s.dat" % dat_name)
         self.readonly = readonly
         if not readonly:
             self.acquireSessionLock()
@@ -1237,8 +1237,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         except struct.error:
             lock = -1
         if lock != self.initTime:
-            for function in self.lockLoseFuncs:
-                function()
+            for func in self.lockLoseFuncs:
+                func()
             raise SessionLockLost("Session lock lost. This world is being accessed from another location.")
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
@@ -1254,16 +1254,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 # Load the resource for the game version
                 if self.gameVersion != 'Unknown':
                     # Force the definitions to be loaded by calling the attribute.
-                    self.defsIds
+                    self.loadDefIds()
                 #
-            except Exception, e:
+            except Exception as e:
                 filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)
                 log.info("Error loading {1}.dat, trying {1}.dat_old ({0})".format(e, dat_name))
                 try:
                     self.root_tag = nbt.load(filename_old)
                     log.info("%s.dat restored from backup."%dat_name)
                     self.saveInPlace()
-                except Exception, e:
+                except Exception as e:
                     traceback.print_exc()
                     print repr(e)
                     log.info("Error loading %s.dat_old. Initializing with defaults."%dat_name)
@@ -1526,7 +1526,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     log.info("Found dimension {0}".format(dirname))
                     dim = MCAlphaDimension(self, dimNo)
                     self.dimensions[dimNo] = dim
-                except Exception, e:
+                except Exception as e:
                     log.error(u"Error loading dimension {0}: {1}".format(dirname, e))
 
     def getDimension(self, dimNo):
@@ -1675,7 +1675,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             chunkData = AnvilChunkData(self, (cx, cz), root_tag)
         except (MemoryError, ChunkNotPresent):
             raise
-        except Exception, e:
+        except Exception as e:
             raise ChunkMalformed("Chunk {0} had an error: {1!r}".format((cx, cz), e), sys.exc_info()[2])
 
         if not self.readonly and self.unsavedWorkFolder.containsChunk(cx, cz):
