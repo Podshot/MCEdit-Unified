@@ -2689,6 +2689,7 @@ class LevelEditor(GLViewport):
                                              useWorldType=generationtype)
 
             if "Canceled" == showProgress("Generating chunks...", worker, cancel=True):
+                generatorPanel.kill_process()
                 raise RuntimeError("Canceled.")
 
             if y < 64:

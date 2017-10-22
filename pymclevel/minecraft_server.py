@@ -83,7 +83,7 @@ class ServerJarStorage(object):
             os.makedirs(self._cacheDir)
         readme = os.path.join(self._cacheDir, "README.TXT")
         if not os.path.exists(readme):
-            with file(readme, "w") as f:
+            with open(readme, "w") as f:
                 f.write("""
 About this folder:
 
@@ -129,7 +129,7 @@ this way.
         print "Downloading the latest Minecraft Server..."
         try:
             (filename, headers) = urllib.urlretrieve(getVersions(getSnapshot))
-        except Exception, e:
+        except Exception as e:
             print "Error downloading server: {0!r}".format(e)
             return
 
@@ -164,7 +164,7 @@ this way.
 
     def checksumForVersion(self, v):
         jf = self.jarfileForVersion(v)
-        with file(jf, "rb") as f:
+        with open(jf, "rb") as f:
             import hashlib
 
             return hashlib.md5(f.read()).hexdigest()
@@ -200,14 +200,14 @@ def readProperties(filename):
     if not os.path.exists(filename):
         return {}
 
-    with file(filename) as f:
+    with open(filename) as f:
         properties = dict((line.split("=", 2) for line in (l.strip() for l in f) if not line.startswith("#")))
 
     return properties
 
 
 def saveProperties(filename, properties):
-    with file(filename, "w") as f:
+    with open(filename, "w") as f:
         for k, v in properties.iteritems():
             f.write("{0}={1}\n".format(k, v))
 
@@ -254,7 +254,7 @@ def findJava():
                                 print "RegQuery: java.exe found at ", java_exe
                                 break
 
-            except Exception, e:
+            except Exception as e:
                 print "Error while locating java.exe using the Registry: ", repr(e)
     else:
         java_exe = which(java_exe_path)
@@ -327,7 +327,7 @@ class MCServerChunkGenerator(object):
         readme = os.path.join(self.worldCacheDir, "README.TXT")
 
         if not os.path.exists(readme):
-            with file(readme, "w") as f:
+            with open(readme, "w") as f:
                 f.write("""
     About this folder:
 
@@ -444,7 +444,7 @@ class MCServerChunkGenerator(object):
             return
         try:
             tempChunkBytes = tempWorld._getChunkBytes(cx, cz)
-        except ChunkNotPresent, e:
+        except ChunkNotPresent as e:
             raise ChunkNotPresent("While generating a world in {0} using server {1} ({2!r})".format(tempWorld,
                                                                                                      self.serverJarFile,
                                                                                                      e), sys.exc_info()[
@@ -646,7 +646,7 @@ class MCServerChunkGenerator(object):
     @classmethod
     def terminateProcesses(cls):
         for process in cls.processes:
-            if process.poll():
+            if process.poll() is None:
                 try:
                     process.terminate()
                 except:

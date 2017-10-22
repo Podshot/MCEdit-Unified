@@ -520,4 +520,5 @@ def GeneratorPanel():
         return _createChunks()
 
     panel.generate = generate
+    panel.kill_process = MCServerChunkGenerator.terminateProcesses
     return panel
