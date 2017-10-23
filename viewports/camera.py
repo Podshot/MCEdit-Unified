@@ -945,8 +945,13 @@ class CameraViewport(GLViewport):
         def menu_picked(index):
             c = u"§%d"%index
             currentField = panel.focus_switch.focus_switch
-            currentField.text += c  # xxx view hierarchy
+            if currentField.insertion_step is not None:
+                currentField.text = currentField.text[:currentField.insertion_step] + c + currentField.text[currentField.insertion_step:]
+            else:
+                currentField.text += c
             currentField.insertion_point = len(currentField.text)
+            currentField.attention_lost()
+            currentField.get_focus()
 
         def changeSign():
             unsavedChanges = False
