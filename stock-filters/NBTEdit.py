@@ -2,8 +2,8 @@ import ast
 from pymclevel.box import BoundingBox
 
 inputs = [(("Entities", True),
-           ("Tile Entities", True),
-           ("Tile Ticks", True),
+           ("TileEntities", True),
+           ("TileTicks", True),
            ("Options", "title")),
           (("Results", "title"),
            ("", ["NBTTree", {}, 0, False]),
@@ -45,7 +45,7 @@ def perform(level, box, options):
     chunks = []
     boundingBox = box
     data = {"Entities": [], "TileEntities": [], "TileTicks": []}
-    runOn = (options["Entities"], options["Tile Entities"], options["Tile Ticks"])
+    runOn = (options["Entities"], options["TileEntities"], options["TileTicks"])
     for (chunk, slices, point) in level.getChunkSlices(box):
         if runOn[0]:
             for e in chunk.Entities:
