@@ -361,21 +361,23 @@ class MCMaterials(object):
         blockyaml = None
         try:
             f = pkg_resources.resource_stream(__name__, filename)
-        except (ImportError, IOError), e:
+        except (ImportError, IOError) as e:
             log.debug("Cannot get resource_stream for %s %s" % (filename, e))
             root = os.environ.get("PYMCLEVEL_YAML_ROOT", "pymclevel")  # fall back to cwd as last resort
             path = join(root, filename)
 
             log.debug("Failed to read %s using pkg_resources. Trying %s instead." % (filename, path))
 
-            f = file(path)
+            f = open(path)
         try:
             log.info(u"Loading block info from %s", f)
             blockyaml = json.load(f)
 
-        except Exception, e:
+        except Exception as e:
             log.warn(u"Exception while loading block info from %s: %s", f, e)
             traceback.print_exc()
+        finally:
+            f.close()
 
         if blockyaml:
             self.addJSONBlocks(blockyaml)

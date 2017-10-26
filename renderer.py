@@ -734,6 +734,7 @@ class ChunkCalculator(object):
             TorchBlockRenderer,
             WaterBlockRenderer,
             SlabBlockRenderer,
+            ModRenderer,
         ]
         if materials.name in ("Alpha", "Pocket"):
             self.blockRendererClasses += [
@@ -1569,7 +1570,7 @@ class LowDetailBlockRenderer(BlockRenderer):
             numpy.clip(h, 0, chunkHeight - 1, out=h)
             overblocks = blocks[gridaxes][nonAirBlocks].ravel()
 
-        except ValueError, e:
+        except ValueError as e:
             raise ValueError(str(e.args) + "Chunk shape: {0}".format(blockIndices.shape), sys.exc_info()[-1])
 
         if nonAirBlocks.any():
@@ -1673,6 +1674,100 @@ class GenericBlockRenderer(BlockRenderer):
     grassColor = grassColorDefault = [0.39, 0.71, 0.23]  # 62C743
 
     makeVertices = makeGenericVertices
+
+class ModRenderer(GenericBlockRenderer):
+
+    textures = {}
+    printed = False
+    _t_mods = []
+    _blocks = []
+
+    @classmethod
+    def getBlocktypes(cls, mats):
+        if not cls._blocks:
+            blocks = []
+            extend = blocks.extend
+            for mod in cls._t_mods:
+                extend(mod["blocks"])
+            cls._blocks = blocks
+            return blocks
+        return cls._blocks
+
+    @classmethod
+    def build(cls):
+        from mceutils import loadPNGTexture
+        import os
+        cls._t_mods = [
+            {
+                "name": "Test Mod",
+                "blocks": [404, 406],
+                "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod", "texture.png")),
+            }, {
+                "name": "Test Mod #2",
+                "blocks": [500, 501],
+                "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod_2", "texture.png"))
+            }
+        ]
+
+    def __init__(self, cc):
+        super(GenericBlockRenderer, self).__init__(cc)
+        self.vertexMap = {}
+
+        #from mceutils import loadPNGTexture
+        #self.mats = cc.level.materials
+        #if self.textures == {}:
+        #    for mod in self.mats.mods:
+        #        self.textures[mod.name] = loadPNGTexture(mod.texture)
+        cc.level.materials.addBlock(404, texture=[0,0])
+        cc.level.materials.addBlock(500, texture=[0,2])
+        #import os
+        #filename = os.path.join(".", "mods", "test_mod", "texture.png")
+        #from mceutils import loadPNGTexture
+        #self.texture = loadPNGTexture(filename)
+
+        if not self.__class__._t_mods:
+            self.__class__.build()
+        #t_mod1 = object()
+        #setattr(t_mod1, 'name', "Test Mod")
+        #setattr(t_mod1, 'blocks', [404, 406])
+        #setattr(t_mod1, 'texture', self.texture)
+        #self._t_mods.append(t_mod1)
+
+    def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        for mod in self._t_mods:
+            old_shape = blocks.shape
+            _blocks = blocks.copy()
+            _blocks = _blocks.ravel()
+            _blocks[numpy.in1d(_blocks, mod["blocks"], invert=True)] = 0
+            _blocks = numpy.reshape(_blocks, old_shape)
+
+            self.vertexArrays = []
+            for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
+                yield
+            self.vertexMap[mod["name"]] = self.vertexArrays
+            self.vertexArrays = []
+
+
+    def drawVertices(self):
+        GL.glPushAttrib(GL.GL_TEXTURE_BIT)
+        for mod in self._t_mods:
+            #GL.glPushAttrib(GL.GL_TEXTURE_BIT)
+            mod["texture"].bind()
+            self.vertexArrays = self.vertexMap[mod["name"]]
+            super(ModRenderer, self).drawVertices()
+            self.vertexArrays = []
+            #GL.glPopAttrib()
+        GL.glPopAttrib()
+        #for mod in self.mats.mods:
+        #GL.glPushAttrib(GL.GL_TEXTURE_BIT)
+            #self.textures[mod.name].bind()
+        #self.texture.bind()
+        #if not self.printed:
+        #    print len(self.vertexArrays)
+        #    print self.vertexArrays
+        #    self.printed = True
+        #super(GenericBlockRenderer, self).drawVertices()
+        #GL.glPopAttrib()
 
 
 class LeafBlockRenderer(BlockRenderer):
