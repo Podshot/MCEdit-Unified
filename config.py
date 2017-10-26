@@ -209,7 +209,7 @@ class ConfigValue(object):
             attr = self.key
         log.debug("Subscribing %s.%s", target, attr)
 
-        attr = intern(attr)
+        attr = intern(str(attr))
         targetref = weakref.ref(target)
         observers.setdefault((targetref, attr), callback)
 

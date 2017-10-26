@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import albow
 from albow.dialogs import Dialog
 from resource_packs import ResourcePackHandler

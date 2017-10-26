@@ -4,7 +4,7 @@
 
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-
+from __future__ import unicode_literals
 """
 mcedit.py
 

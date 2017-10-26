@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import albow
 from albow.dialogs import Dialog
 from config import config
@@ -313,7 +314,7 @@ class OptionsPanel(Dialog):
                     return False
             try:
                 [directories.goPortable, directories.goFixed][directories.portable](useExisting)
-            except Exception, e:
+            except Exception as e:
                 traceback.print_exc()
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
         else:

@@ -1,5 +1,6 @@
 # -*- coding: utf_8 -*-
 # The above line is necessary, unless we want problems with encodings...
+from __future__ import unicode_literals
 import sys
 from compass import CompassOverlay
 from raycaster import TooFarException
@@ -283,7 +284,7 @@ class CameraViewport(GLViewport):
         dx = -math.sin(math.radians(yaw)) * math.cos(math.radians(pitch))
         dy = -math.sin(math.radians(pitch))
         dz = math.cos(math.radians(yaw)) * math.cos(math.radians(pitch))
-        return map(nanzero, [dx, dy, dz])
+        return map(nanzero, (dx, dy, dz))
 
     def updateMouseVector(self):
         self.mouseVector = self._mouseVector()

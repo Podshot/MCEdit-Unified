@@ -703,12 +703,12 @@ class IResourcePack(object):
                         try:
                             image = image.convert("RGBA")
                             log.debug("        Image converted to RGBA.")
-                        except Exception, ee:
+                        except Exception as ee:
                             print "* * *", tex, ee
                     slot = textureSlots[tex]
                     try:
                         new_terrain.paste(image, slot, image)
-                    except Exception, eee:
+                    except Exception as eee:
                         print "* * * new_terrain error:", eee
                     self.propogated_textures.append(slot)
                     log.debug("        Image pasted and propagated.")
@@ -797,7 +797,7 @@ class ZipResourcePack(IResourcePack):
         if not os.path.exists(self._terrain_path):
             try:
                 self.open_pack()
-            except Exception, e:
+            except Exception as e:
                 if 'seek' not in e:
                     print "Error while trying to load one of the resource packs: {}".format(e)
 
@@ -831,7 +831,7 @@ class ZipResourcePack(IResourcePack):
                         possible_texture = Image.open(fp1)
                         log.debug("            File descriptor for %s opened."%block_name)
                         log.debug("            Is %s."%repr(possible_texture.size))
-                    except Exception, e:
+                    except Exception as e:
                         log.debug("            Can't open descriptor for %s"%block_name)
                         log.debug("            System said:")
                         log.debug("            %s"%repr(e))

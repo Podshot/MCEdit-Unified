@@ -414,7 +414,7 @@ class MCMaterials(object):
         for block in blockyaml['blocks']:
             try:
                 self.addJSONBlock(block)
-            except Exception, e:
+            except Exception as e:
                 log.warn(u"Exception while parsing block: %s", e)
                 traceback.print_exc()
                 log.warn(u"Block definition: \n%s", pformat(block))

@@ -11,6 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+from __future__ import unicode_literals
 # -# Modified by D.C.-G. for translation purpose
 # .# Marks the layout modifications. -- D.C.-G.
 
@@ -315,7 +316,7 @@ class SelectionTool(EditorTool):
             text += "TileEntity:\n"
             try:
                 text += "{id}: {pos}\n".format(id=t["id"].value, pos=[t[a].value for a in "xyz"])
-            except Exception, e:
+            except Exception as e:
                 text += repr(e)
             if "Items" in t and self.infoKey == 0:
                 text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(
@@ -346,7 +347,7 @@ class SelectionTool(EditorTool):
             else:
                 return self.describeBlockAt(pos)
 
-        except Exception, e:
+        except Exception as e:
             return repr(e)
 
     @alertException

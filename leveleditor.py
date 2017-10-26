@@ -2994,7 +2994,7 @@ class LevelEditor(GLViewport):
                     self.inspectionString += _("ID: %d (%s), ") % (
                         blockID, self.level.materials.names[blockID][0])
 
-        except Exception, e:
+        except Exception as e:
             self.inspectionString += _("Chunk {0} had an error: {1!r}").format(
                 (int(numpy.floor(blockPosition[0])) >> 4, int(numpy.floor(blockPosition[2])) >> 4), e)
 
