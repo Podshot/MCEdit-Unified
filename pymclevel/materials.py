@@ -516,6 +516,9 @@ class MCMaterials(object):
 
         block = Block(self, blockID, blockData, stringName)
 
+        if '_name' in kw:
+            setattr(self, kw.pop('_name'), block)
+
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
         self.blocksByType[block_type].append(block)
@@ -1344,7 +1347,6 @@ def build_api_material_map(mats=alphaMaterials):
 alphaMaterials.addJSONBlocksFromVersion('Unknown')
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
-
 
 if '--dump-mats' in os.sys.argv:
     os.sys.argv.remove('--dump-mats')
