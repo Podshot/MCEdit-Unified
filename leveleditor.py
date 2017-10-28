@@ -437,8 +437,8 @@ class LevelEditor(GLViewport):
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
-            def __init__(self, parent):
-                Panel.__init__(self, parent)
+            def __init__(self):
+                Panel.__init__(self)
                 self.autoChooseCheckBox = CheckBoxLabel("Override Minecraft Changes (Not Recommended)",
                                                         ref=config.session.override,
                                                         tooltipText="Always override Minecraft changes when map is open in MCEdit. (Not recommended)")
@@ -449,7 +449,7 @@ class LevelEditor(GLViewport):
                 self.shrink_wrap()
 
         if evt.button == 3:
-            sessionLockPanel = SessionLockOptions(self)
+            sessionLockPanel = SessionLockOptions()
             sessionLockPanel.present()
 
     _viewMode = None
