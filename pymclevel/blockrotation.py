@@ -855,7 +855,7 @@ def masterRotationTable(attrname):
                 # Very bad stuff here...
                 try:
                     table[blocktype] = blocktable
-                except (NameError, ValueError) as e:
+                except (NameError, ValueError, IndexError) as e:
                     try:
                         table[eval(blocktype)] = blocktable
                     except (NameError, SyntaxError):
