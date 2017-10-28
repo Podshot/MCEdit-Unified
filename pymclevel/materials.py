@@ -361,7 +361,7 @@ class MCMaterials(object):
         blockyaml = None
         try:
             f = pkg_resources.resource_stream(__name__, filename)
-        except (ImportError, IOError), e:
+        except (ImportError, IOError) as e:
             log.debug("Cannot get resource_stream for %s %s" % (filename, e))
             root = os.environ.get("PYMCLEVEL_YAML_ROOT", "pymclevel")  # fall back to cwd as last resort
             path = join(root, filename)
@@ -373,7 +373,7 @@ class MCMaterials(object):
             log.info(u"Loading block info from %s", f)
             blockyaml = json.load(f)
 
-        except Exception, e:
+        except Exception as e:
             log.warn(u"Exception while loading block info from %s: %s", f, e)
             traceback.print_exc()
 
