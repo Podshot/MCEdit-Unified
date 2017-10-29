@@ -389,6 +389,7 @@ class MCMaterials(object):
         print "Game Version: " + game_version
         game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
+        meth = None
         if game_version == 'PE' or game_version == 'old pocket':
             f_name = 'pocket.json'
             self.setup_blockstates("pe_blockstates.json")
@@ -398,7 +399,7 @@ class MCMaterials(object):
             f_name = 'classic.json'
             meth = build_classic_materials
         elif game_version == 'indev':
-            f_name == 'indev.json'
+            f_name = 'indev.json'
             meth = build_indev_materials
         else:
             f_name = 'minecraft.json'
@@ -516,8 +517,15 @@ class MCMaterials(object):
 
         block = Block(self, blockID, blockData, stringName)
 
-        if '_name' in kw:
-            setattr(self, kw.pop('_name'), block)
+        #if '_name' in kw:
+        #    setattr(self, kw.pop('_name'), block)
+        attr_name = name.title().replace(' ', '')
+        if '(' in attr_name:
+            attr_name = attr_name[:attr_name.find('(')]
+
+        if attr_name not in self.__dict__:
+            setattr(self, attr_name, block)
+            print attr_name
 
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
