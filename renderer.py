@@ -1679,35 +1679,38 @@ class ModRenderer(GenericBlockRenderer):
 
     textures = {}
     printed = False
-    _t_mods = []
-    _blocks = []
+    mod_blocks = []
+    mods = []
 
     @classmethod
     def getBlocktypes(cls, mats):
-        if not cls._blocks:
+        if not cls.mod_blocks:
             blocks = []
             extend = blocks.extend
-            for mod in cls._t_mods:
-                extend(mod["blocks"])
-            cls._blocks = blocks
+            for mod in cls.mods:
+                extend(mod.blocks)
+            cls.mod_blocks = blocks
             return blocks
-        return cls._blocks
+        return cls.mod_blocks
 
-    @classmethod
-    def build(cls):
+    def build(self):
         from mceutils import loadPNGTexture
-        import os
-        cls._t_mods = [
-            {
-                "name": "Test Mod",
-                "blocks": [404, 406],
-                "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod", "texture.png")),
-            }, {
-                "name": "Test Mod #2",
-                "blocks": [500, 501],
-                "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod_2", "texture.png"))
-            }
-        ]
+        #import os
+        #cls._t_mods = [
+        #    {
+        #        "name": "Test Mod",
+        #        "blocks": [404, 406],
+        #        "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod", "texture.png")),
+        #    }, {
+        #        "name": "Test Mod #2",
+        #        "blocks": [500, 501],
+        #        "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod_2", "texture.png"))
+        #    }
+        #]
+        if hasattr(self.materials, 'mods'):
+            for mod in self.materials.mods:
+                setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
+                self.mods.append(mod)
 
     def __init__(self, cc):
         super(GenericBlockRenderer, self).__init__(cc)
@@ -1718,15 +1721,15 @@ class ModRenderer(GenericBlockRenderer):
         #if self.textures == {}:
         #    for mod in self.mats.mods:
         #        self.textures[mod.name] = loadPNGTexture(mod.texture)
-        cc.level.materials.addBlock(404, texture=[0,0])
-        cc.level.materials.addBlock(500, texture=[0,2])
+        #cc.level.materials.addBlock(404, texture=[0,0])
+        #cc.level.materials.addBlock(500, texture=[0,2])
         #import os
         #filename = os.path.join(".", "mods", "test_mod", "texture.png")
         #from mceutils import loadPNGTexture
         #self.texture = loadPNGTexture(filename)
 
-        if not self.__class__._t_mods:
-            self.__class__.build()
+        if not self.__class__.mods:
+            self.build()
         #t_mod1 = object()
         #setattr(t_mod1, 'name', "Test Mod")
         #setattr(t_mod1, 'blocks', [404, 406])
@@ -1734,26 +1737,26 @@ class ModRenderer(GenericBlockRenderer):
         #self._t_mods.append(t_mod1)
 
     def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
-        for mod in self._t_mods:
+        for mod in self.mods:
             old_shape = blocks.shape
             _blocks = blocks.copy()
             _blocks = _blocks.ravel()
-            _blocks[numpy.in1d(_blocks, mod["blocks"], invert=True)] = 0
+            _blocks[numpy.in1d(_blocks, mod.blocks, invert=True)] = 0
             _blocks = numpy.reshape(_blocks, old_shape)
 
             self.vertexArrays = []
             for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
                 yield
-            self.vertexMap[mod["name"]] = self.vertexArrays
+            self.vertexMap[mod.name] = self.vertexArrays
             self.vertexArrays = []
 
 
     def drawVertices(self):
         GL.glPushAttrib(GL.GL_TEXTURE_BIT)
-        for mod in self._t_mods:
+        for mod in self.mods:
             #GL.glPushAttrib(GL.GL_TEXTURE_BIT)
-            mod["texture"].bind()
-            self.vertexArrays = self.vertexMap[mod["name"]]
+            mod.texture.bind()
+            self.vertexArrays = self.vertexMap[mod.name]
             super(ModRenderer, self).drawVertices()
             self.vertexArrays = []
             #GL.glPopAttrib()

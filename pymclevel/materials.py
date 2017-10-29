@@ -535,9 +535,42 @@ class MCMaterials(object):
 
         return block
 
+class ModMaterials(object):
+
+    def __init__(self, parent_materials, mod_directory):
+        self._mod_directory = mod_directory
+        self._parent = parent_materials
+        self.name = os.path.dirname(mod_directory).replace(' ', '_')
+        self.blocks = []
+        self.texture_path = os.path.join(mod_directory, 'texture.png')
+        self.block_definitions = os.path.join(mod_directory, 'blocks.json')
+
+        fp = open(self.block_definitions)
+        mod_defs = json.load(fp)
+        fp.close()
+
+        for block in mod_defs['blocks']:
+            self.blocks.append(block['id'])
+
+        parent_materials.addJSONBlocks(mod_defs)
+
+        if not hasattr(self._parent, 'mods'):
+            setattr(self._parent, 'mods', [self,])
+        else:
+            self._parent.mods.append(self)
+
+    def remove(self):
+        self._parent.mods.remove(self)
+
+
+
 
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
+
+for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
+    if os.path.exists(os.path.join('.', 'mods', mod, 'blocks.json')):
+        ModMaterials(alphaMaterials, os.path.join('.', 'mods', mod))
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"

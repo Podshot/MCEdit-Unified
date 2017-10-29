@@ -4,7 +4,12 @@
       "id": 404,
       "name": "Test Mod Block",
       "idStr": "test_mod_block",
-      "texture": [0,0]
+      "texture": [0,0],
+      "data": {
+        "0": {
+          "tex": [0,0]
+        }
+      }
     },{
       "id": 406,
       "name": "Test Mod Block #2",
@@ -12,6 +17,14 @@
       "texture": [0,0],
       "tex_direction": {
         "TOP": [0,1]
+      },
+      "data": {
+        "0": {
+          "tex": [0,0],
+          "tex_direction": {
+            "TOP": [1,0]
+          }
+        }
       }
     }
   ]
