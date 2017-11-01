@@ -1,1283 +1,1349 @@
 {
-    "load": "1.11",
-    "blocks": [
+    "load":"1.11",
+    "blocks":[
         {
-            "id": 251,
-            "name": "Concrete",
-            "idStr": "concrete",
-            "mapcolor": [
+            "__data":{
+                "blue":{
+                    "tex":[
+                        21,
+                        21
+                    ],
+                    "name":"Blue concrete"
+                },
+                "gray":{
+                    "tex":[
+                        11,
+                        21
+                    ],
+                    "name":"Gray concrete"
+                },
+                "brown":{
+                    "tex":[
+                        25,
+                        21
+                    ],
+                    "name":"Brown concrete"
+                },
+                "purple":{
+                    "tex":[
+                        22,
+                        21
+                    ],
+                    "name":"Purple concrete"
+                },
+                "green":{
+                    "tex":[
+                        18,
+                        21
+                    ],
+                    "name":"Green concrete"
+                },
+                "yellow":{
+                    "tex":[
+                        16,
+                        21
+                    ],
+                    "name":"Yellow concrete"
+                },
+                "silver":{
+                    "tex":[
+                        12,
+                        21
+                    ],
+                    "name":"Silver concrete"
+                },
+                "light_blue":{
+                    "tex":[
+                        20,
+                        21
+                    ],
+                    "name":"Light blue concrete"
+                },
+                "pink":{
+                    "tex":[
+                        24,
+                        21
+                    ],
+                    "name":"Pink concrete"
+                },
+                "black":{
+                    "tex":[
+                        10,
+                        21
+                    ],
+                    "name":"Black concrete"
+                },
+                "orange":{
+                    "tex":[
+                        15,
+                        21
+                    ],
+                    "name":"Orange concrete"
+                },
+                "cyan":{
+                    "tex":[
+                        19,
+                        21
+                    ],
+                    "name":"Cyan concrete"
+                },
+                "magenta":{
+                    "tex":[
+                        23,
+                        21
+                    ],
+                    "name":"Magenta concrete"
+                },
+                "white":{
+                    "tex":[
+                        13,
+                        21
+                    ],
+                    "name":"White concrete"
+                },
+                "red":{
+                    "tex":[
+                        14,
+                        21
+                    ],
+                    "name":"Red concrete"
+                },
+                "lime":{
+                    "tex":[
+                        17,
+                        21
+                    ],
+                    "name":"Lime concrete"
+                }
+            },
+            "name":"Concrete",
+            "idStr":"concrete",
+            "_name":"Concrete",
+            "__comment__":"Invalidated named colors for now...",
+            "mapcolor":[
                 128,
                 128,
                 128
             ],
-            "__comment__": "Invalidated named colors for now...",
-            "__data": {
-                "black": {
-                    "name": "Black concrete",
-                    "tex": [
-                        10,
-                        21
-                    ]
-                },
-                "gray": {
-                    "name": "Gray concrete",
-                    "tex": [
-                        11,
-                        21
-                    ]
-                },
-                "silver": {
-                    "name": "Silver concrete",
-                    "tex": [
-                        12,
-                        21
-                    ]
-                },
-                "white": {
-                    "name": "White concrete",
-                    "tex": [
-                        13,
-                        21
-                    ]
-                },
-                "red": {
-                    "name": "Red concrete",
-                    "tex": [
-                        14,
-                        21
-                    ]
-                },
-                "orange": {
-                    "name": "Orange concrete",
-                    "tex": [
-                        15,
-                        21
-                    ]
-                },
-                "yellow": {
-                    "name": "Yellow concrete",
-                    "tex": [
-                        16,
-                        21
-                    ]
-                },
-                "lime": {
-                    "name": "Lime concrete",
-                    "tex": [
-                        17,
-                        21
-                    ]
-                },
-                "green": {
-                    "name": "Green concrete",
-                    "tex": [
-                        18,
-                        21
-                    ]
-                },
-                "cyan": {
-                    "name": "Cyan concrete",
-                    "tex": [
-                        19,
-                        21
-                    ]
-                },
-                "light_blue": {
-                    "name": "Light blue concrete",
-                    "tex": [
-                        20,
-                        21
-                    ]
-                },
-                "blue": {
-                    "name": "Blue concrete",
-                    "tex": [
+            "data":{
+                "11":{
+                    "tex":[
                         21,
                         21
-                    ]
+                    ],
+                    "name":"Blue concrete",
+                    "_name":"BlueConcrete"
                 },
-                "purple": {
-                    "name": "Purple concrete",
-                    "tex": [
+                "10":{
+                    "tex":[
                         22,
                         21
-                    ]
+                    ],
+                    "name":"Purple concrete",
+                    "_name":"PurpleConcrete"
                 },
-                "magenta": {
-                    "name": "Magenta concrete",
-                    "tex": [
-                        23,
+                "13":{
+                    "tex":[
+                        18,
                         21
-                    ]
+                    ],
+                    "name":"Green concrete",
+                    "_name":"GreenConcrete"
                 },
-                "pink": {
-                    "name": "Pink concrete",
-                    "tex": [
-                        24,
-                        21
-                    ]
-                },
-                "brown": {
-                    "name": "Brown concrete",
-                    "tex": [
+                "12":{
+                    "tex":[
                         25,
                         21
-                    ]
+                    ],
+                    "name":"Brown concrete",
+                    "_name":"BrownConcrete"
+                },
+                "15":{
+                    "tex":[
+                        10,
+                        21
+                    ],
+                    "name":"Black concrete",
+                    "_name":"BlackConcrete"
+                },
+                "14":{
+                    "tex":[
+                        14,
+                        21
+                    ],
+                    "name":"Red concrete",
+                    "_name":"RedConcrete"
+                },
+                "1":{
+                    "tex":[
+                        15,
+                        21
+                    ],
+                    "name":"Orange concrete",
+                    "_name":"OrangeConcrete"
+                },
+                "0":{
+                    "tex":[
+                        13,
+                        21
+                    ],
+                    "name":"White concrete",
+                    "_name":"WhiteConcrete"
+                },
+                "3":{
+                    "tex":[
+                        20,
+                        21
+                    ],
+                    "name":"Light blue concrete",
+                    "_name":"LightBlueConcrete"
+                },
+                "2":{
+                    "tex":[
+                        23,
+                        21
+                    ],
+                    "name":"Magenta concrete",
+                    "_name":"MagentaConcrete"
+                },
+                "5":{
+                    "tex":[
+                        17,
+                        21
+                    ],
+                    "name":"Lime concrete",
+                    "_name":"LimeConcrete"
+                },
+                "4":{
+                    "tex":[
+                        16,
+                        21
+                    ],
+                    "name":"Yellow concrete",
+                    "_name":"YellowConcrete"
+                },
+                "7":{
+                    "tex":[
+                        11,
+                        21
+                    ],
+                    "name":"Gray concrete",
+                    "_name":"GrayConcrete"
+                },
+                "6":{
+                    "tex":[
+                        24,
+                        21
+                    ],
+                    "name":"Pink concrete",
+                    "_name":"PinkConcrete"
+                },
+                "9":{
+                    "tex":[
+                        19,
+                        21
+                    ],
+                    "name":"Cyan concrete",
+                    "_name":"CyanConcrete"
+                },
+                "8":{
+                    "tex":[
+                        12,
+                        21
+                    ],
+                    "name":"Silver concrete",
+                    "_name":"SilverConcrete"
                 }
             },
-            "data": {
-                "15": {
-                    "name": "Black concrete",
-                    "tex": [
-                        10,
-                        21
-                    ]
-                },
-                "7": {
-                    "name": "Gray concrete",
-                    "tex": [
-                        11,
-                        21
-                    ]
-                },
-                "8": {
-                    "name": "Silver concrete",
-                    "tex": [
-                        12,
-                        21
-                    ]
-                },
-                "0": {
-                    "name": "White concrete",
-                    "tex": [
-                        13,
-                        21
-                    ]
-                },
-                "14": {
-                    "name": "Red concrete",
-                    "tex": [
-                        14,
-                        21
-                    ]
-                },
-                "1": {
-                    "name": "Orange concrete",
-                    "tex": [
-                        15,
-                        21
-                    ]
-                },
-                "4": {
-                    "name": "Yellow concrete",
-                    "tex": [
-                        16,
-                        21
-                    ]
-                },
-                "5": {
-                    "name": "Lime concrete",
-                    "tex": [
-                        17,
-                        21
-                    ]
-                },
-                "13": {
-                    "name": "Green concrete",
-                    "tex": [
-                        18,
-                        21
-                    ]
-                },
-                "9": {
-                    "name": "Cyan concrete",
-                    "tex": [
-                        19,
-                        21
-                    ]
-                },
-                "3": {
-                    "name": "Light blue concrete",
-                    "tex": [
-                        20,
-                        21
-                    ]
-                },
-                "11": {
-                    "name": "Blue concrete",
-                    "tex": [
-                        21,
-                        21
-                    ]
-                },
-                "10": {
-                    "name": "Purple concrete",
-                    "tex": [
-                        22,
-                        21
-                    ]
-                },
-                "2": {
-                    "name": "Magenta concrete",
-                    "tex": [
-                        23,
-                        21
-                    ]
-                },
-                "6": {
-                    "name": "Pink concrete",
-                    "tex": [
-                        24,
-                        21
-                    ]
-                },
-                "12": {
-                    "name": "Brown concrete",
-                    "tex": [
-                        25,
-                        21
-                    ]
-                }
-            }
+            "id":251
         },
         {
-            "id": 252,
-            "name": "Concrete powder",
-            "idStr": "concrete_powder",
-            "mapcolor": [
+            "__data":{
+                "blue":{
+                    "tex":[
+                        21,
+                        22
+                    ],
+                    "name":"Blue concrete powder"
+                },
+                "gray":{
+                    "tex":[
+                        11,
+                        22
+                    ],
+                    "name":"Gray concrete powder"
+                },
+                "brown":{
+                    "tex":[
+                        25,
+                        22
+                    ],
+                    "name":"Brown concrete powder"
+                },
+                "purple":{
+                    "tex":[
+                        22,
+                        22
+                    ],
+                    "name":"Purple concrete powder"
+                },
+                "green":{
+                    "tex":[
+                        18,
+                        22
+                    ],
+                    "name":"Green concrete powder"
+                },
+                "yellow":{
+                    "tex":[
+                        16,
+                        22
+                    ],
+                    "name":"Yellow concrete powder"
+                },
+                "silver":{
+                    "tex":[
+                        12,
+                        22
+                    ],
+                    "name":"Silver concrete powder"
+                },
+                "light_blue":{
+                    "tex":[
+                        20,
+                        22
+                    ],
+                    "name":"Light blue concrete powder"
+                },
+                "pink":{
+                    "tex":[
+                        24,
+                        22
+                    ],
+                    "name":"Pink concrete powder"
+                },
+                "black":{
+                    "tex":[
+                        10,
+                        22
+                    ],
+                    "name":"Black concrete powder"
+                },
+                "orange":{
+                    "tex":[
+                        15,
+                        22
+                    ],
+                    "name":"Orange concrete powder"
+                },
+                "cyan":{
+                    "tex":[
+                        19,
+                        22
+                    ],
+                    "name":"Cyan concrete powder"
+                },
+                "magenta":{
+                    "tex":[
+                        23,
+                        22
+                    ],
+                    "name":"Magenta concrete powder"
+                },
+                "white":{
+                    "tex":[
+                        13,
+                        22
+                    ],
+                    "name":"White concrete powder"
+                },
+                "red":{
+                    "tex":[
+                        14,
+                        22
+                    ],
+                    "name":"Red concrete powder"
+                },
+                "lime":{
+                    "tex":[
+                        17,
+                        22
+                    ],
+                    "name":"Lime concrete powder"
+                }
+            },
+            "name":"Concrete powder",
+            "idStr":"concrete_powder",
+            "_name":"ConcretePowder",
+            "__comment__":"Invalidated named colors for now...",
+            "mapcolor":[
                 128,
                 128,
                 128
             ],
-            "__comment__": "Invalidated named colors for now...",
-            "__data": {
-                "black": {
-                    "name": "Black concrete powder",
-                    "tex": [
-                        10,
-                        22
-                    ]
-                },
-                "gray": {
-                    "name": "Gray concrete powder",
-                    "tex": [
-                        11,
-                        22
-                    ]
-                },
-                "silver": {
-                    "name": "Silver concrete powder",
-                    "tex": [
-                        12,
-                        22
-                    ]
-                },
-                "white": {
-                    "name": "White concrete powder",
-                    "tex": [
-                        13,
-                        22
-                    ]
-                },
-                "red": {
-                    "name": "Red concrete powder",
-                    "tex": [
-                        14,
-                        22
-                    ]
-                },
-                "orange": {
-                    "name": "Orange concrete powder",
-                    "tex": [
-                        15,
-                        22
-                    ]
-                },
-                "yellow": {
-                    "name": "Yellow concrete powder",
-                    "tex": [
-                        16,
-                        22
-                    ]
-                },
-                "lime": {
-                    "name": "Lime concrete powder",
-                    "tex": [
-                        17,
-                        22
-                    ]
-                },
-                "green": {
-                    "name": "Green concrete powder",
-                    "tex": [
-                        18,
-                        22
-                    ]
-                },
-                "cyan": {
-                    "name": "Cyan concrete powder",
-                    "tex": [
-                        19,
-                        22
-                    ]
-                },
-                "light_blue": {
-                    "name": "Light blue concrete powder",
-                    "tex": [
-                        20,
-                        22
-                    ]
-                },
-                "blue": {
-                    "name": "Blue concrete powder",
-                    "tex": [
+            "data":{
+                "11":{
+                    "tex":[
                         21,
                         22
-                    ]
+                    ],
+                    "name":"Blue concrete powder",
+                    "_name":"BlueConcretePowder"
                 },
-                "purple": {
-                    "name": "Purple concrete powder",
-                    "tex": [
+                "10":{
+                    "tex":[
                         22,
                         22
-                    ]
+                    ],
+                    "name":"Purple concrete powder",
+                    "_name":"PurpleConcretePowder"
                 },
-                "magenta": {
-                    "name": "Magenta concrete powder",
-                    "tex": [
-                        23,
+                "13":{
+                    "tex":[
+                        18,
                         22
-                    ]
+                    ],
+                    "name":"Green concrete powder",
+                    "_name":"GreenConcretePowder"
                 },
-                "pink": {
-                    "name": "Pink concrete powder",
-                    "tex": [
-                        24,
-                        22
-                    ]
-                },
-                "brown": {
-                    "name": "Brown concrete powder",
-                    "tex": [
+                "12":{
+                    "tex":[
                         25,
                         22
-                    ]
+                    ],
+                    "name":"Brown concrete powder",
+                    "_name":"BrownConcretePowder"
+                },
+                "15":{
+                    "tex":[
+                        10,
+                        22
+                    ],
+                    "name":"Black concrete powder",
+                    "_name":"BlackConcretePowder"
+                },
+                "14":{
+                    "tex":[
+                        14,
+                        22
+                    ],
+                    "name":"Red concrete powder",
+                    "_name":"RedConcretePowder"
+                },
+                "1":{
+                    "tex":[
+                        15,
+                        22
+                    ],
+                    "name":"Orange concrete powder",
+                    "_name":"OrangeConcretePowder"
+                },
+                "0":{
+                    "tex":[
+                        13,
+                        22
+                    ],
+                    "name":"White concrete powder",
+                    "_name":"WhiteConcretePowder"
+                },
+                "3":{
+                    "tex":[
+                        20,
+                        22
+                    ],
+                    "name":"Light blue concrete powder",
+                    "_name":"LightBlueConcretePowder"
+                },
+                "2":{
+                    "tex":[
+                        23,
+                        22
+                    ],
+                    "name":"Magenta concrete powder",
+                    "_name":"MagentaConcretePowder"
+                },
+                "5":{
+                    "tex":[
+                        17,
+                        22
+                    ],
+                    "name":"Lime concrete powder",
+                    "_name":"LimeConcretePowder"
+                },
+                "4":{
+                    "tex":[
+                        16,
+                        22
+                    ],
+                    "name":"Yellow concrete powder",
+                    "_name":"YellowConcretePowder"
+                },
+                "7":{
+                    "tex":[
+                        11,
+                        22
+                    ],
+                    "name":"Gray concrete powder",
+                    "_name":"GrayConcretePowder"
+                },
+                "6":{
+                    "tex":[
+                        24,
+                        22
+                    ],
+                    "name":"Pink concrete powder",
+                    "_name":"PinkConcretePowder"
+                },
+                "9":{
+                    "tex":[
+                        19,
+                        22
+                    ],
+                    "name":"Cyan concrete powder",
+                    "_name":"CyanConcretePowder"
+                },
+                "8":{
+                    "tex":[
+                        12,
+                        22
+                    ],
+                    "name":"Silver concrete powder",
+                    "_name":"SilverConcretePowder"
                 }
             },
-            "data": {
-                "15": {
-                    "name": "Black concrete powder",
-                    "tex": [
-                        10,
-                        22
-                    ]
-                },
-                "7": {
-                    "name": "Gray concrete powder",
-                    "tex": [
-                        11,
-                        22
-                    ]
-                },
-                "8": {
-                    "name": "Silver concrete powder",
-                    "tex": [
-                        12,
-                        22
-                    ]
-                },
-                "0": {
-                    "name": "White concrete powder",
-                    "tex": [
-                        13,
-                        22
-                    ]
-                },
-                "14": {
-                    "name": "Red concrete powder",
-                    "tex": [
-                        14,
-                        22
-                    ]
-                },
-                "1": {
-                    "name": "Orange concrete powder",
-                    "tex": [
-                        15,
-                        22
-                    ]
-                },
-                "4": {
-                    "name": "Yellow concrete powder",
-                    "tex": [
-                        16,
-                        22
-                    ]
-                },
-                "5": {
-                    "name": "Lime concrete powder",
-                    "tex": [
-                        17,
-                        22
-                    ]
-                },
-                "13": {
-                    "name": "Green concrete powder",
-                    "tex": [
-                        18,
-                        22
-                    ]
-                },
-                "9": {
-                    "name": "Cyan concrete powder",
-                    "tex": [
-                        19,
-                        22
-                    ]
-                },
-                "3": {
-                    "name": "Light blue concrete powder",
-                    "tex": [
-                        20,
-                        22
-                    ]
-                },
-                "11": {
-                    "name": "Blue concrete powder",
-                    "tex": [
-                        21,
-                        22
-                    ]
-                },
-                "10": {
-                    "name": "Purple concrete powder",
-                    "tex": [
-                        22,
-                        22
-                    ]
-                },
-                "2": {
-                    "name": "Magenta concrete powder",
-                    "tex": [
-                        23,
-                        22
-                    ]
-                },
-                "6": {
-                    "name": "Pink concrete powder",
-                    "tex": [
-                        24,
-                        22
-                    ]
-                },
-                "12": {
-                    "name": "Brown concrete powder",
-                    "tex": [
-                        25,
-                        22
-                    ]
-                }
-            }
+            "id":252
         },
         {
-            "id": 235,
-            "name": "White glazed terracotta",
-            "idStr": "white_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"White glazed terracotta",
+            "idStr":"white_glazed_terracotta",
+            "_name":"WhiteGlazedTerracotta",
+            "tex":[
                 13,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "White glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         13,
                         24
                     ],
-                    "name": "White glazed terracotta (East)"
+                    "name":"White glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        13,
-                        25
-                    ],
-                    "name": "White glazed terracotta (South)"
+                "0":{
+                    "name":"White glazed terracotta (North)",
+                    "_name":"WhiteGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         13,
                         26
                     ],
-                    "name": "White glazed terracotta (West)"
+                    "name":"White glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        13,
+                        25
+                    ],
+                    "name":"White glazed terracotta (South)"
                 }
-            }
+            },
+            "id":235
         },
         {
-            "id": 236,
-            "name": "Orange glazed terracotta",
-            "idStr": "orange_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Orange glazed terracotta",
+            "idStr":"orange_glazed_terracotta",
+            "_name":"OrangeGlazedTerracotta",
+            "tex":[
                 15,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Orange glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         15,
                         24
                     ],
-                    "name": "Orange glazed terracotta (East)"
+                    "name":"Orange glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        15,
-                        25
-                    ],
-                    "name": "Orange glazed terracotta (South)"
+                "0":{
+                    "name":"Orange glazed terracotta (North)",
+                    "_name":"OrangeGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         15,
                         26
                     ],
-                    "name": "Orange glazed terracotta (West)"
+                    "name":"Orange glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        15,
+                        25
+                    ],
+                    "name":"Orange glazed terracotta (South)"
                 }
-            }
+            },
+            "id":236
         },
         {
-            "id": 237,
-            "name": "Magenta glazed terracotta",
-            "idStr": "magenta_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Magenta glazed terracotta",
+            "idStr":"magenta_glazed_terracotta",
+            "_name":"MagentaGlazedTerracotta",
+            "tex":[
                 23,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Magenta glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         23,
                         24
                     ],
-                    "name": "Magenta glazed terracotta (East)"
+                    "name":"Magenta glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        23,
-                        25
-                    ],
-                    "name": "Magenta glazed terracotta (South)"
+                "0":{
+                    "name":"Magenta glazed terracotta (North)",
+                    "_name":"MagentaGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         23,
                         26
                     ],
-                    "name": "Magenta glazed terracotta (West)"
+                    "name":"Magenta glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        23,
+                        25
+                    ],
+                    "name":"Magenta glazed terracotta (South)"
                 }
-            }
+            },
+            "id":237
         },
         {
-            "id": 238,
-            "name": "Light blue glazed terracotta",
-            "idStr": "light_blue_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Light blue glazed terracotta",
+            "idStr":"light_blue_glazed_terracotta",
+            "_name":"LightBlueGlazedTerracotta",
+            "tex":[
                 20,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Light blue glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         20,
                         24
                     ],
-                    "name": "Light blue glazed terracotta (East)"
+                    "name":"Light blue glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        20,
-                        25
-                    ],
-                    "name": "Light blue glazed terracotta (South)"
+                "0":{
+                    "name":"Light blue glazed terracotta (North)",
+                    "_name":"LightBlueGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         20,
                         26
                     ],
-                    "name": "Light blue glazed terracotta (West)"
+                    "name":"Light blue glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        20,
+                        25
+                    ],
+                    "name":"Light blue glazed terracotta (South)"
                 }
-            }
+            },
+            "id":238
         },
         {
-            "id": 239,
-            "name": "Yellow glazed terracotta",
-            "idStr": "yellow_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Yellow glazed terracotta",
+            "idStr":"yellow_glazed_terracotta",
+            "_name":"YellowGlazedTerracotta",
+            "tex":[
                 16,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Yellow glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         16,
                         24
                     ],
-                    "name": "Yellow glazed terracotta (East)"
+                    "name":"Yellow glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        16,
-                        25
-                    ],
-                    "name": "Yellow glazed terracotta (South)"
+                "0":{
+                    "name":"Yellow glazed terracotta (North)",
+                    "_name":"YellowGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         16,
                         26
                     ],
-                    "name": "Yellow glazed terracotta (West)"
+                    "name":"Yellow glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        16,
+                        25
+                    ],
+                    "name":"Yellow glazed terracotta (South)"
                 }
-            }
+            },
+            "id":239
         },
         {
-            "id": 240,
-            "name": "Lime glazed terracotta",
-            "idStr": "lime_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Lime glazed terracotta",
+            "idStr":"lime_glazed_terracotta",
+            "_name":"LimeGlazedTerracotta",
+            "tex":[
                 17,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Lime glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         17,
                         24
                     ],
-                    "name": "Lime glazed terracotta (East)"
+                    "name":"Lime glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        17,
-                        25
-                    ],
-                    "name": "Lime glazed terracotta (South)"
+                "0":{
+                    "name":"Lime glazed terracotta (North)",
+                    "_name":"LimeGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         17,
                         26
                     ],
-                    "name": "Lime glazed terracotta (West)"
+                    "name":"Lime glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        17,
+                        25
+                    ],
+                    "name":"Lime glazed terracotta (South)"
                 }
-            }
+            },
+            "id":240
         },
         {
-            "id": 241,
-            "name": "Pink glazed terracotta",
-            "idStr": "pink_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Pink glazed terracotta",
+            "idStr":"pink_glazed_terracotta",
+            "_name":"PinkGlazedTerracotta",
+            "tex":[
                 24,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Pink glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         24,
                         24
                     ],
-                    "name": "Pink glazed terracotta (East)"
+                    "name":"Pink glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        24,
-                        25
-                    ],
-                    "name": "Pink glazed terracotta (South)"
+                "0":{
+                    "name":"Pink glazed terracotta (North)",
+                    "_name":"PinkGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         24,
                         26
                     ],
-                    "name": "Pink glazed terracotta (West)"
+                    "name":"Pink glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        24,
+                        25
+                    ],
+                    "name":"Pink glazed terracotta (South)"
                 }
-            }
+            },
+            "id":241
         },
         {
-            "id": 242,
-            "name": "Gray glazed terracotta",
-            "idStr": "gray_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Gray glazed terracotta",
+            "idStr":"gray_glazed_terracotta",
+            "_name":"GrayGlazedTerracotta",
+            "tex":[
                 11,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Gray glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         11,
                         24
                     ],
-                    "name": "Gray glazed terracotta (East)"
+                    "name":"Gray glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        11,
-                        25
-                    ],
-                    "name": "Gray glazed terracotta (South)"
+                "0":{
+                    "name":"Gray glazed terracotta (North)",
+                    "_name":"GrayGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         11,
                         26
                     ],
-                    "name": "Gray glazed terracotta (West)"
+                    "name":"Gray glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        11,
+                        25
+                    ],
+                    "name":"Gray glazed terracotta (South)"
                 }
-            }
+            },
+            "id":242
         },
         {
-            "id": 243,
-            "name": "Light gray glazed terracotta",
-            "idStr": "light_gray_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Light gray glazed terracotta",
+            "idStr":"light_gray_glazed_terracotta",
+            "_name":"LightGrayGlazedTerracotta",
+            "tex":[
                 12,
                 24
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Light gray glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         12,
                         25
                     ],
-                    "name": "Light gray glazed terracotta (East)"
+                    "name":"Light gray glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        12,
-                        26
-                    ],
-                    "name": "Light gray glazed terracotta (South)"
+                "0":{
+                    "name":"Light gray glazed terracotta (North)",
+                    "_name":"LightGrayGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         12,
                         23
                     ],
-                    "name": "Light gray glazed terracotta (West)"
+                    "name":"Light gray glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        12,
+                        26
+                    ],
+                    "name":"Light gray glazed terracotta (South)"
                 }
-            }
+            },
+            "id":243
         },
         {
-            "id": 244,
-            "name": "Cyan glazed terracotta",
-            "idStr": "cyan_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Cyan glazed terracotta",
+            "idStr":"cyan_glazed_terracotta",
+            "_name":"CyanGlazedTerracotta",
+            "tex":[
                 19,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Cyan glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         19,
                         24
                     ],
-                    "name": "Cyan glazed terracotta (East)"
+                    "name":"Cyan glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        19,
-                        25
-                    ],
-                    "name": "Cyan glazed terracotta (South)"
+                "0":{
+                    "name":"Cyan glazed terracotta (North)",
+                    "_name":"CyanGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         19,
                         26
                     ],
-                    "name": "Cyan glazed terracotta (West)"
+                    "name":"Cyan glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        19,
+                        25
+                    ],
+                    "name":"Cyan glazed terracotta (South)"
                 }
-            }
+            },
+            "id":244
         },
         {
-            "id": 245,
-            "name": "Purple glazed terracotta",
-            "idStr": "purple_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Purple glazed terracotta",
+            "idStr":"purple_glazed_terracotta",
+            "_name":"PurpleGlazedTerracotta",
+            "tex":[
                 22,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Purple glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         22,
                         24
                     ],
-                    "name": "Purple glazed terracotta (East)"
+                    "name":"Purple glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        22,
-                        25
-                    ],
-                    "name": "Purple glazed terracotta (South)"
+                "0":{
+                    "name":"Purple glazed terracotta (North)",
+                    "_name":"PurpleGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         22,
                         26
                     ],
-                    "name": "Purple glazed terracotta (West)"
+                    "name":"Purple glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        22,
+                        25
+                    ],
+                    "name":"Purple glazed terracotta (South)"
                 }
-            }
+            },
+            "id":245
         },
         {
-            "id": 246,
-            "name": "Blue glazed terracotta",
-            "idStr": "blue_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Blue glazed terracotta",
+            "idStr":"blue_glazed_terracotta",
+            "_name":"BlueGlazedTerracotta",
+            "tex":[
                 21,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Blue glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         21,
                         24
                     ],
-                    "name": "Blue glazed terracotta (East)"
+                    "name":"Blue glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        21,
-                        25
-                    ],
-                    "name": "Blue glazed terracotta (South)"
+                "0":{
+                    "name":"Blue glazed terracotta (North)",
+                    "_name":"BlueGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         21,
                         26
                     ],
-                    "name": "Blue glazed terracotta (West)"
+                    "name":"Blue glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        21,
+                        25
+                    ],
+                    "name":"Blue glazed terracotta (South)"
                 }
-            }
+            },
+            "id":246
         },
         {
-            "id": 247,
-            "name": "Brown glazed terracotta",
-            "idStr": "brown_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Brown glazed terracotta",
+            "idStr":"brown_glazed_terracotta",
+            "_name":"BrownGlazedTerracotta",
+            "tex":[
                 25,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Brown glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         25,
                         24
                     ],
-                    "name": "Brown glazed terracotta (East)"
+                    "name":"Brown glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        25,
-                        25
-                    ],
-                    "name": "Brown glazed terracotta (South)"
+                "0":{
+                    "name":"Brown glazed terracotta (North)",
+                    "_name":"BrownGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         25,
                         26
                     ],
-                    "name": "Brown glazed terracotta (West)"
+                    "name":"Brown glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        25,
+                        25
+                    ],
+                    "name":"Brown glazed terracotta (South)"
                 }
-            }
+            },
+            "id":247
         },
         {
-            "id": 248,
-            "name": "Green glazed terracotta",
-            "idStr": "green_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Green glazed terracotta",
+            "idStr":"green_glazed_terracotta",
+            "_name":"GreenGlazedTerracotta",
+            "tex":[
                 18,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Green glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         18,
                         24
                     ],
-                    "name": "Green glazed terracotta (East)"
+                    "name":"Green glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        18,
-                        25
-                    ],
-                    "name": "Green glazed terracotta (South)"
+                "0":{
+                    "name":"Green glazed terracotta (North)",
+                    "_name":"GreenGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         18,
                         26
                     ],
-                    "name": "Green glazed terracotta (West)"
+                    "name":"Green glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        18,
+                        25
+                    ],
+                    "name":"Green glazed terracotta (South)"
                 }
-            }
+            },
+            "id":248
         },
         {
-            "id": 249,
-            "name": "Red glazed terracotta",
-            "idStr": "red_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Red glazed terracotta",
+            "idStr":"red_glazed_terracotta",
+            "_name":"RedGlazedTerracotta",
+            "tex":[
                 14,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Red glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         14,
                         24
                     ],
-                    "name": "Red glazed terracotta (East)"
+                    "name":"Red glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        14,
-                        25
-                    ],
-                    "name": "Red glazed terracotta (South)"
+                "0":{
+                    "name":"Red glazed terracotta (North)",
+                    "_name":"RedGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         14,
                         26
                     ],
-                    "name": "Red glazed terracotta (West)"
+                    "name":"Red glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        14,
+                        25
+                    ],
+                    "name":"Red glazed terracotta (South)"
                 }
-            }
+            },
+            "id":249
         },
         {
-            "id": 250,
-            "name": "Black glazed terracotta",
-            "idStr": "black_glazed_terracotta",
-            "tex": [
+            "__data":{
+                "1":{
+                    "facing":"east"
+                },
+                "0":{
+                    "facing":"north"
+                },
+                "3":{
+                    "facing":"west"
+                },
+                "2":{
+                    "facing":"south"
+                }
+            },
+            "name":"Black glazed terracotta",
+            "idStr":"black_glazed_terracotta",
+            "_name":"BlackGlazedTerracotta",
+            "tex":[
                 10,
                 23
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Black glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
+            "__comment__":"The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "data":{
+                "1":{
+                    "tex":[
                         10,
                         24
                     ],
-                    "name": "Black glazed terracotta (East)"
+                    "name":"Black glazed terracotta (East)"
                 },
-                "2": {
-                    "tex": [
-                        10,
-                        25
-                    ],
-                    "name": "Black glazed terracotta (South)"
+                "0":{
+                    "name":"Black glazed terracotta (North)",
+                    "_name":"BlackGlazedTerracotta"
                 },
-                "3": {
-                    "tex": [
+                "3":{
+                    "tex":[
                         10,
                         26
                     ],
-                    "name": "Black glazed terracotta (West)"
+                    "name":"Black glazed terracotta (West)"
+                },
+                "2":{
+                    "tex":[
+                        10,
+                        25
+                    ],
+                    "name":"Black glazed terracotta (South)"
                 }
-            }
+            },
+            "id":250
         }
     ]
 }

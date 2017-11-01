@@ -368,7 +368,7 @@ class MCMaterials(object):
 
             log.debug("Failed to read %s using pkg_resources. Trying %s instead." % (filename, path))
 
-            f = file(path)
+            f = open(path)
         try:
             log.info(u"Loading block info from %s", f)
             blockyaml = json.load(f)
@@ -376,6 +376,8 @@ class MCMaterials(object):
         except Exception as e:
             log.warn(u"Exception while loading block info from %s: %s", f, e)
             traceback.print_exc()
+        finally:
+            f.close()
 
         if blockyaml:
             self.addJSONBlocks(blockyaml)
@@ -387,6 +389,7 @@ class MCMaterials(object):
         print "Game Version: " + game_version
         game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
+        meth = None
         if game_version == 'PE' or game_version == 'old pocket':
             f_name = 'pocket.json'
             self.setup_blockstates("pe_blockstates.json")
@@ -396,7 +399,7 @@ class MCMaterials(object):
             f_name = 'classic.json'
             meth = build_classic_materials
         elif game_version == 'indev':
-            f_name == 'indev.json'
+            f_name = 'indev.json'
             meth = build_indev_materials
         else:
             f_name = 'minecraft.json'
@@ -514,6 +517,16 @@ class MCMaterials(object):
 
         block = Block(self, blockID, blockData, stringName)
 
+        #if '_name' in kw:
+        #    setattr(self, kw.pop('_name'), block)
+        attr_name = name.title().replace(' ', '')
+        if '(' in attr_name:
+            attr_name = attr_name[:attr_name.find('(')]
+
+        if attr_name not in self.__dict__:
+            setattr(self, attr_name, block)
+            print attr_name
+
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
         self.blocksByType[block_type].append(block)
@@ -522,9 +535,42 @@ class MCMaterials(object):
 
         return block
 
+class ModMaterials(object):
+
+    def __init__(self, parent_materials, mod_directory):
+        self._mod_directory = mod_directory
+        self._parent = parent_materials
+        self.name = os.path.dirname(mod_directory).replace(' ', '_')
+        self.blocks = []
+        self.texture_path = os.path.join(mod_directory, 'texture.png')
+        self.block_definitions = os.path.join(mod_directory, 'blocks.json')
+
+        fp = open(self.block_definitions)
+        mod_defs = json.load(fp)
+        fp.close()
+
+        for block in mod_defs['blocks']:
+            self.blocks.append(block['id'])
+
+        parent_materials.addJSONBlocks(mod_defs)
+
+        if not hasattr(self._parent, 'mods'):
+            setattr(self._parent, 'mods', [self,])
+        else:
+            self._parent.mods.append(self)
+
+    def remove(self):
+        self._parent.mods.remove(self)
+
+
+
 
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
+
+for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
+    if os.path.exists(os.path.join('.', 'mods', mod, 'blocks.json')):
+        ModMaterials(alphaMaterials, os.path.join('.', 'mods', mod))
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
@@ -1342,7 +1388,6 @@ def build_api_material_map(mats=alphaMaterials):
 alphaMaterials.addJSONBlocksFromVersion('Unknown')
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
-
 
 if '--dump-mats' in os.sys.argv:
     os.sys.argv.remove('--dump-mats')
