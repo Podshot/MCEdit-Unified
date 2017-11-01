@@ -1233,7 +1233,8 @@
 				"1": {
 					"tex": [7,2],
 					"search": "tall",
-					"name": "Grass"
+					"name": "Grass",
+					"_name": "TallGrass"
 				},
 				"0": {
 					"tex": [7,3],
@@ -6933,6 +6934,7 @@
 			"opacity": 0,
 			"search": "detector",
 			"name": "Daylight Sensor Inverted",
+			"_name": "DaylightSensorOn",
 			"idStr": "daylight_detector_inverted",
 			"tex": [20,2],
 			"mapcolor": [255,100,255],

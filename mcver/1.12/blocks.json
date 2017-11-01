@@ -220,7 +220,7 @@
                         21
                     ],
                     "name":"Yellow concrete",
-                    "_name":"YellowConcrete"
+                    "__name":"YellowConcrete"
                 },
                 "7":{
                     "tex":[

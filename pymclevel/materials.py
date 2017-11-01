@@ -9,6 +9,7 @@ import json
 import os
 import pkg_resources
 import id_definitions
+import re
 
 NOTEX = (496, 496)
 
@@ -386,7 +387,7 @@ class MCMaterials(object):
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
-        print "Game Version: " + game_version
+        print "#### Game Version: " + game_version
         game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
         meth = None
@@ -409,7 +410,10 @@ class MCMaterials(object):
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
-        meth()
+        print sorted(self.__dict__.keys())
+        #meth()
+        build_api_material_map(self)
+        print sorted(self.__dict__.keys())
 #         build_api_material_map()
 
     def addJSONBlocks(self, blockyaml):
@@ -517,11 +521,11 @@ class MCMaterials(object):
 
         block = Block(self, blockID, blockData, stringName)
 
-        #if '_name' in kw:
-        #    setattr(self, kw.pop('_name'), block)
-        attr_name = name.title().replace(' ', '')
-        if '(' in attr_name:
-            attr_name = attr_name[:attr_name.find('(')]
+        if '_name' in kw and kw.get('_name', '') not in self.__dict__:
+            setattr(self, kw.pop('_name'), block)
+        # Sanitazing the name using a regex.
+        # All what is after an opening parenthesis in 'name' is stipped out.
+        attr_name = re.sub(r"\W", "", name.title().split('(')[0])
 
         if attr_name not in self.__dict__:
             setattr(self, attr_name, block)
@@ -534,6 +538,30 @@ class MCMaterials(object):
         self.blocksByID[blockID, blockData] = block
 
         return block
+
+"""
+TODO: Implement a full jar support.
+
+For Conquest (conquest_reforged_MOD_v.1.4.51.jar, loaded with Forge), the
+archive is build like this:
+/
+  + assets/
+    + blockstates/
+      + ... A bunch of .json files containing "variant" blocks.
+    + lang/
+      + ... Files containing translations like in the vanila game.
+    + models/
+      + ... Contains nested sub-directories with .json defintion files for
+            blocks and inventory items definitions.
+    + textures/
+      + ... Contains images files for the block and item tstures in nested
+            sub-directories.
+    + META-INF/
+      + MANIFEST.MF Manifest file.
+    + net/
+      + ... Contains java .class files of the mod.
+
+"""
 
 class ModMaterials(object):
 
