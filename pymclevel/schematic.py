@@ -15,14 +15,9 @@ from box import BoundingBox
 import infiniteworld
 from level import MCLevel, EntityLevel
 from materials import alphaMaterials, MCMaterials, namedMaterials
-try:
-    from materials import blockstateToID
-except ImportError:
-    pass
 from mclevelbase import exhaust
 import nbt
 from numpy import array, swapaxes, uint8, zeros, resize, ndenumerate
-from pymclevel.materials import BlockstateAPI
 from release import TAG as RELEASE_TAG
 import math
 import copy
@@ -379,7 +374,7 @@ class MCSchematic(EntityLevel):
         self.root_tag["Data"].value = self.root_tag["Data"].value[::-1, :, :]
 
         log.info(u"N/S Flip: Relocating entities...")
-        mcedit_ids_get = self.defIds.mcedit_ids.get
+        mcedit_ids_get = self.defsIds.mcedit_ids.get
         for entity in self.Entities:
             ent_id_val = entity["id"].value
             entity["Pos"][1].value = self.Height - entity["Pos"][1].value
@@ -436,7 +431,7 @@ class MCSchematic(EntityLevel):
         northSouthPaintingMap = [0, 3, 2, 1]
 
         log.info(u"N/S Flip: Relocating entities...")
-        mcedit_ids_get = self.defIds.mcedit_ids.get
+        mcedit_ids_get = self.defsIds.mcedit_ids.get
         for entity in self.Entities:
 
             try:
@@ -514,7 +509,7 @@ class MCSchematic(EntityLevel):
         eastWestPaintingMap = [2, 1, 0, 3]
 
         log.info(u"E/W Flip: Relocating entities...")
-        mcedit_ids_get = self.defIds.mcedit_ids.get
+        mcedit_ids_get = self.defsIds.mcedit_ids.get
         for entity in self.Entities:
 
             try:
@@ -737,13 +732,12 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     @classmethod
     def _isLevel(cls, filename):
         return zipfile.is_zipfile(filename)
-    
+
+
 class StructureNBT(object):
     SUPPORTED_VERSIONS = [1, ]
     
     def __init__(self, filename=None, root_tag=None, size=None, mats=alphaMaterials):
-        if not 'blockstateToID' in globals().keys():
-            from materials import blockstateToID
         self._author = None
         self._blocks = None
         self._palette = None
@@ -752,6 +746,7 @@ class StructureNBT(object):
         self._size = None
         self._version = None
         self._mat = mats
+        self.blockstate = mats.blockstate_api
         
         if filename:
             root_tag = nbt.load(filename)
@@ -772,8 +767,8 @@ class StructureNBT(object):
             self._tile_entities.fill({})
             
             for block in self._root_tag["blocks"]:
-                x, y, z = [ p.value for p in block["pos"].value ]
-                self._blocks[x, y, z] = blockstateToID(*self.get_state(block["state"].value))
+                x, y, z = [p.value for p in block["pos"].value]
+                self._blocks[x, y, z] = self.blockstate.blockstateToID(*self.get_state(block["state"].value))
                 if "nbt" in block:
                     compound = nbt.TAG_Compound()
                     compound.update(block["nbt"])
@@ -925,7 +920,7 @@ class StructureNBT(object):
                                               ]
                                              )
         
-        blockstate_api = BlockstateAPI.material_map.get(self._mat, BlockstateAPI.material_map[alphaMaterials])
+        blockstate_api = self.blockstate.material_map.get(self._mat, self.blockstate.material_map[alphaMaterials])
         for z in xrange(self._blocks.shape[2]):  # For some reason, ndenumerate() didn't work, but this does
             for x in xrange(self._blocks.shape[0]):
                 for y in xrange(self._blocks.shape[1]):

@@ -664,7 +664,7 @@ class PocketLeveldbDatabase(object):
                 it.Next()
             it.status()  # All this does is cause an exception if something went wrong. Might be unneeded?
             del it
-            return allChunks
+            return list(set(allChunks))
 
     def getAllPlayerData(self, readOptions=None):
         """
