@@ -2068,9 +2068,10 @@ t959 氧气值
 o960 Version Definitions have been updated!
 
 Please restart MCEdit-Unified to apply the changes
-t960 
-o961 Version Definitions are already up-to-date!
-t961 
-o962 Download Latest Version Definitions
-t962 
+t960 版本定义已更新！
 
+请重启MCEdit-Unified以应用更新
+o961 Version Definitions are already up-to-date!
+t961 版本定义已经是最新！
+o962 Download Latest Version Definitions
+t962 下载最新的版本定义
