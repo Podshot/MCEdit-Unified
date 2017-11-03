@@ -6,10 +6,12 @@ from numpy import arange, zeros
 import collections
 import re
 
+
 class __Rotation:
     def __init__(self):
         for i, blocktype in enumerate(self.blocktypes):
             self.blocktypes[i] = eval(blocktype)
+
 
 def genericRoll(cls):
     rotation = arange(16, dtype='uint8')
@@ -126,7 +128,7 @@ genericFlipRotation(Ladder)
 
 
 class Stair(__Rotation):
-    blocktypes = ['b.ID for b in alphaMaterials.AllStairs']
+    blocktypes = ['list(set([b.ID for b in alphaMaterials.AllStairs]))']
 
     South = 0
     North = 1
@@ -155,7 +157,8 @@ Stair.roll[Stair.TopNorth] = Stair.North
 
 
 class HalfSlab(__Rotation):
-    blocktypes = ['b.ID for b in alphaMaterials.AllSlabs']
+    blocktypes = ['list(set([b.ID for b in alphaMaterials.AllSlabs]))']
+
 
 HalfSlab.flipVertical = arange(16, dtype='uint8')
 for i in xrange(8):
@@ -383,6 +386,7 @@ class SignPost(__Rotation):
     rotateLeft -= 4
     rotateLeft &= 0xf
 
+
 SignPost.flipNorthSouth = arange(16, dtype='uint8')
 SignPost.flipNorthSouth[SignPost.East] = SignPost.West
 SignPost.flipNorthSouth[SignPost.West] = SignPost.East
@@ -468,6 +472,7 @@ class Door(__Rotation):
 
     rotateLeft = arange(16, dtype='uint8')
 
+
 Door.rotateLeft[Door.South] = Door.West
 Door.rotateLeft[Door.West] = Door.North
 Door.rotateLeft[Door.North] = Door.East
@@ -477,7 +482,7 @@ Door.rotateLeft[Door.WestOpen] = Door.NorthOpen
 Door.rotateLeft[Door.NorthOpen] = Door.EastOpen
 Door.rotateLeft[Door.EastOpen] = Door.SouthOpen
     
-#applyBit4(Door.rotateLeft)
+# applyBit4(Door.rotateLeft)
 
 Door.flipEastWest = arange(16, dtype='uint8')
 Door.flipEastWest[Door.Left] = Door.Right
@@ -515,7 +520,8 @@ class Log(__Rotation):
     Type2EastWest = 9
     Type3EastWest = 10
     Type4EastWest = 11  
-    
+
+
 Log.rotateLeft = arange(16, dtype='uint8')
 Log.rotateLeft[Log.Type1NorthSouth] = Log.Type1EastWest
 Log.rotateLeft[Log.Type1EastWest] = Log.Type1NorthSouth
@@ -554,7 +560,7 @@ class RedstoneRepeater(__Rotation):
 
 genericFlipRotation(RedstoneRepeater)
 
-#high bits of the repeater indicate repeater delay, and should be preserved
+# high bits of the repeater indicate repeater delay, and should be preserved
 applyBits48(RedstoneRepeater)
 
 
@@ -586,6 +592,7 @@ class PistonBody(__Rotation):
     North = 4
     South = 5
 
+
 genericRoll(PistonBody)
 genericFlipRotation(PistonBody)
 applyPistonBit = applyBit8
@@ -599,19 +606,19 @@ class PistonHead(PistonBody):
 rotationClasses.append(PistonHead)
 
 
-#Mushroom types:
-#Value     Description     Textures
-#0     Fleshy piece     Pores on all sides
-#1     Corner piece     Cap texture on top, directions 1 (cloud direction) and 2 (sunrise)
-#2     Side piece     Cap texture on top and direction 2 (sunrise)
-#3     Corner piece     Cap texture on top, directions 2 (sunrise) and 3 (cloud origin)
-#4     Side piece     Cap texture on top and direction 1 (cloud direction)
-#5     Top piece     Cap texture on top
-#6     Side piece     Cap texture on top and direction 3 (cloud origin)
-#7     Corner piece     Cap texture on top, directions 0 (sunset) and 1 (cloud direction)
-#8     Side piece     Cap texture on top and direction 0 (sunset)
-#9     Corner piece     Cap texture on top, directions 3 (cloud origin) and 0 (sunset)
-#10     Stem piece     Stem texture on all four sides, pores on top and bottom
+# Mushroom types:
+# Value     Description     Textures
+# 0     Fleshy piece     Pores on all sides
+# 1     Corner piece     Cap texture on top, directions 1 (cloud direction) and 2 (sunrise)
+# 2     Side piece     Cap texture on top and direction 2 (sunrise)
+# 3     Corner piece     Cap texture on top, directions 2 (sunrise) and 3 (cloud origin)
+# 4     Side piece     Cap texture on top and direction 1 (cloud direction)
+# 5     Top piece     Cap texture on top
+# 6     Side piece     Cap texture on top and direction 3 (cloud origin)
+# 7     Corner piece     Cap texture on top, directions 0 (sunset) and 1 (cloud direction)
+# 8     Side piece     Cap texture on top and direction 0 (sunset)
+# 9     Corner piece     Cap texture on top, directions 3 (cloud origin) and 0 (sunset)
+# 10     Stem piece     Stem texture on all four sides, pores on top and bottom
 
 
 class HugeMushroom(__Rotation):
@@ -645,7 +652,8 @@ class Vines(__Rotation):
     flipEastWest = arange(16, dtype='uint8')
     flipNorthSouth = arange(16, dtype='uint8')
 
-#Hmm... Since each bit is a direction, we can rotate by shifting!
+
+# Hmm... Since each bit is a direction, we can rotate by shifting!
 Vines.rotateLeft = 0xf & ((Vines.rotateLeft >> 1) | (Vines.rotateLeft << 3))
 # Wherever each bit is set, clear it and set the opposite bit
 EastWestBits = (Vines.EastBit | Vines.WestBit)
@@ -730,6 +738,7 @@ class FenceGate(__Rotation):
     North = 3
     East = 0
 
+
 genericFlipRotation(FenceGate)
 applyFenceGateBits = applyBits48
 applyFenceGateBits(FenceGate)
@@ -766,10 +775,11 @@ class TripwireHook(__Rotation):
     North = 3
     East = 0
 
+
 applyBits48(TripwireHook)
 
-@genericFlipRotation
 
+@genericFlipRotation
 class MobHead(__Rotation):
     blocktypes = ['alphaMaterials.MobHead.ID']
 
@@ -787,6 +797,7 @@ class Hopper(__Rotation):
     West = 3
     North = 4
     South = 5
+
 
 applyBit8(Hopper)
 Hopper.roll = arange(16, dtype='uint8')
@@ -809,6 +820,7 @@ class DropperCommandblock(__Rotation):
     West = 3
     North = 4
     South = 5
+
 
 applyBit8(DropperCommandblock)
 
@@ -836,12 +848,14 @@ class EndRod(__Rotation):
     North = 4
     South = 5
 
+
 def _get_attribute(obj, attr):
     # Helper function used to get arbitrary attribute from an arbitrary object.
     if hasattr(obj, attr):
         return getattr(obj, attr)
     else:
         raise AttributeError("Object {0} does not have attribute '{1}".format(obj, attr))
+
 
 def masterRotationTable(attrname):
     # compute a materials.id_limitx16 table mapping each possible blocktype/data combination to
@@ -854,7 +868,7 @@ def masterRotationTable(attrname):
             for blocktype in cls.blocktypes:
                 # Very bad stuff here...
                 try:
-                    table[blocktype] = blocktable
+                    table[eval(blocktype)] = blocktable
                 except (NameError, ValueError) as e:
                     try:
                         table[eval(blocktype)] = blocktable
@@ -931,7 +945,7 @@ class BlockRotation:
 
 
 def SameRotationType(blocktype1, blocktype2):
-    #use different default values for typeTable.get() to make it return false when neither blocktype is present
+    # use different default values for typeTable.get() to make it return false when neither blocktype is present
     return BlockRotation().typeTable.get(blocktype1.ID) == BlockRotation().typeTable.get(blocktype2.ID, BlockRotation())
 
 
@@ -953,4 +967,3 @@ def RotateLeft(blocks, data):
 
 def Roll(blocks, data):
     data[:] = BlockRotation().roll[blocks, data]
-
