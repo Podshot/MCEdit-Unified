@@ -1663,7 +1663,7 @@ class GenericBlockRenderer(BlockRenderer):
             vertexArray.view('uint8')[_RGB] *= facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
             if self.materials.name in ("Alpha", "Pocket"):
                 if direction == pymclevel.faces.FaceYIncreasing:
-                    grass = theseBlocks == alphaMaterials.Grass.ID
+                    grass = theseBlocks == alphaMaterials['minecraft:grass'].ID
                     vertexArray.view('uint8')[_RGB][grass] = vertexArray.view('uint8')[_RGB][grass].astype(float) * self.grassColor
             yield
 
@@ -1709,6 +1709,9 @@ class ModRenderer(GenericBlockRenderer):
         #]
         if hasattr(self.materials, 'mods'):
             for mod in self.materials.mods:
+                if mod.texture_path is None:
+                    setattr(mod, 'texture', self.materials.terrainTexture)
+                    continue
                 setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
                 self.mods.append(mod)
 
