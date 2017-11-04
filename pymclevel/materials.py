@@ -411,7 +411,7 @@ class MCMaterials(object):
         else:
             self.addJSONBlocksFromFile(f_name)
         print sorted(self.__dict__.keys())
-        #meth()
+        meth() # TODO: Remove this later, removing now causes things to break
         build_api_material_map(self)
         print sorted(self.__dict__.keys())
 #         build_api_material_map()
@@ -568,7 +568,7 @@ class ModMaterials(object):
     def __init__(self, parent_materials, mod_directory):
         self._mod_directory = mod_directory
         self._parent = parent_materials
-        self.name = os.path.dirname(mod_directory).replace(' ', '_')
+        self.name = os.path.basename(mod_directory).replace(' ', '_')
         self.blocks = []
         self.texture_path = os.path.join(mod_directory, 'texture.png')
         self.block_definitions = os.path.join(mod_directory, 'blocks.json')
@@ -580,12 +580,25 @@ class ModMaterials(object):
         for block in mod_defs['blocks']:
             self.blocks.append(block['id'])
 
+        if not os.path.exists(self.texture_path):
+            self.texture_path = None
+            for block in mod_defs["blocks"]:
+                block["texture"] = NOTEX
+                for sub_block in block.get("data", {}).iterkeys():
+                    block["data"][sub_block]["tex"] = NOTEX
+                    if "tex_direction" in block["data"][sub_block]:
+                        for d in block["data"][sub_block]["tex_direction"].iterkeys():
+                            block["data"][sub_block]["tex_direction"][d] = NOTEX
+
         parent_materials.addJSONBlocks(mod_defs)
 
-        if not hasattr(self._parent, 'mods'):
-            setattr(self._parent, 'mods', [self,])
+        if os.path.exists(self.block_definitions):
+            if not hasattr(self._parent, 'mods'):
+                setattr(self._parent, 'mods', [self,])
+            else:
+                self._parent.mods.append(self)
         else:
-            self._parent.mods.append(self)
+            log.warn("Could not load mod '{}' because the block definition file is missing".format(self.name))
 
     def remove(self):
         self._parent.mods.remove(self)
@@ -596,9 +609,10 @@ class ModMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 
-for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
-    if os.path.exists(os.path.join('.', 'mods', mod, 'blocks.json')):
-        ModMaterials(alphaMaterials, os.path.join('.', 'mods', mod))
+if os.path.exists('mods'):
+    for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
+        if os.path.exists(os.path.join('mods', mod, 'blocks.json')):
+            ModMaterials(alphaMaterials, os.path.join('mods', mod))
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
