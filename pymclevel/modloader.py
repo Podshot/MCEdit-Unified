@@ -8,8 +8,9 @@
 #
 # TODO:
 # * Change the print statements for log entries.
-# * Read the Json data to retrieve the elements in the texture_catalog.
-# * Write corresponding .json files using collected data.
+# * Enhance the data gathering in mod json file to get texture orientation.
+# * Enhance the numeric IDs build.
+# * Implement methods for data other than blocks, like block states and entities.
 #
 from __future__ import unicode_literals
 import os
@@ -25,7 +26,7 @@ from cStringIO import StringIO
 class ModLoader(object):
     """Loads a mod packed in a .jar file and extract needed information in a
     directory named like the mod.
-    The destination directory will contin .json definition files and a texture
+    The destination directory will contain .json definition files and a texture
     one usable by MCEdit."""
     def __init__(self, file_name, output_dir):
         """Initialize the object.
@@ -43,18 +44,33 @@ class ModLoader(object):
         # Textures file name in self.mod_dir.
         # This file will be built using the ones found in the mod .jar.
         self.texture_file = None
+        # mod_info: dict: built from mcmod.info, or using 'defaults'.
         self.mod_info = None
+        # version: string: mod version.
         self.version = None
+        # mcversion: string: game version for which the mod works.
         self.mcversion = None
+        # modid: string: the mod internal ID
         self.modid = None
+        # texture_catalog: dict: keys are texture names and values coordinates (in tiles) in texture_file.
+        # Made to be compatible with MCEdit texture indexing system.
         self.texture_catalog = {}
+        # notex_idx is a tuple containing the 'NOTEX' coordinates in texture_file
+        self.notex_idx = (-1, -1)
+        # __blocks: dict: contains the block definition found in the mod. Not compatible with MCEdit block handling.
+        self.__blocks = {}
+        # built_json: dict: data rebuilt to be compatible with MCEdit handling
+        self.built_json = {}
 
         # Open the jar and finish the initialization.
         self.__archive = zipfile.ZipFile(file_name)
         self.__jar_content = self.__archive.namelist()
         self.__read_mod_info()
         self.__build_texture()
+        self.__load_block_models()
+        self.__save_json()
         self.__archive.close()
+
 
     def __read_mod_info(self):
         """Reads the .jar root directory to find the 'mcmod.info' json file.
@@ -127,6 +143,7 @@ class ModLoader(object):
             # WARNING: textue_size is in tiles of 16*16 pixels, so a size of 4*4 will be a 64*64 pixels image!
             texture_size = (sq_root, sq_root)
             image_size = (sq_root * 16, sq_root * 16)
+            self.notex_idx = sq_root - 1, sq_root - 1
     
 #             print "textures_num", textures_num
 #             print "_s", _s
@@ -198,6 +215,95 @@ class ModLoader(object):
             print "Texture file saved:", texture_file
 
 
+    def __add_to_defs(self, name, j_data, namespace, d_type):
+        """Adds the a definition to the future json file internal data.
+        :name: string: The name of the object to be added.
+        :j_data: object: Parsed json data to extract information from.
+        :namespace: string: The namespace to add the data to.
+        :d_type: string: type of the data such 'blocks' or 'entities'."""
+        built_json = self.built_json
+        texture_catalog = self.texture_catalog
+        notex_idx = self.notex_idx
+
+        if namespace not in built_json.keys():
+            built_json[namespace] = {}
+        if d_type not in built_json[namespace].keys():
+            built_json[namespace][d_type] = []
+
+        # Numeric IDs are added according to the order of the files in the .jar.
+        # They sahll not be used 'as is' by MCEdit.
+        oid = len(built_json[namespace][d_type]) + 1
+
+        built_json[namespace][d_type].append({"id": oid,
+                                              "idStr": name,
+                                              "name": name.replace("_", " ").title(),
+                                              "tex": texture_catalog.get(name, notex_idx)
+                                              }
+                                             )
+
+        self.built_json = built_json
+
+
+    def __load_block_models(self):
+        """Loads the mod block definitions from the models/block .jar subfolders.
+        Data is then contained in self.blocks"""
+        arch = self.__archive
+        jar_content = self.__jar_content
+        pat = "assets{0}.*?{0}models{0}block".format(os.path.sep)
+        blocks_entries = [a for a in jar_content if re.match(pat, a) and a.endswith(".json")]
+
+        # 'assets' can contain several directories with textures an json definitions.
+        # Some definition file names may be duplicated between diferent folders but
+        # May contain different data.
+        # So let use these directory names as 'namespaces'
+
+        blocks = {}
+        namespace_pat = "assets{0}(.*?){0}models{0}block".format(os.path.sep)
+        blocks_num = 0
+
+        for entry in blocks_entries:
+            block_name = os.path.splitext(os.path.split(entry)[1])[0]
+            namespace = re.search(namespace_pat, entry).groups()[0]
+            if namespace not in blocks.keys():
+                blocks[namespace] = {}
+            t_data = arch.read(entry)
+            j_data = json.loads(t_data)
+            # Rebuild the json stuff compatible with id_definitions.ids_loader interface.
+            self.__add_to_defs(block_name, j_data, namespace, 'blocks')
+
+            blocks[namespace][block_name] = j_data
+            blocks_num += 1
+        self.__blocks = blocks
+        print "Loaded %s block models from %s entries in %s namespaces:" % (blocks_num,
+                                                                            len(blocks_entries),
+                                                                            len(blocks))
+        for name in blocks.keys():
+            print "  *", name, len(blocks[name]), "blocks."
+
+
+    def __save_json(self):
+        """Saves built_json object to correponding files in mo_dir 'defs' subdirectories."""
+        built_json = self.built_json
+        if built_json:
+            mod_dir = self.mod_dir
+            defs_path = os.path.join(mod_dir, "defs")
+            print "Saving json data to '%s'." % defs_path
+            if not os.path.exists(defs_path):
+                os.makedirs(defs_path)
+            for namespace in built_json.keys():
+                namespace_path = os.path.join(defs_path, namespace)
+                if not os.path.exists(namespace_path):
+                    os.makedirs(namespace_path)
+                ns_data = built_json[namespace]
+                for d_type in ns_data.keys():
+                    d_type_data = ns_data[d_type]
+                    d_type_file = os.path.join(namespace_path, "%s.json" % d_type)
+                    print "Saving '%s' data for '%s' namespace in '%s'." % (d_type, namespace, d_type_file)
+                    with open(d_type_file, "w") as fout:
+                        json.dump(ns_data, fout, indent=4)
+        else:
+            print "No json data to save."
+
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
     # Let use this for tests :)
@@ -205,4 +311,4 @@ if __name__ == "__main__":
     # modloader.py <jar_file> <output_dir>
     loader = ModLoader(sys.argv[1], sys.argv[2])
 #     print loader.__dict__
-    print loader.texture_catalog
+#     print loader.texture_catalog
