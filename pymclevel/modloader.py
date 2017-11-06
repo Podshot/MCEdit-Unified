@@ -133,7 +133,7 @@ class ModLoader(object):
         jar_content = self.__jar_content
         arch = self.__archive
 
-        pat = "assets{0}.*?{0}textures".format(os.path.sep)
+        pat = "assets/.*?/textures"
         textures_entries = [a for a in jar_content if re.match(pat, a) and a.endswith(".png")]
         textures_num = len(textures_entries)
 
@@ -249,7 +249,7 @@ class ModLoader(object):
         Data is then contained in self.blocks"""
         arch = self.__archive
         jar_content = self.__jar_content
-        pat = "assets{0}.*?{0}models{0}block".format(os.path.sep)
+        pat = "assets/.*?/models/block"
         blocks_entries = [a for a in jar_content if re.match(pat, a) and a.endswith(".json")]
 
         # 'assets' can contain several directories with textures an json definitions.
@@ -258,7 +258,7 @@ class ModLoader(object):
         # So let use these directory names as 'namespaces'
 
         blocks = {}
-        namespace_pat = "assets{0}(.*?){0}models{0}block".format(os.path.sep)
+        namespace_pat = "assets/(.*?)/models/block"
         blocks_num = 0
 
         for entry in blocks_entries:
