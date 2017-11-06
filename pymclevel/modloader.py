@@ -141,9 +141,15 @@ class ModLoader(object):
             _s = math.sqrt(textures_num)
             sq_root = int(round(_s))
             # WARNING: textue_size is in tiles of 16*16 pixels, so a size of 4*4 will be a 64*64 pixels image!
-            texture_size = (sq_root, sq_root)
-            image_size = (sq_root * 16, sq_root * 16)
-            self.notex_idx = sq_root - 1, sq_root - 1
+            plus = 0 # width
+            pluss = [sq_root, sq_root]
+            while (pluss[0] * pluss[1]) < textures_num:
+                pluss[plus] += 1
+                plus = int(not plus)
+            width, height = pluss
+            texture_size = width, height
+            image_size = (width * 16, height * 16)
+            self.notex_idx = width - 1, height - 1
     
 #             print "textures_num", textures_num
 #             print "_s", _s
