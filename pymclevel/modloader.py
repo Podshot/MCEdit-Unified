@@ -28,13 +28,18 @@ class ModLoader(object):
     directory named like the mod.
     The destination directory will contain .json definition files and a texture
     one usable by MCEdit."""
-    def __init__(self, file_name, output_dir):
+    def __init__(self, file_name, output_dir, block_ids={}, force=False):
         """Initialize the object.
         :file_name: string: Full path to the .jar file. Must exists!
-        :output_dir: string: The directory where to create the mod content. Must exists!"""
+        :output_dir: string: The directory where to create the mod content. Must exists!
+        :block_ids: dict: If given, keys are block 'idStr' and values numeric IDs as found in the mod definition in 'level.dat'
+            Defaults to an empty dict.
+        :force: bool: Whether to force a mod extracted data to be overwritten.
+            Defaults to False. ! ! NOT IMPLEMENTED ! !"""
         print "Loading mod", file_name
         self.file_name = file_name
         self.output_dir = output_dir
+        self.block_ids = block_ids
 
         # Let define some useful data for forein class/method usage.
         self.mod_name = None
@@ -236,9 +241,8 @@ class ModLoader(object):
         if d_type not in built_json[namespace].keys():
             built_json[namespace][d_type] = []
 
-        # Numeric IDs are added according to the order of the files in the .jar.
-        # They sahll not be used 'as is' by MCEdit.
-        oid = len(built_json[namespace][d_type]) + 1
+        # Numeric IDs are added according to self.block_ids or the order of the files in the .jar.
+        oid = self.block_ids.get(name, 0) or len(built_json[namespace][d_type]) + 1
 
         built_json[namespace][d_type].append({"id": oid,
                                               "idStr": name,
