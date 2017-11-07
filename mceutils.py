@@ -296,8 +296,9 @@ def loadPNGData(filename_or_data):
 def loadPNGFile(filename):
     (w, h, data) = loadPNGData(filename)
 
-    powers = (16, 32, 64, 128, 256, 512, 1024, 2048, 4096)
-    assert (w in powers) and (h in powers)  # how crude
+    # We need 16*16 sub images in the 'terrain' files for now.
+    # Can we read comments or additional data in PNG files to get the sub-images size like 32*32 or 8*8?
+    assert (w % 16 == 0) and (h % 16 == 0)
 
     return w, h, data
 
