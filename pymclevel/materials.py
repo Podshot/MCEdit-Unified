@@ -358,6 +358,45 @@ class MCMaterials(object):
     def setup_blockstates(self, blockstate_definition_file):
         self.blockstate_api = BlockstateAPI(self, blockstate_definition_file)
 
+    def is_mod_block(self, block):
+        if not hasattr(self, 'mods'):
+            return False
+
+        if isinstance(block, basestring):
+            block = self[block]
+
+        block_id = -1
+        if isinstance(block, Block):
+            block_id = block.ID
+        elif isinstance(block, (tuple, list)):
+            block_id = block[0]
+        elif isinstance(block, int):
+            block_id = block
+
+        for mod in self.mods:
+            if block_id in mod.blocks:
+                return True
+        return False
+
+    def get_mod_for_block(self, block):
+        if not self.is_mod_block(block):
+            return None
+
+        if isinstance(block, basestring):
+            block = self[block]
+
+        block_id = -1
+        if isinstance(block, Block):
+            block_id = block.ID
+        elif isinstance(block, (tuple, list)):
+            block_id = block[0]
+        elif isinstance(block, int):
+            block_id = block
+
+        for mod in self.mods:
+            if block_id in mod.blocks:
+                return mod
+
     def addJSONBlocksFromFile(self, filename):
         blockyaml = None
         try:
