@@ -32,6 +32,10 @@ import logging
 from uuid import UUID
 import id_definitions
 
+# #!# For mod support testing
+from modloader import build_mod_ids_map
+# #!#
+
 log = getLogger(__name__)
 
 DIM_NETHER = -1
@@ -1241,8 +1245,17 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 func()
             raise SessionLockLost("Session lock lost. This world is being accessed from another location.")
 
-    def loadLevelDat(self, create=False, random_seed=None, last_played=None):
+    def loadLevelDat(self, create=False, random_seed=None, last_played=None, check_only=False):
+        """Loads the 'level.dat' file for the world.
+        :create: bool: Whether to create a new world. Defaults to False.
+        :random_seed: string: The seed to be used when creating a world. Defaults to None.
+        :last_played: string(?): Time-stamp of last time the world has been loaded in the game (?).
+        :check_only: bool: Wheter to only check the 'level.dat' is coherent. Mainly used on MCEdit startup.
+            Defaults to False.
+        Note: the parts marked with '(?)' in this docstrings has been guessed when I wrote this docstring. - D.C.-G."""
+        # TODO: Find where loadLevelDat is called whe MCEdit creates the main menu.
 
+        print "loadLevelDat"
         dat_name = self.dat_name
 
         if create:
@@ -1250,13 +1263,21 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.saveInPlace()
         else:
             try:
+                print "self.root_tag = nbt.load(self.filename)", self.filename
                 self.root_tag = nbt.load(self.filename)
                 # Load the resource for the game version
-                if self.gameVersion != 'Unknown':
+                if self.gameVersion != 'Unknown' and not check_only:
                     # Force the definitions to be loaded by calling the attribute.
                     self.loadDefIds()
-                #
+                    # Now check for potential Forge mods in the file.
+                    block_ids, mod_entries = build_mod_ids_map(self.root_tag)
+                    print "block_ids", block_ids
+                    print "mod_entries", mod_entries
+                    # Send mod object map to modloader.ModLoader to build the definition and texture files.
+                    # Before, find the .jar mod files according to the mod_entries dict.
             except Exception as e:
+                print "self.root_tag = nbt.load(self.filename) failed", self.filename
+                traceback.print_exc()
                 filename_old = self.worldFolder.getFilePath("%s.dat_old"%dat_name)
                 log.info("Error loading {1}.dat, trying {1}.dat_old ({0})".format(e, dat_name))
                 try:

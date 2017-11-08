@@ -21,6 +21,7 @@ import math
 import traceback
 from PIL import Image
 from cStringIO import StringIO
+import nbt
 
 
 class ModLoader(object):
@@ -104,11 +105,12 @@ class ModLoader(object):
         self.mod_name = mod_info.get("name", mod_name)
         self.version = mod_info.get("version", mod_name)
         self.mcversion = mod_info.get("mcversion", "Unknown")
-        dir_name = self.mod_name
+        self.modid = mod_info.get("modid", mod_name)
+        # dir_name = self.mod_name
+        dir_name = self.modid
         if self.version != mod_name:
             dir_name += "_%s" % self.version
         self.mod_dir = os.path.join(self.output_dir, dir_name)
-        self.modid = mod_info.get("modid", mod_name)
 
         print "Mod info:"
         print "  * self.mod_name: ", self.mod_name
@@ -228,7 +230,7 @@ class ModLoader(object):
 
     def __add_to_defs(self, name, j_data, namespace, d_type):
         """Adds the a definition to the future json file internal data.
-        :name: string: The name of the object to be added.
+        :name: string: The name of the object to be added. Shall be the 'idStr'.
         :j_data: object: Parsed json data to extract information from.
         :namespace: string: The namespace to add the data to.
         :d_type: string: type of the data such 'blocks' or 'entities'."""
@@ -242,7 +244,7 @@ class ModLoader(object):
             built_json[namespace][d_type] = []
 
         # Numeric IDs are added according to self.block_ids or the order of the files in the .jar.
-        oid = self.block_ids.get(name, 0) or len(built_json[namespace][d_type]) + 1
+        oid = self.block_ids.get(namespace, {}).get(name, 0) or len(built_json[namespace][d_type]) + 1
 
         built_json[namespace][d_type].append({"id": oid,
                                               "idStr": name,
@@ -313,6 +315,53 @@ class ModLoader(object):
                         json.dump(ns_data, fout, indent=4)
         else:
             print "No json data to save."
+
+
+# ------------------------------------------------------------------------------
+def build_mod_ids_map(root_tag):
+    """Search for Forge specific definitions in 'root_tag'.
+    :root_tag: NBT_Compound object: The NBT data from a level.dat file.
+        Absolutely, can be any NBT_Compoun object."""
+    # Initialize a default object to be returned
+    block_ids = {}
+    mod_entries = {}
+#     print "root_tag.keys()", root_tag.keys()
+    if "FML" in root_tag.keys():
+#         print root_tag["FML"].keys()
+#         print root_tag["FML"].get("ModList", None)
+        # We have a Forge mod, let process :)
+        # Get the mod IDs from 'ModList' tag ('ModId')
+        # mod_entries is a dict like object (TAG_Compound): {"ModId": "<modid>", "ModVersion <X.X.X>"}
+        # It has been seen wrong mod version (for Conquest Reforged for MC 1.10.2).
+        _mod_entries = root_tag["FML"].get("ModList", None) or root_tag["FML"].get("modlist", None)
+        for entry in _mod_entries:
+            mod_entries[entry["ModId"].value] = entry["ModVersion"].value
+        # Then, parse the 'Registries::minecraft:blocks::ids' tag to find
+        # which mods has to be loaded. Some mods only implement game rules
+        # or UI/functionnal stuff, but no blocks/entities.
+        if mod_entries:
+            registries = root_tag["FML"].get("Registries", None) or root_tag["FML"].get("registries", None)
+            if registries:
+                # minecraft_block reflects the mod defined blocks...
+                minecraft_blocks = registries.get("minecraft:blocks", None)
+                # Put every definition found here in the block_ids object
+                if minecraft_blocks:
+                    block_names_ids = minecraft_blocks.get("ids", None)
+                    # If an element in mod_entries is found here, trigger it to be loaded.
+                    # TODO: Find a way to guess the .jar file name from the modid
+                    # and version. May request user action to select the right .jar.
+                    # This will be delayed in another function/method
+                    for block_name_id in block_names_ids:
+                        b_name = block_name_id["K"].value
+                        b_id = block_name_id["V"].value
+                        namespace, name = b_name.split(":")
+                        if namespace not in block_ids:
+                            block_ids[namespace] = {}
+                        block_ids[namespace][name] = int(b_id)
+        # Guesss the mod .jar name...
+
+    return block_ids, mod_entries
+
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
