@@ -36,7 +36,7 @@ class ModLoader(object):
         :block_ids: dict: If given, keys are block 'idStr' and values numeric IDs as found in the mod definition in 'level.dat'
             Defaults to an empty dict.
         :force: bool: Whether to force a mod extracted data to be overwritten.
-            Defaults to False. ! ! NOT IMPLEMENTED ! !"""
+            Defaults to False."""
         print "Loading mod", file_name
         self.file_name = file_name
         self.output_dir = output_dir
@@ -72,9 +72,10 @@ class ModLoader(object):
         self.__archive = zipfile.ZipFile(file_name)
         self.__jar_content = self.__archive.namelist()
         self.__read_mod_info()
-        self.__build_texture()
-        self.__load_block_models()
-        self.__save_json()
+        if force or (self.mod_dir and not os.path.exists(self.mod_dir)):
+            self.__build_texture()
+            self.__load_block_models()
+            self.__save_json()
         self.__archive.close()
 
 
@@ -212,7 +213,7 @@ class ModLoader(object):
             # Finish by drawing foreground_color squares where no other image ha been put.
             print "Filling up mod texture with default one."
             notex = Image.new("RGBA", (14, 14), color=foreground_color)
-            while (offset_x * offset_y) < textures_num:
+            while (max(offset_x, 1) * max(offset_y, 1)) < textures_num:
                 x, y = (offset_x * 16) + 1, (offset_y * 16) + 1
                 w, h = x + 14, y + 14
                 texture.paste(notex, (x, y, w, h))
@@ -358,9 +359,34 @@ def build_mod_ids_map(root_tag):
                         if namespace not in block_ids:
                             block_ids[namespace] = {}
                         block_ids[namespace][name] = int(b_id)
-        # Guesss the mod .jar name...
 
     return block_ids, mod_entries
+
+
+# ------------------------------------------------------------------------------
+def find_mod_jar(modid, modver, directories):
+    """Scans directories for .jar file corresponding to mod ID.
+    :modid: string: the mo ID to be found.
+    :modver: string: Mod version to find.
+    :directories: list or tuple of strings: places to look in.
+    The search is not recursive!
+    Returns the full path to the .jar file or None."""
+    return_value = None
+    for directory in directories:
+        jars = [a for a in os.listdir(directory) if a.endswith(".jar")]
+        for jar in jars:
+            file_path = os.path.join(directory, jar)
+            arch = zipfile.ZipFile(file_path)
+            content = arch.namelist()
+            if "mcmod.info" in content:
+                mod_info = arch.read("mcmod.info")
+                modid_r = re.search(r'"modid"[ ]*:[ ]*"(.*)"[ ]*,', mod_info, re.M)
+                if modid_r:
+                     if modid == modid_r.groups()[0]:
+                         return_value = file_path
+                         break
+            arch.close()
+    return return_value
 
 
 # ------------------------------------------------------------------------------

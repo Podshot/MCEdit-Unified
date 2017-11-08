@@ -33,7 +33,8 @@ from uuid import UUID
 import id_definitions
 
 # #!# For mod support testing
-from modloader import build_mod_ids_map
+from modloader import build_mod_ids_map, find_mod_jar, ModLoader
+from directories import getDataDir, getMinecraftSaveFileDir
 # #!#
 
 log = getLogger(__name__)
@@ -1271,10 +1272,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     self.loadDefIds()
                     # Now check for potential Forge mods in the file.
                     block_ids, mod_entries = build_mod_ids_map(self.root_tag)
-                    print "block_ids", block_ids
+#                     print "block_ids", block_ids
                     print "mod_entries", mod_entries
                     # Send mod object map to modloader.ModLoader to build the definition and texture files.
                     # Before, find the .jar mod files according to the mod_entries dict.
+                    mc_mods_dir = os.path.join(getDataDir(), "mods")
+                    for modid, modver in mod_entries.items():
+                        mod_file = find_mod_jar(modid, modver, (mc_mods_dir,
+                                      os.path.abspath(os.path.join(getMinecraftSaveFileDir(), "..", "mods"))))
+                        if mod_file:
+                            ModLoader(mod_file, mc_mods_dir, block_ids)
             except Exception as e:
                 print "self.root_tag = nbt.load(self.filename) failed", self.filename
                 traceback.print_exc()
