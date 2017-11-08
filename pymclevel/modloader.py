@@ -87,7 +87,7 @@ class ModLoader(object):
         arch = self.__archive
         mod_info = {}
         if "mcmod.info" in self.__jar_content:
-            data = arch.read("mcmod.info").strip("[").strip("]")
+            data = arch.read("mcmod.info").strip().strip("[").strip("]")
             # The dependecies are a list of unquoted words. Fix that!
             deps = re.search(r'^[ ]*?"dependencies"[ ]*?:[ ]*?\[.*?\]$', data, re.M)
             if deps:
@@ -102,11 +102,16 @@ class ModLoader(object):
                 traceback.print_exc()
         self.mod_info = mod_info
         # Let define some default values in mcmod.info don't contain them.
-        mod_name = os.path.splitext(self.file_name)[0]
-        self.mod_name = mod_info.get("name", mod_name)
-        self.version = mod_info.get("version", mod_name)
-        self.mcversion = mod_info.get("mcversion", "Unknown")
-        self.modid = mod_info.get("modid", mod_name)
+        mod_name = os.path.split(os.path.splitext(self.file_name)[0])[1]
+        if isinstance(mod_info, dict):
+            if mod_info.get("modListVersion", 0) == 2:
+                info = mod_info.get("modList", [{}])[0]
+            else:
+                info = mod_info
+        self.mod_name = info.get("name", mod_name)
+        self.version = info.get("version", mod_name)
+        self.mcversion = info.get("mcversion", "Unknown")
+        self.modid = info.get("modid", mod_name)
         # dir_name = self.mod_name
         dir_name = self.modid
         if self.version != mod_name:
