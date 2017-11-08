@@ -95,6 +95,11 @@ class ModLoader(object):
                 _deps = [a.strip() for a in _deps.split("]")[0].split(",")]
                 repl = head + '["' + '", "'.join(_deps) + '"]'
                 data = data.replace(deps.group(), repl)
+            # Some mcmod.info files can contain multy line string as values.
+            # Since it is not permited for the json Python support, let fix it.
+            results = re.findall(r'".*?"[ ]*?:[ ]*?"(.*?)",', data, re.M|re.S)
+            for result in results:
+                data = data.replace(result, result.replace("\n", "\\n"))
             try:
                 mod_info = json.loads(data)
             except Exception as exc:
