@@ -23,7 +23,7 @@ from box import BoundingBox
 from entity import Entity, TileEntity, TileTick
 from faces import FaceXDecreasing, FaceXIncreasing, FaceZDecreasing, FaceZIncreasing
 from level import LightedChunk, EntityLevel, computeChunkHeightMap, MCLevel, ChunkBase
-from materials import alphaMaterials
+from materials import alphaMaterials, MCMaterials
 from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,ChunkConcurrentException,exhaust, PlayerNotFound
 import nbt
 from numpy import array, clip, maximum, zeros
@@ -35,6 +35,8 @@ import id_definitions
 # #!# For mod support testing
 from modloader import build_mod_ids_map, find_mod_jar, ModLoader
 from directories import getDataDir, getMinecraftSaveFileDir
+# from gl_img_utils import loadPNGTexture
+from gl_img_utils import loadAlphaTerrainTexture
 # #!#
 
 log = getLogger(__name__)
@@ -1113,6 +1115,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.lockLoseFuncs = []
         self.initTime = -1
 
+        self.mod_materials = None
+
         if os.path.basename(filename) in ("%s.dat" % dat_name, "%s.dat_old" % dat_name):
             filename = os.path.dirname(filename)
 
@@ -1259,6 +1263,9 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         print "loadLevelDat"
         dat_name = self.dat_name
 
+        # Load the default terrain.png file as terrainTexture
+        self.materials.terrainTexture = loadAlphaTerrainTexture()
+
         if create:
             self._create(self.filename, random_seed, last_played)
             self.saveInPlace()
@@ -1277,11 +1284,36 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     # Send mod object map to modloader.ModLoader to build the definition and texture files.
                     # Before, find the .jar mod files according to the mod_entries dict.
                     mc_mods_dir = os.path.join(getDataDir(), "mods")
+                    self.mods = mods = {}
+                    mod_dirs = {}
+                    self.mod_materials = mod_materials = []
                     for modid, modver in mod_entries.items():
                         mod_file = find_mod_jar(modid, modver, (mc_mods_dir,
                                       os.path.abspath(os.path.join(getMinecraftSaveFileDir(), "..", "mods"))))
                         if mod_file:
-                            ModLoader(mod_file, mc_mods_dir, block_ids)
+                            mod_obj = ModLoader(mod_file, mc_mods_dir, block_ids)
+                            mods[mod_obj.modid] = mod_obj
+                            mod_mats = MCMaterials()
+                            mod_mats.name = "Alpha"
+                            mod_mats.addJSONBlocksFromVersion(self.gameVersion, mods={mod_obj.modid: mod_obj.mod_dir})
+                            mod_materials.append(mod_mats)
+#                             mod_dirs[mod_obj.modid] = mod_obj.mod_dir
+#                             if mod_obj.texture:
+#                                 print "Setting texture from mod", modid
+#                                 self.materials.terrainTexture = mod_obj.texture
+                    print "mods", mods
+#                     if mods:
+#                         print "######################################"
+#                         print self.materials
+#                         
+#                         self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
+#                         
+# #                         mod_materials = MCMaterials()
+# #                         mod_materials.name = "Alpha"
+# #                         mod_materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
+# #                         self.mod_materials = mod_materials
+#                         self.mods = mods
+
             except Exception as e:
                 print "self.root_tag = nbt.load(self.filename) failed", self.filename
                 traceback.print_exc()

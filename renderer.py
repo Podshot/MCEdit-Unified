@@ -729,12 +729,13 @@ class ChunkCalculator(object):
     def makeRenderstates(self, materials):
         self.blockRendererClasses = [
             GenericBlockRenderer,
+            ModRenderer,
             LeafBlockRenderer,
             PlantBlockRenderer,
             TorchBlockRenderer,
             WaterBlockRenderer,
             SlabBlockRenderer,
-            ModRenderer,
+#             ModRenderer,
         ]
         if materials.name in ("Alpha", "Pocket"):
             self.blockRendererClasses += [
@@ -1682,19 +1683,29 @@ class ModRenderer(GenericBlockRenderer):
     mod_blocks = []
     mods = []
 
-    @classmethod
-    def getBlocktypes(cls, mats):
-        if not cls.mod_blocks:
+#     @classmethod
+#     def getBlocktypes(cls, mats):
+#         if not cls.mod_blocks:
+#             blocks = []
+#             extend = blocks.extend
+#             for mod in cls.mods:
+#                 extend(mod.blocks)
+#             cls.mod_blocks = blocks
+#             return blocks
+#         return cls.mod_blocks
+
+    def getBlocktypes(self, mats):
+        if not self.mod_blocks:
             blocks = []
             extend = blocks.extend
-            for mod in cls.mods:
-                extend(mod.blocks)
-            cls.mod_blocks = blocks
+            for mod in self.mods:
+                extend(mod.block_ids_names.keys())
+            self.mod_blocks = blocks
             return blocks
-        return cls.mod_blocks
+        return self.mod_blocks
 
     def build(self):
-        from mceutils import loadPNGTexture
+#         from mceutils import loadPNGTexture
         #import os
         #cls._t_mods = [
         #    {
@@ -1707,17 +1718,33 @@ class ModRenderer(GenericBlockRenderer):
         #        "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod_2", "texture.png"))
         #    }
         #]
-        if hasattr(self.materials, 'mods'):
-            for mod in self.materials.mods:
-                if mod.texture_path is None:
-                    setattr(mod, 'texture', self.materials.terrainTexture)
-                    continue
-                setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
-                self.mods.append(mod)
+#         if hasattr(self.materials, 'mods'):
+#             for mod in self.materials.mods:
+#                 if mod.texture_path is None:
+#                     setattr(mod, 'texture', self.materials.terrainTexture)
+#                     continue
+#                 setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
+#                 self.mods.append(mod)
+        
+        
+        print "ModRenderer.build"
+        if hasattr(self.chunkCalculator.level, "mods"):
+            for modid, mod_obj in self.chunkCalculator.level.mods.items():
+                print "modid", modid, "mod_obj.texture", mod_obj.texture
+                if not mod_obj.texture:
+                    setattr(mod_obj, 'texture', self.materials.terrainTexture)
+                self.mods.append(mod_obj)
+                self.textures[modid] = mod_obj.texture
 
     def __init__(self, cc):
         super(GenericBlockRenderer, self).__init__(cc)
         self.vertexMap = {}
+        
+        
+        
+        # Return a MCMaterial object list containing all the loaded mods defs.
+        self.mod_materials = getattr(cc.level, "mod_materials", None)
+        print "ModRenderer.mod_materials", self.mod_materials
 
         #from mceutils import loadPNGTexture
         #self.mats = cc.level.materials
@@ -1731,27 +1758,45 @@ class ModRenderer(GenericBlockRenderer):
         #from mceutils import loadPNGTexture
         #self.texture = loadPNGTexture(filename)
 
-        if not self.__class__.mods:
-            self.build()
+#         if not self.__class__.mods:
+#             self.build()
         #t_mod1 = object()
         #setattr(t_mod1, 'name', "Test Mod")
         #setattr(t_mod1, 'blocks', [404, 406])
         #setattr(t_mod1, 'texture', self.texture)
         #self._t_mods.append(t_mod1)
+        
+        
+        
+        self.build()
 
     def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+#         for mod in self.mods:
+#             old_shape = blocks.shape
+#             _blocks = blocks.copy()
+#             _blocks = _blocks.ravel()
+#             _blocks[numpy.in1d(_blocks, mod.blocks, invert=True)] = 0
+#             _blocks = numpy.reshape(_blocks, old_shape)
+# 
+#             self.vertexArrays = []
+#             for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
+#                 yield
+#             self.vertexMap[mod.name] = self.vertexArrays
+#             self.vertexArrays = []
+
         for mod in self.mods:
             old_shape = blocks.shape
             _blocks = blocks.copy()
             _blocks = _blocks.ravel()
-            _blocks[numpy.in1d(_blocks, mod.blocks, invert=True)] = 0
+            _blocks[numpy.in1d(_blocks, mod.blocks_ids_modid.keys(), invert=True)] = 0
             _blocks = numpy.reshape(_blocks, old_shape)
 
             self.vertexArrays = []
             for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
                 yield
-            self.vertexMap[mod.name] = self.vertexArrays
+            self.vertexMap[mod.modid] = self.vertexArrays
             self.vertexArrays = []
+
 
 
     def drawVertices(self):
@@ -1759,7 +1804,8 @@ class ModRenderer(GenericBlockRenderer):
         for mod in self.mods:
             #GL.glPushAttrib(GL.GL_TEXTURE_BIT)
             mod.texture.bind()
-            self.vertexArrays = self.vertexMap[mod.name]
+#             self.vertexArrays = self.vertexMap[mod.name]
+            self.vertexArrays = self.vertexMap[mod.modid]
             super(ModRenderer, self).drawVertices()
             self.vertexArrays = []
             #GL.glPopAttrib()
@@ -1774,6 +1820,9 @@ class ModRenderer(GenericBlockRenderer):
         #    self.printed = True
         #super(GenericBlockRenderer, self).drawVertices()
         #GL.glPopAttrib()
+        
+        
+        
 
 
 class LeafBlockRenderer(BlockRenderer):
@@ -3864,7 +3913,15 @@ class MCRenderer(object):
             GL.glEnable(GL.GL_CULL_FACE)
             GL.glEnable(GL.GL_DEPTH_TEST)
 
+#             print self.level.materials
+#             print self.level.materials.terrainTexture
             self.level.materials.terrainTexture.bind()
+
+            # For each mod, bind the texture.
+#             for mod in getattr(self.level, "mods", []):
+#                 (a.texture.bind() for a in )
+#             (a.texture.bind() for a in getattr(self.level, "mods", []) if getattr(a, "texture"))
+
             GL.glEnable(GL.GL_TEXTURE_2D)
             GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
 

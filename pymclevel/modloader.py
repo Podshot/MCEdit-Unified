@@ -22,6 +22,23 @@ import traceback
 from PIL import Image
 from cStringIO import StringIO
 import nbt
+from gl_img_utils import loadPNGTexture
+
+
+class NumericalKeyDict(dict):
+    """Dictionary class which keys are numbers or string representation of numbers.
+    So, calling <NumericalKeyDict instance>[1] is same as calling <NumericalKeyDict instance>["1"]."""
+
+    def __getitem__(self, key):
+        """Return value for 'key'.
+        :key: int or string which can be converted to an int."""
+        return self.__inner_dict[int(key)]
+
+    def __setitem__(self, key, value):
+        """Set 'key' item to 'value'.
+        :key: int or string which can be converted to an int.
+        :value: object: Any object that can be a dict() value."""
+        self.__inner_dict[int(key)] = value
 
 
 class ModLoader(object):
@@ -50,6 +67,11 @@ class ModLoader(object):
         # Textures file name in self.mod_dir.
         # This file will be built using the ones found in the mod .jar.
         self.texture_file = None
+        # texture_catalog: dict: keys are texture names and values coordinates (in tiles) in texture_file.
+        # Made to be compatible with MCEdit texture indexing system.
+        self.texture_catalog = {}
+        # texture is the loaded image for the textures
+        self.texture = None
         # mod_info: dict: built from mcmod.info, or using 'defaults'.
         self.mod_info = None
         # version: string: mod version.
@@ -58,13 +80,14 @@ class ModLoader(object):
         self.mcversion = None
         # modid: string: the mod internal ID
         self.modid = None
-        # texture_catalog: dict: keys are texture names and values coordinates (in tiles) in texture_file.
-        # Made to be compatible with MCEdit texture indexing system.
-        self.texture_catalog = {}
         # notex_idx is a tuple containing the 'NOTEX' coordinates in texture_file
         self.notex_idx = (-1, -1)
         # __blocks: dict: contains the block definition found in the mod. Not compatible with MCEdit block handling.
         self.__blocks = {}
+        # block_ids_names is a dict with numerical ids as keys and <namespace>:<block_name> as value.
+        self.block_ids_names = NumericalKeyDict()
+        # block_ids_modid is a dict with numerical ids as keys and <modid> as value.
+        self.block_ids_modid = NumericalKeyDict()
         # built_json: dict: data rebuilt to be compatible with MCEdit handling
         self.built_json = {}
 
@@ -77,7 +100,12 @@ class ModLoader(object):
             self.__load_block_models()
             self.__save_json()
         self.__archive.close()
-
+        tex = os.path.join(self.mod_dir, "terrain.png")
+        if not self.texture_file and os.path.exists(tex):
+            self.texture_file = tex
+        if self.texture_file and os.path.exists(self.texture_file):
+            print "Loading texture."
+            self.texture = loadPNGTexture(self.texture_file)
 
     def __read_mod_info(self):
         """Reads the .jar root directory to find the 'mcmod.info' json file.
@@ -175,8 +203,8 @@ class ModLoader(object):
 #             print "texture_size", texture_size
 #             print "verif: sq_root * sq_root, all_texture_num", sq_root * sq_root, textures_num
             
-            print "Mod textures number:", textures_num
-            print "Mod texture size (in 16*16 pxels tiles:", texture_size
+#             print "Mod textures number:", textures_num
+#             print "Mod texture size (in 16*16 pxels tiles:", texture_size
     
             # ===============================================================
             # Texture file creation and population
@@ -199,10 +227,10 @@ class ModLoader(object):
             foreground_color = (214, 127, 255)
 
             texture = Image.new("RGBA", image_size, color=background_color)
-            print "Mod texture size:", texture.size
+#             print "Mod texture size:", texture.size
 
             # Populate it with the mod textures.
-            print "Populating texture with mod ones."
+#             print "Populating texture with mod ones."
             for img_path in textures_entries:
                 fdata = arch.read(img_path)
                 fimg = StringIO(fdata)
@@ -221,7 +249,7 @@ class ModLoader(object):
             self.texture_catalog = texture_catalog
 
             # Finish by drawing foreground_color squares where no other image ha been put.
-            print "Filling up mod texture with default one."
+#             print "Filling up mod texture with default one."
             notex = Image.new("RGBA", (14, 14), color=foreground_color)
             while (max(offset_x, 1) * max(offset_y, 1)) < textures_num:
                 x, y = (offset_x * 16) + 1, (offset_y * 16) + 1
@@ -236,7 +264,7 @@ class ModLoader(object):
 
             # Finally, save the file
             texture.save(texture_file, "png")
-            print "Texture file saved:", texture_file
+#             print "Texture file saved:", texture_file
 
 
     def __add_to_defs(self, name, j_data, namespace, d_type):
@@ -256,6 +284,8 @@ class ModLoader(object):
 
         # Numeric IDs are added according to self.block_ids or the order of the files in the .jar.
         oid = self.block_ids.get(namespace, {}).get(name, 0) or len(built_json[namespace][d_type]) + 1
+        self.block_ids_names[oid] = "%s:%s" % (namespace, name)
+        self.block_ids_modid[oid] = self.modid
 
         built_json[namespace][d_type].append({"id": oid,
                                               "idStr": name,
@@ -297,24 +327,24 @@ class ModLoader(object):
             blocks[namespace][block_name] = j_data
             blocks_num += 1
         self.__blocks = blocks
-        print "Loaded %s block models from %s entries in %s namespaces:" % (blocks_num,
-                                                                            len(blocks_entries),
-                                                                            len(blocks))
-        for name in blocks.keys():
-            print "  *", name, len(blocks[name]), "blocks."
+#         print "Loaded %s block models from %s entries in %s namespaces:" % (blocks_num,
+#                                                                             len(blocks_entries),
+#                                                                             len(blocks))
+#         for name in blocks.keys():
+#             print "  *", name, len(blocks[name]), "blocks."
 
 
     def __save_json(self):
-        """Saves built_json object to correponding files in mo_dir 'defs' subdirectories."""
+        """Saves built_json object to correponding files in mod_dir subdirectories."""
         built_json = self.built_json
         if built_json:
             mod_dir = self.mod_dir
-            defs_path = os.path.join(mod_dir, "defs")
-            print "Saving json data to '%s'." % defs_path
-            if not os.path.exists(defs_path):
-                os.makedirs(defs_path)
+#             defs_path = os.path.join(mod_dir, "defs")
+            print "Saving json data to '%s'." % mod_dir
+            if not os.path.exists(mod_dir):
+                os.makedirs(mod_dir)
             for namespace in built_json.keys():
-                namespace_path = os.path.join(defs_path, namespace)
+                namespace_path = os.path.join(mod_dir, namespace)
                 if not os.path.exists(namespace_path):
                     os.makedirs(namespace_path)
                 ns_data = built_json[namespace]

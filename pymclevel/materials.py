@@ -422,7 +422,11 @@ class MCMaterials(object):
         if blockyaml:
             self.addJSONBlocks(blockyaml)
 
-    def addJSONBlocksFromVersion(self, game_version):
+    def addJSONBlocksFromVersion(self, game_version, mods={}):
+        """Adds block definitions for a specific game version.
+        :game_version: string: The game version to load the definitions for.
+        :mods: dict: Keys are mod names, values are path to the mod extracted data directory.
+            This directory shall contain files like built with modloader module."""
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
@@ -451,9 +455,30 @@ class MCMaterials(object):
             self.addJSONBlocksFromFile(f_name)
 #         print sorted(self.__dict__.keys())
         meth() # TODO: Remove this later, removing now causes things to break
-        build_api_material_map(self)
+#         build_api_material_map(self)
 #         print sorted(self.__dict__.keys())
 #         build_api_material_map()
+
+        # Load the data for the mods
+        for mod_name, mod_dir in mods.items():
+            log.info("Loading %s mod data from '%s'" % (mod_name, mod_dir))
+            print "Loading %s mod data from '%s'" % (mod_name, mod_dir)
+            for namespace in os.listdir(mod_dir):
+                print "namespace", namespace
+                namespace_path = os.path.join(mod_dir, namespace)
+                namespace_defs = {}
+                print "namespace_path", namespace_path
+                if namespace == "terrain.png":
+                    # TODO: Implement the texture file handling.
+                    pass
+                elif os.path.isdir(namespace_path):
+                    namespace_defs = id_definitions.ids_loader(game_version, namespace=namespace, json_dict=True, directory=namespace_path, update=True)
+#                     print namespace_defs
+#                     print id_definitions.MCEDIT_DEFS
+                if namespace_defs:
+                    self.addJSONBlocks(namespace_defs)
+        build_api_material_map(self)
+
 
     def addJSONBlocks(self, blockyaml):
         self.yamlDatas.append(blockyaml)
@@ -568,7 +593,7 @@ class MCMaterials(object):
 
         if attr_name not in self.__dict__:
             setattr(self, attr_name, block)
-            print attr_name
+#             print attr_name
 
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
