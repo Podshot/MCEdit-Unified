@@ -81,11 +81,20 @@ class BlockstateAPI(object):
         self._mats = mats
         self.block_map = {}
         self.blockstates = {}
+        self.mod_map = {}
 
         for b in self._mats:
             if b.ID == 0:
                 b.stringID = "air"
-            self.block_map[b.ID] = "minecraft:" + b.stringID
+
+            assert isinstance(self._mats, MCMaterials)
+            mod = self._mats.get_mod_for_block(b)
+            if mod:
+                if mod.name not in self.mod_map: # Change 'mod.name' to th actual mod id
+                    self.mod_map[mod.name] = [b.ID,]
+                self.mod_map[mod.name].append(b.ID)
+            else:
+                self.block_map[b.ID] = "minecraft:" + b.stringID
 
         # When running from a bundled app on Linux (and possibly on OSX) pkg_resource can't find the needed files.
         if pkg_resources.resource_exists(__name__, definition_file):
@@ -364,12 +373,12 @@ class MCMaterials(object):
 
         if isinstance(block, basestring):
             block = self[block]
+        elif isinstance(block, (tuple, list)):
+            block = self.blockWithID(*block)
 
         block_id = -1
         if isinstance(block, Block):
             block_id = block.ID
-        elif isinstance(block, (tuple, list)):
-            block_id = block[0]
         elif isinstance(block, int):
             block_id = block
 
@@ -384,12 +393,12 @@ class MCMaterials(object):
 
         if isinstance(block, basestring):
             block = self[block]
+        elif isinstance(block, (tuple, list)):
+            block = self.blockWithID(*block)
 
         block_id = -1
         if isinstance(block, Block):
             block_id = block.ID
-        elif isinstance(block, (tuple, list)):
-            block_id = block[0]
         elif isinstance(block, int):
             block_id = block
 
