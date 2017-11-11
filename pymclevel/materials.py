@@ -458,10 +458,10 @@ class MCMaterials(object):
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
-        print sorted(self.__dict__.keys())
+#         print sorted(self.__dict__.keys())
         meth() # TODO: Remove this later, removing now causes things to break
         build_api_material_map(self)
-        print sorted(self.__dict__.keys())
+#         print sorted(self.__dict__.keys())
 #         build_api_material_map()
 
     def addJSONBlocks(self, blockyaml):

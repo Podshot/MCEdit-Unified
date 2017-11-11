@@ -21,6 +21,7 @@ import math
 import traceback
 from PIL import Image
 from cStringIO import StringIO
+import nbt
 
 
 class ModLoader(object):
@@ -28,13 +29,18 @@ class ModLoader(object):
     directory named like the mod.
     The destination directory will contain .json definition files and a texture
     one usable by MCEdit."""
-    def __init__(self, file_name, output_dir):
+    def __init__(self, file_name, output_dir, block_ids={}, force=False):
         """Initialize the object.
         :file_name: string: Full path to the .jar file. Must exists!
-        :output_dir: string: The directory where to create the mod content. Must exists!"""
+        :output_dir: string: The directory where to create the mod content. Must exists!
+        :block_ids: dict: If given, keys are block 'idStr' and values numeric IDs as found in the mod definition in 'level.dat'
+            Defaults to an empty dict.
+        :force: bool: Whether to force a mod extracted data to be overwritten.
+            Defaults to False."""
         print "Loading mod", file_name
         self.file_name = file_name
         self.output_dir = output_dir
+        self.block_ids = block_ids
 
         # Let define some useful data for forein class/method usage.
         self.mod_name = None
@@ -66,9 +72,10 @@ class ModLoader(object):
         self.__archive = zipfile.ZipFile(file_name)
         self.__jar_content = self.__archive.namelist()
         self.__read_mod_info()
-        self.__build_texture()
-        self.__load_block_models()
-        self.__save_json()
+        if force or (self.mod_dir and not os.path.exists(self.mod_dir)):
+            self.__build_texture()
+            self.__load_block_models()
+            self.__save_json()
         self.__archive.close()
 
 
@@ -80,7 +87,7 @@ class ModLoader(object):
         arch = self.__archive
         mod_info = {}
         if "mcmod.info" in self.__jar_content:
-            data = arch.read("mcmod.info").strip("[").strip("]")
+            data = arch.read("mcmod.info").strip().strip("[").strip("]")
             # The dependecies are a list of unquoted words. Fix that!
             deps = re.search(r'^[ ]*?"dependencies"[ ]*?:[ ]*?\[.*?\]$', data, re.M)
             if deps:
@@ -88,6 +95,11 @@ class ModLoader(object):
                 _deps = [a.strip() for a in _deps.split("]")[0].split(",")]
                 repl = head + '["' + '", "'.join(_deps) + '"]'
                 data = data.replace(deps.group(), repl)
+            # Some mcmod.info files can contain multy line string as values.
+            # Since it is not permited for the json Python support, let fix it.
+            results = re.findall(r'".*?"[ ]*?:[ ]*?"(.*?)",', data, re.M|re.S)
+            for result in results:
+                data = data.replace(result, result.replace("\n", "\\n"))
             try:
                 mod_info = json.loads(data)
             except Exception as exc:
@@ -95,15 +107,21 @@ class ModLoader(object):
                 traceback.print_exc()
         self.mod_info = mod_info
         # Let define some default values in mcmod.info don't contain them.
-        mod_name = os.path.splitext(self.file_name)[0]
-        self.mod_name = mod_info.get("name", mod_name)
-        self.version = mod_info.get("version", mod_name)
-        self.mcversion = mod_info.get("mcversion", "Unknown")
-        dir_name = self.mod_name
+        mod_name = os.path.split(os.path.splitext(self.file_name)[0])[1]
+        if isinstance(mod_info, dict):
+            if mod_info.get("modListVersion", 0) == 2:
+                info = mod_info.get("modList", [{}])[0]
+            else:
+                info = mod_info
+        self.mod_name = info.get("name", mod_name)
+        self.version = info.get("version", mod_name)
+        self.mcversion = info.get("mcversion", "Unknown")
+        self.modid = info.get("modid", mod_name)
+        # dir_name = self.mod_name
+        dir_name = self.modid
         if self.version != mod_name:
             dir_name += "_%s" % self.version
         self.mod_dir = os.path.join(self.output_dir, dir_name)
-        self.modid = mod_info.get("modid", mod_name)
 
         print "Mod info:"
         print "  * self.mod_name: ", self.mod_name
@@ -205,7 +223,7 @@ class ModLoader(object):
             # Finish by drawing foreground_color squares where no other image ha been put.
             print "Filling up mod texture with default one."
             notex = Image.new("RGBA", (14, 14), color=foreground_color)
-            while (offset_x * offset_y) < textures_num:
+            while (max(offset_x, 1) * max(offset_y, 1)) < textures_num:
                 x, y = (offset_x * 16) + 1, (offset_y * 16) + 1
                 w, h = x + 14, y + 14
                 texture.paste(notex, (x, y, w, h))
@@ -223,7 +241,7 @@ class ModLoader(object):
 
     def __add_to_defs(self, name, j_data, namespace, d_type):
         """Adds the a definition to the future json file internal data.
-        :name: string: The name of the object to be added.
+        :name: string: The name of the object to be added. Shall be the 'idStr'.
         :j_data: object: Parsed json data to extract information from.
         :namespace: string: The namespace to add the data to.
         :d_type: string: type of the data such 'blocks' or 'entities'."""
@@ -236,9 +254,8 @@ class ModLoader(object):
         if d_type not in built_json[namespace].keys():
             built_json[namespace][d_type] = []
 
-        # Numeric IDs are added according to the order of the files in the .jar.
-        # They sahll not be used 'as is' by MCEdit.
-        oid = len(built_json[namespace][d_type]) + 1
+        # Numeric IDs are added according to self.block_ids or the order of the files in the .jar.
+        oid = self.block_ids.get(namespace, {}).get(name, 0) or len(built_json[namespace][d_type]) + 1
 
         built_json[namespace][d_type].append({"id": oid,
                                               "idStr": name,
@@ -309,6 +326,78 @@ class ModLoader(object):
                         json.dump(ns_data, fout, indent=4)
         else:
             print "No json data to save."
+
+
+# ------------------------------------------------------------------------------
+def build_mod_ids_map(root_tag):
+    """Search for Forge specific definitions in 'root_tag'.
+    :root_tag: NBT_Compound object: The NBT data from a level.dat file.
+        Absolutely, can be any NBT_Compoun object."""
+    # Initialize a default object to be returned
+    block_ids = {}
+    mod_entries = {}
+#     print "root_tag.keys()", root_tag.keys()
+    if "FML" in root_tag.keys():
+#         print root_tag["FML"].keys()
+#         print root_tag["FML"].get("ModList", None)
+        # We have a Forge mod, let process :)
+        # Get the mod IDs from 'ModList' tag ('ModId')
+        # mod_entries is a dict like object (TAG_Compound): {"ModId": "<modid>", "ModVersion <X.X.X>"}
+        # It has been seen wrong mod version (for Conquest Reforged for MC 1.10.2).
+        _mod_entries = root_tag["FML"].get("ModList", None) or root_tag["FML"].get("modlist", None)
+        for entry in _mod_entries:
+            mod_entries[entry["ModId"].value] = entry["ModVersion"].value
+        # Then, parse the 'Registries::minecraft:blocks::ids' tag to find
+        # which mods has to be loaded. Some mods only implement game rules
+        # or UI/functionnal stuff, but no blocks/entities.
+        if mod_entries:
+            registries = root_tag["FML"].get("Registries", None) or root_tag["FML"].get("registries", None)
+            if registries:
+                # minecraft_block reflects the mod defined blocks...
+                minecraft_blocks = registries.get("minecraft:blocks", None)
+                # Put every definition found here in the block_ids object
+                if minecraft_blocks:
+                    block_names_ids = minecraft_blocks.get("ids", None)
+                    # If an element in mod_entries is found here, trigger it to be loaded.
+                    # TODO: Find a way to guess the .jar file name from the modid
+                    # and version. May request user action to select the right .jar.
+                    # This will be delayed in another function/method
+                    for block_name_id in block_names_ids:
+                        b_name = block_name_id["K"].value
+                        b_id = block_name_id["V"].value
+                        namespace, name = b_name.split(":")
+                        if namespace not in block_ids:
+                            block_ids[namespace] = {}
+                        block_ids[namespace][name] = int(b_id)
+
+    return block_ids, mod_entries
+
+
+# ------------------------------------------------------------------------------
+def find_mod_jar(modid, modver, directories):
+    """Scans directories for .jar file corresponding to mod ID.
+    :modid: string: the mo ID to be found.
+    :modver: string: Mod version to find.
+    :directories: list or tuple of strings: places to look in.
+    The search is not recursive!
+    Returns the full path to the .jar file or None."""
+    return_value = None
+    for directory in directories:
+        jars = [a for a in os.listdir(directory) if a.endswith(".jar")]
+        for jar in jars:
+            file_path = os.path.join(directory, jar)
+            arch = zipfile.ZipFile(file_path)
+            content = arch.namelist()
+            if "mcmod.info" in content:
+                mod_info = arch.read("mcmod.info")
+                modid_r = re.search(r'"modid"[ ]*:[ ]*"(.*)"[ ]*,', mod_info, re.M)
+                if modid_r:
+                     if modid == modid_r.groups()[0]:
+                         return_value = file_path
+                         break
+            arch.close()
+    return return_value
+
 
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
