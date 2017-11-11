@@ -36,11 +36,9 @@ class BlockView(GLOrtho):
         GL.glColor(1.0, 1.0, 1.0, 1.0)
         GL.glEnable(GL.GL_TEXTURE_2D)
         GL.glEnable(GL.GL_ALPHA_TEST)
-        texture = None
+        texture = self.materials.terrainTexture
         if self.materials.is_mod_block(blockInfo):
-            texture = getattr(self.materials.get_mod_for_block(blockInfo), 'texture')
-        else:
-            texture = self.materials.terrainTexture
+            texture = getattr(self.materials.get_mod_for_block(blockInfo), 'texture', self.materials.terrainTexture)
         texture.bind()
         pixelScale = 0.5 if self.materials.name in ("Pocket", "Alpha") else 1.0
         texSize = 16 * pixelScale
