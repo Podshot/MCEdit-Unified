@@ -1287,9 +1287,10 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     self.mods = mods = {}
                     mod_dirs = {}
                     self.mod_materials = mod_materials = []
+                    print os.path.dirname(os.path.dirname(self.filename))
                     for modid, modver in mod_entries.items():
                         mod_file = find_mod_jar(modid, modver, (mc_mods_dir,
-                                      os.path.abspath(os.path.join(getMinecraftSaveFileDir(), "..", "mods"))))
+                                      os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(self.filename)), "..", "mods"))))
                         if mod_file:
                             mod_obj = ModLoader(mod_file, mc_mods_dir, block_ids)
                             mods[mod_obj.modid] = mod_obj
@@ -1297,16 +1298,16 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                             mod_mats.name = "Alpha"
                             mod_mats.addJSONBlocksFromVersion(self.gameVersion, mods={mod_obj.modid: mod_obj.mod_dir})
                             mod_materials.append(mod_mats)
-#                             mod_dirs[mod_obj.modid] = mod_obj.mod_dir
+                            mod_dirs[mod_obj.modid] = mod_obj.mod_dir
 #                             if mod_obj.texture:
 #                                 print "Setting texture from mod", modid
 #                                 self.materials.terrainTexture = mod_obj.texture
                     print "mods", mods
-#                     if mods:
+                    if mods:
 #                         print "######################################"
 #                         print self.materials
 #                         
-#                         self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
+                        self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
 #                         
 # #                         mod_materials = MCMaterials()
 # #                         mod_materials.name = "Alpha"
@@ -1314,6 +1315,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 # #                         self.mod_materials = mod_materials
 #                         self.mods = mods
 
+#                             print "Mod Dir: {}".format(mod_file)
+#                             ModLoader(mod_file, mc_mods_dir, block_ids)
             except Exception as e:
                 print "self.root_tag = nbt.load(self.filename) failed", self.filename
                 traceback.print_exc()
