@@ -1277,10 +1277,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     # Send mod object map to modloader.ModLoader to build the definition and texture files.
                     # Before, find the .jar mod files according to the mod_entries dict.
                     mc_mods_dir = os.path.join(getDataDir(), "mods")
+                    print os.path.dirname(os.path.dirname(self.filename))
                     for modid, modver in mod_entries.items():
                         mod_file = find_mod_jar(modid, modver, (mc_mods_dir,
-                                      os.path.abspath(os.path.join(getMinecraftSaveFileDir(), "..", "mods"))))
+                                      os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(self.filename)), "..", "mods"))))
                         if mod_file:
+                            print "Mod Dir: {}".format(mod_file)
                             ModLoader(mod_file, mc_mods_dir, block_ids)
             except Exception as e:
                 print "self.root_tag = nbt.load(self.filename) failed", self.filename
