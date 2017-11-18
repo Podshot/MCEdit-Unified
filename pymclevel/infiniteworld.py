@@ -37,6 +37,8 @@ from modloader import build_mod_ids_map, find_mod_jar, ModLoader
 from directories import getDataDir, getMinecraftSaveFileDir
 # from gl_img_utils import loadPNGTexture
 from gl_img_utils import loadAlphaTerrainTexture
+# Let use threads!
+from utilities.thread_utils import ThreadRS, threadable, threading
 # #!#
 
 log = getLogger(__name__)
@@ -1090,7 +1092,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     '''
     playersFolder = None
 
-    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False, dat_name='level'):
+    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False, dat_name='level', check_only=False):
         """
         Load an Alpha level from the given filename. It can point to either
         a level.dat or a folder containing one. If create is True, it will
@@ -1160,7 +1162,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._allChunks = None
         self.dimensions = {}
 
-        self.loadLevelDat(create, random_seed, last_played)
+        self.loadLevelDat(create, random_seed, last_played, check_only=check_only)
 
         if dat_name == 'level':
             assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
@@ -1250,6 +1252,22 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 func()
             raise SessionLockLost("Session lock lost. This world is being accessed from another location.")
 
+    #===================================================================
+    # May be not the best place in the class definition to put that...
+    #===================================================================
+    def _load_mod(self, *args, **kwargs):
+        """Actual mod loading function.
+        All arguments and kyword argument has to be the same as for ModLoader instance."""
+        mod_obj = ModLoader(*args, **kwargs)
+        if mod_obj.modid:
+            self.mods[mod_obj.modid] = mod_obj
+            mod_mats = MCMaterials()
+            mod_mats.name = "Alpha"
+            mod_mats.addJSONBlocksFromVersion(self.gameVersion, mods={mod_obj.modid: mod_obj.mod_dir})
+            self.mod_materials.append(mod_mats)
+            self.mod_dirs[mod_obj.modid] = mod_obj.mod_dir
+
+
     def loadLevelDat(self, create=False, random_seed=None, last_played=None, check_only=False):
         """Loads the 'level.dat' file for the world.
         :create: bool: Whether to create a new world. Defaults to False.
@@ -1258,9 +1276,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         :check_only: bool: Wheter to only check the 'level.dat' is coherent. Mainly used on MCEdit startup.
             Defaults to False.
         Note: the parts marked with '(?)' in this docstrings has been guessed when I wrote this docstring. - D.C.-G."""
-        # TODO: Find where loadLevelDat is called whe MCEdit creates the main menu.
-
-        print "loadLevelDat"
         dat_name = self.dat_name
 
         # Load the default terrain.png file as terrainTexture
@@ -1271,52 +1286,73 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.saveInPlace()
         else:
             try:
-                print "self.root_tag = nbt.load(self.filename)", self.filename
                 self.root_tag = nbt.load(self.filename)
                 # Load the resource for the game version
-                if self.gameVersion != 'Unknown' and not check_only:
+                if self.gameVersion != 'Unknown':
                     # Force the definitions to be loaded by calling the attribute.
                     self.loadDefIds()
-                    # Now check for potential Forge mods in the file.
-                    block_ids, mod_entries = build_mod_ids_map(self.root_tag)
-#                     print "block_ids", block_ids
-                    print "mod_entries", mod_entries
-                    # Send mod object map to modloader.ModLoader to build the definition and texture files.
-                    # Before, find the .jar mod files according to the mod_entries dict.
-                    mc_mods_dir = os.path.join(getDataDir(), "mods")
-                    self.mods = mods = {}
-                    mod_dirs = {}
-                    self.mod_materials = mod_materials = []
-                    print os.path.dirname(os.path.dirname(self.filename))
-                    for modid, modver in mod_entries.items():
-                        mod_file = find_mod_jar(modid, modver, (mc_mods_dir,
-                                      os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(self.filename)), "..", "mods"))))
-                        if mod_file:
-                            mod_obj = ModLoader(mod_file, mc_mods_dir, block_ids)
-                            mods[mod_obj.modid] = mod_obj
-                            mod_mats = MCMaterials()
-                            mod_mats.name = "Alpha"
-                            mod_mats.addJSONBlocksFromVersion(self.gameVersion, mods={mod_obj.modid: mod_obj.mod_dir})
-                            mod_materials.append(mod_mats)
-                            mod_dirs[mod_obj.modid] = mod_obj.mod_dir
-#                             if mod_obj.texture:
-#                                 print "Setting texture from mod", modid
-#                                 self.materials.terrainTexture = mod_obj.texture
-                    print "mods", mods
-                    if mods:
-#                         print "######################################"
-#                         print self.materials
-#                         
-                        self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
-#                         
-# #                         mod_materials = MCMaterials()
-# #                         mod_materials.name = "Alpha"
-# #                         mod_materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
-# #                         self.mod_materials = mod_materials
-#                         self.mods = mods
 
-#                             print "Mod Dir: {}".format(mod_file)
-#                             ModLoader(mod_file, mc_mods_dir, block_ids)
+                    if not check_only:
+                        # Now check for potential Forge mods in the file.
+                        block_ids, mod_entries = build_mod_ids_map(self.root_tag)
+                        # Send mod object map to modloader.ModLoader to build the definition and texture files.
+                        # Before, find the .jar mod files according to the mod_entries dict.
+                        self.mc_mods_dir = mc_mods_dir = os.path.join(getDataDir(), "mods")
+                        self.mods = mods = {}
+                        self.mod_dirs = mod_dirs = {}
+                        self.mod_materials = mod_materials = []
+#                         print os.path.dirname(os.path.dirname(self.filename))
+
+                        use_threads = False
+                        import time
+                        start_time = time.time()
+
+                        if not use_threads:
+                            # Non threaded version.
+
+                            for modid, modver in mod_entries.items():
+                                self._load_mod(None, mc_mods_dir, block_ids, modid=modid, modver=modver, gamever=self.gameVersion,
+                                                directories=(mc_mods_dir, os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(self.filename)), "..", "mods"))))
+
+                        else:
+                            # Threaded version.
+                            # Currently slower than the non threaded stuff :/
+                            class ModThread(threading.Thread):
+                                def __init__(self, thread_id, name, func, args, kwargs):
+                                    threading.Thread.__init__(self)
+                                    self.thread_id = thread_id
+                                    self.name = name
+                                    self.args = args
+                                    self.kwargs = kwargs
+                                    self.func = func
+                                def run(self):
+                                    self.func(*self.args, **self.kwargs)
+
+                            threads = []
+                            for modid, modver in mod_entries.items():
+                                t = ModThread(len(threads), "T__%s" % modid, self._load_mod,
+                                              (None, mc_mods_dir, block_ids),
+                                              {"modid": modid, "modver": modver, "gamever": self.gameVersion,
+                                              "directories": (mc_mods_dir, os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(self.filename)), "..", "mods")))})
+                                threads.append(t)
+                                t.start()
+                            for t in threads:
+                                t.join()
+
+#                         print "######################################"
+#                         print "mods", self.mods
+#                         print "lod_dirs", self.mod_dirs
+                        if self.mods:
+#                             print "######################################"
+#                             print self.materials
+#                              
+                            # Remove that when mod support is finished?
+                            self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
+                        end_time = time.time()
+#                         print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#                         print "Mods loading duration:", end_time - start_time
+#                         print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
             except Exception as e:
                 print "self.root_tag = nbt.load(self.filename) failed", self.filename
                 traceback.print_exc()
@@ -2392,7 +2428,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
 
 class MCAlphaDimension(MCInfdevOldLevel):
-    def __init__(self, parentWorld, dimNo, create=False):
+    def __init__(self, parentWorld, dimNo, create=False, check_only=None):
         filename = parentWorld.worldFolder.getFolderPath("DIM" + str(int(dimNo)))
 
         self.parentWorld = parentWorld
@@ -2410,7 +2446,7 @@ class MCAlphaDimension(MCInfdevOldLevel):
     def __str__(self):
         return u"MCAlphaDimension({0}, {1})".format(self.parentWorld, self.dimNo)
 
-    def loadLevelDat(self, create=False, random_seed=None, last_played=None):
+    def loadLevelDat(self, create=False, random_seed=None, last_played=None, check_only=None):
         pass
 
     def preloadDimensions(self):

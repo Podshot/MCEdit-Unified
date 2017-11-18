@@ -154,7 +154,7 @@ class GLDisplayContext(object):
 
         self.display = d
 
-#         self.loadTextures()
+        self.loadTextures()
 
     def getTerrainTexture(self, level):
         return self.terrainTextures.get(level.materials.name, self.terrainTextures["Alpha"])

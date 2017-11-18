@@ -68,7 +68,7 @@ class FileOpener(albow.Widget):
             shortname = os.path.basename(world)
             try:
                 if pymclevel.MCInfdevOldLevel.isLevel(world):
-                    lev = pymclevel.MCInfdevOldLevel(world, readonly=True)
+                    lev = pymclevel.MCInfdevOldLevel(world, readonly=True, check_only=True)
                     shortname = lev.LevelName
                     if lev.LevelName != lev.displayName:
                         shortname = u"{0} ({1})".format(lev.LevelName, lev.displayName)

@@ -193,7 +193,7 @@ class LoadingError(RuntimeError):
     pass
 
 
-def fromFile(filename, loadInfinite=True, readonly=False):
+def fromFile(filename, loadInfinite=True, readonly=False, check_only=False):
     ''' The preferred method for loading Minecraft levels of any type.
     pass False to loadInfinite if you'd rather not load infdev levels.
     '''
@@ -216,7 +216,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
     if MCInfdevOldLevel._isLevel(filename):
         log.info(u"Detected Infdev level.dat")
         if loadInfinite:
-            return MCInfdevOldLevel(filename=filename, readonly=readonly)
+            return MCInfdevOldLevel(filename=filename, readonly=readonly, check_only=check_only)
         else:
             raise ValueError("Asked to load {0} which is an infinite level, loadInfinite was False".format(
                 os.path.basename(filename)))

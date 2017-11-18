@@ -439,7 +439,7 @@ class MCMaterials(object):
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
-        print "#### Game Version: " + game_version
+        print "#### Game Version:", game_version
         game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
         meth = None
@@ -462,21 +462,17 @@ class MCMaterials(object):
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
-#         print sorted(self.__dict__.keys())
         meth() # TODO: Remove this later, removing now causes things to break
-#         build_api_material_map(self)
-#         print sorted(self.__dict__.keys())
-#         build_api_material_map()
 
         # Load the data for the mods
         for mod_name, mod_dir in mods.items():
             log.info("Loading %s mod data from '%s'" % (mod_name, mod_dir))
             print "Loading %s mod data from '%s'" % (mod_name, mod_dir)
             for namespace in os.listdir(mod_dir):
-                print "namespace", namespace
+#                 print "namespace", namespace
                 namespace_path = os.path.join(mod_dir, namespace)
                 namespace_defs = {}
-                print "namespace_path", namespace_path
+#                 print "namespace_path", namespace_path
                 if namespace == "terrain.png":
                     # TODO: Implement the texture file handling.
                     pass

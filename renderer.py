@@ -638,7 +638,7 @@ class ChunkCalculator(object):
         self.hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
 
         self.level = level
-        self.makeRenderstates(level.materials)
+        self.makeRenderstates(level.materials, getattr(level, "mods_materials", []))
 
         # del xArray, zArray, yArray
         self.nullVertices = numpy.zeros((0,) * len(self.precomputedVertices[0].shape),
@@ -726,7 +726,8 @@ class ChunkCalculator(object):
         renderstateEntity,
     )
 
-    def makeRenderstates(self, materials):
+    def makeRenderstates(self, materials, mod_materials=[]):
+        # mod_materials: {"modid": MCMatrial object
         self.blockRendererClasses = [
             GenericBlockRenderer,
             ModRenderer,
@@ -776,22 +777,40 @@ class ChunkCalculator(object):
         materialCount = 2
 
         for br in self.blockRendererClasses[1:]:  # skip generic blocks
-#             materialMap[br.getBlocktypes(materials)] = materialCount
-            materialMap[br(self).getBlocktypes(materials)] = materialCount
-            br.materialIndex = materialCount
-            materialCount += 1
+# #             materialMap[br.getBlocktypes(materials)] = materialCount
+#             materialMap[br(self).getBlocktypes(materials)] = materialCount
+            # Parse also the mod materials here
+            all_mats = mod_materials + [materials]
+            for mats in all_mats:
+                materialMap[br(self).getBlocktypes(materials)] = materialCount
+                br.materialIndex = materialCount
+                materialCount += 1
+
+#             br.materialIndex = materialCount
+#             materialCount += 1
 
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
 
     def addTransparentMaterials(self, mats, materialCount):
         logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
-        for b in self.level.materials:
-            yaml = getattr(b, 'yaml', None)
-            if yaml is not None and yaml.get('opacity', 1) < 1:
-                logging.debug("Adding '%s'" % b)
-                mats[b.ID] = materialCount
-                materialCount += 1
+#         for b in self.level.materials:
+#             yaml = getattr(b, 'yaml', None)
+#             if yaml is not None and yaml.get('opacity', 1) < 1:
+#                 logging.debug("Adding '%s'" % b)
+#                 mats[b.ID] = materialCount
+#                 materialCount += 1
+
+        # Also use the mod materials
+        all_materials = (getattr(self.level, "mod_materials", []) or [] ) + [self.level.materials]
+        for materials in all_materials:
+            for b in materials:
+                yaml = getattr(b, 'yaml', None)
+                if yaml is not None and yaml.get('opacity', 1) < 1:
+                    logging.debug("Adding '%s'" % b)
+                    mats[b.ID] = materialCount
+                    materialCount += 1
+
         logging.debug("renderer::ChunkCalculator: Transparent materials added.")
 
 
@@ -1052,7 +1071,7 @@ class ChunkCalculator(object):
         areaBlockLights = self.getAreaBlockLights(chunk, neighboringChunks)
         yield
 
-        allSlabs = set([b.ID for b in alphaMaterials.allBlocks if "Slab" in b.name])
+        allSlabs = set([b.ID for b in level.materials.allBlocks if "Slab" in b.name])
         for slab in allSlabs:
             slabs = areaBlocks == slab
             if slabs.any():
@@ -1123,11 +1142,12 @@ class ChunkCalculator(object):
                     blockMaterials[sx, sz, sy],
                     [f[sx, sz, sy] for f in facingBlockIndices],
                     areaBlockLights[asx, asz, asy],
-                    chunkRenderer):
+                    chunkRenderer,
+                    getattr(chunk, "mod_materials", [])):
                 yield
 
     def computeCubeGeometry(self, y, blockRenderers, blocks, blockData, materials, blockMaterials, facingBlockIndices,
-                            areaBlockLights, chunkRenderer):
+                            areaBlockLights, chunkRenderer, mod_materials=[]):
         materialCounts = numpy.bincount(blockMaterials.ravel())
         
         append = blockRenderers.append
@@ -1143,6 +1163,7 @@ class ChunkCalculator(object):
             blockRenderer = blockRendererClass(self)
             blockRenderer.y = y
             blockRenderer.materials = materials
+            blockRenderer.mod_materials = mod_materials
             for _ in blockRenderer.makeVertices(facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights,
                                                 texMap):
                 yield
@@ -1184,6 +1205,7 @@ class BlockRenderer(object):
         self.chunkCalculator = cc
         self.vertexArrays = []
         self.materials = cc.level.materials
+        self.mod_materials = getattr(cc.level, "mod_materials", {})
         pass
 
     def getBlocktypes(self, mats):
@@ -1743,8 +1765,8 @@ class ModRenderer(GenericBlockRenderer):
         
         
         # Return a MCMaterial object list containing all the loaded mods defs.
-        self.mod_materials = getattr(cc.level, "mod_materials", None)
-        print "ModRenderer.mod_materials", self.mod_materials
+#         self.mod_materials = getattr(cc.level, "mod_materials", None)
+#         print "ModRenderer.mod_materials", self.mod_materials
 
         #from mceutils import loadPNGTexture
         #self.mats = cc.level.materials
@@ -3214,7 +3236,11 @@ class SlabBlockRenderer(BlockRenderer):
 #         print "self.blocktypes", self.blocktypes
 #         print "self.materials.AllSlabs", list(set(a.ID for a in self.materials.AllSlabs if "double" not in a.name.lower()))
 #         print list(set(a for a in self.materials.AllSlabs if "double" not in a.name.lower()))
-        self.blocktypes = list(set(a.ID for a in materials.AllSlabs if "double" not in a.name.lower()))
+        self.blocktypes = blocktypes = []
+        for mats in getattr(self.chunkCalculator, "mod_materials", []):
+            print "****** mats", mats
+            blocktypes += list(set(a.ID for a in mats.AllSlabs if "double" not in a.name.lower()))
+        blocktypes += list(set(a.ID for a in materials.AllSlabs if "double" not in a.name.lower()))
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -3920,7 +3946,7 @@ class MCRenderer(object):
             # For each mod, bind the texture.
 #             for mod in getattr(self.level, "mods", []):
 #                 (a.texture.bind() for a in )
-#             (a.texture.bind() for a in getattr(self.level, "mods", []) if getattr(a, "texture"))
+            (a.texture.bind() for a in getattr(self.level, "mods", []) if getattr(a, "texture"))
 
             GL.glEnable(GL.GL_TEXTURE_2D)
             GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
