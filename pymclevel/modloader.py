@@ -425,22 +425,64 @@ class ModLoader(object):
         self.block_ids_names[oid] = "%s:%s" % (namespace, name)
         self.block_ids_modid[oid] = self.modid
 
-        built_json[namespace][d_type].append({"id": oid,
-                                              "idStr": name,
-                                              "name": name.replace("_", " ").title(),
-                                              "tex": texture_catalog.get(name, notex_idx)
-                                              }
-                                             )
+        def add_tex_to_bd(_value, _bd):
+            """Add a texture name to a block data.
+            :_value: object: Shall be a dict. If not, the function does nothing.
+            :_bd: dict: Block data to add the texture name."""
+            if isinstance(_value, dict):
+                model = _value.get("model")
+                if model:
+                    model_name = model.split(":", 1)[-1]
+                    var_tex = texture_catalog.get(model_name, notex_idx)
+                    _bd["%s" % i] = {"tex": var_tex,
+                                     "name": model_name.replace("_", " ").title()}
+
+        block_def = {"id": oid,
+                    "idStr": name,
+                    "name": name.replace("_", " ").title(),
+                    "tex": texture_catalog.get(name, notex_idx)
+                    }
+
+        if "variants" in j_data.keys():
+            block_def["data"] = bd = {}
+
+            for i, (k, v) in enumerate(j_data["variants"].items()):
+                print_debug = False
+                if isinstance(v, dict):
+#                     model = v.get("model")
+#                     if model:
+#                         model_name = model.split(":", 1)[-1]
+#                         var_tex = texture_catalog.get(model_name, notex_idx)
+#                         bd["%s" % i] = {"tex": var_tex,
+#                                         "name": model_name.replace("_", " ").title()}
+                    add_tex_to_bd(v, bd)
+                elif isinstance(v, list):
+                    if k == "normal":
+                        for _v in v:
+                            add_tex_to_bd(_v, bd)
+                    else:
+                        print_debug = True
+                else:
+                    print_debug = True
+                if print_debug:
+                    print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                    print name
+                    print k
+                    print v
+                    print type(v)
+
+        built_json[namespace][d_type].append(block_def)
 
         self.built_json = built_json
 
 
     def __load_block_models(self):
-        """Loads the mod block definitions from the models/block .jar subfolders.
+        """Loads the mod block definitions from the blockstates/block .jar subfolders.
         Data is then contained in self.blocks"""
         arch = self.__archive
         jar_content = self.__jar_content
-        pat = "assets/.*?/models/block"
+#         pat = "assets/.*?/models/block"
+        pat = "assets/.*?/blockstates"
         blocks_entries = [a for a in jar_content if re.match(pat, a) and a.endswith(".json")]
 
         # 'assets' can contain several directories with textures an json definitions.
@@ -449,7 +491,8 @@ class ModLoader(object):
         # So let use these directory names as 'namespaces'
 
         blocks = {}
-        namespace_pat = "assets/(.*?)/models/block"
+#         namespace_pat = "assets/(.*?)/models/block"
+        namespace_pat = "assets/(.*?)/blockstates"
         blocks_num = 0
 
         for entry in blocks_entries:
@@ -458,7 +501,13 @@ class ModLoader(object):
             if namespace not in blocks.keys():
                 blocks[namespace] = {}
             t_data = arch.read(entry)
-            j_data = json.loads(t_data)
+            try:
+                j_data = json.loads(re.sub(",\s*}", "}", t_data))
+            except Exception as exc:
+                j_data = {}
+                traceback.print_exc()
+                print t_data
+                raw_input("Program interrupted. ENTER to continue or CTRL-C to break.")
             # Rebuild the json stuff compatible with id_definitions.ids_loader interface.
             self.__add_to_defs(block_name, j_data, namespace, 'blocks')
 

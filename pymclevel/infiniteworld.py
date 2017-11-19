@@ -1264,7 +1264,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             mod_mats = MCMaterials()
             mod_mats.name = "Alpha"
             mod_mats.addJSONBlocksFromVersion(self.gameVersion, mods={mod_obj.modid: mod_obj.mod_dir})
-            self.mod_materials.append(mod_mats)
+            self.mod_materials[mod_obj.modid] = mod_mats
             self.mod_dirs[mod_obj.modid] = mod_obj.mod_dir
 
 
@@ -1300,7 +1300,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                         self.mc_mods_dir = mc_mods_dir = os.path.join(getDataDir(), "mods")
                         self.mods = mods = {}
                         self.mod_dirs = mod_dirs = {}
-                        self.mod_materials = mod_materials = []
+                        self.mod_materials = mod_materials = {}
 #                         print os.path.dirname(os.path.dirname(self.filename))
 
                         use_threads = False
@@ -1342,12 +1342,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 #                         print "######################################"
 #                         print "mods", self.mods
 #                         print "lod_dirs", self.mod_dirs
-                        if self.mods:
-#                             print "######################################"
-#                             print self.materials
-#                              
-                            # Remove that when mod support is finished?
-                            self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs)
+#                         if self.mods:
+# #                             print "######################################"
+# #                             print self.materials
+# #                              
+#                             # Remove that when mod support is finished?
+#                             self.materials.addJSONBlocksFromVersion(self.gameVersion, mods=mod_dirs, block_ids=block_ids)
                         end_time = time.time()
 #                         print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 #                         print "Mods loading duration:", end_time - start_time
