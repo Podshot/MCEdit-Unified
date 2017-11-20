@@ -730,6 +730,7 @@ archive is build like this:
 
 """
 
+# This class is not used, since MCMaterials one handles the mod loading.
 class ModMaterials(object):
 
     def __init__(self, parent_materials, mod_directory):
@@ -776,10 +777,10 @@ class ModMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 
-if os.path.exists('mods'):
-    for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
-        if os.path.exists(os.path.join('mods', mod, 'blocks.json')):
-            ModMaterials(alphaMaterials, os.path.join('mods', mod))
+# if os.path.exists('mods'):
+#     for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
+#         if os.path.exists(os.path.join('mods', mod, 'blocks.json')):
+#             ModMaterials(alphaMaterials, os.path.join('mods', mod))
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
