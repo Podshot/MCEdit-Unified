@@ -1668,7 +1668,7 @@ class LowDetailBlockRenderer(BlockRenderer):
 
             flatcolors = level.materials.flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
             for mod_mats in mod_materials:
-                flatcolors += mod_mats.flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
+                flatcolors += mod_materials[mod_mats].flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
             x, z, y = blockIndices.nonzero()
 
             yield
@@ -1684,7 +1684,7 @@ class LowDetailBlockRenderer(BlockRenderer):
             overmask = overblocks > 0
             flatcolors[overmask] = level.materials.flatColors[:, 0][overblocks[overmask]][:, numpy.newaxis]
             for mod_mats in mod_materials:
-                flatcolors[overmask] += mod_mats.flatColors[:, 0][overblocks[overmask]][:, numpy.newaxis]
+                flatcolors[overmask] += mod_materials[mod_mats].flatColors[:, 0][overblocks[overmask]][:, numpy.newaxis]
 
             if self.detailLevel == 2:
                 heightfactor = (y / float(2.0 * ch.world.Height)) + 0.5
@@ -1718,7 +1718,7 @@ class LowDetailBlockRenderer(BlockRenderer):
             # color grass sides with dirt's color
             va1.view('uint8')[_RGBA][grassmask] = level.materials.flatColors[:, 0][[3]][:, numpy.newaxis]
             for mod_mats in mod_materials:
-                va1.view('uint8')[_RGBA][grassmask] += mod_mats.flatColors[:, 0][[3]][:, numpy.newaxis]
+                va1.view('uint8')[_RGBA][grassmask] += mod_materials[mod_mats].flatColors[:, 0][[3]][:, numpy.newaxis]
 
             va2 = numpy.array(va1)
             va2[_XYZ][:, (1, 2), 0] += step

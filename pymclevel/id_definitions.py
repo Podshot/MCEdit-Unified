@@ -48,12 +48,12 @@ from distutils.version import LooseVersion
 
 log = getLogger(__name__)
 
-def update(orig_dict, new_dict):
+def update_dict(orig_dict, new_dict):
     for key, val in new_dict.iteritems():
         if isinstance(val, collections.Mapping):
             if orig_dict.get(key, {}) == val:
                 continue
-            tmp = update(orig_dict.get(key, { }), val)
+            tmp = update_dict(orig_dict.get(key, { }), val)
             orig_dict[key] = tmp
         elif isinstance(val, list):
             if orig_dict.get(key, []) == val:
@@ -213,16 +213,16 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps
                             if os.path.exists(_file_name):
                                 log.info("Found %s"%_file_name)
                                 #_data.update(_get_data(_file_name))
-                                update(_data, _get_data(_file_name))
+                                update_dict(_data, _get_data(_file_name))
                                 if timestamps:
                                     _timestamps[_file_name] = os.stat(_file_name).st_mtime
                             else:
                                 log.info("Could not find %s"%_file_name)
-                        update(_data, data)
+                        update_dict(_data, data)
                         #_data.update(data)
                         _defs, _ids = _parse_data(_data, prefix, namespace, MCEDIT_DEFS, MCEDIT_IDS, ignore_load=True)
-                        update(MCEDIT_DEFS, _defs)
-                        update(MCEDIT_IDS, _ids)
+                        update_dict(MCEDIT_DEFS, _defs)
+                        update_dict(MCEDIT_IDS, _ids)
                         #MCEDIT_DEFS.update(_defs)
                         #MCEDIT_IDS.update(_ids)
                         if json_dict:
