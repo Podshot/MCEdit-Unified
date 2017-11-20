@@ -638,7 +638,7 @@ class ChunkCalculator(object):
         self.hiddenOreMaterials[alphaMaterials.Netherrack.ID] = stoneid
 
         self.level = level
-        self.makeRenderstates(level.materials)
+        self.makeRenderstates(level.materials, getattr(level, "mods_materials", {}))
 
         # del xArray, zArray, yArray
         self.nullVertices = numpy.zeros((0,) * len(self.precomputedVertices[0].shape),
@@ -726,15 +726,17 @@ class ChunkCalculator(object):
         renderstateEntity,
     )
 
-    def makeRenderstates(self, materials):
+    def makeRenderstates(self, materials, mod_materials={}):
+        # mod_materials: {"modid": MCMatrial object}
         self.blockRendererClasses = [
             GenericBlockRenderer,
+#             ModRenderer,
             LeafBlockRenderer,
             PlantBlockRenderer,
             TorchBlockRenderer,
             WaterBlockRenderer,
             SlabBlockRenderer,
-            ModRenderer,
+#             ModRenderer,
         ]
         if materials.name in ("Alpha", "Pocket"):
             self.blockRendererClasses += [
@@ -775,22 +777,41 @@ class ChunkCalculator(object):
         materialCount = 2
 
         for br in self.blockRendererClasses[1:]:  # skip generic blocks
-#             materialMap[br.getBlocktypes(materials)] = materialCount
-            materialMap[br(self).getBlocktypes(materials)] = materialCount
-            br.materialIndex = materialCount
-            materialCount += 1
+# #             materialMap[br.getBlocktypes(materials)] = materialCount
+#             materialMap[br(self).getBlocktypes(materials)] = materialCount
+            # Parse also the mod materials here
+            all_mats = mod_materials.values() + [materials]
+            for mats in all_mats:
+                materialMap[br(self).getBlocktypes(mats)] = materialCount
+                br.materialIndex = materialCount
+                materialCount += 1
+            
+#             materialMap[br(self).getBlocktypes(materials, mod_materials)] = materialCount
+#             br.materialIndex = materialCount
+#             materialCount += 1
 
         self.exposedMaterialMap = numpy.array(materialMap)
         self.addTransparentMaterials(self.exposedMaterialMap, materialCount)
 
     def addTransparentMaterials(self, mats, materialCount):
         logging.debug("renderer::ChunkCalculator: Dynamically adding transparent materials.")
-        for b in self.level.materials:
-            yaml = getattr(b, 'yaml', None)
-            if yaml is not None and yaml.get('opacity', 1) < 1:
-                logging.debug("Adding '%s'" % b)
-                mats[b.ID] = materialCount
-                materialCount += 1
+#         for b in self.level.materials:
+#             yaml = getattr(b, 'yaml', None)
+#             if yaml is not None and yaml.get('opacity', 1) < 1:
+#                 logging.debug("Adding '%s'" % b)
+#                 mats[b.ID] = materialCount
+#                 materialCount += 1
+
+        # Also use the mod materials
+        all_materials = (getattr(self.level, "mod_materials", {}).values() or [] ) + [self.level.materials]
+        for materials in all_materials:
+            for b in materials:
+                yaml = getattr(b, 'yaml', None)
+                if yaml is not None and yaml.get('opacity', 1) < 1:
+                    logging.debug("Adding '%s'" % b)
+                    mats[b.ID] = materialCount
+                    materialCount += 1
+
         logging.debug("renderer::ChunkCalculator: Transparent materials added.")
 
 
@@ -1051,7 +1072,9 @@ class ChunkCalculator(object):
         areaBlockLights = self.getAreaBlockLights(chunk, neighboringChunks)
         yield
 
-        allSlabs = set([b.ID for b in alphaMaterials.allBlocks if "Slab" in b.name])
+        allSlabs = list(set([b.ID for b in level.materials.allBlocks if "Slab" in b.name]))
+        for mod_mats in getattr(level, "mod_materials", {}).values():
+            allSlabs += list(set([b.ID for b in mod_mats.allBlocks if "Slab" in b.name]))
         for slab in allSlabs:
             slabs = areaBlocks == slab
             if slabs.any():
@@ -1122,17 +1145,24 @@ class ChunkCalculator(object):
                     blockMaterials[sx, sz, sy],
                     [f[sx, sz, sy] for f in facingBlockIndices],
                     areaBlockLights[asx, asz, asy],
-                    chunkRenderer):
+                    chunkRenderer,
+                    getattr(chunk, "mod_materials", {})):
                 yield
 
     def computeCubeGeometry(self, y, blockRenderers, blocks, blockData, materials, blockMaterials, facingBlockIndices,
-                            areaBlockLights, chunkRenderer):
+                            areaBlockLights, chunkRenderer, mod_materials={}):
         materialCounts = numpy.bincount(blockMaterials.ravel())
         
         append = blockRenderers.append
         
         def texMap(blocks, blockData=0, direction=slice(None)):
-            return materials.blockTextures[blocks, blockData, direction]  # xxx slow
+            r = []
+            for mod_mats in mod_materials.values():
+                try:
+                    r = mod_mats.blockTextures[blocks, blockData, direction]
+                except:
+                    pass
+            return + materials.blockTextures[blocks, blockData, direction]  # xxx slow
 
         for blockRendererClass in self.blockRendererClasses:
             mi = blockRendererClass.materialIndex
@@ -1142,6 +1172,7 @@ class ChunkCalculator(object):
             blockRenderer = blockRendererClass(self)
             blockRenderer.y = y
             blockRenderer.materials = materials
+            blockRenderer.mod_materials = mod_materials
             for _ in blockRenderer.makeVertices(facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights,
                                                 texMap):
                 yield
@@ -1164,6 +1195,62 @@ class Layer:
     AllLayers = (Blocks, Entities, Monsters, Items, TileEntities, TileTicks, TerrainPopulated, ChunkBorder)
 
 
+def getBlocktypesIdStrID(idStr, mats, mod_materials={}):
+    """Returns a list of IDs of a block from the idStr.
+    :idStr: string: The string ID to be searched.
+    Other arguments are the same as in BlockRenderer.getBlocktypes instances."""
+    r = []
+    for mod_mats in mod_materials.values():
+        for namespace in mod_mats.namespaces:
+            try:
+                r += [mod_mats[":".join((namespace, idStr))].ID]
+            except:
+                pass
+    return r + [mats[":".join(("minecraft", idStr))].ID]
+
+
+def getBlocktypeIDblocksByType(b_type, mats, mod_materials={}):
+    """Returns a list of IDs of blocks using the 'blockBtYpe' interface.
+    :b_type: string: The block type to get.
+    Other arguments are the same as in BlockRenderer.getBlocktypes instances."""
+    r = []
+    for mod_mats in mod_materials.values():
+        try:
+            r += [block.ID for block in mod_mats.blocksByType[b_type]]
+        except:
+            pass
+    return r + [block.ID for block in mats.blocksByType[b_type]]
+
+
+def getBlocktypeIDblocksByTypes(b_types, mats, mod_materials={}):
+    """Returns a list of IDs of blocks using the 'blockBtYpe' interface.
+    :b_types: list or tuple of string: The block types to get.
+    Other arguments are the same as in BlockRenderer.getBlocktypes instances."""
+    r = []
+    for mod_mats in mod_materials.values():
+        r += [b.ID for b in mod_mats if b.type in b_types]
+    return r + [b.ID for b in mats if b.type in b_types]
+
+
+def getBlocktypesAttribute(attr, mats, mod_materials={}, filter="", filter_status=True):
+    """Returns a list of IDs of blocks by getting 'attr' from materials.
+    :attr: string: The attribute to be used.
+    :filter: string: Used to filter results.
+    :filter_status: bool: Wheter to return block IDs containing 'filter'.
+        Default to an empty string.
+        or the ones which does not contain 'filter'.
+        Default to 'True'.
+    Other arguments are the same as in BlockRenderer.getBlocktypes instances."""
+    r = []
+    filter = filter.lower()
+    for mod_mats in mod_materials.values():
+        try:
+            r += [a.ID for a in getattr(mod_mats, attr) if (filter in a.name.lower()) == filter_status]
+        except:
+            pass
+    return r + [a.ID for a in getattr(mats, attr) if (filter in a.name.lower()) == filter_status]
+
+
 class BlockRenderer(object):
     detailLevels = (0,)
     layer = Layer.Blocks
@@ -1183,9 +1270,10 @@ class BlockRenderer(object):
         self.chunkCalculator = cc
         self.vertexArrays = []
         self.materials = cc.level.materials
+        self.mod_materials = getattr(cc.level, "mod_materials", {})
         pass
 
-    def getBlocktypes(self, mats):
+    def getBlocktypes(self, mats, mod_materials={}):
         return self.blocktypes
 
     def setAlpha(self, alpha):
@@ -1576,7 +1664,11 @@ class LowDetailBlockRenderer(BlockRenderer):
         if nonAirBlocks.any():
             blockTypes = blocks[blockIndices]
 
+            mod_materials = getattr(level, "mod_materials", {}).values()
+
             flatcolors = level.materials.flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
+            for mod_mats in mod_materials:
+                flatcolors += mod_mats.flatColors[blockTypes, ch.Data[blockIndices] & 0xf][:, numpy.newaxis, :]
             x, z, y = blockIndices.nonzero()
 
             yield
@@ -1591,6 +1683,8 @@ class LowDetailBlockRenderer(BlockRenderer):
 
             overmask = overblocks > 0
             flatcolors[overmask] = level.materials.flatColors[:, 0][overblocks[overmask]][:, numpy.newaxis]
+            for mod_mats in mod_materials:
+                flatcolors[overmask] += mod_mats.flatColors[:, 0][overblocks[overmask]][:, numpy.newaxis]
 
             if self.detailLevel == 2:
                 heightfactor = (y / float(2.0 * ch.world.Height)) + 0.5
@@ -1623,6 +1717,8 @@ class LowDetailBlockRenderer(BlockRenderer):
             grassmask = topBlocks[nonAirBlocks] == 2
             # color grass sides with dirt's color
             va1.view('uint8')[_RGBA][grassmask] = level.materials.flatColors[:, 0][[3]][:, numpy.newaxis]
+            for mod_mats in mod_materials:
+                va1.view('uint8')[_RGBA][grassmask] += mod_mats.flatColors[:, 0][[3]][:, numpy.newaxis]
 
             va2 = numpy.array(va1)
             va2[_XYZ][:, (1, 2), 0] += step
@@ -1682,19 +1778,29 @@ class ModRenderer(GenericBlockRenderer):
     mod_blocks = []
     mods = []
 
-    @classmethod
-    def getBlocktypes(cls, mats):
-        if not cls.mod_blocks:
+#     @classmethod
+#     def getBlocktypes(cls, mats):
+#         if not cls.mod_blocks:
+#             blocks = []
+#             extend = blocks.extend
+#             for mod in cls.mods:
+#                 extend(mod.blocks)
+#             cls.mod_blocks = blocks
+#             return blocks
+#         return cls.mod_blocks
+
+    def getBlocktypes(self, mats, mod_materials={}):
+        if not self.mod_blocks:
             blocks = []
             extend = blocks.extend
-            for mod in cls.mods:
-                extend(mod.blocks)
-            cls.mod_blocks = blocks
+            for mod in self.mods:
+                extend(mod.block_ids_names.keys())
+            self.mod_blocks = blocks
             return blocks
-        return cls.mod_blocks
+        return self.mod_blocks
 
     def build(self):
-        from mceutils import loadPNGTexture
+#         from mceutils import loadPNGTexture
         #import os
         #cls._t_mods = [
         #    {
@@ -1707,17 +1813,33 @@ class ModRenderer(GenericBlockRenderer):
         #        "texture": loadPNGTexture(os.path.join(".", "mods", "test_mod_2", "texture.png"))
         #    }
         #]
-        if hasattr(self.materials, 'mods'):
-            for mod in self.materials.mods:
-                if mod.texture_path is None:
-                    setattr(mod, 'texture', self.materials.terrainTexture)
-                    continue
-                setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
-                self.mods.append(mod)
+#         if hasattr(self.materials, 'mods'):
+#             for mod in self.materials.mods:
+#                 if mod.texture_path is None:
+#                     setattr(mod, 'texture', self.materials.terrainTexture)
+#                     continue
+#                 setattr(mod, 'texture', loadPNGTexture(mod.texture_path))
+#                 self.mods.append(mod)
+        
+        
+#         print "ModRenderer.build"
+        if hasattr(self.chunkCalculator.level, "mods"):
+            for modid, mod_obj in self.chunkCalculator.level.mods.items():
+#                 print "modid", modid, "mod_obj.texture", mod_obj.texture
+                if not mod_obj.texture:
+                    setattr(mod_obj, 'texture', self.materials.terrainTexture)
+                self.mods.append(mod_obj)
+                self.textures[modid] = mod_obj.texture
 
     def __init__(self, cc):
         super(GenericBlockRenderer, self).__init__(cc)
         self.vertexMap = {}
+        
+        
+        
+        # Return a MCMaterial object list containing all the loaded mods defs.
+#         self.mod_materials = getattr(cc.level, "mod_materials", None)
+#         print "ModRenderer.mod_materials", self.mod_materials
 
         #from mceutils import loadPNGTexture
         #self.mats = cc.level.materials
@@ -1731,27 +1853,45 @@ class ModRenderer(GenericBlockRenderer):
         #from mceutils import loadPNGTexture
         #self.texture = loadPNGTexture(filename)
 
-        if not self.__class__.mods:
-            self.build()
+#         if not self.__class__.mods:
+#             self.build()
         #t_mod1 = object()
         #setattr(t_mod1, 'name', "Test Mod")
         #setattr(t_mod1, 'blocks', [404, 406])
         #setattr(t_mod1, 'texture', self.texture)
         #self._t_mods.append(t_mod1)
+        
+        
+        
+        self.build()
 
     def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+#         for mod in self.mods:
+#             old_shape = blocks.shape
+#             _blocks = blocks.copy()
+#             _blocks = _blocks.ravel()
+#             _blocks[numpy.in1d(_blocks, mod.blocks, invert=True)] = 0
+#             _blocks = numpy.reshape(_blocks, old_shape)
+# 
+#             self.vertexArrays = []
+#             for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
+#                 yield
+#             self.vertexMap[mod.name] = self.vertexArrays
+#             self.vertexArrays = []
+
         for mod in self.mods:
             old_shape = blocks.shape
             _blocks = blocks.copy()
             _blocks = _blocks.ravel()
-            _blocks[numpy.in1d(_blocks, mod.blocks, invert=True)] = 0
+            _blocks[numpy.in1d(_blocks, mod.block_ids_modid.keys(), invert=True)] = 0
             _blocks = numpy.reshape(_blocks, old_shape)
 
             self.vertexArrays = []
             for _ in super(ModRenderer, self).makeVertices(facingBlockIndices, _blocks, blockMaterials, blockData, areaBlockLights, texMap):
                 yield
-            self.vertexMap[mod.name] = self.vertexArrays
+            self.vertexMap[mod.modid] = self.vertexArrays
             self.vertexArrays = []
+
 
 
     def drawVertices(self):
@@ -1759,7 +1899,8 @@ class ModRenderer(GenericBlockRenderer):
         for mod in self.mods:
             #GL.glPushAttrib(GL.GL_TEXTURE_BIT)
             mod.texture.bind()
-            self.vertexArrays = self.vertexMap[mod.name]
+#             self.vertexArrays = self.vertexMap[mod.name]
+            self.vertexArrays = self.vertexMap[mod.modid]
             super(ModRenderer, self).drawVertices()
             self.vertexArrays = []
             #GL.glPopAttrib()
@@ -1774,13 +1915,17 @@ class ModRenderer(GenericBlockRenderer):
         #    self.printed = True
         #super(GenericBlockRenderer, self).drawVertices()
         #GL.glPopAttrib()
+        
+        
+        
 
 
 class LeafBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["LEAVES"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [block.ID for block in mats.blocksByType["LEAVES"]]
+        return getBlocktypeIDblocksByType("LEAVES", mats, mod_materials)
 
     @property
     def renderstate(self):
@@ -1861,13 +2006,18 @@ class LeafBlockRenderer(BlockRenderer):
 
 class PlantBlockRenderer(BlockRenderer):
     @classmethod
-    def getBlocktypes(cls, mats):
+    def getBlocktypes(cls, mats, mod_materials={}):
         # blocktypes = [6, 37, 38, 39, 40, 59, 83]
         # if mats.name != "Classic": blocktypes += [31, 32]  # shrubs, tall grass
         # if mats.name == "Alpha": blocktypes += [115]  # nether wart
-        blocktypes = [b.ID for b in mats if b.type in ("DECORATION_CROSS", "NETHER_WART", "CROPS", "STEM")]
-
-        return blocktypes
+#         blocktypes = []
+#         types = ("DECORATION_CROSS", "NETHER_WART", "CROPS", "STEM")
+#         for mod_mats in mod_materials.values():
+#             blocktypes += [b.ID for b in mod_mats if b.type in types]
+#         blocktypes += [b.ID for b in mats if b.type in types]
+# 
+#         return blocktypes
+        return getBlocktypeIDblocksByTypes(("DECORATION_CROSS", "NETHER_WART", "CROPS", "STEM"), mats, mod_materials)
 
     renderstate = ChunkCalculator.renderstateAlphaTest
 
@@ -1925,8 +2075,15 @@ class PlantBlockRenderer(BlockRenderer):
 class TorchBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["TORCH"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         r = []
+#         for mod_mats in mod_materials.values():
+#             try:
+#                 r += [block.ID for block in mats.blocksByType["TORCH"]]
+#             except:
+#                 pass
+#         return r + [block.ID for block in mats.blocksByType["TORCH"]]
+        return getBlocktypeIDblocksByType("TORCH", mats, mod_materials)
     
     renderstate = ChunkCalculator.renderstateAlphaTest
     torchOffsetsStraight = [
@@ -2085,8 +2242,16 @@ class TorchBlockRenderer(BlockRenderer):
 class LeverBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:lever"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         r = []
+#         for mod_mats in mod_materials.values():
+#             for namespace in mod_mats.namespaces:
+#                 try:
+#                     r += mod_mats[":".join((namespace, "lever"))].ID
+#                 except:
+#                     pass
+#         return r + [mats["minecraft:lever"].ID]
+        return getBlocktypesIdStrID("lever", mats, mod_materials)
     
     leverBaseTemplate = makeVertexTemplatesFromJsonModel((5, 0, 4), (11, 3, 12), {
         "down": (10, 0, 16, 8),
@@ -2175,10 +2340,16 @@ class RailBlockRenderer(BlockRenderer):
                                    ], dtype='float32')
 
         self.railTextures -= self.materials.blockTextures[self.materials.Rail.ID, 0, 0]
+        for mod_mats in self.mod_materials.values():
+            self.railTextures -= mod_mats.blockTextures[self.materials.Rail.ID, 0, 0]
 
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["SIMPLE_RAIL"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         r = []
+#         for mod_mats in mod_materials.values():
+#             r += [block.ID for block in mod_mats.blocksByType["SIMPLE_RAIL"]]
+#         return r + [block.ID for block in mats.blocksByType["SIMPLE_RAIL"]]
+        return getBlocktypeIDblocksByType("SIMPLE_RAIL", mats, mod_materials)
 
     railOffsets = numpy.array([
                                   [0, 0, 0, 0],
@@ -2213,6 +2384,8 @@ class RailBlockRenderer(BlockRenderer):
         tex = texMap(railBlocks, bdata, pymclevel.faces.FaceYIncreasing)[:, numpy.newaxis, :]
 
         # disable 'powered' or 'pressed' bit for powered and detector rails
+        for mod_mats in self.mod_materials.values():
+            bdata[railBlocks != mod_mats.Rail.ID] = bdata[railBlocks != mod_mats.Rail.ID].astype(int) & ~0x8
         bdata[railBlocks != self.materials.Rail.ID] = bdata[railBlocks != self.materials.Rail.ID].astype(int) & ~0x8
 
         vertexArray = self.makeTemplate(direction, blockIndices)
@@ -2237,8 +2410,16 @@ class RailBlockRenderer(BlockRenderer):
 class LadderBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:ladder"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         r = []
+#         for mod_mats in mod_materials.values():
+#             for namespace in mod_mats.namespaces:
+#                 try:
+#                     r += mod_mats[":".join((namespace, "ladder"))].ID
+#                 except:
+#                     pass
+#         return r + [mats["minecraft:ladder"].ID]
+        return getBlocktypesIdStrID("ladder", mats, mod_materials)
 
     ladderOffsets = numpy.array([
                                     [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
@@ -2285,8 +2466,9 @@ class LadderBlockRenderer(BlockRenderer):
 class WallSignBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:wall_sign"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:wall_sign"].ID]
+        return getBlocktypesIdStrID("wall_sign", mats, mod_materials)
     
     wallSignTemplate = makeVertexTemplatesFromJsonModel((0, 4.5, 0), (16, 13.5, 2), {
         "down": (0, 11, 18, 13),
@@ -2313,9 +2495,10 @@ class WallSignBlockRenderer(BlockRenderer):
 class StandingSignRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:standing_sign"].ID]
-    
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:standing_sign"].ID]
+        return getBlocktypesIdStrID("standing_sign", mats, mod_materials)
+
     signTemplate = makeVertexTemplatesFromJsonModel((0, 7, 7), (16, 16, 9), {
         "down": (0, 14, 16, 16),
         "up": (0, 12, 16, 14),
@@ -2350,8 +2533,9 @@ class StandingSignRenderer(BlockRenderer):
 class SnowBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:snow_layer"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:snow_layer"].ID]
+        return getBlocktypesIdStrID("snow_layer", mats, mod_materials)
 
     def makeSnowVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2393,8 +2577,9 @@ class SnowBlockRenderer(BlockRenderer):
 class CarpetBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:carpet"].ID, mats["minecraft:waterlily"].ID] #Separate before implementing layers
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:carpet"].ID, mats["minecraft:waterlily"].ID] #Separate before implementing layers
+        return getBlocktypesIdStrID("carpet", mats, mod_materials) + getBlocktypesIdStrID("waterlily", mats, mod_materials)
 
     def makeCarpetVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2436,8 +2621,9 @@ class CarpetBlockRenderer(BlockRenderer):
 class CactusBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:cactus"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:cactus"].ID]
+        return getBlocktypesIdStrID("cactus", mats, mod_materials)
 
     def makeCactusVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2476,8 +2662,9 @@ class CactusBlockRenderer(BlockRenderer):
 class PaneBlockRenderer(BlockRenderer):  #Basic no thickness panes, add more faces to widen.
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["SOLID_PANE"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [block.ID for block in mats.blocksByType["SOLID_PANE"]]
+        return getBlocktypeIDblocksByType("SOLID_PANE", mats, mod_materials)
 
     def makePaneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2515,8 +2702,9 @@ class PaneBlockRenderer(BlockRenderer):  #Basic no thickness panes, add more fac
 class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper shape is appreciated.
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["PRESSURE_PLATE"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [block.ID for block in mats.blocksByType["PRESSURE_PLATE"]]
+        return getBlocktypeIDblocksByType("PRESSURE_PLATE", mats, mod_materials)
 
     def makePlateVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2551,8 +2739,9 @@ class EnchantingBlockRenderer(
     BlockRenderer):  #Note: Enderportal frame side sprite has been lowered 1 pixel to use this renderer, will need separate renderer for eye.
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:enchanting_table"].ID, mats["minecraft:end_portal_frame"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:enchanting_table"].ID, mats["minecraft:end_portal_frame"].ID]
+        return getBlocktypesIdStrID("enchanting_table", mats, mod_materials) + getBlocktypesIdStrID("end_portal_frame", mats, mod_materials)
 
     def makeEnchantingVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2586,8 +2775,9 @@ class EnchantingBlockRenderer(
 class DaylightBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:daylight_detector"].ID, mats.DaylightSensorOn.ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:daylight_detector"].ID, mats.DaylightSensorOn.ID]
+        return getBlocktypesIdStrID("daylight_detector", mats, mod_materials) + [mats.DaylightSensorOn.ID]
 
     def makeDaylightVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2624,8 +2814,20 @@ class DaylightBlockRenderer(BlockRenderer):
 class BedBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:bed"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         for modid, mod_mats in mod_materials.items():
+#             # Try to find the block in the materials 'namespaces'.
+#             r = None
+#             for namespace in mod_mats.namespaces:
+#                 try:
+#                     r = mod_mats[":".join((namespace, "bed"))]
+#                 except KeyError:
+#                     pass
+#                 if r:
+#                     break
+#             return r.ID
+#         return [mats["minecraft:bed"].ID]
+        return getBlocktypesIdStrID("bed", mats, mod_materials)
 
     def makeBedVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2659,8 +2861,9 @@ class BedBlockRenderer(BlockRenderer):
 class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:cake"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:cake"].ID]
+        return getBlocktypesIdStrID("cake", mats, mod_materials)
 
     def makeCakeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2701,8 +2904,9 @@ class CakeBlockRenderer(BlockRenderer):  #Only shows whole cakes
 class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [block.ID for block in mats.blocksByType["THINSLICE"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [block.ID for block in mats.blocksByType["THINSLICE"]]
+        return getBlocktypeIDblocksByType("THINSLICE", mats, mod_materials)
 
     def makeRepeaterVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -2737,8 +2941,9 @@ class RepeaterBlockRenderer(BlockRenderer):  #Sticks would be nice
 class RedstoneBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [mats["minecraft:redstone_wire"].ID]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [mats["minecraft:redstone_wire"].ID]
+        return getBlocktypesIdStrID("redstone_wire", mats, mod_materials)
 
     def redstoneVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         blockIndices = self.getMaterialIndices(blockMaterials)
@@ -2770,8 +2975,10 @@ class RedstoneBlockRenderer(BlockRenderer):
 class DoorRenderer(BlockRenderer):
 
     @classmethod
-    def getBlocktypes(cls, mats):
-        cls.blocktypes = [block.ID for block in mats.blocksByType["DOOR"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         cls.blocktypes = [block.ID for block in mats.blocksByType["DOOR"]]
+#         return cls.blocktypes
+        cls.blocktypes =  getBlocktypeIDblocksByType("DOOR", mats, mod_materials)
         return cls.blocktypes
 
     doorTemplate = makeVertexTemplatesFromJsonModel(
@@ -2844,8 +3051,9 @@ class DoorRenderer(BlockRenderer):
 class ButtonRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [a.ID for a in mats.blocksByType["BUTTON"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [a.ID for a in mats.blocksByType["BUTTON"]]
+        return getBlocktypeIDblocksByType("BUTTON", mats, mod_materials)
 
     buttonTemplate = makeVertexTemplatesFromJsonModel((5, 0, 6), (11, 2, 10), {
         "down": (5, 6, 11, 10),
@@ -2887,8 +3095,9 @@ class ButtonRenderer(BlockRenderer):
 class TrapDoorRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [a.ID for a in mats.blocksByType["TRAPDOOR"]]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [a.ID for a in mats.blocksByType["TRAPDOOR"]]
+        return getBlocktypeIDblocksByType("TRAPDOOR", mats, mod_materials)
 
     openTemplate = makeVertexTemplatesFromJsonModel((0, 0, 13), (16, 16, 16), {
         "down": (0, 13, 16, 16),
@@ -2949,13 +3158,14 @@ class FenceBlockRenderer(BlockRenderer):
     makeVertices = makeVerticesFromModel(fenceTemplates)
 
     @classmethod
-    def getBlocktypes(cls, mats):
+    def getBlocktypes(cls, mats, mod_materials={}):
 #         if mats.name == "Pocket":
 #             cls.blocktypes = cls.blocktypes_pocket
 #         else:
 #             cls.blocktypes = cls.blocktypes_alpha
 #         return cls.blocktypes
-        return [block.ID for block in mats.blocksByType["FENCE"]]
+#         return [block.ID for block in mats.blocksByType["FENCE"]]
+        return getBlocktypeIDblocksByType("FENCE", mats, mod_materials)
 
 
 class FenceGateBlockRenderer(BlockRenderer):
@@ -2975,8 +3185,10 @@ class FenceGateBlockRenderer(BlockRenderer):
          makeVertexTemplates(3 / 8., 0, 7 / 8., 1, .8, 1)]])
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [a.ID for a in mats.AllStairs]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [a.ID for a in mats.AllStairs]
+        # Stair types renderer ?
+        return getBlocktypesAttribute("AllStairs", mats, mod_materials)
 
     def fenceGateVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         fenceMask = self.getMaterialIndices(blockMaterials)
@@ -3044,8 +3256,9 @@ class FenceGateBlockRenderer(BlockRenderer):
 class StairBlockRenderer(BlockRenderer):
     
     @classmethod
-    def getBlocktypes(cls, mats):
-        return [a.ID for a in mats.AllStairs]
+    def getBlocktypes(cls, mats, mod_materials={}):
+#         return [a.ID for a in mats.AllStairs]
+        return getBlocktypesAttribute("AllStairs", mats, mod_materials)
 
     # South - FaceXIncreasing
     # North - FaceXDecreasing
@@ -3112,7 +3325,8 @@ class VineBlockRenderer(BlockRenderer):
 
     def __init__(self, *args, **kwargs):
         BlockRenderer.__init__(self, *args, **kwargs)
-        self.blocktypes = [self.materials["minecraft:vine"].ID]
+#         self.blocktypes = [self.materials["minecraft:vine"].ID]
+        self.blocktypes = getBlocktypesIdStrID("vine", self.materials, self.mod_materials)
 
     def vineFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
                          facingBlockLight, texMap):
@@ -3157,15 +3371,21 @@ class VineBlockRenderer(BlockRenderer):
 class SlabBlockRenderer(BlockRenderer):
     def __init__(self, *args, **kwargs):
         BlockRenderer.__init__(self, *args, **kwargs)
-        materials = self.materials
-#         self.blocktypes = [materials["minecraft:wooden_slab"].ID,
-#                   materials["minecraft:stone_slab"].ID,
-#                   materials["minecraft:stone_slab2"].ID,
-#                   materials["minecraft:purpur_slab"].ID]
-#         print "self.blocktypes", self.blocktypes
-#         print "self.materials.AllSlabs", list(set(a.ID for a in self.materials.AllSlabs if "double" not in a.name.lower()))
-#         print list(set(a for a in self.materials.AllSlabs if "double" not in a.name.lower()))
-        self.blocktypes = list(set(a.ID for a in materials.AllSlabs if "double" not in a.name.lower()))
+#         materials = self.materials
+# #         self.blocktypes = [materials["minecraft:wooden_slab"].ID,
+# #                   materials["minecraft:stone_slab"].ID,
+# #                   materials["minecraft:stone_slab2"].ID,
+# #                   materials["minecraft:purpur_slab"].ID]
+# #         print "self.blocktypes", self.blocktypes
+# #         print "self.materials.AllSlabs", list(set(a.ID for a in self.materials.AllSlabs if "double" not in a.name.lower()))
+# #         print list(set(a for a in self.materials.AllSlabs if "double" not in a.name.lower()))
+#         self.blocktypes = blocktypes = []
+#         for mats in getattr(self.chunkCalculator, "mod_materials", {}).values():
+#             print "****** mats", mats
+#             blocktypes += list(set(a.ID for a in mats.AllSlabs if "double" not in a.name.lower()))
+#         blocktypes += list(set(a.ID for a in materials.AllSlabs if "double" not in a.name.lower()))
+
+        self.blocktypes = getBlocktypesAttribute("AllSlabs", self.materials, self.mod_materials, "double", False)
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):
@@ -3200,7 +3420,8 @@ class SlabBlockRenderer(BlockRenderer):
 class EndRodRenderer(BlockRenderer):
     def __init__(self, *args, **kwargs):
         BlockRenderer.__init__(self, *args, **kwargs)
-        self.blocktypes = [self.materials["minecraft:end_rod"].ID]
+#         self.blocktypes = [self.materials["minecraft:end_rod"].ID]
+        self.blocktypes = getBlocktypesIdStrID("end_rod", self.materials, self.mod_materials)
 
     rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
         "down": (4, 2, 2, 0),
@@ -3242,6 +3463,9 @@ class EndRodRenderer(BlockRenderer):
 
     makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
 
+
+# This renderer defines internal ID and initializes blocktypes when instanciated.
+# Has to be reworked...
 class WaterBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateWater
 
@@ -3252,9 +3476,10 @@ class WaterBlockRenderer(BlockRenderer):
         self.blocktypes = [materials["minecraft:flowing_water"].ID, self.waterID]
 
     @classmethod
-    def getBlocktypes(cls, mats):
+    def getBlocktypes(cls, mats, mod_materials={}):
         cls.waterID = mats["minecraft:water"].ID
-        return [mats["minecraft:flowing_water"].ID, cls.waterID]
+#         return [mats["minecraft:flowing_water"].ID, cls.waterID]
+        return getBlocktypesIdStrID("flowing_water", mats, mod_materials) + getBlocktypesIdStrID("water", mats, mod_materials)
 
     def waterFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
                           facingBlockLight, texMap):
@@ -3267,13 +3492,15 @@ class WaterBlockRenderer(BlockRenderer):
     makeFaceVertices = waterFaceVertices
 
 
+# This renderer defines internal ID.
+# Has to be reworked...
 class IceBlockRenderer(BlockRenderer):
     renderstate = ChunkCalculator.renderstateIce
     
     @classmethod
-    def getBlocktypes(cls, mats):
+    def getBlocktypes(cls, mats, mod_materials={}):
         cls.iceID = mats["minecraft:ice"].ID
-        return [cls.iceID]
+        return getBlocktypesIdStrID("ice", mats, mod_materials)
 
     def iceFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
                         facingBlockLight, texMap):
@@ -3864,7 +4091,15 @@ class MCRenderer(object):
             GL.glEnable(GL.GL_CULL_FACE)
             GL.glEnable(GL.GL_DEPTH_TEST)
 
+#             print self.level.materials
+#             print self.level.materials.terrainTexture
             self.level.materials.terrainTexture.bind()
+
+            # For each mod, bind the texture.
+#             for mod in getattr(self.level, "mods", []):
+#                 (a.texture.bind() for a in )
+            (a.texture.bind() for a in getattr(self.level, "mod_materials", {}).values() if getattr(a, "texture"))
+
             GL.glEnable(GL.GL_TEXTURE_2D)
             GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
 

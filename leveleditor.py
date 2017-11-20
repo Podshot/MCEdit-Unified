@@ -1181,7 +1181,7 @@ class LevelEditor(GLViewport):
         GL.glDisable(GL.GL_BLEND)
         GL.glDisable(GL.GL_DEPTH_TEST)
 
-    def loadFile(self, filename, addToRecent=True):
+    def loadFile(self, filename, addToRecent=True, check_only=False):
         """
         Called when the user picks a level using Load World or Open File.
         """
@@ -1199,7 +1199,7 @@ class LevelEditor(GLViewport):
             self.level.close()
 
         try:
-            level = pymclevel.fromFile(filename)
+            level = pymclevel.fromFile(filename, check_only=check_only)
         except Exception as e:
             logging.exception(
                 'Wasn\'t able to open a file {file => %s}' % filename

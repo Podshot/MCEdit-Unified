@@ -22,6 +22,57 @@ import traceback
 from PIL import Image
 from cStringIO import StringIO
 import nbt
+from gl_img_utils import loadPNGTexture
+
+
+_MOD_CATALOG = ""
+
+
+def _get_catalog(f_name):
+    """Reads the mod catalog file.
+    :f_name: string: The catalog file name.
+    If :f_name does not exists, it will be created.
+    Returns the catalog (string)."""
+    global _MOD_CATALOG
+    if not _MOD_CATALOG:
+        if os.path.exists(f_name):
+            with open(f_name, "r") as fi:
+                _MOD_CATALOG = fi.read()
+        else:
+            _MOD_CATALOG = "# Catalog for MCEdit mods"
+            with open(f_name, "w") as fo:
+                fo.write(_MOD_CATALOG)
+    return _MOD_CATALOG
+
+
+def _add_to_catalog(f_name, data):
+    """Adds data to the catalog file.
+    :f_name: string: The catalog file to write to.
+    :data: string: Data to add."""
+    global _MOD_CATALOG
+    if not _MOD_CATALOG:
+        _get_catalog(f_name)
+    if not _MOD_CATALOG.endswith("\n"):
+        _MOD_CATALOG += "\n"
+    _MOD_CATALOG += data
+    with open(f_name, "w") as fo:
+        fo.write(_MOD_CATALOG)
+
+
+class NumericalKeyDict(dict):
+    """Dictionary class which keys are numbers or string representation of numbers.
+    So, calling <NumericalKeyDict instance>[1] is same as calling <NumericalKeyDict instance>["1"]."""
+
+    def __getitem__(self, key):
+        """Return value for 'key'.
+        :key: int or string which can be converted to an int."""
+        return dict.__getitem__(self, int(key))
+
+    def __setitem__(self, key, value):
+        """Set 'key' item to 'value'.
+        :key: int or string which can be converted to an int.
+        :value: object: Any object that can be a dict() value."""
+        dict.__setitem__(self, int(key), value)
 
 
 class ModLoader(object):
@@ -29,15 +80,20 @@ class ModLoader(object):
     directory named like the mod.
     The destination directory will contain .json definition files and a texture
     one usable by MCEdit."""
-    def __init__(self, file_name, output_dir, block_ids={}, force=False):
+    def __init__(self, file_name, output_dir, block_ids={}, force=False, modid=None, modver=None, gamever=None, directories=[]):
         """Initialize the object.
         :file_name: string: Full path to the .jar file. Must exists!
         :output_dir: string: The directory where to create the mod content. Must exists!
         :block_ids: dict: If given, keys are block 'idStr' and values numeric IDs as found in the mod definition in 'level.dat'
             Defaults to an empty dict.
         :force: bool: Whether to force a mod extracted data to be overwritten.
-            Defaults to False."""
-        print "Loading mod", file_name
+            Defaults to False.
+        :modid: string: The mod ID got from the game.
+        :modver: string: The mod version got from the game.
+        :gamever: string: The game version.
+        :directories: list or tuple: The list of the directories to look in for the .jar files if the mod is not found in
+            the catalog."""
+        print "Loading mod", file_name or modid
         self.file_name = file_name
         self.output_dir = output_dir
         self.block_ids = block_ids
@@ -50,6 +106,11 @@ class ModLoader(object):
         # Textures file name in self.mod_dir.
         # This file will be built using the ones found in the mod .jar.
         self.texture_file = None
+        # texture_catalog: dict: keys are texture names and values coordinates (in tiles) in texture_file.
+        # Made to be compatible with MCEdit texture indexing system.
+        self.texture_catalog = {}
+        # texture is the loaded image for the textures
+        self.texture = None
         # mod_info: dict: built from mcmod.info, or using 'defaults'.
         self.mod_info = None
         # version: string: mod version.
@@ -58,32 +119,141 @@ class ModLoader(object):
         self.mcversion = None
         # modid: string: the mod internal ID
         self.modid = None
-        # texture_catalog: dict: keys are texture names and values coordinates (in tiles) in texture_file.
-        # Made to be compatible with MCEdit texture indexing system.
-        self.texture_catalog = {}
         # notex_idx is a tuple containing the 'NOTEX' coordinates in texture_file
         self.notex_idx = (-1, -1)
         # __blocks: dict: contains the block definition found in the mod. Not compatible with MCEdit block handling.
         self.__blocks = {}
+        # block_ids_names is a dict with numerical ids as keys and <namespace>:<block_name> as value.
+        self.block_ids_names = NumericalKeyDict()
+        # block_ids_modid is a dict with numerical ids as keys and <modid> as value.
+        self.block_ids_modid = NumericalKeyDict()
         # built_json: dict: data rebuilt to be compatible with MCEdit handling
         self.built_json = {}
 
-        # Open the jar and finish the initialization.
-        self.__archive = zipfile.ZipFile(file_name)
-        self.__jar_content = self.__archive.namelist()
-        self.__read_mod_info()
-        if force or (self.mod_dir and not os.path.exists(self.mod_dir)):
-            self.__build_texture()
-            self.__load_block_models()
-            self.__save_json()
-        self.__archive.close()
+        # Read the catalog file which stores the mod IDs/game version information if <modid>_<modver> folder
+        # does not exists.
+        self.catalog_file = os.path.join(output_dir, "catalog")
+        if modid and modver and gamever:
+            mod_dir = os.path.join(output_dir, "_".join((modid, modver)))
+            if os.path.exists(mod_dir):
+                self.mod_dir = mod_dir
+            self.__get_from_catalog(modid, modver, gamever)
+            if not self.mod_info:
+                force = True
 
+        # Open the jar and finish the initialization.
+        if force or (self.mod_dir and not os.path.exists(self.mod_dir)):
+            self.file_name= file_name = find_mod_jar(modid, modver, directories)
+            if file_name:
+                self.__archive = zipfile.ZipFile(file_name)
+                self.__jar_content = self.__archive.namelist()
+                self.__read_mod_info()
+                self.__build_texture()
+                self.__load_block_models()
+                self.__save_json()
+                self.__archive.close()
+            else:
+                print "WARNING: Could not find any archive for mod '%s' '%s'!" %(modid, modver)
+        tex = os.path.join(self.mod_dir or "////", "terrain.png")
+        if not self.texture_file and os.path.exists(tex):
+            self.texture_file = tex
+        if self.texture_file and os.path.exists(self.texture_file):
+            print "Loading texture."
+            self.texture = loadPNGTexture(self.texture_file)
+
+
+    def __set_info(self, mod_info):
+        """Set instance members according to 'info' contant.
+        :mod_info: object: Contains data as found in self.mod_info.
+            If the object does not complies, default values are set.
+        The instance members defined here are:
+        *
+        """
+        mod_name = self.mod_name
+        if isinstance(mod_info, dict):
+            if mod_info.get("modListVersion", 0) == 2:
+                info = mod_info.get("modList", [{}])[0]
+            else:
+                info = mod_info
+        self.mod_name = info.get("name", mod_name)
+        self.version = info.get("version", mod_name)
+        self.mcversion = info.get("mcversion", "Unknown")
+        self.modid = info.get("modid", mod_name)
+        self.mod_info = info
+
+
+    def __get_from_catalog(self, modid, modver, gamever):
+        """Retrieve from the mod catalog the information for a mod.
+        :modid: string: the mod ID to look for.
+        :modver: string: the mod version to look for.
+        :gamever: string: the game version to look for.
+        Update self.mod_info with the found data or an empty dict."""
+        if not _MOD_CATALOG:
+            _get_catalog(self.catalog_file)
+
+#         print "################################"
+#         print modid, modver, gamever, len(_MOD_CATALOG)
+
+        # Search the catalog.
+#         # Strict version pattern.
+#         catalog_regex_sv = '^%s[ ]"%s"[ ]"%s"[ ]"(\S+)"[ ]"(\S+)"[ ](.+)$' % (modid, modver, gamever)
+#         # Loose version pattenr.
+#         catalog_regex_lv = '^%s[ ]".+"[ ]"%s"[ ]"(\S+)"[ ]"(\S+)"[ ](.+)$' % (modid, gamever)
+# 
+#         print "--------------------------------"
+#         print _MOD_CATALOG
+#         print "--------------------------------"
+#         print "sv", catalog_regex_sv
+#         print "lv", catalog_regex_lv
+# 
+#         result = re.search(catalog_regex_sv, _MOD_CATALOG, re.M)
+#         print "result 1", result
+#         if not result: 
+#             result = re.search(catalog_regex_lv, _MOD_CATALOG, re.M)
+#             print "result 2", result
+
+        # Trying to match the exact mod and game version is pointless, since we're loading
+        # the mods directly from the game/launcher.
+        # So, let check for the modid only.
+#         print "--------------------------------"
+#         print _MOD_CATALOG
+#         print "--------------------------------"
+#         print '^%s[ ]"\S+?"[ ]"\S+?"[ ]"(.+?)"[ ]"(.+?)"[ ](.+)$' % modid
+
+        
+        result = re.search('^%s[ ]"\S+?"[ ]"\S+?"[ ]"(.+?)"[ ]"(.+?)"[ ](.+)$' % modid, _MOD_CATALOG, re.M)
+
+        if result:
+            self.mod_name = result.groups()[0]
+            self.mod_dir = result.groups()[1]
+            data = result.groups()[2]
+#             print "==========================================="
+#             print result.groups()
+#             print "#%s#" % data
+#             print type(data)
+#             print self.mod_name
+#             raw_input("paused")
+            mod_info = json.loads(data)
+        else:
+            mod_info = {}
+            
+        self.__set_info(mod_info)
+#         raw_input("paused")
+
+
+    def __add_to_catalog(self, data):
+        """Adds data to mod catalog.
+        :data: string: formated data to add to the catalog."""
+        if data not in _MOD_CATALOG:
+            _add_to_catalog(self.catalog_file, data)
 
     def __read_mod_info(self):
         """Reads the .jar root directory to find the 'mcmod.info' json file.
         Read it and build self.mod_dir, self.mod_name, self.version and self.mcversion.
         Also set self.mod_info to the parsed json object.
         If 'mcmod.info' is not found, let try to guess..."""
+#         _MOD_CATALOG = _get_catalog(self.catalog_file)
+#         global _MOD_CATALOG
         arch = self.__archive
         mod_info = {}
         if "mcmod.info" in self.__jar_content:
@@ -105,23 +275,24 @@ class ModLoader(object):
             except Exception as exc:
                 print "Can't load mod info because:"
                 traceback.print_exc()
-        self.mod_info = mod_info
         # Let define some default values in mcmod.info don't contain them.
-        mod_name = os.path.split(os.path.splitext(self.file_name)[0])[1]
-        if isinstance(mod_info, dict):
-            if mod_info.get("modListVersion", 0) == 2:
-                info = mod_info.get("modList", [{}])[0]
-            else:
-                info = mod_info
-        self.mod_name = info.get("name", mod_name)
-        self.version = info.get("version", mod_name)
-        self.mcversion = info.get("mcversion", "Unknown")
-        self.modid = info.get("modid", mod_name)
-        # dir_name = self.mod_name
+        self.mod_name = mod_name = os.path.split(os.path.splitext(self.file_name)[0])[1]
+        self.__set_info(mod_info)
         dir_name = self.modid
         if self.version != mod_name:
             dir_name += "_%s" % self.version
         self.mod_dir = os.path.join(self.output_dir, dir_name)
+
+        mod_dir = self.mod_dir
+        # Create the mod_dir.
+        if not os.path.exists(mod_dir):
+            os.makedirs(mod_dir)
+
+        data = json.dumps(self.mod_info, sort_keys=True)
+        catalog_data = " ".join((self.modid, '"%s"' % self.version, '"%s"' % self.mcversion, '"%s"' % self.mod_name, '"%s"' % self.mod_dir, data))
+        catalog_regex = '^%s[ ]"\S+"[ ]"%s"[ ]"%s"[ ]"%s"[ ].*$' % (self.modid, self.mcversion, self.mod_name, self.mod_dir)
+        if not re.search(catalog_regex, _MOD_CATALOG, re.M):
+            self.__add_to_catalog(catalog_data)
 
         print "Mod info:"
         print "  * self.mod_name: ", self.mod_name
@@ -142,11 +313,6 @@ class ModLoader(object):
             if img.size != (16, 16):
                 return img.resize((16, 16))
             return img
-
-        mod_dir = self.mod_dir
-        # Create the mod_dir.
-        if not os.path.exists(mod_dir):
-            os.makedirs(mod_dir)
 
         jar_content = self.__jar_content
         arch = self.__archive
@@ -175,8 +341,8 @@ class ModLoader(object):
 #             print "texture_size", texture_size
 #             print "verif: sq_root * sq_root, all_texture_num", sq_root * sq_root, textures_num
             
-            print "Mod textures number:", textures_num
-            print "Mod texture size (in 16*16 pxels tiles:", texture_size
+#             print "Mod textures number:", textures_num
+#             print "Mod texture size (in 16*16 pxels tiles:", texture_size
     
             # ===============================================================
             # Texture file creation and population
@@ -193,16 +359,16 @@ class ModLoader(object):
             # Store the tile offsets
             offset_x, offset_y = 0, 0
 
-            self.texture_file = texture_file = os.path.join(mod_dir, "terrain.png")
+            self.texture_file = texture_file = os.path.join(self.mod_dir, "terrain.png")
 
             background_color = (107, 63, 127)
             foreground_color = (214, 127, 255)
 
             texture = Image.new("RGBA", image_size, color=background_color)
-            print "Mod texture size:", texture.size
+#             print "Mod texture size:", texture.size
 
             # Populate it with the mod textures.
-            print "Populating texture with mod ones."
+#             print "Populating texture with mod ones."
             for img_path in textures_entries:
                 fdata = arch.read(img_path)
                 fimg = StringIO(fdata)
@@ -221,7 +387,7 @@ class ModLoader(object):
             self.texture_catalog = texture_catalog
 
             # Finish by drawing foreground_color squares where no other image ha been put.
-            print "Filling up mod texture with default one."
+#             print "Filling up mod texture with default one."
             notex = Image.new("RGBA", (14, 14), color=foreground_color)
             while (max(offset_x, 1) * max(offset_y, 1)) < textures_num:
                 x, y = (offset_x * 16) + 1, (offset_y * 16) + 1
@@ -236,7 +402,7 @@ class ModLoader(object):
 
             # Finally, save the file
             texture.save(texture_file, "png")
-            print "Texture file saved:", texture_file
+#             print "Texture file saved:", texture_file
 
 
     def __add_to_defs(self, name, j_data, namespace, d_type):
@@ -256,23 +422,67 @@ class ModLoader(object):
 
         # Numeric IDs are added according to self.block_ids or the order of the files in the .jar.
         oid = self.block_ids.get(namespace, {}).get(name, 0) or len(built_json[namespace][d_type]) + 1
+        self.block_ids_names[oid] = "%s:%s" % (namespace, name)
+        self.block_ids_modid[oid] = self.modid
 
-        built_json[namespace][d_type].append({"id": oid,
-                                              "idStr": name,
-                                              "name": name.replace("_", " ").title(),
-                                              "tex": texture_catalog.get(name, notex_idx)
-                                              }
-                                             )
+        def add_tex_to_bd(_value, _bd):
+            """Add a texture name to a block data.
+            :_value: object: Shall be a dict. If not, the function does nothing.
+            :_bd: dict: Block data to add the texture name."""
+            if isinstance(_value, dict):
+                model = _value.get("model")
+                if model:
+                    model_name = model.split(":", 1)[-1]
+                    var_tex = texture_catalog.get(model_name, notex_idx)
+                    _bd["%s" % i] = {"tex": var_tex,
+                                     "name": model_name.replace("_", " ").title()}
+
+        block_def = {"id": oid,
+                    "idStr": name,
+                    "name": name.replace("_", " ").title(),
+                    "tex": texture_catalog.get(name, notex_idx)
+                    }
+
+        if "variants" in j_data.keys():
+            block_def["data"] = bd = {}
+
+            for i, (k, v) in enumerate(j_data["variants"].items()):
+                print_debug = False
+                if isinstance(v, dict):
+#                     model = v.get("model")
+#                     if model:
+#                         model_name = model.split(":", 1)[-1]
+#                         var_tex = texture_catalog.get(model_name, notex_idx)
+#                         bd["%s" % i] = {"tex": var_tex,
+#                                         "name": model_name.replace("_", " ").title()}
+                    add_tex_to_bd(v, bd)
+                elif isinstance(v, list):
+                    if k == "normal":
+                        for _v in v:
+                            add_tex_to_bd(_v, bd)
+                    else:
+                        print_debug = True
+                else:
+                    print_debug = True
+                if print_debug:
+                    print "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+                    print name
+                    print k
+                    print v
+                    print type(v)
+
+        built_json[namespace][d_type].append(block_def)
 
         self.built_json = built_json
 
 
     def __load_block_models(self):
-        """Loads the mod block definitions from the models/block .jar subfolders.
+        """Loads the mod block definitions from the blockstates/block .jar subfolders.
         Data is then contained in self.blocks"""
         arch = self.__archive
         jar_content = self.__jar_content
-        pat = "assets/.*?/models/block"
+#         pat = "assets/.*?/models/block"
+        pat = "assets/.*?/blockstates"
         blocks_entries = [a for a in jar_content if re.match(pat, a) and a.endswith(".json")]
 
         # 'assets' can contain several directories with textures an json definitions.
@@ -281,7 +491,8 @@ class ModLoader(object):
         # So let use these directory names as 'namespaces'
 
         blocks = {}
-        namespace_pat = "assets/(.*?)/models/block"
+#         namespace_pat = "assets/(.*?)/models/block"
+        namespace_pat = "assets/(.*?)/blockstates"
         blocks_num = 0
 
         for entry in blocks_entries:
@@ -290,31 +501,37 @@ class ModLoader(object):
             if namespace not in blocks.keys():
                 blocks[namespace] = {}
             t_data = arch.read(entry)
-            j_data = json.loads(t_data)
+            try:
+                j_data = json.loads(re.sub(",\s*}", "}", t_data))
+            except Exception as exc:
+                j_data = {}
+                traceback.print_exc()
+                print t_data
+                raw_input("Program interrupted. ENTER to continue or CTRL-C to break.")
             # Rebuild the json stuff compatible with id_definitions.ids_loader interface.
             self.__add_to_defs(block_name, j_data, namespace, 'blocks')
 
             blocks[namespace][block_name] = j_data
             blocks_num += 1
         self.__blocks = blocks
-        print "Loaded %s block models from %s entries in %s namespaces:" % (blocks_num,
-                                                                            len(blocks_entries),
-                                                                            len(blocks))
-        for name in blocks.keys():
-            print "  *", name, len(blocks[name]), "blocks."
+#         print "Loaded %s block models from %s entries in %s namespaces:" % (blocks_num,
+#                                                                             len(blocks_entries),
+#                                                                             len(blocks))
+#         for name in blocks.keys():
+#             print "  *", name, len(blocks[name]), "blocks."
 
 
     def __save_json(self):
-        """Saves built_json object to correponding files in mo_dir 'defs' subdirectories."""
+        """Saves built_json object to correponding files in mod_dir subdirectories."""
         built_json = self.built_json
         if built_json:
             mod_dir = self.mod_dir
-            defs_path = os.path.join(mod_dir, "defs")
-            print "Saving json data to '%s'." % defs_path
-            if not os.path.exists(defs_path):
-                os.makedirs(defs_path)
+#             defs_path = os.path.join(mod_dir, "defs")
+            print "Saving json data to '%s'." % mod_dir
+            if not os.path.exists(mod_dir):
+                os.makedirs(mod_dir)
             for namespace in built_json.keys():
-                namespace_path = os.path.join(defs_path, namespace)
+                namespace_path = os.path.join(mod_dir, namespace)
                 if not os.path.exists(namespace_path):
                     os.makedirs(namespace_path)
                 ns_data = built_json[namespace]

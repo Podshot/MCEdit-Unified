@@ -57,11 +57,21 @@ class Block(object):
         else:
             r = getattr(self.materials, attr)[self.ID]
         if attr in ("name", "aka", "color", "type", "search"):
-            r = r[self.blockData]
+            try:
+                r = r[self.blockData]
+            except:
+                print r
+                print attr
+                print self.blockData
+                print self.name
+                print self.materials._mods
+                raise
         return r
 
 
+# Let use a greater limit
 id_limit = 4096
+# id_limit = 65536
 
 
 class BlockstateAPI(object):
@@ -263,6 +273,10 @@ class MCMaterials(object):
         self.opacity = self.lightAbsorption
         self.types = {}
 
+        # Mod support
+        self.mods = {}
+        self.namespaces = []
+
         self.Air = self.addBlock(0,
                                  name="Air",
                                  texture=(0, 336),
@@ -322,6 +336,8 @@ class MCMaterials(object):
             elif self.blockstate_api:
                 name, properties = self.blockstate_api.deStringifyBlockstate(key)
                 return self[self.blockstate_api.blockstateToID(name, properties)]
+            print "key", key
+#             print self.allBlocks
             raise KeyError("No blocks named: " + key)
         if isinstance(key, (tuple, list)):
             block_id, blockData = key
@@ -431,11 +447,15 @@ class MCMaterials(object):
         if blockyaml:
             self.addJSONBlocks(blockyaml)
 
-    def addJSONBlocksFromVersion(self, game_version):
+    def addJSONBlocksFromVersion(self, game_version, mods={}, block_ids={}):
+        """Adds block definitions for a specific game version.
+        :game_version: string: The game version to load the definitions for.
+        :mods: dict: Keys are mod names, values are path to the mod extracted data directory.
+            This directory shall contain files like built with modloader module."""
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
-        print "#### Game Version: " + game_version
+        print "#### Game Version:", game_version
         game_version = game_version.replace('java ', '')
         blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
         meth = None
@@ -458,11 +478,61 @@ class MCMaterials(object):
             self.addJSONBlocks(blockyaml)
         else:
             self.addJSONBlocksFromFile(f_name)
-#         print sorted(self.__dict__.keys())
         meth() # TODO: Remove this later, removing now causes things to break
+
+        if not hasattr(self, "_mods"):
+            self._mods = mods
+        else:
+            self._mods.update(mods)
+
+        # Load the data for the mods
+        for mod_name, mod_dir in mods.items():
+            log.info("Loading %s mod data from '%s'" % (mod_name, mod_dir))
+            print "Loading %s mod data from '%s'" % (mod_name, mod_dir)
+            for namespace in os.listdir(mod_dir):
+#                 print "namespace", namespace
+                namespace_path = os.path.join(mod_dir, namespace)
+                namespace_defs = {}
+#                 print "namespace_path", namespace_path
+                if namespace == "terrain.png":
+                    # TODO: Implement the texture file handling.
+                    pass
+                elif os.path.isdir(namespace_path):
+                    namespace_defs = id_definitions.ids_loader(game_version, namespace=namespace, json_dict=True, directory=namespace_path, update=True)
+#                     print namespace_defs
+#                     print id_definitions.MCEDIT_DEFS
+                if namespace_defs:
+                    # Correct the numerical ids according to the data loaded in level.dat
+                    b_i = block_ids.get(namespace, None)
+                    if b_i:
+                        print "Correcting ids for", namespace
+                        from directories import getDataDir
+                        tmp_dir = os.path.join(getDataDir(), "tmp")
+                        nspdf1 = os.path.join(tmp_dir, "%s_%s_defs_1.json" % (mod_name, namespace))
+                        nspdf2 = os.path.join(tmp_dir, "%s_%s_defs_2.json" % (mod_name, namespace))
+                        bif = os.path.join(tmp_dir, "%s_%s_b_i.json" % (mod_name, namespace))
+                        with open(nspdf1, "w") as fo1:
+                            json.dump(namespace_defs, fo1, indent=4)
+                        with open(bif, "w") as fo:
+                            json.dump(b_i, fo, indent=4)
+                        for k, v in b_i.items():
+                            _v = "%s" % v
+                            d1 = namespace_defs["blocks"]
+#                             (_d1.update((k, v)) for _d1 in d1 if _d1.get(k, None))
+#                             if d1:
+#                                 d1["id"] = _v
+                            for _d1 in d1:
+                                if _d1["idStr"] == k:
+                                    _d1["id"] = v
+#                                 _d2 = {}
+#                                 _d2.update(_d1)
+#                                 _d2["idStr"] = ":".join((namespace, k))
+#                                 d1.append(_d2)
+                        with open(nspdf2, "w") as fo2:
+                            json.dump(namespace_defs, fo2, indent=4)
+                    self.addJSONBlocks(namespace_defs)
         build_api_material_map(self)
-#         print sorted(self.__dict__.keys())
-#         build_api_material_map()
+
 
     def addJSONBlocks(self, blockyaml):
         self.yamlDatas.append(blockyaml)
@@ -542,30 +612,79 @@ class MCMaterials(object):
     def addBlock(self, blockID, blockData=0, **kw):
         blockData = int(blockData)
         try:
-            name = kw.pop('name', self.names[blockID][blockData])
-        except:
+            if blockData < len(self.names[blockID]):
+                _name = self.names[blockID][blockData]
+            else:
+                _name = "Unknown block (%s, %s)" % (blockID, blockData)
+            name = kw.pop('name', _name)
+#             print "name", name
+        except Exception as exc:
+            traceback.print_exc()
             print (blockID, blockData)
+            print kw
+            raw_input()
         stringName = kw.pop('idStr', '')
 
         self.lightEmission[blockID] = kw.pop('brightness', self.defaultBrightness)
         self.lightAbsorption[blockID] = kw.pop('opacity', self.defaultOpacity)
+
+        # 'aka' and 'search' are limited to 16 elements, which can break when loading mods.
+        # Let extend the list
+        len_aka = len(self.aka[blockID])
+        if blockData >= len_aka:
+            self.aka[blockID].extend([""] * ((blockData - len_aka) + 1))
         self.aka[blockID][blockData] = kw.pop('aka', "")
+
+#         try:
+#             self.aka[blockID][blockData] = kw.pop('aka', "")
+#         except IndexError as exc:
+#             traceback.print_exc()
+#             print "blockID", blockID, "blockData", blockData
+#             raw_input("Program interrupted. ENTER to continue or CTRL-C to break.")
+
+        len_search = len(self.search[blockID])
+        if blockData >= len_search:
+            self.search[blockID].extend([""] * ((blockData - len_search) + 1))
         self.search[blockID][blockData] = kw.pop('search', "")
         block_type = kw.pop('type', 'NORMAL')
 
-        color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
-        self.flatColors[blockID, blockData] = (tuple(color) + (255,))[:4]
+        # Quick solution for thr flat colors.
+        # The fact is mods can define more than 16 sub elements.
+        try:
+            color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
+            self.flatColors[blockID, blockData] = (tuple(color) + (255,))[:4]
+        except:
+            pass
 
         texture = kw.pop('texture', None)
 
         if texture:
-            self.blockTextures[blockID, blockData] = texture
+            try:
+                self.blockTextures[blockID, blockData] = texture
+            except:
+                pass
 
+        len_names = len(self.names[blockID])
+        if blockData >= len_names:
+            self.names[blockID].extend([""] * ((blockData - len_names) + 1))
         self.names[blockID][blockData] = name
+#         if blockData is 0:
+#             self.type[blockID] = [block_type] * 16
+#         else:
+#             len_types = len(self.type[blockID])
+#             if blockData >= len_types:
+#                 self.type[blockID].extend([block_type] * ((blockData - len_types) + 1))
+#                 print "jfskjfsjsjkfsqjfjfksq", name, blockID, blockData, len_types, len(self.type[blockID])
+#             self.type[blockID][blockData] = block_type
+
         if blockData is 0:
             self.type[blockID] = [block_type] * 16
-        else:
-            self.type[blockID][blockData] = block_type
+        len_types = len(self.type[blockID])
+        if blockData >= len_types:
+            
+            self.type[blockID] += [block_type] * ((blockData - len_types) + 1)
+        self.type[blockID][blockData] = block_type
+
 
         block = Block(self, blockID, blockData, stringName)
 
@@ -577,7 +696,7 @@ class MCMaterials(object):
 
         if attr_name not in self.__dict__:
             setattr(self, attr_name, block)
-            print attr_name
+#             print attr_name
 
         if kw.pop('invalid', 'false') == 'false':
             self.allBlocks.append(block)
@@ -611,6 +730,7 @@ archive is build like this:
 
 """
 
+# This class is not used, since MCMaterials one handles the mod loading.
 class ModMaterials(object):
 
     def __init__(self, parent_materials, mod_directory):
@@ -657,10 +777,10 @@ class ModMaterials(object):
 alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 
-if os.path.exists('mods'):
-    for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
-        if os.path.exists(os.path.join('mods', mod, 'blocks.json')):
-            ModMaterials(alphaMaterials, os.path.join('mods', mod))
+# if os.path.exists('mods'):
+#     for mod in next(os.walk('mods'))[1]: # TODO: Change this to data directories
+#         if os.path.exists(os.path.join('mods', mod, 'blocks.json')):
+#             ModMaterials(alphaMaterials, os.path.join('mods', mod))
 
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"

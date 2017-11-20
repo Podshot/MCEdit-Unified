@@ -680,10 +680,10 @@ class MCEdit(GLViewport):
 
     shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
-    def loadFile(self, filename, addToRecent=True):
+    def loadFile(self, filename, addToRecent=True, check_only=False):
         if os.path.exists(filename):
             try:
-                self.editor.loadFile(filename, addToRecent=addToRecent)
+                self.editor.loadFile(filename, addToRecent=addToRecent, check_only=check_only)
             except Exception as e:
                 traceback.print_exc()
                 logging.error(u'Failed to load file {0}: {1!r}'.format(
