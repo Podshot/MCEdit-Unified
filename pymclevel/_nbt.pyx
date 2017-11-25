@@ -73,7 +73,8 @@ cdef char _ID_STRING = 8
 cdef char _ID_LIST = 9
 cdef char _ID_COMPOUND = 10
 cdef char _ID_INT_ARRAY = 11
-cdef char _ID_SHORT_ARRAY = 12
+cdef char _ID_SHORT_ARRAY = -1
+cdef char _ID_LONG_ARRAY = 12
 cdef char _ID_MAX = 13
 
 # Make IDs python visible
@@ -91,6 +92,7 @@ ID_LIST = _ID_LIST
 ID_COMPOUND = _ID_COMPOUND
 ID_INT_ARRAY = _ID_INT_ARRAY
 ID_SHORT_ARRAY = _ID_SHORT_ARRAY
+ID_LONG_ARRAY = _ID_LONG_ARRAY
 ID_MAX = _ID_MAX
 
 class NBTFormatError (ValueError):
@@ -286,6 +288,34 @@ cdef class TAG_Int_Array(TAG_Value):
 
     def copy(self):
         return TAG_Int_Array(numpy.array(self.value), self.name)
+
+cdef class TAG_Long_Array(TAG_Value):
+    cdef public object value
+    dype = numpy.dtype('>q')
+
+    def __init__(self, value=None, name=""):
+        if value is None:
+            value = numpy.zeros((0,), self.dype)
+
+        self.value = value
+        self.name = name
+        self.tagID = _ID_LONG_ARRAY
+
+    cdef void save_value(self, buf):
+        save_array(self.value, buf, 8)
+
+    def __repr__(self):
+        return "<%s name=%r length=%d>" % (self.__class__.__name__, self.name, len(self.value))
+
+    def __richcmp__(self, other, type):
+        if type == 2: # __eq__
+            return self.__class__ == other.__class__ and all(self.value == other.value)
+        if type == 3: # __ne__
+            return self.__class__ != other.__class__ or any(self.value != other.value)
+        return NotImplemented
+
+    def copy(self):
+        return TAG_Long_Array(numpy.array(self.value), self.name)
 
 cdef class TAG_Short_Array(TAG_Value):
     cdef public object value
@@ -780,6 +810,18 @@ cdef TAG_Int_Array load_int_array(load_ctx ctx):
     dtype = '>u4' if _BIG_ENDIAN else '<u4'
     return TAG_Int_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
 
+cdef TAG_Long_Array load_long_array(load_ctx ctx):
+    cdef int * ptr = <int *> read(ctx, 4)
+    cdef int length = ptr[0]
+    swab(&length, 4)
+
+    byte_length = length * 8
+    cdef char *arr = read(ctx, byte_length)
+    dtype = '>q' if _BIG_ENDIAN else '<q'
+    return TAG_Long_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
+
+
+
 
 # --- Identify tag type and load tag ---
 
@@ -816,6 +858,9 @@ cdef load_tag(char tagID, load_ctx ctx):
 
     if tagID == _ID_INT_ARRAY:
         return load_int_array(ctx)
+
+    if tagID == _ID_LONG_ARRAY:
+        return load_long_array(ctx)
 
     if tagID == _ID_SHORT_ARRAY:
         return load_short_array(ctx)
@@ -932,12 +977,16 @@ cdef void save_tag_value(TAG_Value tag, object buf):
     if tagID == _ID_INT_ARRAY:
         (<TAG_Int_Array> tag).save_value(buf)
 
+    if tagID == _ID_LONG_ARRAY:
+        (<TAG_Long_Array> tag).save_value(buf)
+
     if tagID == _ID_SHORT_ARRAY:
         (<TAG_Short_Array> tag).save_value(buf)
 
 
 tag_classes = {TAG().tagID: TAG for TAG in (TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
-                                            TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array)}
+                                            TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Long_Array,
+                                            TAG_Short_Array)}
 
 #
 # --- Pretty print NBT trees ---

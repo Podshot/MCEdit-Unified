@@ -55,7 +55,8 @@ TAG_STRING = 8
 TAG_LIST = 9
 TAG_COMPOUND = 10
 TAG_INT_ARRAY = 11
-TAG_SHORT_ARRAY = 12
+TAG_LONG_ARRAY = 12
+TAG_SHORT_ARRAY = -1
 
 
 class TAG_Value(object):
@@ -236,6 +237,11 @@ class TAG_Short_Array(TAG_Int_Array):
     tagID = TAG_SHORT_ARRAY
     __slots__ = ('_name', '_value')
     dtype = numpy.dtype('>u2')
+
+class TAG_Long_Array(TAG_Int_Array):
+    tagID = TAG_LONG_ARRAY
+    __slots__ = ('_name', '_value')
+    dtype = numpy.dtype('>q')
 
 
 class TAG_String(TAG_Value):
