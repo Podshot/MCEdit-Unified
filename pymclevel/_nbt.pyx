@@ -291,11 +291,11 @@ cdef class TAG_Int_Array(TAG_Value):
 
 cdef class TAG_Long_Array(TAG_Value):
     cdef public object value
-    dype = numpy.dtype('>q')
+    dtype = numpy.dtype('>q')
 
     def __init__(self, value=None, name=""):
         if value is None:
-            value = numpy.zeros((0,), self.dype)
+            value = numpy.zeros((0,), self.dtype)
 
         self.value = value
         self.name = name
