@@ -55,7 +55,7 @@ Optionally (but highly recommended), setup and activate [virtualenv](http://pypi
 cd mcedit
 easy_install virtualenv
 virtualenv ENV
-. ENV/bin/activate
+. ENV/Scripts/activate
 ```
 
 Install various dependencies. This may take a bit (especially numpy). If installing pygame errors, try installing from a [binary packages](http://pygame.org/install.html) or following one of the guides from that page to install from source. On Windows, `easy_install` is preferred because it installs prebuilt binary packages. On Linux and Mac OS X, you may want to use `pip install` instead.
@@ -67,10 +67,11 @@ easy_install numpy==1.9.3
 easy_install pygame
 easy_install Pillow==2.9.0
 easy_install ftputil
-easy_install pywin32 (Windows only, needed for compiling)
+easy_install pywin32 (Windows only, needed for compiling, if you're not using VirtualENV)
+easy_install pypiwin32 (Windows only again, use this one if you're using VirtualENV)
 ```
 
-For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
+For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name. You can also use `pip` to download these libraries as well.
 
 Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
 
