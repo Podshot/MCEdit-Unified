@@ -219,7 +219,7 @@ lastSaveDir = None
 
 def buildFileTypes(filetypes):
     result = ""
-    for key in filetypes[0]:
+    for key in reversed(filetypes[0].keys()):
         ftypes = []
         result += key + " ("
         for ftype in filetypes[0][key]:
@@ -364,7 +364,7 @@ def askSaveSchematic(initialDir, displayName, fileFormats):
     dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
     return askSaveFile(initialDir,
                        title=_('Save this schematic...'),
-                       defaultName=displayName + "_" + dt + "." + fileFormats[0][fileFormats[0].keys()[0]][0],
+                       defaultName=displayName + "_" + dt + "." + fileFormats[0][fileFormats[0].keys()[1]][0],
                        filetype=fileFormat,
                        suffix=fileFormat,
                        )
