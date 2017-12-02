@@ -103,7 +103,7 @@ class TAG_Value(object):
         value = None
         try:
             (value,) = cls.fmt.unpack_from(data)
-        except Exception, e:
+        except Exception as e:
             if DEBUG_PE:
                 fp = open(dump_fName)
                 n_lines = len(fp.readlines()) + 1
@@ -535,7 +535,7 @@ tag_classes = {}
 
 for c in (
 TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound,
-TAG_Int_Array, TAG_Short_Array):
+TAG_Int_Array, TAG_Long_Array, TAG_Short_Array):
     tag_classes[c.tagID] = c
 
 
@@ -636,6 +636,7 @@ def littleEndianNBT():
     TAG_Float.fmt = struct.Struct("<f")
     TAG_Double.fmt = struct.Struct("<d")
     TAG_Int_Array.dtype = numpy.dtype("<u4")
+    TAG_Long_Array.dtype = numpy.dtype("<q")
     TAG_Short_Array.dtype = numpy.dtype("<u2")
     global write_string
     write_string = override_write_string
@@ -649,6 +650,7 @@ def littleEndianNBT():
     TAG_Float.fmt = struct.Struct(">f")
     TAG_Double.fmt = struct.Struct(">d")
     TAG_Int_Array.dtype = numpy.dtype(">u4")
+    TAG_Long_Array.dtype = numpy.dtype(">q")
     TAG_Short_Array.dtype = numpy.dtype(">u2")
     write_string = reset_write_string
     TAG_Byte_Array.write_value = reset_byte_array_write_value
