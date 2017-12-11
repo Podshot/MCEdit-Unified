@@ -9030,6 +9030,20 @@
         },
         {
             "tex": [
+                19,
+                9
+            ],
+            "idStr": "structure_block",
+            "mapcolor": [
+                153,
+                153,
+                153
+            ],
+            "id": 252,
+            "name": "Structure Block",
+        },
+        {
+            "tex": [
                 9,
                 13
             ],
@@ -9040,7 +9054,7 @@
                 240
             ],
             "id": 255,
-            "name": "Error Stone"
+            "name": "Reserved Block"
         }
     ],
     "name": "Minecraft Pocket Edition",
