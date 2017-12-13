@@ -74,11 +74,31 @@ def getNewDataDir(path=""):
     :return unicode
     """
     dataDir = os.path.dirname(os.path.abspath(__file__))
+    print "Data Dir: {}".format(dataDir)
     #print "Dynamic: " + str(os.getcwdu())
     #print "Fixed: " + str(dataDir)
     if len(path) > 0:
         return os.path.join(dataDir, path)
     return dataDir
+
+def getDataFile(*args, **kwargs):
+    bundled_lookup = kwargs.get('bundle_only_lookup', False)
+    executable_lookup = kwargs.get('executable_only_lookup', False)
+
+    if not getattr(sys, 'frozen', False):
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), *args)
+
+    if executable_lookup:
+        return os.path.join(os.path.dirname(sys.executable), *args)
+
+    if bundled_lookup:
+        return os.path.join(sys._MEIPASS, *args)
+
+    executable_path = getDataFile(*args, executable_only_lookup=True)
+    if os.path.exists(os.path.join(executable_path)):
+        return os.path.join(executable_path)
+    else:
+        return os.path.join(getDataFile(*args, bundle_only_lookup=True))
 
 getNewDataDir()
 

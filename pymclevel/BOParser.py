@@ -6,16 +6,18 @@ import logging
 import re
 import os
 from random import randint
-from directories import getDataDir
+from directories import getDataDir, getDataFile
 
 log = logging.getLogger(__name__)
 
 # Load the bo3.def file (internal BO3 block names).
 bo3_blocks = {}
-if not os.path.exists(os.path.join(getDataDir(), 'bo3.def')):
-    log.warning('The `bo3.def` file is missing in `%s`. The BO3 support will not be complete...'%getDataDir())
+#if not os.path.exists(os.path.join(getDataDir(), 'bo3.def')):
+if not os.path.exists(getDataFile('bo3.def')):
+    log.warning('The `bo3.def` file is missing in `%s`. The BO3 support will not be complete...'%getDataFile())
 else:
-    bo3_blocks.update([(a, int(b)) for a, b in re.findall(r'^([A-Z0-9_]+)\(([0-9]*).*\)', open(os.path.join(getDataDir(), 'bo3.def')).read(), re.M)])
+    #bo3_blocks.update([(a, int(b)) for a, b in re.findall(r'^([A-Z0-9_]+)\(([0-9]*).*\)', open(os.path.join(getDataDir(), 'bo3.def')).read(), re.M)])
+    bo3_blocks.update([(a, int(b)) for a, b in re.findall(r'^([A-Z0-9_]+)\(([0-9]*).*\)', open(getDataFile('bo3.def')).read(), re.M)])
     log.debug('BO3 block definitions loaded. %s entries found'%len(bo3_blocks.keys()))
 
 # find another way for this.

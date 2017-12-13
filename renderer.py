@@ -3952,7 +3952,7 @@ def rendermain():
             renderer.next()
     except StopIteration:
         pass
-    except Exception, e:
+    except Exception as e:
         traceback.print_exc()
         print repr(e)
 

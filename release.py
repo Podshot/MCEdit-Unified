@@ -17,7 +17,8 @@ def build_version_tag_dev():
     MCEdit-Unified is in, and if the program is in development mode.
     '''
     try:
-        with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
+        #with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
+        with open(directories.getDataFile('RELEASE-VERSION.json'), 'rb') as jsonString:
             current = json.load(jsonString)
             return (current["name"].replace("{tag_name}", current["tag_name"]).replace("{mc_versions}", current["mc_versions"]).replace("{pe_versions}", current["pe_versions"]),
                     current["tag_name"],

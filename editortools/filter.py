@@ -603,7 +603,8 @@ class FilterToolPanel(Panel):
 
     @staticmethod
     def load_filter_json():
-        filter_json_file = os.path.join(directories.getDataDir(), "filters.json")
+        #filter_json_file = os.path.join(directories.getDataDir(), "filters.json")
+        filter_json_file = directories.getDataFile('filters.json')
         filter_json = {}
         if FilterToolPanel.BACKUP_FILTER_JSON:
             filter_json = JsonDictProperty(filter_json_file)
@@ -632,7 +633,8 @@ class FilterToolPanel(Panel):
         self._saveOptions()
         self.filter_json["Last Filter Opened"] = self.selectedName
         if not FilterToolPanel.BACKUP_FILTER_JSON:
-            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+            #with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+            with open(directories.getDataFile('filters.json'), 'w') as f:
                 json.dump(self.filter_json, f)
 
     def reload(self):
@@ -1050,7 +1052,8 @@ class FilterTool(EditorTool):
                         filterFiles.append((root, possible_filter, _stock, subFolderString))
 
         # Search first for the stock filters.
-        searchForFiltersInDir(os.path.join(directories.getDataDir(), "stock-filters"), True)
+        #searchForFiltersInDir(os.path.join(directories.getDataDir(), "stock-filters"), True)
+        searchForFiltersInDir(directories.getDataFile('stock-filters'), True)
         searchForFiltersInDir(directories.getFiltersDir(), False)
 
         filterModules = []

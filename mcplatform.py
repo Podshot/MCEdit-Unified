@@ -37,7 +37,8 @@ if sys.platform == "win32":
         plat = "win32"
     if platform.architecture()[0] == "64bit":
         plat = "win-amd64"
-    sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
+    #sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
+    sys.path.append(directories.getDataFile('pymclevel', 'build', 'lib.{}-2.6'.format(plat)).encode(enc))
 elif sys.platform in ['linux2', 'darwin']:
     try:
         import Xlib.display
@@ -47,7 +48,8 @@ elif sys.platform in ['linux2', 'darwin']:
     except ImportError:
         hasXlibDisplay = None
 
-os.environ["YAML_ROOT"] = join(directories.getDataDir(), "pymclevel").encode(enc)
+#os.environ["YAML_ROOT"] = join(directories.getDataDir(), "pymclevel").encode(enc)
+os.environ['YAML_ROOT'] = directories.getDataFile('pymclevel').encode(enc)
 
 from pygame import display
 

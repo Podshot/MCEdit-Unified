@@ -103,7 +103,8 @@ if enc is None:
 
 string_cache = {}
 font_lang_cache = {}
-langPath = directories.getDataDir("lang")
+#langPath = directories.getDataDir("lang")
+langPath = directories.getDataFile("lang")
 lang = "Default"
 
 # template building

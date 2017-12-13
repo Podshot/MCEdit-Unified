@@ -280,8 +280,10 @@ class LevelEditor(GLViewport):
         self.recordUndoButton = CheckBoxLabel("Undo", ref=AttrRef(self, 'recordUndo'))
 
         # TODO: Mark
-        self.sessionLockLock = Image(image.load(open(directories.getDataDir(os.path.join(u"toolicons",
-                                                                                         u"session_good.png")), 'rb'), 'rb'))
+        print directories.getDataDir(os.path.join(u"toolicons", u"session_good.png"))
+        #self.sessionLockLock = Image(image.load(open(directories.getDataDir(os.path.join(u"toolicons",
+        #                                                                                 u"session_good.png")), 'rb'), 'rb'))
+        self.sessionLockLock = Image(image.load(directories.getDataFile('toolicons', 'session_good.png')))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLock.mouse_down = self.mouse_down_session
         self.sessionLockLabel = Label("Session:", margin=0)
@@ -3113,14 +3115,16 @@ class LevelEditor(GLViewport):
         config.save()
 
     def lockLost(self):
-        image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
+        #image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
+        image_path = directories.getDataFile('toolicons', 'session_bad.png')
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
         self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
 
     def lockAcquired(self):
-        image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
+        #image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
+        image_path = directories.getDataFile('toolicons', 'session_good.png')
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"

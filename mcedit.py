@@ -124,7 +124,8 @@ from albow.root import RootWidget
 from config import config
 
 if __name__ == "__main__":
-    albow.resource.resource_dir = directories.getDataDir()
+    #albow.resource.resource_dir = directories.getDataDir()
+    albow.resource.resource_dir = directories.getDataFile()
 
 import panels
 import leveleditor
@@ -422,7 +423,8 @@ class MCEdit(GLViewport):
 
     def makeSideColumn1(self):
         def showLicense():
-            platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+            #platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+            platform_open(directories.getDataFile('LICENSE.txt'))
 
         def refresh():
             PlayerCache().force_refresh()
@@ -454,7 +456,8 @@ class MCEdit(GLViewport):
                     ("",
                      "License",
                      showLicense,
-                     os.path.join(directories.getDataDir(), "LICENSE.txt")),
+                     #os.path.join(directories.getDataDir(), "LICENSE.txt")),
+                     directories.getDataFile('LICENSE.txt')),
                     ("",
                      "Refresh Player Names",
                      refresh),
@@ -925,7 +928,8 @@ def main(argv):
     try:
         if not os.path.exists(directories.schematicsDir):
             shutil.copytree(
-                os.path.join(directories.getDataDir(), u'stock-schematics'),
+                #os.path.join(directories.getDataDir(), u'stock-schematics'),
+                directories.getDataFile('stock-schematics'),
                 directories.schematicsDir
             )
     except Exception as e:

@@ -37,7 +37,7 @@ from editortools.editortool import EditorTool
 from editortools.operation import Operation
 from editortools.tooloptions import ToolOptions
 import copy
-from directories import getDataDir
+from directories import getDataDir, getDataFile
 import os
 import mcplatform
 from config import config, DEF_ENC
@@ -88,7 +88,8 @@ import struct
 
 # -----------------------------------------------------------------------------
 bullet_image = None
-default_bullet_images = os.path.join(getDataDir(), "Nbtsheet.png")
+#default_bullet_images = os.path.join(getDataDir(), "Nbtsheet.png")
+default_bullet_images = getDataFile('Nbtsheet.png')
 
 
 def get_bullet_image(index, w=16, h=16):

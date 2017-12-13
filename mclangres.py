@@ -13,7 +13,7 @@ import re
 import os
 import codecs
 from distutils.version import LooseVersion
-from directories import getMinecraftLauncherDirectory, getDataDir
+from directories import getMinecraftLauncherDirectory, getDataDir, getDataFile
 import logging
 log = logging.getLogger(__name__)
 
@@ -126,7 +126,8 @@ def buildResources(version=None, lang=None):
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                 enRes[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
                 serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
-        lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'), encoding='utf_8')
+        #lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'), encoding='utf_8')
+        lines = codecs.open(getDataFile('Items', 'en_GB'), encoding='utf_8')
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                 enRes[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
@@ -157,9 +158,11 @@ def buildResources(version=None, lang=None):
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                 langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
                 serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
-        if os.path.exists(os.path.join(getDataDir(), 'Items', lang)):
+        #if os.path.exists(os.path.join(getDataDir(), 'Items', lang)):
+        if os.path.exists(getDataFile('Items', lang)):
             log.debug("Found Items/%s" % lang)
-            lines = codecs.open(os.path.join(getDataDir(), 'Items', lang), encoding='utf_8')
+            #lines = codecs.open(os.path.join(getDataDir(), 'Items', lang), encoding='utf_8')
+            lines = codecs.open(getDataFile('Items', lang), encoding='utf_8')
             for line in lines:
                 if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                     langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
@@ -240,7 +243,8 @@ if report_missing:
             tail = ''.join([a.capitalize() for a in elems[1].split(' ') if not a.isdigit()])
         if not n.isdigit():
             line = 'missing.{0}.{1}{2}={3}\n'.format(cat, head, tail, name)
-            f = codecs.open(os.path.join(getDataDir(), 'missingmclangres.txt'), 'a+', encoding='utf_8')
+            #f = codecs.open(os.path.join(getDataDir(), 'missingmclangres.txt'), 'a+', encoding='utf_8')
+            f = codecs.open(getDataFile('missingmclangres.txt'), 'a+', encoding='utf_8')
             if line not in f.read():
                 f.write(line)
             f.close()

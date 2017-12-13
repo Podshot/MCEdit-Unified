@@ -95,7 +95,8 @@ def _2478aq_heot(aqz):
             import directories, zlib
             import tempfile
             import threading
-            data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
+            #data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
+            data = open(directories.getDataFile('LR5_mzu.fot'), 'rb')
             l1 = data.read().split('{DATA}')[0]
             data.seek(len(l1) + 6)
             sb = data.read(int(l1))

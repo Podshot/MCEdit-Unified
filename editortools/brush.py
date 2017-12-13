@@ -491,8 +491,10 @@ class BrushTool(CloneTool):
         Imports all Stock Brush Modes from their files.
         Called by setupBrushModes
         """
-        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters')) ### Why? Is 'stock-filters' needed here? Shouldn't be 'stock-brushes'?
-        files = [x for x in os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')) if x.endswith(".py")]
+        #sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters')) ### Why? Is 'stock-filters' needed here? Shouldn't be 'stock-brushes'?
+        sys.path.append(directories.getDataFile('stock-filters'))
+        #files = [x for x in os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')) if x.endswith(".py")]
+        files = [x for x in os.listdir(directories.getDataFile('stock-brushes')) if x.endswith('.py')]
         more_files = [x for x in os.listdir(directories.brushesDir) if x.endswith(".py")]
         modes = [self.tryImport(x[:-3], 'stock-brushes') for x in files]
         cust_modes = [self.tryImport(x[:-3], directories.brushesDir) for x in more_files]

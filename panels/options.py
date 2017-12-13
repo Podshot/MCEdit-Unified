@@ -268,7 +268,8 @@ class OptionsPanel(Dialog):
         logging.debug('*** Language change detected.')
         logging.debug('    Former language: %s.'%albow.translate.getLang())
         logging.debug('    New language: %s.'%lng)
-        albow.translate.langPath = os.sep.join((directories.getDataDir(), "lang"))
+        #albow.translate.langPath = os.sep.join((directories.getDataDir(), "lang"))
+        albow.translate.langPath = directories.getDataFile('lang')
         update = albow.translate.setLang(lng)[2]
         logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
         self.mcedit.root.set_update_ui(update or lng == 'en_US')

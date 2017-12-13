@@ -41,7 +41,7 @@ if DEBUG:
         try:
             file_image = get_image('file.png', prefix='')
             folder_image = get_image('folder.png', prefix='')
-        except Exception, e:
+        except Exception as e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
             from pygame import draw, Surface
@@ -59,7 +59,7 @@ if DEBUG:
         return file_image, folder_image
 
 else:
-    from directories import getDataDir
+    from directories import getDataDir, getDataFile
 
     if sys.platform in ('darwin', 'linux2'):
         print "*** MCEDIT DEBUG: file_dialog:", __file__
@@ -68,7 +68,7 @@ else:
         try:
             file_image = image.load('file.png')
             folder_image = image.load('folder.png')
-        except Exception, e:
+        except Exception as e:
             print "MCEDIT DEBUG: Could not load file dialog images."
             print e
             from pygame import draw, Surface
@@ -84,8 +84,10 @@ else:
             draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
             draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
     else: # windows
-        file_image = image.load(os.path.join(getDataDir(), 'file.png'))
-        folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
+        #file_image = image.load(os.path.join(getDataDir(), 'file.png'))
+        #folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
+        file_image = image.load(getDataFile('file.png'))
+        folder_image = image.load(getDataFile('folder.png'))
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):

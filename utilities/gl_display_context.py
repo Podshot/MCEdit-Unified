@@ -136,7 +136,8 @@ class GLDisplayContext(object):
                 print "* self.win.get_position()", self.win.get_position()
 
         try:
-            iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
+            #iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
+            iconpath = directories.getDataFile('favicon.png')
             iconfile = file(iconpath, 'rb')
             icon = pygame.image.load(iconfile, 'favicon.png')
             display.set_icon(icon)
