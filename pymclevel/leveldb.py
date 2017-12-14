@@ -57,6 +57,8 @@ import threading
 from collections import namedtuple
 import os
 import sys
+import platform
+import directories
 
 # Let have some logging stuff.
 import logging
@@ -99,7 +101,11 @@ try:
         if getattr(sys, '_MEIPASS', False):
             import win32api
             win32api.SetDllDirectory(sys._MEIPASS)
-        _ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
+        DLL_NAME = 'LevelDB-MCPE-32bit.dll'
+        if platform.architecture()[0] == '64bit' or sys.maxsize > 2**32:
+            DLL_NAME = 'LevelDB-MCPE-64bit.dll'
+        #_ldb = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LevelDB-MCPE.dll"))
+        _ldb = ctypes.CDLL(directories.getDataFile('pymclevel', DLL_NAME))
     log.debug("Binary support v%s.%s for PE 1+ world succesfully loaded." % (_ldb.leveldb_major_version(), _ldb.leveldb_minor_version()))
 except Exception as e:
     # What shall we do if the library is not found?

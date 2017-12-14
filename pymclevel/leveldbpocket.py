@@ -658,7 +658,7 @@ class PocketLeveldbDatabase(object):
                 t = ord(key[8])
 
                 # This need to be changed, because we assume that if 't' is 47 we have a 1+ chunk, which may not be accurate...
-                if (version == 'pre1.0' and t == 48) or (version == '1.plus' and t == 47): # or t == 47:
+                if (version == 'pre1.0' and t == 48) or (version == '1.plus' and t == 118): # or t == 47:
                     cx, cz = struct.unpack('<i', raw_x), struct.unpack('<i', raw_z)
                     allChunks.append((cx[0], cz[0]))
                 it.Next()

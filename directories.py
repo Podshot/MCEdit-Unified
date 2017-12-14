@@ -231,8 +231,8 @@ def getMinecraftSaveFileDir():
 
 minecraftSaveFileDir = getMinecraftSaveFileDir()
 
-ini = u"mcedit.ini"
-cache = u"usercache.json"
+ini = u"mcedit_testing.ini"
+cache = u"usercache_testing.ini"
 
 parentDir = os.path.dirname(getDataDir())
 docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
@@ -414,7 +414,7 @@ def getCacheDir():
             return os.path.expanduser("~/.pymclevel")
 
 if sys.platform == "darwin":
-    configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
+    configFilePath = os.path.expanduser("~/Library/Preferences/mcedit_testing.ini")
     schematicsDir = os.path.join(getCacheDir(), u"Schematics")
     brushesDir = os.path.join(getCacheDir(), u"Brushes")
     filtersDir = os.path.join(getCacheDir(), u"Filters")
@@ -431,7 +431,7 @@ for directory in (filtersDir, brushesDir, schematicsDir):
         os.makedirs(directory)
 
 # set userCachePath
-userCachePath = os.path.join(getCacheDir(),'usercache.json')
+userCachePath = os.path.join(getCacheDir(),'usercache_testing.ini')
 # Make sure it exists
 try:
     if not os.path.exists(userCachePath):
@@ -439,7 +439,7 @@ try:
         f.write('{}')
         f.close()
 except:
-    print "Unable to make usercache.json at {}".format(userCachePath)
+    print "Unable to make usercache_testing.ini at {}".format(userCachePath)
 
 
 def getFiltersDir():

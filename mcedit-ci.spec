@@ -69,7 +69,7 @@ for f in files:
     shutil.copy(f, os.path.join('.', 'dist', 'mcedit', f))
 
 os.mkdir(os.path.join('.', 'dist', 'mcedit', 'pymclevel'))
-pymclevel_files = glob.glob(os.path.join('.', 'pymclevel', '*.json'))
+pymclevel_files = glob.glob(os.path.join('.', 'pymclevel', '*.json')) + glob.glob(os.path.join('.', 'pymclevel', '*.dll'))
 for f in pymclevel_files:
     shutil.copy(f, os.path.join('.', 'dist', 'mcedit', 'pymclevel', os.path.basename(f)))
 
@@ -83,7 +83,7 @@ shutil.copytree(os.path.join('.', 'stock-brushes'), os.path.join('.', 'dist', 'm
 shutil.copytree(os.path.join('.', 'stock-filters'), os.path.join('.', 'dist', 'mcedit', 'stock-filters'))
 shutil.copytree(os.path.join('.', 'stock-schematics'), os.path.join('.', 'dist', 'mcedit', 'stock-schematics'))
 
-shutil.copy(os.path.join('.', 'pymclevel', 'LevelDB-MCPE.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+#shutil.copy(os.path.join('.', 'pymclevel', 'LevelDB-MCPE.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
 
 fp = open(os.path.join('.', 'dist', 'mcedit', 'RELEASE-VERSION.json'),'rb')
 version_data = json.load(fp)
@@ -100,17 +100,19 @@ with open('directories.py', 'wb') as out:
 
 subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unified-Preview.git'])
 
-if str(os.environ.get('WHL_ARCH')) == '32':
+if str(os.environ.get('WHL_ARCH')) == '32' or not sys.maxsize > 2**32:
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
     try:
-        shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-32bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+        #shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-32bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+        x = 1
     except IOError:
         pass
     VERSION += '-win32'
-elif str(os.environ.get('WHL_ARCH')) == '_amd64':
+elif str(os.environ.get('WHL_ARCH')) == '_amd64' or sys.maxsize > 2**32:
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
     try:
-        shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-64bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+        #shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-64bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
+        x = 1
     except IOError:
         pass
     VERSION += '-win64'
