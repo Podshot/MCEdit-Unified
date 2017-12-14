@@ -1108,8 +1108,8 @@ def build_pocket_materials():
     pocketMaterials.SandstoneStairs = pocketMaterials[128, 0]
     pocketMaterials.EmeraldOre = pocketMaterials[129, 0]
     pocketMaterials.TripwireHook = pocketMaterials[131, 0]
+    pocketMaterials.Tripwire = pocketMaterials[132, 0]
     pocketMaterials.BlockOfEmerald = pocketMaterials[133, 0]
-
     pocketMaterials.SpruceWoodStairs = pocketMaterials[134, 0]
     pocketMaterials.BirchWoodStairs = pocketMaterials[135, 0]
     pocketMaterials.JungleWoodStairs = pocketMaterials[136, 0]
