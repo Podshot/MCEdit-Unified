@@ -85,7 +85,10 @@ def getDataFile(*args, **kwargs):
     bundled_lookup = kwargs.get('bundle_only_lookup', False)
     executable_lookup = kwargs.get('executable_only_lookup', False)
 
-    if not getattr(sys, 'frozen', False):
+    if getattr(sys, 'frozen', False):
+        # Linux bundle uses 'sys.frozen'
+        return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), *args)
+    else:
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), *args)
 
     if executable_lookup:
