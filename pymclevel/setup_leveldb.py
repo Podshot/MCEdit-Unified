@@ -2,15 +2,16 @@
 #
 # setup_leveldb.py
 #
-# Compiles and install Minecraft Pocket Edtition binary support.
+# Compiles and installs Minecraft Pocket Edtition binary support.
 #
 __author__ = "D.C.-G. 2017"
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 import sys
 import os
 import platform
 import fnmatch
+import re
 
 if sys.platform != "linux2":
     print "This script can't run on other platforms than Linux ones..."
@@ -22,15 +23,20 @@ wget_curl = None
 wget_cmd = "wget -q --no-check-certificate -O"
 curl_cmd = "curl -LskS -o"
 
-mojang_sources_url = "https://codeload.github.com/Mojang/leveldb-mcpe/zip/"
-mojang_commit = "a056ea7c18dfd7b806d6d693726ce79d75543904"
-jocopa3_sources_url = "https://codeload.github.com/jocopa3/leveldb-mcpe/zip/"
-jocopa3_commit = "56bdd1f38dde7074426d85eab01a5c1c0b5b1cfe"
+leveldb_mojang_sources_url = "https://codeload.github.com/Mojang/leveldb-mcpe/zip/"
+leveldb_mojang_commit = "5722a489c0fabf70f7bb36f70adc2ac70ff90377"
+# leveldb_other_sources_url = "https://codeload.github.com/jocopa3/leveldb-mcpe/zip/"
+# leveldb_other_commit = "56bdd1f38dde7074426d85eab01a5c1c0b5b1cfe"
+leveldb_other_sources_url = "https://codeload.github.com/LaChal/leveldb-mcpe/zip/"
+leveldb_other_commit = "9191f0499cd6d71e4e08c513f3a331a1ffe24332"
 zlib_sources_url = "https://codeload.github.com/madler/zlib/zip/"
 zlib_commit = "4a090adef8c773087ec8916ad3c2236ef560df27"
 
-zlib_ideal_version = "1.2.10"
+zlib_ideal_version = "1.2.8"
 zlib_minimal_version = "1.2.8"
+zlib_supported_versions = (zlib_minimum_version, zlib_ideal_version, "1.2.10")
+
+silent = False
 
 
 def check_bins(bins):
@@ -61,17 +67,19 @@ def check_bins(bins):
                 print '*** WARNING: %s not found.' % name
                 missing_bin = True
     if missing_bin:
-        a = raw_input('The binary dependencies are not satisfied. The build may fail.\nContinue [y/N]?')
+        if not silent:
+            a = raw_input('The binary dependencies are not satisfied. The build may fail.\nContinue [y/N]?')
+        else:
+            a = 'n'
         if a and a in 'yY':
             pass
         else:
-            sys.exit()
+            sys.exit(1)
     else:
         print 'All the needed binaries were found.'
 
 
 # Picked from another project to find the lib and adapted to the need
-import re
 ARCH = {'32bit': '32', '64bit': '64'}[platform.architecture()[0]]
 default_paths = ['/lib', '/lib32', '/lib64', '/usr/lib', '/usr/lib32','/usr/lib64', 
                  '/usr/local/lib', os.path.expanduser('~/.local/lib'), '.']
@@ -179,20 +187,105 @@ def build_zlib():
     return os.WEXITSTATUS(os.system("./configure; make"))
 
 
+# Bad and dirty, but working untill Mojang implement this (or like): code injection
+# directly into the sources before compilation.
+# As an alternative to this, you may prefer to run this script with the '--alt-leveldb'
+# CLI option, since the other repository don't need this code injection.
+before = 0
+after = 1
+c_inject = {
+    "c.h": {
+        # The hook to look for code injection.
+        "hook": """
+extern void leveldb_options_set_compression(leveldb_options_t*, int);
+""",
+        # The data to be injected.
+        "data": """
+extern void leveldb_options_set_compressor(leveldb_options_t*, int, int);
+""",
+        # Where to inject the data: after the "hook" or before it.
+        "where": after
+    },
+
+    "c.cc": {
+        "hook": """
+void leveldb_options_set_compression(leveldb_options_t* opt, int t) {
+""",
+        "data": """
+void leveldb_options_set_compressor(leveldb_options_t* opt, int i, int t) {
+  switch(t) {
+    case 0:
+      opt->rep.compressors[i] = nullptr;
+      break;
+#ifdef SNAPPY
+    case leveldb_snappy_compression:
+      opt->rep.compressors[i] = new leveldb::SnappyCompressor();
+      break;
+#endif
+    case leveldb_zlib_compression:
+      opt->rep.compressors[i] = new leveldb::ZlibCompressor();
+      break;
+    case leveldb_zlib_raw_compression:
+      opt->rep.compressors[i] = new leveldb::ZlibCompressorRaw();
+      break;
+  }
+}
+""",
+        "where": before
+    }
+}
+
 def build_leveldb(zlib):
     print "Building leveldb..."
-    # Looks like the '-lz' option has to be changed...
+
+    # Inject the needed code into the sources.
+    for root, d_names, f_names in os.walk("."):
+        for f_name in fnmatch.filter(f_names, "c.[ch]*"):
+            if f_name in c_inject.keys():
+                hook = c_inject[f_name]["hook"]
+                data = c_inject[f_name]["data"]
+                where = c_inject[f_name]["where"]
+                with open(os.path.join(root, f_name), "r+") as fd:
+                    f_data = fd.read()
+                    if data not in f_data:
+                        if where == before:
+                            c_data = "\n".join((data, hook))
+                        else:
+                            c_data = "\n".join((hook, data))
+                        fd.seek(0)
+                        fd.write(f_data.replace(hook, c_data))
+
     if zlib:
-        data = open('Makefile').read()
-        data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s" % zlib)
-        open("Makefile", "w").write(data)
+        with open("Makefile", "r+") as f:
+            # If '-lz' is specified, we *may* need to specify the full library path. Just force it to be sure.
+            data = f.read().replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += $(PLATFORM_LIBS) %s" % zlib)
+            # All the same if a path is specified, we need the one we found here. (SuSE don't have a /lib/x64_86-linux-gnu directory.)
+            data = data.replace("LIBS += $(PLATFORM_LIBS) /lib/x86_64-linux-gnu/libz.so.1.2.8", "LIBS += $(PLATFORM_LIBS) %s" % zlib)
+            f.seek(0)
+            f.write(data)
     cpath = os.environ.get("CPATH")
     if cpath:
-        os.environ["CPATH"] = "./zlib:$CPATH"
+        os.environ["CPATH"] = ":".join(("./zlib", cpath))
     else:
         os.environ["CPATH"] = "./zlib"
     return os.WEXITSTATUS(os.system("make"))
 
+def request_zlib_build():
+    print "             Enter 'b' to build zlib v%s only for leveldb." % zlib_ideal_version
+    print "             Enter 'a' to quit now and install zlib yourself."
+    print "             Enter 'c' to continue."
+    a = ""
+    if not silent:
+        while a.lower() not in "abc":
+            a = raw_input("Build zlib [b], abort [a] or continue [c]? ")
+    else:
+        a = "a"
+    if a == "b":
+        return True
+    elif a == "a":
+        sys.exit(1)
+    elif a == "c":
+        return None
 
 def main():
     print "=" * 72
@@ -201,26 +294,39 @@ def main():
     global leveldb_commit
     global zlib_commit
     global zlib_sources_url
+    global silent
+    global zlib_ideal_version
     force_zlib = False
-    leveldb_source_url = mojang_sources_url
-    leveldb_commit = mojang_commit
+    leveldb_source_url = leveldb_mojang_sources_url
+    leveldb_commit = leveldb_mojang_commit
     cur_dir = os.getcwd()
     if "--force-zlib" in sys.argv:
         force_zlib = True
         sys.argv.remove("--force-zlib")
     if "--alt-leveldb" in sys.argv:
-        leveldb_source_url = jocopa3_sources_url
-        leveldb_commit = jocopa3_commit
-    for arg, var in (("--leveldb-commit", 'leveldb_commit'), ("--zlib-commit", 'zlib_commit')):
+        leveldb_source_url = leveldb_other_sources_url
+        leveldb_commit = leveldb_other_commit
+    for arg, var in (("--leveldb-source-url", "leveldb_source_url"),
+                     ("--leveldb-commit", "leveldb_commit"),
+                     ("--zlib-source-url", "zlib_source_url"),
+                     ("--zlib-commit", "zlib_commit")):
         if arg in sys.argv:
             globals()[var] = sys.argv[sys.argv.index(arg) + 1]
     leveldb_source_url += leveldb_commit
     zlib_sources_url += zlib_commit
+    if "--silent" in sys.argv:
+        silent = True
+
+    if "--debug-cenv" in sys.argv:
+        print 'CPATH:', os.environ.get('CPATH', 'empty!')
+        print 'PATH:', os.environ.get('PATH', 'empty!')
+        print 'LD_LIBRARY_PATH', os.environ.get('LD_LIBRARY_PATH', 'empty!')
+        print 'LIBRARY_PATH', os.environ.get('LIBRARY_PATH', 'empty!')
+
     check_bins(bin_deps)
     # Get the sources here.
     get_sources("leveldb", leveldb_source_url)
     os.chdir("leveldb")
-#     os.rmdir("zlib")
     get_sources("zlib", zlib_sources_url)
     os.chdir(cur_dir)
     zlib = (None, None, None)
@@ -234,32 +340,19 @@ def main():
             print "*** WARNING: zlib not found!"
             print "             It is recommended you install zlib v%s on your system or" % zlib_ideal_version
             print "             let this script install it only for leveldb."
-            print "             Enter 'b' to build zlib v1.2.10 only for leveldb."
-            print "             Enter 'a' to quit now and install zlib on your yourself."
-            print "             It is recomended to use your package manager to install zlib."
-            a = ""
-            while a.lower() not in "abc":
-                a = raw_input("Build zlib [b] or abort [a]? ")
-            if a == "b":
-                force_zlib = True
-            elif a == "a":
-                sys.exit(1)
+            force_zlib = request_zlib_build()
         else:
-            err = False
             if zlib[2] == None:
                 print "*** WARNING: zlib has been found, but the exact version could not be"
                 print "             determined."
-                print "             The sources for zlib v%s will be downloaded and the" % zlib_ideal_version
-                print "             build will start."
-                print "             If the build fails or the support does not work, install"
-                print "             the version %s and retry. You may also install another" % zlib_ideal_version
-                print "             version and retry with this one."
-                err = True
-            elif zlib[2] not in ("1.2.8", "1.2.10"):
+                print "             It is recommended you install zlib v%s on your system or" % zlib_ideal_version
+                print "             let this script install it only for leveldb."
+                force_zlib = request_zlib_build()
+            elif zlib[2] not in zlib_supported_versions:
                 print "*** WARNING: zlib was found, but its version is %s." % zlib[2]
                 print "             You can try to build with this version, but it may fail,"
                 print "             or the generated libraries may not work..."
-                err = True
+                force_zlib = request_zlib_build()
 
             if zlib[1] == False:
                 print "*** WARNING: zlib has been found on your system, but not for the"
@@ -267,19 +360,14 @@ def main():
                 print "             You apparently run on a %s, and the found zlib is %s" % (ARCH, zlib[0])
                 print "             Building the Pocket Edition support may fail. If not,"
                 print "             the support may not work."
-                print "             You can continue, but it is recommended to install zlib"
-                print "             for your architecture."
-                err = True
+                print "             You can continue, but it is recommended to install zlib."
+                force_zlib = request_zlib_build()
 
-            if err:
-                a = raw_input("Continue [y/N]? ")
-                if a and a in "yY":
-                    zlib = zlib[0]
-                else:
-                    sys.exit(1)
+            if force_zlib is None:
+                print "Build continues with zlib v%s" % zlib[2]
             else:
                 print "Found compliant zlib v%s." % zlib[2]
-                zlib = zlib[0]
+            zlib = zlib[0]
 
     if force_zlib:
         os.chdir("leveldb/zlib")
@@ -291,13 +379,20 @@ def main():
         os.rename("leveldb/zlib/libz.so.1.2.10", "./libz.so.1.2.10")
         os.rename("leveldb/zlib/libz.so.1", "./libz.so.1")
         os.rename("leveldb/zlib/libz.so", "./libz.so")
+        for root, d_names, f_names in os.walk("leveldb"):
+            for f_name in fnmatch.filter(f_names, "libz.so*"):
+                os.rename(os.path.join(root, f_name), os.path.join(".", f_name))
+
         # Tweak the leveldb makefile to force the linker to use the built zlib
-        data = open("leveldb/Makefile").read()
-        data = data.replace("PLATFORM_SHARED_LDFLAGS", "PSL")
-        data = data.replace("LDFLAGS += $(PLATFORM_LDFLAGS)",
-                            "LDFLAGS += $(PLATFORM_LDFLAGS)\nPSL = -L{d} -lz -Wl,-R{d} $(PLATFORM_SHARED_LDFLAGS)".format(d=cur_dir))
-        data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += -L{d} -lz -Wl,-R{d} $(PLATFORM_LIBS)".format(d=cur_dir))
-        open("leveldb/Makefile", "w").write(data)
+        with open("leveldb/Makefile", "r+") as f:
+            data = f.read()
+            data = data.replace("PLATFORM_SHARED_LDFLAGS", "PSL")
+            data = data.replace("LDFLAGS += $(PLATFORM_LDFLAGS)",
+                                "LDFLAGS += $(PLATFORM_LDFLAGS)\nPSL = -L{d} -lz -Wl,-R{d} $(PLATFORM_SHARED_LDFLAGS)".format(d=cur_dir))
+            data = data.replace("LIBS += $(PLATFORM_LIBS) -lz", "LIBS += -L{d} -lz -Wl,-R{d} $(PLATFORM_LIBS)".format(d=cur_dir))
+            f.seek(0)
+            f.write(data)
+            
         zlib = None
 
     os.chdir("leveldb")

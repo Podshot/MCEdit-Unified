@@ -3,9 +3,7 @@ LEVELDB INSTALLATION INSTRUCTIONS FOR LINUX SYSTEMS
 
 In order to install this library, you will run the 'setup_leveldb.py' script.
 
-It will try to solve the binary and library dependencies for you.
-
-Ensure you're connected to internet. Some packages need to be
+Ensure you're connected to the internet. Some packages need to be
 downloaded.
 
 
@@ -17,7 +15,7 @@ BINARIES
 ~~~~~~~~
 
 These binaries/tools have to be installed on system in order to compile
-leveldb_mcpe:
+leveldb:
 
 * g++
 * make
@@ -31,9 +29,9 @@ LIBRARIES
 ~~~~~~~~~
 
 You will need to have zlib v1.2.8 or v1.2.10 installed on your system.
-Other versions can work, but no garantee...
+Other versions can work, but no guarantee...
 
-If zlib is not found on your system, the script will build the version 1.2.10
+If zlib is not found on your system, the script can build the version 1.2.8
 specifically for PE support. See ZLIB section for more details.
 
 
@@ -44,7 +42,7 @@ INSTALLATION
 Just open a shell, go to the 'pymcelvel' directory in MCEdit one and run
 'python setup_leveldb.py' et voilà!
 (Note that you'll have a lot of messages in the console, including warnings.
-Don't pannic, and wait the end!)
+Don't panic, and wait the end!)
 
 You don't have to run this command as root. (Actually, DO NOT RUN IT AS ROOT!)
 If the `python` command invokes Python 3, try with `python2`.
@@ -54,7 +52,7 @@ directory:
 
 * libleveldb.so
 * libleveldb.so.1
-* libleveldb.so.1.18
+* libleveldb.so.1.20 (or so)
 
 Then you can run 'python test_leveldb.py' to verify the library can run.
 You shall get an output like that:
@@ -68,9 +66,9 @@ You shall get an output like that:
 It is possible to compile this library using another source version with the
 following command line argument:
 
-`--leveldb-commit <commit SHA1>`
+`--leveldb-commit <SHA1>`
 
-Where `<commit SHA1>` is a full Github commit hash.
+Where `<SHA1>` is a full Github commit hash.
 
 
 ~~~~~~~~~~~~~
@@ -89,9 +87,9 @@ ZLIB
 
 The leveldb library need zlib to work.
 
-The ideal version is 1.2.10, but PE support also works with 1.2.8.
+The ideal version is 1.2.8, but PE support can also work with 1.2.10.
 
-If zlib is not found, the script will build it and 'install' it in the
+If zlib is not found, the script can build it and 'install' it in the
 'pymclevel' directory. This zlib library will be used only for PE support, and
 will no be available for other applications on your system.
 
@@ -102,7 +100,25 @@ force zlib compilation using the '--force-zlib' switch for the script.
 It is possible to compile this library using another source version with the
 following command line argument:
 
-`--zlib-commit <commit SHA1>`
+`--zlib-commit <SHA1>`
 
-Where `<commit SHA1>` is a full Github commit hash.
+Where `<SHA1>` is a full Github commit hash.
+
+
+~~~~~~~~~~~~~~
+SOURCE CONTROL
+~~~~~~~~~~~~~~
+
+It is possible to use other sources to compile the PE support.
+
+One alternate repository is already configured in the setup script.
+You can use it with the `--alt-leveldb` CLI option.
+
+If you want to use a different repository for 'leveldb', use the following:
+`--leveldb-source-url <github_zip_url> --leveldb-commit <SHA1>`
+Where <github_zip_url> is like 'https://codeload.github.com/MyOrg/MyProject/zip'
+and <SHA1> is the commit SHA1 like '5722a489c0fabf70f7bb36f70adc2ac70ff90377'.
+
+You can also specify the URL and SHA1 fo zlib sources using the variants
+`--zlib-source-url` and `--zlib-commit`.
 
