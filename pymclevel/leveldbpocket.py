@@ -733,7 +733,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     @property
     def LevelName(self):
-        root_tag = self.root_tag["Data"]
+        root_tag = self.root_tag
         if "LevelName" not in root_tag:
             with open(os.path.join(self.worldFile.path, "levelname.txt"), 'r') as f:
                 name = f.read()
@@ -744,7 +744,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     @LevelName.setter
     def LevelName(self, name):
-        self.root_tag["Data"]["LevelName"] = nbt.TAG_String(value=name)
+        self.root_tag["LevelName"] = nbt.TAG_String(value=name)
         with open(os.path.join(self.worldFile.path, "levelname.txt"), 'w') as f:
             f.write(name)
 
@@ -860,10 +860,10 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         """
         with nbt.littleEndianNBT():
             root_tag = nbt.TAG_Compound()
-            root_tag["Data"] = nbt.TAG_Compound()
-            root_tag["Data"]["SpawnX"] = nbt.TAG_Int(0)
-            root_tag["Data"]["SpawnY"] = nbt.TAG_Int(2)
-            root_tag["Data"]["SpawnZ"] = nbt.TAG_Int(0)
+            root_tag = nbt.TAG_Compound()
+            root_tag["SpawnX"] = nbt.TAG_Int(0)
+            root_tag["SpawnY"] = nbt.TAG_Int(2)
+            root_tag["SpawnZ"] = nbt.TAG_Int(0)
 
             if last_played is None:
                 last_played = long(time.time() * 100)
@@ -895,7 +895,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             if len(root_tag_buf) != struct.Struct('<i').unpack(length)[0]:
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.TAG_Compound()
-            self.root_tag["Data"] = nbt.load(buf=root_tag_buf)
+            self.root_tag = nbt.load(buf=root_tag_buf)
 
         self.__gameVersion = 'PE'
         if create:
@@ -1309,7 +1309,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param player: nbt.TAG_Compound, root tag of the player.
         :return: tuple int (x, y, z), coordinates of the spawn.
         """
-        dataTag = self.root_tag["Data"]
+        dataTag = self.root_tag
         if player is None:
             playerSpawnTag = dataTag
         else:
@@ -1325,7 +1325,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return: None
         """
         if player is None:
-            playerSpawnTag = self.root_tag["Data"]
+            playerSpawnTag = self.root_tag
         else:
             playerSpawnTag = self.getPlayerTag(player)
         for name, val in zip(("SpawnX", "SpawnY", "SpawnZ"), pos):
