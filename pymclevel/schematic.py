@@ -96,7 +96,7 @@ class MCSchematic(EntityLevel):
                 add = zeros(size + (size & 1), 'uint16')
 
                 # Fill the even bytes with data
-                add[::2] = self.root_tag["AddBlocks"].value
+                add[::2] = resize(self.root_tag["AddBlocks"].value, add[::2].shape)
 
                 # Copy the low 4 bits to the odd bytes
                 add[1::2] = add[::2] & 0xf
