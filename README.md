@@ -35,60 +35,76 @@ If you delete the file, it will be generated again, and the feature will be acti
 
 ## Running from source
 
-MCEdit-Unified is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.
+### Requirements
 
-Clone MCEdit-Unified using your github client of choice:
+These programs and packages are required:
+
+**General**
+
+* git
+* Python 2.7+ (Python 3 is unsupported)
+* virtualenv (not strictly required, but highly recommended)
+
+**Python packages**
+
+* [pygame](http://pygame.org/install.html)
+* PyOpenGL
+* numpy 1.9.3
+* Pillow 2.9.0
+* ftputil
+* python-yaml
+* python-xlib 0.14
+
+On Windows, these are also required:
+
+* pywin32
+* pypiwin32
+
+### 1. Clone repo
+
+Clone the repo (recursively, to also clone submodules):
 
 ```sh
 git clone --recursive https://github.com/Khroki/MCEdit-Unified
 ```
 
-Or, if you've already cloned MCEdit in the past and need to update, go to the existing source folder then run:
+### 2. Install dependencies
+
+#### Linux
+
+On Linux, these may be installed at the system level with your distro package manager.
+
+If they are not available, you can install them using `pip install --user PACKAGE`.  In this case, you should set up the virtualenv first, like this:
 
 ```sh
-git pull
+cd MCEdit-Unified  # Enter the repo directory
+virtualenv virtualenv  # Create new virtualenv in "virtualenv" directory
+source virtualenv/bin/activate  # Deactivate by running "deactivate" when done
 ```
 
-Optionally (but highly recommended), setup and activate [virtualenv](http://pypi.python.org/pypi/virtualenv). virtualenv will simplify development by creating an isolated and barebones Python environment. Anything you install while virtualenv is active won't affect your system-wide Python installation, for example.
+**Note about python-xlib:** Some Linux distros do not have version 0.14 of python-xlib.  In this case, you should install it with `pip` (either in a virtualenv, or after removing the system package).
 
-```sh
-cd mcedit
-easy_install virtualenv
-virtualenv ENV
-. ENV/Scripts/activate
-```
+#### Debian/Ubuntu
 
-Install various dependencies. This may take a bit (especially numpy). If installing pygame errors, try installing from a [binary packages](http://pygame.org/install.html) or following one of the guides from that page to install from source. On Windows, `easy_install` is preferred because it installs prebuilt binary packages. On Linux and Mac OS X, you may want to use `pip install` instead.
-Linux users can also use the package manager to install the dependencies.
-
-```sh
-easy_install PyOpenGL
-easy_install numpy==1.9.3
-easy_install pygame
-easy_install Pillow==2.9.0
-easy_install ftputil
-easy_install pywin32 (Windows only, needed for compiling, if you're not using VirtualENV)
-easy_install pypiwin32 (Windows only again, use this one if you're using VirtualENV)
-```
-
-For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name. You can also use `pip` to download these libraries as well.
-
-Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
+On Debian and Ubuntu, the Python packages may be installed from distro repositories like this:
 
 ```sh
 sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib
 ```
 
-Mac and Linux users need to install python-xlib. This can be done using `pip`:
+#### Mac OS X and Windows
 
-```sh
-pip install svn+https://svn.code.sf.net/p/python-xlib/code/trunk/
-```
+The Python packages may be installed using `pip install --user PACKAGE`.
 
-Linux users must install python-xlib 0.14 (or over). It may be possible that the pip repository install the wrong version. Google a bit to grab the right version archive, and install it manually. (It's a pure Python package and does not require C extension compilation.)
+### 3. Run
 
-You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
-On Linux, it is recommended to use the `mcedit.sh` shell script.
+#### Linux
+
+Run `mcedit.sh`.
+
+#### Windows
+
+Run `python mcedit.py`.
 
 ## BUILDING NBT AND PNG SUPPORT
 
