@@ -33,7 +33,7 @@ zlib_sources_url = "https://codeload.github.com/madler/zlib/zip/"
 zlib_commit = "4a090adef8c773087ec8916ad3c2236ef560df27"
 
 zlib_ideal_version = "1.2.8"
-zlib_minimal_version = "1.2.8"
+zlib_minimum_version = "1.2.8"
 zlib_supported_versions = (zlib_minimum_version, zlib_ideal_version, "1.2.10")
 
 silent = False
