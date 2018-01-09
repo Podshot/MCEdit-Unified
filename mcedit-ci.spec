@@ -1,11 +1,27 @@
 # -*- mode: python -*-
 
 import sys
+sys.modules['FixTk'] = None
+
 import glob
 import os
 import shutil
 import json
 import subprocess
+
+try:
+    from PyInstaller.utils.hooks import collect_data_files, remove_prefix
+except ImportError:
+    from PyInstaller.hooks.hookutils import collect_data_files, remove_prefix
+
+def walk(directory):
+    files = []
+    for path, subdirs, ffiles in os.walk(directory):
+        for name in ffiles:
+            src = os.path.abspath(os.path.join(path, name))
+            dest = remove_prefix(path, os.path.abspath(os.getcwdu()))
+            files.append((src, dest.replace('./','')))
+    return files
 
 block_cipher = None
 
@@ -40,16 +56,35 @@ a = Analysis(['mcedit.py'],
              hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate', 'OpenGL.platform.win32'],
              hookspath=['.'],
              runtime_hooks=[],
-             excludes=[],
+             excludes=['Tkinter', 'tkinter', '_tkinter', 'Tcl', 'tcl', 'Tk', 'tk', 'wx', 'FixTk'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
 
+datas = []
+base_files = glob.glob(r".\\*.json") + glob.glob(r'.\\*.png') + glob.glob(r'.\\*.fot') + glob.glob(r'.\\*.def') + [os.path.join('.', 'LICENSE.txt'),]
+for f in base_files:
+    datas.append((os.path.basename(f), os.path.abspath(f), 'DATA'))
+
+pymclevel_files = collect_data_files('pymclevel')
+pymclevel_files = [(os.path.join(dest, os.path.basename(src)), src, 'DATA') for src, dest in pymclevel_files]
+datas += pymclevel_files
+
+misc_files = walk('fonts') + walk('item-textures') + walk('Items') + walk('lang') + walk('mcver') + walk('stock-filters')
+misc_files += walk('stock-brushes') + walk('stock-schematics') + walk('toolicons')
+misc_files = set([(os.path.join(dest, os.path.basename(src)), src, 'DATA') for src, dest in misc_files])
+datas += misc_files
+
+a.datas.extend(datas)
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
+a.scripts += a.binaries + a.zipfiles + a.datas + a.zipped_data
+
 exe = EXE(pyz,
           a.scripts,
-          exclude_binaries=True,
+          exclude_binaries=False,
           name='mcedit',
           debug=False,
           strip=False,
@@ -63,27 +98,6 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                name='mcedit')
-
-files = glob.glob(r".\\*.json") + glob.glob(r'.\\*.png') + glob.glob(r'.\\*.fot') + glob.glob(r'.\\*.def')
-for f in files:
-    shutil.copy(f, os.path.join('.', 'dist', 'mcedit', f))
-
-os.mkdir(os.path.join('.', 'dist', 'mcedit', 'pymclevel'))
-pymclevel_files = glob.glob(os.path.join('.', 'pymclevel', '*.json')) + glob.glob(os.path.join('.', 'pymclevel', '*.dll'))
-for f in pymclevel_files:
-    shutil.copy(f, os.path.join('.', 'dist', 'mcedit', 'pymclevel', os.path.basename(f)))
-
-shutil.copytree(os.path.join('.', 'Items'), os.path.join('.', 'dist', 'mcedit', 'Items'))
-shutil.copytree(os.path.join('.', 'item-textures'), os.path.join('.', 'dist', 'mcedit', 'items-textures'))
-shutil.copytree(os.path.join('.', 'toolicons'), os.path.join('.', 'dist', 'mcedit', 'toolicons'))
-shutil.copytree(os.path.join('.', 'lang'), os.path.join('.', 'dist', 'mcedit', 'lang'))
-shutil.copytree(os.path.join('.', 'mcver'), os.path.join('.', 'dist', 'mcedit', 'mcver'))
-shutil.copytree(os.path.join('.', 'fonts'), os.path.join('.', 'dist', 'mcedit', 'fonts'))
-shutil.copytree(os.path.join('.', 'stock-brushes'), os.path.join('.', 'dist', 'mcedit', 'stock-brushes'))
-shutil.copytree(os.path.join('.', 'stock-filters'), os.path.join('.', 'dist', 'mcedit', 'stock-filters'))
-shutil.copytree(os.path.join('.', 'stock-schematics'), os.path.join('.', 'dist', 'mcedit', 'stock-schematics'))
-
-#shutil.copy(os.path.join('.', 'pymclevel', 'LevelDB-MCPE.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
 
 fp = open(os.path.join('.', 'dist', 'mcedit', 'RELEASE-VERSION.json'),'rb')
 version_data = json.load(fp)
@@ -102,19 +116,9 @@ subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unifie
 
 if str(os.environ.get('WHL_ARCH')) == '32' or not sys.maxsize > 2**32:
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
-    try:
-        #shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-32bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
-        x = 1
-    except IOError:
-        pass
     VERSION += '-win32'
 elif str(os.environ.get('WHL_ARCH')) == '_amd64' or sys.maxsize > 2**32:
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
-    try:
-        #shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'LevelDB-MCPE-64bit.dll'), os.path.join('.', 'dist', 'mcedit', 'pymclevel', 'LevelDB-MCPE.dll'))
-        x = 1
-    except IOError:
-        pass
     VERSION += '-win64'
 
 subprocess.check_call([

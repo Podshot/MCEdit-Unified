@@ -103,7 +103,8 @@ def getDataFile(*args, **kwargs):
     else:
         return os.path.join(getDataFile(*args, bundle_only_lookup=True))
 
-getNewDataDir()
+def getDataFileSaveable(*args):
+    return getDataFile(*args, executable_only_lookup=True)
 
 def getDataDir(path=""):
     """
