@@ -80,11 +80,9 @@ a.datas.extend(datas)
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
-a.scripts += a.binaries + a.zipfiles + a.datas + a.zipped_data
-
 exe = EXE(pyz,
           a.scripts,
-          exclude_binaries=False,
+          exclude_binaries=True,
           name='mcedit',
           debug=False,
           strip=False,
