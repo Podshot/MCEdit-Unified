@@ -149,16 +149,15 @@ class MCLevel(object):
 
     @property
     def gamePlatform(self):
+        # I would use isinstance() here, but importing the separate level classes would cause a circular import, so this will have to do
         if not hasattr(self, '__gamePlatform'):
-            self.__gamePlatform = 'Unknown'
-            if self.gameVersion == 'PE':
-                self.__gamePlatform = 'PE'
-            elif self.gameVersion == 'Schematic':
-                self.__gamePlatform = 'Schematic'
-            elif 'Player' in self.root_tag or 'Player' in self.root_tag:
-                self.__gamePlatform = 'Java'
-            else:
-                self.__gamePlatform = 'Unknown'
+            type_map = {
+                'pymclevel.schematic.MCSchematic': 'Schematic',
+                'pymclevel.leveldbpocket.PocketLeveldbWorld': 'PE',
+                'pymclevel.infiniteworld.MCInfdevOldLevel': 'Java',
+            }
+            t = str(type(self))
+            self.__gamePlatform = type_map.get(t[8:len(t) - 2], 'Unknown')
         return self.__gamePlatform
 
     @property
