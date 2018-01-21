@@ -49,8 +49,8 @@ These programs and packages are required:
 
 * [pygame](http://pygame.org/install.html)
 * PyOpenGL
-* numpy 1.9.3
-* Pillow 2.9.0
+* numpy 1.13.3
+* Pillow 4.2.1
 * ftputil
 * python-yaml
 * python-xlib 0.14
