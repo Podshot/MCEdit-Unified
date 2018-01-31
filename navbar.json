@@ -27,8 +27,11 @@
       "displayname": "Documentation",
       "url": "docs/index.html",
       "icon": "book"
-    },
-    {
+    },{
+      "displayname": "Discord Server",
+      "url": "https://discord.gg/BTm6jnf",
+      "icon": "server"
+    },{
       "icon": "reddit",
       "showTextInNavbar": false,
       "displayname": "MCEdit Subreddit",
