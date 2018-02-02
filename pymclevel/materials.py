@@ -1110,7 +1110,6 @@ def build_pocket_materials():
     pocketMaterials.TripwireHook = pocketMaterials[131, 0]
     pocketMaterials.Tripwire = pocketMaterials[132, 0]
     pocketMaterials.BlockOfEmerald = pocketMaterials[133, 0]
-
     pocketMaterials.SpruceWoodStairs = pocketMaterials[134, 0]
     pocketMaterials.BirchWoodStairs = pocketMaterials[135, 0]
     pocketMaterials.JungleWoodStairs = pocketMaterials[136, 0]
@@ -1165,6 +1164,7 @@ def build_pocket_materials():
     pocketMaterials.NetherReactorUsed = pocketMaterials[247, 1]
     pocketMaterials.UpdateGameBlock1 = pocketMaterials[248, 0]
     pocketMaterials.UpdateGameBlock2 = pocketMaterials[249, 0]
+    pocketMaterials.StructureBlock = pocketMaterials[252, 0]
     pocketMaterials.info_reserved6 = pocketMaterials[255, 0]
 
     build_api_material_map(pocketMaterials)
