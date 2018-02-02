@@ -13600,6 +13600,20 @@
 		    "idStr": "observer",
 		    "id": 251
 		},
+		{
+            "id": 252,
+            "idStr": "structure_block",
+            "mapcolor": [
+                153,
+                153,
+                153
+            ],
+            "name": "Structure Block",
+            "tex": [
+                19,
+                9
+            ]
+        },
         {
             "id": 255,
             "idStr": "info_reserved6",
@@ -13608,7 +13622,7 @@
                 119,
                 240
             ],
-            "name": "Error Stone",
+            "name": "Reserved Block",
             "tex": [
                 9,
                 13
