@@ -50,11 +50,11 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
                 changesLighting = True
 
     tileEntity = None
-    split_ver = level.gameVersion.split('.')
-    if int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
-        tileEntity = "minecraft:{}".format(blockInfo.stringID)
-    else:
-        if blockInfo.stringID in TileEntity.stringNames.keys():
+    if blockInfo.stringID in TileEntity.stringNames.keys():
+        split_ver = level.gameVersion.split('.')
+        if int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
+            tileEntity = "minecraft:{}".format(blockInfo.stringID)
+        else:
             tileEntity = TileEntity.stringNames[blockInfo.stringID]
 
     blocksIdToReplace = [block.ID for block in blocksToReplace]
