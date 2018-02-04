@@ -1,14 +1,14 @@
 var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
-var releasesURL = 'https://api.github.com/repos/Khroki/MCEdit-Unified/releases?per_page=3';
+var releasesURL = 'https://api.github.com/repos/Podshot/MCEdit-Unified/releases?per_page=3';
 var cacheItemPrependString = 'cache_json_store'
 var norefetches = false;
 
 var URL_PRELOAD_REGISTER = [
 	"navbar.json",
 	"comments.json",
-	"https://api.github.com/repos/Khroki/MCEdit-Unified/releases",
-	"https://api.github.com/repos/Khroki/MCEdit-Unified/contributors"
+	"https://api.github.com/repos/Podshot/MCEdit-Unified/releases",
+	"https://api.github.com/repos/Podshot/MCEdit-Unified/contributors"
 ]
 
 function getJSONAsync(url, forceLoad, callback) {
@@ -255,7 +255,7 @@ function loadFailError() {
 	$('title').html('MCEdit Unified - Load Error');
 	$('body').html('<h1>An error occured loading the page.</h1><br>Please <a class="btn btn-default btn-xs" href="#" onclick="location.reload()">refresh</a> the page.');
 	if (localStorage.getItem('errorCount') > 2) {
-		$('body').append('<br><br><a onclick="localStorage.setItem(\'errorCount\',0);" href="http://github.com/Khroki/MCEdit-Unified/issues/new" class="btn btn-xs btn-danger"><i class="fa fa-exclamation-triangle"></i> Report an Issue</a>');
+		$('body').append('<br><br><a onclick="localStorage.setItem(\'errorCount\',0);" href="http://github.com/Podshot/MCEdit-Unified/issues/new" class="btn btn-xs btn-danger"><i class="fa fa-exclamation-triangle"></i> Report an Issue</a>');
 	}
 	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
