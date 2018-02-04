@@ -224,7 +224,7 @@ function generatePageStructure() {
 			navitem.showTextInNavbar = true
 		}
 
-		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + (navitem.icon ? '<i class="fa fa-' + navitem.icon + '"></i>' : '') + (navitem.icon && navitem.showTextInNavbar ? ' ' : '') + (navitem.showTextInNavbar ? navitem.displayname : '') + '</a></li>');
+		$('#navbar').append(`<li class="${(active ? 'active' : '')}"><a href="${navitem.url}">${(navitem.icon ? '<i class="' + navitem.icon + '"></i>' : '') + (navitem.icon && navitem.showTextInNavbar ? ' ' : '') + (navitem.showTextInNavbar ? navitem.displayname : '')}</a></li>`);
 	}
 	$('#loading_row').remove();
 	return true;

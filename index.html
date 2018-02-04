@@ -9,12 +9,17 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
+	
 	<script src="js/marked.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/stylesheet.css">
 	<link rel="shortcut icon" href="favicon.ico">
+
+	<script defer src="js/fa-brands.min.js"></script>
+	<script defer src="js/fa-regular.min.js"></script>
+	<script defer src="js/fa-solid.min.js"></script>
+	<script src="js/fontawesome.min.js"></script>
 
 	<meta name="viewport" content="width=device-width, initiass ol-scale=1">
 
@@ -136,9 +141,9 @@
 				}
 
 				var downloadLinks = '<div class="row" style="padding-right:15px;">';
-				downloadLinks += '<div class="btn-group"><button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-windows"></i> <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a href="' + getDownload('Win',version,64).browser_download_url + '">64 bit</a></li><li><a href="' + getDownload('Win',version,32).browser_download_url + '">32 bit</a></li></ul></div>';
-				downloadLinks += ' <a href="' + getDownload('OSX',version,64).browser_download_url + '" class="btn btn-xs btn-primary"><i class="fa fa-apple"></i></a>';
-				downloadLinks += ' <a href="' + getDownload('Lin',version,'Universal').browser_download_url + '" class="btn btn-xs btn-primary"><i class="fa fa-linux"></i></a>';
+				downloadLinks += '<div class="btn-group"><button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fab fa-windows"></i> <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a href="' + getDownload('Win',version,64).browser_download_url + '">64 bit</a></li><li><a href="' + getDownload('Win',version,32).browser_download_url + '">32 bit</a></li></ul></div>';
+				downloadLinks += ' <a href="' + getDownload('OSX',version,64).browser_download_url + '" class="btn btn-xs btn-primary"><i class="fab fa-apple"></i></a>';
+				downloadLinks += ' <a href="' + getDownload('Lin',version,'Universal').browser_download_url + '" class="btn btn-xs btn-primary"><i class="fab fa-linux"></i></a>';
 				downloadLinks += '</div>';
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
@@ -173,13 +178,13 @@
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name, 32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name, 64);
 				if(assetUniversal) {
-					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + assetUniversal.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32/64bit</a><br><br>');
+					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + assetUniversal.browser_download_url + '"><i class="fa fa-cloud-download-alt" ></i> Version ' + latestRelease.tag_name + ' 32/64bit</a><br><br>');
 				} else {
 					if (asset32) {
-						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download-alt" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
 					}
 					if (asset64) {
-						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download-alt"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 					}
 				}
 			}
@@ -216,11 +221,11 @@
 					<div class="row">
 						<div class="col-md-4" id="OSX-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
-								<i class="fa fa-apple fa-5x"></i>
+								<i class="fab fa-apple fa-5x"></i>
 								<br><br><span style="font-size:16pt">macOS</span><br><br>
 							</span>
 							<span class="hidden-md hidden-lg">
-								<i class="fa fa-apple fa-2x"></i>
+								<i class="fab fa-apple fa-2x"></i>
 								<span style="font-size:16pt">&nbsp;macOS<br></span>
 							</span>
 							<span id="OSX-downloads">
@@ -229,12 +234,12 @@
 						</div>
 						<div class="col-md-4" id="Win-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
-								<i class="fa fa-windows fa-5x"></i>
+								<i class="fab fa-windows fa-5x"></i>
 								<br><br><span style="font-size:16pt">Windows</span><br><br>
 							</span>
 							<span class="hidden-md hidden-lg">
 								<br><br>
-								<i class="fa fa-windows fa-2x"></i>
+								<i class="fab fa-windows fa-2x"></i>
 								<span style="font-size:16pt">&nbsp;Windows<br></span>
 							</span>
 							<span id="Win-downloads">
@@ -243,12 +248,12 @@
 						</div>
 						<div class="col-md-4" id="Lin-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
-								<i class="fa fa-linux fa-5x"></i>
+								<i class="fab fa-linux fa-5x"></i>
 								<br><br><span style="font-size:16pt">Linux <span class="label label-warning">Beta</span></span><br><br>
 							</span>
 							<span class="hidden-md hidden-lg">
 								<br><br>
-								<i class="fa fa-linux fa-2x"></i>
+								<i class="fab fa-linux fa-2x"></i>
 								<span style="font-size:16pt">&nbsp;Linux <span class="label label-warning">Beta</span><br></span>
 							</span>
 							<span id="Lin-downloads">
@@ -274,7 +279,7 @@
 					<!-- Linux source on md/lg -->
 					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:50px;">
 						<div class="col-md-12">
-							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Podshot/MCEdit-Unified/releases">run from source.</a>
+							<i class="fab fa-linux"></i> Linux users can also <a href="http://github.com/Podshot/MCEdit-Unified/releases">run from source.</a>
 						</div>
 					</div>
 
@@ -300,7 +305,7 @@
 					<!-- Linux on sm/xs -->
 					<div class="row hidden-md hidden-lg" style="text-align:center;">
 						<div class="col-md-12">
-							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Podshot/MCEdit-Unified/releases">run from source.</a>
+							<i class="fab fa-linux"></i> Linux users can also <a href="http://github.com/Podshot/MCEdit-Unified/releases">run from source.</a>
 						</div>
 					</div>
 
@@ -320,7 +325,7 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-5" style="text-align:center;">
 				<ul class="pager">
-					<li class="previous"><a href="https://github.com/Podshot/MCEdit-Unified/releases">More Releases <i class="fa fa-github"></i></a></li>
+					<li class="previous"><a href="https://github.com/Podshot/MCEdit-Unified/releases">More Releases <i class="fab fa-github"></i></a></li>
 				</ul>
 		</div>
 	</div>

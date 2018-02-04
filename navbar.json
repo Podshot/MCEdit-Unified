@@ -1,7 +1,7 @@
 {
   "navbar": [
     {
-      "icon": "home",
+      "icon": "fa fa-home",
       "showTextInNavbar": false,
       "displayname": "Home",
       "url": "index.html"
@@ -21,27 +21,27 @@
     {
       "displayname": "Contributors",
       "url": "contributors.html",
-      "icon": "users"
+      "icon": "fa fa-users"
     },
     {
       "displayname": "Documentation",
       "url": "docs/index.html",
-      "icon": "book"
+      "icon": "fa fa-book"
     },
     {
       "displayname": "Discord Server",
       "url": "https://discord.gg/BTm6jnf",
-      "icon": "server"
+      "icon": "fa fa-server"
     },
     {
-      "icon": "reddit",
+      "icon": "fab fa-reddit",
       "showTextInNavbar": false,
       "displayname": "MCEdit Subreddit",
       "url": "https://www.reddit.com/r/MCEdit/"
     },
     {
       "displayname": "GitHub",
-      "icon": "github",
+      "icon": "fab fa-github",
       "showTextInNavbar": false,
       "url": "https://github.com/Khroki/MCEdit-Unified/"
     }
