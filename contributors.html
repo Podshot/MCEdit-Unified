@@ -69,23 +69,23 @@
 			var contributorDB = getJSON('contributors.json');
 			for (var i = 0; i < contributors.length; i++) {
 				var contributor = contributors[i];
-				contributorDiv = '<a href="http://github.com/' + contributor.login + '"><i class="fa fa-github"></i></a> ';
+				contributorDiv = '<a href="http://github.com/' + contributor.login + '"><i class="fab fa-github"></i></a> ';
 				contributorDiv += '<a href="https://github.com/Podshot/MCEdit-Unified/commits?author=' + contributor.login + '"><i class="fa fa-code"></i></a> ';
 
 				var webcheck = false;
 
 				if (contributorDB[contributor.login]) {
 					if (contributorDB[contributor.login].twitter) {
-						contributorDiv += '<a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter"></i></a> ';
+						contributorDiv += '<a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fab fa-twitter"></i></a> ';
 					}
 					if (contributorDB[contributor.login].youtube) {
-						contributorDiv += '<a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube"></i></a> ';
+						contributorDiv += '<a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fab fa-youtube"></i></a> ';
 					}
 					if (contributorDB[contributor.login].reddit) {
-						contributorDiv += '<a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit"></i></a> ';
+						contributorDiv += '<a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fab fa-reddit"></i></a> ';
 					}
 					if (contributorDB[contributor.login].facebook) {
-						contributorDiv += '<a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook"></i></a> ';
+						contributorDiv += '<a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fab fa-facebook"></i></a> ';
 					}
 					if (contributorDB[contributor.login].payment) {
 						contributorDiv += '<a href="' + contributorDB[contributor.login].payment + '"><i class="fa fa-usd"></i></a> ';
