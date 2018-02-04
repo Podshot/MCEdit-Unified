@@ -27,21 +27,23 @@
       "displayname": "Documentation",
       "url": "docs/index.html",
       "icon": "book"
-    },{
+    },
+    {
       "displayname": "Discord Server",
       "url": "https://discord.gg/BTm6jnf",
       "icon": "server"
-    },{
+    },
+    {
       "icon": "reddit",
       "showTextInNavbar": false,
       "displayname": "MCEdit Subreddit",
-      "url": "http://www.reddit.com/r/MCEdit/"
+      "url": "https://www.reddit.com/r/MCEdit/"
     },
     {
       "displayname": "GitHub",
       "icon": "github",
       "showTextInNavbar": false,
-      "url": "http://github.com/Khroki/MCEdit-Unified/"
+      "url": "https://github.com/Khroki/MCEdit-Unified/"
     }
   ]
 }
