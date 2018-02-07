@@ -761,7 +761,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         return self._allChunks
 
     def copyChunkFrom(self, oldLevel, cx, cz):
-        assert isinstance(oldLevel, PocketLeveldbWorld)
         if self.readonly:
             raise IOError("World is opened read only.")
 
