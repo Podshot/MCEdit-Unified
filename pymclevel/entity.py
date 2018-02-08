@@ -1,6 +1,5 @@
 '''
 Created on Jul 23, 2011
-
 @author: Rio
 '''
 from math import isnan
@@ -64,6 +63,9 @@ class TileEntity(object):
             ("Item", nbt.TAG_String),
             ("Data", nbt.TAG_Int),
         ),
+        "Bed": (
+            ("color", nbt.TAG_Int),
+        ),
         "EnchantTable": (
             ("CustomName", nbt.TAG_String),
         ),
@@ -88,6 +90,7 @@ class TileEntity(object):
         "Sign": "Sign",
         "Monster Spawner": "MobSpawner",
         "Chest": "Chest",
+        "Bed": "Bed",
         "Note Block": "Music",
         "Trapped Chest": "Chest",
         "Jukebox": "RecordPlayer",
@@ -109,6 +112,7 @@ class TileEntity(object):
         "wall_sign": "Sign",
         "mob_spawner": "MobSpawner",
         "chest": "Chest",
+        "bed": "Bed",
         "ender_chest": "Chest",
         "noteblock": "Music",
         "trapped_chest": "Chest",
@@ -182,6 +186,9 @@ class TileEntity(object):
                                 tileEntityTag["SpawnData"][k] = deepcopy(v)
                         else:
                             tileEntityTag["SpawnData"].add(spawn_id)
+                elif tileEntityID == "Bed":
+                    if name == "color":
+                        tileEntityTag[name] = nbt.TAG_Int(14)
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
