@@ -19,6 +19,7 @@ import os
 import json
 import glob
 import shutil
+from utilities.misc import unicoded
 
 
 def win32_utf8_argv():
@@ -81,6 +82,7 @@ def getNewDataDir(path=""):
         return os.path.join(dataDir, path)
     return dataDir
 
+@unicoded
 def getDataFile(*args, **kwargs):
     bundled_lookup = kwargs.get('bundle_only_lookup', False)
     executable_lookup = kwargs.get('executable_only_lookup', False)
@@ -141,7 +143,7 @@ def win32_appdata():
 
         objShell = win32com.client.Dispatch("WScript.Shell")
         return objShell.SpecialFolders("AppData")
-    except Exception, e:
+    except Exception as e:
         print "Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}".format(e)
         try:
             from win32com.shell import shell, shellcon
@@ -149,7 +151,7 @@ def win32_appdata():
             return shell.SHGetPathFromIDListEx(
                 shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_APPDATA)
             )
-        except Exception, e:
+        except Exception as e:
             print "Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}".format(e)
 
             return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
@@ -195,7 +197,7 @@ def getDocumentsFolder():
             objShell = win32com.client.Dispatch("WScript.Shell")
             docsFolder = objShell.SpecialFolders("MyDocuments")
 
-        except Exception, e:
+        except Exception as e:
             print e
             try:
                 docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)

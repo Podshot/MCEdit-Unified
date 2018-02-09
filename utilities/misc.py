@@ -56,3 +56,10 @@ def deprecated(func):
         new_func.__doc__ = '''*Deprecated*'''
     new_func.__dict__.update(func.__dict__)
     return new_func
+
+def unicoded(func):
+
+    def wrapper(*args, **kwargs):
+        return unicode(func(*args, **kwargs))
+
+    return wrapper
