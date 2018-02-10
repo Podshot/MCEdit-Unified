@@ -2343,6 +2343,20 @@
             ]
         },
         {
+            "id": 36,
+            "idStr": "tile.36.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.36.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
             "id": 37,
             "idStr": "yellow_flower",
             "mapcolor": [
@@ -9627,6 +9641,20 @@
 			"id": 165
 		},
         {
+            "id": 166,
+            "idStr": "tile.166.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.166.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
 			"opacity": 0,
 			"name": "Iron Trapdoor",
 			"data": {
@@ -11224,7 +11252,49 @@
                 5
             ]
         },
-{
+        {
+            "id": 190,
+            "idStr": "tile.190.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.190.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 191,
+            "idStr": "tile.191.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.191.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 192,
+            "idStr": "tile.192.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.192.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
 			"opacity": 0,
 			"name": "Spruce Door",
 			"idStr": "spruce_door",
@@ -11293,7 +11363,8 @@
 				}
 			},
 			"id": 193
-		},{
+		},
+        {
 			"opacity": 0,
 			"name": "Birch Door",
 			"idStr": "birch_door",
@@ -11362,7 +11433,8 @@
 				}
 			},
 			"id": 194
-		},{
+		},
+        {
 			"opacity": 0,
 			"name": "Jungle Door",
 			"idStr": "jungle_door",
@@ -11431,7 +11503,8 @@
 				}
 			},
 			"id": 195
-		},{
+		},
+        {
 			"opacity": 0,
 			"name": "Acacia Door",
 			"idStr": "acacia_door",
@@ -11500,7 +11573,8 @@
 				}
 			},
 			"id": 196
-		},{
+		},
+        {
 			"opacity": 0,
 			"name": "Dark Oak Door",
 			"idStr": "dark_oak_door",
@@ -11648,6 +11722,20 @@
 			},
 			"id": 201
 		},
+        {
+            "id": 202,
+            "idStr": "tile.202.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.202.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
 		{
 			"name": "Purpur Stairs",
 			"type": "STAIRS",
@@ -11682,6 +11770,20 @@
 			},
 			"id": 203
 		},
+        {
+            "id": 204,
+            "idStr": "tile.204.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.204.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
 		{
 			"tex": [18,18],
 			"mapcolor": [120,120,120],
@@ -11751,6 +11853,62 @@
 			"id": 209,
 			"name": "End Gateway"
 		},
+        {
+            "id": 210,
+            "idStr": "tile.210.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.210.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 211,
+            "idStr": "tile.211.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.211.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 212,
+            "idStr": "tile.212.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.212.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 217,
+            "idStr": "tile.217.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.217.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
 		{
             "id": 218,
             "name": "Shulker Box",
@@ -11887,6 +12045,56 @@
                 "12": {
                     "name": "Brown Shulker Box",
                     "tex": [25, 21]
+                }
+            }
+        },
+        {
+            "id": 219,
+            "name": "Purple glazed terracotta",
+            "idStr": "purple_glazed_terracotta",
+            "tex": [
+                22,
+                23
+            ],
+            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
+            "__data": {
+                "0": {
+                    "facing": "north"
+                },
+                "1": {
+                    "facing": "east"
+                },
+                "2": {
+                    "facing": "south"
+                },
+                "3": {
+                    "facing": "west"
+                }
+            },
+            "data": {
+                "0": {
+                    "name": "Purple glazed terracotta (North)"
+                },
+                "1": {
+                    "tex": [
+                        22,
+                        24
+                    ],
+                    "name": "Purple glazed terracotta (East)"
+                },
+                "2": {
+                    "tex": [
+                        22,
+                        25
+                    ],
+                    "name": "Purple glazed terracotta (South)"
+                },
+                "3": {
+                    "tex": [
+                        22,
+                        26
+                    ],
+                    "name": "Purple glazed terracotta (West)"
                 }
             }
         },
@@ -12391,54 +12599,18 @@
             }
         },
         {
-            "id": 219,
-            "name": "Purple glazed terracotta",
-            "idStr": "purple_glazed_terracotta",
-            "tex": [
-                22,
-                23
+            "id": 230,
+            "idStr": "tile.230.name",
+            "mapcolor": [
+                201,
+                119,
+                240
             ],
-            "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
-            "__data": {
-                "0": {
-                    "facing": "north"
-                },
-                "1": {
-                    "facing": "east"
-                },
-                "2": {
-                    "facing": "south"
-                },
-                "3": {
-                    "facing": "west"
-                }
-            },
-            "data": {
-                "0": {
-                    "name": "Purple glazed terracotta (North)"
-                },
-                "1": {
-                    "tex": [
-                        22,
-                        24
-                    ],
-                    "name": "Purple glazed terracotta (East)"
-                },
-                "2": {
-                    "tex": [
-                        22,
-                        25
-                    ],
-                    "name": "Purple glazed terracotta (South)"
-                },
-                "3": {
-                    "tex": [
-                        22,
-                        26
-                    ],
-                    "name": "Purple glazed terracotta (West)"
-                }
-            }
+            "name": "tile.230.name",
+            "tex": [
+                15,
+                29
+            ]
         },
         {
             "id": 231,
@@ -13169,6 +13341,34 @@
             }
         },
         {
+            "id": 238,
+            "idStr": "tile.238.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.238.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 239,
+            "idStr": "tile.239.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.239.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
 			"tex": [13,20],
 			"mapcolor": [120,120,120],
 			"idStr": "chorus_plant",
@@ -13266,6 +13466,20 @@
 			"type": "GLASS",
 			"id": 241
 		},
+        {
+            "id": 242,
+            "idStr": "tile.242.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.242.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
         {
             "id": 243,
             "idStr": "podzol",
@@ -13615,6 +13829,34 @@
             ]
         },
         {
+            "id": 253,
+            "idStr": "tile.253.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.253.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 254,
+            "idStr": "tile.254.name",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.254.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
             "id": 255,
             "idStr": "info_reserved6",
             "mapcolor": [
@@ -13624,8 +13866,8 @@
             ],
             "name": "Reserved Block",
             "tex": [
-                9,
-                13
+                15,
+                29
             ]
         }
     ],
