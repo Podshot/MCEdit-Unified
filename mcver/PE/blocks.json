@@ -11705,6 +11705,31 @@
             }
         },
         {
+            "id": 199,
+            "idStr": "item_frame",
+            "mapcolor": [168,88,51],
+            "name": "Item Frame",
+            "tex": [9,11],
+            "data": {
+                "0": {
+                    "tex": [9,11],
+                    "name": "Item (East)"
+                },
+                "1": {
+                    "tex": [9,11],
+                    "name": "Item (West)"
+                },
+                "2": {
+                    "tex": [9,11],
+                    "name": "Item (South)"
+                },
+                "3": {
+                    "tex": [9,11],
+                    "name": "Item (North)"
+                }
+            }
+        },
+        {
 			"name": "Chorus Flower",
 			"idStr": "chorus_flower",
 			"tex": [15,20],
