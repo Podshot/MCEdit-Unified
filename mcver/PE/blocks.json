@@ -13880,6 +13880,68 @@
 						"LEFT": [30,0],
 						"RIGHT": [30,1]
 		            }
+	            },
+                "8": {
+		            "name": "Observer (Powered, Down)",
+		            "tex_direction": {
+						"TOP": [31,0],
+						"BOTTOM": [30,1],
+						"SIDES": [30,2],
+						"FORWARD": [30,3],
+						"BACKWARD": [30,3]
+		            }
+	            },
+		        "9": {
+		            "name": "Observer (Powered, Up)",
+		            "tex_direction": {
+						"TOP": [30,1],
+						"BOTTOM": [31,0],
+						"SIDES": [30,2],
+						"FORWARD": [30,3],
+						"BACKWARD": [30,3]
+		            }
+	            },
+		        "10": {
+		            "name": "Observer (Powered, South)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"SIDES": [30,2],
+						"FORWARD": [30,1],
+						"BACKWARD": [31,0]
+		            }
+	            },
+		        "11": {
+		            "name": "Observer (Powered, North)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"SIDES": [30,2],
+						"FORWARD": [31,0],
+						"BACKWARD": [30,1]
+		            }
+	            },
+		        "12": {
+		            "name": "Observer (Powered, East)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"FORWARD": [30,2],
+						"BACKWARD": [30,2],
+						"LEFT": [30,1],
+						"RIGHT": [31,0]
+		            }
+	            },
+		        "13": {
+		            "name": "Observer (West)",
+		            "tex_direction": {
+						"TOP": [30,3],
+						"BOTTOM": [30,3],
+						"FORWARD": [30,2],
+						"BACKWARD": [30,2],
+						"LEFT": [31,0],
+						"RIGHT": [30,1]
+		            }
 	            }
 		    },
 		    "name": "Observer",
