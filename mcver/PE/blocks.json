@@ -3697,9 +3697,11 @@
         {
             "data": {
                 "0": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Unopened, East)"
                 },
                 "1": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Unopened, South)"
                 },
                 "10": {
@@ -3709,21 +3711,27 @@
                     "name": "Oak Door (Upper, Right Hinge, Powered)"
                 },
                 "2": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Unopened, West)"
                 },
                 "3": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Unopened, North)"
                 },
                 "4": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Opened, East)"
                 },
                 "5": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Opened, South)"
                 },
                 "6": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Opened, West)"
                 },
                 "7": {
+                    "tex": [1,6],
                     "name": "Oak Door (Lower, Opened, North)"
                 },
                 "8": {
@@ -4009,9 +4017,11 @@
         {
             "data": {
                 "0": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Unopened, East)"
                 },
                 "1": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Unopened, South)"
                 },
                 "10": {
@@ -4021,21 +4031,27 @@
                     "name": "Iron Door (Upper, Right Hinge, Powered)"
                 },
                 "2": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Unopened, West)"
                 },
                 "3": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Unopened, North)"
                 },
                 "4": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Opened, East)"
                 },
                 "5": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Opened, South)"
                 },
                 "6": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Opened, West)"
                 },
                 "7": {
+                    "tex": [2,6],
                     "name": "Iron Door (Lower, Opened, North)"
                 },
                 "8": {
