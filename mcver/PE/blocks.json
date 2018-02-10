@@ -4459,6 +4459,21 @@
             "type": "DECORATION_CROSS"
         },
         {
+            "id": 84,
+			"tex_direction": {
+				"TOP": [11,4]
+			},
+			"name": "Jukebox",
+			"idStr": "jukebox",
+			"tex": [10,4],
+			"mapcolor": [114,88,56],
+			"data": {
+				"0": {
+					"name": "Jukebox"
+				}
+			}
+		},
+        {
             "data": {
                 "0": {
                     "name": "Oak Fence"
@@ -5128,26 +5143,12 @@
             ],
             "type": "THINSLICE"
         },
-        {
-            "id": 95,
-            "idStr": "invisible_bedrock",
-            "name": "Invisible Bedrock",
-            "tex": [
-                31,
-                31
-            ]
-        },
 		{
-			"data": {
-				"1": {
-					"name": "Barrier"
-				}
-			},
-			"id": 20,
+            "id": 95,
 			"opacity": 0,
 			"search": "block",
-			"name": "Barrier",
-			"idStr": "barrier",
+			"name": "Invisible Bedrock",
+			"idStr": "invisible_bedrock",
 			"tex": [10,1],
 			"mapcolor": [255,255,255]
 		},
