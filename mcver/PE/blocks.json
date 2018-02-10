@@ -11913,6 +11913,61 @@
             ]
         },
         {
+			"id": 213,
+			"name": "Magma Block",
+			"idStr": "magma",
+			"tex": [18,13]
+		},
+        {
+			"id": 214,
+			"name": "Nether Wart Block",
+			"idStr": "nether_wart_block",
+			"tex": [18,14]
+		},
+        {
+			"id": 215,
+			"name": "Red Nether Brick",
+			"idStr": "red_nether_brick",
+			"tex": [18,15]
+		},
+        {
+			"id": 216,
+			"name": "Bone Block",
+			"idStr": "bone_block",
+			"data": {
+				"0": {
+					"tex_direction": {
+						"TOP": [19,11],
+						"BOTTOM": [19,11],
+						"SIDES": [19,12],
+						"FORWARD": [19,12],
+						"BACKWARD": [19,12]
+					},
+					"name": "Bone Block (Upright)"
+				},
+				"4": {
+					"tex_direction": {
+						"TOP": [19,12],
+						"BOTTOM": [19,12],
+						"SIDES": [19,11],
+						"FORWARD": [19,12],
+						"BACKWARD": [19,12]
+					},
+					"name": "Bone Block (East/West)"
+				},
+				"8": {
+					"tex_direction": {
+						"TOP": [19,12],
+						"BOTTOM": [19,12],
+						"SIDES": [19,12],
+						"FORWARD": [19,11],
+						"BACKWARD": [19,11]
+					},
+					"name": "Bone Block (North/South)"
+				}
+			}
+		},
+        {
             "id": 217,
             "idStr": "tile.217.name",
             "mapcolor": [
