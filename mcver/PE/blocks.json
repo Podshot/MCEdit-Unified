@@ -8895,7 +8895,7 @@
 			},
 			"id": 157
 		},
-{
+        {
 			"name": "Wooden Slab",
 			"idStr": "wooden_slab",
 			"tex": [4,0],
@@ -12058,24 +12058,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Purple glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         22,
                         24
@@ -12089,7 +12089,7 @@
                     ],
                     "name": "Purple glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         22,
                         26
@@ -12108,24 +12108,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "White glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         13,
                         24
@@ -12139,7 +12139,7 @@
                     ],
                     "name": "White glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         13,
                         26
@@ -12158,24 +12158,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Orange glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         15,
                         24
@@ -12189,7 +12189,7 @@
                     ],
                     "name": "Orange glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         15,
                         26
@@ -12208,24 +12208,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Magenta glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         23,
                         24
@@ -12239,7 +12239,7 @@
                     ],
                     "name": "Magenta glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         23,
                         26
@@ -12258,24 +12258,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Light blue glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         20,
                         24
@@ -12289,7 +12289,7 @@
                     ],
                     "name": "Light blue glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         20,
                         26
@@ -12308,24 +12308,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Yellow glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         16,
                         24
@@ -12339,7 +12339,7 @@
                     ],
                     "name": "Yellow glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         16,
                         26
@@ -12358,24 +12358,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Lime glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         17,
                         24
@@ -12389,7 +12389,7 @@
                     ],
                     "name": "Lime glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         17,
                         26
@@ -12408,24 +12408,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Pink glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         24,
                         24
@@ -12439,7 +12439,7 @@
                     ],
                     "name": "Pink glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         24,
                         26
@@ -12458,24 +12458,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Gray glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         11,
                         24
@@ -12489,7 +12489,7 @@
                     ],
                     "name": "Gray glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         11,
                         26
@@ -12508,24 +12508,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Light gray glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         12,
                         25
@@ -12539,7 +12539,7 @@
                     ],
                     "name": "Light gray glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         12,
                         23
@@ -12558,24 +12558,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Cyan glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         19,
                         24
@@ -12589,7 +12589,7 @@
                     ],
                     "name": "Cyan glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         19,
                         26
@@ -12622,24 +12622,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Blue glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         21,
                         24
@@ -12653,7 +12653,7 @@
                     ],
                     "name": "Blue glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         21,
                         26
@@ -12672,24 +12672,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Brown glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         25,
                         24
@@ -12703,7 +12703,7 @@
                     ],
                     "name": "Brown glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         25,
                         26
@@ -12722,24 +12722,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Green glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         18,
                         24
@@ -12753,7 +12753,7 @@
                     ],
                     "name": "Green glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         18,
                         26
@@ -12772,24 +12772,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Red glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         14,
                         24
@@ -12803,7 +12803,7 @@
                     ],
                     "name": "Red glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         14,
                         26
@@ -12822,24 +12822,24 @@
             ],
             "__comment__": "The 'facing' tag exists to describe the rotation of the block. Tests needed!",
             "__data": {
-                "0": {
+                "3": {
                     "facing": "north"
                 },
-                "1": {
+                "4": {
                     "facing": "east"
                 },
                 "2": {
                     "facing": "south"
                 },
-                "3": {
+                "5": {
                     "facing": "west"
                 }
             },
             "data": {
-                "0": {
+                "3": {
                     "name": "Black glazed terracotta (North)"
                 },
-                "1": {
+                "4": {
                     "tex": [
                         10,
                         24
@@ -12853,7 +12853,7 @@
                     ],
                     "name": "Black glazed terracotta (South)"
                 },
-                "3": {
+                "5": {
                     "tex": [
                         10,
                         26
