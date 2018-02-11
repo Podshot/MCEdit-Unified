@@ -51,7 +51,7 @@ These programs and packages are required:
 * PyOpenGL
 * numpy 1.13.3
 * Pillow 4.2.1
-* ftputil
+* ftputil (Optional, but FTP server support will be disabled without it)
 * python-yaml
 * python-xlib 0.14
 

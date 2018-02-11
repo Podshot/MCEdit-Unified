@@ -24,7 +24,13 @@ import pygame
 from albow.fields import FloatField
 from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow, ScrollPanel
 from editortools.blockview import BlockButton
-import ftp_client
+try:
+    import ftp_client
+    ftp_supported = True
+    log.info('FPTUtil module found, FTP server support enabled')
+except ImportError:
+    ftp_supported = False
+    log.info('FTPUtil module not found, FTP server support is disabled')
 #import sys
 #from pymclevel import nbt
 #from editortools.select import SelectionTool
@@ -2129,7 +2135,7 @@ class LevelEditor(GLViewport):
             self.world_from_ftp = True
 
     def uploadChanges(self):
-        if self.world_from_ftp:
+        if self.world_from_ftp and ftp_supported:
             if self.unsavedEdits:
                 answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1,
                              cancel=0)
@@ -2156,8 +2162,11 @@ class LevelEditor(GLViewport):
             display.set_caption(("MCEdit ~ " + release.get_version()%_("for")).encode('utf-8'))
 
             self._ftp_client.cleanup()
-        else:
+        elif not self.world_from_ftp:
             alert("This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible")
+        elif not ftp_supported:
+            alert('Uploading changes to an FTP server is disabled due to the \'ftputil\' module not being installed')
+
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
@@ -2587,7 +2596,11 @@ class LevelEditor(GLViewport):
         worldPanel.add(worldTable)
         worldPanel.shrink_wrap()
 
-        dialog = Dialog(worldPanel, ["Load", "From FTP Server", "Cancel"])
+        if ftp_supported:
+            options = ["Load", "From FTP Server", "Cancel"]
+        else:
+            options = ["Load", "Cancel"]
+        dialog = Dialog(worldPanel, options)
         dialog.key_up = key_up
         result = dialog.present()
         if result == "Load":
