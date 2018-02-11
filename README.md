@@ -43,6 +43,7 @@ These programs and packages are required:
 
 * git
 * Python 2.7+ (Python 3 is unsupported)
+  * If you use Unicode characters in any of your file paths, you **need** to use 2.7.14
 * virtualenv (not strictly required, but highly recommended)
 
 **Python packages**
