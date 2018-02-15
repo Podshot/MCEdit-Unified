@@ -1793,53 +1793,6 @@
 			"opacity": 0,
 			"name": "Sticky Piston",
 			"data": {
-				"11": {
-					"tex": [15,12],
-					"tex_direction": {
-						"RIGHT": [29,3],
-						"BOTTOM": [29,2],
-						"TOP": [29,2],
-						"FORWARD": [14,3],
-						"BACKWARD": [14,6],
-						"LEFT": [29,1]
-					},
-					"name": "Sticky Piston (Extended, South)"
-				},
-				"10": {
-					"tex_direction": {
-						"RIGHT": [29,1],
-						"BOTTOM": [29,0],
-						"TOP": [29,0],
-						"FORWARD": [14,6],
-						"BACKWARD": [14,3],
-						"LEFT": [29,3]
-					},
-					"name": "Sticky Piston (Extended, North)"
-				},
-				"13": {
-					"tex": [14,12],
-					"tex_direction": {
-						"RIGHT": [14,6],
-						"BOTTOM": [29,1],
-						"TOP": [29,1],
-						"FORWARD": [29,3],
-						"BACKWARD": [29,1],
-						"LEFT": [14,3]
-					},
-					"name": "Sticky Piston (Extended, East)"
-				},
-				"12": {
-					"tex": [14,13],
-					"tex_direction": {
-						"RIGHT": [14,3],
-						"BOTTOM": [29,3],
-						"TOP": [29,3],
-						"FORWARD": [29,1],
-						"BACKWARD": [29,3],
-						"LEFT": [14,6]
-					},
-					"name": "Sticky Piston (Extended, West)"
-				},
 				"1": {
 					"tex_direction": {
 						"TOP": [10,6],
@@ -1855,7 +1808,7 @@
 					},
 					"name": "Sticky Piston (Down)"
 				},
-				"3": {
+				"2": {
 					"tex": [15,12],
 					"tex_direction": {
 						"FORWARD": [14,3],
@@ -1865,7 +1818,7 @@
 					},
 					"name": "Sticky Piston (South)"
 				},
-				"2": {
+				"3": {
 					"tex_direction": {
 						"FORWARD": [10,6],
 						"RIGHT": [14,12],
@@ -1874,7 +1827,7 @@
 					},
 					"name": "Sticky Piston (North)"
 				},
-				"5": {
+				"4": {
 					"tex": [14,12],
 					"tex_direction": {
 						"FORWARD": [14,13],
@@ -1883,7 +1836,7 @@
 					},
 					"name": "Sticky Piston (East)"
 				},
-				"4": {
+				"5": {
 					"tex": [14,13],
 					"tex_direction": {
 						"FORWARD": [14,12],
@@ -1891,29 +1844,6 @@
 						"LEFT": [10,6]
 					},
 					"name": "Sticky Piston (West)"
-				},
-				"9": {
-					"tex_direction": {
-						"RIGHT": [29,0],
-						"BOTTOM": [14,3],
-						"TOP": [14,6],
-						"FORWARD": [29,0],
-						"BACKWARD": [29,0],
-						"LEFT": [29,0]
-					},
-					"name": "Sticky Piston (Extended, Up)"
-				},
-				"8": {
-					"tex": [15,12],
-					"tex_direction": {
-						"RIGHT": [29,2],
-						"BOTTOM": [14,6],
-						"TOP": [14,3],
-						"FORWARD": [29,2],
-						"BACKWARD": [29,2],
-						"LEFT": [29,2]
-					},
-					"name": "Sticky Piston (Extended, Down)"
 				}
 			},
 			"idStr": "sticky_piston",
@@ -1998,53 +1928,6 @@
 			"opacity": 0,
 			"name": "Piston",
 			"data": {
-				"11": {
-					"tex": [15,12],
-					"tex_direction": {
-						"RIGHT": [29,3],
-						"BOTTOM": [29,2],
-						"TOP": [29,2],
-						"FORWARD": [14,3],
-						"BACKWARD": [14,6],
-						"LEFT": [29,1]
-					},
-					"name": "Piston (Extended, South)"
-				},
-				"10": {
-					"tex_direction": {
-						"RIGHT": [29,1],
-						"BOTTOM": [29,0],
-						"TOP": [29,0],
-						"FORWARD": [14,6],
-						"BACKWARD": [14,3],
-						"LEFT": [29,3]
-					},
-					"name": "Piston (Extended, North)"
-				},
-				"13": {
-					"tex": [14,12],
-					"tex_direction": {
-						"RIGHT": [14,6],
-						"BOTTOM": [29,1],
-						"TOP": [29,1],
-						"FORWARD": [29,3],
-						"BACKWARD": [29,1],
-						"LEFT": [14,3]
-					},
-					"name": "Piston (Extended, East)"
-				},
-				"12": {
-					"tex": [14,13],
-					"tex_direction": {
-						"RIGHT": [14,3],
-						"BOTTOM": [29,3],
-						"TOP": [29,3],
-						"FORWARD": [29,1],
-						"BACKWARD": [29,3],
-						"LEFT": [14,6]
-					},
-					"name": "Piston (Extended, West)"
-				},
 				"1": {
 					"tex_direction": {
 						"TOP": [11,6],
@@ -2060,7 +1943,7 @@
 					},
 					"name": "Piston (Down)"
 				},
-				"3": {
+				"2": {
 					"tex": [15,12],
 					"tex_direction": {
 						"FORWARD": [14,3],
@@ -2070,7 +1953,7 @@
 					},
 					"name": "Piston (South)"
 				},
-				"2": {
+				"3": {
 					"tex_direction": {
 						"FORWARD": [11,6],
 						"RIGHT": [14,12],
@@ -2079,7 +1962,7 @@
 					},
 					"name": "Piston (North)"
 				},
-				"5": {
+				"4": {
 					"tex": [14,12],
 					"tex_direction": {
 						"FORWARD": [14,13],
@@ -2088,7 +1971,7 @@
 					},
 					"name": "Piston (East)"
 				},
-				"4": {
+				"5": {
 					"tex": [14,13],
 					"tex_direction": {
 						"FORWARD": [14,12],
@@ -2096,29 +1979,6 @@
 						"LEFT": [11,6]
 					},
 					"name": "Piston (West)"
-				},
-				"9": {
-					"tex_direction": {
-						"RIGHT": [29,0],
-						"BOTTOM": [14,3],
-						"TOP": [14,6],
-						"FORWARD": [29,0],
-						"BACKWARD": [29,0],
-						"LEFT": [29,0]
-					},
-					"name": "Piston (Extended, Up)"
-				},
-				"8": {
-					"tex": [15,12],
-					"tex_direction": {
-						"RIGHT": [29,2],
-						"BOTTOM": [14,6],
-						"TOP": [14,3],
-						"FORWARD": [29,2],
-						"BACKWARD": [29,2],
-						"LEFT": [29,2]
-					},
-					"name": "Piston (Extended, Down)"
 				}
 			},
 			"idStr": "piston",
@@ -2131,6 +1991,39 @@
 			"mapcolor": [132,132,132],
 			"type": "PISTON_BODY",
 			"id": 33
+		},
+        {
+            "id": 34,
+			"name": "Piston Head",
+			"idStr": "piston_head",
+			"tex": [19,13],
+			"mapcolor": [132,132,132],
+			"data": {
+                "0": {
+                    "tex": [19,13],
+					"name": "Piston Head (Down)"
+				},
+				"1": {
+                    "tex": [19,13],
+					"name": "Piston Head (Up)"
+				},
+                "2": {
+                    "tex": [19,13],
+					"name": "Piston Head (South)"
+				},
+				"3": {
+                    "tex": [19,13],
+					"name": "Piston Head (North)"
+				},
+                "4": {
+                    "tex": [19,13],
+					"name": "Piston Head (East)"
+				},
+				"5": {
+                    "tex": [19,13],
+					"name": "Piston Head (West)"
+				}
+			}
 		},
         {
             "data": {
