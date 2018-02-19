@@ -43,6 +43,12 @@
             "type": "Immobile and projectiles"
         },
         {
+            "id": 72,
+            "idStr": "Firework Rocket",
+            "name": "Firework Rocket",
+            "type": "Immobile and projectiles"
+        },
+        {
             "id": 76,
             "idStr": "Shulker bullet",
             "name": "Shulker bullet",
@@ -173,6 +179,24 @@
             "idStr": "Thrown lingering potion",
             "name": "Thrown lingering potion",
             "type": "Immobile and projectiles"
+        },
+        {
+            "id": 102,
+            "idStr": "Llama Spit",
+            "name": "Llama Spit",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 103,
+            "idStr": "Evocation Fangs",
+            "name": "Evocation Fangs",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 104,
+            "idStr": "Evoker Illager",
+            "name": "Evoker Illager",
+            "type": "Hostile mobs"
         },
         {
             "id": 32,
@@ -424,6 +448,18 @@
             "id": 28,
             "idStr": "Polar Bear",
             "name": "Polar Bear",
+            "type": "Animals"
+        },
+        {
+            "id": 29,
+            "idStr": "Llama",
+            "name": "Llama",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 30,
+            "idStr": "Parrot",
+            "name": "Parrot",
             "type": "Animals"
         },
         {
