@@ -66,7 +66,7 @@ On Windows, these are also required:
 Clone the repo (recursively, to also clone submodules):
 
 ```sh
-git clone --recursive https://github.com/Khroki/MCEdit-Unified
+git clone --recursive https://github.com/Podshot/MCEdit-Unified
 ```
 
 ### 2. Install dependencies
