@@ -881,7 +881,13 @@ class ZipResourcePack(IResourcePack):
         if self.big_textures_counted >= self.big_textures_max:
             self.handle_too_big_packs()
         else:
-            self.parse_terrain_png()
+            try:
+                self.parse_terrain_png()
+            except Exception:
+                traceback.print_exc()
+                log.warning('Encountered an Exception while parsing terrain texture')
+                self._too_big = True
+                pass
 
 
 class FolderResourcePack(IResourcePack):
@@ -945,7 +951,13 @@ class FolderResourcePack(IResourcePack):
         if self.big_textures_counted >= self.big_textures_max:
             self.handle_too_big_packs()
         else:
-            self.parse_terrain_png()
+            try:
+                self.parse_terrain_png()
+            except Exception:
+                traceback.print_exc()
+                log.warning('Encountered an Exception while parsing terrain texture')
+                self._too_big = True
+                pass
 
 
 class DefaultResourcePack(IResourcePack):
