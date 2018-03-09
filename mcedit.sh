@@ -1,5 +1,5 @@
 #!/bin/bash
-cd $(dirname $0)
+cd $(dirname $(readlink $0))
 echo "Starting MCEdit..."
 f=
 if [ -f "mcedit.py" ]
@@ -17,5 +17,8 @@ else
     exit 1
 fi
 python2 $f "${@}"
+status=$?
 read -n 1 -p "Press any key to close."
 echo ""
+exit $status
+
