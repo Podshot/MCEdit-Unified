@@ -741,8 +741,9 @@ class BrushTool(CloneTool):
         if op.canUndo:
             self.editor.addUnsavedEdit()
         self.editor.invalidateBox(op.dirtyBox())
-        self.lastPosition = self.draggedPositions[-1]
-        self.draggedPositions = []
+        if self.draggedPositions:
+            self.lastPosition = self.draggedPositions[-1]
+            self.draggedPositions = []
 
     def swapBrushStyles(self):
         """
