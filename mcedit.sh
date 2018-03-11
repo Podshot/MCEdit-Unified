@@ -1,5 +1,5 @@
 #!/bin/bash
-cd $(dirname $(readlink $0))
+cd $(dirname $(readlink -f $0))
 echo "Starting MCEdit..."
 f=
 if [ -f "mcedit.py" ]
