@@ -18,6 +18,7 @@ class WaypointManager:
         self.editor = editor
         self.nbt_waypoints = nbt.TAG_Compound()
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
+        self.already_saved = False
         self.load()
 
     def build(self):
@@ -139,3 +140,4 @@ class WaypointManager:
 
         self.nbt_waypoints["LastPosition"] = topTag
         self.save()
+        self.already_saved = True

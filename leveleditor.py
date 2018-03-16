@@ -3133,7 +3133,8 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
-        self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
+        if not self.waypointManager.already_saved and config.settings.savePositionOnClose.get():
+            self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
 
     def lockAcquired(self):
         #image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
@@ -3142,6 +3143,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.root.sessionStolen = False
+        self.waypointManager.already_saved = False
 
 class EditorToolbar(GLOrtho):
     toolbarSize = (204, 24)
