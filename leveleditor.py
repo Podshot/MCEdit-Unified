@@ -2553,7 +2553,7 @@ class LevelEditor(GLViewport):
         worldTable = TableView(columns=[
             TableColumn("Last Played", 200, "l"),
             TableColumn("Level Name", 300, "l"),
-            TableColumn("Filename", 300, "l")
+            TableColumn("File Name", 300, "l")
         ])
 
         def dateobj(lp):

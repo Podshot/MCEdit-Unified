@@ -1252,7 +1252,7 @@ o599 Simulate the world for a few seconds after generating it. Reduces the save 
 t599 
 o600 Last Played
 t600 
-o601 Level Name (filename)
+o601 Level Name
 t601 
 o602 Load
 t602 
@@ -2009,3 +2009,5 @@ o961 Version Definitions are already up-to-date!
 t961 
 o962 Download Latest Version Definitions
 t962 
+o963 File Name
+t963 
