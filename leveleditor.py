@@ -2479,7 +2479,7 @@ class LevelEditor(GLViewport):
             return
 
         def loadWorld():
-            self.mcedit.loadFile(self.worldData[worldTable.selectedWorldIndex][2].filename)
+            self.mcedit.loadFile(self.worldData[worldTable.selectedWorldIndex][3].filename)
             self.root.fix_sticky_ctrl()
 
         def click_row(i, evt):
@@ -2516,7 +2516,7 @@ class LevelEditor(GLViewport):
                 splitText = text.split(" ")
                 amount = len(splitText)
                 for v in allWorlds:
-                    nameParts = nameFormat(v).lower().split(" ")
+                    nameParts = [a.lower() for a in nameFormat(v)]
                     i = 0
                     spiltTextUsed = []
                     for v2 in nameParts:
@@ -2552,7 +2552,8 @@ class LevelEditor(GLViewport):
 
         worldTable = TableView(columns=[
             TableColumn("Last Played", 200, "l"),
-            TableColumn("Level Name (filename)", 500, "l"),
+            TableColumn("Level Name", 300, "l"),
+            TableColumn("Filename", 300, "l")
         ])
 
         def dateobj(lp):
@@ -2570,20 +2571,20 @@ class LevelEditor(GLViewport):
         def nameFormat(w):
             try:
                 if w.LevelName == w.displayName.decode("utf-8"):
-                    return w.LevelName
-                return u"{0} ({1})".format(w.LevelName, w.displayName.decode("utf-8"))
+                    return w.LevelName, w.LevelName
+                return u"%s" % w.LevelName, u"%s" % w.displayName.decode("utf-8")
             except:
                 try:
-                    return w.LevelName
+                    return w.LevelName, w.LevelName
                 except:
                     try:
-                        return w.displayName
+                        return w.displayName, w.displayName
                     except:
-                        return "[UNABLE TO READ]"
+                        return "[UNABLE TO READ]", "[? ? ?]"
 
-        self.worldData = [[dateFormat(d), nameFormat(w), w, d]
+        self.worldData = [[dateFormat(d)] + list(nameFormat(w)) + [w, d]
                           for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
-        self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
+        self.worldData.sort(key=lambda (a, b, c, w, d): d, reverse=True)
 
         worldTable.selectedWorldIndex = 0
         worldTable.num_rows = lambda: len(self.worldData)
