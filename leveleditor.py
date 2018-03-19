@@ -278,7 +278,7 @@ class LevelEditor(GLViewport):
         self.waypointManager = WaypointManager(editor=self)
         self.waypointManager.load()
         #self.loadWaypoints()
-        self.waypointsButton = Button("Waypoints", action=self.showWaypointsDialog)
+        self.waypointsButton = Button("Waypoints/Goto", action=self.showWaypointsDialog)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
                                      tooltipText=_("Shortcut: {0}").format(_(config.keys.toggleView.get())))
@@ -423,7 +423,6 @@ class LevelEditor(GLViewport):
 
     def showWaypointsDialog(self):
         if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
-            print type(self.level)
             self.Notify("Waypoints currently only support PC Worlds")
             return
 
@@ -437,11 +436,47 @@ class LevelEditor(GLViewport):
         saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
                                           ref=config.settings.savePositionOnClose)
 
-        col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), saveCameraOnClose, Button("Close", action=self.waypointDialog.dismiss)))
+        gotoPanel = Widget()
+        gotoPanel.goto_coords = False
+        gotoPanel.X, gotoPanel.Y, gotoPanel.Z = map(int, self.mainViewport.cameraPosition)
+
+        def set_goto_coords():
+            self.waypointDialog.dismiss()
+            gotoPanel.goto_coords = True
+
+        coordinateRow = (
+            Label("X: "), IntField(ref=AttrRef(gotoPanel, "X")),
+            Label("Y: "), IntField(ref=AttrRef(gotoPanel, "Y")),
+            Label("Z: "), IntField(ref=AttrRef(gotoPanel, "Z")),
+        )
+        gotoRow = Row(coordinateRow)
+        gotoCoordinateButton = Button("Goto Coordinates", action=set_goto_coords)
+
+        col = Column(
+            (
+                self.waypointsChoiceButton,
+                Row(
+                    (
+                        createWaypointButton,
+                        gotoWaypointButton,
+                        deleteWaypointButton,
+                    )
+                ),
+                saveCameraOnClose,
+                gotoRow,
+                gotoCoordinateButton,
+                Button("Close", action=self.waypointDialog.dismiss),
+            )
+        )
         self.waypointDialog.add(col)
         self.waypointDialog.shrink_wrap()
-        #qd.topleft = self.waypointsButton.bottomleft
         self.waypointDialog.present(True)
+
+        if gotoPanel.goto_coords:
+            destPoint = [gotoPanel.X, gotoPanel.Y, gotoPanel.Z]
+            if self.currentViewport is self.chunkViewport:
+                self.swapViewports()
+            self.mainViewport.cameraPosition = destPoint
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
@@ -1948,7 +1983,7 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.worldInfo.get():
             self.showWorldInfo()
         if keyname == config.keys.gotoPanel.get():
-            self.showGotoPanel()
+            self.showWaypointsDialog()
         if keyname == config.keys.saveAs.get():
             self.saveAs()
 
@@ -2021,47 +2056,6 @@ class LevelEditor(GLViewport):
                         self.toolbar.tools[4].panel.reload()
 
         self.root.fix_sticky_ctrl()
-
-    def showGotoPanel(self):
-
-        gotoPanel = Widget()
-        gotoPanel.X, gotoPanel.Y, gotoPanel.Z = map(int, self.mainViewport.cameraPosition)
-
-        inputRow = (
-            Label("X: "), IntField(ref=AttrRef(gotoPanel, "X")),
-            Label("Y: "), IntField(ref=AttrRef(gotoPanel, "Y")),
-            Label("Z: "), IntField(ref=AttrRef(gotoPanel, "Z")),
-        )
-        inputRow = Row(inputRow)
-        column = (
-            Label("Goto Position:"),
-            Label("(click anywhere to teleport)"),
-            inputRow,
-            # Row( (Button("Cancel"), Button("Goto")), align="r" )
-        )
-        column = Column(column)
-        gotoPanel.add(column)
-        gotoPanel.shrink_wrap()
-        d = Dialog(client=gotoPanel, responses=["Goto", "Cancel"])
-
-        def click_outside(event):
-            if event not in d:
-                x, y, z = self.blockFaceUnderCursor[0]
-                if y == 0:
-                    y = 64
-                y += 3
-                gotoPanel.X, gotoPanel.Y, gotoPanel.Z = x, y, z
-                if event.num_clicks == 2:
-                    d.dismiss("Goto")
-
-        d.mouse_down = click_outside
-        d.top = self.viewportContainer.top + 10
-        d.centerx = self.viewportContainer.centerx
-        if d.present(centered=False) == "Goto":
-            destPoint = [gotoPanel.X, gotoPanel.Y, gotoPanel.Z]
-            if self.currentViewport is self.chunkViewport:
-                self.swapViewports()
-            self.mainViewport.cameraPosition = destPoint
 
     # TODO: Close marker
     def closeEditor(self):

@@ -39,7 +39,7 @@ class ControlPanel(Panel):
                     (config.keys.reloadWorld.get(), "Reload", editor.reload),
                     (config.keys.closeWorld.get(), "Close", editor.closeEditor),
                     (config.keys.uploadWorld.get(), "Upload to FTP Server", editor.uploadChanges),
-                    (config.keys.gotoPanel.get(), "Goto", editor.showGotoPanel),
+                    (config.keys.gotoPanel.get(), "Waypoints/Goto", editor.showWaypointsDialog),
                     (config.keys.worldInfo.get(), "World Info", editor.showWorldInfo),
                     (config.keys.undo.get(), "Undo", editor.undo),
                     (config.keys.redo.get(), "Redo", editor.redo),
