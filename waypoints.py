@@ -14,7 +14,7 @@ class WaypointManager:
     def __init__(self, worldDir=None, editor=None):
         self.worldDirectory = worldDir
         self.waypoints = {}
-        self.waypoint_names = []
+        self.waypoint_names = set()
         self.editor = editor
         self.nbt_waypoints = nbt.TAG_Compound()
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
@@ -26,7 +26,7 @@ class WaypointManager:
         Builds the raw NBT data from the 'mcedit_waypoints.dat' file to a readable dictionary, with the key being '<Name> (<X>,<Y>,<Z>)' and the values being a list of [<X>,<Y>,<Z>,<Yaw>,<Pitch>,<Dimension>]
         '''
         for point in self.nbt_waypoints["Waypoints"]:
-            self.waypoint_names.append(point["Name"].value)
+            self.waypoint_names.add(point["Name"].value)
             self.waypoints["{0} ({1},{2},{3})".format(point["Name"].value, int(point["Coordinates"][0].value), int(point["Coordinates"][1].value), int(point["Coordinates"][2].value))] = [
                                                                                                                                                                         point["Coordinates"][0].value, 
                                                                                                                                                                         point["Coordinates"][1].value, 
@@ -98,7 +98,7 @@ class WaypointManager:
         '''
         formatted_name = "{0} ({1},{2},{3})".format(name, coordinates[0], coordinates[1], coordinates[2])
         data = coordinates + rotation + (dimension,)
-        self.waypoint_names.append(name)
+        self.waypoint_names.add(name)
         self.waypoints[formatted_name] = data
 
     def delete(self, choice):
@@ -108,6 +108,14 @@ class WaypointManager:
         :param choice: Name of the waypoint to delete
         :type choice: str
         '''
+        waypt = None
+        for waypoint in self.waypoint_names:
+            if choice.startswith(waypoint):
+                waypt = waypoint
+
+        if waypt:
+            self.waypoint_names.remove(waypt)
+
         del self.waypoints[choice]
         self.save()
         if not (len(self.waypoints) > 0):

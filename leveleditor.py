@@ -362,7 +362,7 @@ class LevelEditor(GLViewport):
         waypoints = self.waypointManager.waypoint_names
         defaultName = 'Waypoint{}'
         n = 1
-        while n < 50:
+        while n <= 50:
             if defaultName.format(n) in waypoints:
                 n += 1
             else:
