@@ -27,7 +27,7 @@ class WaypointManager:
         '''
         for point in self.nbt_waypoints["Waypoints"]:
             self.waypoint_names.append(point["Name"].value)
-            self.waypoints["{0} ({1},{2},{3})".format(point["Name"].value, round(point["Coordinates"][0].value, 2), round(point["Coordinates"][1].value, 2), round(point["Coordinates"][2].value, 2))] = [
+            self.waypoints["{0} ({1},{2},{3})".format(point["Name"].value, int(point["Coordinates"][0].value), int(point["Coordinates"][1].value), int(point["Coordinates"][2].value))] = [
                                                                                                                                                                         point["Coordinates"][0].value, 
                                                                                                                                                                         point["Coordinates"][1].value, 
                                                                                                                                                                         point["Coordinates"][2].value,

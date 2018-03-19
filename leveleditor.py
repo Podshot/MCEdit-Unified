@@ -394,6 +394,17 @@ class LevelEditor(GLViewport):
                 y += 3
                 xField.value, yField.value, zField.value = x, y, z
 
+        old_dispatch_key = d.dispatch_key
+        def on_key_event(name, event):
+            old_dispatch_key(name, event)
+            if name == 'key_down':
+                key = self.root.getKey(event)
+                if key == 'Return':
+                    d.dismiss("Create")
+                elif key == 'Escape':
+                    d.dismiss("Cancel")
+
+        d.dispatch_key = on_key_event
         d.mouse_down = click_outside
         result = d.present()
         if result == "Create":
@@ -477,6 +488,26 @@ class LevelEditor(GLViewport):
                     gotoPanel.goto_coords = True
                     self.waypointDialog.dismiss()
 
+        old_dispatch_key = self.waypointDialog.dispatch_key
+        def on_key_event(name, event):
+            old_dispatch_key(name, event)
+            if name == 'key_down':
+                key = self.root.getKey(event)
+                if key == 'Escape':
+                    gotoPanel.goto_coords = False
+                    self.waypointDialog.dismiss()
+                elif key == 'Return':
+                    gotoPanel.goto_coords = True
+                    self.waypointDialog.dismiss()
+
+        def on_choose():
+            choice = self.waypointsChoiceButton.value
+            waypoint = self.waypointManager.waypoints[choice]
+            gotoPanel.X, gotoPanel.Y, gotoPanel.Z = map(int, waypoint[0:3])
+
+        self.waypointsChoiceButton.choose = on_choose
+        on_choose()
+
         coordinateRow = (
             Label("X: "), IntField(ref=AttrRef(gotoPanel, "X")),
             Label("Y: "), IntField(ref=AttrRef(gotoPanel, "Y")),
@@ -504,6 +535,7 @@ class LevelEditor(GLViewport):
         self.waypointDialog.add(col)
         self.waypointDialog.shrink_wrap()
         self.waypointDialog.mouse_down = click_outside
+        self.waypointDialog.dispatch_key = on_key_event
         self.waypointDialog.present(True)
 
         if gotoPanel.goto_coords:
