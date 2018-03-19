@@ -358,7 +358,17 @@ class LevelEditor(GLViewport):
     def showCreateDialog(self):
         widg = Widget()
 
-        nameField = TextFieldWrapped(width=100)
+        nameField = TextFieldWrapped(width=200)
+        waypoints = self.waypointManager.waypoint_names
+        defaultName = 'Waypoint{}'
+        n = 1
+        while n < 50:
+            if defaultName.format(n) in waypoints:
+                n += 1
+            else:
+                break
+        nameField.value = defaultName.format(n)
+
         xField = FloatField()
         yField = FloatField()
         zField = FloatField()
@@ -374,7 +384,18 @@ class LevelEditor(GLViewport):
         widg.add(col)
         widg.shrink_wrap()
 
-        result = Dialog(widg, ["Create", "Cancel"]).present()
+        d = Dialog(widg, ["Create", "Cancel"])
+
+        def click_outside(event):
+            if event not in d:
+                x, y, z = self.blockFaceUnderCursor[0]
+                if y == 0:
+                    y = 64
+                y += 3
+                xField.value, yField.value, zField.value = x, y, z
+
+        d.mouse_down = click_outside
+        result = d.present()
         if result == "Create":
             if nameField.value in self.waypointManager.waypoint_names:
                 self.Notify("You cannot have duplicate waypoint names")
