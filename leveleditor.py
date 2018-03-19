@@ -444,6 +444,18 @@ class LevelEditor(GLViewport):
             self.waypointDialog.dismiss()
             gotoPanel.goto_coords = True
 
+        def click_outside(event):
+            if event not in self.waypointDialog:
+                x, y, z = self.blockFaceUnderCursor[0]
+                if y == 0:
+                    y = 64
+                y += 3
+                gotoPanel.X, gotoPanel.Y, gotoPanel.Z = x, y, z
+
+                if event.num_clicks == 2:
+                    gotoPanel.goto_coords = True
+                    self.waypointDialog.dismiss()
+
         coordinateRow = (
             Label("X: "), IntField(ref=AttrRef(gotoPanel, "X")),
             Label("Y: "), IntField(ref=AttrRef(gotoPanel, "Y")),
@@ -470,6 +482,7 @@ class LevelEditor(GLViewport):
         )
         self.waypointDialog.add(col)
         self.waypointDialog.shrink_wrap()
+        self.waypointDialog.mouse_down = click_outside
         self.waypointDialog.present(True)
 
         if gotoPanel.goto_coords:
