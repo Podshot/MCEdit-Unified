@@ -134,9 +134,6 @@ class Label(Widget):
         Widget.set_update_ui(self, v)
     #-#
 
-    def __repr__(self):
-        return "Label {0}, child of {1}".format(self.text.encode('ascii', errors='backslashreplace'), self.parent)
-
     def get_text(self):
         return self._text
 
@@ -219,6 +216,9 @@ class ButtonBase(Control):
     rightClickAction = None
     default_choice_color = ThemeProperty('default_choice_color')
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
+
+    if __builtins__.get("mcenf_tab_to_next"):
+        tab_stop= True
 
     def mouse_down(self, event):
         button = event.button

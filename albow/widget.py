@@ -95,6 +95,12 @@ class Widget(object):
     # 'name' is used to track widgets without parent
     name = 'Widget'
 
+    if __builtins__.get("mcenf_tab_to_next"):
+        # 'focusable' is used to know if a widget can have the focus.
+        # Used to tell container widgets like Columns or Dialogs tofind the next focusable widget
+        # in their children.
+        focusable = True
+
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
@@ -111,6 +117,9 @@ class Widget(object):
         self.set(**kwds)
         self.root = self.get_root()
         self.setup_spacings()
+
+    def __repr__(self):
+        return "{0} {1}, child of {2}".format(super(Widget, self).__repr__(), getattr(self, "text", "\b").encode('ascii', errors='backslashreplace'), self.parent)
 
     #-# Translation live update preparation
     @property
@@ -435,6 +444,9 @@ class Widget(object):
 
     def dispatch_attention_loss(self):
         widget = self
+        if __builtins__.get("mcenf_tab_to_next"):
+            if hasattr(self, "_highlighted"):
+                self._highlighted = False
         while widget:
             widget.attention_lost()
             widget = widget.focus_switch
@@ -548,6 +560,9 @@ class Widget(object):
         parent = self.next_handler()
         if parent:
             parent.focus_on(self)
+            if __builtins__.get("mcenf_tab_to_next"):
+                if hasattr(self, "_highlighted"):
+                    self._highlighted = True
 
     def focus_on(self, subwidget):
         old_focus = self.focus_switch
@@ -635,7 +650,7 @@ class Widget(object):
         if chain:
             chain[0].focus()
 
-    def tab_to_next(self):
+    def tab_to_next_old(self):
         top = self.get_top_widget()
         chain = top.get_tab_order()
         try:
@@ -645,12 +660,62 @@ class Widget(object):
         target = chain[(i + 1) % len(chain)]
         target.focus()
 
+    def _is_next_in_tab(self, top):
+        """Helper function to find if the current widget is ne 'next' on whe 'tabbing'.
+        :param top: Widget: The 'top' widget to find 'self' in tab order.
+        Returns a tuple: (<'self' index in 'top.get_tab_order()' result>, <'top.subwidgets>)
+        If 'self' is not found, the first tuple element is 0, and the second one a tuple of widgets.
+        If self is found, the first elemnt is the index it was found, the second one one a tuple of widgets."""
+        idx = 0
+#         subwidgets = []
+        chain = top.get_tab_order()
+        if self in chain:
+            idx = chain.index(self) + 1
+#         else:
+#             subwidgets = top.subwidgets
+#         subwidgets = top.subwidgets
+        return idx, chain
+
+    def tab_to_next_new(self):
+        """Give focus to the next focusable widget."""
+        top = self.get_top_widget()
+        # print "top", top
+        # print self.parent
+        idx, subwidgets = self._is_next_in_tab(top)
+        # print "self", self
+        # print "  idx 1", idx
+        chain = top.get_tab_order() + subwidgets
+        # print "  chain 1", chain
+        target = chain[idx % len(chain)]
+        # print "  target 1", target
+        i = 2  # for debug
+        while not target.focusable:
+            _, subwidgets = target._is_next_in_tab(target)
+#             chain = target.subwidgets
+#             idx = chain.index(target)
+            chain = chain + subwidgets
+            idx = chain.index(target) + 1
+            # print "    idx %s" % i, idx
+            # print "    chain %s" % i, chain
+            target = chain[idx % len(chain)]
+            # print "    target %s" %i, target
+            i += 1
+
+        self.get_focus().dispatch_attention_loss()
+        target.focus()
+
+    tab_to_next = tab_to_next_old
+    if __builtins__.get("mcenf_tab_to_next"):
+        tab_to_next = tab_to_next_new
+
     def get_tab_order(self):
         result = []
         self.collect_tab_order(result)
         return result
 
     def collect_tab_order(self, result):
+#         if __builtins__.get("mcenf_tab_to_next"):
+#             print "----------", self
         if self.visible:
             if self.tab_stop:
                 result.append(self)
