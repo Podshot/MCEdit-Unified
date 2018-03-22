@@ -366,6 +366,10 @@ class CheckWidget(Widget):
     border_width = 1
     check_mark_tweak = 2
 
+    if __builtins__.get("mcenf_tab_to_next"):
+        tab_stop = True
+        highlight_color = ThemeProperty('highlight_color')
+
     smooth = ThemeProperty('smooth')
 
     def __init__(self, **kwds):

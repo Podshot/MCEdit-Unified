@@ -343,7 +343,13 @@ class Widget(object):
             self.draw(surface)
             bw = self.border_width
             if bw:
-                bc = self.border_color or self.fg_color
+                if __builtins__.get("mcenf_tab_to_next"):
+                    if self.has_focus() and hasattr(self, "highlight_color"):
+                        bc = self.highlight_color
+                    else:
+                        bc = self.border_color or self.fg_color
+                else:
+                    bc = self.border_color or self.fg_color
                 frame_rect(surface, bc, surf_rect, bw)
             for widget in self.subwidgets:
                 sub_rect = widget.rect
