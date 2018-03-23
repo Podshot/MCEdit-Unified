@@ -44,8 +44,9 @@ install:
   # by default, all script lines are interpreted as batch
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "%PYTHON%\\python.exe -m pip install wheel"
+  -
   - pip install -r requirements.txt
-  - pip install git+http://github.com/pyinstaller/pyinstaller
+  - pip install pyinstaller
 
 build_script:
   - pyinstaller mcedit-ci.spec -y
