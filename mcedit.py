@@ -103,7 +103,10 @@ if __name__ == "__main__" and '--new-features' in sys.argv:
         logger.warning("New features mode requested.")
         lines = [a.strip() for a in open('new_features.def', 'r').readlines()]
         for line in lines:
-            setattr(__builtins__, 'mcenf_%s' % line, True)
+            _ln = line.strip()
+            if _ln and not _ln.startswith("#"):
+                setattr(__builtins__, 'mcenf_%s' % line, True)
+                logger.warning("Activating 'mcenf_%s'" % line)
         logger.warning("New features list loaded.")
 
 from player_cache import PlayerCache

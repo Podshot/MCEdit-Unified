@@ -164,6 +164,12 @@ root.Field.border_color = (128, 128, 128)
 root.CheckWidget = Theme('CheckWidget')
 root.CheckWidget.smooth = False
 root.CheckWidget.border_color = root.Field.border_color
+root.CheckWidget.highlight_color = (0, 128, 255)
+
+if __builtins__.get("mcenf_tab_to_next"):
+    root.CheckBox = Theme("CheckBox)")
+    # Let use the same highlight color as for buttons
+    root.CheckBox.highlight_color = root.Button.highlight_color
 
 root.Dialog = Theme('Dialog')
 root.Dialog.bg_color = (40, 40, 40)
