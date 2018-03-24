@@ -205,6 +205,11 @@ class Tree(Column):
                     self.selected_item_index = -1
                 self.selected_item_index = max(0, self.selected_item_index - self.treeRow.num_rows())
                 keyname = 'Return'
+            elif keyname in ("Left", "Right"):
+                # Deploy or close a compound element.
+                if self.selected_item and self.selected_item[7] in self.compound_types:
+                    self.clicked_item = self.selected_item
+                    self.deploy(self.selected_item_index)
 
             if self.treeRow.cell_to_item_no(0, 0) is not None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
                 self.treeRow.scroll_to_item(self.selected_item_index)
@@ -212,8 +217,6 @@ class Tree(Column):
             #if keyname == 'Return' and self.selected_item_index != None:
             if keyname == 'Return' and self.selected_item_index:
                 self.select_item(self.selected_item_index)
-                if self.selected_item[7] in self.compound_types:
-                    self.deploy(self.selected_item[6])
                 if self.selected_item is not None and hasattr(self, "update_side_panel"):
                     self.update_side_panel(self.selected_item)
 
@@ -472,7 +475,7 @@ class Tree(Column):
             self.selected_item_index = self.cached_selected_item_index
         else:
             self.cached_selected_item_index = self.selected_item_index
-            self.selected_item_index = None
+            self.selected_item_index = n
 
     def click_item(self, n, pos):
         """..."""
