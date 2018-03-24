@@ -1345,7 +1345,7 @@ class TextEditorWrapped(Widget):
 
 # ---------------------------------------------------------------------------
 
-class FieldWrapped(Control, TextEditorWrapped):
+class FieldWrapped(TextEditorWrapped, Control):
     #  type      func(string) -> value
     #  editing   boolean
 
