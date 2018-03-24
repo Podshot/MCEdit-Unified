@@ -666,20 +666,17 @@ class Widget(object):
         target = chain[(i + 1) % len(chain)]
         target.focus()
 
-    def _is_next_in_tab(self, top):
+    def _is_next_in_tab(self, top, delta=1):
         """Helper function to find if the current widget is ne 'next' on whe 'tabbing'.
         :param top: Widget: The 'top' widget to find 'self' in tab order.
+        :param delta: int: The index modifier. Shall be 1 or -1. Defaults to 1.
         Returns a tuple: (<'self' index in 'top.get_tab_order()' result>, <'top.subwidgets>)
         If 'self' is not found, the first tuple element is 0, and the second one a tuple of widgets.
         If self is found, the first elemnt is the index it was found, the second one one a tuple of widgets."""
         idx = 0
-#         subwidgets = []
         chain = top.get_tab_order()
         if self in chain:
-            idx = chain.index(self) + 1
-#         else:
-#             subwidgets = top.subwidgets
-#         subwidgets = top.subwidgets
+            idx = chain.index(self) + delta
         return idx, chain
 
     def tab_to_next_new(self):
@@ -687,7 +684,12 @@ class Widget(object):
         top = self.get_top_widget()
         # print "top", top
         # print self.parent
-        idx, subwidgets = self._is_next_in_tab(top)
+        # If SHIFT key is hold down, set the index modifier to -1 to iterate to the previuos widget
+        # instead of the next one.
+        delta = 1
+        if self.root.get_modifiers()["shift"]:
+            delta = -1
+        idx, subwidgets = self._is_next_in_tab(top, delta)
         # print "self", self
         # print "  idx 1", idx
         chain = top.get_tab_order() + subwidgets
@@ -696,11 +698,9 @@ class Widget(object):
         # print "  target 1", target
         i = 2  # for debug
         while not target.focusable:
-            _, subwidgets = target._is_next_in_tab(target)
-#             chain = target.subwidgets
-#             idx = chain.index(target)
+            _, subwidgets = target._is_next_in_tab(target, delta)
             chain = chain + subwidgets
-            idx = chain.index(target) + 1
+            idx = chain.index(target) + delta
             # print "    idx %s" % i, idx
             # print "    chain %s" % i, chain
             target = chain[idx % len(chain)]
