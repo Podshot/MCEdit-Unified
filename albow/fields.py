@@ -353,7 +353,7 @@ class TextEditor(Widget):
 # --------------------------------------------------------------------------
 
 
-class Field(Control, TextEditor):
+class Field(TextEditor, Control):
     #  type      func(string) -> value
     #  editing   boolean
 
