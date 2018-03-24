@@ -363,12 +363,15 @@ class ValueButton(ButtonBase, ValueDisplay):
 
 
 class CheckControl(Control):
-    def mouse_down(self, e):
+    def mouse_down(self, *args, **kwargs):
         if self.get_enabled():
             self.value = not self.value
 
     def get_highlighted(self):
         return self.value
+
+    if __builtins__.get("mcenf_tab_to_next"):
+        action = mouse_down
 
 
 class CheckWidget(Widget):
