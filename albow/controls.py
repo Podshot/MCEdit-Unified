@@ -4,6 +4,7 @@
 #-# Modified by D.C.-G. for translation purpose
 
 from pygame import Rect, draw, transform
+from pygame.locals import K_RETURN, K_KP_ENTER, K_SPACE
 
 from widget import Widget, overridable_property
 from theme import ThemeProperty
@@ -48,6 +49,17 @@ class Control(object):
 
     def set_enabled(self, x):
         self._enabled = x
+
+    if __builtins__.get("mcenf_tab_to_next"):
+        def key_down(self, event):
+            """Handles key press.
+            Captured events are ENTER and SPACE key press.
+            :param event: object: The event being processed."""
+            key = event.key
+            if key in (K_RETURN, K_KP_ENTER, K_SPACE):
+                self.call_handler("action")
+            else:
+                Widget.key_down(self, event)
 
 
 class AttrRef(object):
@@ -242,7 +254,6 @@ class ButtonBase(Control):
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self.call_handler('rightClickAction')
         self.get_root().fix_sticky_ctrl()
-
 
 
 class Button(ButtonBase, Label):
