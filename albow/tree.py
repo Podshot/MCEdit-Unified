@@ -214,8 +214,7 @@ class Tree(Column):
             if self.treeRow.cell_to_item_no(0, 0) is not None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
                 self.treeRow.scroll_to_item(self.selected_item_index)
 
-            #if keyname == 'Return' and self.selected_item_index != None:
-            if keyname == 'Return' and self.selected_item_index:
+            if keyname == 'Return' and self.selected_item_index is not None:
                 self.select_item(self.selected_item_index)
                 if self.selected_item is not None and hasattr(self, "update_side_panel"):
                     self.update_side_panel(self.selected_item)
