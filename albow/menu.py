@@ -312,7 +312,15 @@ class Menu(Dialog):
             :param event: object: The event to be processed."""
             key = self.root.getKey(event)
             last_index = len(self._items) - 1
-            def _x(*a, **k): pass
+            # Just define a dummy method when scrolling is not necessary.
+            def _x(*args, **kwargs):
+                """..."""
+                pass
+
+            def page_up_down(*args, **kwargs):
+                """Triggers scroll alignment to see the selected item on page up/down event."""
+                self.scroll = min(self._selected_item_index, last_index - self.scroll_items + 1)
+
             view_meth = _x
             if key == "Up":
                 if self._selected_item_index == 0:
@@ -328,6 +336,12 @@ class Menu(Dialog):
                 else:
                     self._selected_item_index += 1
                     view_meth = self.scroll_down
+            elif key == "Page up":
+                self._selected_item_index = max(0, self._selected_item_index - self.scroll_items)
+                view_meth = page_up_down
+            elif key == "Page down":
+                self._selected_item_index = min(last_index, self._selected_item_index + self.scroll_items)
+                view_meth = page_up_down
             elif key in ("Return", "Enter", "Space"):
                 self.dismiss(self._selected_item_index)
             elif key == "Escape":
