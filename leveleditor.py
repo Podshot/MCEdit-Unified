@@ -405,7 +405,7 @@ class LevelEditor(GLViewport):
                     d.dismiss("Cancel")
                 else:
                     Dialog.key_down(d, event)
- 
+
             d.key_down = key_down
 
             # Trigger escape key press when one field has focus to the dialog dismiss action.

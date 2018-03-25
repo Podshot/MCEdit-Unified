@@ -66,6 +66,11 @@ class Menu(Dialog):
         self.scrolling = scrolling and len(self._items) > scroll_items
         self.scroll_items = scroll_items
         self.scroll_page = scroll_page
+
+        if __builtins__.get("mcenf_tab_to_next"):
+            self._selected_item_index = 0
+            self._hilited = self._items[self._selected_item_index]
+
         Dialog.__init__(self, **kwds)
 
         self.root = self.get_root()
@@ -120,7 +125,8 @@ class Menu(Dialog):
         if self.scrolling:
             width += self.scroll_button_size
         self.size = (width, height)
-        self._hilited = None
+        if not __builtins__.get("mcenf_tab_to_next"):
+            self._hilited = None
 
         self.rect.clamp_ip(self.root.rect)
 
@@ -295,3 +301,26 @@ class Menu(Dialog):
         cmd = self.get_command(i)
         if cmd:
             get_focus().handle_command(cmd)
+
+    if __builtins__.get("mcenf_tab_to_next"):
+        def key_down(self, event):
+            """Handles key presses to select and activate menu items or dismiss it.
+            :param event: object: The event to be processed."""
+            key = self.root.getKey(event)
+            if key == "Up":
+                if self._selected_item_index == 0:
+                    self._selected_item_index = len(self._items) - 1
+                else:
+                    self._selected_item_index -= 1
+            elif key == "Down":
+                if self._selected_item_index == len(self._items) - 1:
+                    self._selected_item_index = 0
+                else:
+                    self._selected_item_index += 1
+            elif key in ("Return", "Enter", "Space"):
+                self.dismiss(self._selected_item_index)
+            elif key == "Escape":
+                self.dismiss(False)
+            else:
+                Dialog.key_down(self, event)
+            self._hilited = self._items[self._selected_item_index]
