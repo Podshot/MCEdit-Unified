@@ -228,6 +228,10 @@ class Menu(Dialog):
             self._hilited = item
             self.invalidate()
 
+            if __builtins__.get("mcenf_tab_to_next"):
+                if item:
+                    self._selected_item_index = self._items.index(item)
+
     def mouse_up(self, e):
         if 1 <= e.button <= 3:
             item = self.find_enabled_item(e)
@@ -307,20 +311,32 @@ class Menu(Dialog):
             """Handles key presses to select and activate menu items or dismiss it.
             :param event: object: The event to be processed."""
             key = self.root.getKey(event)
+            last_index = len(self._items) - 1
+            def _x(*a, **k): pass
+            view_meth = _x
             if key == "Up":
                 if self._selected_item_index == 0:
-                    self._selected_item_index = len(self._items) - 1
+                    self._selected_item_index = last_index
+                    self.scroll = last_index - self.scroll_items + 1
                 else:
                     self._selected_item_index -= 1
+                    view_meth = self.scroll_up
             elif key == "Down":
-                if self._selected_item_index == len(self._items) - 1:
+                if self._selected_item_index == last_index:
                     self._selected_item_index = 0
+                    self.scroll = 0
                 else:
                     self._selected_item_index += 1
+                    view_meth = self.scroll_down
             elif key in ("Return", "Enter", "Space"):
                 self.dismiss(self._selected_item_index)
             elif key == "Escape":
                 self.dismiss(False)
             else:
                 Dialog.key_down(self, event)
+
             self._hilited = self._items[self._selected_item_index]
+
+            # Ensure the selected item is visible by scrollign accordingly
+            if self._hilited not in self._items[self.scroll:self.scroll + self.scroll_items]:
+                view_meth()
