@@ -473,9 +473,6 @@ class LevelEditor(GLViewport):
             self.mainViewport.pitch = lastPos["Rotation"][1].value
 
     def showWaypointsDialog_old(self):
-        if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
-            self.Notify("Waypoints currently only support PC Worlds")
-            return
 
         self.waypointDialog = QuickDialog()
 
@@ -565,9 +562,6 @@ class LevelEditor(GLViewport):
 
     def showWaypointsDialog_new(self):
         """Displays the waypoints dialog. Also used to jump to coordinates."""
-        if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
-            self.Notify("Waypoints currently only support PC Worlds")
-            return
 
         self.waypointDialog = Dialog()
 
@@ -1564,7 +1558,7 @@ class LevelEditor(GLViewport):
             self.remove(self.topRow)
             self.topRow = Row((
                 self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
-                self.viewButton, self.viewportButton, self.recordUndoButton))
+                self.viewButton, self.viewportButton, self.recordUndoButton, self.waypointsButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
         #!# Adding waypoints handling for all world types
