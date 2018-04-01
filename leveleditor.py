@@ -234,9 +234,9 @@ class LevelEditor(GLViewport):
 
         def chooseDistance():
             self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
-        if self.renderer.viewDistance not in xrange(2,32,2):
-            self.renderer.viewDistance = 8
-        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in xrange(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
+        if self.renderer.viewDistance not in xrange(2,config.settings.maxViewDistance.get()+1,2):
+            self.renderer.viewDistance = 2
+        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in xrange(2,config.settings.maxViewDistance.get()+1,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
         self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
         self.viewDistanceReadout.shrink_wrap()
 
@@ -2619,7 +2619,7 @@ class LevelEditor(GLViewport):
             self.addUnsavedEdit()
 
     def swapViewDistance(self):
-        if self.renderer.viewDistance >= self.renderer.maxViewDistance:
+        if self.renderer.viewDistance >= config.settings.maxViewDistance.get():
             self.renderer.viewDistance = self.renderer.minViewDistance
         else:
             self.renderer.viewDistance += 2
@@ -2628,7 +2628,7 @@ class LevelEditor(GLViewport):
         config.settings.viewDistance.set(self.renderer.viewDistance)
 
     def changeViewDistance(self, dist):
-        self.renderer.viewDistance = min(self.renderer.maxViewDistance, dist)
+        self.renderer.viewDistance = min(config.settings.maxViewDistance.get(), dist)
         self.addWorker(self.renderer)
         config.settings.viewDistance.set(self.renderer.viewDistance)
 
