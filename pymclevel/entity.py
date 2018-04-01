@@ -657,7 +657,7 @@ class Entity(object):
         # Need to check the content of the copy to regenerate the possible sub entities UUIDs.
         # A simple fix for the 1.9+ minecarts is proposed.
 
-        positionTags = map(lambda p, co: nbt.TAG_Double(p.value + co), eTag["Pos"], copyOffset)
+        positionTags = map(lambda p, co: type(p)((p.value + co)), eTag["Pos"], copyOffset)
         eTag["Pos"] = nbt.TAG_List(positionTags)
 
         # Also match the 'minecraft:XXX' names

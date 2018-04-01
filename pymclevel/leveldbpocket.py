@@ -526,17 +526,21 @@ class PocketLeveldbDatabase(object):
 
         wop = self.writeOptions if writeOptions is None else writeOptions
         chunk._Blocks.update_subchunks()
+        chunk._Data.subchunks = chunk._Blocks.subchunks
         chunk._Data.update_subchunks()
         data_2d = getattr(chunk, 'data_2d', None)
         if hasattr(chunk, 'Biomes') and data_2d:
             data_2d = data_2d[:512] + chunk.Biomes.tostring()
         if chunk.version == "\x03":
+            chunk._SkyLight.subchunks = chunk._Blocks.subchunks
             chunk._SkyLight.update_subchunks()
+            chunk._BlockLight.subchunks = chunk._Blocks.subchunks
             chunk._BlockLight.update_subchunks()
+        chunk.subchunks = chunk._Blocks.subchunks
 
         for y in chunk.subchunks:
             c = chr(y)
-            ver = chr(chunk.subchunks_versions[y])
+            ver = chr(chunk.subchunks_versions.get(y, 0))
             blocks = chunk._Blocks.binary_data[y].tostring()
             blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
             skyLight = ""
@@ -1731,7 +1735,7 @@ class PE1PlusDataContainer:
         """Auto-updates the existing subchunks data using the 'destination' one."""
         for y in range(16):
             sub = self.destination[:, :, y * 16:16 + (y * 16)]
-            if sub.any() or self.binary_data[y] is not None:
+            if self.destination[:, :, y * 16:].any() or self.binary_data[y] is not None or y in self.subchunks:
                 self.binary_data[y] = sub
                 if y not in self.subchunks:
                     self.subchunks.append(y)

@@ -124,9 +124,9 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
 
             def copy(p):
                 return p in sourceChunkBoxInDestLevel and (blocksToCopy is None or mask[
-                    int(p[0]) - sourceChunkBoxInDestLevel.minx,
-                    int(p[2]) - sourceChunkBoxInDestLevel.minz,
-                    int(p[1]) - sourceChunkBoxInDestLevel.miny,
+                    int(p[0] - sourceChunkBoxInDestLevel.minx),
+                    int(p[2] - sourceChunkBoxInDestLevel.minz),
+                    int(p[1] - sourceChunkBoxInDestLevel.miny),
                 ])
 
             if entities:
