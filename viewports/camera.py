@@ -908,9 +908,16 @@ class CameraViewport(GLViewport):
 
         panel = Dialog()
 
+        oneText = False
+        if "Text1" not in tileEntity:
+            oneText = True
+            text_parts = tileEntity["Text"].value.split("\n")
+            for i, text_part in enumerate(text_parts):
+                tileEntity["Text"+str(i+1)] = pymclevel.TAG_String(text_part)
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
-
+            if l not in tileEntity:
+                tileEntity[l] = pymclevel.TAG_String("")
             f.value = tileEntity[l].value
 
             # Double quotes handling for olf sign text format.
@@ -958,7 +965,7 @@ class CameraViewport(GLViewport):
             unsavedChanges = False
             fmt = '"{}"'
             u_fmt = u'"%s"'
-            if json_fmt:
+            if json_fmt or oneText:
                 fmt = '{}'
                 u_fmt = u'%s'
             for l, f in zip(linekeys, lineFields):
@@ -966,6 +973,9 @@ class CameraViewport(GLViewport):
                 tileEntity[l] = pymclevel.TAG_String(u_fmt%f.value[:255])
                 if fmt.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
+            if oneText:
+                tileEntity["Text"] = pymclevel.TAG_String("\n".join([tileEntity[l].value for l in linekeys]))
+
             if unsavedChanges:
                 op = SignEditOperation(self.editor, self.editor.level, tileEntity, undoBackupEntityTag)
                 self.editor.addOperation(op)
