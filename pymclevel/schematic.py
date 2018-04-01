@@ -265,11 +265,12 @@ class MCSchematic(EntityLevel):
                     zBase = self.Length
                 else:
                     zBase = 0.0
-                newX = entity[p][2].value
-                newZ = zBase - entity[p][0].value
+                if p in entity:
+                    newX = entity[p][2].value
+                    newZ = zBase - entity[p][0].value
 
-                entity[p][0].value = newX
-                entity[p][2].value = newZ
+                    entity[p][0].value = newX
+                    entity[p][2].value = newZ
             entity["Rotation"][0].value -= 90.0
             if entity["id"].value in ("Painting", "ItemFrame") or mcedit_ids_get(entity["id"].value) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 x, z = entity["TileX"].value, entity["TileZ"].value
@@ -332,10 +333,11 @@ class MCSchematic(EntityLevel):
             newY = entity["Pos"][0].value
             entity["Pos"][0].value = newX
             entity["Pos"][1].value = newY
-            newX = entity["Motion"][1].value
-            newY = -entity["Motion"][0].value
-            entity["Motion"][0].value = newX
-            entity["Motion"][1].value = newY
+            if "Motion" in entity:
+                newX = entity["Motion"][1].value
+                newY = -entity["Motion"][0].value
+                entity["Motion"][0].value = newX
+                entity["Motion"][1].value = newY
             # I think this is right
             # Although rotation isn't that important as most entities can't rotate and mobs
             # don't serialize rotation.
@@ -378,7 +380,8 @@ class MCSchematic(EntityLevel):
         for entity in self.Entities:
             ent_id_val = entity["id"].value
             entity["Pos"][1].value = self.Height - entity["Pos"][1].value
-            entity["Motion"][1].value = -entity["Motion"][1].value
+            if "Motion" in entity:
+                entity["Motion"][1].value = -entity["Motion"][1].value
             entity["Rotation"][1].value = -entity["Rotation"][1].value
             if ent_id_val in ("Painting", "ItemFrame") or mcedit_ids_get(ent_id_val) in ('DEFS_ENTITIES_PAINTING', 'DEFS_ENTITIES_ITEM_FRAME'):
                 entity["TileY"].value = self.Height - entity["TileY"].value - 1
