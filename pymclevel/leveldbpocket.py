@@ -760,36 +760,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 self._allChunks += self.worldFile.getAllChunks(version='pre1.0')
         return self._allChunks
 
-    def copyChunkFrom(self, oldLevel, cx, cz):
-        if self.readonly:
-            raise IOError("World is opened read only.")
-
-        destChunk = self._loadedChunks.get((cx, cz))
-        sourceChunk = oldLevel._loadedChunks.get((cx, cz))
-
-        if sourceChunk:
-            if destChunk:
-                logger.debug("Both chunks loaded. Using block copy.")
-                # Both chunks loaded. Use block copy.
-                self.copyBlocksFrom(oldLevel, destChunk.bounds, destChunk.bounds.origin)
-                return
-            else:
-                logger.debug("Source chunk loaded. Saving into work folder.")
-
-                # Only source chunk loaded. Discard destination chunk and save source chunk in its place.
-                self._loadedChunkData.pop((cx, cz), None)
-                self.unsavedWorkFolder.saveChunk(cx, cz, sourceChunk.savedTagData())
-                return
-        else:
-            if destChunk:
-                logger.debug("Destination chunk loaded. Using block copy.")
-                # Only destination chunk loaded. Use block copy.
-                self.copyBlocksFrom(oldLevel, destChunk.bounds, destChunk.bounds.origin)
-            else:
-                logger.debug("No chunk loaded. Using world folder.copyChunkFrom")
-                # Neither chunk loaded. Copy via world folders.
-                raise NotImplementedError
-
     @property
     def players(self):
         if self._playerList is None:

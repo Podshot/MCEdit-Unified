@@ -45,7 +45,7 @@ class Operation(object):
             chunks = numpy.array(list(chunks))
             mincx, mincz = numpy.min(chunks, 0)
             maxcx, maxcz = numpy.max(chunks, 0)
-            box = BoundingBox((mincx << 4, 0, mincz << 4), (maxcx << 4, level.Height, maxcz << 4))
+            box = BoundingBox((mincx << 4, 0, mincz << 4), ((maxcx << 4) - (mincx << 4), level.Height, (maxcz << 4) - (mincz << 4)))
 
             return self.extractUndoSchematic(level, box)
 

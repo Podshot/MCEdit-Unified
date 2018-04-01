@@ -690,7 +690,7 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
             if "Materials" in schematicDat:
                 self.materials = namedMaterials[schematicDat["Materials"].value]
 
-        except Exception, e:
+        except Exception as e:
             print "Exception reading schematic.dat, skipping: {0!r}".format(e)
             self.Width = 0
             self.Length = 0
