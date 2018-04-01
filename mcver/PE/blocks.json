@@ -4393,16 +4393,16 @@
                     ]
                 },
                 "4": {
-                    "name": "Acasia Fence",
+                    "name": "Acacia Fence",
                     "tex": [
-                        1,
+                        0,
                         15
                     ]
                 },
                 "5": {
                     "name": "Dark Oak Fence",
                     "tex": [
-                        0,
+                        1,
                         15
                     ]
                 }
