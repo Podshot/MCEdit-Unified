@@ -42,6 +42,9 @@ class Block(object):
         key = lambda a: a and (a.ID, a.blockData)
         return cmp(key(self), key(other))
 
+    def __hash__(self):
+        return hash((self.ID, self.blockData))
+
     def __init__(self, materials, blockID, blockData=0, blockString=''):
         self.materials = materials
         self.ID = blockID

@@ -167,7 +167,7 @@ class BlockPicker(Dialog):
         self.materials = materials
         self.anySubtype = blockInfo.wildcard
 
-        self.matchingBlocks = materials.allBlocks
+        self.matchingBlocks = sorted(list(set(materials.allBlocks)))
         #&#
         self.searchNames = [mclangres.translate(a.name).lower() for a in self.matchingBlocks]
         #&#
@@ -237,7 +237,6 @@ class BlockPicker(Dialog):
 
         def draw_block_table_cell(surf, i, data, cell_rect, column):
             if isinstance(data, Block):
-
                 tableicons[i - tableview.rows.scroll].blockInfo = data
             else:
                 draw_table_cell(surf, i, data, cell_rect, column)
@@ -358,6 +357,7 @@ class BlockPicker(Dialog):
         else:
             self.matchingBlocks = blocks
 
+        self.matchingBlocks = sorted(list(set(self.matchingBlocks)))
         self.selectedBlockIndex = 0
 
         self.tableview.rows.scroll_to_item(self.selectedBlockIndex)

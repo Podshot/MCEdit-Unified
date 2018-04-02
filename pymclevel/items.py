@@ -45,7 +45,7 @@ class Items(object):
                     for item in itempack:
                         itempacknew[file_ + ":" + item] = itempack.get(item)
                     self.items.update(itempacknew)
-                except Exception, e:
+                except Exception as e:
                     logger.debug('Error while loading items.json: %s'%e)
                     pass
                 try:
@@ -57,7 +57,7 @@ class Items(object):
                     for item in itempack:
                         itempacknew[file_ + ":" + item] = itempack.get(item)
                     self.items.update(itempacknew)
-                except Exception, e:
+                except Exception as e:
                     logger.debug('Error while loading blocks.json: %s'%e)
                     pass
 
