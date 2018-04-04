@@ -297,22 +297,23 @@ class MCMaterials(object):
 
            """
         if isinstance(key, basestring):
+            key = key.replace("minecraft:", "")
+            key = key.lower()
+            lowest_block = None
             for b in self.allBlocks:
-                if b.name == key:
+                if b.name.lower() == key:
                     return b
-            if "[" not in key:
-                lowest_block = None
-                for b in self.allBlocks:
-                    if "minecraft:{}".format(b.idStr) == key or b.idStr == key:
-                        if b.blockData == 0:
-                            return b
-                        elif not lowest_block:
+                if b.idStr.lower() == key:
+                    if b.blockData == 0:
+                        return b
+                    elif not lowest_block:
+                        lowest_block = b
+                    elif lowest_block.blockData > b.blockData:
                             lowest_block = b
-                        elif lowest_block.blockData > b.blockData:
-                            lowest_block = b
-                if lowest_block:
-                    return lowest_block
-            elif self.blockstate_api:
+            if lowest_block:
+                return lowest_block
+
+            if '[' in key and self.blockstate_api:
                 name, properties = self.blockstate_api.deStringifyBlockstate(key)
                 return self[self.blockstate_api.blockstateToID(name, properties)]
             raise KeyError("No blocks named: " + key)

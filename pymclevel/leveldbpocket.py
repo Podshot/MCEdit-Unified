@@ -1,6 +1,8 @@
 import itertools
 import time
-from math import floor
+from StringIO import StringIO
+from functools import partial
+from math import floor, ceil
 from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
@@ -15,8 +17,6 @@ from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, un
 from level import LightedChunk
 from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
-import id_definitions
-
 import traceback
 
 logger = logging.getLogger(__name__)
@@ -1711,13 +1711,13 @@ class PE1PlusDataContainer:
         """Add data to 'y' subchunk.
 
         y: int: the subchunk to add data to
-        data: str: data to be added. Must be 4096 bytes long.
+        data: ndarray: data to be added. Must be 4096 numbers long.
 
         Does not raise an error if the subchunk already has data.
         The old data is overriden.
         Creates the subchunk if it does not exists.
         """
-        self.binary_data[y] = numpy.fromstring(data, self.bin_type)
+        self.binary_data[y] = data
         if len(data) != self.subdata_length:
             raise ValueError("%s: Data does not match the required %s bytes length: %s bytes"%(self.name, self.subdata_length, len(data)))
         try:
@@ -1857,31 +1857,58 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if terrain:
             self.subchunks.append(subchunk)
 
-            version, terrain = ord(terrain[:1]), terrain[1:]
-            blocks, terrain = terrain[:4096], terrain[4096:]
-            data, terrain = terrain[:2048], terrain[2048:]
-            skyLight, terrain = terrain[:2048], terrain[2048:]
-            blockLight, terrain = terrain[:2048], terrain[2048:]
+            version, terrain = ord(terrain[0]), terrain[1:]
+            if version == 0:
+                blocks, terrain = terrain[:4096], terrain[4096:]
+                data, terrain = terrain[:2048], terrain[2048:]
+                skyLight, terrain = terrain[:2048], terrain[2048:]
+                blockLight, terrain = terrain[:2048], terrain[2048:]
+                # 'Computing' data is needed before sending it to the data holders.
+                self._Blocks.add_data(subchunk, numpy.fromstring(blocks, self._Blocks.bin_type))
+
+                #             for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
+                #                 a = numpy.fromstring(v, k.bin_type)
+                #                 a.shape = (16, 16, len(v) / 256)
+                #                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
+
+                a = numpy.fromstring(data, self._Data.bin_type)
+                a.shape = (16, 16, len(data) / 256)
+                self._Data.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), self._Data.bin_type))
+
+                if self.version == "\x03":
+                    for k, v in ((self._SkyLight, skyLight), (self._BlockLight, blockLight)):
+                        a = numpy.fromstring(v, k.bin_type)
+                        a.shape = (16, 16, len(v) / 256)
+                        k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), k.bin_type))
+            elif version == 1:
+                bytes_per_block, terrain = ord(terrain[0]) >> 1, terrain[1:]
+                blocks_per_word = int(floor(32 / bytes_per_block))
+                word_count = int(ceil(4096 / float(blocks_per_word)))
+                raw_blocks, terrain = terrain[:word_count * 4], terrain[word_count * 4:]
+                mask = 2 ** bytes_per_block - 1
+                blocks = []
+                for i in range(word_count):
+                    word = struct.unpack("<i", raw_blocks[i * 4:4 + i * 4])[0]
+                    for blockNumber in range(blocks_per_word):
+                        blocks.append(word & mask)
+                        word = word >> bytes_per_block
+                blocks_type = "uint" + str(max(bytes_per_block, 8))
+                blocks = numpy.fromiter(blocks, dtype=blocks_type)[:4096]
+                pallet_size, pallet = terrain[:4], terrain[4:]
+                pallet = loadNBTCompoundList(pallet)
+                ids = [pocketMaterials.get(item["name"].value).ID for item in pallet]
+                data = [item["val"].value for item in pallet]
+                new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
+                blocks = numpy.asarray(ids)[new_blocks]
+                data = numpy.asarray(data)[new_blocks]
+                self._Blocks.bin_type = blocks_type
+                self._Blocks.add_data(subchunk, blocks)
+                self._Data.add_data(subchunk, data)
+                version = 0
+            else:
+                raise NotImplementedError("Not implemented this new type of world format yet")
 
             self.subchunks_versions[subchunk] = version
-
-            # 'Computing' data is needed before sending it to the data holders.
-            self._Blocks.add_data(subchunk, blocks)
-
-#             for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
-#                 a = numpy.fromstring(v, k.bin_type)
-#                 a.shape = (16, 16, len(v) / 256)
-#                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
-
-            a = numpy.fromstring(data, self._Data.bin_type)
-            a.shape = (16, 16, len(data) / 256)
-            self._Data.add_data(subchunk, unpackNibbleArray(a).tostring())
-
-            if self.version == "\x03":
-                for k, v in ((self._SkyLight, skyLight), (self._BlockLight, blockLight)):
-                    a = numpy.fromstring(v, k.bin_type)
-                    a.shape = (16, 16, len(v) / 256)
-                    k.add_data(subchunk, unpackNibbleArray(a).tostring())
 
 #             if DEBUG_PE:
 #                 write_dump("--- sub-chunk (%s, %s, %s) version: %s\n" % (self.chunkPosition[0], self.chunkPosition[1], subchunk, version))
