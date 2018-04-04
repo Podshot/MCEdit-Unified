@@ -1,7 +1,5 @@
 import itertools
 import time
-from StringIO import StringIO
-from functools import partial
 from math import floor, ceil
 from level import FakeChunk, MCLevel
 import logging
