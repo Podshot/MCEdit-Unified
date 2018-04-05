@@ -87,7 +87,11 @@ class BlockstateAPI(object):
         for b in self._mats:
             if b.ID == 0:
                 b.stringID = "air"
-            self.block_map[b.ID] = "minecraft:" + b.stringID
+            stringID = b.stringID
+            if not isinstance(stringID, list):
+                stringID = [stringID]
+            for strID in stringID:
+                self.block_map[b.ID] = "minecraft:" + strID
 
         # When running from a bundled app on Linux (and possibly on OSX) pkg_resource can't find the needed files.
         if pkg_resources.resource_exists(__name__, definition_file):
