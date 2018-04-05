@@ -95,11 +95,17 @@ def _parse_data(data, prefix, namespace, defs_dict, ids_dict, ignore_load=False)
             # We're parsing the block/entity/whatever data
             for item in value:
                 _name = item.get('_name', item.get('idStr', u'%s' % item['id']))
+                if isinstance(_name, list):
+                    _name = _name[0]
                 entry_name = "DEF_%s_%s" % (prefix.upper(), _name.upper())
                 defs_dict[entry_name] = item
                 ids_dict[item['id']] = ids_dict[_name] = entry_name
                 if item.get('idStr'):
-                    ids_dict[u'%s:%s' % (namespace, item['idStr'])] = ids_dict[item['idStr']] = entry_name
+                    idStrs = item.get('idStr')
+                    if not isinstance(idStrs, list):
+                        idStrs = [idStrs]
+                    for idStr in idStrs:
+                        ids_dict[u'%s:%s' % (namespace, idStr)] = ids_dict[idStr] = entry_name
                 for a_name, a_value in autobuilds.items():
                     try:
                         v = eval(a_value)

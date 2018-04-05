@@ -1894,7 +1894,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 blocks = numpy.fromiter(blocks, dtype=blocks_type)[:4096]
                 pallet_size, pallet = terrain[:4], terrain[4:]
                 pallet = loadNBTCompoundList(pallet)
-                ids = [pocketMaterials.get(item["name"].value).ID for item in pallet]
+                ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
                 data = [item["val"].value for item in pallet]
                 new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
                 blocks = numpy.asarray(ids)[new_blocks]

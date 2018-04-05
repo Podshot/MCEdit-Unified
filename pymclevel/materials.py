@@ -303,13 +303,17 @@ class MCMaterials(object):
             for b in self.allBlocks:
                 if b.name.lower() == key:
                     return b
-                if b.idStr.lower() == key:
-                    if b.blockData == 0:
-                        return b
-                    elif not lowest_block:
-                        lowest_block = b
-                    elif lowest_block.blockData > b.blockData:
+                idStr = b.idStr
+                if not isinstance(idStr, list):
+                    idStr = [idStr]
+                for blockStr in idStr:
+                    if blockStr.lower() == key:
+                        if b.blockData == 0:
+                            return b
+                        elif not lowest_block:
                             lowest_block = b
+                        elif lowest_block.blockData > b.blockData:
+                                lowest_block = b
             if lowest_block:
                 return lowest_block
 
@@ -1371,7 +1375,13 @@ if '--find-blockstates' in os.sys.argv:
         ID = block.ID
         DATA = block.blockData
         pc_block = alphaMaterials.get((ID, DATA))
-        if pc_block and pc_block.stringID == block.stringID:
+        pc_block_string = pc_block.stringID
+        pe_block_string = block.stringID
+        if not isinstance(pc_block_string, list):
+            pc_block_string = [pc_block_string]
+        if not isinstance(pe_block_string, list):
+            pe_block_string = [pe_block_string]
+        if not set(pc_block_string).isdisjoint(pe_block_string):  # Checks if the lists has an element in common
             passed.append(block)
         else:
             failed.append(block)
