@@ -1,6 +1,6 @@
 import itertools
 import time
-from math import floor, ceil
+from math import floor, ceil, log
 from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
@@ -1771,9 +1771,20 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.subchunks = []
         self.subchunks_versions = {}
 
-        self._Blocks = PE1PlusDataContainer(4096, 'uint8', name='Blocks', chunk_height=self.Height)
+        max_blocks_dtype = int(ceil(log(max([getattr(x, "ID", -1) for x in pocketMaterials]), 2)))
+        max_data_dtype = int(ceil(log(max([int(max(getattr(x, "yaml", {}).get("data", {"0": "0"}).keys(), key=int)) for x in pocketMaterials]), 2)))
+        possible_dtypes = [2 ** x for x in range(3, 8)]
+        for possible_dtype in possible_dtypes:
+            if possible_dtype >= max_blocks_dtype:
+                max_blocks_dtype = possible_dtype
+                break
+        for possible_dtype in possible_dtypes:
+            if possible_dtype >= max_data_dtype:
+                max_data_dtype = possible_dtype
+                break
+        self._Blocks = PE1PlusDataContainer(4096, 'uint'+str(max_blocks_dtype), name='Blocks', chunk_height=self.Height)
         self.Blocks = self._Blocks.destination
-        self._Data = PE1PlusDataContainer(4096, 'uint8', name='Data', bit_shift_indexes=(0, 0, 0, 0))
+        self._Data = PE1PlusDataContainer(4096, 'uint'+str(max_data_dtype), name='Data', bit_shift_indexes=(0, 0, 0, 0))
         self.Data = self._Data.destination
         self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight', bit_shift_indexes=(0, 0, 0, 0))
         self.SkyLight = self._SkyLight.destination
@@ -1879,27 +1890,25 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                         a.shape = (16, 16, len(v) / 256)
                         k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), k.bin_type))
             elif version == 1:
-                bytes_per_block, terrain = ord(terrain[0]) >> 1, terrain[1:]
-                blocks_per_word = int(floor(32 / bytes_per_block))
+                bits_per_block, terrain = ord(terrain[0]) >> 1, terrain[1:]
+                blocks_per_word = int(floor(32 / bits_per_block))
                 word_count = int(ceil(4096 / float(blocks_per_word)))
                 raw_blocks, terrain = terrain[:word_count * 4], terrain[word_count * 4:]
-                mask = 2 ** bytes_per_block - 1
+                mask = 2 ** bits_per_block - 1
                 blocks = []
                 for i in range(word_count):
                     word = struct.unpack("<i", raw_blocks[i * 4:4 + i * 4])[0]
                     for blockNumber in range(blocks_per_word):
                         blocks.append(word & mask)
-                        word = word >> bytes_per_block
-                blocks_type = "uint" + str(max(bytes_per_block, 8))
-                blocks = numpy.fromiter(blocks, dtype=blocks_type)[:4096]
+                        word = word >> bits_per_block
+                blocks = numpy.fromiter(blocks, dtype="uint" + str(max(bits_per_block, 8)))[:4096]
                 pallet_size, pallet = terrain[:4], terrain[4:]
                 pallet = loadNBTCompoundList(pallet)
                 ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
                 data = [item["val"].value for item in pallet]
                 new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
-                blocks = numpy.asarray(ids)[new_blocks]
-                data = numpy.asarray(data)[new_blocks]
-                self._Blocks.bin_type = blocks_type
+                blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[new_blocks]
+                data = numpy.asarray(data, dtype=self._Data.bin_type)[new_blocks]
                 self._Blocks.add_data(subchunk, blocks)
                 self._Data.add_data(subchunk, data)
                 version = 0

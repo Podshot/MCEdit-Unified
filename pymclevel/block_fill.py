@@ -52,7 +52,7 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
     tileEntity = None
     if blockInfo.stringID in TileEntity.stringNames.keys():
         split_ver = level.gameVersion.split('.')
-        if 'Unknown' not in split_ver and int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
+        if 'Unknown' not in split_ver and "PE" not in split_ver and int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
             tileEntity = "minecraft:{}".format(blockInfo.stringID)
         else:
             tileEntity = TileEntity.stringNames[blockInfo.stringID]
