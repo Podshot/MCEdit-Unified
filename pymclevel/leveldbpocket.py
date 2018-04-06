@@ -77,52 +77,16 @@ def write_dump(msg):
 
 
 # =====================================================================
-def loadNBTCompoundList(data, littleEndian=True):
+def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
     """
     Loads a list of NBT Compound tags from a bunch of data.
     Uses sep to determine where the next Compound tag starts.
     :param data: str, the NBT to load from
     :param littleEndian: bool. Determines endianness
+    :param partNBT: bool. If part of the data is NBT (begins with NBT), the function will return the list of compounds with the rest of the data that was not NBT
     :return: list of TAG_Compounds
     """
-    def _load(_data):
-        if len(_data):
-            try:
-                __data = nbt.load(buf=_data)
-            except Exception as e:
-                msg1 = "PE support could not read compound list data:"
-                msg2 = "Data dump:"
-                msg3 = "Data length: %s"
-                logger.error(msg1)
-                logger.error(e)
-                if len(_data) > 80:
-                    logger.error("Partial data dump:")
-                    logger.error("%s [...] %s", repr(_data[:40]), repr(_data[-40:]))
-                else:
-                    logger.error(msg2)
-                    logger.error(repr(_data))
-                logger.error(msg3, len(data))
-                if DEBUG_PE:
-                    try:
-                        dump_line = len(open(dump_fName).read().splitlines()) + 1
-                        dump_msg = "**********\n{m1}\n{e}\n{m2}\n{d}\n{m3} {l}".format(m1=msg1,
-                                   e=e, m2=msg2, d=repr(_data), m3=msg3, l=len(data))
-                        msg_len = len(dump_msg.splitlines())
-                        write_dump(dump_msg)
-                        logger.warn("Error info and data dumped to %s at line %s (%s lines long)", dump_fName, dump_line, msg_len)
-                    except Exception as _e:
-                        logger.error("Could not dump PE debug info:")
-                        logger.error(_e)
-                raise e
-            if DEBUG_PE == 2:
-                write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
-            if __data.isCompound():
-                return [__data]
-            return __data
-        else:
-            return []
-
-    def load(_data):
+    def load(_data, _partNBT):
         compound_list = []
         idx = 0
         while idx < len(_data):
@@ -130,6 +94,8 @@ def loadNBTCompoundList(data, littleEndian=True):
                 __data = nbt.load(buf=_data[idx:])
                 idx += len(nbt.gunzip(__data.save()))
             except Exception as e:
+                if _partNBT:
+                    return compound_list, _data[idx:]
                 msg1 = "PE support could not read compound list data:"
                 msg2 = "Data dump:"
                 msg3 = "Data length: %s"
@@ -157,13 +123,15 @@ def loadNBTCompoundList(data, littleEndian=True):
             if DEBUG_PE == 2:
                 write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
             compound_list.append(__data)
+        if _partNBT:
+            return compound_list, None
         return compound_list
 
     if littleEndian:
         with nbt.littleEndianNBT():
-            return load(data)
+            return load(data, partNBT)
     else:
-        return load(data)
+        return load(data, partNBT)
 
 
 # =====================================================================
@@ -1855,6 +1823,28 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 #         self.shapeChunkData()
 #=======================================================================
 
+    def _read_block_storage(self, storage):
+        bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
+        blocks_per_word = int(floor(32 / bits_per_block))
+        word_count = int(ceil(4096 / float(blocks_per_word)))
+        raw_blocks, storage = storage[:word_count * 4], storage[word_count * 4:]
+        mask = 2 ** bits_per_block - 1
+        blocks = []
+        for i in range(word_count):
+            word = struct.unpack("<i", raw_blocks[i * 4:4 + i * 4])[0]
+            for blockNumber in range(blocks_per_word):
+                blocks.append(word & mask)
+                word = word >> bits_per_block
+        blocks = numpy.fromiter(blocks, dtype="uint" + str(max(bits_per_block, 8)))[:4096]
+        pallet_size, pallet = struct.unpack("<i", storage[:4])[0], storage[4:]
+        pallet, storage = loadNBTCompoundList(pallet, partNBT=True)
+        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
+        data = [item["val"].value for item in pallet]
+        new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
+        blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[new_blocks]
+        data = numpy.asarray(data, dtype=self._Data.bin_type)[new_blocks]
+        return blocks, data, storage
+
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
         """Add data to subchunk.
 
@@ -1867,7 +1857,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             self.subchunks.append(subchunk)
 
             version, terrain = ord(terrain[0]), terrain[1:]
-            if version == 0:
+            if version in [0, 2, 3, 4, 5, 6, 7]:
                 blocks, terrain = terrain[:4096], terrain[4096:]
                 data, terrain = terrain[:2048], terrain[2048:]
                 skyLight, terrain = terrain[:2048], terrain[2048:]
@@ -1890,28 +1880,16 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                         a.shape = (16, 16, len(v) / 256)
                         k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), k.bin_type))
             elif version == 1:
-                bits_per_block, terrain = ord(terrain[0]) >> 1, terrain[1:]
-                blocks_per_word = int(floor(32 / bits_per_block))
-                word_count = int(ceil(4096 / float(blocks_per_word)))
-                raw_blocks, terrain = terrain[:word_count * 4], terrain[word_count * 4:]
-                mask = 2 ** bits_per_block - 1
-                blocks = []
-                for i in range(word_count):
-                    word = struct.unpack("<i", raw_blocks[i * 4:4 + i * 4])[0]
-                    for blockNumber in range(blocks_per_word):
-                        blocks.append(word & mask)
-                        word = word >> bits_per_block
-                blocks = numpy.fromiter(blocks, dtype="uint" + str(max(bits_per_block, 8)))[:4096]
-                pallet_size, pallet = terrain[:4], terrain[4:]
-                pallet = loadNBTCompoundList(pallet)
-                ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
-                data = [item["val"].value for item in pallet]
-                new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
-                blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[new_blocks]
-                data = numpy.asarray(data, dtype=self._Data.bin_type)[new_blocks]
                 self._Blocks.add_data(subchunk, blocks)
                 self._Data.add_data(subchunk, data)
                 version = 0
+            elif version == 8:
+                num_of_storages, terrain = ord(terrain[0]), terrain[1:]
+                while len(terrain) > 0:
+                    blocks, data, terrain = self._read_block_storage(terrain)
+                    self._Blocks.add_data(subchunk, blocks)
+                    self._Data.add_data(subchunk, data)
+                    break  # TODO: replace the break here with logic to support multiple storage objects
             else:
                 raise NotImplementedError("Not implemented this new type of world format yet")
 
