@@ -300,7 +300,7 @@ class PlayerMoveOperation(Operation):
                 self.undoPos = level.getPlayerPosition(self.player)
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
 
             yaw, pitch = self.yp
@@ -313,7 +313,7 @@ class PlayerMoveOperation(Operation):
             self.tool.markerList.invalidate()
             self.canUndo = True
 
-        except pymclevel.PlayerNotFound, e:
+        except pymclevel.PlayerNotFound as e:
             print "Player move failed: ", e
 
     def undo(self):
@@ -323,7 +323,7 @@ class PlayerMoveOperation(Operation):
                 self.redoPos = level.getPlayerPosition(self.player)
                 self.redoDim = level.getPlayerDimension(self.player)
                 self.redoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.undoPos, self.player)
             level.setPlayerDimension(self.undoDim, self.player)
@@ -337,7 +337,7 @@ class PlayerMoveOperation(Operation):
                 self.undoPos = level.getPlayerPosition(self.player)
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
-            except Exception, e:
+            except Exception as e:
                 log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.redoPos, self.player)
             level.setPlayerDimension(self.redoDim, self.player)

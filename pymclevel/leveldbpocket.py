@@ -1309,8 +1309,9 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
         :return:
         """
-        posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
         playerTag = self.getPlayerTag(player)
+        nbt_type = type(playerTag["Pos"][0])
+        posList = nbt.TAG_List([nbt_type(p) for p in (x, y - 1.75, z)])
 
         playerTag["Pos"] = posList
 
@@ -1880,6 +1881,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                         a.shape = (16, 16, len(v) / 256)
                         k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), k.bin_type))
             elif version == 1:
+                blocks, data, terrain = self._read_block_storage(terrain)
                 self._Blocks.add_data(subchunk, blocks)
                 self._Data.add_data(subchunk, data)
                 version = 0
