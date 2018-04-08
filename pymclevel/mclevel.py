@@ -268,7 +268,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
     try:
         root_tag = nbt.load(buf=data)
 
-    except Exception, e:
+    except Exception as e:
         log.info(u"Error during NBT load: {0!r}".format(e))
         log.info(traceback.format_exc())
         log.info(u"Fallback: Detected compressed flat block array, yzx ordered ")
@@ -276,7 +276,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
             lev = MCJavaLevel(filename, data)
             lev.compressed = compressed
             return lev
-        except Exception, e2:
+        except Exception as e2:
             raise LoadingError(("Multiple errors encountered", e, e2), sys.exc_info()[2])
 
     else:

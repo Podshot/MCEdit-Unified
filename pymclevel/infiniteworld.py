@@ -154,13 +154,23 @@ class AnvilChunkData(object):
 
         self.dirty = True
 
+    def _get_blocks_and_data_from_blockstates(self, section):
+        raise NotImplementedError("1.13 version not supported yet")
+
     def _load(self, root_tag):
         self.root_tag = root_tag
 
         for sec in self.root_tag["Level"].pop("Sections", []):
             y = sec["Y"].value * 16
 
-            for name in "Blocks", "Data", "SkyLight", "BlockLight":
+            values_to_get = ["SkyLight", "BlockLight"]
+            if "Blocks" in sec and "Data" in sec:
+                values_to_get.extend(["Blocks", "Data"])
+            else:
+                Blocks, Data = self._get_blocks_and_data_from_blockstates(sec)
+                self.Blocks[..., y:y + 16], self.Data[..., y:y + 16] = Blocks, Data
+
+            for name in values_to_get:
                 arr = getattr(self, name)
                 secarray = sec[name].value
                 if name == "Blocks":
