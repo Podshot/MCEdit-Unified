@@ -9668,7 +9668,7 @@
         {
 			"name": "Sea Lantern",
 			"brightness": 15,
-			"idStr": "sea_lantern",
+			"idStr": "seaLantern",
 			"tex": [17,18],
 			"mapcolor": [49,127,159],
 			"id": 169
@@ -11599,7 +11599,7 @@
         },
         {
             "id": 199,
-            "idStr": "item_frame",
+            "idStr": "frame",
             "mapcolor": [168,88,51],
             "name": "Item Frame",
             "tex": [9,11],
