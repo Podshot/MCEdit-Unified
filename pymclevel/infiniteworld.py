@@ -155,12 +155,12 @@ class AnvilChunkData(object):
         self.dirty = True
 
     def _get_blocks_and_data_from_blockstates(self, section):
-        bits_amount = len(section["BlockStates"].value) / 64
-        binary_blocks = unpackbits(section["BlockStates"].value.view("uint8")).reshape(-1, 4)
+        long_array = section["BlockStates"].value
+        bits_amount = len(long_array) / 64
+        binary_blocks = unpackbits(long_array.view("uint8")).reshape(-1, 2, bits_amount)[:, ::-1, :].reshape(-1, bits_amount)
         blocks_before_palette = binary_blocks.dot(2**arange(binary_blocks.shape[1]-1, -1, -1))
         blocks = asarray(section["Palette"].value, dtype="object")[blocks_before_palette]
         raise NotImplementedError("1.13 version not supported yet")
-
 
     def _load(self, root_tag):
         self.root_tag = root_tag
