@@ -1829,21 +1829,28 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         blocks_per_word = int(floor(32 / bits_per_block))
         word_count = int(ceil(4096 / float(blocks_per_word)))
         raw_blocks, storage = storage[:word_count * 4], storage[word_count * 4:]
-        mask = 2 ** bits_per_block - 1
-        blocks = []
-        for i in range(word_count):
-            word = struct.unpack("<i", raw_blocks[i * 4:4 + i * 4])[0]
-            for blockNumber in range(blocks_per_word):
-                blocks.append(word & mask)
-                word = word >> bits_per_block
-        blocks = numpy.fromiter(blocks, dtype="uint" + str(max(bits_per_block, 8)))[:4096]
+        word_size = 32
+        bin_arr = numpy.unpackbits(numpy.frombuffer(bytearray(raw_blocks), dtype='uint8')).astype(bool)
+
+        # cut redundant bits
+        word_arr = bin_arr.reshape(-1, word_size/8, 8)
+        word_arr = word_arr[:, ::-1, :]
+        word_arr = word_arr.reshape(-1, word_size)
+        redundant_bits = word_size % bits_per_block
+        clean_word_arr = word_arr[:, redundant_bits:]
+
+        # convert blocks to uint
+        clean_word_arr = clean_word_arr.reshape(-1, word_size / bits_per_block, bits_per_block)[:, ::-1]
+        block_arr = clean_word_arr.reshape(-1, bits_per_block)
+        block_size = max(bits_per_block, 8)
+        blocks_before_palette = block_arr.dot(2**numpy.arange(block_arr.shape[1]-1, -1, -1))[:4096]
+        blocks_before_palette = blocks_before_palette.astype("uint"+str(block_size))
         pallet_size, pallet = struct.unpack("<i", storage[:4])[0], storage[4:]
         pallet, storage = loadNBTCompoundList(pallet, partNBT=True)
         ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
         data = [item["val"].value for item in pallet]
-        new_blocks = numpy.nonzero(range(0, len(ids)) == blocks[:, None])[1]
-        blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[new_blocks]
-        data = numpy.asarray(data, dtype=self._Data.bin_type)[new_blocks]
+        blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[blocks_before_palette]
+        data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
         return blocks, data, storage
 
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
