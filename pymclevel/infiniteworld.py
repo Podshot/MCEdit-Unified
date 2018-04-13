@@ -26,7 +26,7 @@ from level import LightedChunk, EntityLevel, computeChunkHeightMap, MCLevel, Chu
 from materials import alphaMaterials
 from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,ChunkConcurrentException,exhaust, PlayerNotFound
 import nbt
-from numpy import array, clip, maximum, zeros, asarray
+from numpy import array, clip, maximum, zeros, asarray, unpackbits, arange
 from regionfile import MCRegionFile
 import logging
 from uuid import UUID
@@ -156,10 +156,8 @@ class AnvilChunkData(object):
 
     def _get_blocks_and_data_from_blockstates(self, section):
         bits_amount = len(section["BlockStates"].value) / 64
-        int_binary_list = [bin(((1 << 64)-1) & int(state)).replace("0b", "")
-                           for state in section["BlockStates"].value]
-        blocks_binary = "".join(["0" * (64 - len(block)) + block for block in int_binary_list])
-        blocks_before_palette = [int(blocks_binary[bits_amount*i:bits_amount*i+bits_amount], 2) for i in range(4096)]
+        binary_blocks = unpackbits(section["BlockStates"].value.view("uint8")).reshape(-1, 4)
+        blocks_before_palette = binary_blocks.dot(2**arange(binary_blocks.shape[1]-1, -1, -1))
         blocks = asarray(section["Palette"].value, dtype="object")[blocks_before_palette]
         raise NotImplementedError("1.13 version not supported yet")
 
