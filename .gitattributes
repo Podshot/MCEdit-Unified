@@ -1,5 +1,6 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+# Disabled because it changes crlf line ends to lf on Linux, and this causes diff think that the whole file is chnaged.
+# * text=auto
 
 # Custom for Visual Studio
 *.cs     diff=csharp

@@ -394,35 +394,21 @@ class LevelEditor(GLViewport):
                 y += 3
                 xField.value, yField.value, zField.value = x, y, z
 
-        if __builtins__.get("mcenf_tab_to_next"):
-            def key_down(event):
-                """Defines keyboard actions for the waypoint creation dialog.
-                :param event: object: The event to be processed."""
-                key = self.root.getKey(event)
-                if key == "Return":
-                    d.dismiss("Create")
-                elif key == "Escape":
-                    d.dismiss("Cancel")
-                else:
-                    Dialog.key_down(d, event)
+        def key_down(event):
+            """Defines keyboard actions for the waypoint creation dialog.
+            :param event: object: The event to be processed."""
+            key = self.root.getKey(event)
+            if key == "Return":
+                d.dismiss("Create")
+            elif key == "Escape":
+                d.dismiss("Cancel")
+            else:
+                Dialog.key_down(d, event)
 
-            d.key_down = key_down
+        d.key_down = key_down
 
-            # Trigger escape key press when one field has focus to the dialog dismiss action.
-            nameField.escape_action = xField.escape_action = yField.escape_action = zField.escape_action = d.dismiss
-
-        else:
-            old_dispatch_key = d.dispatch_key
-            def on_key_event(name, event):
-                old_dispatch_key(name, event)
-                if name == 'key_down':
-                    key = self.root.getKey(event)
-                    if key == 'Return':
-                        d.dismiss("Create")
-                    elif key == 'Escape':
-                        d.dismiss("Cancel")
-
-            d.dispatch_key = on_key_event
+        # Trigger escape key press when one field has focus to the dialog dismiss action.
+        nameField.escape_action = xField.escape_action = yField.escape_action = zField.escape_action = d.dismiss
 
         d.mouse_down = click_outside
         result = d.present()
@@ -472,95 +458,7 @@ class LevelEditor(GLViewport):
             self.mainViewport.yaw = lastPos["Rotation"][0].value
             self.mainViewport.pitch = lastPos["Rotation"][1].value
 
-    def showWaypointsDialog_old(self):
-
-        self.waypointDialog = QuickDialog()
-
-        self.waypointsChoiceButton = ChoiceButton(self.waypointManager.waypoints.keys())
-        createWaypointButton = Button("Create Waypoint", action=self.showCreateDialog)
-        gotoWaypointButton = Button("Goto Waypoint", action=self.gotoWaypoint)
-        deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
-
-        saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
-                                          ref=config.settings.savePositionOnClose)
-
-        gotoPanel = Widget()
-        gotoPanel.goto_coords = False
-        gotoPanel.X, gotoPanel.Y, gotoPanel.Z = map(int, self.mainViewport.cameraPosition)
-
-        def set_goto_coords():
-            self.waypointDialog.dismiss()
-            gotoPanel.goto_coords = True
-
-        def click_outside(event):
-            if event not in self.waypointDialog:
-                x, y, z = self.blockFaceUnderCursor[0]
-                if y == 0:
-                    y = 64
-                y += 3
-                gotoPanel.X, gotoPanel.Y, gotoPanel.Z = x, y, z
-
-                if event.num_clicks == 2:
-                    gotoPanel.goto_coords = True
-                    self.waypointDialog.dismiss()
-
-        old_dispatch_key = self.waypointDialog.dispatch_key
-        def on_key_event(name, event):
-            old_dispatch_key(name, event)
-            if name == 'key_down':
-                key = self.root.getKey(event)
-                if key == 'Escape':
-                    gotoPanel.goto_coords = False
-                    self.waypointDialog.dismiss()
-                elif key == 'Return':
-                    gotoPanel.goto_coords = True
-                    self.waypointDialog.dismiss()
-
-        def on_choose():
-            choice = self.waypointsChoiceButton.value
-            waypoint = self.waypointManager.waypoints[choice]
-            gotoPanel.X, gotoPanel.Y, gotoPanel.Z = map(int, waypoint[0:3])
-
-        self.waypointsChoiceButton.choose = on_choose
-        on_choose()
-
-        coordinateRow = (
-            Label("X: "), IntField(ref=AttrRef(gotoPanel, "X")),
-            Label("Y: "), IntField(ref=AttrRef(gotoPanel, "Y")),
-            Label("Z: "), IntField(ref=AttrRef(gotoPanel, "Z")),
-        )
-        gotoRow = Row(coordinateRow)
-        gotoCoordinateButton = Button("Goto Coordinates", action=set_goto_coords)
-
-        col = Column(
-            (
-                self.waypointsChoiceButton,
-                Row(
-                    (
-                        createWaypointButton,
-                        gotoWaypointButton,
-                        deleteWaypointButton,
-                    )
-                ),
-                saveCameraOnClose,
-                gotoRow,
-                gotoCoordinateButton,
-                Button("Close", action=self.waypointDialog.dismiss),
-            )
-        )
-        self.waypointDialog.add(col)
-        self.waypointDialog.shrink_wrap()
-        self.waypointDialog.mouse_down = click_outside
-        self.waypointDialog.dispatch_key = on_key_event
-        self.waypointDialog.present(True)
-
-        if gotoPanel.goto_coords:
-            destPoint = [gotoPanel.X, gotoPanel.Y, gotoPanel.Z]
-            if self.currentViewport is self.chunkViewport:
-                self.swapViewports()
-            self.mainViewport.cameraPosition = destPoint
-
-    def showWaypointsDialog_new(self):
+    def showWaypointsDialog(self):
         """Displays the waypoints dialog. Also used to jump to coordinates."""
 
         self.waypointDialog = Dialog()
@@ -657,10 +555,6 @@ class LevelEditor(GLViewport):
             if self.currentViewport is self.chunkViewport:
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
-
-    showWaypointsDialog = showWaypointsDialog_old
-    if __builtins__.get("mcenf_tab_to_next"):
-        showWaypointsDialog = showWaypointsDialog_new
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):

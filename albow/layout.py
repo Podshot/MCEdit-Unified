@@ -8,8 +8,7 @@ from widget import Widget
 
 class RowOrColumn(Widget):
     _is_gl_container = True
-    if __builtins__.get("mcenf_tab_to_next"):
-        focusable = False
+    focusable = False
 
     def __init__(self, size, items, kwds):
         align = kwds.pop('align', 'c')

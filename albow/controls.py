@@ -50,16 +50,15 @@ class Control(object):
     def set_enabled(self, x):
         self._enabled = x
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        def key_down(self, event):
-            """Handles key press.
-            Captured events are ENTER and SPACE key press.
-            :param event: object: The event being processed."""
-            key = event.key
-            if key in (K_RETURN, K_KP_ENTER, K_SPACE):
-                self.call_handler("action")
-            else:
-                Widget.key_down(self, event)
+    def key_down(self, event):
+        """Handles key press.
+        Captured events are ENTER and SPACE key press.
+        :param event: object: The event being processed."""
+        key = event.key
+        if key in (K_RETURN, K_KP_ENTER, K_SPACE):
+            self.call_handler("action")
+        else:
+            Widget.key_down(self, event)
 
 
 class AttrRef(object):
@@ -229,8 +228,7 @@ class ButtonBase(Control):
     default_choice_color = ThemeProperty('default_choice_color')
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        tab_stop= True
+    tab_stop= True
 
     def mouse_down(self, event):
         button = event.button
@@ -370,8 +368,7 @@ class CheckControl(Control):
     def get_highlighted(self):
         return self.value
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        action = mouse_down
+    action = mouse_down
 
 
 class CheckWidget(Widget):
@@ -380,9 +377,8 @@ class CheckWidget(Widget):
     border_width = 1
     check_mark_tweak = 2
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        tab_stop = True
-        highlight_color = ThemeProperty('highlight_color')
+    tab_stop = True
+    highlight_color = ThemeProperty('highlight_color')
 
     smooth = ThemeProperty('smooth')
 

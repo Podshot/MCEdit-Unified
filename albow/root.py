@@ -132,10 +132,9 @@ class RootWidget(Widget):
         self.sprint = False
         self.filesToChange = []
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        def get_modifiers(self):
-            """Returns the 'modifiers' global object."""
-            return modifiers
+    def get_modifiers(self):
+        """Returns the 'modifiers' global object."""
+        return modifiers
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton

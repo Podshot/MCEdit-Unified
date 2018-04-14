@@ -95,11 +95,10 @@ class Widget(object):
     # 'name' is used to track widgets without parent
     name = 'Widget'
 
-    if __builtins__.get("mcenf_tab_to_next"):
-        # 'focusable' is used to know if a widget can have the focus.
-        # Used to tell container widgets like Columns or Dialogs tofind the next focusable widget
-        # in their children.
-        focusable = True
+    # 'focusable' is used to know if a widget can have the focus.
+    # Used to tell container widgets like Columns or Dialogs tofind the next focusable widget
+    # in their children.
+    focusable = True
 
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
@@ -343,11 +342,8 @@ class Widget(object):
             self.draw(surface)
             bw = self.border_width
             if bw:
-                if __builtins__.get("mcenf_tab_to_next"):
-                    if self.has_focus() and hasattr(self, "highlight_color"):
-                        bc = self.highlight_color
-                    else:
-                        bc = self.border_color or self.fg_color
+                if self.has_focus() and hasattr(self, "highlight_color"):
+                    bc = self.highlight_color
                 else:
                     bc = self.border_color or self.fg_color
                 frame_rect(surface, bc, surf_rect, bw)
@@ -450,9 +446,8 @@ class Widget(object):
 
     def dispatch_attention_loss(self):
         widget = self
-        if __builtins__.get("mcenf_tab_to_next"):
-            if hasattr(self, "_highlighted"):
-                self._highlighted = False
+        if hasattr(self, "_highlighted"):
+            self._highlighted = False
         while widget:
             widget.attention_lost()
             widget = widget.focus_switch
@@ -566,9 +561,8 @@ class Widget(object):
         parent = self.next_handler()
         if parent:
             parent.focus_on(self)
-            if __builtins__.get("mcenf_tab_to_next"):
-                if hasattr(self, "_highlighted"):
-                    self._highlighted = True
+            if hasattr(self, "_highlighted"):
+                self._highlighted = True
 
     def focus_on(self, subwidget):
         old_focus = self.focus_switch
@@ -656,18 +650,8 @@ class Widget(object):
         if chain:
             chain[0].focus()
 
-    def tab_to_next_old(self):
-        top = self.get_top_widget()
-        chain = top.get_tab_order()
-        try:
-            i = chain.index(self)
-        except ValueError:
-            return
-        target = chain[(i + 1) % len(chain)]
-        target.focus()
-
     def _is_next_in_tab(self, top, delta=1):
-        """Helper function to find if the current widget is ne 'next' on whe 'tabbing'.
+        """Helper function to find if the current widget is ne 'next' on when 'tabbing'.
         :param top: Widget: The 'top' widget to find 'self' in tab order.
         :param delta: int: The index modifier. Shall be 1 or -1. Defaults to 1.
         Returns a tuple: (<'self' index in 'top.get_tab_order()' result>, <'top.subwidgets>)
@@ -679,40 +663,25 @@ class Widget(object):
             idx = chain.index(self) + delta
         return idx, chain
 
-    def tab_to_next_new(self):
+    def tab_to_next(self):
         """Give focus to the next focusable widget."""
         top = self.get_top_widget()
-        # print "top", top
-        # print self.parent
         # If SHIFT key is hold down, set the index modifier to -1 to iterate to the previuos widget
         # instead of the next one.
         delta = 1
         if self.root.get_modifiers()["shift"]:
             delta = -1
         idx, subwidgets = self._is_next_in_tab(top, delta)
-        # print "self", self
-        # print "  idx 1", idx
         chain = top.get_tab_order() + subwidgets
-        # print "  chain 1", chain
         target = chain[idx % len(chain)]
-        # print "  target 1", target
-        i = 2  # for debug
         while not target.focusable:
             _, subwidgets = target._is_next_in_tab(target, delta)
             chain = chain + subwidgets
             idx = chain.index(target) + delta
-            # print "    idx %s" % i, idx
-            # print "    chain %s" % i, chain
             target = chain[idx % len(chain)]
-            # print "    target %s" %i, target
-            i += 1
 
         self.get_focus().dispatch_attention_loss()
         target.focus()
-
-    tab_to_next = tab_to_next_old
-    if __builtins__.get("mcenf_tab_to_next"):
-        tab_to_next = tab_to_next_new
 
     def get_tab_order(self):
         result = []
@@ -720,8 +689,6 @@ class Widget(object):
         return result
 
     def collect_tab_order(self, result):
-#         if __builtins__.get("mcenf_tab_to_next"):
-#             print "----------", self
         if self.visible:
             if self.tab_stop:
                 result.append(self)

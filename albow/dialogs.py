@@ -165,21 +165,11 @@ def ask(mess, responses=("OK", "Cancel"), default=0, cancel=-1,
     box.add(col)
     box.shrink_wrap()
 
-    def dispatchKeyForAsk_old(name, evt):
-        if name == "key_down":
-            if box.root.getKey(evt) == "Return":
-                if default is not None:
-                    box.dismiss(responses[default])
-
-    def dispatchKeyForAsk_new(name, evt):
+    def dispatchKeyForAsk(name, evt):
         if name == "key_down" and box.root.getKey(evt) == "Return" and default is not None:
             box.dismiss(responses[default])
         else:
             Dialog.dispatch_key(box, name, evt)
-
-    dispatchKeyForAsk = dispatchKeyForAsk_old
-    if __builtins__.get("mcenf_tab_to_next"):
-        dispatchKeyForAsk = dispatchKeyForAsk_new
 
     box.dispatch_key = dispatchKeyForAsk
     if tie_widget_to:
