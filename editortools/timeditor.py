@@ -1,6 +1,6 @@
+import directories
 from albow.controls import RotatableImage, Label
 import pygame
-import os
 from albow.widget import Widget
 from albow.layout import Column, Row
 from albow.fields import TimeField, IntField
@@ -91,7 +91,7 @@ class TimeEditor(Widget):
         __deg = self.ticksToDegrees(current_tick_time)
         
         self.rot_image = RotatableImage(
-                                        image=pygame.image.load(os.path.join("toolicons", "day_night_cycle.png")),
+                                        image=pygame.image.load(directories.getDataFile("toolicons", "day_night_cycle.png")),
                                         min_angle=-self._maxRotation,
                                         max_angle=0,
                                         angle=__deg

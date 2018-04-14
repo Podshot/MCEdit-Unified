@@ -40,9 +40,9 @@ except Exception as e:
     print e
     try:
         #fp = open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb')
-        fp = open(directories.getDataFile('fonst', 'DejaVuSans-Bold.ttf'), 'rb')
+        fp = open(directories.getDataFile('fonts', 'DejaVuSans-Bold.ttf'), 'rb')
         font = pygame.font.Font(fp, 48)
-        buf = font.render("MCEDit is loading...", True, (128, 128, 128))
+        buf = font.render("MCEdit is loading...", True, (128, 128, 128))
         screen = pygame.display.set_mode((buf.get_width() + 20, buf.get_height() + 20), pygame.NOFRAME)
         screen.blit(buf, (10, 10))
         splash = pygame.display.get_surface()
