@@ -1151,6 +1151,7 @@ class ChunkCalculator(object):
     def makeTemplate(self, direction, blockIndices):
         return self.precomputedVertices[direction][numpy.where(blockIndices)]
 
+
 class Layer:
     Blocks = "Blocks"
     Entities = "Entities"
@@ -1224,9 +1225,7 @@ class BlockRenderer(object):
 
     def drawArrays(self, chunkPosition, showRedraw):
         cx, cz = chunkPosition
-        y = 0
-        if hasattr(self, 'y'):
-            y = self.y
+        y = getattr(self, "y", 0)
         with gl.glPushMatrix(GL.GL_MODELVIEW):
             GL.glTranslate(cx << 4, y, cz << 4)
 
@@ -1569,7 +1568,7 @@ class LowDetailBlockRenderer(BlockRenderer):
             numpy.clip(h, 0, chunkHeight - 1, out=h)
             overblocks = blocks[gridaxes][nonAirBlocks].ravel()
 
-        except ValueError, e:
+        except ValueError as e:
             raise ValueError(str(e.args) + "Chunk shape: {0}".format(blockIndices.shape), sys.exc_info()[-1])
 
         if nonAirBlocks.any():
@@ -3773,7 +3772,7 @@ class MCRenderer(object):
             try:
                 self.callMasterLists()
 
-            except GL.GLError, e:
+            except GL.GLError as e:
                 if self.errorLimit:
                     self.errorLimit -= 1
                     traceback.print_exc()
@@ -3865,12 +3864,9 @@ class MCRenderer(object):
     vertexBufferLimit = 384
 
     def getChunkRenderer(self, c):
-        if not (c in self.chunkRenderers):
-            cr = self.chunkClass(self, c)
-        else:
-            cr = self.chunkRenderers[c]
-
-        return cr
+        if c not in self.chunkRenderers:
+            return self.chunkClass(self, c)
+        return self.chunkRenderers[c]
 
     def calcFacesForChunkRenderer(self, cr):
         self.bufferUsage -= cr.bufferSize

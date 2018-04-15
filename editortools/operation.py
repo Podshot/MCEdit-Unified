@@ -80,7 +80,7 @@ class Operation(object):
             sch = showProgress("Recording undo...", level.extractZipSchematicIter(box), cancel=True)
         else:
             sch = level.extractZipSchematic(box)
-        if sch == "Cancel":
+        if sch == "Cancel" or sch == "Canceled":
             raise Cancel
         if sch:
             sch.sourcePoint = box.origin
