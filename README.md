@@ -55,6 +55,8 @@ These programs and packages are required:
 * ftputil (Optional, but FTP server support will be disabled without it)
 * python-yaml
 * python-xlib 0.14
+* ftputil (Optional, but FTP server support will be disabled without it)
+* pyClark (Optional, but error reporting will be disabled without it)
 
 On Windows, these are also required:
 

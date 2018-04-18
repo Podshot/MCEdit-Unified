@@ -3,7 +3,7 @@ import os
 import logging
 import shutil
 
-log = logging.getLogger(__name__)
+log = logging.getLogger()
 
 
 class WaypointManager:
@@ -47,8 +47,9 @@ class WaypointManager:
         else:
             try:
                 self.nbt_waypoints = nbt.load(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
-            except nbt.NBTFormatError:
+            except nbt.NBTFormatError as e:
                 shutil.move(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"), os.path.join(self.worldDirectory, u"mcedit_waypoints_backup.dat"))
+                log.error(e)
                 log.warning("Waypoint data file corrupted, ignoring...")
             finally:
                 self.build()

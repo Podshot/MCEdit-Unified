@@ -39,6 +39,7 @@ class Config(object):
         try:
             self.config.read(self.getPath())
         except Exception as e:
+            log.error(e)
             log.warn("Error while reading configuration file mcedit.ini: {0}".format(e))
 
         self.transformConfig()
@@ -111,6 +112,12 @@ class Config(object):
                 version = "1.1.2.0-new"
             self.config.set("Version", "version", version)
             self.save()
+        if "1.1.2.0" in version:
+            self.config.set("Settings", "report crashes new", False)
+            self.config.set("Settings", "report crashes asked", False)
+            self.config.set("Version", "version", "1.6.0.0")
+            self.save()
+
 
     def save(self):
         try:
@@ -118,6 +125,7 @@ class Config(object):
             self.config.write(cf)
             cf.close()
         except Exception as e:
+            log.error(e)
             log.error("Error saving configuration settings to mcedit.ini: {0}".format(e))
 
 
@@ -173,8 +181,9 @@ class ConfigValue(object):
             if self.type is unicode:
                 return self.type(self.config.get(self.section, self.name).decode(DEF_ENC))
             return self.type(self.config.get(self.section, self.name))
-        except:
+        except Exception as e:
             if self.default is None:
+                log.error(e)
                 raise
 
             self.set(self.default)
@@ -278,8 +287,9 @@ class ListValue(ConfigValue):
     def get(self):
         try:
             return self.type(self.subtype(x.strip()) for x in self._config.get(self.section, self.name).translate(None, '[]()').split(','))
-        except:
+        except Exception as e:
             if self.default is None:
+                log.error(e)
                 raise
 
             self.set(self.default)
@@ -460,7 +470,7 @@ definitions = {
         ("nbtExplorer", "nbt explorer", "None"),
     ],
     ("version", "Version"): [
-        ("version", "version", "1.1.2.0")
+        ("version", "version", "1.6.0.0")
     ],
     ("settings", "Settings"): [
         ("flyMode", "Fly Mode", False),

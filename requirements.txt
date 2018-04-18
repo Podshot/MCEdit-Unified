@@ -7,3 +7,4 @@ pygame==1.9.3
 #pywin32==221 Use this if you're installing from binaries
 pypiwin32
 cython==0.26.1
+pyclark

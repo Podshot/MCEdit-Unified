@@ -130,6 +130,42 @@ if __name__ == "__main__":
     #albow.resource.resource_dir = directories.getDataDir()
     albow.resource.resource_dir = directories.getDataFile()
 
+if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
+
+    def create_mocked_pyclark():
+        import imp
+
+        class MockedPyClark(object):
+
+            class Clark(object):
+
+                def report(self, *args, **kwargs):
+                    pass
+
+            global_clark = Clark()
+
+        mod = imp.new_module('pyClark')
+        mod = MockedPyClark()
+        sys.modules['pyClark'] = mod
+        return mod
+
+    if config.settings.reportCrashes.get():
+        global pyClark
+        try:
+            import pyClark
+            pyClark.Clark('http://127.0.0.1', inject=True)
+            logger.info('Successfully setup pyClark')
+        except ImportError:
+            pyClark = create_mocked_pyclark()
+            logger.info('The \'pyClark\' module has not been installed, disabling error reporting')
+            pass
+    else:
+        logger.info('User has opted out of pyClark error reporting')
+        pyClark = create_mocked_pyclark()
+
+
+
+
 import panels
 import leveleditor
 
@@ -807,8 +843,13 @@ class MCEdit(GLViewport):
             if answer == "Don't remind me again.":
                 config.settings.closeMinecraftWarning.set(False)
 
-        config.settings.reportCrashes.set(False)
-        config.settings.reportCrashesAsked.set(True)
+        if not config.settings.reportCrashesAsked.get():
+            answer = albow.ask(
+                'Would you like to send anonymous error reports to the MCEdit-Unified Team to help with improving future releases?\n\nThe error reports are stripped of any identifying user information before being sent.\n\nPyClark, the library used, is open source under the GNU LGPL v3 license and is maintained by Podshot. The source code can be located here: https://github.com/Podshot/pyClark.\n\nThere has been no modification to the library in any form.\n\nIf you allow MCEdit-Unified to send error reports, this change will take effect next time MCEdit-Unified is launched.',
+                ['Allow', 'Deny'], default=1, cancel=1
+            )
+            config.settings.reportCrashes.set(answer == 'Allow')
+            config.settings.reportCrashesAsked.set(True)
 
         config.save()
         if "update" in config.version.version.get():
@@ -818,7 +859,7 @@ class MCEdit(GLViewport):
             if answer == "Yes":
                 for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
                     config.keys[config.convert(configKey)].set(k)
-        config.version.version.set("1.1.2.0")
+        config.version.version.set("1.6.0.0")
         config.save()
         if "-causeError" in sys.argv:
             raise ValueError("Error requested via -causeError")
@@ -1025,6 +1066,7 @@ if __name__ == "__main__":
         pass
     except:
         traceback.print_exc()
+        pyClark.global_clark.report(locals=locals())
         print ""
         print "=================================="
         print "\t\t\t  MCEdit has crashed"
