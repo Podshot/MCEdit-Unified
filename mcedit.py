@@ -130,27 +130,28 @@ if __name__ == "__main__":
     #albow.resource.resource_dir = directories.getDataDir()
     albow.resource.resource_dir = directories.getDataFile()
 
+def create_mocked_pyclark():
+    import imp
+
+    class MockedPyClark(object):
+
+        class Clark(object):
+
+            def report(self, *args, **kwargs):
+                pass
+
+        global_clark = Clark()
+
+    mod = imp.new_module('pyClark')
+    mod = MockedPyClark()
+    sys.modules['pyClark'] = mod
+    return mod
+
+global pyClark
+pyClark = None
 if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
 
-    def create_mocked_pyclark():
-        import imp
-
-        class MockedPyClark(object):
-
-            class Clark(object):
-
-                def report(self, *args, **kwargs):
-                    pass
-
-            global_clark = Clark()
-
-        mod = imp.new_module('pyClark')
-        mod = MockedPyClark()
-        sys.modules['pyClark'] = mod
-        return mod
-
     if config.settings.reportCrashes.get():
-        global pyClark
         try:
             import pyClark
             pyClark.Clark('http://127.0.0.1', inject=True)
@@ -161,9 +162,11 @@ if getattr(sys, 'frozen', False) or '--report-errors' in sys.argv:
             pass
     else:
         logger.info('User has opted out of pyClark error reporting')
+        print type(create_mocked_pyclark())
         pyClark = create_mocked_pyclark()
-
-
+        print pyClark
+else:
+    pyClark = create_mocked_pyclark()
 
 
 import panels
@@ -851,6 +854,8 @@ class MCEdit(GLViewport):
             config.settings.reportCrashes.set(answer == 'Allow')
             config.settings.reportCrashesAsked.set(True)
 
+
+
         config.save()
         if "update" in config.version.version.get():
             answer = albow.ask(
@@ -1066,7 +1071,6 @@ if __name__ == "__main__":
         pass
     except:
         traceback.print_exc()
-        pyClark.global_clark.report(locals=locals())
         print ""
         print "=================================="
         print "\t\t\t  MCEdit has crashed"
