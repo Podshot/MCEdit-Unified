@@ -13120,7 +13120,7 @@
 	    {
             "id": 237,
             "name": "Concrete powder",
-            "idStr": "concrete_powder",
+            "idStr": "concretePowder",
             "mapcolor": [
                 128,
                 128,

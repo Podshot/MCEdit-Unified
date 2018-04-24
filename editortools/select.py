@@ -1025,7 +1025,7 @@ class SelectionTool(EditorTool):
 
     def setSelectionPoints(self, points, changeSelection=True):
         if points:
-            if points[0][1] < 0 or points[1][1] >= self.editor.level.Height:
+            if all(points) and (points[0][1] < 0 or points[1][1] >= self.editor.level.Height):
                 return
             self.bottomLeftPoint, self.topRightPoint = [Vector(*p) if p else None for p in points]
         else:

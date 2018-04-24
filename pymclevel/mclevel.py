@@ -251,7 +251,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
     unzippedData = None
     try:
         unzippedData = nbt.gunzip(rawdata)
-    except Exception, e:
+    except Exception as e:
         log.info(u"Exception during Gzip operation, assuming {0} uncompressed: {1!r}".format(filename, e))
         if unzippedData is None:
             compressed = False
