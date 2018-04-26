@@ -9,6 +9,14 @@ import shutil
 import json
 import subprocess
 
+hasPyClark = False
+try:
+    import pyClark
+    hasByClark = True
+except ImportError:
+    pass
+
+
 try:
     from PyInstaller.utils.hooks import collect_data_files, remove_prefix
 except ImportError:
@@ -47,7 +55,7 @@ with open('directories.py', 'wb') as out:
         new_data = new_data.replace(key, value)
     out.write(new_data)
 
-subprocess.check_call([sys.executable, 'setup.py', 'all'])
+#subprocess.check_call([sys.executable, 'setup.py', 'all'])
 
 a = Analysis(['mcedit.py'],
              pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
@@ -56,7 +64,7 @@ a = Analysis(['mcedit.py'],
              hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate', 'OpenGL.platform.win32'],
              hookspath=['.'],
              runtime_hooks=[],
-             excludes=['Tkinter', 'tkinter', '_tkinter', 'Tcl', 'tcl', 'Tk', 'tk', 'wx', 'FixTk'],
+             excludes=['Tkinter', 'tkinter', '_tkinter', 'Tcl', 'tcl', 'Tk', 'tk', 'wx', 'FixTk', 'pyClark'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
@@ -118,6 +126,9 @@ if str(os.environ.get('WHL_ARCH')) == '32' or not sys.maxsize > 2**32:
 elif str(os.environ.get('WHL_ARCH')) == '_amd64' or sys.maxsize > 2**32:
     shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
     VERSION += '-win64'
+
+if hasPyClark:
+    shutil.copytree(os.path.dirname(pyClark.__file__), os.path.join('dist', 'mcedit', 'pyClark'))
 
 subprocess.check_call([
     SEVENZIP,

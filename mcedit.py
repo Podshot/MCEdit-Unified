@@ -848,9 +848,11 @@ class MCEdit(GLViewport):
 
         if not config.settings.reportCrashesAsked.get():
             answer = albow.ask(
-                'Would you like to send anonymous error reports to the MCEdit-Unified Team to help with improving future releases?\n\nThe error reports are stripped of any identifying user information before being sent.\n\nPyClark, the library used, is open source under the GNU LGPL v3 license and is maintained by Podshot. The source code can be located here: https://github.com/Podshot/pyClark.\n\nThere has been no modification to the library in any form.\n\nIf you allow MCEdit-Unified to send error reports, this change will take effect next time MCEdit-Unified is launched.',
+                'Would you like to send anonymous error reports to the MCEdit-Unified Team to help with improving future releases?\n\nError reports are stripped of any identifying user information before being sent.\n\nPyClark, the library used, is open source under the GNU LGPL v3 license and is maintained by Podshot. The source code can be located here: https://github.com/Podshot/pyClark.\n\nThere has been no modification to the library in any form.',
                 ['Allow', 'Deny'], default=1, cancel=1
             )
+            if answer == 'Allow':
+                albow.alert("Error reporting will be enabled next time MCEdit-Unified is launched")
             config.settings.reportCrashes.set(answer == 'Allow')
             config.settings.reportCrashesAsked.set(True)
 
