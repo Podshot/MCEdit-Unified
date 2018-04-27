@@ -508,10 +508,10 @@ class PocketLeveldbDatabase(object):
             c = chr(y)
             ver = chr(chunk.subchunks_versions.get(y, 0))
             if chunk._Blocks.binary_data[y] is None:
-                chunk._Blocks.binary_data[y] = numpy.zeros((16, 16, 16))
+                chunk._Blocks.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
             blocks = chunk._Blocks.binary_data[y].tostring()
             if chunk._Data.binary_data[y] is None:
-                chunk._Data.binary_data[y] = numpy.zeros((16, 16, 16))
+                chunk._Data.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
             blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
             skyLight = ""
             blockLight = ""
