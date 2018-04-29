@@ -1563,6 +1563,8 @@ class LevelEditor(GLViewport):
                             if isinstance(level, pymclevel.MCInfdevOldLevel):
                                 needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
                                 needsRefresh.extend(level.unsavedWorkFolder.listChunks())
+                            elif isinstance(level, pymclevel.PocketLeveldbWorld):
+                                needsRefresh = [c.chunkPosition for c in level._loadedChunks.itervalues() if c.dirty]
                             else:
                                 needsRefresh = [c for c in level.allChunks if level.getChunk(*c).dirty]
                             #xxx change MCInfdevOldLevel to monitor changes since last call
@@ -1575,6 +1577,8 @@ class LevelEditor(GLViewport):
                         if isinstance(level, pymclevel.MCInfdevOldLevel):
                             needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
                             needsRefresh.extend(level.unsavedWorkFolder.listChunks())
+                        elif isinstance(level, pymclevel.PocketLeveldbWorld):
+                            needsRefresh = [c.chunkPosition for c in level._loadedChunks.itervalues() if c.dirty]
                         else:
                             needsRefresh = [c for c in level.allChunks if level.getChunk(*c).dirty]
                         #xxx change MCInfdevOldLevel to monitor changes since last call
