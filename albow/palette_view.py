@@ -232,7 +232,10 @@ class PaletteView(GridView):
         n = self.num_items() / getattr(getattr(self, 'parent', None), 'num_cols', lambda: 1)()
         # Get the displayed row number (v)
         v = self.num_rows()
-        s = float(d) / n
+        if n:
+            s = float(d) / n
+        else:
+            s = 0
         h = s * v
         if type(h) == float:
             if h - int(h) > 0:
