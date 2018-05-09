@@ -79,7 +79,7 @@ pymclevel_files = [(os.path.join(dest, os.path.basename(src)), src, 'DATA') for 
 datas += pymclevel_files
 
 misc_files = walk('fonts') + walk('item-textures') + walk('Items') + walk('lang') + walk('mcver') + walk('stock-filters')
-misc_files += walk('stock-brushes') + walk('stock-schematics') + walk('toolicons')
+misc_files += walk('stock-brushes') + walk('stock-schematics') + walk('toolicons') + walk('splashes')
 misc_files = set([(os.path.join(dest, os.path.basename(src)), src, 'DATA') for src, dest in misc_files])
 datas += misc_files
 
