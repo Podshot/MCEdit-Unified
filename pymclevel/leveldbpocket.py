@@ -506,7 +506,7 @@ class PocketLeveldbDatabase(object):
 
         for y in chunk.subchunks:
             c = chr(y)
-            ver = chr(chunk.subchunks_versions.get(y, 0))
+            ver = chr(0)  # FIXME: Hack to make saving works while 1.2.13 support is only half done! Should be changed!!
             if chunk._Blocks.binary_data[y] is None:
                 chunk._Blocks.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
             blocks = chunk._Blocks.binary_data[y].tostring()
