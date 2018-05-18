@@ -241,7 +241,7 @@ import threading
 from utilities.gl_display_context import GLDisplayContext
 
 import mclangres
-from utilities import mcver_updater
+from utilities import mcver_updater, mcworld_support
 
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
@@ -727,6 +727,9 @@ class MCEdit(GLViewport):
 
     def loadFile(self, filename, addToRecent=True):
         if os.path.exists(filename):
+            if filename.endswith(".mcworld"):
+                filename = mcworld_support.open_world(filename)
+                addToRecent = False
             try:
                 self.editor.loadFile(filename, addToRecent=addToRecent)
             except Exception as e:
@@ -1070,8 +1073,10 @@ if __name__ == "__main__":
             logger.debug("MCEdit is exiting normally.")
             logger.debug("Lines below this one are pure Python output.")
             sys.stdout = sys.stderr = FakeStdOutErr()
+        mcworld_support.close_all_temp_dirs()
         pass
     except:
+        mcworld_support.close_all_temp_dirs()
         traceback.print_exc()
         print ""
         print "=================================="

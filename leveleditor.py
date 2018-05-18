@@ -1602,14 +1602,28 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def saveAs(self):
+
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
-        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
-                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
+        if isinstance(self.level, pymclevel.leveldbpocket.PocketLeveldbWorld):
+            filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
+                                              self.level.LevelName + " - Copy", _('Minecraft World\0*.*\0MCWorld File\0*.mcworld\0\0'), "")
+        else:
+            filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
+                                              shortName + " - Copy",
+                                              _('Minecraft World\0*.*\0\0'), "")
+
         if filename is None:
             return
-        shutil.copytree(self.level.worldFolder.filename, filename)
-        self.level.worldFolder = AnvilWorldFolder(filename)
-        self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
+
+        #if filename.endswith()
+        if isinstance(self.level, pymclevel.leveldbpocket.PocketLeveldbWorld):
+            shutil.copytree(self.level.worldFile.path, filename)
+            self.level.worldFile.path = filename
+            self.level.filename = os.path.join(filename, 'level.dat')
+        else:
+            shutil.copytree(self.level.worldFolder.filename, filename)
+            self.level.worldFolder = AnvilWorldFolder(filename)
+            self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
         if hasattr(self.level, "acquireSessionLock"):
             self.level.acquireSessionLock()
 

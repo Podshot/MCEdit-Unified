@@ -236,7 +236,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
     global lastSchematicsDir, lastSaveDir
 
     if not suffixes:
-        suffixes = ["mclevel", "dat", "mine", "mine.gz"]
+        suffixes = ["mclevel", "dat", "mine", "mine.gz", "mcworld"]
         suffixesChanged = False
     else:
         suffixesChanged = True
@@ -295,7 +295,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
 def askOpenFileWin32(title, schematics, initialDir, suffixes=None):
     try:
         if not suffixes:
-            f = (_('Levels and Schematics') + '\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt\0' +
+            f = (_('Levels and Schematics') + '\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv;*.nbt;*.mcworld\0' +
                  '*.*\0*.*\0\0')
         else:
             f = "All\0"
