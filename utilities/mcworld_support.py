@@ -5,7 +5,7 @@ import atexit
 import os
 import glob
 
-DO_REMOVE = False
+DO_REMOVE = True
 
 def trim_any_leftovers():
     print tempfile.gettempdir()
@@ -37,6 +37,19 @@ def open_world(file_path):
     zip_fd.close()
 
     return _find_level_dat(temp_dir)
+
+def save_world(world_path, dest_path):
+    zip_fd = zipfile.ZipFile(dest_path, 'w')
+    for root, dirs, files in os.walk(world_path):
+        for f in files:
+            result = os.path.join(root, f)
+            result = result.replace(world_path, '')[1:]
+            fp = open(os.path.join(root, f), 'rb')
+            zip_fd.writestr(result, fp.read())
+            fp.close()
+    zip_fd.close()
+
+    return os.path.basename(dest_path)
 
 atexit.register(close_all_temp_dirs)
 trim_any_leftovers()

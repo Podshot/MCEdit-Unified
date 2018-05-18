@@ -14,6 +14,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 # Moving this here to get log entries ASAP -- D.C.-G.
 import logging
 from pymclevel.schematic import StructureNBT
+from utilities import mcworld_support
+
 log = logging.getLogger(__name__)
 
 #-# Modified by D.C.-G. for translation purpose
@@ -1613,6 +1615,11 @@ class LevelEditor(GLViewport):
                                               _('Minecraft World\0*.*\0\0'), "")
 
         if filename is None:
+            return
+
+        if filename.endswith(".mcworld"):
+            result = mcworld_support.save_world(self.level.worldFile.path, filename)
+            self.Notify("Successfully saved: \"{}\"".format(result))
             return
 
         #if filename.endswith()
