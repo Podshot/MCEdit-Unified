@@ -732,6 +732,9 @@ class MCEdit(GLViewport):
                 addToRecent = False
             try:
                 self.editor.loadFile(filename, addToRecent=addToRecent)
+            except NotImplementedError as e:
+                albow.alert(e.message)
+                return None
             except Exception as e:
                 logging.error(u'Failed to load file {0}: {1!r}'.format(
                     filename, e))

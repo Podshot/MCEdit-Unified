@@ -1284,6 +1284,9 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     log.info("Error loading %s.dat_old. Initializing with defaults."%dat_name)
                     self._create(self.filename, random_seed, last_played)
 
+        if self.root_tag.get('Data', nbt.TAG_Compound()).get('Version', nbt.TAG_Compound()).get('Id', nbt.TAG_Int(-1)).value > 1451:
+            raise NotImplementedError("Java 1.13 format worlds are not supported at this time")
+
     def saveInPlaceGen(self):
         if self.readonly:
             raise IOError("World is opened read only. (%s)"%self.filename)
