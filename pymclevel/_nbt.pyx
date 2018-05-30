@@ -603,6 +603,7 @@ def load(filename="", buf=None):
     """
     if filename:
         buf = open(filename, "rb")
+    data = buf
 
     if hasattr(buf, "read"):
         data = buf.read()
