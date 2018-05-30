@@ -1039,7 +1039,7 @@ class LevelEditor(GLViewport):
     def addExternalWidget(self, obj):
         if isinstance(obj, Widget):
             return self.addExternalWidget_Widget(obj)
-        elif isinstance(obj, dict):
+        elif isinstance(obj, (dict, tuple, list)):
             return self.addExternalWidget_Dict(obj)
 
     def addExternalWidget_Widget(self, obj):
@@ -1078,6 +1078,10 @@ class LevelEditor(GLViewport):
         cols = []
         max_height = self.mainViewport.height
         widget.inputDict = {}
+
+        if isinstance(provided_fields, dict):
+            provided_fields = [(key, value) for key, value in provided_fields.iteritems()]
+
         for inputName, inputType in provided_fields:
             if isinstance(inputType, tuple) and inputType != ():
                 if isinstance(inputType[0], (int, long, float)):
