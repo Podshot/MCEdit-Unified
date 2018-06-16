@@ -546,7 +546,7 @@ def gunzip(data):
 def try_gunzip(data):
     try:
         data = gunzip(data)
-    except IOError, zlib.error:
+    except IOError as zlib.error:
         pass
     return data
 
