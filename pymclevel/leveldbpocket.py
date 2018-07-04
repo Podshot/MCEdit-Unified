@@ -505,25 +505,28 @@ class PocketLeveldbDatabase(object):
 
         empty = numpy.zeros((16, 16, 16), dtype="uint8")
 
-        for y in range(16):
+        for y in chunk.subchunks:
             c = chr(y)
             ver = chr(0)  # FIXME: Hack to make saving works while 1.2.13 support is only half done! Should be changed!!
             if chunk._Blocks.binary_data[y] is None:
-                chunk._Blocks.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
-            blocks = chunk._Blocks.binary_data[y].tostring()
+                blocks = None
+            else:
+                blocks = chunk._Blocks.binary_data[y].tostring()
             if chunk._Data.binary_data[y] is None:
-                chunk._Data.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
-            blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
+                blockData = None
+            else:
+                blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
             skyLight = ""
             blockLight = ""
             if chunk.chunk_version == "\x03":
                 skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
                 blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
-            terrain = ver + blocks + blockData + skyLight + blockLight
+            if blocks is not None and blockData is not None:
+                terrain = ver + blocks + blockData + skyLight + blockLight
 
             if batch is None:
                 with self.world_db() as db:
-                    if numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty):
+                    if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
                         try:
                             db.Delete(key + "\x2f" + c)
                         except:
@@ -537,7 +540,7 @@ class PocketLeveldbDatabase(object):
                         if data_2d:
                             db.Put(wop, key + '\x2d', data_2d)
             else:
-                if numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty):
+                if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
                     try:
                         batch.Delete(key + "\x2f" + c)
                     except:
