@@ -531,10 +531,7 @@ class PocketLeveldbDatabase(object):
             if batch is None:
                 with self.world_db() as db:
                     if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
-                        try:
-                            db.Delete(key + "\x2f" + c)
-                        except:
-                            continue
+                        db.Delete(key + "\x2f" + c)
                     else:
                         db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
@@ -545,10 +542,7 @@ class PocketLeveldbDatabase(object):
                             db.Put(wop, key + '\x2d', data_2d)
             else:
                 if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
-                    try:
-                        batch.Delete(key + "\x2f" + c)
-                    except:
-                        continue
+                    batch.Delete(key + "\x2f" + c)
                 else:
                     batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
