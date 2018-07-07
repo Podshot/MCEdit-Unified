@@ -507,8 +507,6 @@ class PocketLeveldbDatabase(object):
             chunk._BlockLight.update_subchunks()
         chunk.subchunks = chunk._Blocks.subchunks
 
-        empty = numpy.zeros((16, 16, 16), dtype="uint8")
-
         for y in chunk.subchunks:
             c = chr(y)
             ver = chr(0)  # FIXME: Hack to make saving works while 1.2.13 support is only half done! Should be changed!!
@@ -530,7 +528,7 @@ class PocketLeveldbDatabase(object):
 
             if batch is None:
                 with self.world_db() as db:
-                    if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
+                    if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == 0) and numpy.all(chunk._Data.binary_data[y] == 0)):
                         db.Delete(key + "\x2f" + c)
                     else:
                         db.Put(wop, key + "\x2f" + c, terrain)
@@ -541,7 +539,7 @@ class PocketLeveldbDatabase(object):
                         if data_2d:
                             db.Put(wop, key + '\x2d', data_2d)
             else:
-                if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == empty) and numpy.all(chunk._Data.binary_data[y] == empty)):
+                if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == 0) and numpy.all(chunk._Data.binary_data[y] == 0)):
                     batch.Delete(key + "\x2f" + c)
                 else:
                     batch.Put(key + "\x2f" + c, terrain)
