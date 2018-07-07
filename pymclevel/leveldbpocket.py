@@ -342,13 +342,27 @@ class PocketLeveldbDatabase(object):
             except RuntimeError:
                 if DEBUG_PE:
                     write_dump("!!! No terrain found for sub-chunk (%s, %s, %s)\n" % (cx, cz, y))
-                return None
+                terrain = None
             except Exception as e:
                 if DEBUG_PE:
                     write_dump("!!! An unhandled error occured when loading sub-chunk (%s, %s, %s) terrain.\n" % (cx, cz, y))
                     write_dump("%s" % e)
+                terrain = None
 
-        return terrain
+            if y == 0:
+                try:
+                    tile_entities = db.Get(rop, key + "\x31")
+                except RuntimeError:
+                    tile_entities = None
+
+                try:
+                    entities = db.Get(rop, key + "\x32")
+                except RuntimeError:
+                    entities = None
+            else:
+                tile_entities = entities = None
+
+        return terrain, tile_entities, entities
 
     def _readChunk(self, cx, cz, world, readOptions=None):
         """
@@ -404,18 +418,8 @@ class PocketLeveldbDatabase(object):
                     biomes.shape = (16 ,16)
                     chunk.Biomes = biomes
                 for i in range(16):
-                    terrain = self._readSubChunk_1plus(cx, cz, i, rop, key)
-                    chunk.add_terrain(terrain=terrain, subchunk=i)
-
-                try:
-                    tile_entities = db.Get(rop, key + "\x31")
-                except RuntimeError:
-                    tile_entities = None
-                try:
-                    entities = db.Get(rop, key + "\x32")
-                except RuntimeError:
-                    entities = None
-                chunk.add_data(tile_entities=tile_entities, entities=entities)
+                    tr, te, en = self._readSubChunk_1plus(cx, cz, i, rop, key)
+                    chunk.add_data(terrain=tr, tile_entities=te, entities=en, subchunk=i)
 
                 # Generate the lights if we have a PE 1.1 chunk.
                 if ord(chunk.chunk_version) >= 4:
@@ -1873,10 +1877,10 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
         return blocks, data, storage
 
-    def add_terrain(self, terrain=None, subchunk=None):
+    def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
         """Add terrain to chunk.
 
-        terrain: str: 4096 long string. Defaults to 'None'.
+        terrain, tile_entities, entities: str: 4096 long string. Defaults to 'None'.
         subchunk: int: subchunk 'height'; generaly 0 to 15 number.
         """
         if type(subchunk) != int:
@@ -1932,12 +1936,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             if subchunk == 0 and DEBUG_PE:
                 write_dump("!!! No terrain for sub-chunk (%s, %s, %s)\n" % (self.chunkPosition[0], self.chunkPosition[1], subchunk))
 
-    def add_data(self, tile_entities=None, entities=None):
-        """Add data to subchunk.
-
-        terrain, tile_entities, entities: str: 4096 long string. Defaults to 'None'.
-        subchunk: int: subchunk 'height'; generaly 0 to 15 number.
-        """
         if tile_entities:
             if DEBUG_PE:
                 write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n' % (self.chunkPosition[0], self.chunkPosition[1]))
