@@ -160,7 +160,7 @@ class MCLevel(object):
             t = str(type(self))
             self.__gamePlatform = type_map.get(t[8:len(t) - 2], 'Unknown')
             if self.__gamePlatform == 'Unknown' and self.root_tag.name:
-                self.__gameVersion = self.root_tag.name
+                self.__gamePlatform = self.root_tag.name
         return self.__gamePlatform
 
     @property
