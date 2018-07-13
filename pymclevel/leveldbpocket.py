@@ -77,7 +77,7 @@ def write_dump(msg):
 
 
 # =====================================================================
-def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
+def loadNBTCompoundList(data, littleEndian=True, partNBT=False, count=None):
     """
     Loads a list of NBT Compound tags from a bunch of data.
     Uses sep to determine where the next Compound tag starts.
@@ -86,13 +86,15 @@ def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
     :param partNBT: bool. If part of the data is NBT (begins with NBT), the function will return the list of compounds with the rest of the data that was not NBT
     :return: list of TAG_Compounds
     """
-    def load(_data, _partNBT):
+    def load(_data, _partNBT, _count):
         compound_list = []
         idx = 0
-        while idx < len(_data):
+        count = 0
+        while idx < len(_data) and (_count is None or count < _count):
             try:
                 __data = nbt.load(buf=_data[idx:])
                 idx += len(nbt.gunzip(__data.save()))
+                count += 1
             except Exception as e:
                 if _partNBT:
                     return compound_list, _data[idx:]
@@ -124,14 +126,14 @@ def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
                 write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
             compound_list.append(__data)
         if _partNBT:
-            return compound_list, None
+            return compound_list, _data[idx:]
         return compound_list
 
     if littleEndian:
         with nbt.littleEndianNBT():
-            return load(data, partNBT)
+            return load(data, partNBT, count)
     else:
-        return load(data, partNBT)
+        return load(data, partNBT, count)
 
 
 # =====================================================================
@@ -165,6 +167,46 @@ class InvalidPocketLevelDBWorldException(Exception):
 
 
 # =====================================================================
+def get_blocks_storage_from_blocks_and_data(blocks, data):
+    palette = []
+    new_blocks = []
+    for i in range(len(blocks)):
+        try:
+            block_string = "minecraft:" + pocketMaterials.blocksByID[blocks[i], data[i]].stringID
+            block_data = data[i]
+        except:
+            block_string = "minecraft:air"
+            block_data = 0
+        with nbt.littleEndianNBT():
+            block_nbt = nbt.TAG_Compound([nbt.TAG_String(block_string, "name"), nbt.TAG_Short(block_data, "val")]).save(compressed=False)
+        if block_nbt not in palette:
+            palette.append(block_nbt)
+        position = palette.index(block_nbt)
+        new_blocks.append(position)
+    numpy_blocks = numpy.array(new_blocks)
+    max_bits = len('{0:b}'.format(numpy_blocks.max()))
+    possible_bits_per_blocks = [1, 2, 3, 4, 5, 6, 8, 16]
+    bits_per_block = possible_bits_per_blocks[numpy.searchsorted(possible_bits_per_blocks, max_bits, side='left')]
+    word_size = 32
+    blocks_per_word = int(floor(32 / bits_per_block))
+    word_count = int(ceil(4096 / float(blocks_per_word)))
+    blocks_binary = (numpy_blocks.reshape(-1, 1) >> numpy.arange(bits_per_block)[::-1] & 1).astype(bool)
+    bits_per_word = bits_per_block * blocks_per_word
+    bits_missing = bits_per_word - (blocks_binary.shape[0] * blocks_binary.shape[1]) % bits_per_word
+    if bits_missing == bits_per_word:
+        bits_missing = 0
+    final_blocks_binary = numpy.concatenate([blocks_binary, numpy.array([False] * bits_missing).reshape(-1, bits_per_block)])
+    clean_blocks_binary = final_blocks_binary.reshape(-1, word_size / bits_per_block, bits_per_block)[:, ::-1].reshape(-1, blocks_per_word * bits_per_block)
+    full_blocks_binary = numpy.hstack([numpy.empty([word_count, word_size - bits_per_word], dtype=bool), clean_blocks_binary])
+    flat_blocks_binary = full_blocks_binary.reshape(-1, word_size / 8, 8)[:, ::-1, :].ravel()
+    blocks_in_bytes = numpy.packbits(flat_blocks_binary.astype(int)).tobytes()
+
+    palette_size = struct.pack("<i", len(palette))
+    palette_string = "".join(palette)
+
+    return chr(bits_per_block << 1) + blocks_in_bytes + palette_size + palette_string
+
+
 class PocketLeveldbDatabase(object):
     """
     Not to be confused with leveldb.DB
@@ -175,7 +217,7 @@ class PocketLeveldbDatabase(object):
     """
     holdDatabaseOpen = True
     _world_db = None
-    world_version = None # to be set to 'pre1.0' or '1.plus'
+    world_version = None  # to be set to 'pre1.0' or '1.plus'
 
     def __open_db(self):
         """Opens a DB and return the associated object."""
@@ -415,7 +457,7 @@ class PocketLeveldbDatabase(object):
                     # and the biome information of the chunk on the last 256 bytes.
                     chunk.data_2d = d2d
                     biomes = numpy.fromstring(d2d[512:], 'uint8')
-                    biomes.shape = (16 ,16)
+                    biomes.shape = (16, 16)
                     chunk.Biomes = biomes
                 for i in range(16):
                     tr, te, en = self._readSubChunk_1plus(cx, cz, i, rop, key)
@@ -497,6 +539,10 @@ class PocketLeveldbDatabase(object):
         chunk._Blocks.update_subchunks()
         chunk._Data.subchunks = chunk._Blocks.subchunks
         chunk._Data.update_subchunks()
+        chunk._extra_blocks.subchunks = chunk._Blocks.subchunks
+        chunk._extra_blocks_data.subchunks = chunk._Blocks.subchunks
+        chunk._extra_blocks.update_subchunks()
+        chunk._extra_blocks_data.update_subchunks()
         data_2d = getattr(chunk, 'data_2d', None)
         if hasattr(chunk, 'Biomes') and data_2d:
             data_2d = data_2d[:512] + chunk.Biomes.tostring()
@@ -509,7 +555,7 @@ class PocketLeveldbDatabase(object):
 
         for y in chunk.subchunks:
             c = chr(y)
-            ver = chr(0)  # FIXME: Hack to make saving works while 1.2.13 support is only half done! Should be changed!!
+            ver = chr(chunk.subchunks_versions.get(y, 0))
             if chunk._Blocks.binary_data[y] is None:
                 blocks = None
             else:
@@ -518,13 +564,32 @@ class PocketLeveldbDatabase(object):
                 blockData = None
             else:
                 blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
-            skyLight = ""
-            blockLight = ""
-            if chunk.chunk_version == "\x03":
-                skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
-                blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
-            if blocks is not None and blockData is not None:
+            if ord(ver) in [0, 2, 3, 4, 5, 6, 7]:
+                blocks = chunk._Blocks.binary_data[y].astype("uint8").tostring()
+                blockData = packNibbleArray(chunk._Data.binary_data[y]).astype("uint8").tostring()
+                skyLight = ""
+                blockLight = ""
+                if chunk.chunk_version == "\x03":
+                    skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).astype("uint8").tostring()
+                    blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).astype("uint8").tostring()
                 terrain = ver + blocks + blockData + skyLight + blockLight
+            elif ord(ver) == 1 or ord(ver) == 8:
+                blocks = chunk._Blocks.binary_data[y].ravel()
+                blockData = chunk._Data.binary_data[y].ravel()
+                blocks_storage = get_blocks_storage_from_blocks_and_data(blocks, blockData)
+                if ord(ver) == 1:
+                    terrain = ver + blocks_storage
+                else:
+                    extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
+                    if extra_blocks is None:
+                        extra_blocks = ""
+                        num_of_storages = 1
+                    else:
+                        num_of_storages = 2
+                        extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
+                        extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
+                    terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
+
 
             if batch is None:
                 with self.world_db() as db:
@@ -1649,7 +1714,7 @@ class PocketLeveldbChunkPre1(LightedChunk):
 # =====================================================================
 class PE1PlusDataContainer:
     """Container for subchunks data for MCPE 1.0+."""
-    def __init__(self, subdata_length, bin_type, name='none', shape=None, chunk_height=256, bit_shift_indexes=None):
+    def __init__(self, subdata_length, bin_type, name='none', shape=None, chunk_height=256):
         """subdata_length: int: the length for the underlying numpy objects.
         bin_type: str: the binary data type, like uint8
         destination: numpy array class (not instance): destination object to be used by other MCEdit objects as 'chunk.Blocks', or 'chunk.Data'
@@ -1661,7 +1726,6 @@ class PE1PlusDataContainer:
         self.name = name
         self.subdata_length = subdata_length
         self.bin_type = bin_type
-        self.bit_shift_indexes = bit_shift_indexes
         # the first two argument for the shape always are 16
         if shape is None:
             self.shape = (16, 16, subdata_length / (16 * 16))
@@ -1669,11 +1733,11 @@ class PE1PlusDataContainer:
             self.shape = shape
         self.destination = numpy.zeros(subdata_length * (chunk_height / 16), bin_type)
         self.destination.shape = (self.shape[0], self.shape[1], chunk_height)
-        self.subchunks = [] # Store here the valid subchunks as ints
-        self.binary_data = [None] * 16 # Has to be a numpy arrays. This list is indexed using the subchunks content.
+        self.subchunks = []  # Store here the valid subchunks as ints
+        self.binary_data = [None] * 16  # Has to be a numpy arrays. This list is indexed using the subchunks content.
 
     def __repr__(self):
-        return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }"%(self.subdata_length, self.bin_type, self.shape, self.subchunks)
+        return "PE1PlusDataContainer { subdata_length: %s, bin_type: %s, shape: %s, subchunks: %s }" % (self.subdata_length, self.bin_type, self.shape, self.subchunks)
 
     def __getitem__(self, x, z, y):
         subchunk = y / 16
@@ -1748,7 +1812,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         Initialize the subchunbk containers.
         """
-        self.world_version = world_version # For info and tracking
+        self.world_version = world_version  # For info and tracking
         if chunk_version:
             self.chunk_version = chunk_version
         self.chunkPosition = (cx, cz)
@@ -1769,11 +1833,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 break
         self._Blocks = PE1PlusDataContainer(4096, 'uint'+str(max_blocks_dtype), name='Blocks', chunk_height=self.Height)
         self.Blocks = self._Blocks.destination
-        self._Data = PE1PlusDataContainer(4096, 'uint'+str(max_data_dtype), name='Data', bit_shift_indexes=(0, 0, 0, 0))
+        self._Data = PE1PlusDataContainer(4096, 'uint'+str(max_data_dtype), name='Data')
         self.Data = self._Data.destination
-        self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight', bit_shift_indexes=(0, 0, 0, 0))
+        self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight')
         self.SkyLight = self._SkyLight.destination
-        self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight', bit_shift_indexes=(0, 0, 0, 0))
+        self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight')
         self.BlockLight = self._BlockLight.destination
 
         self.TileEntities = nbt.TAG_List(list_type=nbt.TAG_COMPOUND)
@@ -1781,6 +1845,11 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         self.Biomes = numpy.zeros((16, 16), 'uint8')
         self.data2d = None
+
+        self._extra_blocks = PE1PlusDataContainer(4096, 'uint' + str(max_blocks_dtype), name='extra_blocks', chunk_height=self.Height)
+        self.extra_blocks = self._extra_blocks.destination
+        self._extra_blocks_data = PE1PlusDataContainer(4096, 'uint' + str(max_data_dtype), name='extra_blocks_data')
+        self.extra_blocks_data = self._extra_blocks_data.destination
 
 #=======================================================================
 # Get rid of that, or rework it?
@@ -1842,7 +1911,10 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
     def _read_block_storage(self, storage):
         bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
-        blocks_per_word = int(floor(32 / bits_per_block))
+        try:
+            blocks_per_word = int(floor(32 / bits_per_block))
+        except:
+            print "hi"
         word_count = int(ceil(4096 / float(blocks_per_word)))
         raw_blocks, storage = storage[:word_count * 4], storage[word_count * 4:]
         word_size = 32
@@ -1861,10 +1933,12 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         block_size = max(bits_per_block, 8)
         blocks_before_palette = block_arr.dot(2**numpy.arange(block_arr.shape[1]-1, -1, -1))[:4096]
         blocks_before_palette = blocks_before_palette.astype("uint"+str(block_size))
-        pallet_size, pallet = struct.unpack("<i", storage[:4])[0], storage[4:]
-        pallet, storage = loadNBTCompoundList(pallet, partNBT=True)
-        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", -1) for item in pallet]
-        data = [item["val"].value for item in pallet]
+
+        # This might be varint and not just 4 bytes, need to make sure
+        palette_size, palette = struct.unpack("<i", storage[:4])[0], storage[4:]
+        palette_nbt, storage = loadNBTCompoundList(palette, partNBT=True, count=palette_size)
+        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 4095) for item in palette_nbt]
+        data = [item["val"].value for item in palette_nbt]
         blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[blocks_before_palette]
         data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
         return blocks, data, storage
@@ -1887,34 +1961,36 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 skyLight, terrain = terrain[:2048], terrain[2048:]
                 blockLight, terrain = terrain[:2048], terrain[2048:]
                 # 'Computing' data is needed before sending it to the data holders.
-                self._Blocks.add_data(subchunk, numpy.fromstring(blocks, self._Blocks.bin_type))
+                self._Blocks.add_data(subchunk, numpy.fromstring(blocks, "uint8").astype(self._Blocks.bin_type))
 
                 #             for k, v in ((self._Data, data), (self._SkyLight, skyLight), (self._BlockLight, blockLight)):
                 #                 a = numpy.fromstring(v, k.bin_type)
                 #                 a.shape = (16, 16, len(v) / 256)
                 #                 k.add_data(subchunk, unpackNibbleArray(a).tostring())
 
-                a = numpy.fromstring(data, self._Data.bin_type)
+                a = numpy.fromstring(data, "uint8")
                 a.shape = (16, 16, len(data) / 256)
-                self._Data.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), self._Data.bin_type))
+                self._Data.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), "uint8").astype(self._Data.bin_type))
 
                 if self.chunk_version == "\x03":
                     for k, v in ((self._SkyLight, skyLight), (self._BlockLight, blockLight)):
-                        a = numpy.fromstring(v, k.bin_type)
+                        a = numpy.fromstring(v, "uint8")
                         a.shape = (16, 16, len(v) / 256)
-                        k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), k.bin_type))
+                        k.add_data(subchunk,
+                                   numpy.fromstring(unpackNibbleArray(a).tostring(), "uint8").astype(k.bin_type))
             elif subchunk_version == 1:
                 blocks, data, terrain = self._read_block_storage(terrain)
                 self._Blocks.add_data(subchunk, blocks)
                 self._Data.add_data(subchunk, data)
-                subchunk_version = 0
             elif subchunk_version == 8:
                 num_of_storages, terrain = ord(terrain[0]), terrain[1:]
                 while len(terrain) > 0:
                     blocks, data, terrain = self._read_block_storage(terrain)
                     self._Blocks.add_data(subchunk, blocks)
                     self._Data.add_data(subchunk, data)
-                    break  # TODO: replace the break here with logic to support multiple storage objects
+                    if len(terrain) > 0:
+                        self._extra_blocks.binary_data[subchunk], self._extra_blocks_data.binary_data[subchunk], ignored_data = self._read_block_storage(terrain)
+                    break  # Only support for one layer of extra blocks is in place
             else:
                 raise NotImplementedError("Not implemented this new type of world format yet")
 
