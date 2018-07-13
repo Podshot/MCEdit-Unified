@@ -569,7 +569,7 @@ class PocketLeveldbDatabase(object):
                 blockData = packNibbleArray(chunk._Data.binary_data[y]).astype("uint8").tostring()
                 skyLight = ""
                 blockLight = ""
-                if chunk.version == "\x03":
+                if chunk.chunk_version == "\x03":
                     skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).astype("uint8").tostring()
                     blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).astype("uint8").tostring()
                 terrain = ver + blocks + blockData + skyLight + blockLight
