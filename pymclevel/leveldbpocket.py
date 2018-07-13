@@ -384,21 +384,25 @@ class PocketLeveldbDatabase(object):
             except RuntimeError:
                 if DEBUG_PE:
                     write_dump("!!! No terrain found for sub-chunk (%s, %s, %s)\n" % (cx, cz, y))
-                return None
+                terrain = None
             except Exception as e:
                 if DEBUG_PE:
                     write_dump("!!! An unhandled error occured when loading sub-chunk (%s, %s, %s) terrain.\n" % (cx, cz, y))
                     write_dump("%s" % e)
+                terrain = None
 
-            try:
-                tile_entities = db.Get(rop, key + "\x31")
-            except RuntimeError:
-                tile_entities = None
+            if y == 0:
+                try:
+                    tile_entities = db.Get(rop, key + "\x31")
+                except RuntimeError:
+                    tile_entities = None
 
-            try:
-                entities = db.Get(rop, key + "\x32")
-            except RuntimeError:
-                entities = None
+                try:
+                    entities = db.Get(rop, key + "\x32")
+                except RuntimeError:
+                    entities = None
+            else:
+                tile_entities = entities = None
 
         return terrain, tile_entities, entities
 
@@ -415,24 +419,24 @@ class PocketLeveldbDatabase(object):
             key = struct.pack('<i', cx) + struct.pack('<i', cz)
             raise_err = False
             try:
-                ver = db.Get(rop, key + chr(118))
-                if ver is None:
+                chunk_version = db.Get(rop, key + chr(118))
+                if chunk_version is None:
                     raise_err = True
             except:
                 raise_err = True
             if raise_err:
                 raise ChunkNotPresent((cx, cz, self))
             if DEBUG_PE:
-                write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0", "\x04": "1.1"}.get(ver, 'Unknown'), v=repr(ver)))
+                write_dump("** Loading chunk ({x}, {z}) for PE {vs} ({v}).\n".format(x=cx, z=cz, vs={"\x02": "pre 1.0", "\x03": "1.0", "\x04": "1.1"}.get(chunk_version, 'Unknown'), v=repr(chunk_version)))
 
-            if ver == "\x02":
+            if chunk_version == "\x02":
                 # We have a pre 1.0 chunk
                 data = self._readChunk_pre1_0(cx, cz, rop, key)
                 if data is None:
                     raise ChunkNotPresent((cx, cz, self))
                 chunk = PocketLeveldbChunkPre1(cx, cz, world, data, world_version=self.world_version)
             # Let assume that any chunk wich version is greater or equal to 3 in a PE 1+ one.
-            elif ord(ver) >= 3:
+            elif ord(chunk_version) >= 3:
                 # PE 1+ chunk detected. Iterate through the subchunks to rebuild the whole data.
                 # If the world version was set o pre1.0 during initialization, change it for 1+.
                 # Change also the world height to 256...
@@ -446,7 +450,7 @@ class PocketLeveldbDatabase(object):
                     world._allChunks = None
                     world.allChunks
 
-                chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version, chunk_version=ver)
+                chunk = PocketLeveldbChunk1Plus(cx, cz, world, world_version=self.world_version, chunk_version=chunk_version)
                 d2d = db.Get(rop, key + "\x2d")
                 if d2d:
                     # data_2d contains the heightmap (currently computed dynamically, may change)
@@ -456,25 +460,24 @@ class PocketLeveldbDatabase(object):
                     biomes.shape = (16, 16)
                     chunk.Biomes = biomes
                 for i in range(16):
-                    r = self._readSubChunk_1plus(cx, cz, i, rop, key)
-                    if type(r) == tuple:
-                        tr, te, en = r
-                        chunk.add_data(terrain=tr, tile_entities=te, entities=en, subchunk=i)
+                    tr, te, en = self._readSubChunk_1plus(cx, cz, i, rop, key)
+                    chunk.add_data(terrain=tr, tile_entities=te, entities=en, subchunk=i)
+
                 # Generate the lights if we have a PE 1.1 chunk.
-                if ord(chunk.version) >= 4:
+                if ord(chunk.chunk_version) >= 4:
                     chunk.genFastLights()
                 if DEBUG_PE:
                     write_dump(">>> Chunk (%s, %s) sub-chunks: %s\n" % (cx, cz, repr(chunk.subchunks)))
-            elif ver is not None:
-                raise AttributeError("Unknown PE chunk version %s" % repr(ver))
-            elif ver is None:
+            elif chunk_version is not None:
+                raise AttributeError("Unknown PE chunk version %s" % repr(chunk_version))
+            elif chunk_version is None:
                 if DEBUG_PE:
                     write_dump("Chunk (%s, %s) version seem to be 'None'. Do this chunk exists in this world?" % (cx, cz))
                 return None
             else:
                 if DEBUG_PE:
-                    write_dump("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, repr(ver)))
-                raise AttributeError("Unknown chunk version detected for chukn (%s, %s): %s" % (cx, cz, repr(ver)))
+                    write_dump("Unknown chunk version detected for chunk (%s, %s): %s" % (cx, cz, repr(chunk_version)))
+                raise AttributeError("Unknown chunk version detected for chunk (%s, %s): %s" % (cx, cz, repr(chunk_version)))
             logger.debug("CHUNK LOAD %s %s" % (cx, cz))
             return chunk
 
@@ -543,7 +546,7 @@ class PocketLeveldbDatabase(object):
         data_2d = getattr(chunk, 'data_2d', None)
         if hasattr(chunk, 'Biomes') and data_2d:
             data_2d = data_2d[:512] + chunk.Biomes.tostring()
-        if chunk.version == "\x03":
+        if chunk.chunk_version == "\x03":
             chunk._SkyLight.subchunks = chunk._Blocks.subchunks
             chunk._SkyLight.update_subchunks()
             chunk._BlockLight.subchunks = chunk._Blocks.subchunks
@@ -554,9 +557,13 @@ class PocketLeveldbDatabase(object):
             c = chr(y)
             ver = chr(chunk.subchunks_versions.get(y, 0))
             if chunk._Blocks.binary_data[y] is None:
-                chunk._Blocks.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
+                blocks = None
+            else:
+                blocks = chunk._Blocks.binary_data[y].tostring()
             if chunk._Data.binary_data[y] is None:
-                chunk._Data.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
+                blockData = None
+            else:
+                blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
             if ord(ver) in [0, 2, 3, 4, 5, 6, 7]:
                 blocks = chunk._Blocks.binary_data[y].astype("uint8").tostring()
                 blockData = packNibbleArray(chunk._Data.binary_data[y]).astype("uint8").tostring()
@@ -583,19 +590,26 @@ class PocketLeveldbDatabase(object):
                         extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
                     terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
 
+
             if batch is None:
                 with self.world_db() as db:
-                    db.Put(wop, key + "\x2f" + c, terrain)
+                    if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == 0) and numpy.all(chunk._Data.binary_data[y] == 0)):
+                        db.Delete(key + "\x2f" + c)
+                    else:
+                        db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
-                        db.Put(wop, key + '\x76', chunk.version)
+                        db.Put(wop, key + '\x76', chunk.chunk_version)
                         db.Put(wop, key + '\x31', tileEntityData)
                         db.Put(wop, key + '\x33', entityData)
                         if data_2d:
                             db.Put(wop, key + '\x2d', data_2d)
             else:
-                batch.Put(key + "\x2f" + c, terrain)
+                if blocks is None or blockData is None or (numpy.all(chunk._Blocks.binary_data[y] == 0) and numpy.all(chunk._Data.binary_data[y] == 0)):
+                    batch.Delete(key + "\x2f" + c)
+                else:
+                    batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
-                    batch.Put(key + '\x76', chunk.version)
+                    batch.Put(key + '\x76', chunk.chunk_version)
                     batch.Put(key + '\x31', tileEntityData)
                     batch.Put(key + '\x32', entityData)
                     if data_2d:
@@ -610,7 +624,7 @@ class PocketLeveldbDatabase(object):
         :return: None
         """
         # Check the chunk version, since PE 1.0+ can contain pre 1.0+ chunks
-        ver = chunk.version
+        ver = chunk.chunk_version
         if ver == "\x02":
             self._saveChunk_pre1_0(chunk, batch, writeOptions)
         elif ord(ver) >= 3:
@@ -652,17 +666,17 @@ class PocketLeveldbDatabase(object):
 
         logger.debug("DELETED CHUNK %s %s" % (cx, cz))
 
-    def getAllChunks(self, readOptions=None, version=None):
+    def getAllChunks(self, readOptions=None, world_version=None):
         """
         Returns a list of all chunks that have terrain data in the database.
         Chunks with only Entities or TileEntities are ignored.
         :param readOptions: ReadOptions
-        :param version: game version to read the data for. Default: None.
+        :param world_version: game version to read the data for. Default: None.
         :return: list
         """
         with self.world_db() as db:
-            if not version:
-                version = self.world_version
+            if not world_version:
+                world_version = self.world_version
             allChunks = []
             rop = self.readOptions if readOptions is None else readOptions
 
@@ -672,7 +686,7 @@ class PocketLeveldbDatabase(object):
                 key = it.key()
 
                 # This version check may be useless...
-                if version == 'pre1.0':
+                if world_version == 'pre1.0':
                     if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
                         it.Next()
                         continue
@@ -696,7 +710,7 @@ class PocketLeveldbDatabase(object):
                 t = ord(key[8])
 
                 # This need to be changed, because we assume that if 't' is 47 we have a 1+ chunk, which may not be accurate...
-                if (version == 'pre1.0' and t == 48) or (version == '1.plus' and t == 118): # or t == 47:
+                if (world_version == 'pre1.0' and t == 48) or (world_version == '1.plus' and t == 118): # or t == 47:
                     cx, cz = struct.unpack('<i', raw_x), struct.unpack('<i', raw_z)
                     allChunks.append((cx[0], cz[0]))
                 it.Next()
@@ -794,7 +808,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._allChunks is None:
             self._allChunks = self.worldFile.getAllChunks()
             if self.world_version == '1.plus' and self.dat_world_version == '\x04':
-                self._allChunks += self.worldFile.getAllChunks(version='pre1.0')
+                self._allChunks += self.worldFile.getAllChunks(world_version='pre1.0')
         return self._allChunks
 
     @property
@@ -1510,7 +1524,7 @@ class PocketLeveldbChunkPre1(LightedChunk):
     _Entities = nbt.TAG_List()
     _TileEntities = nbt.TAG_List()
     dirty = False
-    version = "\x02"
+    chunk_version = "\x02"
 
     def __init__(self, cx, cz, world, data=None, create=False, world_version=None):
         """
@@ -1784,7 +1798,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
     _Entities = nbt.TAG_List()
     _TileEntities = nbt.TAG_List()
     dirty = False
-    version = "\x03"
+    chunk_version = "\x03"
 
     def __init__(self, cx, cz, world, data=None, create=False, world_version=None, chunk_version=None):
         """
@@ -1798,9 +1812,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         Initialize the subchunbk containers.
         """
-        self.world_version = world_version # For info and tracking
+        self.world_version = world_version  # For info and tracking
         if chunk_version:
-            self.version = chunk_version
+            self.chunk_version = chunk_version
         self.chunkPosition = (cx, cz)
         self.world = world
         self.subchunks = []
@@ -1930,7 +1944,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         return blocks, data, storage
 
     def add_data(self, terrain=None, tile_entities=None, entities=None, subchunk=None):
-        """Add data to subchunk.
+        """Add terrain to chunk.
 
         terrain, tile_entities, entities: str: 4096 long string. Defaults to 'None'.
         subchunk: int: subchunk 'height'; generaly 0 to 15 number.
@@ -1940,8 +1954,8 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         if terrain:
             self.subchunks.append(subchunk)
 
-            version, terrain = ord(terrain[0]), terrain[1:]
-            if version in [0, 2, 3, 4, 5, 6, 7]:
+            subchunk_version, terrain = ord(terrain[0]), terrain[1:]
+            if subchunk_version in [0, 2, 3, 4, 5, 6, 7]:
                 blocks, terrain = terrain[:4096], terrain[4096:]
                 data, terrain = terrain[:2048], terrain[2048:]
                 skyLight, terrain = terrain[:2048], terrain[2048:]
@@ -1958,16 +1972,17 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 a.shape = (16, 16, len(data) / 256)
                 self._Data.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), "uint8").astype(self._Data.bin_type))
 
-                if self.version == "\x03":
+                if self.chunk_version == "\x03":
                     for k, v in ((self._SkyLight, skyLight), (self._BlockLight, blockLight)):
                         a = numpy.fromstring(v, "uint8")
                         a.shape = (16, 16, len(v) / 256)
-                        k.add_data(subchunk, numpy.fromstring(unpackNibbleArray(a).tostring(), "uint8").astype(k.bin_type))
-            elif version == 1:
+                        k.add_data(subchunk,
+                                   numpy.fromstring(unpackNibbleArray(a).tostring(), "uint8").astype(k.bin_type))
+            elif subchunk_version == 1:
                 blocks, data, terrain = self._read_block_storage(terrain)
                 self._Blocks.add_data(subchunk, blocks)
                 self._Data.add_data(subchunk, data)
-            elif version == 8:
+            elif subchunk_version == 8:
                 num_of_storages, terrain = ord(terrain[0]), terrain[1:]
                 while len(terrain) > 0:
                     blocks, data, terrain = self._read_block_storage(terrain)
@@ -1979,7 +1994,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             else:
                 raise NotImplementedError("Not implemented this new type of world format yet")
 
-            self.subchunks_versions[subchunk] = version
+            self.subchunks_versions[subchunk] = subchunk_version
 
 #             if DEBUG_PE:
 #                 write_dump("--- sub-chunk (%s, %s, %s) version: %s\n" % (self.chunkPosition[0], self.chunkPosition[1], subchunk, version))
@@ -1989,14 +2004,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             if subchunk == 0 and DEBUG_PE:
                 write_dump("!!! No terrain for sub-chunk (%s, %s, %s)\n" % (self.chunkPosition[0], self.chunkPosition[1], subchunk))
 
-        if subchunk == 0 and tile_entities:
+        if tile_entities:
             if DEBUG_PE:
                 write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n' % (self.chunkPosition[0], self.chunkPosition[1]))
             if DEBUG_PE == 2:
                 write_dump("+ begin tile_entities raw data\n%s\n- end tile_entities raw data\n" % nbt.hexdump(tile_entities, length=16))
             for tile_entity in loadNBTCompoundList(tile_entities):
                 self.TileEntities.insert(-1, tile_entity)
-        if subchunk == 0 and entities:
+        if entities:
             mcedit_defs = self.world.defsIds.mcedit_defs
             defs_get = mcedit_defs.get
             ids_get = self.world.defsIds.mcedit_ids.get
@@ -2006,6 +2021,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 Entities = loadNBTCompoundList(entities)
             except Exception as exc:
                 logger.error("The entities data for chunk %s:%s may be corrupted. The error is:\n%s" % (self.chunkPosition[0], self.chunkPosition[1], exc))
+                Entities = nbt.TAG_List()
 
             # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
             # Whenever we save an entity, we need to make sure to swap back.

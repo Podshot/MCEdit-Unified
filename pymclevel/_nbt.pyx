@@ -542,8 +542,9 @@ cdef class _TAG_Compound(TAG_Value):
             return data
 
         if isinstance(filename_or_buf, basestring):
-            f = file(filename_or_buf, "wb")
+            f = open(filename_or_buf, "wb")
             f.write(data)
+            f.close()
         else:
             filename_or_buf.write(data)
 
@@ -601,19 +602,23 @@ def load(filename="", buf=None):
     :rtype: TAG_Compound
     """
     if filename:
-        buf = file(filename, "rb")
+        buf = open(filename, "rb")
+    data = buf
 
     if hasattr(buf, "read"):
-        buf = buf.read()
+        data = buf.read()
 
-    buf = try_gunzip(buf)
+    if hasattr(buf, "close"):
+        buf.close()
+
+    data = try_gunzip(data)
 
     cdef load_ctx ctx = load_ctx()
     ctx.offset = 1
-    ctx.buffer = buf
+    ctx.buffer = data
     ctx.size = len(buf)
 
-    if len(buf) < 1:
+    if len(data) < 1:
         raise NBTFormatError("NBT Stream too short!")
 
     cdef unsigned int * magic_no = <unsigned int *> ctx.buffer

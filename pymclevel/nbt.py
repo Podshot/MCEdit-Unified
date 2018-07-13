@@ -117,7 +117,9 @@ class TAG_Value(object):
                                                                lcd=len(ctx.data), lrd=len(data)
                                                               )
                 )
-                open(dump_fName, 'a').write(msg)
+                fp1 = open(dump_fName, 'a')
+                fp1.write(msg)
+                fp1.close()
                 added_n_lines = len(msg.splitlines())
                 log.warning("Could not unpack NBT data: information written in {fn}, from line {b} to line {e}".format(fn=dump_fName, b=n_lines, e=(n_lines + added_n_lines - 1)))
             else:
@@ -374,8 +376,9 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
             return data
 
         if isinstance(filename_or_buf, basestring):
-            f = file(filename_or_buf, "wb")
+            f = open(filename_or_buf, "wb")
             f.write(data)
+            f.close()
         else:
             filename_or_buf.write(data)
 
@@ -558,12 +561,16 @@ def load(filename="", buf=None):
     containing NBT data.
     """
     if filename:
-        buf = file(filename, "rb")
+        buf = open(filename, "rb")
+    data = buf
 
     if hasattr(buf, "read"):
-        buf = buf.read()
+        data = buf.read()
 
-    return _load_buffer(try_gunzip(buf))
+    if hasattr(buf, "close"):
+        buf.close()
+
+    return _load_buffer(try_gunzip(data))
 
 
 class load_ctx(object):

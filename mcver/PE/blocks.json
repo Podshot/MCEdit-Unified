@@ -1995,7 +1995,7 @@
         {
             "id": 34,
 			"name": "Piston Head",
-			"idStr": "piston_head",
+			"idStr": "pistonArmCollision",
 			"tex": [19,13],
 			"mapcolor": [132,132,132],
 			"data": {
@@ -5041,7 +5041,7 @@
 			"opacity": 0,
 			"search": "block",
 			"name": "Invisible Bedrock",
-			"idStr": "invisible_bedrock",
+			"idStr": "invisibleBedrock",
 			"tex": [10,1],
 			"mapcolor": [255,255,255]
 		},
@@ -10078,6 +10078,104 @@
             "type": "DECORATION_CROSS"
         },
         {
+            "id": 176,
+            "idStr": "standing_banner",
+            "mapcolor": [0,115,0],
+            "name": "Standing Banner",
+            "tex": [19,14],
+            "data": {
+                "0": {
+                    "name": "Standing Banner Facing South",
+                    "tex": [19,14]
+                },
+                "1": {
+                    "name": "Standing Banner Facing SSW",
+                    "tex": [19,14]
+                },
+                "2": {
+                    "name": "Standing Banner Facing SW",
+                    "tex": [19,14]
+                },
+                "3": {
+                    "name": "Standing Banner Facing WSW",
+                    "tex": [19,14]
+                },
+                "4": {
+                    "name": "Standing Banner Facing West",
+                    "tex": [19,14]
+                },
+                "5": {
+                    "name": "Standing Banner Facing WNW",
+                    "tex": [19,14]
+                },
+                "6": {
+                    "name": "Standing Banner Facing NW",
+                    "tex": [19,14]
+                },
+                "7": {
+                    "name": "Standing Banner Facing NNW",
+                    "tex": [19,14]
+                },
+                "8": {
+                    "name": "Standing Banner Facing North",
+                    "tex": [19,14]
+                },
+                "9": {
+                    "name": "Standing Banner Facing NNE",
+                    "tex": [19,14]
+                },
+                "10": {
+                    "name": "Standing Banner Facing NE",
+                    "tex": [19,14]
+                },
+                "11": {
+                    "name": "Standing Banner Facing ENE",
+                    "tex": [19,14]
+                },
+                "12": {
+                    "name": "Standing Banner Facing East",
+                    "tex": [19,14]
+                },
+                "13": {
+                    "name": "Standing Banner Facing ESE",
+                    "tex": [19,14]
+                },
+                "14": {
+                    "name": "Standing Banner Facing SE",
+                    "tex": [19,14]
+                },
+                "15": {
+                    "name": "Standing Banner Facing SSE",
+                    "tex": [19,14]
+                }
+            }
+        },
+        {
+            "id": 177,
+            "idStr": "wall_banner",
+            "mapcolor": [0,115,0],
+            "name": "Wall Banner",
+            "tex": [19,14],
+            "data": {
+                "2": {
+                    "name": "Wall Banner Facing North",
+                    "tex": [19,14]
+                },
+                "3": {
+                    "name": "Wall Banner Facing South",
+                    "tex": [19,14]
+                },
+                "4": {
+                    "name": "Wall Banner Facing West",
+                    "tex": [19,14]
+                },
+                "5": {
+                    "name": "Wall Banner Facing East",
+                    "tex": [19,14]
+                }
+            }
+        },
+        {
             "data": {
                 "0": {
                     "name": "Daylight Sensor Inverted (Power 0)"
@@ -11755,7 +11853,7 @@
         {
             "id": 205,
             "name": "Shulker Box",
-            "idStr": "shulker_box",
+            "idStr": "undyed_shulker_box",
             "mapcolor": [128, 128, 128],
             "tex": [9, 27]
         },
@@ -12531,7 +12629,7 @@
         {
             "id": 228,
             "name": "Light gray glazed terracotta",
-            "idStr": "light_gray_glazed_terracotta",
+            "idStr": "silver_glazed_terracotta",
             "tex": [
                 12,
                 24
@@ -13651,7 +13749,7 @@
         {
             "brightness": 12,
             "id": 246,
-            "idStr": "glowing_obsidian",
+            "idStr": "glowingobsidian",
             "mapcolor": [
                 155,
                 0,
@@ -13688,7 +13786,7 @@
                 }
             },
             "id": 247,
-            "idStr": "nether_reactor_core",
+            "idStr": "netherreactor",
             "mapcolor": [
                 125,
                 210,
@@ -13702,7 +13800,7 @@
         },
         {
             "id": 248,
-            "idStr": "update_game",
+            "idStr": "info_update",
             "mapcolor": [
                 201,
                 119,
@@ -13716,7 +13814,7 @@
         },
         {
             "id": 249,
-            "idStr": "update_game2",
+            "idStr": "info_update2",
             "mapcolor": [
                 201,
                 119,
@@ -13950,7 +14048,7 @@
         },
         {
             "id": 255,
-            "idStr": "info_reserved6",
+            "idStr": "reserved6",
             "mapcolor": [
                 201,
                 119,
