@@ -99,6 +99,7 @@ class MCIndevLevel(EntityLevel):
 
     materials = indevMaterials
     gameVersion = 'indev'
+    __gamePlatform = 'indev'
 
     def setPlayerSpawnPosition(self, pos, player=None):
         assert len(pos) == 3

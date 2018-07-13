@@ -841,12 +841,13 @@ class BrushTool(CloneTool):
             materials = self.editor.level.materials
             root_tag = "Dummy"
             gameVersion = "Unknown"
+            __gamePlatform = "Unknown"
 
             def __init__(self):
                 self.chunkCache = {}
 
             Width, Height, Length = brushSize
-            if self.editor.level.gameVersion == "PE" and self.editor.level.world_version == "1.plus":
+            if self.editor.level.gamePlatform == "PE" and self.editor.level.world_version == "1.plus":
                 Height = 16
             else:
                 Height = self.editor.level.Height

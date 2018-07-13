@@ -1267,7 +1267,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             try:
                 self.root_tag = nbt.load(self.filename)
                 # Load the resource for the game version
-                if self.gameVersion != 'Unknown':
+                if self.gamePlatform != 'Unknown':
                     # Force the definitions to be loaded by calling the attribute.
                     self.loadDefIds()
                 #

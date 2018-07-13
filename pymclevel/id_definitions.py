@@ -126,13 +126,15 @@ def _get_data(file_name):
     return data
 
 
-def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps=False):
+def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dict=False, timestamps=False):
     """Load the whole files from mcver directory.
     :game_version: str/unicode: the game version for which the resources will be loaded.
     :namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'.
     :json_dict: bool: Whether to return a ran dict from the JSon file(s) instead of the (MCEDIT_DEFS, MCEDIT_IDS) pair.
     :timestamp: bool: wheter the return also the loaded file timestamp."""
-    log.info("Loading resources for MC %s"%game_version)
+    if gamePlatform != 'Java':  # TODO : make it so other platforms can be versioned
+        gameVersionNumber = gamePlatform
+    log.info("Loading resources for MC %s"%gameVersionNumber)
     global MCEDIT_DEFS
     global MCEDIT_IDS
     MCEDIT_DEFS = {}
@@ -141,16 +143,16 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps
         _json = {}
     if timestamps:
         _timestamps = {}
-    d = os.path.join('mcver', game_version)
+    d = os.path.join('mcver', gameVersionNumber)
 
     # If version 1.2.4 files are not found, try to load the one for the closest
     # lower version (like 1.2.3 or 1.2).
-    if not os.path.isdir(d) and game_version != "Unknown":
-        log.info("No definitions found for MC %s. Trying to find ones for the closest lower version." % game_version)
+    if not os.path.isdir(d) and gameVersionNumber != "Unknown":
+        log.info("No definitions found for MC %s. Trying to find ones for the closest lower version." % gameVersionNumber)
         ver_dirs = os.listdir('mcver')
-        ver_dirs.append(game_version)
+        ver_dirs.append(gameVersionNumber)
         ver_dirs.sort(key=LooseVersion)
-        idx = ver_dirs.index(game_version) - 1
+        idx = ver_dirs.index(gameVersionNumber) - 1
         ver = ver_dirs[idx]
         d = os.path.join('mcver', ver)
         log.info("Closest lower version found is %s." % ver)
@@ -187,7 +189,7 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps
                             if json_dict:
                                 _json.update(_data)
                         if isinstance(r, (str, unicode)):
-                            v = game_version
+                            v = gameVersionNumber
                             if len(deps):
                                 v = deps[-1]
                             log.info("Found dependency for %s %s"%(v, prefix))
@@ -222,7 +224,7 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps
                             _json.update(_data)
                     log.info("Done")
     else:
-        log.info("MC %s resources not found."%game_version)
+        log.info("MC %s resources not found."%gameVersionNumber)
     # Override the module objects to expose them outside when (re)importing.
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
@@ -231,7 +233,7 @@ def ids_loader(game_version, namespace=u"minecraft", json_dict=False, timestamps
     if json_dict:
         toreturn = _json
     if '--dump-defs' in sys.argv:
-        dump_f_name = 'defs_ids-%s.json' % game_version
+        dump_f_name = 'defs_ids-%s.json' % gameVersionNumber
         log.info("Dumping definitions as Json data in '%s'." % dump_f_name)
         with open(dump_f_name, 'w') as f:
             f.write("#" * 80)
@@ -250,11 +252,11 @@ version_defs_ids = {}
 class MCEditDefsIds(object):
     """Class to handle MCEDIT_DEFS and MCEDIT_IDS dicts."""
 
-    def __init__(self, game_version, namespace=u"minecraft"):
+    def __init__(self, gamePlatform, gameVersionNumber, namespace=u"minecraft"):
         """:game_version, namespace: See 'ids_loader() docstring'."""
         global version_defs_ids
-        self.mcedit_defs, self.mcedit_ids, self.timestamps = ids_loader(game_version, namespace, timestamps=True)
-        version_defs_ids[game_version] = self
+        self.mcedit_defs, self.mcedit_ids, self.timestamps = ids_loader(gamePlatform, gameVersionNumber, namespace, timestamps=True)
+        version_defs_ids[gameVersionNumber] = self
 
     def check_timestamps(self, timestamps):
         """Compare the stored and current modification time stamp of files.
@@ -274,15 +276,17 @@ class MCEditDefsIds(object):
         """Acts like MCEDIT_DEFS[def_id]"""
         return self.mcedit_defs[def_id]
 
-def get_defs_ids(game_version, namespace=u"minecraft"):
+def get_defs_ids(gamePlatform, gameVersionNumber, namespace=u"minecraft"):
     """Create a MCEditDefsIds instance only if one for the game version does not already exists, or a definition file has been changed.
     See MCEditDefsIds doc.
     Returns a MCEditDefsIds instance."""
-    if game_version in version_defs_ids.keys():
-        obj = version_defs_ids[game_version]
+    if gamePlatform != 'Java':  # TODO : make it so other platforms can be versioned
+        gameVersionNumber = gamePlatform
+    if gameVersionNumber in version_defs_ids.keys():
+        obj = version_defs_ids[gameVersionNumber]
         timestamps = obj.timestamps
         if not obj.check_timestamps(timestamps):
             return obj
     else:
-        return MCEditDefsIds(game_version, namespace=namespace)
+        return MCEditDefsIds(gamePlatform, gameVersionNumber, namespace=namespace)
 

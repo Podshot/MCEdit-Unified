@@ -884,7 +884,10 @@ class CameraViewport(GLViewport):
 
         # From version 1.8, signs accept Json format.
         # 1.9 does no more support the old raw string fomat.
-        splitVersion = self.editor.level.gameVersion.split('.')
+        if self.editor.level.gamePlatform == "Java":
+            splitVersion = self.editor.level.gameVersionNumber.split('.')
+        else:
+            splitVersion = self.editor.level.gamePlatform.split('.')
         newFmtVersion = ['1','9']
         fmt = ""
         json_fmt = False

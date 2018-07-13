@@ -370,7 +370,10 @@ class MCEdit(GLViewport):
         if v:
             #&# Prototype for blocks/items names
             if self.editor.level:
-                mclangres.buildResources(self.editor.level.gameVersion, albow.translate.getLang())
+                if self.editor.level.gamePlatform == "Java": # added this so the original functionality of this function does not change
+                    mclangres.buildResources(self.editor.level.gameVersionNumber, albow.translate.getLang())
+                else:
+                    mclangres.buildResources(self.editor.level.gamePlatform, albow.translate.getLang())
             #&#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)

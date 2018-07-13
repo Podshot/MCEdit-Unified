@@ -717,6 +717,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     # Let store this internal .dat version to be able to deal with mixed pre 1 and 1+ chunks.
     dat_world_version = None
     gameVersion = 'PE'
+    __gamePlatform = 'PE'
 
     @property
     def LevelName(self):
@@ -857,7 +858,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             else:
                 self.root_tag["Data"] = nbt.load(buf=root_tag_buf)
 
-        self.__gameVersion = 'PE'
+        self.__gamePlatform = 'PE'
         if create:
             print "Creating PE level.dat"
             self._createLevelDat(random_seed, last_played)

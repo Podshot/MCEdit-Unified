@@ -200,12 +200,12 @@ class MCLevel(object):
     @property
     def defsIds(self):
         if self.root_tag and not hasattr(self, '__defs_ids'):
-            self.__defs_ids = id_definitions.get_defs_ids(self.gameVersion)
+            self.__defs_ids = id_definitions.get_defs_ids(self.gamePlatform, self.gameVersionNumber)
         return self.__defs_ids
 
     def loadDefIds(self):
         if self.root_tag and not hasattr(self, '__defs_ids'):
-            self.__defs_ids = id_definitions.get_defs_ids(self.gameVersion)
+            self.__defs_ids = id_definitions.get_defs_ids(self.gamePlatform, self.gameVersionNumber)
 
     @classmethod
     def isLevel(cls, filename):
