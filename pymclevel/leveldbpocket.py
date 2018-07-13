@@ -77,7 +77,7 @@ def write_dump(msg):
 
 
 # =====================================================================
-def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
+def loadNBTCompoundList(data, littleEndian=True, partNBT=False, count=None):
     """
     Loads a list of NBT Compound tags from a bunch of data.
     Uses sep to determine where the next Compound tag starts.
@@ -86,13 +86,15 @@ def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
     :param partNBT: bool. If part of the data is NBT (begins with NBT), the function will return the list of compounds with the rest of the data that was not NBT
     :return: list of TAG_Compounds
     """
-    def load(_data, _partNBT):
+    def load(_data, _partNBT, _count):
         compound_list = []
         idx = 0
-        while idx < len(_data):
+        count = 0
+        while idx < len(_data) and (_count is None or count < _count):
             try:
                 __data = nbt.load(buf=_data[idx:])
                 idx += len(nbt.gunzip(__data.save()))
+                count += 1
             except Exception as e:
                 if _partNBT:
                     return compound_list, _data[idx:]
@@ -124,14 +126,14 @@ def loadNBTCompoundList(data, littleEndian=True, partNBT=False):
                 write_dump("++++++++++\nloadNBTCompoundList_new parsed data:\n{d}\nis compound ? {ic}\n".format(d=__data, ic=__data.isCompound()))
             compound_list.append(__data)
         if _partNBT:
-            return compound_list, []
+            return compound_list, _data[idx:]
         return compound_list
 
     if littleEndian:
         with nbt.littleEndianNBT():
-            return load(data, partNBT)
+            return load(data, partNBT, count)
     else:
-        return load(data, partNBT)
+        return load(data, partNBT, count)
 
 
 # =====================================================================
@@ -215,7 +217,7 @@ class PocketLeveldbDatabase(object):
     """
     holdDatabaseOpen = True
     _world_db = None
-    world_version = None # to be set to 'pre1.0' or '1.plus'
+    world_version = None  # to be set to 'pre1.0' or '1.plus'
 
     def __open_db(self):
         """Opens a DB and return the associated object."""
@@ -556,13 +558,13 @@ class PocketLeveldbDatabase(object):
             if chunk._Data.binary_data[y] is None:
                 chunk._Data.binary_data[y] = numpy.zeros((16, 16, 16), dtype="uint8")
             if ord(ver) in [0, 2, 3, 4, 5, 6, 7]:
-                blocks = chunk._Blocks.binary_data[y].tostring()
-                blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
+                blocks = chunk._Blocks.binary_data[y].astype("uint8").tostring()
+                blockData = packNibbleArray(chunk._Data.binary_data[y]).astype("uint8").tostring()
                 skyLight = ""
                 blockLight = ""
                 if chunk.version == "\x03":
-                    skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).tostring()
-                    blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).tostring()
+                    skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).astype("uint8").tostring()
+                    blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).astype("uint8").tostring()
                 terrain = ver + blocks + blockData + skyLight + blockLight
             elif ord(ver) == 1 or ord(ver) == 8:
                 blocks = chunk._Blocks.binary_data[y].ravel()
@@ -1895,7 +1897,10 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
     def _read_block_storage(self, storage):
         bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
-        blocks_per_word = int(floor(32 / bits_per_block))
+        try:
+            blocks_per_word = int(floor(32 / bits_per_block))
+        except:
+            print "hi"
         word_count = int(ceil(4096 / float(blocks_per_word)))
         raw_blocks, storage = storage[:word_count * 4], storage[word_count * 4:]
         word_size = 32
@@ -1917,9 +1922,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
         # This might be varint and not just 4 bytes, need to make sure
         palette_size, palette = struct.unpack("<i", storage[:4])[0], storage[4:]
-        palette, storage = loadNBTCompoundList(palette, partNBT=True)
-        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 4095) for item in palette]
-        data = [item["val"].value for item in palette]
+        palette_nbt, storage = loadNBTCompoundList(palette, partNBT=True, count=palette_size)
+        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 4095) for item in palette_nbt]
+        data = [item["val"].value for item in palette_nbt]
         blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[blocks_before_palette]
         data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
         return blocks, data, storage
