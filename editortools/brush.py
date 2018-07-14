@@ -840,8 +840,8 @@ class BrushTool(CloneTool):
             filename = "Fake Level"
             materials = self.editor.level.materials
             root_tag = "Dummy"
-            gameVersion = "Unknown"
-            __gamePlatform = "Unknown"
+
+            _gamePlatform = "Unknown"
 
             def __init__(self):
                 self.chunkCache = {}

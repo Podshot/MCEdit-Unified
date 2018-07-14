@@ -98,8 +98,7 @@ class MCIndevLevel(EntityLevel):
     swapping to be consistent with infinite levels."""
 
     materials = indevMaterials
-    gameVersion = 'indev'
-    __gamePlatform = 'indev'
+    _gamePlatform = 'indev'
 
     def setPlayerSpawnPosition(self, pos, player=None):
         assert len(pos) == 3

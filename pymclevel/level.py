@@ -151,51 +151,48 @@ class MCLevel(object):
     def gamePlatform(self): # Should return the platform the world is from ("Java", "PE" or "Schematic")
         """Returns the platform the world is from ("Java", "PE", "Schematic"...)"""
         # I would use isinstance() here, but importing the separate level classes would cause a circular import, so this will have to do
-        if not hasattr(self, '__gamePlatform'):
+        if not hasattr(self, '_gamePlatform'):
             type_map = {
                 'pymclevel.schematic.MCSchematic': 'Schematic',
                 'pymclevel.leveldbpocket.PocketLeveldbWorld': 'PE',
                 'pymclevel.infiniteworld.MCInfdevOldLevel': 'Java',
             }
             t = str(type(self))
-            self.__gamePlatform = type_map.get(t[8:len(t) - 2], 'Unknown')
-            if self.__gamePlatform == 'Unknown' and self.root_tag.name:
-                self.__gamePlatform = self.root_tag.name
-        return self.__gamePlatform
+            self._gamePlatform = type_map.get(t[8:len(t) - 2], 'Unknown')
+        return self._gamePlatform
 
     @property
     def gameVersionNumber(self):  # Should return the version number that the world is from (eg "1.12.2"...)
         """Returns the version number the world was last opened in or 'Unknown'"""
-        if self.root_tag and not hasattr(self, '__gameVersionNumber'):
-            self.__gameVersionNumber = 'Unknown'
+        if self.root_tag and not hasattr(self, '_gameVersionNumber'):
+            self._gameVersionNumber = 'Unknown'
             if self.gamePlatform == "PE":
                 if 'Data' in self.root_tag and isinstance(self.root_tag['Data'], nbt.TAG_Compound):
                     if 'lastOpenedWithVersion' in self.root_tag['Data'] and isinstance(self.root_tag['Data']['lastOpenedWithVersion'], nbt.TAG_List):
-                        self.__gameVersionNumber = '.'.join([str(num.value) for num in self.root_tag['Data']['lastOpenedWithVersion']])
+                        self._gameVersionNumber = '.'.join([str(num.value) for num in self.root_tag['Data']['lastOpenedWithVersion']])
                     else:
-                        self.__gameVersionNumber = self.root_tag['Data']['lastOpenedWithVersion']
+                        self._gameVersionNumber = self.root_tag['Data']['lastOpenedWithVersion']
             elif self.gamePlatform == "Java":
                 if 'Data' in self.root_tag and isinstance(self.root_tag['Data'], nbt.TAG_Compound):
                     # We're opening a world.
                     if 'Version' in self.root_tag['Data']:
                         if 'Name' in self.root_tag['Data']['Version']:
-                            self.__gameVersionNumber = self.root_tag['Data']['Version']['Name'].value
-        return self.__gameVersionNumber
+                            self._gameVersionNumber = self.root_tag['Data']['Version']['Name'].value
+                elif self.root_tag.name:
+                    self._gameVersion = self.root_tag.name
+        return self._gameVersionNumber
 
     @property
     def gameVersion(self): #depreciated. The output of this function is inconsistent. Use either gamePlatform or gameVersionNumber
         """Depreciated property. Use gamePlatform or gameVersionNumber. This returns gameVersionNumber for Java worlds and gamePlatform for all others"""
-        if self.root_tag and not hasattr(self, '__gameVersion'):
-            self.__gameVersion = 'Unknown'
-            if 'Data' in self.root_tag and isinstance(self.root_tag['Data'], nbt.TAG_Compound):
-                # We're opening a world.
-                if 'Version' in self.root_tag['Data']:
-                    if 'Name' in self.root_tag['Data']['Version']:
-                        self.__gameVersion = self.root_tag['Data']['Version']['Name'].value
+        log.warning('gameVersion is depreciated. Use gamePlatform or gameVersionNumber instead')
+        if self.root_tag and not hasattr(self, '_gameVersion'):
+            self._gameVersion = 'Unknown'
+            if self.gamePlatform == "Java":
+                self._gameVersion = self.gameVersionNumber
             else:
-                if self.root_tag.name:
-                    self.__gameVersion = self.root_tag.name
-        return self.__gameVersion
+                self._gameVersion = self.gamePlatform
+        return self._gameVersion
 
     @property
     def defsIds(self):
