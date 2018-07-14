@@ -7,17 +7,27 @@
 """
 The logic here is to load the JSON definitions for blocks, entities and tile entities for a given game version.
 
-Data for each game version is contained in subfolders of the 'mcver' one. These subfolders are named with a game version:
+Data for each game platform is contained in subfolders of the 'mcver' one and subsequent subfolders for each game version number:
 
 mcver/
-  + 1.2/
-    - blocks.json
-    - entities.json
-    - tileentities.json
-  + 1.2.3/
-    - blocks.json
-    - entities.json
-    - tileentities.json
+  + Java/
+    + 1.2/
+      - blocks.json
+      - entities.json
+      - tileentities.json
+    + 1.2.3/
+      - blocks.json
+      - entities.json
+      - tileentities.json
+  + PE/
+    + 1.2/
+      - blocks.json
+      - entities.json
+      - tileentities.json
+    + 1.4/
+      - blocks.json
+      - entities.json
+      - tileentities.json
 [etc.]
 
 The JSON files can contain all the definitions for a version, or partial ones.
@@ -30,9 +40,9 @@ If definitions are partial, other game version files can be loaded by referencin
 }
 '''
 
-Using the directory structure above, and assuming the code snippet comes from the 'block.json' file in the '1.2.3' subfolder,
-the data in 'blocks.json' in the '1.2' subfolder will be loaded before the data in 'blocks.json' in '1.2.3'.
-So '1.2.3' data will override '1.2' one.
+Using the directory structure above, and assuming the code snippet comes from the 'block.json' file in the 'Java/1.2.3' subfolder,
+the data in 'blocks.json' in the 'Java/1.2' subfolder will be loaded before the data in 'blocks.json' in 'Java/1.2.3'.
+So the '1.2.3' data will override the '1.2' data.
 """
 
 import os
@@ -132,9 +142,7 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
     :namespace: unicode: the name to be put in front of some IDs. default to 'minecraft'.
     :json_dict: bool: Whether to return a ran dict from the JSon file(s) instead of the (MCEDIT_DEFS, MCEDIT_IDS) pair.
     :timestamp: bool: wheter the return also the loaded file timestamp."""
-    if gamePlatform != 'Java':  # TODO : make it so other platforms can be versioned
-        gameVersionNumber = gamePlatform
-    log.info("Loading resources for MC %s"%gameVersionNumber)
+    log.info("Loading resources for MC {} {}".format(gamePlatform, gameVersionNumber))
     global MCEDIT_DEFS
     global MCEDIT_IDS
     MCEDIT_DEFS = {}
@@ -143,19 +151,19 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
         _json = {}
     if timestamps:
         _timestamps = {}
-    d = os.path.join('mcver', gameVersionNumber)
+    d = os.path.join('mcver', gamePlatform, gameVersionNumber)
 
     # If version 1.2.4 files are not found, try to load the one for the closest
     # lower version (like 1.2.3 or 1.2).
     if not os.path.isdir(d) and gameVersionNumber != "Unknown":
-        log.info("No definitions found for MC %s. Trying to find ones for the closest lower version." % gameVersionNumber)
-        ver_dirs = os.listdir('mcver')
+        log.info("No definitions found for MC {} {}. Trying to find ones for the closest lower version.".format(gamePlatform, gameVersionNumber))
+        ver_dirs = os.listdir(os.path.join('mcver', gamePlatform))
         ver_dirs.append(gameVersionNumber)
         ver_dirs.sort(key=LooseVersion)
         idx = ver_dirs.index(gameVersionNumber) - 1
         ver = ver_dirs[idx]
-        d = os.path.join('mcver', ver)
-        log.info("Closest lower version found is %s." % ver)
+        d = os.path.join('mcver', gamePlatform, ver)
+        log.info("Closest lower version found is MC {} {}.".format(gamePlatform, ver))
 
     if os.path.isdir(d):
         for file_name in os.listdir(d):
@@ -168,7 +176,7 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
                 if data:
                     # We use here names coming from the 'minecraft:name_of_the_stuff' ids
                     # The second part of the name is present in the first file used (for MC 1.11) in the 'idStr' value).
-                    # The keys of MCEDIT_DEFS are built by concatening the file base name and the idStr
+                    # The keys of MCEDIT_DEFS are built by concatenating the file base name and the idStr
                     # References to MCEDIT_DEFS elements are stored in MCEDIT_IDS dict.
                     # If an element "load" is defined in the JSON data, it must be a string corresponding to another game version.
                     # The corresponding file will be loaded before parsing the data.
@@ -194,7 +202,7 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
                                 v = deps[-1]
                             log.info("Found dependency for %s %s"%(v, prefix))
                             deps.append(r)
-                            _data = _get_data(os.path.join('mcver', r, file_name))
+                            _data = _get_data(os.path.join('mcver', gamePlatform, r, file_name))
                         else:
                             defs, ids = r
                             MCEDIT_DEFS.update(defs)
@@ -204,7 +212,7 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
                         log.info("Loading definitions dependencies")
                         _data = {}
                         for dep in deps:
-                            _file_name = os.path.join('mcver', dep, file_name)
+                            _file_name = os.path.join('mcver', gamePlatform, dep, file_name)
                             if os.path.exists(_file_name):
                                 log.info("Found %s"%_file_name)
                                 #_data.update(_get_data(_file_name))
@@ -224,7 +232,7 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
                             _json.update(_data)
                     log.info("Done")
     else:
-        log.info("MC %s resources not found."%gameVersionNumber)
+        log.info("MC {} {} resources not found.".format(gamePlatform, gameVersionNumber))
     # Override the module objects to expose them outside when (re)importing.
     pymclevel.MCEDIT_DEFS = MCEDIT_DEFS
     pymclevel.MCEDIT_IDS = MCEDIT_IDS
@@ -233,8 +241,8 @@ def ids_loader(gamePlatform, gameVersionNumber, namespace=u"minecraft", json_dic
     if json_dict:
         toreturn = _json
     if '--dump-defs' in sys.argv:
-        dump_f_name = 'defs_ids-%s.json' % gameVersionNumber
-        log.info("Dumping definitions as Json data in '%s'." % dump_f_name)
+        dump_f_name = 'defs_ids-{}-{}.json'.format(gamePlatform, gameVersionNumber)
+        log.info("Dumping definitions as JSON data in '%s'." % dump_f_name)
         with open(dump_f_name, 'w') as f:
             f.write("#" * 80)
             f.write("\nDEFS\n")
@@ -256,7 +264,9 @@ class MCEditDefsIds(object):
         """:game_version, namespace: See 'ids_loader() docstring'."""
         global version_defs_ids
         self.mcedit_defs, self.mcedit_ids, self.timestamps = ids_loader(gamePlatform, gameVersionNumber, namespace, timestamps=True)
-        version_defs_ids[gameVersionNumber] = self
+        if gamePlatform not in version_defs_ids:
+            version_defs_ids[gamePlatform] = {}
+        version_defs_ids[gamePlatform][gameVersionNumber] = self
 
     def check_timestamps(self, timestamps):
         """Compare the stored and current modification time stamp of files.
@@ -280,10 +290,8 @@ def get_defs_ids(gamePlatform, gameVersionNumber, namespace=u"minecraft"):
     """Create a MCEditDefsIds instance only if one for the game version does not already exists, or a definition file has been changed.
     See MCEditDefsIds doc.
     Returns a MCEditDefsIds instance."""
-    if gamePlatform != 'Java':  # TODO : make it so other platforms can be versioned
-        gameVersionNumber = gamePlatform
-    if gameVersionNumber in version_defs_ids.keys():
-        obj = version_defs_ids[gameVersionNumber]
+    if gamePlatform in version_defs_ids.keys() and gameVersionNumber in version_defs_ids[gamePlatform].keys():
+        obj = version_defs_ids[gamePlatform][gameVersionNumber]
         timestamps = obj.timestamps
         if not obj.check_timestamps(timestamps):
             return obj
