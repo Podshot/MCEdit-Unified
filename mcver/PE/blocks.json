@@ -14020,13 +14020,13 @@
         },
         {
             "id": 253,
-            "idStr": "tile.253.name",
+            "idStr": "hard_glass",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "tile.253.name",
+            "name": "Hardened Glass",
             "tex": [
                 15,
                 29
@@ -14034,13 +14034,13 @@
         },
         {
             "id": 254,
-            "idStr": "tile.254.name",
+            "idStr": "hard_stained_glass",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "tile.254.name",
+            "name": "Hardened Stained Glass",
             "tex": [
                 15,
                 29
@@ -14059,6 +14059,38 @@
                 15,
                 29
             ]
+        },
+        {
+            "name": "Prismarine Stairs",
+            "idStr": "prismarine_stairs",
+            "tex": [0,0],
+            "id": 257,
+            "data": {
+                "0": {
+                    "name": "Prismarine Stairs (Bottom, East)"
+                },
+                "1": {
+                    "name": "Prismarine Stairs (Bottom, West)"
+                },
+                "2": {
+                    "name": "Prismarine Stairs (Bottom, South)"
+                },
+                "3": {
+                    "name": "Prismarine Stairs (Bottom, North)"
+                },
+                "4": {
+                    "name": "Prismarine Stairs (Top, East)"
+                },
+                "5": {
+                    "name": "Prismarine Stairs (Top, West)"
+                },
+                "6": {
+                    "name": "Prismarine Stairs (Top, South)"
+                },
+                "7": {
+                    "name": "Prismarine Stairs (Top, North)"
+                }
+            }
         },
         {
 			"opacity": 0,
