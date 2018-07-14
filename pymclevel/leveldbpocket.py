@@ -1921,7 +1921,13 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         # This might be varint and not just 4 bytes, need to make sure
         palette_size, palette = struct.unpack("<i", storage[:4])[0], storage[4:]
         palette_nbt, storage = loadNBTCompoundList(palette, partNBT=True, count=palette_size)
-        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 4095) for item in palette_nbt]
+        tempBlockID = max([numID for numID, item in enumerate(pocketMaterials.idStr) if item != '']) + 1
+        for item in palette_nbt:
+            if pocketMaterials.get(item["name"].value) is None:
+                idStr = item["name"].value.split(':')[-1]
+                pocketMaterials.addJSONBlock({"id": tempBlockID, "name": idStr, "idStr": idStr, "mapcolor": [214, 127, 255],"data":{n:{"name": idStr} for n in range(16)}})
+                tempBlockID += 1
+        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 255) for item in palette_nbt]
         data = [item["val"].value for item in palette_nbt]
         blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[blocks_before_palette]
         data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
