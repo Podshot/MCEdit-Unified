@@ -19,7 +19,7 @@ log = getLogger(__name__)
 
 class MCJavaLevel(MCLevel):
 
-    gameVersion = 'javalevel'
+    _gamePlatform = 'javalevel'
 
     def setBlockDataAt(self, *args):
         pass

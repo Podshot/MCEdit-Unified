@@ -1339,7 +1339,7 @@ class LevelEditor(GLViewport):
         log.debug("Loaded world is %s" % repr(level))
 
         if hasattr(level, 'materials'):
-            level.materials.addJSONBlocksFromVersion(level.gameVersion)
+            level.materials.addJSONBlocksFromVersion(level.gamePlatform, level.gameVersionNumber)
 
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
@@ -1376,12 +1376,16 @@ class LevelEditor(GLViewport):
 
         self.removeNetherPanel()
 
-        gameVersion = level.gameVersion
-        if gameVersion == 'Schematic':
+        gamePlatform = level.gamePlatform
+        gameVersionNumber = level.gameVersionNumber
+        if gamePlatform == 'Schematic':
             log.info('Loading \'Schematic\' file.')
+        elif gamePlatform == 'PE':
+            log.info('Loading \'Bedrock\' world.')
+            buildResources(gamePlatform, getLang())
         else:
-            log.info('Loading world for version {}.'.format({True: "prior to 1.9 (detection says 'Unknown')", False: gameVersion}[gameVersion == 'Unknown']))
-            buildResources(gameVersion, getLang())
+            log.info('Loading world for version {}.'.format({True: "prior to 1.9 (detection says 'Unknown')", False: gameVersionNumber}[gameVersionNumber == 'Unknown']))
+            buildResources(gameVersionNumber, getLang())
 
         self.loadLevel(level)
 

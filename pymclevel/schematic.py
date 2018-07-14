@@ -656,7 +656,10 @@ class INVEditChest(MCSchematic):
     def TileEntities(self):
         chestTag = nbt.TAG_Compound()
         chest_id = "Chest"
-        split_ver = self.gameVersion.split('.')
+        if self.gamePlatform == "Java":
+            split_ver = self.gameVersionNumber.split('.')
+        else:
+            split_ver = self.gamePlatform.split('.')
         if int(split_ver[0]) >= 1 and int(split_ver[1]) >= 11:
             chest_id = "minecraft:chest"
         chestTag["id"] = nbt.TAG_String(chest_id)

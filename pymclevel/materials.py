@@ -384,22 +384,22 @@ class MCMaterials(object):
         if blockyaml:
             self.addJSONBlocks(blockyaml)
 
-    def addJSONBlocksFromVersion(self, game_version):
+    def addJSONBlocksFromVersion(self, gamePlatform, gameVersionNumber):
         # Load first the versionned stuff
         # Fallback to the old .json file
         log.debug("Loading block definitions from versionned file")
-        print "Game Version: " + game_version
-        game_version = game_version.replace('java ', '')
-        blockyaml = id_definitions.ids_loader(game_version, json_dict=True)
-        if game_version == 'PE' or game_version == 'old pocket':
+        print "Game Version: {} : {}".format(gamePlatform, gameVersionNumber)
+        gameVersionNumber = gameVersionNumber.replace('java ', '')
+        blockyaml = id_definitions.ids_loader(gamePlatform, gameVersionNumber, json_dict=True)
+        if gamePlatform == 'PE' or gamePlatform == 'old pocket':
             f_name = 'pocket.json'
             self.setup_blockstates("pe_blockstates.json")
             meth = build_pocket_materials
-        elif game_version == 'javalevel':
+        elif gamePlatform == 'javalevel':
             # No reference to materials in javalevel.py and no related JSon file, let use the 'classic' ones?
             f_name = 'classic.json'
             meth = build_classic_materials
-        elif game_version == 'indev':
+        elif gamePlatform == 'indev':
             f_name == 'indev.json'
             meth = build_indev_materials
         else:
@@ -1343,7 +1343,7 @@ def build_api_material_map(mats=alphaMaterials):
             setattr(block, "Blockstate", BlockstateAPI.material_map[mat].idToBlockstate(block.ID, block.blockData))
 
 # alphaMaterials has to be 'preloaded' for now...
-alphaMaterials.addJSONBlocksFromVersion('Unknown')
+alphaMaterials.addJSONBlocksFromVersion('Unknown','Unknown')
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials, BlockstateAPI".split(", ")
 

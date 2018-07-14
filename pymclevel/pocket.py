@@ -302,7 +302,7 @@ class PocketWorld(ChunkedLevelMixin, MCLevel):
     Height = 128
     Length = 512
     Width = 512
-    gameVersion = "old Pocket"
+    _gamePlatform = "old Pocket"
 
     isInfinite = True  # Wrong. isInfinite actually means 'isChunked' and should be changed
     materials = pocketMaterials

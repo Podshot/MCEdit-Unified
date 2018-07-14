@@ -37,10 +37,10 @@ def apply(self, op, point):
     # undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
     # Use the same world as the one loaded.
     create = True
-    if op.level.gameVersion == 'PE':
+    if op.level.gamePlatform == 'PE':
         create = op.level.world_version
     undoLevel = type(op.level)(mkundotemp(), create=create)
-    if op.level.gameVersion == 'PE':
+    if op.level.gamePlatform == 'PE':
         undoLevel.Height = op.level.Height
     dirtyChunks = set()
 
