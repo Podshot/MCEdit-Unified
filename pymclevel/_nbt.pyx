@@ -606,7 +606,7 @@ def load(filename="", buf=None):
     data = buf
 
     if hasattr(buf, "read"):
-        data = buf.read()
+        buf = data = buf.read()
 
     if hasattr(buf, "close"):
         buf.close()
