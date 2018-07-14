@@ -555,41 +555,26 @@ class PocketLeveldbDatabase(object):
 
         for y in chunk.subchunks:
             c = chr(y)
-            ver = chr(chunk.subchunks_versions.get(y, 0))
-            if chunk._Blocks.binary_data[y] is None:
-                blocks = None
-            else:
-                blocks = chunk._Blocks.binary_data[y].tostring()
-            if chunk._Data.binary_data[y] is None:
-                blockData = None
-            else:
-                blockData = packNibbleArray(chunk._Data.binary_data[y]).tostring()
-            if ord(ver) in [0, 2, 3, 4, 5, 6, 7]:
-                blocks = chunk._Blocks.binary_data[y].astype("uint8").tostring()
-                blockData = packNibbleArray(chunk._Data.binary_data[y]).astype("uint8").tostring()
-                skyLight = ""
-                blockLight = ""
-                if chunk.chunk_version == "\x03":
-                    skyLight = packNibbleArray(chunk._SkyLight.binary_data[y]).astype("uint8").tostring()
-                    blockLight = packNibbleArray(chunk._BlockLight.binary_data[y]).astype("uint8").tostring()
-                terrain = ver + blocks + blockData + skyLight + blockLight
-            elif ord(ver) == 1 or ord(ver) == 8:
-                blocks = chunk._Blocks.binary_data[y].ravel()
-                blockData = chunk._Data.binary_data[y].ravel()
-                blocks_storage = get_blocks_storage_from_blocks_and_data(blocks, blockData)
-                if ord(ver) == 1:
-                    terrain = ver + blocks_storage
-                else:
-                    extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
-                    if extra_blocks is None:
-                        extra_blocks = ""
-                        num_of_storages = 1
-                    else:
-                        num_of_storages = 2
-                        extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
-                        extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
-                    terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
+            ver = chr(8)
+            if chunk._Blocks.binary_data[y] is None or chunk._Data.binary_data[y] is None:
+                continue
 
+            blocks = chunk._Blocks.binary_data[y].ravel()
+            blockData = chunk._Data.binary_data[y].ravel()
+            blocks_storage = get_blocks_storage_from_blocks_and_data(blocks, blockData)
+
+            if hasattr(chunk, "_extra_blocks"):
+                extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
+            else:
+                extra_blocks = None
+            if extra_blocks is None:
+                extra_blocks = ""
+                num_of_storages = 1
+            else:
+                num_of_storages = 2
+                extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
+                extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
+            terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
 
             if batch is None:
                 with self.world_db() as db:
