@@ -3114,6 +3114,8 @@ class LevelEditor(GLViewport):
         except Exception as e:
             self.inspectionString += _("Chunk {0} had an error: {1!r}").format(
                 (int(numpy.floor(blockPosition[0])) >> 4, int(numpy.floor(blockPosition[2])) >> 4), e)
+            import traceback
+            traceback.print_exc()
 
     def drawWireCubeReticle(self, color=(1.0, 1.0, 1.0, 1.0), position=None):
         GL.glPolygonOffset(DepthOffset.TerrainWire, DepthOffset.TerrainWire)

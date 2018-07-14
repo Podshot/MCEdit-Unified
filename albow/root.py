@@ -5,6 +5,8 @@
 #---------------------------------------------------------------------------
 
 import sys
+import traceback
+
 import pygame
 
 from pygame import key
@@ -375,6 +377,7 @@ class RootWidget(Widget):
                                 self.editor.level.checkSessionLock()
                         except Exception as e:
                             log.warn(u"Error reading chunk (?): %s", e)
+                            traceback.print_exc()
                             if not config.session.override.get():
                                 self.sessionStolen = True
                             else:
