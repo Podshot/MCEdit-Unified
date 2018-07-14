@@ -476,7 +476,9 @@ class MCEdit(GLViewport):
 
         def update_mcver():
             num = mcver_updater.run()
-            if num:
+            if num is None:
+                albow.alert("Error Updating")
+            elif num:
                 albow.alert("Version Definitions have been updated!\n\nPlease restart MCEdit-Unified to apply the changes")
             else:
                 albow.alert("Version Definitions are already up-to-date!")
