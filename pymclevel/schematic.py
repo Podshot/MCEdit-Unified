@@ -636,7 +636,7 @@ class INVEditChest(MCSchematic):
             if None is root_tag:
                 try:
                     root_tag = nbt.load(filename)
-                except IOError, e:
+                except IOError as e:
                     log.info(u"Failed to load file {0}".format(e))
                     raise
         else:

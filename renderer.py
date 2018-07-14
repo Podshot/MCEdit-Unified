@@ -814,6 +814,7 @@ class ChunkCalculator(object):
                 yield
                 return
             logging.warn(u"Error reading chunk: %s", e)
+            traceback.print_exc()
             yield
             return
 

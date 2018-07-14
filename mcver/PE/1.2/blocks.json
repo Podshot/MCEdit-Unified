@@ -9993,17 +9993,17 @@
                     ]
                 },
                 "10": {
-                    "name": "Double Plant (Upper Half, North)",
+                    "name": "Double Tallgrass (Upper Half)",
                     "tex": [
-                        5,
-                        3
+                        16,
+                        11
                     ]
                 },
                 "11": {
-                    "name": "Double Plant (Upper Half, East)",
+                    "name": "Large Fern (Upper Half)",
                     "tex": [
-                        5,
-                        3
+                        16,
+                        12
                     ]
                 },
                 "2": {
@@ -10035,17 +10035,31 @@
                     ]
                 },
                 "8": {
-                    "name": "Double Plant (Upper Half, South)",
+                    "name": "Sunflower (Upper Half)",
                     "tex": [
-                        5,
-                        3
+                        16,
+                        9
                     ]
                 },
                 "9": {
-                    "name": "Double Plant (Upper Half, West)",
+                    "name": "Lilac (Upper Half)",
                     "tex": [
-                        5,
-                        3
+                        16,
+                        10
+                    ]
+                },
+                "12": {
+                    "name": "Rose Bush (Upper Half)",
+                    "tex": [
+                        16,
+                        13
+                    ]
+                },
+                "13": {
+                    "name": "Peony (Upper Half)",
+                    "tex": [
+                        16,
+                        14
                     ]
                 }
             },
@@ -14006,13 +14020,13 @@
         },
         {
             "id": 253,
-            "idStr": "tile.253.name",
+            "idStr": "hard_glass",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "tile.253.name",
+            "name": "Hardened Glass",
             "tex": [
                 15,
                 29
@@ -14020,13 +14034,13 @@
         },
         {
             "id": 254,
-            "idStr": "tile.254.name",
+            "idStr": "hard_stained_glass",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "tile.254.name",
+            "name": "Hardened Stained Glass",
             "tex": [
                 15,
                 29
@@ -14045,7 +14059,124 @@
                 15,
                 29
             ]
-        }
+        },
+        {
+            "name": "Prismarine Stairs",
+            "idStr": "prismarine_stairs",
+            "tex": [0,0],
+            "id": 257,
+            "data": {
+                "0": {
+                    "name": "Prismarine Stairs (Bottom, East)"
+                },
+                "1": {
+                    "name": "Prismarine Stairs (Bottom, West)"
+                },
+                "2": {
+                    "name": "Prismarine Stairs (Bottom, South)"
+                },
+                "3": {
+                    "name": "Prismarine Stairs (Bottom, North)"
+                },
+                "4": {
+                    "name": "Prismarine Stairs (Top, East)"
+                },
+                "5": {
+                    "name": "Prismarine Stairs (Top, West)"
+                },
+                "6": {
+                    "name": "Prismarine Stairs (Top, South)"
+                },
+                "7": {
+                    "name": "Prismarine Stairs (Top, North)"
+                }
+            }
+        },
+        {
+			"opacity": 0,
+			"name": "Spruce Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Spruce Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Spruce Pressure Plate"
+				}
+			},
+			"idStr": "spruce_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 256
+		},
+        {
+			"opacity": 0,
+			"name": "Birch Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Birch Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Birch Pressure Plate"
+				}
+			},
+			"idStr": "birch_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 257
+		},
+        {
+			"opacity": 0,
+			"name": "Jungle Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Jungle Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Jungle Pressure Plate"
+				}
+			},
+			"idStr": "jungle_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 258
+		},
+        {
+			"opacity": 0,
+			"name": "Acacia Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Acacia Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Acacia Pressure Plate"
+				}
+			},
+			"idStr": "acacia_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 259
+		},
+        {
+			"opacity": 0,
+			"name": "Dark Oak Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Dark Oak Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Dark Oak Pressure Plate"
+				}
+			},
+			"idStr": "dark_oak_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 230
+		}
     ],
     "defaults": {
         "brightness": 0,

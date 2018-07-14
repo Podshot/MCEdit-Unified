@@ -47,6 +47,7 @@ install:
   -
   - pip install -r requirements.txt
   - pip install pyinstaller
+  - python setup.py all
 
 build_script:
   - pyinstaller mcedit-ci.spec -y
