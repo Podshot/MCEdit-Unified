@@ -613,7 +613,7 @@ def load(filename="", buf=None):
     cdef load_ctx ctx = load_ctx()
     ctx.offset = 1
     ctx.buffer = data
-    ctx.size = len(buf)
+    ctx.size = len(data)
 
     if len(data) < 1:
         raise NBTFormatError("NBT Stream too short!")
