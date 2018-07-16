@@ -567,10 +567,12 @@ def load(filename="", buf=None):
     if hasattr(buf, "read"):
         data = buf.read()
 
+    result = _load_buffer(try_gunzip(data))
+
     if hasattr(buf, "close"):
         buf.close()
 
-    return _load_buffer(try_gunzip(data))
+    return result
 
 
 class load_ctx(object):

@@ -606,10 +606,7 @@ def load(filename="", buf=None):
     data = buf
 
     if hasattr(buf, "read"):
-        buf = data = buf.read()
-
-    if hasattr(buf, "close"):
-        buf.close()
+        data = buf.read()
 
     data = try_gunzip(data)
 
@@ -629,6 +626,10 @@ def load(filename="", buf=None):
     name = load_name(ctx)
     tag = load_compound(ctx)
     tag.name = name
+
+    if hasattr(buf, "close"):
+        buf.close()
+
     return tag
 
 
