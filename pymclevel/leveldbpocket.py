@@ -1895,10 +1895,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
 
     def _read_block_storage(self, storage):
         bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
-        try:
-            blocks_per_word = int(floor(32 / bits_per_block))
-        except:
-            print "hi"
+        blocks_per_word = int(floor(32 / bits_per_block))
         word_count = int(ceil(4096 / float(blocks_per_word)))
         raw_blocks, storage = storage[:word_count * 4], storage[word_count * 4:]
         word_size = 32
