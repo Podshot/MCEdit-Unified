@@ -2067,6 +2067,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         # Not used for PE 1+ worlds... May change :)
         raise NotImplementedError()
 
+    def genFastLights(self):
+        self.SkyLight[:] = 15
+
     # -- Entities and TileEntities
 
     @property
