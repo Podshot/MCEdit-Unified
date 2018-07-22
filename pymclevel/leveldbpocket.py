@@ -719,14 +719,13 @@ class PocketLeveldbDatabase(object):
             if it.Valid():
                 allPlayers["~local_player"] = it.value()
             it.seek("player_")
-            while it.Valid():
-                key = it.key()
-                if not key.startswith("player_"):
-                    break
+            key = it.key()
+            while it.Valid() and key.startswith("player_"):
                 allPlayers[key] = it.value()
                 it.Next()
-            if True or self.world_version == 'pre1.0':
-                it.status()
+                key = it.key()
+
+            it.status()
             del it
             return allPlayers
 
