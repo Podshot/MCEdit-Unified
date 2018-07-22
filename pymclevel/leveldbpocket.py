@@ -715,13 +715,15 @@ class PocketLeveldbDatabase(object):
             rop = self.readOptions if readOptions is None else readOptions
 
             it = db.NewIterator(rop)
-            it.SeekToFirst()
+            it.seek("~local_player")
+            if it.Valid():
+                allPlayers["~local_player"] = it.value()
+            it.seek("player_")
             while it.Valid():
                 key = it.key()
-                if key == "~local_player":  # Singleplayer
-                    allPlayers[key] = it.value()
-                elif key.startswith('player_'):  # Multiplayer player
-                    allPlayers[key] = it.value()
+                if not key.startswith("player_"):
+                    break
+                allPlayers[key] = it.value()
                 it.Next()
             if True or self.world_version == 'pre1.0':
                 it.status()
