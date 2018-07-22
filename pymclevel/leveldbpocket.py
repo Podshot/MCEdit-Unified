@@ -168,12 +168,14 @@ class InvalidPocketLevelDBWorldException(Exception):
 
 # =====================================================================
 def get_blocks_storage_from_blocks_and_data(blocks, data):
+    blocksCombined = numpy.stack((blocks, data))
+    uniqueBlocks = numpy.transpose(numpy.unique(blocksCombined, axis=1))
     palette = []
-    new_blocks = []
-    for i in range(len(blocks)):
+    numpy_blocks = numpy.zeros(4096, 'uint16')
+    for index, (blockID, blockData) in enumerate(uniqueBlocks):
         try:
-            block_string = "minecraft:" + pocketMaterials.blocksByID[blocks[i], data[i]].stringID
-            block_data = data[i]
+            block_string = "minecraft:" + pocketMaterials.blocksByID[blockID, blockData].stringID
+            block_data = blockData
         except:
             block_string = "minecraft:air"
             block_data = 0
@@ -182,8 +184,7 @@ def get_blocks_storage_from_blocks_and_data(blocks, data):
         if block_nbt not in palette:
             palette.append(block_nbt)
         position = palette.index(block_nbt)
-        new_blocks.append(position)
-    numpy_blocks = numpy.array(new_blocks)
+        numpy_blocks[(blocksCombined[0]==blockID) & (blocksCombined[1]==blockData)] = position
     max_bits = len('{0:b}'.format(numpy_blocks.max()))
     possible_bits_per_blocks = [1, 2, 3, 4, 5, 6, 8, 16]
     bits_per_block = possible_bits_per_blocks[numpy.searchsorted(possible_bits_per_blocks, max_bits, side='left')]
@@ -565,16 +566,14 @@ class PocketLeveldbDatabase(object):
 
             if hasattr(chunk, "_extra_blocks"):
                 extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
-            else:
-                extra_blocks = None
-            if extra_blocks is None:
-                extra_blocks = ""
-                num_of_storages = 1
-            else:
-                num_of_storages = 2
                 extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
-                extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
-            terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
+                extra_blocks_storage = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
+                num_of_storages = 2
+            else:
+                extra_blocks_storage = ""
+                num_of_storages = 1
+
+            terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks_storage
 
             if batch is None:
                 with self.world_db() as db:
