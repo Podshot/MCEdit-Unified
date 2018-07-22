@@ -714,18 +714,19 @@ class PocketLeveldbDatabase(object):
             allPlayers = {}
             rop = self.readOptions if readOptions is None else readOptions
 
+            try:
+                allPlayers["~local_player"] = db.Get(rop, "~local_player")
+            except RuntimeError:
+                pass
+
             it = db.NewIterator(rop)
-            it.seek("~local_player")
-            if it.Valid():
-                allPlayers["~local_player"] = it.value()
             it.seek("player_")
             key = it.key()
             while it.Valid() and key.startswith("player_"):
                 allPlayers[key] = it.value()
-                it.Next()
+                it.stepForward()
                 key = it.key()
 
-            it.status()
             del it
             return allPlayers
 
