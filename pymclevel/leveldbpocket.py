@@ -658,7 +658,7 @@ class PocketLeveldbDatabase(object):
         :param world_version: game version to read the data for. Default: None.
         :return: list
         """
-        allChunks = []
+        allChunks = set()
         with self.world_db() as db:
             if not world_version:
                 world_version = self.world_version
@@ -683,7 +683,7 @@ class PocketLeveldbDatabase(object):
                         elif world_version == '1.plus':
                             db.Get(rop, key[:8]+'\x76')
                         # if the above key exists it is a valid chunk so add it
-                        allChunks.append(struct.unpack('<2i', key[:8]))
+                        allChunks.add(struct.unpack('<2i', key[:8]))
                     except RuntimeError:
                         pass
 
@@ -693,7 +693,7 @@ class PocketLeveldbDatabase(object):
 
             it.status()  # All this does is cause an exception if something went wrong. Might be unneeded?
             del it
-        return list(set(allChunks))
+        return allChunks
 
     def getAllPlayerData(self, readOptions=None):
         """
@@ -787,7 +787,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._allChunks is None:
             self._allChunks = self.worldFile.getAllChunks()
             if self.world_version == '1.plus' and self.dat_world_version == '\x04':
-                self._allChunks += self.worldFile.getAllChunks(world_version='pre1.0')
+                self._allChunks.union(self.worldFile.getAllChunks(world_version='pre1.0'))
         return self._allChunks
 
     @property
@@ -1132,7 +1132,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self.containsChunk(cx, cz):
             raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
         if self.allChunks is not None:
-            self.allChunks.append((cx, cz))
+            self.allChunks.add((cx, cz))
 
         if self.world_version == 'pre1.0':
             self._loadedChunks[(cx, cz)] = PocketLeveldbChunkPre1(cx, cz, self, create=True, world_version=self.world_version)
