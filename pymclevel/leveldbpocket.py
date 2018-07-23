@@ -658,49 +658,42 @@ class PocketLeveldbDatabase(object):
         :param world_version: game version to read the data for. Default: None.
         :return: list
         """
+        allChunks = []
         with self.world_db() as db:
             if not world_version:
                 world_version = self.world_version
-            allChunks = []
             rop = self.readOptions if readOptions is None else readOptions
 
             it = db.NewIterator(rop)
             it.SeekToFirst()
-            while it.Valid():
+            if it.Valid():
+                firstKey = it.key()
+            else:
+                # ie the database is empty
+                return []
+
+            it.SeekToLast()
+            key = ''
+            while key[0:8] != firstKey[0:8]:
                 key = it.key()
+                if len(key) >= 8:
+                    try:
+                        if world_version == 'pre1.0':
+                            db.Get(rop, key[:8] + '\x30')
+                        elif world_version == '1.plus':
+                            db.Get(rop, key[:8]+'\x76')
+                        # if the above key exists it is a valid chunk so add it
+                        allChunks.append(struct.unpack('<2i', key[:8]))
+                    except RuntimeError:
+                        pass
 
-                # This version check may be useless...
-                if world_version == 'pre1.0':
-                    if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
-                        it.Next()
-                        continue
-                else:
-                    if len(key) < 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
-                        it.Next()
-                        continue
+                # seek to the first key with this beginning and go one further
+                it.seek(key[:8])
+                it.stepBackward()
 
-                raw_x = key[0:4]
-                raw_z = key[4:8]
-#                 if DEBUG_PE:
-#                     write_dump("+++ %s %s" % (repr(struct.unpack('<i', raw_x)), repr(struct.unpack('<i', raw_z))))
-#                     write_dump("    %s, %s\n" % (key[8], type(key[8])))
-# #                     write_dump("    %s\n" % repr(dir(it)))
-#                     write_dump("    %s\n" % repr(dir(it.Values())))
-#                 if version == 'pre1.0':
-#                     t = key[8]
-#                 else:
-#                     t = ord(key[8])
-
-                t = ord(key[8])
-
-                # This need to be changed, because we assume that if 't' is 47 we have a 1+ chunk, which may not be accurate...
-                if (world_version == 'pre1.0' and t == 48) or (world_version == '1.plus' and t == 118): # or t == 47:
-                    cx, cz = struct.unpack('<i', raw_x), struct.unpack('<i', raw_z)
-                    allChunks.append((cx[0], cz[0]))
-                it.Next()
             it.status()  # All this does is cause an exception if something went wrong. Might be unneeded?
             del it
-            return list(set(allChunks))
+        return list(set(allChunks))
 
     def getAllPlayerData(self, readOptions=None):
         """
