@@ -1972,15 +1972,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 self._Data.add_data(subchunk, data)
             elif subchunk_version == 8:
                 num_of_storages, terrain = ord(terrain[0]), terrain[1:]
-                while len(terrain) > 0:
-                    blocks, data, terrain = self._read_block_storage(terrain)
-                    self._Blocks.add_data(subchunk, blocks)
-                    self._Data.add_data(subchunk, data)
-                    if len(terrain) > 0:
-                        extraBlocks, extraData, ignored_data = self._read_block_storage(terrain)
-                        self._extra_blocks.add_data(subchunk, extraBlocks)
-                        self._extra_blocks_data.add_data(subchunk, extraData)
-                    break  # Only support for one layer of extra blocks is in place
+                blocks, data, terrain = self._read_block_storage(terrain)
+                self._Blocks.add_data(subchunk, blocks)
+                self._Data.add_data(subchunk, data)
+                if num_of_storages > 1:
+                    extraBlocks, extraData, ignored_data = self._read_block_storage(terrain)
+                    self._extra_blocks.add_data(subchunk, extraBlocks)
+                    self._extra_blocks_data.add_data(subchunk, extraData)
+                    # Only support for one layer of extra blocks is in place
             else:
                 raise NotImplementedError("Not implemented this new type of world format yet")
 
