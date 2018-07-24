@@ -1,0 +1,47 @@
+os: linux
+language: python
+python:
+  - 2.7
+
+matrix:
+  include:
+  - os: osx
+    language: generic
+    env: PYTHON=2.7
+    osx_image: xcode8
+    rvm: 2.3
+
+before_install:
+#  - brew upgrade ruby
+  - brew update
+  - which python
+  - python --version
+
+install:
+  # Install wheel, upgrade pip to use wheel-cache
+  - python -m pip install -U pip
+  - python -m easy_install -U setuptools
+  #- python -m pip install pygame
+
+  - python -m pip install -r requirements.txt | cat
+  - python setup.py all
+
+  - python -m pip install git+http://github.com/pyinstaller/pyinstaller
+  #- python setup.py all
+
+script:
+  #- if [ "${TRAVIS_TAG}x" = "x" ]; then return 0; fi
+  #- export MCEDIT_BUILD_VERSION=${TRAVIS_TAG}
+  - pyinstaller mcedit-ci-osx.spec
+  - zip -r "mcedit-unified-1.6.0.${TRAVIS_BUILD_NUMBER}-testing-osx.zip" "dist" -x "*.DS_Store"
+
+
+# Deploy to GitHub Releases
+deploy:
+  provider: releases
+  api_key: $GITHUB_AUTH_TOKEN
+  repo: Podshot/Travis-CI-OSX-Testing
+  file: mcedit-unified-1.6.0.${TRAVIS_BUILD_NUMBER}-testing-osx.zip
+  name: "MCEdit-Unified 1.6.0.$TRAVIS_BUILD_NUMBER-osx-testing"
+  file_glob: true
+  skip_cleanup: true
