@@ -23,7 +23,7 @@ install:
   - python -m easy_install -U setuptools
   #- python -m pip install pygame
 
-  - python -m pip install -r requirements.txt | cat
+  - python -m pip install -r requirements-osx.txt | cat
   - python setup.py all
 
   - python -m pip install git+http://github.com/pyinstaller/pyinstaller
