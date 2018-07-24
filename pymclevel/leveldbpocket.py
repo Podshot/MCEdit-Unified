@@ -1798,7 +1798,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.subchunks = []
         self.subchunks_versions = {}
 
-        max_blocks_dtype = int(ceil(log(max([getattr(x, "ID", -1) for x in pocketMaterials]), 2)))
         possible_dtypes = [2 ** x for x in range(3, 8)]
         max_blocks_dtype = int(ceil(log(max([i for i,x in enumerate(pocketMaterials.idStr) if x]), 2)))
         max_blocks_dtype = next(possible_dtype for possible_dtype in possible_dtypes if possible_dtype >= max_blocks_dtype)
@@ -1824,64 +1823,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.extra_blocks = self._extra_blocks.destination
         self._extra_blocks_data = PE1PlusDataContainer(4096, 'uint' + str(max_data_dtype), name='extra_blocks_data')
         self.extra_blocks_data = self._extra_blocks_data.destination
-
-#=======================================================================
-# Get rid of that, or rework it?
-#         else:
-#             terrain = numpy.fromstring(data[0], dtype='uint8')
-#             if data[1] is not None:
-# #                 print 'loading tile entities in chunk', cx, cz
-#                 if DEBUG_PE:
-#                     write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
-#                 TileEntities = loadNBTCompoundList(data[1])
-#                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
-# 
-#             if data[2] is not None:
-# #                 print 'loading entities in chunk', cx, cz
-#                 if DEBUG_PE:
-#                     write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
-#                 Entities = loadNBTCompoundList(data[2])
-#                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
-#                 # Whenever we save an entity, we need to make sure to swap back.
-#                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
-#                 for ent in Entities:
-#                     # Get the string id, or a build one
-#                     # ! For PE debugging
-#                     try:
-#                         v = ent["id"].value
-#                     except Exception, e:
-#                         logger.warning("An error occured while getting entity ID:")
-#                         logger.warning(e)
-#                         logger.warning("Default 'Unknown' ID is used...")
-#                         v = 'Unknown'
-#                     # !
-#                     id = invertEntities.get(v, "Entity %s"%v)
-#                     # Add the built one to the entities
-#                     if id not in entity.PocketEntity.entityList.keys():
-#                         logger.warning("Found unknown entity '%s'"%v)
-#                         entity.PocketEntity.entityList[id] = v
-#                     ent["id"] = nbt.TAG_String(id)
-#                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
-
-#             if self.world_version == 'pre1.0':
-#                 self.Blocks, terrain = terrain[:32768], terrain[32768:]
-#                 self.Data, terrain = terrain[:16384], terrain[16384:]
-#                 self.SkyLight, terrain = terrain[:16384], terrain[16384:]
-#                 self.BlockLight, terrain = terrain[:16384], terrain[16384:]
-#                 self.DirtyColumns, terrain = terrain[:256], terrain[256:]
-#     
-#                 # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
-#                 self.GrassColors = terrain[:1024]
-#             else:
-#                 self.version, terrain = terrain[:1], terrain[1:]
-#                 self.Blocks, terrain = terrain[:4096], terrain[4096:]
-#                 self.Data, terrain = terrain[:2048], terrain[2048:]
-#                 self.SkyLight, terrain = terrain[:2048], terrain[2048:]
-#                 self.BlockLight, terrain = terrain[:2048], terrain[2048:]
-
-#         self._unpackChunkData()
-#         self.shapeChunkData()
-#=======================================================================
 
     def _read_block_storage(self, storage):
         bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
