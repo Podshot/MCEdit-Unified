@@ -1799,16 +1799,12 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.subchunks_versions = {}
 
         max_blocks_dtype = int(ceil(log(max([getattr(x, "ID", -1) for x in pocketMaterials]), 2)))
-        max_data_dtype = int(ceil(log(max([int(max(getattr(x, "yaml", {}).get("data", {"0": "0"}).keys(), key=int)) for x in pocketMaterials]), 2)))
         possible_dtypes = [2 ** x for x in range(3, 8)]
-        for possible_dtype in possible_dtypes:
-            if possible_dtype >= max_blocks_dtype:
-                max_blocks_dtype = possible_dtype
-                break
-        for possible_dtype in possible_dtypes:
-            if possible_dtype >= max_data_dtype:
-                max_data_dtype = possible_dtype
-                break
+        max_blocks_dtype = int(ceil(log(max([i for i,x in enumerate(pocketMaterials.idStr) if x]), 2)))
+        max_blocks_dtype = next(possible_dtype for possible_dtype in possible_dtypes if possible_dtype >= max_blocks_dtype)
+        max_data_dtype = int(ceil(log(max([x[1] for x in pocketMaterials.blocksByID.keys()]), 2)))
+        max_data_dtype = next(possible_dtype for possible_dtype in possible_dtypes if possible_dtype >= max_data_dtype)
+
         self._Blocks = PE1PlusDataContainer(4096, 'uint'+str(max_blocks_dtype), name='Blocks', chunk_height=self.Height)
         self.Blocks = self._Blocks.destination
         self._Data = PE1PlusDataContainer(4096, 'uint'+str(max_data_dtype), name='Data')
