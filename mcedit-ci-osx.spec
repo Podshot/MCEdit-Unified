@@ -67,7 +67,7 @@ a = Analysis(['mcedit.py'],
              cipher=block_cipher)
 
 datas = []
-base_files = glob.glob(r".\\*.json") + glob.glob(r'.\\*.png') + glob.glob(r'.\\*.fot') + glob.glob(r'.\\*.def') + [os.path.join('.', 'LICENSE.txt'),]
+base_files = glob.glob(r"./*.json") + glob.glob(r'./*.png') + glob.glob(r'./*.fot') + glob.glob(r'./*.def') + [os.path.join('.', 'LICENSE.txt'),]
 for f in base_files:
     datas.append((os.path.basename(f), os.path.abspath(f), 'DATA'))
 
