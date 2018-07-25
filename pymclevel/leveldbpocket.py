@@ -679,7 +679,6 @@ class PocketLeveldbDatabase(object):
                 if len(key) >= 8:
                     try:
                         if world_version == 'pre1.0':
-                            db.Get(rop, key[:8] + '\x30')
                             val = db.Get(rop, key[:8] + '\x30')
                         elif world_version == '1.plus':
                             val = db.Get(rop, key[:8]+'\x76')
