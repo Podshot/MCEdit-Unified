@@ -680,10 +680,12 @@ class PocketLeveldbDatabase(object):
                     try:
                         if world_version == 'pre1.0':
                             db.Get(rop, key[:8] + '\x30')
+                            val = db.Get(rop, key[:8] + '\x30')
                         elif world_version == '1.plus':
-                            db.Get(rop, key[:8]+'\x76')
+                            val = db.Get(rop, key[:8]+'\x76')
                         # if the above key exists it is a valid chunk so add it
-                        allChunks.add(struct.unpack('<2i', key[:8]))
+                        if val is not None:
+                            allChunks.add(struct.unpack('<2i', key[:8]))
                     except RuntimeError:
                         pass
 
