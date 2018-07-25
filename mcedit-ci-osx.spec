@@ -108,6 +108,6 @@ coll = COLLECT(exe,
                name='mcedit')
 
 app = BUNDLE(coll,
-             name='mcedit-unified.app',
+             name='mcedit.app',
              icon='mcedit.icns',
              bundle_identifier='net.mcedit-unified.mcedit-unified')
