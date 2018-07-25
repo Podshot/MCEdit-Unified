@@ -4,7 +4,5 @@ PyOpenGL==3.1.1a1
 PyOpenGL-accelerate==3.1.1a1
 ftputil==3.4
 pygame==1.9.4
-#pywin32==221 Use this if you're installing from binaries
-pypiwin32
 cython==0.28.4
 pyclark>=0.0.1

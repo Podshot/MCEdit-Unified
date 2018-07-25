@@ -48,17 +48,17 @@ These programs and packages are required:
 
 **Python packages**
 
-* [pygame](http://pygame.org/install.html)
-* PyOpenGL
-* numpy 1.13.3
-* Pillow 4.2.1
-* ftputil (Optional, but FTP server support will be disabled without it)
-* python-yaml
+* [pygame 1.9.4](http://pygame.org/install.html)
+* PyOpenGL 3.1.1a1
+* PyOpenGL-accelerate 3.1.1a1
+* numpy 1.15.0
+* Pillow 5.2.0
+* cython 0.28.4
 * python-xlib 0.14
-* ftputil (Optional, but FTP server support will be disabled without it)
+* ftputil 3.4 (Optional, but FTP server support will be disabled without it)
 * pyClark (Optional, but error reporting will be disabled without it)
 
-On Windows, these are also required:
+On Windows, these are also required (Either one works, pypiwin32 is recommended):
 
 * pywin32
 * pypiwin32
