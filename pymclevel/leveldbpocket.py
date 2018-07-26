@@ -174,7 +174,7 @@ def get_blocks_storage_from_blocks_and_data(blocks, data):
     numpy_blocks = numpy.zeros(4096, 'uint16')
     for index, (blockID, blockData) in enumerate(uniqueBlocks):
         try:
-            block_string = "minecraft:" + pocketMaterials.blocksByID[blockID, blockData].stringID
+            block_string = "minecraft:" + pocketMaterials.idStr[blockID]
             block_data = blockData
         except:
             block_string = "minecraft:air"
