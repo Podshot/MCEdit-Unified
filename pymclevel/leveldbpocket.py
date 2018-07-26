@@ -1855,7 +1855,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         ids = []
         data = []
         for item in palette_nbt:
-            idStr = item["name"].value.split(':',1)[-1].lower()
+            idStr = item["name"].value.split(':',1)[-1]
             if idStr != 'air' and idStr not in pocketMaterials.idStr:
                 pocketMaterials.addJSONBlock({"id": pocketMaterials.tempBlockID, "name": idStr, "idStr": idStr, "mapcolor": [214, 127, 255], "data": {n: {"name": idStr} for n in range(16)}})
                 pocketMaterials.tempBlockID += 1
