@@ -168,12 +168,14 @@ class InvalidPocketLevelDBWorldException(Exception):
 
 # =====================================================================
 def get_blocks_storage_from_blocks_and_data(blocks, data):
+    blocksCombined = numpy.stack((blocks, data))
+    uniqueBlocks = numpy.transpose(numpy.unique(blocksCombined, axis=1))
     palette = []
-    new_blocks = []
-    for i in range(len(blocks)):
+    numpy_blocks = numpy.zeros(4096, 'uint16')
+    for index, (blockID, blockData) in enumerate(uniqueBlocks):
         try:
-            block_string = "minecraft:" + pocketMaterials.blocksByID[blocks[i], data[i]].stringID
-            block_data = data[i]
+            block_string = "minecraft:" + pocketMaterials.idStr[blockID]
+            block_data = blockData
         except:
             block_string = "minecraft:air"
             block_data = 0
@@ -182,8 +184,7 @@ def get_blocks_storage_from_blocks_and_data(blocks, data):
         if block_nbt not in palette:
             palette.append(block_nbt)
         position = palette.index(block_nbt)
-        new_blocks.append(position)
-    numpy_blocks = numpy.array(new_blocks)
+        numpy_blocks[(blocksCombined[0]==blockID) & (blocksCombined[1]==blockData)] = position
     max_bits = len('{0:b}'.format(numpy_blocks.max()))
     possible_bits_per_blocks = [1, 2, 3, 4, 5, 6, 8, 16]
     bits_per_block = possible_bits_per_blocks[numpy.searchsorted(possible_bits_per_blocks, max_bits, side='left')]
@@ -565,16 +566,14 @@ class PocketLeveldbDatabase(object):
 
             if hasattr(chunk, "_extra_blocks"):
                 extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
-            else:
-                extra_blocks = None
-            if extra_blocks is None:
-                extra_blocks = ""
-                num_of_storages = 1
-            else:
-                num_of_storages = 2
                 extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
-                extra_blocks = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
-            terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks
+                extra_blocks_storage = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
+                num_of_storages = 2
+            else:
+                extra_blocks_storage = ""
+                num_of_storages = 1
+
+            terrain = ver + chr(num_of_storages) + blocks_storage + extra_blocks_storage
 
             if batch is None:
                 with self.world_db() as db:
@@ -659,49 +658,43 @@ class PocketLeveldbDatabase(object):
         :param world_version: game version to read the data for. Default: None.
         :return: list
         """
+        allChunks = set()
         with self.world_db() as db:
             if not world_version:
                 world_version = self.world_version
-            allChunks = []
             rop = self.readOptions if readOptions is None else readOptions
 
             it = db.NewIterator(rop)
             it.SeekToFirst()
-            while it.Valid():
+            if it.Valid():
+                firstKey = it.key()
+            else:
+                # ie the database is empty
+                return []
+
+            it.SeekToLast()
+            key = ''
+            while key[0:8] != firstKey[0:8]:
                 key = it.key()
+                if len(key) >= 8:
+                    try:
+                        if world_version == 'pre1.0':
+                            val = db.Get(rop, key[:8] + '\x30')
+                        elif world_version == '1.plus':
+                            val = db.Get(rop, key[:8]+'\x76')
+                        # if the above key exists it is a valid chunk so add it
+                        if val is not None:
+                            allChunks.add(struct.unpack('<2i', key[:8]))
+                    except RuntimeError:
+                        pass
 
-                # This version check may be useless...
-                if world_version == 'pre1.0':
-                    if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
-                        it.Next()
-                        continue
-                else:
-                    if len(key) < 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
-                        it.Next()
-                        continue
+                # seek to the first key with this beginning and go one further
+                it.seek(key[:8])
+                it.stepBackward()
 
-                raw_x = key[0:4]
-                raw_z = key[4:8]
-#                 if DEBUG_PE:
-#                     write_dump("+++ %s %s" % (repr(struct.unpack('<i', raw_x)), repr(struct.unpack('<i', raw_z))))
-#                     write_dump("    %s, %s\n" % (key[8], type(key[8])))
-# #                     write_dump("    %s\n" % repr(dir(it)))
-#                     write_dump("    %s\n" % repr(dir(it.Values())))
-#                 if version == 'pre1.0':
-#                     t = key[8]
-#                 else:
-#                     t = ord(key[8])
-
-                t = ord(key[8])
-
-                # This need to be changed, because we assume that if 't' is 47 we have a 1+ chunk, which may not be accurate...
-                if (world_version == 'pre1.0' and t == 48) or (world_version == '1.plus' and t == 118): # or t == 47:
-                    cx, cz = struct.unpack('<i', raw_x), struct.unpack('<i', raw_z)
-                    allChunks.append((cx[0], cz[0]))
-                it.Next()
             it.status()  # All this does is cause an exception if something went wrong. Might be unneeded?
             del it
-            return list(set(allChunks))
+        return allChunks
 
     def getAllPlayerData(self, readOptions=None):
         """
@@ -795,7 +788,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._allChunks is None:
             self._allChunks = self.worldFile.getAllChunks()
             if self.world_version == '1.plus' and self.dat_world_version == '\x04':
-                self._allChunks += self.worldFile.getAllChunks(world_version='pre1.0')
+                self._allChunks.union(self.worldFile.getAllChunks(world_version='pre1.0'))
         return self._allChunks
 
     @property
@@ -1140,7 +1133,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self.containsChunk(cx, cz):
             raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
         if self.allChunks is not None:
-            self.allChunks.append((cx, cz))
+            self.allChunks.add((cx, cz))
 
         if self.world_version == 'pre1.0':
             self._loadedChunks[(cx, cz)] = PocketLeveldbChunkPre1(cx, cz, self, create=True, world_version=self.world_version)
@@ -1806,23 +1799,19 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.subchunks = []
         self.subchunks_versions = {}
 
-        max_blocks_dtype = int(ceil(log(max([getattr(x, "ID", -1) for x in pocketMaterials]), 2)))
-        max_data_dtype = int(ceil(log(max([int(max(getattr(x, "yaml", {}).get("data", {"0": "0"}).keys(), key=int)) for x in pocketMaterials]), 2)))
         possible_dtypes = [2 ** x for x in range(3, 8)]
-        for possible_dtype in possible_dtypes:
-            if possible_dtype >= max_blocks_dtype:
-                max_blocks_dtype = possible_dtype
-                break
-        for possible_dtype in possible_dtypes:
-            if possible_dtype >= max_data_dtype:
-                max_data_dtype = possible_dtype
-                break
+        max_blocks_dtype = int(ceil(log(max([i for i,x in enumerate(pocketMaterials.idStr) if x]), 2)))
+        max_blocks_dtype = next(possible_dtype for possible_dtype in possible_dtypes if possible_dtype >= max_blocks_dtype)
+        max_data_dtype = int(ceil(log(max([x[1] for x in pocketMaterials.blocksByID.keys()]), 2)))
+        max_data_dtype = next(possible_dtype for possible_dtype in possible_dtypes if possible_dtype >= max_data_dtype)
+
         self._Blocks = PE1PlusDataContainer(4096, 'uint'+str(max_blocks_dtype), name='Blocks', chunk_height=self.Height)
         self.Blocks = self._Blocks.destination
         self._Data = PE1PlusDataContainer(4096, 'uint'+str(max_data_dtype), name='Data')
         self.Data = self._Data.destination
         self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight')
         self.SkyLight = self._SkyLight.destination
+        self.SkyLight[:] = 15
         self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight')
         self.BlockLight = self._BlockLight.destination
 
@@ -1836,64 +1825,6 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.extra_blocks = self._extra_blocks.destination
         self._extra_blocks_data = PE1PlusDataContainer(4096, 'uint' + str(max_data_dtype), name='extra_blocks_data')
         self.extra_blocks_data = self._extra_blocks_data.destination
-
-#=======================================================================
-# Get rid of that, or rework it?
-#         else:
-#             terrain = numpy.fromstring(data[0], dtype='uint8')
-#             if data[1] is not None:
-# #                 print 'loading tile entities in chunk', cx, cz
-#                 if DEBUG_PE:
-#                     write_dump(('/' * 80) + '\nParsing TileEntities in chunk %s,%s\n'%(cx, cz))
-#                 TileEntities = loadNBTCompoundList(data[1])
-#                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
-# 
-#             if data[2] is not None:
-# #                 print 'loading entities in chunk', cx, cz
-#                 if DEBUG_PE:
-#                     write_dump(('\\' * 80) + '\nParsing Entities in chunk %s,%s\n'%(cx, cz))
-#                 Entities = loadNBTCompoundList(data[2])
-#                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
-#                 # Whenever we save an entity, we need to make sure to swap back.
-#                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
-#                 for ent in Entities:
-#                     # Get the string id, or a build one
-#                     # ! For PE debugging
-#                     try:
-#                         v = ent["id"].value
-#                     except Exception, e:
-#                         logger.warning("An error occured while getting entity ID:")
-#                         logger.warning(e)
-#                         logger.warning("Default 'Unknown' ID is used...")
-#                         v = 'Unknown'
-#                     # !
-#                     id = invertEntities.get(v, "Entity %s"%v)
-#                     # Add the built one to the entities
-#                     if id not in entity.PocketEntity.entityList.keys():
-#                         logger.warning("Found unknown entity '%s'"%v)
-#                         entity.PocketEntity.entityList[id] = v
-#                     ent["id"] = nbt.TAG_String(id)
-#                 self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
-
-#             if self.world_version == 'pre1.0':
-#                 self.Blocks, terrain = terrain[:32768], terrain[32768:]
-#                 self.Data, terrain = terrain[:16384], terrain[16384:]
-#                 self.SkyLight, terrain = terrain[:16384], terrain[16384:]
-#                 self.BlockLight, terrain = terrain[:16384], terrain[16384:]
-#                 self.DirtyColumns, terrain = terrain[:256], terrain[256:]
-#     
-#                 # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
-#                 self.GrassColors = terrain[:1024]
-#             else:
-#                 self.version, terrain = terrain[:1], terrain[1:]
-#                 self.Blocks, terrain = terrain[:4096], terrain[4096:]
-#                 self.Data, terrain = terrain[:2048], terrain[2048:]
-#                 self.SkyLight, terrain = terrain[:2048], terrain[2048:]
-#                 self.BlockLight, terrain = terrain[:2048], terrain[2048:]
-
-#         self._unpackChunkData()
-#         self.shapeChunkData()
-#=======================================================================
 
     def _read_block_storage(self, storage):
         bits_per_block, storage = ord(storage[0]) >> 1, storage[1:]
@@ -1920,14 +1851,22 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         # This might be varint and not just 4 bytes, need to make sure
         palette_size, palette = struct.unpack("<i", storage[:4])[0], storage[4:]
         palette_nbt, storage = loadNBTCompoundList(palette, partNBT=True, count=palette_size)
-        tempBlockID = max([numID for numID, item in enumerate(pocketMaterials.idStr) if item != '']) + 1
+        if not hasattr(pocketMaterials, 'tempBlockID'):
+            pocketMaterials.tempBlockID = max([numID for numID, item in enumerate(pocketMaterials.idStr) if item]) + 1
+        ids = []
+        data = []
         for item in palette_nbt:
-            if pocketMaterials.get(item["name"].value) is None:
-                idStr = item["name"].value.split(':')[-1]
-                pocketMaterials.addJSONBlock({"id": tempBlockID, "name": idStr, "idStr": idStr, "mapcolor": [214, 127, 255],"data":{n:{"name": idStr} for n in range(16)}})
-                tempBlockID += 1
-        ids = [getattr(pocketMaterials.get(item["name"].value), "ID", 255) for item in palette_nbt]
-        data = [item["val"].value for item in palette_nbt]
+            idStr = item["name"].value.split(':',1)[-1]
+            if idStr != 'air' and idStr not in pocketMaterials.idStr:
+                pocketMaterials.addJSONBlock({"id": pocketMaterials.tempBlockID, "name": idStr, "idStr": idStr, "mapcolor": [214, 127, 255], "data": {n: {"name": idStr} for n in range(16)}})
+                pocketMaterials.tempBlockID += 1
+            if idStr == 'air':
+                ids.append(0)
+            elif idStr in pocketMaterials.idStr:
+                ids.append(pocketMaterials.idStr.index(idStr))
+            else:
+                ids.append(255)
+            data.append(item["val"].value)
         blocks = numpy.asarray(ids, dtype=self._Blocks.bin_type)[blocks_before_palette]
         data = numpy.asarray(data, dtype=self._Data.bin_type)[blocks_before_palette]
         return blocks, data, storage
@@ -1973,15 +1912,14 @@ class PocketLeveldbChunk1Plus(LightedChunk):
                 self._Data.add_data(subchunk, data)
             elif subchunk_version == 8:
                 num_of_storages, terrain = ord(terrain[0]), terrain[1:]
-                while len(terrain) > 0:
-                    blocks, data, terrain = self._read_block_storage(terrain)
-                    self._Blocks.add_data(subchunk, blocks)
-                    self._Data.add_data(subchunk, data)
-                    if len(terrain) > 0:
-                        extraBlocks, extraData, ignored_data = self._read_block_storage(terrain)
-                        self._extra_blocks.add_data(subchunk, extraBlocks)
-                        self._extra_blocks_data.add_data(subchunk, extraData)
-                    break  # Only support for one layer of extra blocks is in place
+                blocks, data, terrain = self._read_block_storage(terrain)
+                self._Blocks.add_data(subchunk, blocks)
+                self._Data.add_data(subchunk, data)
+                if num_of_storages > 1:
+                    extraBlocks, extraData, ignored_data = self._read_block_storage(terrain)
+                    self._extra_blocks.add_data(subchunk, extraBlocks)
+                    self._extra_blocks_data.add_data(subchunk, extraData)
+                    # Only support for one layer of extra blocks is in place
             else:
                 raise NotImplementedError("Not implemented this new type of world format yet")
 
@@ -2068,6 +2006,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         """Unused, raises NotImplementedError()."""
         # Not used for PE 1+ worlds... May change :)
         raise NotImplementedError()
+
+    def genFastLights(self):
+        pass
 
     # -- Entities and TileEntities
 
