@@ -1811,6 +1811,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         self.Data = self._Data.destination
         self._SkyLight = PE1PlusDataContainer(4096, 'uint8', name='SkyLight')
         self.SkyLight = self._SkyLight.destination
+        self.SkyLight[:] = 15
         self._BlockLight = PE1PlusDataContainer(4096, 'uint8', name='BlockLight')
         self.BlockLight = self._BlockLight.destination
 
@@ -2007,7 +2008,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         raise NotImplementedError()
 
     def genFastLights(self):
-        self.SkyLight[:] = 15
+        pass
 
     # -- Entities and TileEntities
 
