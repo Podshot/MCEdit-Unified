@@ -7110,7 +7110,7 @@
 					"name": "Tripwire (Unattached, Disarmed, Unpowered, Unsuspended)"
 				}
 			},
-			"idStr": "tripwire",
+			"idStr": "tripWire",
 			"tex": [13,10],
 			"mapcolor": [200,200,200],
 			"type": "DECORATION_CROSS",
