@@ -792,6 +792,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         return self._allChunks
 
     @property
+    def chunkCount(self):
+        """Returns the number of chunks in the level. May initiate a costly chunk scan."""
+        if len(self._loadedChunks) != 0:
+            return len(self._loadedChunks)
+        else:
+            return len(self.allChunks)
+
+    @property
     def players(self):
         if self._playerList is None:
             self._playerList = []
