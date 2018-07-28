@@ -1,0 +1,290 @@
+{
+    "load": "1.2",
+    "blocks": [
+	    {
+            "id": 36,
+            "idStr": "element_0",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "element_0",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 166,
+            "idStr": "glow_stick",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "glow_stick",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 190,
+            "idStr": "hard_glass_pane",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "hard_glass_pane",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 191,
+            "idStr": "hard_stained_glass_pane",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "hard_stained_glass_pane",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 192,
+            "idStr": "chemical_heat",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "chemical_heat",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 202,
+            "idStr": "colored_torch_rg",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "colored_torch_rg",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 204,
+            "idStr": "colored_torch_bp",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "colored_torch_bp",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 238,
+            "idStr": "chemistry_table",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "chemistry_table",
+            "tex": [
+                15,
+                29
+            ]
+        },
+        {
+            "id": 239,
+            "idStr": "underwater_torch",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "underwater_torch",
+            "tex": [
+                15,
+                29
+            ]
+        },
+	    {
+            "id": 253,
+            "idStr": "hard_glass",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "Hardened Glass",
+            "tex": [
+                31,
+                31
+            ]
+        },
+        {
+            "id": 254,
+            "idStr": "hard_stained_glass",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "Hardened Stained Glass",
+            "tex": [
+                31,
+                31
+            ]
+        },
+	    {
+            "id": 256,
+            "idStr": "minecraft:256",
+            "mapcolor": [
+                201,
+                119,
+                240
+            ],
+            "name": "tile.256.name",
+            "tex": [
+                15,
+                29
+            ]
+        },
+		{
+            "name": "Prismarine Stairs",
+            "idStr": "prismarine_stairs",
+            "tex": [0,0],
+            "id": 257,
+            "data": {
+                "0": {
+                    "name": "Prismarine Stairs (Bottom, East)"
+                },
+                "1": {
+                    "name": "Prismarine Stairs (Bottom, West)"
+                },
+                "2": {
+                    "name": "Prismarine Stairs (Bottom, South)"
+                },
+                "3": {
+                    "name": "Prismarine Stairs (Bottom, North)"
+                },
+                "4": {
+                    "name": "Prismarine Stairs (Top, East)"
+                },
+                "5": {
+                    "name": "Prismarine Stairs (Top, West)"
+                },
+                "6": {
+                    "name": "Prismarine Stairs (Top, South)"
+                },
+                "7": {
+                    "name": "Prismarine Stairs (Top, North)"
+                }
+            }
+        },
+        {
+			"opacity": 0,
+			"name": "Acacia Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Acacia Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Acacia Pressure Plate"
+				}
+			},
+			"idStr": "acacia_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 405
+		},
+	    {
+			"opacity": 0,
+			"name": "Birch Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Birch Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Birch Pressure Plate"
+				}
+			},
+			"idStr": "birch_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 406
+		},
+        {
+			"opacity": 0,
+			"name": "Dark Oak Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Dark Oak Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Dark Oak Pressure Plate"
+				}
+			},
+			"idStr": "dark_oak_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 407
+		},
+        {
+			"opacity": 0,
+			"name": "Jungle Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Jungle Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Jungle Pressure Plate"
+				}
+			},
+			"idStr": "jungle_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 408
+		},
+	    {
+			"opacity": 0,
+			"name": "Spruce Pressure Plate",
+			"data": {
+				"1": {
+					"name": "Spruce Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Spruce Pressure Plate"
+				}
+			},
+			"idStr": "spruce_pressure_plate",
+			"tex": [4,0],
+			"mapcolor": [157,128,79],
+			"type": "PRESSURE_PLATE",
+			"id": 409
+		}
+	]
+}

@@ -104,14 +104,17 @@
 			"tex": [2,0],
 			"mapcolor": [134,96,67],
 			"data": {
-				"1": {
-					"name": "Coarse",
-					"tex": [2,0]
-				},
-				"0": {
-				    "name": "Dirt",
-					"tex": [2,0]
-				}
+                "0": {
+                    "name": "Dirt",
+                    "tex": [2,0]
+                },
+                "1": {
+                    "name": "Coarse Dirt",
+                    "tex": [2,0],
+                    "tex_direction": {
+                        "TOP": [19,5]
+                    }
+                }
 			}
 		},
         {
@@ -1261,19 +1264,31 @@
 			"mapcolor": [218,210,158],
 			"data": {
 				"1": {
-					"tex": [5,14],
-					"mapcolor": [218,210,158],
-					"name": "Chiseled Sandstone"
+                    "tex": [5,14],
+                    "mapcolor": [218,210,158],
+                    "name": "Chiseled Sandstone",
+                    "tex_direction": {
+                        "TOP": [0,11],
+                        "BOTTOM": [0,13]
+                    }
 				},
 				"0": {
-					"tex": [0,12],
-					"mapcolor": [218,210,158],
-					"name": "Sandstone"
+                    "tex": [0,12],
+                    "mapcolor": [218,210,158],
+                    "name": "Sandstone",
+                    "tex_direction": {
+                        "TOP": [0,11],
+                        "BOTTOM": [0,13]
+                    }
 				},
 				"2": {
-					"tex": [6,14],
-					"mapcolor": [218,210,158],
-					"name": "Smooth Sandstone"
+                    "tex": [6,14],
+                    "mapcolor": [218,210,158],
+                    "name": "Smooth Sandstone",
+                    "tex_direction": {
+                        "TOP": [0,11],
+                        "BOTTOM": [0,13]
+                    }
 				}
 			},
 			"id": 24
@@ -2237,7 +2252,7 @@
         },
         {
             "id": 36,
-            "idStr": "tile.36.name",
+            "idStr": "36",
             "mapcolor": [
                 201,
                 119,
@@ -3153,18 +3168,11 @@
             },
             "id": 55,
             "idStr": "redstone_wire",
-            "mapcolor": [
-                245,
-                50,
-                50
-            ],
+            "tex": [4,10],
+            "mapcolor": [245,50,50],
             "name": "Redstone Dust",
             "opacity": 0,
             "search": "wire",
-            "tex": [
-                31,
-                31
-            ],
             "type": "FLOOR"
         },
         {
@@ -3738,7 +3746,7 @@
                     7
                 ]
             },
-            "type": "MINECART_TRACKS"
+            "type": "SIMPLE_RAIL"
         },
         {
             "data": {
@@ -8252,42 +8260,6 @@
 			"opacity": 0,
 			"name": "Redstone Comparator (Off)",
 			"data": {
-				"11": {
-					"tex_direction": {
-						"TOP": [27,3]
-					},
-					"name": "Redstone Comparator (On, Compare, East)"
-				},
-				"10": {
-					"tex_direction": {
-						"TOP": [27,2]
-					},
-					"name": "Redstone Comparator (On, Compare, North)"
-				},
-				"13": {
-					"tex_direction": {
-						"TOP": [28,1]
-					},
-					"name": "Redstone Comparator (On, Subtract, West)"
-				},
-				"12": {
-					"tex_direction": {
-						"TOP": [28,0]
-					},
-					"name": "Redstone Comparator (On, Subtract, South)"
-				},
-				"15": {
-					"tex_direction": {
-						"TOP": [28,3]
-					},
-					"name": "Redstone Comparator (On, Subtract, East)"
-				},
-				"14": {
-					"tex_direction": {
-						"TOP": [28,2]
-					},
-					"name": "Redstone Comparator (On, Subtract, North)"
-				},
 				"1": {
 					"tex_direction": {
 						"TOP": [25,1]
@@ -8335,18 +8307,6 @@
 						"TOP": [26,2]
 					},
 					"name": "Redstone Comparator (Off, Subtract, North)"
-				},
-				"9": {
-					"tex_direction": {
-						"TOP": [27,1]
-					},
-					"name": "Redstone Comparator (On, Compare, West)"
-				},
-				"8": {
-					"tex_direction": {
-						"TOP": [27,0]
-					},
-					"name": "Redstone Comparator (On, Compare, South)"
 				}
 			},
 			"idStr": "unpowered_comparator",
@@ -8360,101 +8320,53 @@
 			"name": "Redstone Comparator (On)",
 			"brightness": 8,
 			"data": {
-				"11": {
-					"tex_direction": {
-						"TOP": [27,3]
-					},
-					"name": "OLD/Redstone Comparator (On, Compare, West)"
-				},
-				"10": {
-					"tex_direction": {
-						"TOP": [27,2]
-					},
-					"name": "OLD/Redstone Comparator (On, Compare, South)"
-				},
-				"13": {
-					"tex_direction": {
-						"TOP": [28,1]
-					},
-					"name": "OLD/Redstone Comparator (On, Subtract, East)"
-				},
-				"12": {
-					"tex_direction": {
-						"TOP": [28,0]
-					},
-					"name": "OLD/Redstone Comparator (On, Subtract, North)"
-				},
-				"15": {
-					"tex_direction": {
-						"TOP": [28,3]
-					},
-					"name": "OLD/Redstone Comparator (On, Subtract, West)"
-				},
-				"14": {
-					"tex_direction": {
-						"TOP": [28,2]
-					},
-					"name": "OLD/Redstone Comparator (On, Subtract, South)"
-				},
-				"1": {
-					"tex_direction": {
-						"TOP": [25,1]
-					},
-					"name": "OLD/Redstone Comparator (Off, Compare, West)"
-				},
-				"0": {
-					"tex_direction": {
-						"TOP": [25,0]
-					},
-					"name": "OLD/Redstone Comparator (Off, Compare, North)"
-				},
-				"3": {
-					"tex_direction": {
-						"TOP": [25,3]
-					},
-					"name": "OLD/Redstone Comparator (Off, Compare, West)"
-				},
-				"2": {
-					"tex_direction": {
-						"TOP": [25,2]
-					},
-					"name": "OLD/Redstone Comparator (Off, Compare, South)"
-				},
-				"5": {
-					"tex_direction": {
-						"TOP": [26,1]
-					},
-					"name": "OLD/Redstone Comparator (Off, Subtract, East)"
-				},
-				"4": {
-					"tex_direction": {
-						"TOP": [26,0]
-					},
-					"name": "OLD/Redstone Comparator (Off, Subtract, North)"
-				},
-				"7": {
-					"tex_direction": {
-						"TOP": [26,3]
-					},
-					"name": "OLD/Redstone Comparator (Off, Subtract, West)"
-				},
-				"6": {
-					"tex_direction": {
-						"TOP": [26,2]
-					},
-					"name": "OLD/Redstone Comparator (Off, Subtract, South)"
-				},
 				"9": {
 					"tex_direction": {
 						"TOP": [27,1]
 					},
-					"name": "OLD/Redstone Comparator (On, Compare, East)"
+					"name": "Redstone Comparator (On, Compare, East)"
 				},
 				"8": {
 					"tex_direction": {
 						"TOP": [27,0]
 					},
-					"name": "OLD/Redstone Comparator (On, Compare, North)"
+					"name": "Redstone Comparator (On, Compare, North)"
+				},
+				"11": {
+					"tex_direction": {
+						"TOP": [27,3]
+					},
+					"name": "Redstone Comparator (On, Compare, West)"
+				},
+				"10": {
+					"tex_direction": {
+						"TOP": [27,2]
+					},
+					"name": "Redstone Comparator (On, Compare, South)"
+				},
+				"13": {
+					"tex_direction": {
+						"TOP": [28,1]
+					},
+					"name": "Redstone Comparator (On, Subtract, East)"
+				},
+				"12": {
+					"tex_direction": {
+						"TOP": [28,0]
+					},
+					"name": "Redstone Comparator (On, Subtract, North)"
+				},
+				"15": {
+					"tex_direction": {
+						"TOP": [28,3]
+					},
+					"name": "Redstone Comparator (On, Subtract, West)"
+				},
+				"14": {
+					"tex_direction": {
+						"TOP": [28,2]
+					},
+					"name": "Redstone Comparator (On, Subtract, South)"
 				}
 			},
 			"idStr": "powered_comparator",
@@ -8661,7 +8573,7 @@
                     "name": "Block of Quartz"
                 },
                 "1": {
-                    "name": "Chiseled Quartz Block",
+                    "name": "Chiseled Quartz Block (Upright)",
                     "tex": [
                         8,
                         15
@@ -8701,11 +8613,7 @@
                         15
                     ],
                     "tex_direction": {
-                        "BOTTOM": [
-                            9,
-                            15
-                        ],
-                        "TOP": [
+                        "SIDES": [
                             9,
                             15
                         ]
@@ -8724,6 +8632,23 @@
                         ]
 					}
                 },
+			    "9": {
+                    "name": "Chiseled Quartz Block (North/South)",
+                    "tex": [
+                        8,
+                        15
+                    ],
+                    "tex_direction": {
+                        "BACKWARD": [
+                            9,
+                            15
+                        ],
+                        "FORWARD": [
+                            9,
+                            15
+                        ]
+                    }
+                },
 			    "10": {
                     "name": "Pillar Quartz Block (North/South)",
                     "tex": [
@@ -8731,11 +8656,29 @@
                         19
                     ],
                     "tex_direction": {
-                        "SIDES": [
+                        "BACKWARD": [
+                            11,
+                            15
+                        ],
+                        "FORWARD": [
                             11,
                             15
                         ]
-					}
+                    }
+                },
+			    "13": {
+                    "name": "Chiseled Quartz Block (Smooth)",
+                    "tex": [
+                        8,
+                        15
+                    ]
+                },
+			    "14": {
+                    "name": "Pillar Quartz Block (Smooth)",
+                    "tex": [
+                        17,
+                        19
+                    ]
                 }
 			},
             "id": 155,
@@ -9571,7 +9514,7 @@
 		},
         {
             "id": 166,
-            "idStr": "tile.166.name",
+            "idStr": "166",
             "mapcolor": [
                 201,
                 119,
@@ -9645,20 +9588,20 @@
 		{
 			"tex": [18,17],
 			"data": {
-				"1": {
-					"tex": [16,17],
-					"mapcolor": [39,117,149],
-					"name": "Prismarine Bricks"
-				},
 				"0": {
 					"tex": [18,17],
 					"mapcolor": [39,117,149],
 					"name": "Prismarine"
 				},
-				"2": {
+				"1": {
 					"tex": [17,17],
 					"mapcolor": [29,87,119],
 					"name": "Dark Prismarine"
+				},
+                "2": {
+					"tex": [16,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Bricks"
 				}
 			},
 			"idStr": "prismarine",
@@ -10314,46 +10257,97 @@
 			"id": 180
 		},
 		{
-			"tex_direction": {
-				"TOP": [4,20],
-				"BOTTOM": [0,20]
-			},
 			"name": "Double Red Sandstone Slab",
 			"idStr": "double_stone_slab2",
 			"tex": [2,20],
 			"mapcolor": [140,90,90],
 			"data": {
 				"0": {
-					"name": "Red Sandstone Double Slab (Seamed)"
+					"name": "Red Sandstone Double Slab",
+					"tex": [2,20],
+					"tex_direction": {
+						"TOP": [4,20],
+						"BOTTOM": [0,20]
+					}
 				},
 				"1": {
-					"tex": [18,19],
-					"name": "Purpur Double Slab"
+					"name": "Purpur Double Slab",
+					"tex": [18,19]
 				},
-				"8": {
-					"name": "Red Sandstone Double Slab (Seamless)"
+				"2": {
+					"tex": [18,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Double Slab"
+				},
+				"3": {
+					"tex": [17,17],
+					"mapcolor": [29,87,119],
+					"name": "Dark Prismarine Double Slab"
+				},
+				"4": {
+					"tex": [16,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Bricks Double Slab"
 				}
 			},
 			"id": 181
 		},
 		{
-			"tex_direction": {
-				"TOP": [4,20],
-				"BOTTOM": [0,20]
-			},
 			"name": "Red Sandstone Slab",
 			"data": {
-				"0": {
-					"name": "Red Sandstone Slab (Bottom)"
+                "0": {
+					"name": "Red Sandstone Slab (Bottom)",
+					"tex": [2,20],
+					"tex_direction": {
+						"TOP": [4,20],
+						"BOTTOM": [0,20]
+					}
 				},
 				"1": {
-					"name": "Purpur Slab (Bottom)"
+					"name": "Purpur Slab (Bottom)",
+					"tex": [18,19]
 				},
-				"8": {
-					"name": "Red Sandstone Slab (Top)"
+				"2": {
+					"tex": [18,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Slab (Bottom)"
+				},
+				"3": {
+					"tex": [17,17],
+					"mapcolor": [29,87,119],
+					"name": "Dark Prismarine Slab (Bottom)"
+				},
+				"4": {
+					"tex": [16,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Bricks Slab (Bottom)"
+				},
+                "8": {
+					"name": "Red Sandstone Slab (Top)",
+					"tex": [2,20],
+					"tex_direction": {
+						"TOP": [4,20],
+						"BOTTOM": [0,20]
+					}
 				},
 				"9": {
-					"name": "Purpur Slab (Bottom)"
+					"name": "Purpur Slab (Top)",
+					"tex": [18,19]
+				},
+				"10": {
+					"tex": [18,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Slab (Top)"
+				},
+				"11": {
+					"tex": [17,17],
+					"mapcolor": [29,87,119],
+					"name": "Dark Prismarine Slab (Top)"
+				},
+				"12": {
+					"tex": [16,17],
+					"mapcolor": [39,117,149],
+					"name": "Prismarine Bricks Slab (Top)"
 				}
 			},
 			"idStr": "stone_slab2",
@@ -10413,7 +10407,7 @@
                     "name": "Spruce Fence Gate (Powered, Closed, West)"
                 }
             },
-			
+
             "id": 183,
             "idStr": "spruce_fence_gate",
             "mapcolor": [
@@ -11295,7 +11289,7 @@
         },
         {
             "id": 190,
-            "idStr": "tile.190.name",
+            "idStr": "190",
             "mapcolor": [
                 201,
                 119,
@@ -11309,7 +11303,7 @@
         },
         {
             "id": 191,
-            "idStr": "tile.191.name",
+            "idStr": "191",
             "mapcolor": [
                 201,
                 119,
@@ -11323,7 +11317,7 @@
         },
         {
             "id": 192,
-            "idStr": "tile.192.name",
+            "idStr": "192",
             "mapcolor": [
                 201,
                 119,
@@ -11718,19 +11712,19 @@
             "data": {
                 "0": {
                     "tex": [9,11],
-                    "name": "Item (East)"
+                    "name": "Item Frame (East)"
                 },
                 "1": {
                     "tex": [9,11],
-                    "name": "Item (West)"
+                    "name": "Item Frame (West)"
                 },
                 "2": {
                     "tex": [9,11],
-                    "name": "Item (South)"
+                    "name": "Item Frame (South)"
                 },
                 "3": {
                     "tex": [9,11],
-                    "name": "Item (North)"
+                    "name": "Item Frame (North)"
                 }
             }
         },
@@ -11767,7 +11761,7 @@
 			},
 			"id": 200
 		},
-        {
+    	{
 			"tex": [18,19],
 			"mapcolor": [120,120,120],
 			"idStr": "purpur_block",
@@ -11776,21 +11770,40 @@
 				"0": {
 					"name": "Purpur Block"
 				},
-				"1": {
-					"name": "Purpur Block (Chiseled)"
-				},
 				"2": {
-					"name": "Purpur Block (Lined)"
+					"name": "Purpur Pillar (Upright)",
+					"tex": [19,17],
+					"tex_direction": {
+						"BOTTOM": [19,18],
+						"TOP": [19,18]
+					}
 				},
-				"3": {
-					"name": "Purpur Block"
+				"6": {
+					"name": "Purpur Pillar (East/West)",
+					"tex": [19,19],
+					"tex_direction": {
+						"SIDES": [19,18]
+					}
+				},
+				"10": {
+					"name": "Purpur Pillar (North/South)",
+					"tex": [19,17],
+					"tex_direction": {
+						"BACKWARD": [19,18],
+						"FORWARD": [19,18],
+						"SIDES": [19,19]
+					}
+				},
+				"14": {
+					"name": "Purpur Pillar (Smooth)",
+					"tex": [19,17]
 				}
 			},
 			"id": 201
 		},
         {
             "id": 202,
-            "idStr": "tile.202.name",
+            "idStr": "202",
             "mapcolor": [
                 201,
                 119,
@@ -11838,7 +11851,7 @@
 		},
         {
             "id": 204,
-            "idStr": "tile.204.name",
+            "idStr": "204",
             "mapcolor": [
                 201,
                 119,
@@ -11894,16 +11907,16 @@
                     "name": "End Rod (Up)"
                 },
                 "2": {
-                    "name": "End Rod (North)"
-                },
-                "3": {
                     "name": "End Rod (South)"
                 },
+                "3": {
+                    "name": "End Rod (North)"
+                },
                 "4": {
-                    "name": "End Rod (West)"
+                    "name": "End Rod (East)"
                 },
                 "5": {
-                    "name": "End Rod (East)"
+                    "name": "End Rod (West)"
                 }
             },
             "id": 208,
@@ -11928,7 +11941,7 @@
 		},
         {
             "id": 210,
-            "idStr": "tile.210.name",
+            "idStr": "210",
             "mapcolor": [
                 201,
                 119,
@@ -11942,7 +11955,7 @@
         },
         {
             "id": 211,
-            "idStr": "tile.211.name",
+            "idStr": "211",
             "mapcolor": [
                 201,
                 119,
@@ -11956,7 +11969,7 @@
         },
         {
             "id": 212,
-            "idStr": "tile.212.name",
+            "idStr": "212",
             "mapcolor": [
                 201,
                 119,
@@ -11986,46 +11999,40 @@
 			"idStr": "red_nether_brick",
 			"tex": [18,15]
 		},
-        {
+		{
 			"id": 216,
 			"name": "Bone Block",
 			"idStr": "bone_block",
+			"tex": [19,12],
 			"data": {
 				"0": {
 					"tex_direction": {
 						"TOP": [19,11],
-						"BOTTOM": [19,11],
-						"SIDES": [19,12],
-						"FORWARD": [19,12],
-						"BACKWARD": [19,12]
+						"BOTTOM": [19,11]
 					},
 					"name": "Bone Block (Upright)"
 				},
 				"4": {
 					"tex_direction": {
-						"TOP": [19,12],
-						"BOTTOM": [19,12],
-						"SIDES": [19,11],
-						"FORWARD": [19,12],
-						"BACKWARD": [19,12]
+						"SIDES": [19,11]
 					},
 					"name": "Bone Block (East/West)"
 				},
 				"8": {
 					"tex_direction": {
-						"TOP": [19,12],
-						"BOTTOM": [19,12],
-						"SIDES": [19,12],
 						"FORWARD": [19,11],
 						"BACKWARD": [19,11]
 					},
 					"name": "Bone Block (North/South)"
+				},
+				"12": {
+					"name": "Bone Block (Smooth)"
 				}
 			}
 		},
         {
             "id": 217,
-            "idStr": "tile.217.name",
+            "idStr": "217",
             "mapcolor": [
                 201,
                 119,
@@ -12728,7 +12735,7 @@
         },
         {
             "id": 230,
-            "idStr": "tile.230.name",
+            "idStr": "230",
             "mapcolor": [
                 201,
                 119,
@@ -13470,7 +13477,7 @@
         },
         {
             "id": 238,
-            "idStr": "tile.238.name",
+            "idStr": "238",
             "mapcolor": [
                 201,
                 119,
@@ -13484,7 +13491,7 @@
         },
         {
             "id": 239,
-            "idStr": "tile.239.name",
+            "idStr": "239",
             "mapcolor": [
                 201,
                 119,
@@ -13596,7 +13603,7 @@
 		},
         {
             "id": 242,
-            "idStr": "tile.242.name",
+            "idStr": "242",
             "mapcolor": [
                 201,
                 119,
@@ -13762,29 +13769,6 @@
             ]
         },
         {
-            "data": {
-                "1": {
-                    "name": "Nether Reactor",
-                    "tex": [
-                        9,
-                        29
-                    ]
-                },
-                "2": {
-                    "name": "Active Nether Reactor",
-                    "tex": [
-                        10,
-                        29
-                    ]
-                },
-                "3": {
-                    "name": "Used Nether Reactor",
-                    "tex": [
-                        11,
-                        29
-                    ]
-                }
-            },
             "id": 247,
             "idStr": "netherreactor",
             "mapcolor": [
@@ -14020,13 +14004,13 @@
         },
         {
             "id": 253,
-            "idStr": "hard_glass",
+            "idStr": "253",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "Hardened Glass",
+            "name": "tile.253.name",
             "tex": [
                 15,
                 29
@@ -14034,13 +14018,13 @@
         },
         {
             "id": 254,
-            "idStr": "hard_stained_glass",
+            "idStr": "254",
             "mapcolor": [
                 201,
                 119,
                 240
             ],
-            "name": "Hardened Stained Glass",
+            "name": "tile.254.name",
             "tex": [
                 15,
                 29
@@ -14059,124 +14043,7 @@
                 15,
                 29
             ]
-        },
-        {
-            "name": "Prismarine Stairs",
-            "idStr": "prismarine_stairs",
-            "tex": [0,0],
-            "id": 257,
-            "data": {
-                "0": {
-                    "name": "Prismarine Stairs (Bottom, East)"
-                },
-                "1": {
-                    "name": "Prismarine Stairs (Bottom, West)"
-                },
-                "2": {
-                    "name": "Prismarine Stairs (Bottom, South)"
-                },
-                "3": {
-                    "name": "Prismarine Stairs (Bottom, North)"
-                },
-                "4": {
-                    "name": "Prismarine Stairs (Top, East)"
-                },
-                "5": {
-                    "name": "Prismarine Stairs (Top, West)"
-                },
-                "6": {
-                    "name": "Prismarine Stairs (Top, South)"
-                },
-                "7": {
-                    "name": "Prismarine Stairs (Top, North)"
-                }
-            }
-        },
-        {
-			"opacity": 0,
-			"name": "Spruce Pressure Plate",
-			"data": {
-				"1": {
-					"name": "Spruce Pressure Plate (Powered)"
-				},
-				"0": {
-					"name": "Spruce Pressure Plate"
-				}
-			},
-			"idStr": "spruce_pressure_plate",
-			"tex": [4,0],
-			"mapcolor": [157,128,79],
-			"type": "PRESSURE_PLATE",
-			"id": 256
-		},
-        {
-			"opacity": 0,
-			"name": "Birch Pressure Plate",
-			"data": {
-				"1": {
-					"name": "Birch Pressure Plate (Powered)"
-				},
-				"0": {
-					"name": "Birch Pressure Plate"
-				}
-			},
-			"idStr": "birch_pressure_plate",
-			"tex": [4,0],
-			"mapcolor": [157,128,79],
-			"type": "PRESSURE_PLATE",
-			"id": 257
-		},
-        {
-			"opacity": 0,
-			"name": "Jungle Pressure Plate",
-			"data": {
-				"1": {
-					"name": "Jungle Pressure Plate (Powered)"
-				},
-				"0": {
-					"name": "Jungle Pressure Plate"
-				}
-			},
-			"idStr": "jungle_pressure_plate",
-			"tex": [4,0],
-			"mapcolor": [157,128,79],
-			"type": "PRESSURE_PLATE",
-			"id": 258
-		},
-        {
-			"opacity": 0,
-			"name": "Acacia Pressure Plate",
-			"data": {
-				"1": {
-					"name": "Acacia Pressure Plate (Powered)"
-				},
-				"0": {
-					"name": "Acacia Pressure Plate"
-				}
-			},
-			"idStr": "acacia_pressure_plate",
-			"tex": [4,0],
-			"mapcolor": [157,128,79],
-			"type": "PRESSURE_PLATE",
-			"id": 259
-		},
-        {
-			"opacity": 0,
-			"name": "Dark Oak Pressure Plate",
-			"data": {
-				"1": {
-					"name": "Dark Oak Pressure Plate (Powered)"
-				},
-				"0": {
-					"name": "Dark Oak Pressure Plate"
-				}
-			},
-			"idStr": "dark_oak_pressure_plate",
-			"tex": [4,0],
-			"mapcolor": [157,128,79],
-			"type": "PRESSURE_PLATE",
-			"id": 230
-		}
+        }
     ],
     "defaults": {
         "brightness": 0,
