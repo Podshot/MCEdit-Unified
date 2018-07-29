@@ -1,0 +1,1008 @@
+{
+	"load": "1.2",
+	"blocks": [
+		{
+			"id": 36,
+			"idStr": "element_0",
+			"mapcolor": [201, 119, 240],
+			"name": "element_0",
+			"tex": [15, 29]
+		},
+		{
+			"id": 166,
+			"idStr": "glow_stick",
+			"mapcolor": [201, 119, 240],
+			"name": "glow_stick",
+			"tex": [15, 29]
+		},
+		{
+			"id": 190,
+			"idStr": "hard_glass_pane",
+			"mapcolor": [201, 119, 240],
+			"name": "hard_glass_pane",
+			"tex": [15, 29]
+		},
+		{
+			"id": 191,
+			"idStr": "hard_stained_glass_pane",
+			"mapcolor": [201, 119, 240],
+			"name": "hard_stained_glass_pane",
+			"tex": [15, 29]
+		},
+		{
+			"id": 192,
+			"idStr": "chemical_heat",
+			"mapcolor": [201, 119, 240],
+			"name": "chemical_heat",
+			"tex": [15, 29]
+		},
+		{
+			"id": 202,
+			"idStr": "colored_torch_rg",
+			"mapcolor": [201, 119, 240],
+			"name": "colored_torch_rg",
+			"tex": [15, 29]
+		},
+		{
+			"id": 204,
+			"idStr": "colored_torch_bp",
+			"mapcolor": [201, 119, 240],
+			"name": "colored_torch_bp",
+			"tex": [15, 29]
+		},
+		{
+			"id": 238,
+			"idStr": "chemistry_table",
+			"mapcolor": [201,119,240],
+			"name": "chemistry_table",
+			"tex": [15,29]
+		},
+		{
+			"id": 239,
+			"idStr": "underwater_torch",
+			"mapcolor": [201,119,240],
+			"name": "underwater_torch",
+			"tex": [15,29]
+		},
+		{
+			"id": 253,
+			"idStr": "hard_glass",
+			"mapcolor": [201,119,240],
+			"name": "Hardened Glass",
+			"tex": [31,31]
+		},
+		{
+			"id": 254,
+			"idStr": "hard_stained_glass",
+			"mapcolor": [201,119,240],
+			"name": "Hardened Stained Glass",
+			"tex": [31,31]
+		},
+		{
+			"id": 256,
+			"idStr": "256",
+			"mapcolor": [201,119,240],
+			"name": "tile.256.name",
+			"tex": [15,29]
+		},
+		{
+			"id": 257,
+			"idStr": "prismarine_stairs",
+			"name": "Prismarine Stairs",
+			"tex": [18, 17],
+			"type": "STAIRS",
+			"data": {
+				"0": {
+					"name": "Prismarine Stairs (Bottom, East)"
+				},
+				"1": {
+					"name": "Prismarine Stairs (Bottom, West)"
+				},
+				"2": {
+					"name": "Prismarine Stairs (Bottom, South)"
+				},
+				"3": {
+					"name": "Prismarine Stairs (Bottom, North)"
+				},
+				"4": {
+					"name": "Prismarine Stairs (Top, East)"
+				},
+				"5": {
+					"name": "Prismarine Stairs (Top, West)"
+				},
+				"6": {
+					"name": "Prismarine Stairs (Top, South)"
+				},
+				"7": {
+					"name": "Prismarine Stairs (Top, North)"
+				}
+			}
+		},
+		{
+			"id": 258,
+			"idStr": "dark_prismarine_stairs",
+			"name": "Dark Prismarine Stairs",
+			"tex": [17, 17],
+			"type": "STAIRS",
+			"data": {
+				"0": {
+					"name": "Dark Prismarine Stairs (Bottom, East)"
+				},
+				"1": {
+					"name": "Dark Prismarine Stairs (Bottom, West)"
+				},
+				"2": {
+					"name": "Dark Prismarine Stairs (Bottom, South)"
+				},
+				"3": {
+					"name": "Dark Prismarine Stairs (Bottom, North)"
+				},
+				"4": {
+					"name": "Dark Prismarine Stairs (Top, East)"
+				},
+				"5": {
+					"name": "Dark Prismarine Stairs (Top, West)"
+				},
+				"6": {
+					"name": "Dark Prismarine Stairs (Top, South)"
+				},
+				"7": {
+					"name": "Dark Prismarine Stairs (Top, North)"
+				}
+			}
+		},
+		{
+			"id": 259,
+			"idStr": "prismarine_bricks_stairs",
+			"name": "Prismarine Brick Stairs",
+			"tex": [16, 17],
+			"type": "STAIRS",
+			"data": {
+				"0": {
+					"name": "Prismarine Brick Stairs (Bottom, East)"
+				},
+				"1": {
+					"name": "Prismarine Brick Stairs (Bottom, West)"
+				},
+				"2": {
+					"name": "Prismarine Brick Stairs (Bottom, South)"
+				},
+				"3": {
+					"name": "Prismarine Brick Stairs (Bottom, North)"
+				},
+				"4": {
+					"name": "Prismarine Brick Stairs (Top, East)"
+				},
+				"5": {
+					"name": "Prismarine Brick Stairs (Top, West)"
+				},
+				"6": {
+					"name": "Prismarine Brick Stairs (Top, South)"
+				},
+				"7": {
+					"name": "Prismarine Brick Stairs (Top, North)"
+				}
+			}
+		},
+		{
+			"id": 260,
+			"idStr": "stripped_spruce_log",
+			"name": "Stripped Spruce Wood"
+		},
+		{
+			"id": 261,
+			"idStr": "stripped_birch_log",
+			"name": "Stripped Birch Wood"
+		},
+		{
+			"id": 262,
+			"idStr": "stripped_jungle_log",
+			"name": "Stripped Jungle Wood"
+		},
+		{
+			"id": 263,
+			"idStr": "stripped_acacia_log",
+			"name": "Stripped Acacia Wood"
+		},
+		{
+			"id": 264,
+			"idStr": "stripped_dark_oak_log",
+			"name": "Stripped Dark Oak Wood"
+		},
+		{
+			"id": 265,
+			"idStr": "stripped_oak_log",
+			"name": "Stripped Oak Wood"
+		},
+		{
+			"id": 266,
+			"idStr": "blue_ice",
+			"name": "Blue Ice"
+		},
+		{
+			"id": 267,
+			"idStr": "element_1",
+			"name": "element_1"
+		},
+		{
+			"id": 268,
+			"idStr": "element_2",
+			"name": "element_2"
+		},
+		{
+			"id": 269,
+			"idStr": "element_3",
+			"name": "element_3"
+		},
+		{
+			"id": 270,
+			"idStr": "element_4",
+			"name": "element_4"
+		},
+		{
+			"id": 271,
+			"idStr": "element_5",
+			"name": "element_5"
+		},
+		{
+			"id": 272,
+			"idStr": "element_6",
+			"name": "element_6"
+		},
+		{
+			"id": 273,
+			"idStr": "element_7",
+			"name": "element_7"
+		},
+		{
+			"id": 274,
+			"idStr": "element_8",
+			"name": "element_8"
+		},
+		{
+			"id": 275,
+			"idStr": "element_9",
+			"name": "element_9"
+		},
+		{
+			"id": 276,
+			"idStr": "element_10",
+			"name": "element_10"
+		},
+		{
+			"id": 277,
+			"idStr": "element_11",
+			"name": "element_11"
+		},
+		{
+			"id": 278,
+			"idStr": "element_12",
+			"name": "element_12"
+		},
+		{
+			"id": 279,
+			"idStr": "element_13",
+			"name": "element_13"
+		},
+		{
+			"id": 280,
+			"idStr": "element_14",
+			"name": "element_14"
+		},
+		{
+			"id": 281,
+			"idStr": "element_15",
+			"name": "element_15"
+		},
+		{
+			"id": 282,
+			"idStr": "element_16",
+			"name": "element_16"
+		},
+		{
+			"id": 283,
+			"idStr": "element_17",
+			"name": "element_17"
+		},
+		{
+			"id": 284,
+			"idStr": "element_18",
+			"name": "element_18"
+		},
+		{
+			"id": 285,
+			"idStr": "element_19",
+			"name": "element_19"
+		},
+		{
+			"id": 286,
+			"idStr": "element_20",
+			"name": "element_20"
+		},
+		{
+			"id": 287,
+			"idStr": "element_21",
+			"name": "element_21"
+		},
+		{
+			"id": 288,
+			"idStr": "element_22",
+			"name": "element_22"
+		},
+		{
+			"id": 289,
+			"idStr": "element_23",
+			"name": "element_23"
+		},
+		{
+			"id": 290,
+			"idStr": "element_24",
+			"name": "element_24"
+		},
+		{
+			"id": 291,
+			"idStr": "element_25",
+			"name": "element_25"
+		},
+		{
+			"id": 292,
+			"idStr": "element_26",
+			"name": "element_26"
+		},
+		{
+			"id": 293,
+			"idStr": "element_27",
+			"name": "element_27"
+		},
+		{
+			"id": 294,
+			"idStr": "element_28",
+			"name": "element_28"
+		},
+		{
+			"id": 295,
+			"idStr": "element_29",
+			"name": "element_29"
+		},
+		{
+			"id": 296,
+			"idStr": "element_30",
+			"name": "element_30"
+		},
+		{
+			"id": 297,
+			"idStr": "element_31",
+			"name": "element_31"
+		},
+		{
+			"id": 298,
+			"idStr": "element_32",
+			"name": "element_32"
+		},
+		{
+			"id": 299,
+			"idStr": "element_33",
+			"name": "element_33"
+		},
+		{
+			"id": 300,
+			"idStr": "element_34",
+			"name": "element_34"
+		},
+		{
+			"id": 301,
+			"idStr": "element_35",
+			"name": "element_35"
+		},
+		{
+			"id": 302,
+			"idStr": "element_36",
+			"name": "element_36"
+		},
+		{
+			"id": 303,
+			"idStr": "element_37",
+			"name": "element_37"
+		},
+		{
+			"id": 304,
+			"idStr": "element_38",
+			"name": "element_38"
+		},
+		{
+			"id": 305,
+			"idStr": "element_39",
+			"name": "element_39"
+		},
+		{
+			"id": 306,
+			"idStr": "element_40",
+			"name": "element_40"
+		},
+		{
+			"id": 307,
+			"idStr": "element_41",
+			"name": "element_41"
+		},
+		{
+			"id": 308,
+			"idStr": "element_42",
+			"name": "element_42"
+		},
+		{
+			"id": 309,
+			"idStr": "element_43",
+			"name": "element_43"
+		},
+		{
+			"id": 310,
+			"idStr": "element_44",
+			"name": "element_44"
+		},
+		{
+			"id": 311,
+			"idStr": "element_45",
+			"name": "element_45"
+		},
+		{
+			"id": 312,
+			"idStr": "element_46",
+			"name": "element_46"
+		},
+		{
+			"id": 313,
+			"idStr": "element_47",
+			"name": "element_47"
+		},
+		{
+			"id": 314,
+			"idStr": "element_48",
+			"name": "element_48"
+		},
+		{
+			"id": 315,
+			"idStr": "element_49",
+			"name": "element_49"
+		},
+		{
+			"id": 316,
+			"idStr": "element_50",
+			"name": "element_50"
+		},
+		{
+			"id": 317,
+			"idStr": "element_51",
+			"name": "element_51"
+		},
+		{
+			"id": 318,
+			"idStr": "element_52",
+			"name": "element_52"
+		},
+		{
+			"id": 319,
+			"idStr": "element_53",
+			"name": "element_53"
+		},
+		{
+			"id": 320,
+			"idStr": "element_54",
+			"name": "element_54"
+		},
+		{
+			"id": 321,
+			"idStr": "element_55",
+			"name": "element_55"
+		},
+		{
+			"id": 322,
+			"idStr": "element_56",
+			"name": "element_56"
+		},
+		{
+			"id": 323,
+			"idStr": "element_57",
+			"name": "element_57"
+		},
+		{
+			"id": 324,
+			"idStr": "element_58",
+			"name": "element_58"
+		},
+		{
+			"id": 325,
+			"idStr": "element_59",
+			"name": "element_59"
+		},
+		{
+			"id": 326,
+			"idStr": "element_60",
+			"name": "element_60"
+		},
+		{
+			"id": 327,
+			"idStr": "element_61",
+			"name": "element_61"
+		},
+		{
+			"id": 328,
+			"idStr": "element_62",
+			"name": "element_62"
+		},
+		{
+			"id": 329,
+			"idStr": "element_63",
+			"name": "element_63"
+		},
+		{
+			"id": 330,
+			"idStr": "element_64",
+			"name": "element_64"
+		},
+		{
+			"id": 331,
+			"idStr": "element_65",
+			"name": "element_65"
+		},
+		{
+			"id": 332,
+			"idStr": "element_66",
+			"name": "element_66"
+		},
+		{
+			"id": 333,
+			"idStr": "element_67",
+			"name": "element_67"
+		},
+		{
+			"id": 334,
+			"idStr": "element_68",
+			"name": "element_68"
+		},
+		{
+			"id": 335,
+			"idStr": "element_69",
+			"name": "element_69"
+		},
+		{
+			"id": 336,
+			"idStr": "element_70",
+			"name": "element_70"
+		},
+		{
+			"id": 337,
+			"idStr": "element_71",
+			"name": "element_71"
+		},
+		{
+			"id": 338,
+			"idStr": "element_72",
+			"name": "element_72"
+		},
+		{
+			"id": 339,
+			"idStr": "element_73",
+			"name": "element_73"
+		},
+		{
+			"id": 340,
+			"idStr": "element_74",
+			"name": "element_74"
+		},
+		{
+			"id": 341,
+			"idStr": "element_75",
+			"name": "element_75"
+		},
+		{
+			"id": 342,
+			"idStr": "element_76",
+			"name": "element_76"
+		},
+		{
+			"id": 343,
+			"idStr": "element_77",
+			"name": "element_77"
+		},
+		{
+			"id": 344,
+			"idStr": "element_78",
+			"name": "element_78"
+		},
+		{
+			"id": 345,
+			"idStr": "element_79",
+			"name": "element_79"
+		},
+		{
+			"id": 346,
+			"idStr": "element_80",
+			"name": "element_80"
+		},
+		{
+			"id": 347,
+			"idStr": "element_81",
+			"name": "element_81"
+		},
+		{
+			"id": 348,
+			"idStr": "element_82",
+			"name": "element_82"
+		},
+		{
+			"id": 349,
+			"idStr": "element_83",
+			"name": "element_83"
+		},
+		{
+			"id": 350,
+			"idStr": "element_84",
+			"name": "element_84"
+		},
+		{
+			"id": 351,
+			"idStr": "element_85",
+			"name": "element_85"
+		},
+		{
+			"id": 352,
+			"idStr": "element_86",
+			"name": "element_86"
+		},
+		{
+			"id": 353,
+			"idStr": "element_87",
+			"name": "element_87"
+		},
+		{
+			"id": 354,
+			"idStr": "element_88",
+			"name": "element_88"
+		},
+		{
+			"id": 355,
+			"idStr": "element_89",
+			"name": "element_89"
+		},
+		{
+			"id": 356,
+			"idStr": "element_90",
+			"name": "element_90"
+		},
+		{
+			"id": 357,
+			"idStr": "element_91",
+			"name": "element_91"
+		},
+		{
+			"id": 358,
+			"idStr": "element_92",
+			"name": "element_92"
+		},
+		{
+			"id": 359,
+			"idStr": "element_93",
+			"name": "element_93"
+		},
+		{
+			"id": 360,
+			"idStr": "element_94",
+			"name": "element_94"
+		},
+		{
+			"id": 361,
+			"idStr": "element_95",
+			"name": "element_95"
+		},
+		{
+			"id": 362,
+			"idStr": "element_96",
+			"name": "element_96"
+		},
+		{
+			"id": 363,
+			"idStr": "element_97",
+			"name": "element_97"
+		},
+		{
+			"id": 364,
+			"idStr": "element_98",
+			"name": "element_98"
+		},
+		{
+			"id": 365,
+			"idStr": "element_99",
+			"name": "element_99"
+		},
+		{
+			"id": 366,
+			"idStr": "element_100",
+			"name": "element_100"
+		},
+		{
+			"id": 367,
+			"idStr": "element_101",
+			"name": "element_101"
+		},
+		{
+			"id": 368,
+			"idStr": "element_102",
+			"name": "element_102"
+		},
+		{
+			"id": 369,
+			"idStr": "element_103",
+			"name": "element_103"
+		},
+		{
+			"id": 370,
+			"idStr": "element_104",
+			"name": "element_104"
+		},
+		{
+			"id": 371,
+			"idStr": "element_105",
+			"name": "element_105"
+		},
+		{
+			"id": 372,
+			"idStr": "element_106",
+			"name": "element_106"
+		},
+		{
+			"id": 373,
+			"idStr": "element_107",
+			"name": "element_107"
+		},
+		{
+			"id": 374,
+			"idStr": "element_108",
+			"name": "element_108"
+		},
+		{
+			"id": 375,
+			"idStr": "element_109",
+			"name": "element_109"
+		},
+		{
+			"id": 376,
+			"idStr": "element_110",
+			"name": "element_110"
+		},
+		{
+			"id": 377,
+			"idStr": "element_111",
+			"name": "element_111"
+		},
+		{
+			"id": 378,
+			"idStr": "element_112",
+			"name": "element_112"
+		},
+		{
+			"id": 379,
+			"idStr": "element_113",
+			"name": "element_113"
+		},
+		{
+			"id": 380,
+			"idStr": "element_114",
+			"name": "element_114"
+		},
+		{
+			"id": 381,
+			"idStr": "element_115",
+			"name": "element_115"
+		},
+		{
+			"id": 382,
+			"idStr": "element_116",
+			"name": "element_116"
+		},
+		{
+			"id": 383,
+			"idStr": "element_117",
+			"name": "element_117"
+		},
+		{
+			"id": 384,
+			"idStr": "element_118",
+			"name": "element_118"
+		},
+		{
+			"id": 385,
+			"idStr": "seagrass",
+			"name": "Seagrass"
+		},
+		{
+			"id": 386,
+			"idStr": "coral",
+			"name": "coral"
+		},
+		{
+			"id": 387,
+			"idStr": "coral_block",
+			"name": "coral_block"
+		},
+		{
+			"id": 388,
+			"idStr": "coral_fan",
+			"name": "coral_fan"
+		},
+		{
+			"id": 389,
+			"idStr": "coral_fan_dead",
+			"name": "coral_fan_dead"
+		},
+		{
+			"id": 390,
+			"idStr": "coral_fan_hang",
+			"name": "coral_fan_hang"
+		},
+		{
+			"id": 391,
+			"idStr": "coral_fan_hang2",
+			"name": "coral_fan_hang2"
+		},
+		{
+			"id": 392,
+			"idStr": "coral_fan_hang3",
+			"name": "coral_fan_hang3"
+		},
+		{
+			"id": 393,
+			"idStr": "kelp",
+			"name": "kelp"
+		},
+		{
+			"id": 394,
+			"idStr": "dried_kelp_block",
+			"name": "Dried Kelp Block"
+		},
+		{
+			"id": 395,
+			"idStr": "acacia_button",
+			"name": "Acacia Button"
+		},
+		{
+			"id": 396,
+			"idStr": "birch_button",
+			"name": "Birch Button"
+		},
+		{
+			"id": 397,
+			"idStr": "dark_oak_button",
+			"name": "Dark Oak Button"
+		},
+		{
+			"id": 398,
+			"idStr": "jungle_button",
+			"name": "Jungle Button"
+		},
+		{
+			"id": 399,
+			"idStr": "spruce_button",
+			"name": "Spruce Button"
+		},
+		{
+			"id": 400,
+			"idStr": "acacia_trapdoor",
+			"name": "Acacia Trapdoor"
+		},
+		{
+			"id": 401,
+			"idStr": "birch_trapdoor",
+			"name": "Birch Trapdoor"
+		},
+		{
+			"id": 402,
+			"idStr": "dark_oak_trapdoor",
+			"name": "Dark Oak Trapdoor"
+		},
+		{
+			"id": 403,
+			"idStr": "jungle_trapdoor",
+			"name": "Jungle Trapdoor"
+		},
+		{
+			"id": 404,
+			"idStr": "spruce_trapdoor",
+			"name": "Spruce Trapdoor"
+		},
+		{
+			"id": 405,
+			"idStr": "acacia_pressure_plate",
+			"opacity": 0,
+			"name": "Acacia Pressure Plate",
+			"tex": [0, 15],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
+			"data": {
+				"1": {
+					"name": "Acacia Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Acacia Pressure Plate"
+				}
+			}
+		},
+		{
+			"id": 406,
+			"idStr": "birch_pressure_plate",
+			"opacity": 0,
+			"name": "Birch Pressure Plate",
+			"tex": [6, 13],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
+			"data": {
+				"1": {
+					"name": "Birch Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Birch Pressure Plate"
+				}
+			}
+		},
+		{
+			"id": 407,
+			"idStr": "dark_oak_pressure_plate",
+			"opacity": 0,
+			"name": "Dark Oak Pressure Plate",
+			"tex": [1, 15],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
+			"data": {
+				"1": {
+					"name": "Dark Oak Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Dark Oak Pressure Plate"
+				}
+			}
+		},
+		{
+			"id": 408,
+			"idStr": "jungle_pressure_plate",
+			"opacity": 0,
+			"name": "Jungle Pressure Plate",
+			"tex": [7, 12],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
+			"data": {
+				"1": {
+					"name": "Jungle Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Jungle Pressure Plate"
+				}
+			}
+		},
+		{
+			"id": 409,
+			"idStr": "spruce_pressure_plate",
+			"opacity": 0,
+			"name": "Spruce Pressure Plate",
+			"tex": [6, 12],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
+			"data": {
+				"1": {
+					"name": "Spruce Pressure Plate (Powered)"
+				},
+				"0": {
+					"name": "Spruce Pressure Plate"
+				}
+			}
+		},
+		{
+			"id": 410,
+			"idStr": "carved_pumpkin",
+			"name": "Carved Pumpkin"
+		},
+		{
+			"id": 411,
+			"idStr": "sea_pickle",
+			"name": "Sea Pickle"
+		}
+	]
+}
