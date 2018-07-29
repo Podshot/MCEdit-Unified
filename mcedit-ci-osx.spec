@@ -33,6 +33,9 @@ if os.environ.get('APPVEYOR_BUILD_VERSION'):
 else:
     VERSION = "1.6.0.0-testing"
 
+if os.environ.get('OVERRIDE_VERSION'):
+    VERSION = os.environ.get('OVERRIDE_VERSION')
+
 fp = open(os.path.join('.', 'RELEASE-VERSION.json'),'rb')
 version_data = json.load(fp)
 fp.close()
@@ -43,15 +46,16 @@ fp = open(os.path.join('.', 'RELEASE-VERSION.json'), 'wb')
 json.dump(version_data, fp)
 fp.close()
 
-fp = open('directories.py', 'rb')
-data = fp.read();
-fp.close()
+if not os.environ.get("RELEASE"):
+    fp = open('directories.py', 'rb')
+    data = fp.read();
+    fp.close()
 
-with open('directories.py', 'wb') as out:
-    new_data = data
-    for (key, value) in replace_map.iteritems():
-        new_data = new_data.replace(key, value)
-    out.write(new_data)
+    with open('directories.py', 'wb') as out:
+        new_data = data
+        for (key, value) in replace_map.iteritems():
+            new_data = new_data.replace(key, value)
+        out.write(new_data)
 
 block_cipher = None
 

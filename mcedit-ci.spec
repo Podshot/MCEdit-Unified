@@ -45,15 +45,19 @@ if os.environ.get('APPVEYOR_BUILD_VERSION'):
 else:
     VERSION = "1.6.0.0-testing"
 
-fp = open('directories.py', 'rb')
-data = fp.read();
-fp.close()
+if os.environ.get('OVERRIDE_VERSION'):
+    VERSION = os.environ.get('OVERRIDE_VERSION')
 
-with open('directories.py', 'wb') as out:
-    new_data = data
-    for (key, value) in replace_map.iteritems():
-        new_data = new_data.replace(key, value)
-    out.write(new_data)
+if not os.environ.get("RELEASE"):
+    fp = open('directories.py', 'rb')
+    data = fp.read();
+    fp.close()
+
+    with open('directories.py', 'wb') as out:
+        new_data = data
+        for (key, value) in replace_map.iteritems():
+            new_data = new_data.replace(key, value)
+        out.write(new_data)
 
 #subprocess.check_call([sys.executable, 'setup.py', 'all'])
 
@@ -115,8 +119,9 @@ fp = open(os.path.join('.', 'dist', 'mcedit', 'RELEASE-VERSION.json'), 'wb')
 json.dump(version_data, fp)
 fp.close()
 
-with open('directories.py', 'wb') as out:
-    out.write(data)
+if not os.environ.get("RELEASE"):
+    with open('directories.py', 'wb') as out:
+        out.write(data)
 
 subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unified-Preview.git'])
 
