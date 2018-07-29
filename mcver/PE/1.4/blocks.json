@@ -89,7 +89,8 @@
 			"id": 257,
 			"idStr": "prismarine_stairs",
 			"name": "Prismarine Stairs",
-			"tex": [0, 0],
+			"tex": [18, 17],
+			"type": "STAIRS",
 			"data": {
 				"0": {
 					"name": "Prismarine Stairs (Bottom, East)"
@@ -120,12 +121,68 @@
 		{
 			"id": 258,
 			"idStr": "dark_prismarine_stairs",
-			"name": "Dark Prismarine Stairs"
+			"name": "Dark Prismarine Stairs",
+			"tex": [17, 17],
+			"type": "STAIRS",
+			"data": {
+				"0": {
+					"name": "Dark Prismarine Stairs (Bottom, East)"
+				},
+				"1": {
+					"name": "Dark Prismarine Stairs (Bottom, West)"
+				},
+				"2": {
+					"name": "Dark Prismarine Stairs (Bottom, South)"
+				},
+				"3": {
+					"name": "Dark Prismarine Stairs (Bottom, North)"
+				},
+				"4": {
+					"name": "Dark Prismarine Stairs (Top, East)"
+				},
+				"5": {
+					"name": "Dark Prismarine Stairs (Top, West)"
+				},
+				"6": {
+					"name": "Dark Prismarine Stairs (Top, South)"
+				},
+				"7": {
+					"name": "Dark Prismarine Stairs (Top, North)"
+				}
+			}
 		},
 		{
 			"id": 259,
 			"idStr": "prismarine_bricks_stairs",
-			"name": "Prismarine Brick Stairs"
+			"name": "Prismarine Brick Stairs",
+			"tex": [16, 17],
+			"type": "STAIRS",
+			"data": {
+				"0": {
+					"name": "Prismarine Brick Stairs (Bottom, East)"
+				},
+				"1": {
+					"name": "Prismarine Brick Stairs (Bottom, West)"
+				},
+				"2": {
+					"name": "Prismarine Brick Stairs (Bottom, South)"
+				},
+				"3": {
+					"name": "Prismarine Brick Stairs (Bottom, North)"
+				},
+				"4": {
+					"name": "Prismarine Brick Stairs (Top, East)"
+				},
+				"5": {
+					"name": "Prismarine Brick Stairs (Top, West)"
+				},
+				"6": {
+					"name": "Prismarine Brick Stairs (Top, South)"
+				},
+				"7": {
+					"name": "Prismarine Brick Stairs (Top, North)"
+				}
+			}
 		},
 		{
 			"id": 260,
@@ -857,7 +914,7 @@
 			"idStr": "acacia_pressure_plate",
 			"opacity": 0,
 			"name": "Acacia Pressure Plate",
-			"tex": [4, 0],
+			"tex": [0, 15],
 			"mapcolor": [157, 128, 79],
 			"type": "PRESSURE_PLATE",
 			"data": {
@@ -874,6 +931,9 @@
 			"idStr": "birch_pressure_plate",
 			"opacity": 0,
 			"name": "Birch Pressure Plate",
+			"tex": [6, 13],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
 			"data": {
 				"1": {
 					"name": "Birch Pressure Plate (Powered)"
@@ -881,16 +941,16 @@
 				"0": {
 					"name": "Birch Pressure Plate"
 				}
-			},
-			"tex": [4, 0],
-			"mapcolor": [157, 128, 79],
-			"type": "PRESSURE_PLATE"
+			}
 		},
 		{
 			"id": 407,
 			"idStr": "dark_oak_pressure_plate",
 			"opacity": 0,
 			"name": "Dark Oak Pressure Plate",
+			"tex": [1, 15],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
 			"data": {
 				"1": {
 					"name": "Dark Oak Pressure Plate (Powered)"
@@ -898,16 +958,16 @@
 				"0": {
 					"name": "Dark Oak Pressure Plate"
 				}
-			},
-			"tex": [4, 0],
-			"mapcolor": [157, 128, 79],
-			"type": "PRESSURE_PLATE"
+			}
 		},
 		{
 			"id": 408,
 			"idStr": "jungle_pressure_plate",
 			"opacity": 0,
 			"name": "Jungle Pressure Plate",
+			"tex": [7, 12],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
 			"data": {
 				"1": {
 					"name": "Jungle Pressure Plate (Powered)"
@@ -915,16 +975,16 @@
 				"0": {
 					"name": "Jungle Pressure Plate"
 				}
-			},
-			"tex": [4, 0],
-			"mapcolor": [157, 128, 79],
-			"type": "PRESSURE_PLATE"
+			}
 		},
 		{
 			"id": 409,
 			"idStr": "spruce_pressure_plate",
 			"opacity": 0,
 			"name": "Spruce Pressure Plate",
+			"tex": [6, 12],
+			"mapcolor": [157, 128, 79],
+			"type": "PRESSURE_PLATE",
 			"data": {
 				"1": {
 					"name": "Spruce Pressure Plate (Powered)"
@@ -932,10 +992,7 @@
 				"0": {
 					"name": "Spruce Pressure Plate"
 				}
-			},
-			"tex": [4, 0],
-			"mapcolor": [157, 128, 79],
-			"type": "PRESSURE_PLATE"
+			}
 		},
 		{
 			"id": 410,
