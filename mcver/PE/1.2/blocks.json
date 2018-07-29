@@ -9472,7 +9472,7 @@
 		},
 		{
 			"id": 250,
-			"idStr": "movingblock",
+			"idStr": "movingBlock",
 			"opacity": 0,
 			"name": "Piston Extension",
 			"tex": [0, 0],
