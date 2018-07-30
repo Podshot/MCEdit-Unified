@@ -11,11 +11,12 @@ from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt
 import numpy
 import struct
-from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, unpackNibbleArray, packNibbleArray
+from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData, AnvilWorldFolder, unpackNibbleArray, packNibbleArray
 from level import LightedChunk
 from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
 import traceback
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -859,6 +860,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.readonly = readonly
         self.loadLevelDat(create, random_seed, last_played)
 
+        self.worldFolder = AnvilWorldFolder(filename)
+        workFolderPath2 = self.worldFolder.getFolderPath("##MCEDIT.TEMP2##")
+        if os.path.exists(workFolderPath2):
+            shutil.rmtree(workFolderPath2, True)
+        self.fileEditsFolder = AnvilWorldFolder(workFolderPath2)
+        self.editFileNumber = 1
+
     def _createLevelDat(self, random_seed, last_played):
         """
         Creates a new level.dat root_tag, and puts it in self.root_tag.
@@ -984,7 +992,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.playerTagCache.clear()
         self.unload()
         try:
-            pass  # Setup a way to close a work-folder?
+            shutil.rmtree(self.fileEditsFolder.filename, True)
+            # Setup a way to close a work-folder?
         except SessionLockLost:
             pass
 

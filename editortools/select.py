@@ -1237,6 +1237,8 @@ class SelectionTool(EditorTool):
         sorting = config.commands.sorting.get()
         edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor,
                         self.editor.level)
+        platform = self.editor.level.gamePlatform
+        repeatID, chainID = {'PE':(188,189),'Java':(210,211)}.get(platform, (210,211))
 
         order = []
         if sorting == "chain":
@@ -1249,10 +1251,10 @@ class SelectionTool(EditorTool):
                     skip.remove((x, y, z))
                     continue
                 blockID = self.editor.level.blockAt(x, y, z)
-                if blockID == 211:
+                if blockID == chainID:
                     chainStored.append((x, y, z))
                     continue
-                if blockID == 137 or blockID == 210:
+                if blockID == 137 or blockID == repeatID:
                     edit.writeCommandInFile(first, space, (x, y, z), fp, skip, True, done, order)
                     first = False
             for (x, y, z) in chainStored:
@@ -1267,7 +1269,7 @@ class SelectionTool(EditorTool):
                 else:
                     (z, y, x) = coords
                 blockID = self.editor.level.blockAt(x, y, z)
-                if blockID == 137 or blockID == 210 or blockID == 211:
+                if blockID == 137 or blockID == repeatID or blockID == chainID:
                     edit.writeCommandInFile(first, space, (x, y, z), fp, None, False, None, order)
                     first = False
         fp.close()
