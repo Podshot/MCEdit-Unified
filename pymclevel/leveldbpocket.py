@@ -175,8 +175,12 @@ def get_blocks_storage_from_blocks_and_data(blocks, data):
     numpy_blocks = numpy.zeros(4096, 'uint16')
     for index, (blockID, blockData) in enumerate(uniqueBlocks):
         try:
-            block_string = "minecraft:" + pocketMaterials.idStr[blockID]
-            block_data = blockData
+            if blockID != 0:
+                block_string = "minecraft:" + pocketMaterials.idStr[blockID]
+                block_data = blockData
+            else:
+                block_string = "minecraft:air"
+                block_data = blockData
         except:
             block_string = "minecraft:air"
             block_data = 0
@@ -1874,6 +1878,9 @@ class PocketLeveldbChunk1Plus(LightedChunk):
         data = []
         for item in palette_nbt:
             idStr = item["name"].value.split(':',1)[-1]
+            if idStr == '':
+                idStr = 'air'
+                item["val"] = nbt.TAG_Short(0)
             if idStr != 'air' and idStr not in pocketMaterials.idStr:
                 pocketMaterials.addJSONBlock({"id": pocketMaterials.tempBlockID, "name": idStr, "idStr": idStr, "mapcolor": [214, 127, 255], "data": {n: {"name": idStr} for n in range(16)}})
                 pocketMaterials.tempBlockID += 1
