@@ -588,8 +588,14 @@ class PocketLeveldbDatabase(object):
                         db.Put(wop, key + "\x2f" + c, terrain)
                     if y == 0:
                         db.Put(wop, key + '\x76', chunk.chunk_version)
-                        db.Put(wop, key + '\x31', tileEntityData)
-                        db.Put(wop, key + '\x33', entityData)
+                        if len(chunk.TileEntities) > 0:
+                            db.Put(wop, key + '\x31', tileEntityData)
+                        else:
+                            db.Delete(key + '\x31')
+                        if len(chunk.Entities) > 0:
+                            db.Put(wop, key + '\x32', entityData)
+                        else:
+                            db.Delete(key + '\x32')
                         if data_2d:
                             db.Put(wop, key + '\x2d', data_2d)
             else:
@@ -599,8 +605,14 @@ class PocketLeveldbDatabase(object):
                     batch.Put(key + "\x2f" + c, terrain)
                 if y == 0:
                     batch.Put(key + '\x76', chunk.chunk_version)
-                    batch.Put(key + '\x31', tileEntityData)
-                    batch.Put(key + '\x32', entityData)
+                    if len(chunk.TileEntities) > 0:
+                        batch.Put(wop, key + '\x31', tileEntityData)
+                    else:
+                        batch.Delete(key + '\x31')
+                    if len(chunk.Entities) > 0:
+                        batch.Put(wop, key + '\x32', entityData)
+                    else:
+                        batch.Delete(key + '\x32')
                     if data_2d:
                         batch.Put(key + '\x2d', data_2d)
 
