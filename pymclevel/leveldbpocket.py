@@ -565,7 +565,7 @@ class PocketLeveldbDatabase(object):
             blockData = chunk._Data.binary_data[y].ravel()
             blocks_storage = get_blocks_storage_from_blocks_and_data(blocks, blockData)
 
-            if hasattr(chunk, "_extra_blocks"):
+            if hasattr(chunk, "_extra_blocks") and chunk._extra_blocks.binary_data[y].max() > 0:
                 extra_blocks = chunk._extra_blocks.binary_data[y].ravel()
                 extra_blocks_data = chunk._extra_blocks_data.binary_data[y].ravel()
                 extra_blocks_storage = get_blocks_storage_from_blocks_and_data(extra_blocks, extra_blocks_data)
