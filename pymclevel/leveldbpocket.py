@@ -606,11 +606,11 @@ class PocketLeveldbDatabase(object):
                 if y == 0:
                     batch.Put(key + '\x76', chunk.chunk_version)
                     if len(chunk.TileEntities) > 0:
-                        batch.Put(wop, key + '\x31', tileEntityData)
+                        batch.Put(key + '\x31', tileEntityData)
                     else:
                         batch.Delete(key + '\x31')
                     if len(chunk.Entities) > 0:
-                        batch.Put(wop, key + '\x32', entityData)
+                        batch.Put(key + '\x32', entityData)
                     else:
                         batch.Delete(key + '\x32')
                     if data_2d:
