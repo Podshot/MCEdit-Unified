@@ -1,6 +1,12 @@
 {
     "entities": [
         {
+            "id": 61,
+            "idStr": "Armor stand",
+            "name": "Armor stand",
+            "type": "Other"
+        },
+        {
             "id": 64,
             "idStr": "Dropped item",
             "name": "Dropped item",
