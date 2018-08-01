@@ -564,8 +564,10 @@
         "Hostile mobs 3": 264960,
         "Rideable mobs": 2118400
     },
-    "fullid doc": ["The following 'fullid' is used to tell the MCEdit internal parser to build and add 'fullid' tags",
-        "and add them to the data defined here in MCEDIT_DEFS and add corresponding mappings to MCEDIT_IDS."],
+    "fullid doc": [
+        "The following 'fullid' is used to tell the MCEdit internal parser to build and add 'fullid' tags",
+        "and add them to the data defined here in MCEDIT_DEFS and add corresponding mappings to MCEDIT_IDS."
+    ],
     "autobuild": {
         "fullid": "entities['entity_types'][item['type']] + item['id']"
     }
