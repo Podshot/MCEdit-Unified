@@ -39,7 +39,7 @@ biome_types = {
     36: 'Savanna Plateau',
     37: 'Messa',
     38: 'Messa Plateau F',
-    39: 'Messa Plateau'
+    39: 'Messa Plateau',
     127: 'The Void',
     129: 'Sunflower Plains',
     130: 'Desert M',
