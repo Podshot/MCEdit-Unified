@@ -1,6 +1,12 @@
 {
     "entities": [
         {
+            "id": 61,
+            "idStr": "Armor stand",
+            "name": "Armor stand",
+            "type": "Other"
+        },
+        {
             "id": 64,
             "idStr": "Dropped item",
             "name": "Dropped item",
@@ -46,6 +52,12 @@
             "id": 72,
             "idStr": "Firework Rocket",
             "name": "Firework Rocket",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 73,
+            "idStr": "Trident",
+            "name": "Trident",
             "type": "Immobile and projectiles"
         },
         {
@@ -197,6 +209,42 @@
             "idStr": "Evoker Illager",
             "name": "Evoker Illager",
             "type": "Hostile mobs"
+        },
+        {
+            "id": 108,
+            "idStr": "Pufferfish",
+            "name": "Pufferfish",
+            "type": "Water mobs"
+        },
+        {
+            "id": 109,
+            "idStr": "Salmon",
+            "name": "Salmon",
+            "type": "Water mobs"
+        },
+        {
+            "id": 110,
+            "idStr": "Drowned",
+            "name": "Drowned",
+            "type": "Hostil mobs 2"
+        },
+        {
+            "id": 111,
+            "idStr": "Tropical Fish",
+            "name": "Tropical Fish",
+            "type": "Water mobs"
+        },
+        {
+            "id": 112,
+            "idStr": "Cod",
+            "name": "Cod",
+            "type": "Water mobs"
+        },
+        {
+            "id": 31,
+            "idStr": "Dolphin",
+            "name": "Dolphin",
+            "type": "Water mobs"
         },
         {
             "id": 32,
@@ -490,6 +538,12 @@
             "id": 78,
             "idStr": "Chalkboard",
             "name": "Chalkboard",
+            "type": "Education Edition"
+        },
+        {
+            "id": 106,
+            "idStr": "Ice Bomb",
+            "name": "Ice Bomb",
             "type": "Education Edition"
         }
     ],
