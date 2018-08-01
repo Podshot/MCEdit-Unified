@@ -1,0 +1,518 @@
+{
+    "entities": [
+        {
+            "id": 64,
+            "idStr": "Dropped item",
+            "name": "Dropped item",
+            "type": "Drops"
+        },
+        {
+            "id": 69,
+            "idStr": "Experience Orb",
+            "name": "Experience Orb",
+            "type": "Drops"
+        },
+        {
+            "id": 65,
+            "idStr": "Primed TNT",
+            "name": "Primed TNT",
+            "type": "Blocks"
+        },
+        {
+            "id": 66,
+            "idStr": "Falling block",
+            "name": "Falling block",
+            "type": "Blocks"
+        },
+        {
+            "id": 68,
+            "idStr": "Thrown Bottle o' Enchanting",
+            "name": "Thrown Bottle o' Enchanting",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 70,
+            "idStr": "Eye Of Ender",
+            "name": "Eye Of Ender",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 71,
+            "idStr": "Ender Crystal",
+            "name": "Ender Crystal",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 72,
+            "idStr": "Firework Rocket",
+            "name": "Firework Rocket",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 76,
+            "idStr": "Shulker bullet",
+            "name": "Shulker bullet",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 77,
+            "idStr": "Fishing Rod hook",
+            "name": "Fishing Rod hook",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 79,
+            "idStr": "Dragon fireball",
+            "name": "Dragon fireball",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 80,
+            "idStr": "Shot arrow",
+            "name": "Shot arrow",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 81,
+            "idStr": "Thrown snowball",
+            "name": "Thrown snowball",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 82,
+            "idStr": "Thrown egg",
+            "name": "Thrown egg",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 83,
+            "idStr": "Painting",
+            "name": "Painting",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 84,
+            "idStr": "Minecart",
+            "name": "Minecart",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 85,
+            "idStr": "Ghast fireball",
+            "name": "Ghast fireball",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 86,
+            "idStr": "splash potion",
+            "name": "splash potion",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 87,
+            "idStr": "Thrown Ender Pearl",
+            "name": "Thrown Ender Pearl",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 88,
+            "idStr": "Leash knot",
+            "name": "Leash knot",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 89,
+            "idStr": "Blue wither skull",
+            "name": "Blue wither skull",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 90,
+            "idStr": "Boat",
+            "name": "Boat",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 93,
+            "idStr": "Lightning Bolt",
+            "name": "Lightning Bolt",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 94,
+            "idStr": "Blaze fireball",
+            "name": "Blaze fireball",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 95,
+            "idStr": "Area Effect Cloud",
+            "name": "Area Effect Cloud",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 96,
+            "idStr": "Minecart with Hopper",
+            "name": "Minecart with Hopper",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 97,
+            "idStr": "Minecart with TNT",
+            "name": "Minecart with TNT",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 98,
+            "idStr": "Minecart with Chest",
+            "name": "Minecart with Chest",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 100,
+            "idStr": "Minecart with Command Block",
+            "name": "Minecart with Command Block",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 101,
+            "idStr": "Thrown lingering potion",
+            "name": "Thrown lingering potion",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 102,
+            "idStr": "Llama Spit",
+            "name": "Llama Spit",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 103,
+            "idStr": "Evocation Fangs",
+            "name": "Evocation Fangs",
+            "type": "Immobile and projectiles"
+        },
+        {
+            "id": 104,
+            "idStr": "Evoker Illager",
+            "name": "Evoker Illager",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 32,
+            "idStr": "Zombie",
+            "name": "Zombie",
+            "type": "Hostile mobs 2"
+        },
+        {
+            "id": 33,
+            "idStr": "Creeper",
+            "name": "Creeper",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 34,
+            "idStr": "Skeleton",
+            "name": "Skeleton",
+            "type": "Hostile mobs 1"
+        },
+        {
+            "id": 35,
+            "idStr": "Spider",
+            "name": "Spider",
+            "type": "Hostile mobs 3"
+        },
+        {
+            "id": 36,
+            "idStr": "PigZombie",
+            "name": "Zombie Pigman",
+            "type": "Hostile mobs 1"
+        },
+        {
+            "id": 37,
+            "idStr": "Slime",
+            "name": "Slime",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 38,
+            "idStr": "Enderman",
+            "name": "Enderman",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 39,
+            "idStr": "Silverfish",
+            "name": "Silverfish",
+            "type": "Hostile mobs 3"
+        },
+        {
+            "id": 40,
+            "idStr": "CaveSpider",
+            "name": "Cave Spider",
+            "type": "Hostile mobs 3"
+        },
+        {
+            "id": 41,
+            "idStr": "Ghast",
+            "name": "Ghast",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 42,
+            "idStr": "Magma Cube",
+            "name": "Magma Cube",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 43,
+            "idStr": "Blaze",
+            "name": "Blaze",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 44,
+            "idStr": "Zombie Villager",
+            "name": "Zombie Villager",
+            "type": "Hostile mobs 2"
+        },
+        {
+            "id": 45,
+            "idStr": "Witch",
+            "name": "Witch",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 46,
+            "idStr": "Stray",
+            "name": "Stray",
+            "type": "Hostile mobs 1"
+        },
+        {
+            "id": 47,
+            "idStr": "Husk",
+            "name": "Husk",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 48,
+            "idStr": "Wither Skeleton",
+            "name": "Wither Skeleton",
+            "type": "Hostile mobs 1"
+        },
+        {
+            "id": 49,
+            "idStr": "Guardian",
+            "name": "Guardian",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 50,
+            "idStr": "Elder Guardian",
+            "name": "Elder Guardian",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 52,
+            "idStr": "Wither",
+            "name": "Wither",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 53,
+            "idStr": "Ender Dragon",
+            "name": "Ender Dragon",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 54,
+            "idStr": "Shulker",
+            "name": "Shulker",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 55,
+            "idStr": "Endermite",
+            "name": "Endermite",
+            "type": "Hostile mobs"
+        },
+        {
+            "id": 10,
+            "idStr": "Chicken",
+            "name": "Chicken",
+            "type": "Animals"
+        },
+        {
+            "id": 11,
+            "idStr": "Cow",
+            "name": "Cow",
+            "type": "Animals"
+        },
+        {
+            "id": 12,
+            "idStr": "Pig",
+            "name": "Pig",
+            "type": "Animals"
+        },
+        {
+            "id": 13,
+            "idStr": "Sheep",
+            "name": "Sheep",
+            "type": "Animals"
+        },
+        {
+            "id": 14,
+            "idStr": "Wolf",
+            "name": "Wolf",
+            "type": "Tamable mobs"
+        },
+        {
+            "id": 15,
+            "idStr": "Villager",
+            "name": "Villager",
+            "type": "Passive mobs"
+        },
+        {
+            "id": 16,
+            "idStr": "Mooshroom",
+            "name": "Mooshroom",
+            "type": "Animals"
+        },
+        {
+            "id": 17,
+            "idStr": "Squid",
+            "name": "Squid",
+            "type": "Water mobs"
+        },
+        {
+            "id": 18,
+            "idStr": "Rabbit",
+            "name": "Rabbit",
+            "type": "Animals"
+        },
+        {
+            "id": 19,
+            "idStr": "Bat",
+            "name": "Bat",
+            "type": "Flying mobs"
+        },
+        {
+            "id": 20,
+            "idStr": "Iron Golem",
+            "name": "Iron Golem",
+            "type": "Passive mobs"
+        },
+        {
+            "id": 21,
+            "idStr": "Snow Golem",
+            "name": "Snow Golem",
+            "type": "Passive mobs"
+        },
+        {
+            "id": 22,
+            "idStr": "Ocelot",
+            "name": "Ocelot",
+            "type": "Tamable mobs"
+        },
+        {
+            "id": 23,
+            "idStr": "Horse",
+            "name": "Horse",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 24,
+            "idStr": "Donkey",
+            "name": "Donkey",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 25,
+            "idStr": "Mule",
+            "name": "Mule",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 26,
+            "idStr": "Skeleton Horse",
+            "name": "Skeleton Horse",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 27,
+            "idStr": "Zombie Horse",
+            "name": "Zombie Horse",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 28,
+            "idStr": "Polar Bear",
+            "name": "Polar Bear",
+            "type": "Animals"
+        },
+        {
+            "id": 29,
+            "idStr": "Llama",
+            "name": "Llama",
+            "type": "Rideable mobs"
+        },
+        {
+            "id": 30,
+            "idStr": "Parrot",
+            "name": "Parrot",
+            "type": "Animals"
+        },
+        {
+            "id": 63,
+            "idStr": "Player",
+            "name": "Player",
+            "type": "Other"
+        },
+        {
+            "id": 51,
+            "idStr": "NPC",
+            "name": "NPC",
+            "type": "Education Edition"
+        },
+        {
+            "id": 56,
+            "idStr": "Learn To Code Mascot",
+            "name": "Learn To Code Mascot",
+            "type": "Education Edition"
+        },
+        {
+            "id": 62,
+            "idStr": "Camera",
+            "name": "Camera",
+            "type": "Education Edition"
+        },
+        {
+            "id": 78,
+            "idStr": "Chalkboard",
+            "name": "Chalkboard",
+            "type": "Education Edition"
+        }
+    ],
+    "entity_types": {
+        "Blocks": 0,
+        "Drops": 0,
+        "Immobile and projectiles": 0,
+        "Other": 256,
+        "Education Edition": 256,
+        "Passive mobs": 768,
+        "Animals": 4864,
+        "Tamable mobs": 21248,
+        "Water mobs": 8960,
+        "Flying mobs": 33024,
+        "Hostile mobs": 2816,
+        "Hostile mobs 1": 68352,
+        "Hostile mobs 2": 199424,
+        "Hostile mobs 3": 264960,
+        "Rideable mobs": 2118400
+    },
+    "fullid doc": ["The following 'fullid' is used to tell the MCEdit internal parser to build and add 'fullid' tags",
+        "and add them to the data defined here in MCEDIT_DEFS and add corresponding mappings to MCEDIT_IDS."],
+    "autobuild": {
+        "fullid": "entities['entity_types'][item['type']] + item['id']"
+    }
+}
