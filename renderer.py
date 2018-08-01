@@ -1555,7 +1555,7 @@ class LowDetailBlockRenderer(BlockRenderer):
         h = numpy.swapaxes(heightMap - 1, 0, 1)[:chunkWidth, :chunkLength]
         numpy.clip(h, 0, chunkHeight - 1, out=h)
 
-        gridaxes = [gridaxes[0], gridaxes[1], h]
+        gridaxes = (gridaxes[0], gridaxes[1], h)
 
         depths = numpy.zeros((chunkWidth, chunkLength), dtype='uint16')
         depths[1:-1, 1:-1] = reduce(numpy.minimum, (h[1:-1, :-2], h[1:-1, 2:], h[:-2, 1:-1]), h[2:, 1:-1])

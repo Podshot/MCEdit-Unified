@@ -36,6 +36,7 @@ pyinstaller-develop
 *.manifest
 *.spec
 !mcedit-ci.spec
+!mcedit-ci-osx.spec
 
 # Installer logs
 pip-log.txt

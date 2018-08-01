@@ -1,21 +1,13 @@
 # -*- mode: python -*-
 
+import os
 import sys
 sys.modules['FixTk'] = None
 
-import glob
-import os
-import shutil
-import json
 import subprocess
-
-hasPyClark = False
-try:
-    import pyClark
-    hasByClark = True
-except ImportError:
-    pass
-
+import shutil
+import glob
+import json
 
 try:
     from PyInstaller.utils.hooks import collect_data_files, remove_prefix
@@ -31,10 +23,6 @@ def walk(directory):
             files.append((src, dest.replace('./','')))
     return files
 
-block_cipher = None
-
-SEVENZIP = r"C:\Program Files\7-Zip\7z.exe"
-
 replace_map = {
     "mcedit.ini": "mcedit_testing.ini",
     "usercache.json": "usercache_testing.ini"
@@ -48,6 +36,16 @@ else:
 if os.environ.get('OVERRIDE_VERSION'):
     VERSION = os.environ.get('OVERRIDE_VERSION')
 
+fp = open(os.path.join('.', 'RELEASE-VERSION.json'),'rb')
+version_data = json.load(fp)
+fp.close()
+
+version_data["tag_name"] = VERSION
+
+fp = open(os.path.join('.', 'RELEASE-VERSION.json'), 'wb')
+json.dump(version_data, fp)
+fp.close()
+
 if not os.environ.get("RELEASE"):
     fp = open('directories.py', 'rb')
     data = fp.read();
@@ -59,22 +57,21 @@ if not os.environ.get("RELEASE"):
             new_data = new_data.replace(key, value)
         out.write(new_data)
 
-#subprocess.check_call([sys.executable, 'setup.py', 'all'])
+block_cipher = None
+
 
 a = Analysis(['mcedit.py'],
-             pathex=['C:\\Users\\gotharbg\\Documents\\Python Projects\\MCEdit-Unified'],
-             binaries=[], # ('./ENV/Lib/site-packages/OpenGL/DLLS/freeglut64.vc9.dll', 'freeglut64.vc9.dll'),
+             pathex=['/Users/travis/build/Podshot/Travis-Ci-OSX-Testing'],
+             binaries=[],
              datas=[],
-             hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate', 'OpenGL.platform.win32'],
+             hiddenimports=['pkg_resources', 'PyOpenGL', 'PyOpenGL_accelerate', 'OpenGL', 'OpenGL_accelerate'],
              hookspath=['.'],
              runtime_hooks=[],
-             excludes=['Tkinter', 'tkinter', '_tkinter', 'Tcl', 'tcl', 'Tk', 'tk', 'wx', 'FixTk', 'pyClark'],
-             win_no_prefer_redirects=False,
-             win_private_assemblies=False,
+             excludes=['Tkinter', 'tkinter', '_tkinter', 'Tcl', 'tcl', 'Tk', 'tk', 'wx', 'FixTk'],
              cipher=block_cipher)
 
 datas = []
-base_files = glob.glob(r".\\*.json") + glob.glob(r'.\\*.png') + glob.glob(r'.\\*.fot') + glob.glob(r'.\\*.def') + [os.path.join('.', 'LICENSE.txt'),]
+base_files = glob.glob(r"./*.json") + glob.glob(r'./*.png') + glob.glob(r'./*.fot') + glob.glob(r'./*.def') + [os.path.join('.', 'LICENSE.txt'),]
 for f in base_files:
     datas.append((os.path.basename(f), os.path.abspath(f), 'DATA'))
 
@@ -94,51 +91,27 @@ pyz = PYZ(a.pure, a.zipped_data,
 
 exe = EXE(pyz,
           a.scripts,
+#          a.binaries,
+#          a.zipfiles,
+#          a.datas,
           exclude_binaries=True,
           name='mcedit',
-          debug=False,
-          strip=False,
-          upx=True,
-          console=True , icon='mcedit.ico')
+          debug=True,
+          strip=None,
+          upx=False,
+          runtime_tmpdir=None,
+          console=True,
+          icon='mcedit.icns')
 
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
-               strip=False,
+               strip=None,
                upx=True,
                name='mcedit')
 
-fp = open(os.path.join('.', 'dist', 'mcedit', 'RELEASE-VERSION.json'),'rb')
-version_data = json.load(fp)
-fp.close()
-
-version_data["tag_name"] = VERSION
-
-fp = open(os.path.join('.', 'dist', 'mcedit', 'RELEASE-VERSION.json'), 'wb')
-json.dump(version_data, fp)
-fp.close()
-
-if not os.environ.get("RELEASE"):
-    with open('directories.py', 'wb') as out:
-        out.write(data)
-
-subprocess.check_call(['git', 'clone', 'https://github.com/Podshot/MCEdit-Unified-Preview.git'])
-
-if str(os.environ.get('WHL_ARCH')) == '32' or not sys.maxsize > 2**32:
-    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut32.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut32.dll'))
-    VERSION += '-win32'
-elif str(os.environ.get('WHL_ARCH')) == '_amd64' or sys.maxsize > 2**32:
-    shutil.copy(os.path.join('.', 'MCEdit-Unified-Preview', 'freeglut64.vc9.dll'), os.path.join('.', 'dist', 'mcedit', 'freeglut64.dll'))
-    VERSION += '-win64'
-
-if hasPyClark:
-    shutil.copytree(os.path.dirname(pyClark.__file__), os.path.join('dist', 'mcedit', 'pyClark'))
-
-subprocess.check_call([
-    SEVENZIP,
-    'a',
-    'mcedit-unified-{}.zip'.format(VERSION),
-    os.path.join('.', 'mcedit', '*')
-    ],
-    cwd='dist')
+app = BUNDLE(coll,
+             name='mcedit.app',
+             icon='mcedit.icns',
+             bundle_identifier='net.mcedit-unified.mcedit-unified')
