@@ -1,0 +1,77 @@
+{
+  "load": "1.2",
+  "entities": [
+    {
+      "id": 73,
+      "idStr": "Trident",
+      "name": "Trident",
+      "type": "Immobile and projectiles"
+    },
+    {
+      "id": 108,
+      "idStr": "Pufferfish",
+      "name": "Pufferfish",
+      "type": "Water mobs"
+    },
+    {
+      "id": 109,
+      "idStr": "Salmon",
+      "name": "Salmon",
+      "type": "Water mobs"
+    },
+    {
+      "id": 110,
+      "idStr": "Drowned",
+      "name": "Drowned",
+      "type": "Hostil mobs 2"
+    },
+    {
+      "id": 111,
+      "idStr": "Tropical Fish",
+      "name": "Tropical Fish",
+      "type": "Water mobs"
+    },
+    {
+      "id": 112,
+      "idStr": "Cod",
+      "name": "Cod",
+      "type": "Water mobs"
+    },
+    {
+      "id": 31,
+      "idStr": "Dolphin",
+      "name": "Dolphin",
+      "type": "Water mobs"
+    },
+    {
+      "id": 106,
+      "idStr": "Ice Bomb",
+      "name": "Ice Bomb",
+      "type": "Education Edition"
+    }
+  ],
+  "entity_types": {
+    "Blocks": 0,
+    "Drops": 0,
+    "Immobile and projectiles": 0,
+    "Other": 256,
+    "Education Edition": 256,
+    "Passive mobs": 768,
+    "Animals": 4864,
+    "Tamable mobs": 21248,
+    "Water mobs": 8960,
+    "Flying mobs": 33024,
+    "Hostile mobs": 2816,
+    "Hostile mobs 1": 68352,
+    "Hostile mobs 2": 199424,
+    "Hostile mobs 3": 264960,
+    "Rideable mobs": 2118400
+  },
+  "fullid doc": [
+    "The following 'fullid' is used to tell the MCEdit internal parser to build and add 'fullid' tags",
+    "and add them to the data defined here in MCEDIT_DEFS and add corresponding mappings to MCEDIT_IDS."
+  ],
+  "autobuild": {
+    "fullid": "entities['entity_types'][item['type']] + item['id']"
+  }
+}
