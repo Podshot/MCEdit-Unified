@@ -20,16 +20,12 @@
 		"1.2": [
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.2/blocks.json",
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.2/entities.json"
-		]
-	},
-	"PE": {
+		],
 		"1.4": [
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.4/blocks.json",
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.4/entities.json"
-		]
-	},
-	"PE": {
-		"1.2": [
+		],
+		"1.5": [
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.5/blocks.json",
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.5/entities.json"
 		]
