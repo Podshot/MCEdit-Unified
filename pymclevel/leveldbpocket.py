@@ -1111,7 +1111,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         for c in self.chunksNeedingLighting:
             self.getChunk(*c).genFastLights()
 
-        for chunk in self._loadedChunks.itervalues():
+        for chunkCoords in self._loadedChunks.keys():
+            chunk = self._loadedChunks[chunkCoords]
             if chunk.dirty:
                 dirtyChunkCount += 1
                 self.worldFile.saveChunk(chunk, batch=batch)
@@ -1210,7 +1211,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         Generator containing all chunks that need lighting.
         :yield: int (cx, cz) Coordinates of the chunk
         """
-        for chunk in self._loadedChunks.itervalues():
+        for chunkCoords in self._loadedChunks.keys():
+            chunk = self._loadedChunks[chunkCoords]
             if chunk.needsLighting:
                 yield chunk.chunkPosition
 
