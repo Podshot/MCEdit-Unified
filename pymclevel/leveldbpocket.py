@@ -1021,9 +1021,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return: None
         """
         self.worldFile.deleteChunk(cx, cz, batch=batch)
-        if self._loadedChunks is not None and (cx, cz) in self._loadedChunks:  # Unnecessary check?
+        try:
             del self._loadedChunks[(cx, cz)]
+        except:
+            pass
+        try:
             self.allChunks.remove((cx, cz))
+        except:
+            pass
 
     def deleteChunksInBox(self, box):
         """
