@@ -1,5 +1,6 @@
+MCEdit Unified bug report template. For MCEdit 2.0 bugs see here : https://github.com/mcedit/mcedit2
 #### Description of Issue:
-#### MCEdit Version: ([MCEdit 2.0 bugs should be reported here.](https://github.com/mcedit/mcedit2/issues/new) Delete if not applicable)
+#### MCEdit Version:
 #### Minecraft Version the world was last opened in:
 #### Operating System:
 #### A screenshot or full text of the error from the console:
