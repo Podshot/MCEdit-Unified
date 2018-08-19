@@ -1,5 +1,5 @@
 #### Description of Issue:
-#### MCEdit Version:
+#### MCEdit Version: ([MCEdit 2.0 bugs should be reported here.](https://github.com/mcedit/mcedit2/issues/new) Delete if not applicable)
 #### Minecraft Version the world was last opened in:
 #### Operating System:
 #### A screenshot or full text of the error from the console:
