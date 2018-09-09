@@ -533,13 +533,26 @@ class PocketLeveldbDatabase(object):
 
             entityData = ''
             for ent in chunk.Entities:
-                v = ent["id"].value
-                ent_data = defs_get(ids_get(v, v), {'id': -1})
-                id = ent_data['id']
-                ent['id'] = nbt.TAG_Int(id + mcedit_defs['entity_types'].get(ent_data.get('type', None),0))
-                entityData += ent.save(compressed=False)
-                # We have to re-invert after saving otherwise the next save will fail.
-                ent["id"] = nbt.TAG_String(v)
+                if 'identifier' in ent:
+                    v = 'see "identifier"'
+                    if "id" in ent:
+                        v = ent["id"].value
+                        del ent["id"]
+                    entityData += ent.save(compressed=False)
+                    ent["id"] = nbt.TAG_String(v)
+                else:
+                    try:
+                        v = ent["id"].value
+                        ent_data = defs_get(ids_get(v, v), {'id': -1})
+                        id = ent_data['id']
+                        ent['id'] = nbt.TAG_Int(id + mcedit_defs['entity_types'].get(ent_data.get('type', None),0))
+                        entityData += ent.save(compressed=False)
+                        # We have to re-invert after saving otherwise the next save will fail.
+                        ent["id"] = nbt.TAG_String(v)
+                    except Exception as e:
+                        logger.warning("An error occured while saving entity ID:")
+                        logger.warning(e)
+                        logger.warning("Entity has been skipped")
 
         wop = self.writeOptions if writeOptions is None else writeOptions
         chunk._Blocks.update_subchunks()
@@ -1999,49 +2012,55 @@ class PocketLeveldbChunk1Plus(LightedChunk):
             # Whenever we save an entity, we need to make sure to swap back.
 #             invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
             for ent in Entities:
-                try:
-                    v = ent["id"].value
+                if 'identifier' in ent:
+                    ent["id"] = nbt.TAG_String('see "identifier"')
+                else:
+                    try:
+                        v = ent["id"].value
+                        if DEBUG_PE:
+                            _v = int(v)
+                        v = int(v) & 0xFF
+                    except Exception as e:
+                        logger.warning("An error occured while getting entity ID:")
+                        logger.warning(e)
+                        logger.warning("Default 'Unknown' ID is used...")
+                        v = 'Unknown'
+                    # !
+    #                 id = invertEntities.get(v, "Entity %s"%v)
+                    # Add the built one to the entities
+    #                 if id not in entity.PocketEntity.entityList.keys():
+    #                     logger.warning("Found unknown entity '%s'"%v)
+    #                     entity.PocketEntity.entityList[id] = v
+
+                    try:
+                        id = defs_get(ids_get(v, 'Unknown'),
+                                             {'name': 'Unknown Entity %s' % v,
+                                              'idStr': 'Unknown Entity %s' % v,
+                                              'id': -1,
+                                              'type': 'Unknown'}
+                                             )['name']
+                    except:
+                        continue
                     if DEBUG_PE:
-                        _v = int(v)
-                    v = int(v) & 0xFF
-                except Exception as e:
-                    logger.warning("An error occured while getting entity ID:")
-                    logger.warning(e)
-                    logger.warning("Default 'Unknown' ID is used...")
-                    v = 'Unknown'
-                # !
-#                 id = invertEntities.get(v, "Entity %s"%v)
-                # Add the built one to the entities
-#                 if id not in entity.PocketEntity.entityList.keys():
-#                     logger.warning("Found unknown entity '%s'"%v)
-#                     entity.PocketEntity.entityList[id] = v
+                        ent_def = defs_get(ids_get(v, 'Unknown'),
+                                         {'name': 'Unknown Entity %s' % v,
+                                          'idStr': 'Unknown Entity %s' % v,
+                                          'id': -1,
+                                          'type': 'Unknown'}
+                                         )
+                        _tn = ent_def.get('type', 'Unknown')
+                        _tv = mcedit_defs['entity_types'].get(_tn, 'Unknown')
+                        write_dump("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
+                                                        id=id,
+                                                        _v=_v,
+                                                        _fid= _v & 0xff,
+                                                        _f1= _v & 0xff00,
+                                                        _f2= _v - (_v & 0xff),
+                                                        _tn=_tn,
+                                                        _tv=_tv)
+                                                    )
 
-                id = defs_get(ids_get(v, 'Unknown'),
-                                     {'name': 'Unknown Entity %s' % v,
-                                      'idStr': 'Unknown Entity %s' % v,
-                                      'id': -1,
-                                      'type': 'Unknown'}
-                                     )['name']
-                if DEBUG_PE:
-                    ent_def = defs_get(ids_get(v, 'Unknown'),
-                                     {'name': 'Unknown Entity %s' % v,
-                                      'idStr': 'Unknown Entity %s' % v,
-                                      'id': -1,
-                                      'type': 'Unknown'}
-                                     )
-                    _tn = ent_def.get('type', 'Unknown')
-                    _tv = mcedit_defs['entity_types'].get(_tn, 'Unknown')
-                    write_dump("* Internal ID: {id}, raw ID: {_v}, filtered ID: {_fid}, filter: {_f1} ({_f2}), type name {_tn}, type value: {_tv}\n".format(
-                                                    id=id,
-                                                    _v=_v,
-                                                    _fid= _v & 0xff,
-                                                    _f1= _v & 0xff00,
-                                                    _f2= _v - (_v & 0xff),
-                                                    _tn=_tn,
-                                                    _tv=_tv)
-                                                )
-
-                ent["id"] = nbt.TAG_String(id)
+                    ent["id"] = nbt.TAG_String(id)
 
                 self.Entities.insert(-1, ent)
 
