@@ -1131,6 +1131,21 @@
       "id": 411,
       "idStr": "sea_pickle",
       "name": "Sea Pickle"
+    },
+    {
+      "id": 412,
+      "idStr": "conduit",
+      "name": "Conduit"
+    },
+    {
+      "id": 414,
+      "idStr": "turtle_egg",
+      "name": "Turtle_Egg"
+    },
+    {
+      "id": 415,
+      "idStr": "bubble_column",
+      "name": "Bubble_Column"
     }
   ]
 }
