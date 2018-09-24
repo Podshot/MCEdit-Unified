@@ -210,7 +210,7 @@
 </head>
 <body>
 	<div class="container">
-	    <div class="row" id="minecon-alert">
+	    <div class="row" id="minecon-alert" style="display: none;">
 	        <div class="col-12">
 	            <div class="alert alert-info" role="alert">
 	                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="localStorage.setItem('dismissed-minecon-2018','yes');">
@@ -226,7 +226,7 @@
 	        </div>
 	    </div>
 	    <script>
-	        if (localStorage.getItem('dismissed-minecon-2018') === "yes") { document.querySelector('#minecon-alert').remove() }
+	        if (localStorage.getItem('dismissed-minecon-2018') !== "yes") { $('#minecon-alert').show() }
 	    </script>
 		<div class="row" id="loading_row">
 			<div class="col-md-12">
