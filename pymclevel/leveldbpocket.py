@@ -1,3 +1,7 @@
+dimension = '' #overworld
+# dimension = '\x01\x00\x00\x00' #nether
+# dimension = '\x02\x00\x00\x00' #end
+
 import itertools
 import time
 from math import floor, ceil, log
@@ -344,7 +348,7 @@ class PocketLeveldbDatabase(object):
         :return: None
         """
         if key is None:
-            key = struct.pack('<i', cx) + struct.pack('<i', cz)
+            key = struct.pack('<i', cx) + struct.pack('<i', cz) + dimension
         with self.world_db() as db:
             rop = self.readOptions if readOptions is None else readOptions
 
@@ -380,7 +384,7 @@ class PocketLeveldbDatabase(object):
             Automatically calculated from cx and cz if the default 'None' value is used.
         """
         if key is None:
-            key = struct.pack('<i', cx) + struct.pack('<i', cz)
+            key = struct.pack('<i', cx) + struct.pack('<i', cz)+dimension
         with self.world_db() as db:
             rop = self.readOptions if readOptions is None else readOptions
             c = chr(y)
@@ -422,7 +426,7 @@ class PocketLeveldbDatabase(object):
         # Let check which version of the chunk we have before doing anything else.
         with self.world_db() as db:
             rop = self.readOptions if readOptions is None else readOptions
-            key = struct.pack('<i', cx) + struct.pack('<i', cz)
+            key = struct.pack('<i', cx) + struct.pack('<i', cz)+dimension
             raise_err = False
             try:
                 chunk_version = db.Get(rop, key + chr(118))
@@ -496,7 +500,7 @@ class PocketLeveldbDatabase(object):
         """
         cx, cz = chunk.chunkPosition
         data = chunk.savedData()
-        key = struct.pack('<i', cx) + struct.pack('<i', cz)
+        key = struct.pack('<i', cx) + struct.pack('<i', cz)+dimension
 
         if batch is None:
             with self.world_db() as db:
@@ -521,7 +525,7 @@ class PocketLeveldbDatabase(object):
         :return: None
         """
         cx, cz = chunk.chunkPosition
-        key = struct.pack('<i', cx) + struct.pack('<i', cz)
+        key = struct.pack('<i', cx) + struct.pack('<i', cz) + dimension
 
         with nbt.littleEndianNBT():
             mcedit_defs = self.level.defsIds.mcedit_defs
@@ -562,7 +566,7 @@ class PocketLeveldbDatabase(object):
         chunk._extra_blocks_data.subchunks = chunk._Blocks.subchunks
         chunk._extra_blocks.update_subchunks()
         chunk._extra_blocks_data.update_subchunks()
-        data_2d = getattr(chunk, 'data_2d', None)
+        data_2d = getattr(chunk, 'data_2d', '\x00'*768)
         if hasattr(chunk, 'Biomes') and data_2d:
             data_2d = data_2d[:512] + chunk.Biomes.tostring()
         if chunk.chunk_version == "\x03":
@@ -663,7 +667,7 @@ class PocketLeveldbDatabase(object):
         else:
             keys = []
             keys_append = keys.append
-            coords_str = struct.pack('<i', cx) + struct.pack('<i', cz)
+            coords_str = struct.pack('<i', cx) + struct.pack('<i', cz)+dimension
             for i in xrange(16):
                 keys_append(coords_str + "\x2f" + chr(i))
             for k in ("\x2d", "\x2e", "\x30", "\x31", "\x32", "\x33", "\x34",
@@ -711,7 +715,7 @@ class PocketLeveldbDatabase(object):
                         if world_version == 'pre1.0':
                             val = db.Get(rop, key[:8] + '\x30')
                         elif world_version == '1.plus':
-                            val = db.Get(rop, key[:8]+'\x76')
+                            val = db.Get(rop, key[:8]+dimension+'\x76')
                         # if the above key exists it is a valid chunk so add it
                         if val is not None:
                             allChunks.add(struct.unpack('<2i', key[:8]))
@@ -1830,7 +1834,7 @@ class PocketLeveldbChunk1Plus(LightedChunk):
     _Entities = nbt.TAG_List()
     _TileEntities = nbt.TAG_List()
     dirty = False
-    chunk_version = "\x03"
+    chunk_version = "\x04"
 
     def __init__(self, cx, cz, world, data=None, create=False, world_version=None, chunk_version=None):
         """
