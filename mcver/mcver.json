@@ -28,6 +28,26 @@
 		"1.5": [
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.5/blocks.json",
 			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.5/entities.json"
+		],
+		"1.6": [
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.6/blocks.json",
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.6/entities.json"
+		],
+		"1.7": [
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.7/blocks.json",
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.7/entities.json"
+		],
+		"1.8": [
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.8/blocks.json",
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.8/entities.json"
+		],
+		"1.9": [
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.9/blocks.json",
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.9/entities.json"
+		],
+		"1.10": [
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.10/blocks.json",
+			"https://raw.githubusercontent.com/Podshot/MCEdit-Unified/master/mcver/PE/1.10/entities.json"
 		]
 	}
 }
