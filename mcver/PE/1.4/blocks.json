@@ -956,114 +956,334 @@
       "idStr": "dried_kelp_block",
       "name": "Dried Kelp Block"
     },
-		{
-			"id": 395,
-			"idStr": "acacia_button",
-			"opacity": 0,
-			"name": "Acacia Button",
-      "tex": [0, 15],
-			"mapcolor": [120, 120, 120],
-			"type": "BUTTON",
-			"data": {
-				"11": {
-					"name": "Acacia Button (Powered, South)"
-				},
-				"10": {
-					"name": "Acacia Button (Powered, West)"
-				},
-				"13": {
-					"name": "Acacia Button (Powered, Up)"
-				},
-				"12": {
-					"name": "Acacia Button (Powered, North)"
-				},
-				"1": {
-					"name": "Acacia Button (East)"
-				},
-				"0": {
-					"name": "Acacia Button (Down)"
-				},
-				"3": {
-					"name": "Acacia Button (South)"
-				},
-				"2": {
-					"name": "Acacia Button (West)"
-				},
-				"5": {
-					"name": "Acacia Button (Up)"
-				},
-				"4": {
-					"name": "Acacia Button (North)"
-				},
-				"9": {
-					"name": "Acacia Button (Powered, East)"
-				},
-				"8": {
-					"name": "Acacia Button (Powered, Down)"
-				}
-			}
-		},
-		{
-			"id": 396,
-			"idStr": "birch_button",
-			"opacity": 0,
-			"name": "Birch Button",
-      "tex": [6, 13],
-			"mapcolor": [120, 120, 120],
-			"type": "BUTTON",
-			"data": {
-				"11": {
-					"name": "Birch Button (Powered, South)"
-				},
-				"10": {
-					"name": "Birch Button (Powered, West)"
-				},
-				"13": {
-					"name": "Birch Button (Powered, Up)"
-				},
-				"12": {
-					"name": "Birch Button (Powered, North)"
-				},
-				"1": {
-					"name": "Birch Button (East)"
-				},
-				"0": {
-					"name": "Birch Button (Down)"
-				},
-				"3": {
-					"name": "Birch Button (South)"
-				},
-				"2": {
-					"name": "Birch Button (West)"
-				},
-				"5": {
-					"name": "Birch Button (Up)"
-				},
-				"4": {
-					"name": "Birch Button (North)"
-				},
-				"9": {
-					"name": "Birch Button (Powered, East)"
-				},
-				"8": {
-					"name": "Birch Button (Powered, Down)"
-				}
-			}
-		},
+    {
+      "id": 395,
+      "idStr": "acacia_button",
+      "opacity": 0,
+      "name": "Acacia Button",
+      "tex": [
+        0,
+        15
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Acacia Button (Down)"
+        },
+        "1": {
+          "name": "Acacia Button (East)"
+        },
+        "2": {
+          "name": "Acacia Button (West)"
+        },
+        "3": {
+          "name": "Acacia Button (South)"
+        },
+        "4": {
+          "name": "Acacia Button (North)"
+        },
+        "5": {
+          "name": "Acacia Button (Up)"
+        },
+        "8": {
+          "name": "Acacia Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Acacia Button (Powered, East)"
+        },
+        "10": {
+          "name": "Acacia Button (Powered, West)"
+        },
+        "11": {
+          "name": "Acacia Button (Powered, South)"
+        },
+        "12": {
+          "name": "Acacia Button (Powered, North)"
+        },
+        "13": {
+          "name": "Acacia Button (Powered, Up)"
+        }
+      }
+    },
+    {
+      "id": 396,
+      "idStr": "birch_button",
+      "opacity": 0,
+      "name": "Birch Button",
+      "tex": [
+        6,
+        13
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Birch Button (Down)"
+        },
+        "1": {
+          "name": "Birch Button (East)"
+        },
+        "2": {
+          "name": "Birch Button (West)"
+        },
+        "3": {
+          "name": "Birch Button (South)"
+        },
+        "4": {
+          "name": "Birch Button (North)"
+        },
+        "5": {
+          "name": "Birch Button (Up)"
+        },
+        "8": {
+          "name": "Birch Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Birch Button (Powered, East)"
+        },
+        "10": {
+          "name": "Birch Button (Powered, West)"
+        },
+        "11": {
+          "name": "Birch Button (Powered, South)"
+        },
+        "12": {
+          "name": "Birch Button (Powered, North)"
+        },
+        "13": {
+          "name": "Birch Button (Powered, Up)"
+        }
+      }
+    },
     {
       "id": 397,
       "idStr": "dark_oak_button",
-      "name": "Dark Oak Button"
+      "opacity": 0,
+      "name": "Dark Oak Button",
+      "tex": [
+        1,
+        15
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Dark Oak Button (Down)"
+        },
+        "1": {
+          "name": "Dark Oak Button (East)"
+        },
+        "2": {
+          "name": "Dark Oak Button (West)"
+        },
+        "3": {
+          "name": "Dark Oak Button (South)"
+        },
+        "4": {
+          "name": "Dark Oak Button (North)"
+        },
+        "5": {
+          "name": "Dark Oak Button (Up)"
+        },
+        "8": {
+          "name": "Dark Oak Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Dark Oak Button (Powered, East)"
+        },
+        "10": {
+          "name": "Dark Oak Button (Powered, West)"
+        },
+        "11": {
+          "name": "Dark Oak Button (Powered, South)"
+        },
+        "12": {
+          "name": "Dark Oak Button (Powered, North)"
+        },
+        "13": {
+          "name": "Dark Oak Button (Powered, Up)"
+        }
+      }
     },
     {
       "id": 398,
       "idStr": "jungle_button",
-      "name": "Jungle Button"
+      "opacity": 0,
+      "name": "Jungle Button",
+      "tex": [
+        7,
+        12
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Jungle Button (Down)"
+        },
+        "1": {
+          "name": "Jungle Button (East)"
+        },
+        "2": {
+          "name": "Jungle Button (West)"
+        },
+        "3": {
+          "name": "Jungle Button (South)"
+        },
+        "4": {
+          "name": "Jungle Button (North)"
+        },
+        "5": {
+          "name": "Jungle Button (Up)"
+        },
+        "8": {
+          "name": "Jungle Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Jungle Button (Powered, East)"
+        },
+        "10": {
+          "name": "Jungle Button (Powered, West)"
+        },
+        "11": {
+          "name": "Jungle Button (Powered, South)"
+        },
+        "12": {
+          "name": "Jungle Button (Powered, North)"
+        },
+        "13": {
+          "name": "Jungle Button (Powered, Up)"
+        }
+      }
+    },
+    {
+      "id": 398,
+      "idStr": "jungle_button",
+      "opacity": 0,
+      "name": "Jungle Button",
+      "tex": [
+        7,
+        12
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Jungle Button (Down)"
+        },
+        "1": {
+          "name": "Jungle Button (East)"
+        },
+        "2": {
+          "name": "Jungle Button (West)"
+        },
+        "3": {
+          "name": "Jungle Button (South)"
+        },
+        "4": {
+          "name": "Jungle Button (North)"
+        },
+        "5": {
+          "name": "Jungle Button (Up)"
+        },
+        "8": {
+          "name": "Jungle Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Jungle Button (Powered, East)"
+        },
+        "10": {
+          "name": "Jungle Button (Powered, West)"
+        },
+        "11": {
+          "name": "Jungle Button (Powered, South)"
+        },
+        "12": {
+          "name": "Jungle Button (Powered, North)"
+        },
+        "13": {
+          "name": "Jungle Button (Powered, Up)"
+        }
+      }
     },
     {
       "id": 399,
       "idStr": "spruce_button",
       "name": "Spruce Button"
+    },
+    {
+      "id": 399,
+      "idStr": "spruce_button",
+      "opacity": 0,
+      "name": "Spruce Button",
+      "tex": [
+        7,
+        12
+      ],
+      "mapcolor": [
+        120,
+        120,
+        120
+      ],
+      "type": "BUTTON",
+      "data": {
+        "0": {
+          "name": "Spruce Button (Down)"
+        },
+        "1": {
+          "name": "Spruce Button (East)"
+        },
+        "2": {
+          "name": "Spruce Button (West)"
+        },
+        "3": {
+          "name": "Spruce Button (South)"
+        },
+        "4": {
+          "name": "Spruce Button (North)"
+        },
+        "5": {
+          "name": "Spruce Button (Up)"
+        },
+        "8": {
+          "name": "Spruce Button (Powered, Down)"
+        },
+        "9": {
+          "name": "Spruce Button (Powered, East)"
+        },
+        "10": {
+          "name": "Spruce Button (Powered, West)"
+        },
+        "11": {
+          "name": "Spruce Button (Powered, South)"
+        },
+        "12": {
+          "name": "Spruce Button (Powered, North)"
+        },
+        "13": {
+          "name": "Spruce Button (Powered, Up)"
+        }
+      }
     },
     {
       "id": 400,
