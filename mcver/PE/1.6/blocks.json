@@ -4,7 +4,17 @@
     {
       "id": 416,
       "idStr": "barrier",
-      "name": "Barrier"
+      "mapcolor": [
+        111,
+        91,
+        54
+      ],
+      "opacity": 0,
+      "name": "Barrier",
+      "tex": [
+        18,
+        19
+      ]
     }
   ]
 }
