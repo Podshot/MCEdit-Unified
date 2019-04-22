@@ -310,7 +310,11 @@
     {
       "id": 266,
       "idStr": "blue_ice",
-      "name": "Blue Ice"
+      "name": "Blue Ice",
+      "tex": [
+        19,
+        19
+      ]
     },
     {
       "id": 267,
