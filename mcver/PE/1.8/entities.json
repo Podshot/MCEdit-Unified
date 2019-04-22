@@ -1,0 +1,41 @@
+{
+  "load": "1.7",
+  "entities": [
+    {
+      "id": 113,
+      "idStr": "panda",
+      "name": "Panda",
+      "type": "Animals"
+    },
+    {
+      "id": 75,
+      "idStr": "cat",
+      "name": "cat",
+      "type": "Tamable mobs"
+    }
+  ],
+  "entity_types": {
+    "Blocks": 0,
+    "Drops": 0,
+    "Immobile and projectiles": 0,
+    "Other": 256,
+    "Education Edition": 256,
+    "Passive mobs": 768,
+    "Animals": 4864,
+    "Tamable mobs": 21248,
+    "Water mobs": 8960,
+    "Flying mobs": 33024,
+    "Hostile mobs": 2816,
+    "Hostile mobs 1": 68352,
+    "Hostile mobs 2": 199424,
+    "Hostile mobs 3": 264960,
+    "Rideable mobs": 2118400
+  },
+  "fullid doc": [
+    "The following 'fullid' is used to tell the MCEdit internal parser to build and add 'fullid' tags",
+    "and add them to the data defined here in MCEDIT_DEFS and add corresponding mappings to MCEDIT_IDS."
+  ],
+  "autobuild": {
+    "fullid": "entities['entity_types'][item['type']] + item['id']"
+  }
+}
