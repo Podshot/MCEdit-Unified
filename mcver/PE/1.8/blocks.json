@@ -1,0 +1,50 @@
+{
+  "load": "1.7",
+  "blocks": [
+    {
+      "id": 418,
+      "idStr": "bamboo",
+      "name": "Bamboo",
+      "mapcolor": [
+        0,
+        124,
+        0
+      ],
+      "tex": [
+        21,
+        6
+      ]
+    },
+    {
+      "id": 419,
+      "idStr": "bamboo_sapling",
+      "name": "Bamboo Sapling",
+			"opacity": 0,
+      "mapcolor": [
+        0,
+        124,
+        0
+      ],
+      "tex": [
+        22,
+        6
+      ],
+			"type": "DECORATION_CROSS"
+    },
+    {
+      "id": 420,
+      "idStr": "scaffolding",
+      "name": "Scaffolding",
+			"opacity": 0,
+      "mapcolor": [
+        247,
+        233,
+        163
+      ],
+      "tex": [
+        19,
+        15
+      ]
+    }
+  ]
+}
