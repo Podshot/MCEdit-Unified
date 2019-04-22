@@ -498,6 +498,36 @@
           "name": "Dark Oak Standing Sign (South-SouthEast)"
         }
       }
+    },
+    {
+      "id": 437,
+      "idStr": "spruce_wall_sign",
+      "mapcolor": [
+        111,
+        91,
+        54
+      ],
+      "name": "Spruce Wall Sign",
+      "opacity": 0,
+      "tex": [
+        20,
+        16
+      ],
+      "type": "WALLSIGN",
+      "data": {
+        "2": {
+          "name": "Spruce Wall Sign (North)"
+        },
+        "3": {
+          "name": "Spruce Wall Sign (South)"
+        },
+        "4": {
+          "name": "Spruce Wall Sign (West)"
+        },
+        "5": {
+          "name": "Spruce Wall Sign (East)"
+        }
+      }
     }
   ]
 }
