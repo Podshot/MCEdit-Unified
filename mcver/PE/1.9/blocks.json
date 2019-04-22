@@ -1,0 +1,503 @@
+{
+  "load": "1.7",
+  "blocks": [
+    {
+      "id": 38,
+      "idStr": "red_flower",
+      "mapcolor": [
+        255,
+        0,
+        0
+      ],
+      "opacity": 0,
+      "tex": [
+        12,
+        0
+      ],
+      "type": "DECORATION_CROSS",
+      "data": {
+        "0": {
+          "name": "Poppy",
+          "search": "flower, red"
+        },
+        "1": {
+          "name": "Blue Orchid",
+          "search": "flower",
+          "tex": [
+            16,
+            0
+          ]
+        },
+        "2": {
+          "name": "Allium",
+          "search": "flower",
+          "tex": [
+            17,
+            0
+          ]
+        },
+        "3": {
+          "aka": "Houstonia",
+          "name": "Azure Bluet",
+          "search": "flower",
+          "tex": [
+            18,
+            0
+          ]
+        },
+        "4": {
+          "name": "Red Tulip",
+          "search": "flower",
+          "tex": [
+            19,
+            0
+          ]
+        },
+        "5": {
+          "name": "Orange Tulip",
+          "search": "flower",
+          "tex": [
+            16,
+            1
+          ]
+        },
+        "6": {
+          "name": "White Tulip",
+          "search": "flower",
+          "tex": [
+            17,
+            1
+          ]
+        },
+        "7": {
+          "name": "Pink Tulip",
+          "search": "flower",
+          "tex": [
+            18,
+            1
+          ]
+        },
+        "8": {
+          "name": "Oxeye Daisy",
+          "search": "flower",
+          "tex": [
+            19,
+            1
+          ]
+        },
+        "9": {
+          "name": "Cornflower",
+          "search": "flower",
+          "tex": [
+            14,
+            0
+          ]
+        },
+        "10": {
+          "name": "Lily of the Valley",
+          "search": "flower",
+          "tex": [
+            15,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "id": 436,
+      "idStr": "spruce_standing_sign",
+      "name": "Spruce Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        11
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Spruce Standing Sign (South)"
+        },
+        "1": {
+          "name": "Spruce Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Spruce Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Spruce Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Spruce Standing Sign (West)"
+        },
+        "5": {
+          "name": "Spruce Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Spruce Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Spruce Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Spruce Standing Sign (North)"
+        },
+        "9": {
+          "name": "Spruce Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Spruce Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Spruce Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Spruce Standing Sign (East)"
+        },
+        "13": {
+          "name": "Spruce Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Spruce Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Spruce Standing Sign (South-SouthEast)"
+        }
+      }
+    },
+    {
+      "id": 441,
+      "idStr": "birch_standing_sign",
+      "name": "Birch Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        12
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Birch Standing Sign (South)"
+        },
+        "1": {
+          "name": "Birch Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Birch Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Birch Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Birch Standing Sign (West)"
+        },
+        "5": {
+          "name": "Birch Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Birch Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Birch Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Birch Standing Sign (North)"
+        },
+        "9": {
+          "name": "Birch Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Birch Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Birch Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Birch Standing Sign (East)"
+        },
+        "13": {
+          "name": "Birch Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Birch Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Birch Standing Sign (South-SouthEast)"
+        }
+      }
+    },
+    {
+      "id": 443,
+      "idStr": "jungle_standing_sign",
+      "name": "Jungle Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        13
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Jungle Standing Sign (South)"
+        },
+        "1": {
+          "name": "Jungle Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Jungle Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Jungle Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Jungle Standing Sign (West)"
+        },
+        "5": {
+          "name": "Jungle Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Jungle Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Jungle Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Jungle Standing Sign (North)"
+        },
+        "9": {
+          "name": "Jungle Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Jungle Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Jungle Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Jungle Standing Sign (East)"
+        },
+        "13": {
+          "name": "Jungle Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Jungle Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Jungle Standing Sign (South-SouthEast)"
+        }
+      }
+    },
+    {
+      "id": 445,
+      "idStr": "acacia_standing_sign",
+      "name": "Acacia Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        14
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Acacia Standing Sign (South)"
+        },
+        "1": {
+          "name": "Acacia Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Acacia Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Acacia Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Acacia Standing Sign (West)"
+        },
+        "5": {
+          "name": "Acacia Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Acacia Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Acacia Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Acacia Standing Sign (North)"
+        },
+        "9": {
+          "name": "Acacia Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Acacia Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Acacia Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Acacia Standing Sign (East)"
+        },
+        "13": {
+          "name": "Acacia Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Acacia Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Acacia Standing Sign (South-SouthEast)"
+        }
+      }
+    },
+    {
+      "id": 445,
+      "idStr": "acacia_standing_sign",
+      "name": "Acacia Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        14
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Acacia Standing Sign (South)"
+        },
+        "1": {
+          "name": "Acacia Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Acacia Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Acacia Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Acacia Standing Sign (West)"
+        },
+        "5": {
+          "name": "Acacia Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Acacia Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Acacia Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Acacia Standing Sign (North)"
+        },
+        "9": {
+          "name": "Acacia Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Acacia Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Acacia Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Acacia Standing Sign (East)"
+        },
+        "13": {
+          "name": "Acacia Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Acacia Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Acacia Standing Sign (South-SouthEast)"
+        }
+      }
+    },
+    {
+      "id": 447,
+      "idStr": "darkoak_standing_sign",
+      "name": "Dark Oak Standing Sign",
+      "opacity": 0,
+      "mapcolor": [
+        143,
+        119,
+        72
+      ],
+      "tex": [
+        20,
+        15
+      ],
+      "type": "SIGNPOST",
+      "data": {
+        "0": {
+          "name": "Dark Oak Standing Sign (South)"
+        },
+        "1": {
+          "name": "Dark Oak Standing Sign (South-SouthWest)"
+        },
+        "2": {
+          "name": "Dark Oak Standing Sign (SouthWest)"
+        },
+        "3": {
+          "name": "Dark Oak Standing Sign (West-SouthWest)"
+        },
+        "4": {
+          "name": "Dark Oak Standing Sign (West)"
+        },
+        "5": {
+          "name": "Dark Oak Standing Sign (West-NorthWest)"
+        },
+        "6": {
+          "name": "Dark Oak Standing Sign (NorthWest)"
+        },
+        "7": {
+          "name": "Dark Oak Standing Sign (North-NorthWest)"
+        },
+        "8": {
+          "name": "Dark Oak Standing Sign (North)"
+        },
+        "9": {
+          "name": "Dark Oak Standing Sign (North-NorthEast)"
+        },
+        "10": {
+          "name": "Dark Oak Standing Sign (NorthEast)"
+        },
+        "11": {
+          "name": "Dark Oak Standing Sign (East-NorthEast)"
+        },
+        "12": {
+          "name": "Dark Oak Standing Sign (East)"
+        },
+        "13": {
+          "name": "Dark Oak Standing Sign (East-SouthEast)"
+        },
+        "14": {
+          "name": "Dark Oak Standing Sign (SouthEast)"
+        },
+        "15": {
+          "name": "Dark Oak Standing Sign (South-SouthEast)"
+        }
+      }
+    }
+  ]
+}
