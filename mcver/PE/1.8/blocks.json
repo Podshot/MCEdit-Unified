@@ -19,7 +19,7 @@
       "id": 419,
       "idStr": "bamboo_sapling",
       "name": "Bamboo Sapling",
-			"opacity": 0,
+      "opacity": 0,
       "mapcolor": [
         0,
         124,
@@ -29,13 +29,13 @@
         22,
         6
       ],
-			"type": "DECORATION_CROSS"
+      "type": "DECORATION_CROSS"
     },
     {
       "id": 420,
       "idStr": "scaffolding",
       "name": "Scaffolding",
-			"opacity": 0,
+      "opacity": 0,
       "mapcolor": [
         247,
         233,
