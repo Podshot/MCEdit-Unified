@@ -35,6 +35,7 @@ import pygame
 
 from select import SelectionOperation
 from pymclevel.pocket import PocketWorld
+from pymclevel.leveldbpocket import PocketLeveldbWorld
 from pymclevel import block_copy, BoundingBox, BOParser
 
 import logging
@@ -634,7 +635,7 @@ class CloneTool(EditorTool):
 
     @property
     def canRotateLevel(self):
-        return not isinstance(self.level, (pymclevel.MCInfdevOldLevel, PocketWorld))
+        return not isinstance(self.level, (pymclevel.MCInfdevOldLevel, PocketWorld, PocketLeveldbWorld))
 
     def rotatedSelectionSize(self):
         if self.canRotateLevel:
