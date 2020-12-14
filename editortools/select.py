@@ -430,6 +430,12 @@ class SelectionTool(EditorTool):
 
         return "{0}W x {2}L x {1}H".format(*size)
 
+    def aabbLabelText(self):
+        box = self.selectionBox()
+        return "({minX},{minY},{minZ}) to ({maxX},{maxY},{maxZ})".format(
+            minX=box.minx, minY=box.miny, minZ=box.minz,
+            maxX=box.maxx, maxY=box.maxy, maxZ=box.maxz)
+
     def showPanel(self):
         if self.selectionBox() is None:
             return
@@ -474,23 +480,32 @@ class SelectionTool(EditorTool):
 
         if hasattr(self, 'sizeLabel'):
             self.nudgePanel.remove(self.sizeLabel)
+        if hasattr(self, 'aabbLabel'):
+            self.nudgePanel.remove(self.aabbLabel)
         self.sizeLabel = Label(self.sizeLabelText())
         self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
+
+        self.aabbLabel = Label(self.aabbLabelText())
+        self.aabbLabel.anchor = "wh"
+        self.aabbLabel.tooltipText = "test"
 
         self.nudgePanel.top = 0
         self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
+        self.nudgePanel.add(self.aabbLabel)
 
         self.nudgePanel.add(self.nudgeSelectionButton)
         self.spaceLabel.height = 3
         self.nudgeSelectionButton.top = self.spaceLabel.bottom
         self.sizeLabel.top = self.nudgeSelectionButton.bottom
-        self.nudgeRow.top = self.sizeLabel.bottom
+        self.aabbLabel.top = self.sizeLabel.bottom
+        self.nudgeRow.top = self.aabbLabel.bottom
 
         self.nudgePanel.shrink_wrap()
         self.sizeLabel.centerx = self.nudgePanel.centerx
+        self.aabbLabel.centerx = self.nudgePanel.centerx
         self.nudgeRow.centerx = self.nudgePanel.centerx
         self.nudgeSelectionButton.centerx = self.nudgePanel.centerx
 
