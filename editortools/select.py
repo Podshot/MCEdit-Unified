@@ -432,7 +432,7 @@ class SelectionTool(EditorTool):
 
     def aabbLabelText(self):
         box = self.selectionBox()
-        return "({minX},{minY},{minZ}) to ({maxX},{maxY},{maxZ})".format(
+        return _("({minX},{minY},{minZ}) to ({maxX},{maxY},{maxZ})").format(
             minX=box.minx, minY=box.miny, minZ=box.minz,
             maxX=box.maxx, maxY=box.maxy, maxZ=box.maxz)
 
