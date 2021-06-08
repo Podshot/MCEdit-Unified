@@ -354,6 +354,38 @@
 		&copy; 2014-2015 <a href="http://podshot.github.io/MCEdit-Unified/contributors.html">Khroki and all of the contributers</a>.
 		All Rights Reserved to their respective ownership.
 	</div>
+    
+    <div id="amuletModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">MCEdit Unified for Java 1.12 and Bedrock 1.12</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>MCEdit is not able to open worlds from Java 1.13+ or Bedrock 1.13+
+                       If you want to edit these newer format worlds check out Amulet Editor!
+                       <br>
+                       Amulet Editor is a spiritual successor to MCEdit for Java and Bedrock created by some of the MCEdit Unified developers.
+                       It works with the new format (1.13+) as well as the old format (1.12 and before).
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="location.href = 'https://www.amulet-editor.com/';">Go to Amulet Editor</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue to MCEdit-Unified</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    $(window).on('load', function() {
+        $('#amuletModal').modal('show');
+    });
+</script>
+
 
 </body>
 </html>
