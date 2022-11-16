@@ -141,17 +141,18 @@ class BlockstateAPI(object):
         :return: A tuple containing the numerical ID/Data pair (<id>, <data>)
         :rtype: tuple
         """
-        
+
         if ":" in name:
             prefix, name = name.split(":")
         else:
             prefix = "minecraft"
-            
+
         if prefix not in self.blockstates:
-            return -1, -1
+            # TODO support modded blocks
+            raise Exception("Unknown block")
         elif name not in self.blockstates[prefix]:
-            return -1, -1
-        
+            raise Exception("Unknown block")
+
         bid = self.blockstates[prefix][name]["id"]
         for prop in self.blockstates[prefix][name]["properties"]:
             correct = True

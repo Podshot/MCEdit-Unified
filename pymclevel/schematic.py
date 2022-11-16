@@ -793,6 +793,8 @@ class StructureNBT(object):
             self._entities = []
             self._tile_entities = zeros(self.Size, dtype=nbt.TAG_Compound)
             self._tile_entities.fill({})
+        # TODO testing
+        self.toSchematic().saveToFile("file.schematic")
             
     def toSchematic(self):
         schem = MCSchematic(shape=self.Size, mats=self._mat)
