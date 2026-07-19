@@ -904,7 +904,7 @@ class PlayerPositionTool(EditorTool):
 
                 #GL.glDisable(GL.GL_BLEND)
 
-            except Exception, e:
+            except Exception as e:
                 print "Exception in editortools.player.PlayerPositionTool._drawToolMarkers:", repr(e)
                 import traceback
                 print traceback.format_exc()
@@ -1117,7 +1117,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 self.editor.addUnsavedEdit()
             self.markerList.invalidate()
 
-        except SpawnPositionInvalid, e:
+        except SpawnPositionInvalid as e:
             if "Okay" != ask(str(e), responses=["Okay", "Fix it for me!"]):
                 level = self.editor.level
                 status = ""
@@ -1148,7 +1148,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                     if op.canUndo:
                         self.editor.addUnsavedEdit()
                     self.markerList.invalidate()
-                except SpawnPositionInvalid, e:
+                except SpawnPositionInvalid as e:
                     alert(str(e))
                     return
 

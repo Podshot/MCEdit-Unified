@@ -142,7 +142,7 @@ class FileOpener(albow.Widget):
             filename = mcplatform.askOpenFile(schematics=True)
             if filename:
                 self.mcedit.loadFile(filename)
-#        except Exception, e:
+#        except Exception as e:
 #            logging.error('Error during proptOpenAndLoad: {0!r}'.format(e))
 
     def createNewWorld(self):

@@ -792,7 +792,7 @@ class mce(object):
                                 itemname = item.name
                             except KeyError:
                                 itemname = "Unknown Item {0}".format(itemTag)
-                            except Exception, e:
+                            except Exception as e:
                                 itemname = repr(e)
                             outFile.write("{0} {1}:{2}\n".format(itemTag["Count"].value, itemname, itemTag["Damage"].value))
                     else:
@@ -1058,7 +1058,7 @@ class mce(object):
                         minutes = int(m)
                     else:
                         hours = int(word)
-                except Exception, e:
+                except Exception as e:
                     raise UsageError(("Cannot interpret time, ", e))
 
                 if len(command) > 1:
@@ -1407,7 +1407,7 @@ class mce(object):
                 except EOFError:
                     print "End of input."
                     raise SystemExit
-                except Exception, e:
+                except Exception as e:
                     print "Cannot open {0}: {1}".format(world, e)
                 else:
                     break
@@ -1433,7 +1433,7 @@ class mce(object):
                     print "End of file. Saving automatically."
                     self._save([])
                     raise SystemExit
-                except Exception, e:
+                except Exception as e:
                     if self.debug:
                         traceback.print_exc()
                     print 'Exception during command: {0!r}'.format(e)
@@ -1469,11 +1469,11 @@ class mce(object):
 
         try:
             func(commandWords)
-        except PlayerNotFound, e:
+        except PlayerNotFound as e:
             print "Cannot find player {0}".format(e.args[0])
             self._player([])
 
-        except UsageError, e:
+        except UsageError as e:
             print e
             if self.debug:
                 traceback.print_exc()

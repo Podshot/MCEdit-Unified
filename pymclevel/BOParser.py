@@ -150,7 +150,7 @@ class BO3:
                         try:
                             self.__schem.Blocks[x, z, y] = b_idn
                             self.__schem.Data[x, z, y] = verify_state(b_id, b_state)
-                        except Exception, e:
+                        except Exception as e:
                             print 'Error while building BO3 data:'
                             print e
                             print 'size', self.size_x, self.size_y, self.size_z

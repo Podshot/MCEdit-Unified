@@ -132,7 +132,7 @@ class MCJavaLevel(MCLevel):
         try:
             with open(self.filename, 'wb') as f:
                 f.write(s.getvalue())
-        except Exception, e:
+        except Exception as e:
             log.info(u"Error while saving java level in place: {0}".format(e))
             try:
                 os.remove(self.filename)
