@@ -35,7 +35,7 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             blockmask[blocktype.ID] = True
             blocktypeMask = blockmask[blocks]
 
-        except Exception, e:
+        except Exception as e:
             print repr(e), " while using blockmask from filters.topsoil"
             blocktypeMask = blocks != 0
 

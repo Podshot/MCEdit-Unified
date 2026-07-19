@@ -144,7 +144,7 @@ class PocketChunksFile(object):
     #
     #
     #
-    #                except Exception, e:
+    #                except Exception as e:
     #                    logger.info("Unexpected chunk data at sector {sector} ({exc})".format(sector=sectorStart, exc=e))
     #                    self.setOffset(cx, cz, 0)
     #                    deleted += 1

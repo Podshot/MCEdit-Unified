@@ -102,7 +102,7 @@ def get_bullet_image(index, w=16, h=16):
                 bullet_image = image.load(default_bullet_images)
             else:
                 bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
-        except Exception, e:
+        except Exception as e:
             print "*** MCEDIT DEBUG: bullets image could not be loaded."
             print "*** MCEDIT DEBUG:", e
             print "*** MCEDIT DEBUG: bullets image file:", resource_path(config.nbtTreeSettings.bulletFileName.get())
@@ -559,7 +559,7 @@ class SlotEditor(Dialog):
 
         try:
             self.tableview.rows.scroll_to_item(self.selected_item_index)
-        except Exception, e:
+        except Exception as e:
             print e
             pass
 

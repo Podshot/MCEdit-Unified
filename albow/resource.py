@@ -189,7 +189,7 @@ def get_font(size, *names, **kwds):
             #     #     path = path.encode(sys.getfilesystemencoding())
             #     #     font = pygame.font.Font(open(path, 'rb'), size)
             #     #     log.debug("Font %s loaded."%path)
-            #     # except Exception, e:
+            #     # except Exception as e:
             #     #     log.debug("PyGame could not load font.")
             #     #     log.debug("Exception: %s"%e)
             #     #     log.debug("Loading sysfont")
