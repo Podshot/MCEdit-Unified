@@ -19,7 +19,7 @@ The gtk module is not available for Python 3, and this module does not work with
 """
 
 # Modified by Podshot to work with MCEdit-Unified's python environment
-# * Removed Python 3 compatability
+# * Removed Python 3 compatibility
 # * Removed PyQT support
 
 __version__ = '1.5.6'
