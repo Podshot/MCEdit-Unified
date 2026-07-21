@@ -2196,7 +2196,7 @@ class WallSignBlockRenderer(BlockRenderer):
         "east": (10, 4, 12, 13)
     })
     
-    # I don't know how this sytem works and how it should be structured, but this seem to do the job
+    # I don't know how this system works and how it should be structured, but this seem to do the job
     wallSignTemplates = numpy.array([
         wallSignTemplate,
         wallSignTemplate,
